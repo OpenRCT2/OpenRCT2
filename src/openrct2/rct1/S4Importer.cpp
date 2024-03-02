@@ -95,6 +95,7 @@ namespace RCT1
         RCT12::EntryList _smallSceneryEntries;
         RCT12::EntryList _largeSceneryEntries;
         RCT12::EntryList _wallEntries;
+        RCT12::EntryList _bannerEntries;
         RCT12::EntryList _pathEntries;
         RCT12::EntryList _pathAdditionEntries;
         RCT12::EntryList _sceneryGroupEntries;
@@ -106,10 +107,11 @@ namespace RCT1
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
         ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::Count)]{};
-        ObjectEntryIndex _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
+        ObjectEntryIndex _vehicleTypeToRideEntryMap[EnumValue(VehicleType::Count)]{};
         ObjectEntryIndex _smallSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _largeSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _wallTypeToEntryMap[256]{};
+        ObjectEntryIndex _bannerTypeToEntryMap[9]{};
         ObjectEntryIndex _pathTypeToEntryMap[24]{};
         ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
         ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
@@ -349,6 +351,7 @@ namespace RCT1
             std::fill(std::begin(_smallSceneryTypeToEntryMap), std::end(_smallSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_largeSceneryTypeToEntryMap), std::end(_largeSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_wallTypeToEntryMap), std::end(_wallTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_bannerTypeToEntryMap), std::end(_bannerTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
@@ -373,6 +376,7 @@ namespace RCT1
             AddAvailableEntriesFromMap();
             AddAvailableEntriesFromRides();
             AddAvailableEntriesFromSceneryGroups();
+            AddAvailableEntriesFromBannerList();
             AddEntryForWater();
         }
 
@@ -453,7 +457,8 @@ namespace RCT1
                         // For some bizarre reason, RCT1 research lists contain vehicles that aren't actually researched.
                         if (rideTypeInResearch[researchItem->RelatedRide])
                         {
-                            AddEntryForVehicleType(static_cast<RideType>(researchItem->RelatedRide), researchItem->Item);
+                            AddEntryForVehicleType(
+                                static_cast<RideType>(researchItem->RelatedRide), static_cast<VehicleType>(researchItem->Item));
                         }
                         break;
                 }
@@ -559,7 +564,7 @@ namespace RCT1
                             case ObjectType::SmallScenery:
                             case ObjectType::LargeScenery:
                             case ObjectType::Walls:
-                            case ObjectType::Paths:
+                            case ObjectType::Banners:
                             case ObjectType::PathAdditions:
                             {
                                 RCT12::EntryList* entries = GetEntryList(objectType);
@@ -582,6 +587,19 @@ namespace RCT1
                         LOG_ERROR("Cannot find object %s", objectName);
                     }
                 }
+            }
+        }
+
+        void AddAvailableEntriesFromBannerList()
+        {
+            for (size_t i = 0; i < std::size(_s4.Banners); i++)
+            {
+                auto& banner = _s4.Banners[i];
+                auto type = static_cast<BannerType>(banner.Type);
+                if (type == BannerType::Null)
+                    continue;
+
+                AddEntryForBanner(type);
             }
         }
 
@@ -614,17 +632,17 @@ namespace RCT1
             }
         }
 
-        void AddEntryForVehicleType(RideType rideType, uint8_t vehicleType)
+        void AddEntryForVehicleType(RideType rideType, VehicleType vehicleType)
         {
             Guard::Assert(EnumValue(rideType) < std::size(_rideTypeToRideEntryMap));
 
-            if (_vehicleTypeToRideEntryMap[vehicleType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_vehicleTypeToRideEntryMap[EnumValue(vehicleType)] == OBJECT_ENTRY_INDEX_NULL)
             {
                 auto entryName = RCT1::GetVehicleObject(vehicleType);
                 if (!entryName.empty())
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
-                    _vehicleTypeToRideEntryMap[vehicleType] = entryIndex;
+                    _vehicleTypeToRideEntryMap[EnumValue(vehicleType)] = entryIndex;
 
                     if (rideType != RideType::Null)
                         AddEntryForRideType(rideType);
@@ -665,6 +683,18 @@ namespace RCT1
                 auto entryIndex = _wallEntries.GetOrAddEntry(entryName);
 
                 _wallTypeToEntryMap[wallType] = entryIndex;
+            }
+        }
+
+        void AddEntryForBanner(BannerType bannerType)
+        {
+            assert(EnumValue(bannerType) < std::size(_bannerTypeToEntryMap));
+            if (_bannerTypeToEntryMap[EnumValue(bannerType)] == OBJECT_ENTRY_INDEX_NULL)
+            {
+                auto entryName = RCT1::GetBannerObject(bannerType);
+                auto entryIndex = _bannerEntries.GetOrAddEntry(entryName);
+
+                _bannerTypeToEntryMap[EnumValue(bannerType)] = entryIndex;
             }
         }
 
@@ -797,7 +827,7 @@ namespace RCT1
 
             if (RCT1::RideTypeUsesVehicles(src->Type))
             {
-                dst->subtype = _vehicleTypeToRideEntryMap[src->VehicleType];
+                dst->subtype = _vehicleTypeToRideEntryMap[EnumValue(src->VehicleType)];
             }
             else
             {
@@ -829,6 +859,10 @@ namespace RCT1
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_MUSIC;
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            }
+            if (VehicleTypeIsReversed(src->VehicleType))
+            {
+                dst->lifecycle_flags |= RIDE_LIFECYCLE_REVERSED_TRAINS;
             }
 
             // Station
@@ -1210,9 +1244,8 @@ namespace RCT1
         void SetVehicleColours(::Vehicle* dst, const RCT1::Vehicle* src)
         {
             const auto& srcRide = _s4.Rides[src->Ride];
-            uint8_t vehicleTypeIndex = srcRide.VehicleType;
             RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
-                vehicleTypeIndex);
+                srcRide.VehicleType);
 
             // RCT1 had no third colour
             if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
@@ -1475,19 +1508,7 @@ namespace RCT1
             AppendRequiredObjects(result, ObjectType::Paths, _pathEntries);
             AppendRequiredObjects(result, ObjectType::PathAdditions, _pathAdditionEntries);
             AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
-            AppendRequiredObjects(
-                result, ObjectType::Banners,
-                std::vector<std::string>({
-                    "rct2.footpath_banner.bn1",
-                    "rct2.footpath_banner.bn2",
-                    "rct2.footpath_banner.bn3",
-                    "rct2.footpath_banner.bn4",
-                    "rct2.footpath_banner.bn5",
-                    "rct2.footpath_banner.bn6",
-                    "rct2.footpath_banner.bn7",
-                    "rct2.footpath_banner.bn8",
-                    "rct2.footpath_banner.bn9",
-                }));
+            AppendRequiredObjects(result, ObjectType::Banners, _bannerEntries);
             AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.park_entrance.pkent1" }));
             AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
             AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
@@ -2375,10 +2396,6 @@ namespace RCT1
                 case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW:
                     *colourA = COLOUR_DARK_BROWN;
                     break;
-                case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE:
-                    *colourB = *colourA;
-                    *colourA = COLOUR_DARK_BROWN;
-                    break;
                 case RCT1_WALL_TYPE_GLASS_SMOOTH:
                 case RCT1_WALL_TYPE_GLASS_PANELS:
                     *colourB = COLOUR_WHITE;
@@ -2400,7 +2417,12 @@ namespace RCT1
 
             *dst = {};
             dst->id = id;
-            dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
+            auto type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
+            if (type < std::size(_bannerTypeToEntryMap))
+                type = _bannerTypeToEntryMap[type];
+            else
+                type = OBJECT_ENTRY_INDEX_NULL;
+            dst->type = type;
 
             dst->flags = 0;
             if (src->Flags & BANNER_FLAG_NO_ENTRY)
@@ -2453,6 +2475,8 @@ namespace RCT1
                     return &_largeSceneryEntries;
                 case ObjectType::Walls:
                     return &_wallEntries;
+                case ObjectType::Banners:
+                    return &_bannerEntries;
                 case ObjectType::Paths:
                     return &_pathEntries;
                 case ObjectType::PathAdditions:
@@ -2717,7 +2741,7 @@ namespace RCT1
 
                 if (researchList[i].Type == RCT1_RESEARCH_TYPE_RIDE)
                 {
-                    return RCT1::GetRideType(static_cast<RideType>(researchList[i].Item), 0);
+                    return RCT1::GetRideType(static_cast<RideType>(researchList[i].Item), static_cast<VehicleType>(0));
                 }
             }
 
@@ -2907,6 +2931,11 @@ namespace RCT1
             dst->SetFlag(VehicleFlags::Crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+
+        if (VehicleTypeIsReversed(rct1Ride.VehicleType))
+        {
+            dst->SetFlag(VehicleFlags::CarIsReversed);
+        }
     }
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)

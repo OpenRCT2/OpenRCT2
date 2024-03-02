@@ -45,8 +45,8 @@
     <LibsSha1 Condition="'$(Platform)'=='ARM64'">bd338aa3da9a357fb996dcaa6cea02c4f906718c</LibsSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.6/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>80fefc6ebbabc42a6f4703412daa5c62f661420d</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.3.13/objects.zip</ObjectsUrl>
-    <ObjectsSha1>15a60424d5f4f0b94ac07763b6967ba0e6ae3a7d</ObjectsSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.4.0/objects.zip</ObjectsUrl>
+    <ObjectsSha1>f512e230ffa2f16109209e4f30e7d7bf4fe21fc0</ObjectsSha1>
     <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.5/opensound.zip</OpenSFXUrl>
     <OpenSFXSha1>b1b1f1b241d2cbff63a1889c4dc5a09bdf769bfb</OpenSFXSha1>
     <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.5/openmusic.zip</OpenMSXUrl>

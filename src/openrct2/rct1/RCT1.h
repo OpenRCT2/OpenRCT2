@@ -109,6 +109,116 @@ namespace RCT1
         Null = 255,
     };
 
+    enum class VehicleType : uint8_t
+    {
+        SteelRollerCoasterTrain,
+        SteelRollerCoasterTrainBackwards,
+        WoodenRollerCoasterTrain,
+        InvertedCoasterTrain, // Not in RCT2
+        SuspendedSwingingCars,
+        LadybirdCars,
+        StandUpRollerCoasterCars,
+        SpinningCars,
+        SinglePersonSwingingChairs,
+        SwansPedalBoats,
+        LargeMonorailTrain,
+        Canoes,
+        RowingBoats,
+        SteamTrain,
+        WoodenMouseCars,
+        BumperBoats,
+        WoodenRollerCoasterTrainBackwards,
+        RocketCars,
+        Horses, // Steeplechase
+        Sportscars,
+        LyingDownSwingingCars, // Inverted single-rail
+        WoodenMineCars,
+        SuspendedSwingingAirplaneCars,
+        SmallMonorailCars,
+        WaterTricycles,
+        LaunchedFreefallCar,
+        BobsleighCars,
+        Dinghies,
+        RotatingCabin,
+        MineTrain,
+        ChairliftCars,
+        CorkscrewRollerCoasterTrain,
+        Motorbikes,
+        RacingCars,
+        Trucks,
+        GoKarts,
+        RapidsBoats,
+        LogFlumeBoats,
+        Dodgems,
+        SwingingShip,
+        SwingingInverterShip,
+        MerryGoRound,
+        FerrisWheel,
+        SimulatorPod,
+        CinemaBuilding,
+        TopspinCar,
+        SpaceRings,
+        ReverseFreefallRollerCoasterCar,
+        VerticalRollerCoasterCars,
+        CatCars,
+        TwistArmsAndCars,
+        HauntedHouseBuilding,
+        LogCars,
+        CircusTent,
+        GhostTrainCars,
+        SteelTwisterRollerCoasterTrain,
+        WoodenTwisterRollerCoasterTrain,
+        WoodenSideFrictionCars,
+        VintageCars,
+        SteamTrainCoveredCars,
+        StandUpSteelTwisterRollerCoasterTrain,
+        FloorlessSteelTwisterRollerCoasterTrain,
+        SteelMouseCars,
+        ChairliftCarsAlternative,
+        SuspendedMonorailTrain,
+        HelicopterCars,
+        VirginiaReelTubs,
+        ReverserCars,
+        Golfers,
+        RiverRideBoats,
+        FlyingRollerCoasterTrain,
+        NonLoopingSteelTwisterRollerCoasterTrain,
+        HeartlineTwisterCars,
+        HeartlineTwisterCarsReversed,
+        Reserved,
+        RotodropCar,
+        FlyingSaucers,
+        CrookedHouseBuilding,
+        Bicycles,
+        HypercoasterTrain,
+        _4AcrossInvertedCoasterTrain,
+        WaterCoasterBoats,
+        FaceoffCars,
+        JetSkis,
+        RaftBoats,
+        AmericanStyleSteamTrain,
+        AirPoweredCoasterTrain,
+        SuspendedWildMouseCars, // Inverted Hairpin in RCT2
+        EnterpriseWheel,
+
+        Count,
+    };
+
+    enum class BannerType : uint8_t
+    {
+        Plain = 0,
+        Jungle,
+        Roman,
+        Egyptian,
+        Mine,
+        Jurassic,
+        Oriental,
+        Snow,
+        Space,
+
+        Null = 255,
+    };
+
 #pragma pack(push, 1)
     struct Entrance
     {
@@ -125,11 +235,11 @@ namespace RCT1
      */
     struct Ride
     {
-        RideType Type;           // 0x000
-        uint8_t VehicleType;     // 0x001
-        uint16_t LifecycleFlags; // 0x002
-        uint8_t OperatingMode;   // 0x004
-        uint8_t ColourScheme;    // 0x005
+        RideType Type;                 // 0x000
+        RCT1::VehicleType VehicleType; // 0x001
+        uint16_t LifecycleFlags;       // 0x002
+        uint8_t OperatingMode;         // 0x004
+        uint8_t ColourScheme;          // 0x005
         struct
         {
             colour_t Body;
@@ -792,7 +902,7 @@ namespace RCT1
     struct TD4
     {
         RideType Type; // 0x00
-        uint8_t VehicleType;
+        RCT1::VehicleType VehicleType;
         uint32_t Flags;                                              // 0x02
         uint8_t Mode;                                                // 0x06
         uint8_t VersionAndColourScheme;                              // 0x07 0b0000_VVCC
@@ -849,101 +959,6 @@ namespace RCT1
 
     assert_struct_size(TD4AA, 0xC4);
 #pragma pack(pop)
-
-    enum
-    {
-        RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN = 0,
-        RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS,
-        RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN, // Not in RCT2
-        RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS,
-        RCT1_VEHICLE_TYPE_LADYBIRD_CARS,
-        RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS,
-        RCT1_VEHICLE_TYPE_SPINNING_CARS,
-        RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS,
-        RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS,
-        RCT1_VEHICLE_TYPE_LARGE_MONORAIL_TRAIN,
-        RCT1_VEHICLE_TYPE_CANOES,
-        RCT1_VEHICLE_TYPE_ROWING_BOATS,
-        RCT1_VEHICLE_TYPE_STEAM_TRAIN,
-        RCT1_VEHICLE_TYPE_WOODEN_MOUSE_CARS,
-        RCT1_VEHICLE_TYPE_BUMPER_BOATS,
-        RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN_BACKWARDS,
-        RCT1_VEHICLE_TYPE_ROCKET_CARS,
-        RCT1_VEHICLE_TYPE_HORSES, // Steeplechase
-        RCT1_VEHICLE_TYPE_SPORTSCARS,
-        RCT1_VEHICLE_TYPE_LYING_DOWN_SWINGING_CARS, // Inverted single-rail
-        RCT1_VEHICLE_TYPE_WOODEN_MINE_CARS,
-        RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_AIRPLANE_CARS,
-        RCT1_VEHICLE_TYPE_SMALL_MONORAIL_CARS,
-        RCT1_VEHICLE_TYPE_WATER_TRICYCLES,
-        RCT1_VEHICLE_TYPE_LAUNCHED_FREEFALL_CAR,
-        RCT1_VEHICLE_TYPE_BOBSLEIGH_CARS,
-        RCT1_VEHICLE_TYPE_DINGHIES,
-        RCT1_VEHICLE_TYPE_ROTATING_CABIN,
-        RCT1_VEHICLE_TYPE_MINE_TRAIN,
-        RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS,
-        RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_MOTORBIKES,
-        RCT1_VEHICLE_TYPE_RACING_CARS,
-        RCT1_VEHICLE_TYPE_TRUCKS,
-        RCT1_VEHICLE_TYPE_GO_KARTS,
-        RCT1_VEHICLE_TYPE_RAPIDS_BOATS,
-        RCT1_VEHICLE_TYPE_LOG_FLUME_BOATS,
-        RCT1_VEHICLE_TYPE_DODGEMS,
-        RCT1_VEHICLE_TYPE_SWINGING_SHIP,
-        RCT1_VEHICLE_TYPE_SWINGING_INVERTER_SHIP,
-        RCT1_VEHICLE_TYPE_MERRY_GO_ROUND,
-        RCT1_VEHICLE_TYPE_FERRIS_WHEEL,
-        RCT1_VEHICLE_TYPE_SIMULATOR_POD,
-        RCT1_VEHICLE_TYPE_CINEMA_BUILDING,
-        RCT1_VEHICLE_TYPE_TOPSPIN_CAR,
-        RCT1_VEHICLE_TYPE_SPACE_RINGS,
-        RCT1_VEHICLE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER_CAR,
-        RCT1_VEHICLE_TYPE_VERTICAL_ROLLER_COASTER_CARS,
-        RCT1_VEHICLE_TYPE_CAT_CARS,
-        RCT1_VEHICLE_TYPE_TWIST_ARMS_AND_CARS,
-        RCT1_VEHICLE_TYPE_HAUNTED_HOUSE_BUILDING,
-        RCT1_VEHICLE_TYPE_LOG_CARS,
-        RCT1_VEHICLE_TYPE_CIRCUS_TENT,
-        RCT1_VEHICLE_TYPE_GHOST_TRAIN_CARS,
-        RCT1_VEHICLE_TYPE_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_WOODEN_TWISTER_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS,
-        RCT1_VEHICLE_TYPE_VINTAGE_CARS,
-        RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS,
-        RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_STEEL_MOUSE_CARS,
-        RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS_ALTERNATIVE,
-        RCT1_VEHICLE_TYPE_SUSPENDED_MONORAIL_TRAIN,
-        RCT1_VEHICLE_TYPE_HELICOPTER_CARS,
-        RCT1_VEHICLE_TYPE_VIRGINIA_REEL_TUBS,
-        RCT1_VEHICLE_TYPE_REVERSER_CARS,
-        RCT1_VEHICLE_TYPE_GOLFERS,
-        RCT1_VEHICLE_TYPE_RIVER_RIDE_BOATS,
-        RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS,
-        RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED,
-        RCT1_VEHICLE_TYPE_RESERVED,
-        RCT1_VEHICLE_TYPE_ROTODROP_CAR,
-        RCT1_VEHICLE_TYPE_FLYING_SAUCERS,
-        RCT1_VEHICLE_TYPE_CROOKED_HOUSE_BUILDING,
-        RCT1_VEHICLE_TYPE_BICYCLES,
-        RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_WATER_COASTER_BOATS,
-        RCT1_VEHICLE_TYPE_FACEOFF_CARS,
-        RCT1_VEHICLE_TYPE_JET_SKIS,
-        RCT1_VEHICLE_TYPE_RAFT_BOATS,
-        RCT1_VEHICLE_TYPE_AMERICAN_STYLE_STEAM_TRAIN,
-        RCT1_VEHICLE_TYPE_AIR_POWERED_COASTER_TRAIN,
-        RCT1_VEHICLE_TYPE_SUSPENDED_WILD_MOUSE_CARS, // Inverted Hairpin in RCT2
-        RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL,
-
-        RCT1_VEHICLE_TYPE_COUNT
-    };
 
     enum
     {
