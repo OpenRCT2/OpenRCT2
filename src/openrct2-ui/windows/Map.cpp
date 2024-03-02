@@ -138,9 +138,68 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 };
 // clang-format on
 
+static constexpr StringId MapLabels[] = {
+    STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
+    STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
+};
+
+static constexpr uint16_t RideKeyColours[] = {
+    MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE
+    MapColour(PALETTE_INDEX_42),  // COLOUR_KEY_FOOD
+    MapColour(PALETTE_INDEX_20),  // COLOUR_KEY_DRINK
+    MapColour(PALETTE_INDEX_209), // COLOUR_KEY_SOUVENIR
+    MapColour(PALETTE_INDEX_136), // COLOUR_KEY_KIOSK
+    MapColour(PALETTE_INDEX_102), // COLOUR_KEY_FIRST_AID
+    MapColour(PALETTE_INDEX_55),  // COLOUR_KEY_CASH_MACHINE
+    MapColour(PALETTE_INDEX_161), // COLOUR_KEY_TOILETS
+};
+
+static constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
+static constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
+static constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
+static constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
+static constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
+
+static constexpr uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
+
+static constexpr uint16_t ElementTypeMaskColour[] = {
+    0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
+    0x0000, // TILE_ELEMENT_TYPE_PATH
+    0x00FF, // TILE_ELEMENT_TYPE_TRACK
+    0xFF00, // TILE_ELEMENT_TYPE_SMALL_SCENERY
+    0x0000, // TILE_ELEMENT_TYPE_ENTRANCE
+    0xFFFF, // TILE_ELEMENT_TYPE_WALL
+    0x0000, // TILE_ELEMENT_TYPE_LARGE_SCENERY
+    0xFFFF, // TILE_ELEMENT_TYPE_BANNER
+};
+
+static constexpr uint16_t ElementTypeAddColour[] = {
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
+    MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
+    MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
+    MapColour2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+    MapColour(PALETTE_INDEX_186),                   // TILE_ELEMENT_TYPE_ENTRANCE
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_WALL
+    MapColour(PALETTE_INDEX_99),                    // TILE_ELEMENT_TYPE_LARGE_SCENERY
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
+};
+
 class MapWindow final : public Window
 {
     uint8_t _rotation;
+    uint8_t _activeTool;
+    uint32_t _currentLine;
+    uint16_t _landRightsToolSize;
+    int32_t _firstColumnWidth;
+    std::vector<uint8_t> _mapImageData;
+    bool _mapWidthAndHeightLinked{ true };
+    bool _recalculateScrollbars = false;
+    enum class ResizeDirection
+    {
+        Both,
+        X,
+        Y,
+    } _resizeDirection{ ResizeDirection::Both };
 
 public:
     MapWindow()
@@ -1430,66 +1489,6 @@ private:
         width = std::max(min_width, width);
         _recalculateScrollbars = true;
     }
-
-    uint8_t _activeTool;
-    uint32_t _currentLine;
-    uint16_t _landRightsToolSize;
-    int32_t _firstColumnWidth;
-    std::vector<uint8_t> _mapImageData;
-    bool _mapWidthAndHeightLinked{ true };
-    bool _recalculateScrollbars = false;
-    enum class ResizeDirection
-    {
-        Both,
-        X,
-        Y,
-    } _resizeDirection{ ResizeDirection::Both };
-
-    static constexpr StringId MapLabels[] = {
-        STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
-        STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
-    };
-
-    static constexpr uint16_t RideKeyColours[] = {
-        MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE
-        MapColour(PALETTE_INDEX_42),  // COLOUR_KEY_FOOD
-        MapColour(PALETTE_INDEX_20),  // COLOUR_KEY_DRINK
-        MapColour(PALETTE_INDEX_209), // COLOUR_KEY_SOUVENIR
-        MapColour(PALETTE_INDEX_136), // COLOUR_KEY_KIOSK
-        MapColour(PALETTE_INDEX_102), // COLOUR_KEY_FIRST_AID
-        MapColour(PALETTE_INDEX_55),  // COLOUR_KEY_CASH_MACHINE
-        MapColour(PALETTE_INDEX_161), // COLOUR_KEY_TOILETS
-    };
-
-    static constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
-    static constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
-    static constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
-    static constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
-    static constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
-
-    static constexpr uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
-
-    static constexpr uint16_t ElementTypeMaskColour[] = {
-        0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
-        0x0000, // TILE_ELEMENT_TYPE_PATH
-        0x00FF, // TILE_ELEMENT_TYPE_TRACK
-        0xFF00, // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        0x0000, // TILE_ELEMENT_TYPE_ENTRANCE
-        0xFFFF, // TILE_ELEMENT_TYPE_WALL
-        0x0000, // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        0xFFFF, // TILE_ELEMENT_TYPE_BANNER
-    };
-
-    static constexpr uint16_t ElementTypeAddColour[] = {
-        MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
-        MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
-        MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
-        MapColour2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        MapColour(PALETTE_INDEX_186),                   // TILE_ELEMENT_TYPE_ENTRANCE
-        MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_WALL
-        MapColour(PALETTE_INDEX_99),                    // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
-    };
 };
 
 WindowBase* WindowMapOpen()
