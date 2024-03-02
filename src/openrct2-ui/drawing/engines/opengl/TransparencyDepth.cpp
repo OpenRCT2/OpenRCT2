@@ -17,7 +17,6 @@
 
 namespace OpenRCT2::Ui
 {
-
     /*
      * Structure to store locations of vertical bounding box edge.
      */

@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui::OpenGLState
         ActiveTexture = UINT16_MAX;
         CurrentProgram = UINT32_MAX;
     }
-} // namespace OpenGLState
+} // namespace OpenRCT2::Ui::OpenGLState
 
 void OpenGLAPI::SetTexture(uint16_t index, GLenum type, GLuint texture)
 {

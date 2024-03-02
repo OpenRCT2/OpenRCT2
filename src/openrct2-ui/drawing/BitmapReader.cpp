@@ -17,7 +17,6 @@
 
 namespace OpenRCT2::Ui
 {
-
     static std::vector<uint8_t> ReadToVector(std::istream& stream)
     {
         std::vector<uint8_t> result;
