@@ -59,8 +59,7 @@ GameActions::Result FootpathRemoveAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
-        && !MapIsLocationOwned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);

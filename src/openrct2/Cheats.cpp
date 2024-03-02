@@ -109,8 +109,7 @@ void CheatsSerialise(DataSerialiser& ds)
             ds, CheatType::AllowArbitraryRideTypeChanges, gameState.Cheats.AllowArbitraryRideTypeChanges, count);
         CheatEntrySerialise(ds, CheatType::DisableRideValueAging, gameState.Cheats.DisableRideValueAging, count);
         CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gameState.Cheats.IgnoreResearchStatus, count);
-        CheatEntrySerialise(
-            ds, CheatType::EnableAllDrawableTrackPieces, gameState.Cheats.EnableAllDrawableTrackPieces, count);
+        CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gameState.Cheats.EnableAllDrawableTrackPieces, count);
         CheatEntrySerialise(
             ds, CheatType::AllowTrackPlaceInvalidHeights, gameState.Cheats.AllowTrackPlaceInvalidHeights, count);
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gameState.Cheats.AllowRegularPathAsQueue, count);

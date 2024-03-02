@@ -250,12 +250,8 @@ bool RideSetSettingAction::RideIsModeValid(const Ride& ride) const
 
 bool RideSetSettingAction::RideIsValidLiftHillSpeed(const Ride& ride) const
 {
-    int32_t minSpeed = GetGameState().Cheats.UnlockOperatingLimits
-        ? 0
-        : ride.GetRideTypeDescriptor().LiftData.minimum_speed;
-    int32_t maxSpeed = GetGameState().Cheats.UnlockOperatingLimits
-        ? 255
-        : ride.GetRideTypeDescriptor().LiftData.maximum_speed;
+    int32_t minSpeed = GetGameState().Cheats.UnlockOperatingLimits ? 0 : ride.GetRideTypeDescriptor().LiftData.minimum_speed;
+    int32_t maxSpeed = GetGameState().Cheats.UnlockOperatingLimits ? 255 : ride.GetRideTypeDescriptor().LiftData.maximum_speed;
     return _value >= minSpeed && _value <= maxSpeed;
 }
 
