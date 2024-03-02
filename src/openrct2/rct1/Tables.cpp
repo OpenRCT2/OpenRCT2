@@ -260,7 +260,7 @@ namespace RCT1
         };
 
         const auto index = EnumValue(rideType);
-        Guard::ArgumentInRange<size_t>(index, 0, std::size(map), "Unsupported RCT1 ride type.");
+        Guard::ArgumentInRange<size_t>(index, 0, std::size(map) - 1, "Unsupported RCT1 ride type.");
 
         return map[index];
     }
@@ -360,7 +360,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
         };
 
-        Guard::ArgumentInRange<size_t>(EnumValue(vehicleType), 0, std::size(map), "Unsupported RCT1 vehicle type.");
+        Guard::ArgumentInRange<size_t>(EnumValue(vehicleType), 0, std::size(map) - 1, "Unsupported RCT1 vehicle type.");
         return map[EnumValue(vehicleType)];
     }
 
@@ -792,7 +792,7 @@ namespace RCT1
         };
 
         const auto index = EnumValue(rideType);
-        Guard::ArgumentInRange<size_t>(index, 0, std::size(map), "Unsupported RCT1 ride type.");
+        Guard::ArgumentInRange<size_t>(index, 0, std::size(map) - 1, "Unsupported RCT1 ride type.");
 
         return map[index];
     }
@@ -892,7 +892,7 @@ namespace RCT1
             "rct2.ride.enterp",                            //  VehicleType::EnterpriseWheel
         };
 
-        Guard::ArgumentInRange<size_t>(EnumValue(vehicleType), 0, std::size(map), "Unsupported RCT1 vehicle type.");
+        Guard::ArgumentInRange<size_t>(EnumValue(vehicleType), 0, std::size(map) - 1, "Unsupported RCT1 vehicle type.");
         return map[EnumValue(vehicleType)];
     }
 
