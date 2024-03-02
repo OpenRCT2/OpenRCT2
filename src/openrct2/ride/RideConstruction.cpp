@@ -10,6 +10,7 @@
 #include "RideConstruction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../actions/MazeSetTrackAction.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
@@ -49,8 +50,6 @@
 #include "Vehicle.h"
 
 using namespace OpenRCT2::TrackMetaData;
-
-money64 gTotalRideValueForMoney;
 
 money64 _currentTrackPrice;
 
@@ -342,9 +341,10 @@ void Ride::RemovePeeps()
 
 void RideClearBlockedTiles(const Ride& ride)
 {
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
+    auto& gameState = GetGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {
@@ -641,7 +641,7 @@ void RideConstructionSetDefaultNextPiece()
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
-    _currentTrackPrice = MONEY64_UNDEFINED;
+    _currentTrackPrice = kMoney64Undefined;
 
     const TrackElementDescriptor* ted;
     switch (_rideConstructionState)
@@ -1204,7 +1204,7 @@ money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
-    return res.Error == GameActions::Status::Ok ? 0 : MONEY64_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
 money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
@@ -1213,7 +1213,7 @@ money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t
     rideSetSetting.SetFlags(flags);
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);
-    return res.Error == GameActions::Status::Ok ? 0 : MONEY64_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
 /**

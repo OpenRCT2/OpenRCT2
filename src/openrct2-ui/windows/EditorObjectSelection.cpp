@@ -16,6 +16,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/audio/audio.h>
@@ -40,6 +41,8 @@
 #include <openrct2/windows/Intent.h>
 #include <string>
 #include <vector>
+
+using namespace OpenRCT2;
 
 enum
 {
@@ -183,6 +186,7 @@ enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX
     WIDX_FILTER_RIDE_TAB_STALL,
     WIDX_LIST_SORT_TYPE,
     WIDX_LIST_SORT_RIDE,
+    WIDX_RELOAD_OBJECT,
     WIDX_TAB_1,
 };
 
@@ -211,7 +215,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
     MakeTab   ({189, 47},                                                                                       STR_SHOPS_STALLS_TIP             ),
     MakeWidget({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
     MakeWidget({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-
+    MakeWidget({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Primary,   SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
     MakeTab   ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
     // Copied object type times...
 
@@ -449,6 +453,19 @@ public:
                 }
                 VisibleListRefresh();
                 break;
+            case WIDX_RELOAD_OBJECT:
+                if (_loadedObject != nullptr)
+                {
+                    auto descriptor = _loadedObject->GetDescriptor();
+                    auto& objectManager = GetContext()->GetObjectManager();
+                    auto entryIndex = objectManager.GetLoadedObjectEntryIndex(descriptor);
+                    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                    {
+                        objectManager.UnloadObjects({ descriptor });
+                        objectManager.LoadObject(descriptor, entryIndex);
+                    }
+                }
+                break;
             default:
                 if (widgetIndex >= WIDX_TAB_1
                     && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
@@ -590,7 +607,7 @@ public:
         Invalidate();
 
         const CursorState* state = ContextGetCursorState();
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, state->position.x);
+        Audio::Play(Audio::SoundId::Click1, 0, state->position.x);
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
@@ -605,9 +622,9 @@ public:
                 _loadedObject = nullptr;
             }
 
-            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            auto& objRepository = GetContext()->GetObjectRepository();
             _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objManager = GetContext()->GetObjectManager();
             objManager.LoadObject(_loadedObject.get()->GetIdentifier());
 
             // This function calls window_track_list_open
@@ -684,7 +701,7 @@ public:
             if (selectedObject != -1)
             {
                 auto listItem = &_listItems[selectedObject];
-                auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+                auto& objRepository = GetContext()->GetObjectRepository();
                 _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
                 if (_loadedObject != nullptr)
                 {
@@ -833,6 +850,8 @@ public:
         widgets[WIDX_INSTALL_TRACK].right = width - 9;
         widgets[WIDX_FILTER_DROPDOWN].left = width - 250;
         widgets[WIDX_FILTER_DROPDOWN].right = width - 137;
+        widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
+        widgets[WIDX_RELOAD_OBJECT].right = width - 9;
 
         // Set pressed widgets
         pressed_widgets |= 1uLL << WIDX_PREVIEW;
@@ -882,6 +901,11 @@ public:
                 x += 31;
             }
         }
+
+        if (gConfigGeneral.DebuggingTools)
+            widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::ImgBtn;
+        else
+            widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::Empty;
 
         if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
         {
@@ -1523,7 +1547,7 @@ private:
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
 
-        gEditorStep = EditorStep::DesignsManager;
+        GetGameState().EditorStep = EditorStep::DesignsManager;
 
         int32_t entry_index = 0;
         for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
@@ -1585,7 +1609,7 @@ static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
  */
 void EditorLoadSelectedObjects()
 {
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objManager = GetContext()->GetObjectManager();
     int32_t numItems = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     bool showFallbackWarning = false;

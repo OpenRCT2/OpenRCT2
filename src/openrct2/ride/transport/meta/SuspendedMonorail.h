@@ -17,46 +17,46 @@
 // clang-format off
 constexpr RideTypeDescriptor SuspendedMonorailRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
-    SET_FIELD(Category, RIDE_CATEGORY_TRANSPORT),
-    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE}),
-    SET_FIELD(ExtraTrackPieces, {}),
-    SET_FIELD(CoveredTrackPieces, {}),
-    SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionSuspendedMonorail)),
-    SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
+    .AlternateType = RIDE_TYPE_NULL,
+    .Category = RIDE_CATEGORY_TRANSPORT,
+    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE},
+    .ExtraTrackPieces = {},
+    .CoveredTrackPieces = {},
+    .StartTrackPiece = TrackElemType::EndStation,
+    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSuspendedMonorail),
+    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS |
                      RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_TRANSPORT_RIDE | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER |
-                     RIDE_TYPE_FLAG_IS_SUSPENDED),
-    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle)),
-    SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
-    SET_FIELD(Naming, { STR_RIDE_NAME_SUSPENDED_MONORAIL, STR_RIDE_DESCRIPTION_SUSPENDED_MONORAIL }),
-    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_SUSPENDED_MONORAIL)),
-    SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
-    SET_FIELD(Heights, { 12, 40, 32, 8, }),
-    SET_FIELD(MaxMass, 78),
-    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsMultipliers, { 70, 6, -10 }),
-    SET_FIELD(UpkeepCosts, { 70, 20, 0, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 32.50_GBP, 2.50_GBP, 50, }),
-    SET_FIELD(DefaultPrices, { 10, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
-    SET_FIELD(PhotoItem, ShopItem::Photo),
-    SET_FIELD(BonusValue, 60),
-    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+                     RIDE_TYPE_FLAG_IS_SUSPENDED,
+    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle),
+    .DefaultMode = RideMode::ContinuousCircuit,
+    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
+    .Naming = { STR_RIDE_NAME_SUSPENDED_MONORAIL, STR_RIDE_DESCRIPTION_SUSPENDED_MONORAIL },
+    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
+    .EnumName = nameof(RIDE_TYPE_SUSPENDED_MONORAIL),
+    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .Heights = { 12, 40, 32, 8, },
+    .MaxMass = 78,
+    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .RatingsMultipliers = { 70, 6, -10 },
+    .UpkeepCosts = { 70, 20, 0, 10, 3, 10 },
+    .BuildCosts = { 32.50_GBP, 2.50_GBP, 50, },
+    .DefaultPrices = { 10, 0 },
+    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .PhotoItem = ShopItem::Photo,
+    .BonusValue = 60,
+    .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BLACK, COLOUR_BLACK },
         { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_BLACK },
         { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_BLACK },
-    )),
-    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_SUPPORTS }),
-    SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(Name, "suspended_monorail"),
-    SET_FIELD(RatingsData,
+    ),
+    .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_SUPPORTS },
+    .ColourKey = RideColourKey::Ride,
+    .Name = "suspended_monorail",
+    .RatingsData = 
     {
         RatingsCalculationType::Normal,
         { RIDE_RATING(2, 15), RIDE_RATING(0, 23), RIDE_RATING(0, 8) },
@@ -75,6 +75,6 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
             { RatingsModifierType::RequirementLength,      0xAA0000,         2, 2, 2 },
             { RatingsModifierType::RequirementUnsheltered, 4,                4, 1, 1 },
         },
-    }),
+    },
 };
 // clang-format on

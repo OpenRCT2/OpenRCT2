@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Editor.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
@@ -39,6 +40,8 @@
 #include <iterator>
 #include <list>
 
+using namespace OpenRCT2;
+
 std::list<std::shared_ptr<WindowBase>> g_window_list;
 WindowBase* gWindowAudioExclusive;
 
@@ -49,7 +52,7 @@ int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;
 TextInputSession* gTextInput;
 
-uint16_t gWindowUpdateTicks;
+uint32_t gWindowUpdateTicks;
 uint16_t gWindowMapFlashingFlags;
 colour_t gCurrentWindowColours[4];
 
@@ -135,7 +138,7 @@ void WindowUpdateAll()
     // Periodic update happens every second so 40 ticks.
     if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
     {
-        gWindowUpdateTicks = gCurrentRealTimeTicks + GAME_UPDATE_FPS;
+        gWindowUpdateTicks = gCurrentRealTimeTicks + kGameUpdateFPS;
 
         WindowVisitEach([](WindowBase* w) { WindowEventPeriodicUpdateCall(w); });
     }
@@ -152,7 +155,7 @@ void WindowUpdateAll()
         }
     });
 
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->UpdateMouseWheel();
 }
 
@@ -331,7 +334,7 @@ void WindowCloseTop()
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (gEditorStep != EditorStep::LandscapeEditor)
+        if (GetGameState().EditorStep != EditorStep::LandscapeEditor)
             return;
     }
 
@@ -1088,7 +1091,7 @@ void MainWindowZoom(bool zoomIn, bool atCursor)
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gEditorStep != EditorStep::LandscapeEditor)
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
         return;
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -1649,7 +1652,7 @@ void WindowCloseConstructionWindows()
  */
 void WindowUpdateViewportRideMusic()
 {
-    OpenRCT2::RideAudio::ClearAllViewportInstances();
+    RideAudio::ClearAllViewportInstances();
     g_music_tracking_viewport = nullptr;
 
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -1663,11 +1666,11 @@ void WindowUpdateViewportRideMusic()
         gWindowAudioExclusive = w;
 
         if (viewport->zoom <= ZoomLevel{ 0 })
-            OpenRCT2::Audio::gVolumeAdjustZoom = 0;
+            Audio::gVolumeAdjustZoom = 0;
         else if (viewport->zoom == ZoomLevel{ 1 })
-            OpenRCT2::Audio::gVolumeAdjustZoom = 30;
+            Audio::gVolumeAdjustZoom = 30;
         else
-            OpenRCT2::Audio::gVolumeAdjustZoom = 60;
+            Audio::gVolumeAdjustZoom = 60;
         break;
     }
 }
@@ -1854,7 +1857,7 @@ void WindowStartTextbox(
     if (existing_text != STR_NONE)
     {
         char tempBuf[TEXT_INPUT_SIZE]{};
-        size_t len = OpenRCT2::FormatStringLegacy(tempBuf, TEXT_INPUT_SIZE, existing_text, &existing_args);
+        size_t len = FormatStringLegacy(tempBuf, TEXT_INPUT_SIZE, existing_text, &existing_args);
         gTextBoxInput.assign(tempBuf, len);
     }
 

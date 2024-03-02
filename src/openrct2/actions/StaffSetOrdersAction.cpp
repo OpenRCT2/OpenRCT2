@@ -54,7 +54,8 @@ GameActions::Result StaffSetOrdersAction::Query() const
         || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
     {
         LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
     }
 
     return GameActions::Result();

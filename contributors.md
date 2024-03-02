@@ -118,6 +118,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Wenzhao Qiu (qwzhaox) - Misc.
 * Tiago Reul (reul) - Misc.
 * Fredrik Tegnell (fredriktegnell) - Misc.
+* Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
 
 ## Bug fixes & Refactors
 * (KirilAngelov)
@@ -282,6 +283,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Russian - (Soosisya)
 * Spanish - Josué Acevedo (Wirlie), Diego Mateos (dimateos), (frenchiveruti), (mdtrooper), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
+* Ukrainian - (CsyeCokTheSolly), (Veydzher), (Saba4ara)
 
 ## Graphics
 * Yannic Geurts (xzbobzx) - OpenRCT2 Logo

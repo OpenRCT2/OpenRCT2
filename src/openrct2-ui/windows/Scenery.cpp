@@ -16,6 +16,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/ScenerySetRestrictedAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
@@ -69,6 +71,7 @@ enum WindowSceneryListWidgetIdx
     WIDX_SCENERY_BUILD_CLUSTER_BUTTON,
     WIDX_FILTER_TEXT_BOX,
     WIDX_FILTER_CLEAR_BUTTON,
+    WIDX_RESTRICT_SCENERY,
     WIDX_SCENERY_TAB_1,
 };
 
@@ -90,6 +93,7 @@ static Widget WindowSceneryBaseWidgets[] = {
     MakeWidget     ({609, 169}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
     MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
     MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
+    MakeWidget     ({539,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP ),
     WIDGETS_END,
 };
 // clang-format on
@@ -193,7 +197,7 @@ public:
         _selectedScenery = {};
         _hoverCounter = 0;
         gSceneryGhostType = 0;
-        gSceneryPlaceCost = MONEY64_UNDEFINED;
+        gSceneryPlaceCost = kMoney64Undefined;
         gSceneryPlaceRotation = 0;
         gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
         gWindowSceneryEyedropperEnabled = false;
@@ -280,6 +284,19 @@ public:
                 scrolls->v_top = 0;
                 Invalidate();
                 break;
+            case WIDX_RESTRICT_SCENERY:
+            {
+                const auto tabIndex = _activeTabIndex;
+                const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
+                if (!tabSelectedScenery.IsUndefined())
+                {
+                    const auto newStatus = !IsSceneryItemRestricted(tabSelectedScenery);
+                    const auto objectType = GetObjectTypeFromSceneryType(tabSelectedScenery.SceneryType);
+                    auto action = ScenerySetRestrictedAction(objectType, tabSelectedScenery.EntryIndex, newStatus);
+                    GameActions::Execute(&action);
+                }
+                break;
+            }
         }
     }
 
@@ -341,7 +358,7 @@ public:
         {
             _activeTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
             Invalidate();
-            gSceneryPlaceCost = MONEY64_UNDEFINED;
+            gSceneryPlaceCost = kMoney64Undefined;
 
             ContentUpdateScroll();
         }
@@ -616,6 +633,7 @@ public:
         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
         widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::Empty;
         widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::Empty;
+        widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Empty;
 
         if (!(gWindowSceneryPaintEnabled & 1))
         {
@@ -641,6 +659,15 @@ public:
             else if (tabSelectedScenery.SceneryType >= SCENERY_TYPE_LARGE)
             {
                 widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
+            }
+
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+            {
+                widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
+                if (IsSceneryItemRestricted(tabSelectedScenery))
+                    pressed_widgets |= (1uLL << WIDX_RESTRICT_SCENERY);
+                else
+                    pressed_widgets &= ~(1uLL << WIDX_RESTRICT_SCENERY);
             }
         }
 
@@ -782,7 +809,7 @@ public:
         }
 
         auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-        if (price != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (price != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(price);
@@ -858,7 +885,7 @@ public:
         gWindowSceneryEyedropperEnabled = false;
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, ContextGetWidth() / 2);
         _hoverCounter = -16;
-        gSceneryPlaceCost = MONEY64_UNDEFINED;
+        gSceneryPlaceCost = kMoney64Undefined;
         Invalidate();
     }
 
@@ -1395,7 +1422,7 @@ private:
         gWindowSceneryEyedropperEnabled = false;
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
         _hoverCounter = -16;
-        gSceneryPlaceCost = MONEY64_UNDEFINED;
+        gSceneryPlaceCost = kMoney64Undefined;
         Invalidate();
     }
 
@@ -1412,8 +1439,8 @@ private:
     std::pair<StringId, money64> GetNameAndPrice(ScenerySelection selectedScenery)
     {
         StringId name = STR_UNKNOWN_OBJECT_TYPE;
-        money64 price = MONEY64_UNDEFINED;
-        if (selectedScenery.IsUndefined() && gSceneryPlaceCost != MONEY64_UNDEFINED)
+        money64 price = kMoney64Undefined;
+        if (selectedScenery.IsUndefined() && gSceneryPlaceCost != kMoney64Undefined)
         {
             price = gSceneryPlaceCost;
         }

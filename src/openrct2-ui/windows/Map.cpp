@@ -15,6 +15,7 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LandSetRightsAction.h>
@@ -37,6 +38,8 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
 #include <vector>
+
+using namespace OpenRCT2;
 
 static constexpr uint16_t MapColour2(uint8_t colourA, uint8_t colourB)
 {
@@ -162,7 +165,8 @@ public:
         CentreMapOnViewPoint();
         FootpathSelectDefault();
 
-        _mapWidthAndHeightLinked = gMapSize.x == gMapSize.y;
+        auto& gameState = GetGameState();
+        _mapWidthAndHeightLinked = gameState.MapSize.x == gameState.MapSize.y;
 
         // Reset land rights tool size
         _landRightsToolSize = 1;
@@ -201,7 +205,7 @@ public:
                     break;
                 _activeTool = 2;
                 // Prevent mountain tool size.
-                _landRightsToolSize = std::max<uint16_t>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
+                _landRightsToolSize = std::max<uint16_t>(kLandToolMinimumSize, _landRightsToolSize);
                 ShowGridlines();
                 ShowLandRights();
                 ShowConstructionRights();
@@ -309,13 +313,13 @@ public:
                 break;
             case WIDX_LAND_TOOL_SMALLER:
                 // Decrement land rights tool size
-                _landRightsToolSize = std::max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
+                _landRightsToolSize = std::max<uint16_t>(kLandToolMinimumSize, _landRightsToolSize - 1);
 
                 Invalidate();
                 break;
             case WIDX_LAND_TOOL_LARGER:
                 // Increment land rights tool size
-                _landRightsToolSize = std::min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
+                _landRightsToolSize = std::min<uint16_t>(kLandToolMaximumSize, _landRightsToolSize + 1);
 
                 Invalidate();
                 break;
@@ -612,7 +616,7 @@ public:
                 int32_t size = strtol(textStr.c_str(), &end, 10);
                 if (*end == '\0')
                 {
-                    size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
+                    size = std::clamp<uint16_t>(size, kLandToolMinimumSize, kLandToolMaximumSize);
                     _landRightsToolSize = size;
                     Invalidate();
                 }
@@ -630,7 +634,7 @@ public:
                     size += 2;
                     size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-                    TileCoordsXY newMapSize = gMapSize;
+                    TileCoordsXY newMapSize = GetGameState().MapSize;
                     if (_resizeDirection != ResizeDirection::X)
                         newMapSize.y = size;
                     if (_resizeDirection != ResizeDirection::Y)
@@ -755,7 +759,8 @@ public:
             pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
         // Set disabled widgets
-        SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gMapSize.x != gMapSize.y);
+        auto& gameState = GetGameState();
+        SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.MapSize.x != gameState.MapSize.y);
 
         // Resize widgets to window size
         ResizeFrameWithPage();
@@ -860,7 +865,7 @@ public:
             + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
         // Draw land tool size
-        if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > kLandToolMaximumSizeWithSprite)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(_landRightsToolSize);
@@ -971,7 +976,7 @@ private:
 
     void IncreaseMapSize()
     {
-        auto newMapSize = gMapSize;
+        auto newMapSize = GetGameState().MapSize;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
             newMapSize.y++;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
@@ -983,7 +988,7 @@ private:
 
     void DecreaseMapSize()
     {
-        auto newMapSize = gMapSize;
+        auto newMapSize = GetGameState().MapSize;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
             newMapSize.y--;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
@@ -1312,16 +1317,17 @@ private:
             widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
         // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
+        auto& gameState = GetGameState();
         auto ft = Formatter::Common();
-        ft.Add<uint16_t>(gMapSize.y - 2);
-        ft.Add<uint16_t>(gMapSize.x - 2);
+        ft.Add<uint16_t>(gameState.MapSize.y - 2);
+        ft.Add<uint16_t>(gameState.MapSize.x - 2);
     }
 
     void InputLandSize()
     {
         Formatter ft;
-        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+        ft.Add<uint16_t>(kLandToolMinimumSize);
+        ft.Add<uint16_t>(kLandToolMaximumSize);
         TextInputOpen(WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 

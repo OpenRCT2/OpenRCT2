@@ -72,7 +72,7 @@ public:
         WindowPushOthersBelow(*this);
 
         gLandToolSize = 2;
-        gClearSceneryCost = MONEY64_UNDEFINED;
+        gClearSceneryCost = kMoney64Undefined;
 
         gClearSmallScenery = true;
         gClearLargeScenery = false;
@@ -97,8 +97,8 @@ public:
             case WIDX_PREVIEW:
             {
                 Formatter ft;
-                ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-                ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+                ft.Add<uint16_t>(kLandToolMinimumSize);
+                ft.Add<uint16_t>(kLandToolMaximumSize);
                 TextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
                 break;
             }
@@ -123,14 +123,14 @@ public:
         {
             case WIDX_DECREMENT:
                 // Decrement land tool size, if it stays within the limit
-                gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+                gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                 // Invalidate the window
                 Invalidate();
                 break;
             case WIDX_INCREMENT:
                 // Increment land tool size, if it stays within the limit
-                gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+                gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                 // Invalidate the window
                 Invalidate();
@@ -146,7 +146,7 @@ public:
         try
         {
             int32_t size = std::stol(std::string(text));
-            size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
+            size = std::clamp<uint16_t>(size, kLandToolMinimumSize, kLandToolMaximumSize);
             gLandToolSize = size;
             Invalidate();
         }
@@ -181,7 +181,7 @@ public:
         // Draw number for tool sizes bigger than 7
         ScreenCoordsXY screenCoords = { windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
                                         windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
-        if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (gLandToolSize > kLandToolMaximumSizeWithSprite)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
@@ -189,7 +189,7 @@ public:
         }
 
         // Draw cost amount
-        if (gClearSceneryCost != MONEY64_UNDEFINED && gClearSceneryCost != 0
+        if (gClearSceneryCost != kMoney64Undefined && gClearSceneryCost != 0
             && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();

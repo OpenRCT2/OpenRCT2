@@ -11,6 +11,7 @@
 
 #include "../../Cheats.h"
 #include "../../Context.h"
+#include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
 #include "../../core/Guard.hpp"
@@ -592,8 +593,8 @@ static void ViewportSurfaceDrawTileSideBottom(
     if (neighbour.tile_element == nullptr || neighbourIsClippedAway)
     {
         // The neighbour tile doesn't exist or isn't drawn - assume minimum height to draw full edges
-        neighbourCornerHeight2 = MINIMUM_LAND_HEIGHT / 2;
-        neighbourCornerHeight1 = MINIMUM_LAND_HEIGHT / 2;
+        neighbourCornerHeight2 = kMinimumLandHeight / 2;
+        neighbourCornerHeight1 = kMinimumLandHeight / 2;
     }
 
     if (isWater && neighbour.tile_element != nullptr)
@@ -1131,7 +1132,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16);
         image_id += GetHeightMarkerOffset();
-        image_id -= gMapBaseZ;
+        image_id -= kMapBaseZ;
 
         PaintAddImageAsParent(session, ImageId(image_id, COLOUR_OLIVE_GREEN), { 16, 16, surfaceHeight }, { 1, 1, 0 });
     }

@@ -184,8 +184,6 @@ void TitleScreen::Tick()
     ContextUpdateMapTooltip();
     WindowDispatchUpdateAll();
 
-    gSavedAge++;
-
     ContextHandleInput();
 
     gInUpdateCode = false;

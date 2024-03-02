@@ -51,9 +51,9 @@ void Banner::FormatTextTo(Formatter& ft, bool addColour) const
     if (addColour)
     {
         auto formatToken = FormatTokenFromTextColour(text_colour);
-        auto tokenText = FormatTokenToString(formatToken, true);
+        formattedTextBuffer = FormatTokenToStringWithBraces(formatToken);
         ft.Add<StringId>(STR_STRING_STRINGID);
-        ft.Add<const char*>(tokenText.data());
+        ft.Add<const char*>(formattedTextBuffer.data());
     }
 
     FormatTextTo(ft);
@@ -251,10 +251,11 @@ struct BannerElementWithPos
 // Returns a list of BannerElement's with the tile position.
 static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
 {
+    auto& gameState = GetGameState();
     std::vector<BannerElementWithPos> banners;
-    for (int y = 0; y < gMapSize.y; y++)
+    for (int y = 0; y < gameState.MapSize.y; y++)
     {
-        for (int x = 0; x < gMapSize.x; x++)
+        for (int x = 0; x < gameState.MapSize.x; x++)
         {
             const auto tilePos = TileCoordsXY{ x, y };
             for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.ToCoordsXY()))

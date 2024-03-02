@@ -87,7 +87,7 @@ struct TrackElementDescriptor
     uint32_t PriceModifier;
     track_type_t MirrorElement;
     uint32_t HeightMarkerPositions;
-    uint16_t Flags;
+    uint32_t Flags;
 
     std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
     std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;

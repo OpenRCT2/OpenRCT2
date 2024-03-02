@@ -10,7 +10,7 @@
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../util/Util.h"
 #include "../Ride.h"
 #include "../Track.h"
@@ -51,7 +51,9 @@ static void PaintDodgems(
 
     int32_t edges = edges_4x4[relativeTrackSequence];
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, GetStationColourScheme(session, trackElement));
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 

@@ -411,7 +411,7 @@ private:
 
         auto action = GetClearAction();
         auto result = GameActions::Query(&action);
-        auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : MONEY64_UNDEFINED);
+        auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
         if (gClearSceneryCost != cost)
         {
             gClearSceneryCost = cost;
@@ -430,9 +430,9 @@ private:
 
         if (!mapTile.has_value())
         {
-            if (gClearSceneryCost != MONEY64_UNDEFINED)
+            if (gClearSceneryCost != kMoney64Undefined)
             {
-                gClearSceneryCost = MONEY64_UNDEFINED;
+                gClearSceneryCost = kMoney64Undefined;
                 WindowInvalidateByClass(WindowClass::ClearScenery);
             }
             return state_changed;
@@ -530,8 +530,8 @@ private:
 
             if (!mapTile.has_value())
             {
-                money64 lower_cost = MONEY64_UNDEFINED;
-                money64 raise_cost = MONEY64_UNDEFINED;
+                money64 lower_cost = kMoney64Undefined;
+                money64 raise_cost = kMoney64Undefined;
 
                 if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
                 {
@@ -607,8 +607,8 @@ private:
 
         if (!mapTile.has_value())
         {
-            money64 lower_cost = MONEY64_UNDEFINED;
-            money64 raise_cost = MONEY64_UNDEFINED;
+            money64 lower_cost = kMoney64Undefined;
+            money64 raise_cost = kMoney64Undefined;
 
             if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
             {
@@ -746,10 +746,10 @@ private:
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
             auto res = GameActions::Query(&waterLowerAction);
-            money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+            money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
             res = GameActions::Query(&waterRaiseAction);
-            money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+            money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
             if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
             {
@@ -767,10 +767,10 @@ private:
 
         if (info.SpriteType == ViewportInteractionItem::None)
         {
-            if (gWaterToolRaiseCost != MONEY64_UNDEFINED || gWaterToolLowerCost != MONEY64_UNDEFINED)
+            if (gWaterToolRaiseCost != kMoney64Undefined || gWaterToolLowerCost != kMoney64Undefined)
             {
-                gWaterToolRaiseCost = MONEY64_UNDEFINED;
-                gWaterToolLowerCost = MONEY64_UNDEFINED;
+                gWaterToolRaiseCost = kMoney64Undefined;
+                gWaterToolLowerCost = kMoney64Undefined;
                 WindowInvalidateByClass(WindowClass::Water);
             }
             return;
@@ -838,10 +838,10 @@ private:
             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
         auto res = GameActions::Query(&waterLowerAction);
-        money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+        money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
         res = GameActions::Query(&waterRaiseAction);
-        money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+        money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
         if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
         {
@@ -955,7 +955,7 @@ private:
                         { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, gWindowSceneryPrimaryColour,
                         gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
-                    if (cost != MONEY64_UNDEFINED)
+                    if (cost != kMoney64Undefined)
                         break;
                     gSceneryPlaceZ += 8;
                 }
@@ -1046,7 +1046,7 @@ private:
                         { mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, gWindowSceneryPrimaryColour,
                         gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
-                    if (cost != MONEY64_UNDEFINED)
+                    if (cost != kMoney64Undefined)
                         break;
                     gSceneryPlaceZ += 8;
                 }
@@ -1112,7 +1112,7 @@ private:
                         { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, gWindowSceneryPrimaryColour,
                         gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
-                    if (cost != MONEY64_UNDEFINED)
+                    if (cost != kMoney64Undefined)
                         break;
                     gSceneryPlaceZ += COORDS_Z_STEP;
                 }
@@ -1179,7 +1179,7 @@ private:
                 false);
             auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
                                                         : GameActions::Query(&landSmoothAction);
-            return res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+            return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
         }
 
         auto landRaiseAction = LandRaiseAction(
@@ -1188,7 +1188,7 @@ private:
         auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
                                                     : GameActions::Query(&landRaiseAction);
 
-        return res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+        return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
     }
 
     /**
@@ -1210,7 +1210,7 @@ private:
                 true);
             auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
                                                         : GameActions::Query(&landSmoothAction);
-            return res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+            return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
         }
 
         auto landLowerAction = LandLowerAction(
@@ -1219,7 +1219,7 @@ private:
         auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
                                                     : GameActions::Query(&landLowerAction);
 
-        return res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+        return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
     }
 
     /**
@@ -1251,8 +1251,8 @@ private:
 
             SelectionRaiseLand(GAME_COMMAND_FLAG_APPLY);
 
-            gLandToolRaiseCost = MONEY64_UNDEFINED;
-            gLandToolLowerCost = MONEY64_UNDEFINED;
+            gLandToolRaiseCost = kMoney64Undefined;
+            gLandToolLowerCost = kMoney64Undefined;
         }
         else if (y_diff >= -tile_height)
         {
@@ -1260,8 +1260,8 @@ private:
 
             SelectionLowerLand(GAME_COMMAND_FLAG_APPLY);
 
-            gLandToolRaiseCost = MONEY64_UNDEFINED;
-            gLandToolLowerCost = MONEY64_UNDEFINED;
+            gLandToolRaiseCost = kMoney64Undefined;
+            gLandToolLowerCost = kMoney64Undefined;
         }
     }
 
@@ -1287,8 +1287,8 @@ private:
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
             GameActions::Execute(&waterRaiseAction);
 
-            gWaterToolRaiseCost = MONEY64_UNDEFINED;
-            gWaterToolLowerCost = MONEY64_UNDEFINED;
+            gWaterToolRaiseCost = kMoney64Undefined;
+            gWaterToolLowerCost = kMoney64Undefined;
 
             return;
         }
@@ -1302,8 +1302,8 @@ private:
             auto waterLowerAction = WaterLowerAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
             GameActions::Execute(&waterLowerAction);
-            gWaterToolRaiseCost = MONEY64_UNDEFINED;
-            gWaterToolLowerCost = MONEY64_UNDEFINED;
+            gWaterToolRaiseCost = kMoney64Undefined;
+            gWaterToolLowerCost = kMoney64Undefined;
 
             return;
         }
@@ -1312,7 +1312,7 @@ private:
     /**
      *
      *  rct2: 0x006E24F6
-     * On failure returns MONEY64_UNDEFINED
+     * On failure returns kMoney64Undefined
      * On success places ghost scenery and returns cost to place proper
      */
     money64 TryPlaceGhostSmallScenery(
@@ -1327,7 +1327,7 @@ private:
         smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         auto res = GameActions::Execute(&smallSceneryPlaceAction);
         if (res.Error != GameActions::Status::Ok)
-            return MONEY64_UNDEFINED;
+            return kMoney64Undefined;
 
         const auto placementData = res.GetData<SmallSceneryPlaceActionResult>();
 
@@ -1369,7 +1369,7 @@ private:
         });
         auto res = GameActions::Execute(&footpathAdditionPlaceAction);
         if (res.Error != GameActions::Status::Ok)
-            return MONEY64_UNDEFINED;
+            return kMoney64Undefined;
 
         return res.Cost;
     }
@@ -1396,7 +1396,7 @@ private:
 
         auto res = GameActions::Execute(&wallPlaceAction);
         if (res.Error != GameActions::Status::Ok)
-            return MONEY64_UNDEFINED;
+            return kMoney64Undefined;
 
         return res.Cost;
     }
@@ -1412,7 +1412,7 @@ private:
             GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
         auto res = GameActions::Execute(&sceneryPlaceAction);
         if (res.Error != GameActions::Status::Ok)
-            return MONEY64_UNDEFINED;
+            return kMoney64Undefined;
 
         const auto placementData = res.GetData<LargeSceneryPlaceActionResult>();
 
@@ -1445,7 +1445,7 @@ private:
             GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
         auto res = GameActions::Execute(&bannerPlaceAction);
         if (res.Error != GameActions::Status::Ok)
-            return MONEY64_UNDEFINED;
+            return kMoney64Undefined;
 
         gSceneryGhostPosition = loc;
         gSceneryGhostPosition.z += PATH_HEIGHT_STEP;
@@ -3047,20 +3047,22 @@ public:
             widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
             widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
 
-            if (gEditorStep != EditorStep::LandscapeEditor)
+            auto& gameState = GetGameState();
+            if (gameState.EditorStep != EditorStep::LandscapeEditor)
             {
                 widgets[WIDX_LAND].type = WindowWidgetType::Empty;
                 widgets[WIDX_WATER].type = WindowWidgetType::Empty;
             }
 
-            if (gEditorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.EditorStep != EditorStep::RollercoasterDesigner)
             {
                 widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
                 widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
                 widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
             }
 
-            if (gEditorStep != EditorStep::LandscapeEditor && gEditorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.EditorStep != EditorStep::LandscapeEditor
+                && gameState.EditorStep != EditorStep::RollercoasterDesigner)
             {
                 widgets[WIDX_MAP].type = WindowWidgetType::Empty;
                 widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
@@ -3230,9 +3232,10 @@ public:
             // Draw an overlay if clearance checks are disabled
             if (gCheatsDisableClearanceChecks)
             {
+                auto colour = static_cast<colour_t>(EnumValue(COLOUR_DARK_ORANGE) | EnumValue(COLOUR_FLAG_OUTLINE));
                 DrawTextBasic(
                     dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
-                    { COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
+                    { colour, TextAlignment::RIGHT });
             }
         }
 
@@ -3295,9 +3298,8 @@ public:
             // Draw number of players.
             auto ft = Formatter();
             ft.Add<int32_t>(NetworkGetNumVisiblePlayers());
-            DrawTextBasic(
-                dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
-                { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
+            auto colour = static_cast<colour_t>(EnumValue(COLOUR_WHITE) | EnumValue(COLOUR_FLAG_OUTLINE));
+            DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
         }
     }
 };
@@ -3537,7 +3539,7 @@ void TopToolbar::InitMapMenu(Widget& widget)
     auto i = 0;
     gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
     gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
     {
         gDropdownItems[i++].Format = STR_MAPGEN_WINDOW_TITLE;
     }
@@ -3568,7 +3570,7 @@ void TopToolbar::InitMapMenu(Widget& widget)
 void TopToolbar::MapMenuDropdown(int16_t dropdownIndex)
 {
     int32_t customStartIndex = 3;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
     {
         customStartIndex++;
     }

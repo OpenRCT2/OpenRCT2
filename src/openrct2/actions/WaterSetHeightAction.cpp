@@ -100,7 +100,8 @@ GameActions::Result WaterSetHeightAction::Query() const
     }
     if (surfaceElement->HasTrackThatNeedsWater())
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
     }
 
     res.Cost = 250;
@@ -150,12 +151,12 @@ StringId WaterSetHeightAction::CheckParameters() const
         return STR_OFF_EDGE_OF_MAP;
     }
 
-    if (_height < MINIMUM_WATER_HEIGHT)
+    if (_height < kMinimumWaterHeight)
     {
         return STR_TOO_LOW;
     }
 
-    if (_height > MAXIMUM_WATER_HEIGHT)
+    if (_height > kMaximumWaterHeight)
     {
         return STR_TOO_HIGH;
     }

@@ -596,7 +596,7 @@ public:
         if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
         {
             auto val = StringToMoney(std::string(text).c_str());
-            if (val != MONEY64_UNDEFINED)
+            if (val != kMoney64Undefined)
             {
                 _moneySpinnerValue = val;
             }
@@ -721,12 +721,12 @@ private:
                 break;
             case WIDX_YEAR_UP:
                 _yearSpinnerValue++;
-                _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, MAX_YEAR);
+                _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, kMaxYear);
                 InvalidateWidget(WIDX_YEAR_BOX);
                 break;
             case WIDX_YEAR_DOWN:
                 _yearSpinnerValue--;
-                _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, MAX_YEAR);
+                _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, kMaxYear);
                 InvalidateWidget(WIDX_YEAR_BOX);
                 break;
             case WIDX_MONTH_UP:
@@ -869,7 +869,7 @@ private:
                 CheatsSet(CheatType::OpenClosePark);
                 break;
             case WIDX_CREATE_DUCKS:
-                CheatsSet(CheatType::CreateDucks, CHEATS_DUCK_INCREMENT);
+                CheatsSet(CheatType::CreateDucks, kCheatsDuckIncrement);
                 break;
             case WIDX_REMOVE_DUCKS:
                 CheatsSet(CheatType::RemoveDucks);
@@ -936,22 +936,22 @@ private:
         }
         if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
         {
-            int32_t speed = CHEATS_STAFF_NORMAL_SPEED;
+            int32_t speed = kCheatsStaffNormalSpeed;
             switch (dropdownIndex)
             {
                 case 0:
                     gCheatsSelectedStaffSpeed = StaffSpeedCheat::None;
-                    speed = CHEATS_STAFF_NORMAL_SPEED;
+                    speed = kCheatsStaffNormalSpeed;
                     break;
 
                 case 1:
                     gCheatsSelectedStaffSpeed = StaffSpeedCheat::Frozen;
-                    speed = CHEATS_STAFF_FREEZE_SPEED;
+                    speed = kCheatsStaffFreezeSpeed;
                     break;
 
                 case 2:
                     gCheatsSelectedStaffSpeed = StaffSpeedCheat::Fast;
-                    speed = CHEATS_STAFF_FAST_SPEED;
+                    speed = kCheatsStaffFastSpeed;
             }
             CheatsSet(CheatType::SetStaffSpeed, speed);
         }
@@ -1010,7 +1010,7 @@ private:
                 CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY, 0);
                 break;
             case WIDX_TRAM_GUESTS:
-                CheatsSet(CheatType::GenerateGuests, CHEATS_TRAM_INCREMENT);
+                CheatsSet(CheatType::GenerateGuests, kCheatsTramIncrement);
                 break;
             case WIDX_REMOVE_ALL_GUESTS:
                 CheatsSet(CheatType::RemoveAllGuests);

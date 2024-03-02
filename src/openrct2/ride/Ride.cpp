@@ -96,10 +96,7 @@ static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
 
-// Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-static std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> _rides{};
-
-// This is the highest used index + 1 of the _rides array.
+// This is the highest used index + 1 of the GameState_t::Rides array.
 static size_t _endOfUsedRange = 0;
 
 // A special instance of Ride that is used to draw previews such as the track designs.
@@ -131,10 +128,11 @@ RideManager GetRideManager()
 
 size_t RideManager::size() const
 {
+    auto& gameState = GetGameState();
     size_t count = 0;
     for (size_t i = 0; i < _endOfUsedRange; i++)
     {
-        if (!_rides[i].id.IsNull())
+        if (!gameState.Rides[i].id.IsNull())
         {
             count++;
         }
@@ -159,9 +157,10 @@ RideManager::Iterator RideManager::get(RideId rideId)
 
 RideId GetNextFreeRideId()
 {
-    for (RideId::UnderlyingType i = 0; i < _rides.size(); i++)
+    auto& gameState = GetGameState();
+    for (RideId::UnderlyingType i = 0; i < gameState.Rides.size(); i++)
     {
-        if (_rides[i].id.IsNull())
+        if (gameState.Rides[i].id.IsNull())
         {
             return RideId::FromUnderlying(i);
         }
@@ -174,7 +173,7 @@ Ride* RideAllocateAtIndex(RideId index)
     const auto idx = index.ToUnderlying();
     _endOfUsedRange = std::max<size_t>(idx + 1, _endOfUsedRange);
 
-    auto result = &_rides[idx];
+    auto result = &GetGameState().Rides[idx];
     assert(result->id == RideId::GetNull());
 
     result->id = index;
@@ -196,16 +195,17 @@ static void RideReset(Ride& ride)
 
 void RideDelete(RideId id)
 {
+    auto& gameState = GetGameState();
     const auto idx = id.ToUnderlying();
 
-    assert(idx < _rides.size());
-    assert(_rides[idx].type != RIDE_TYPE_NULL);
+    assert(idx < gameState.Rides.size());
+    assert(gameState.Rides[idx].type != RIDE_TYPE_NULL);
 
-    auto& ride = _rides[idx];
+    auto& ride = gameState.Rides[idx];
     RideReset(ride);
 
     // Shrink maximum ride size.
-    while (_endOfUsedRange > 0 && _rides[_endOfUsedRange - 1].id.IsNull())
+    while (_endOfUsedRange > 0 && gameState.Rides[_endOfUsedRange - 1].id.IsNull())
     {
         _endOfUsedRange--;
     }
@@ -218,14 +218,15 @@ Ride* GetRide(RideId index)
         return nullptr;
     }
 
+    auto& gameState = GetGameState();
     const auto idx = index.ToUnderlying();
-    assert(idx < _rides.size());
-    if (idx >= _rides.size())
+    assert(idx < gameState.Rides.size());
+    if (idx >= gameState.Rides.size())
     {
         return nullptr;
     }
 
-    auto& ride = _rides[idx];
+    auto& ride = gameState.Rides[idx];
     if (ride.type != RIDE_TYPE_NULL)
     {
         assert(ride.id == index);
@@ -942,7 +943,8 @@ bool Ride::SupportsStatus(RideStatus s) const
  */
 void RideInitAll()
 {
-    std::for_each(std::begin(_rides), std::end(_rides), RideReset);
+    auto& gameState = GetGameState();
+    std::for_each(std::begin(gameState.Rides), std::end(gameState.Rides), RideReset);
     _endOfUsedRange = 0;
 }
 
@@ -977,7 +979,7 @@ void Ride::UpdateAll()
     // Remove all rides if scenario editor
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        switch (gEditorStep)
+        switch (GetGameState().EditorStep)
         {
             case EditorStep::ObjectSelection:
             case EditorStep::LandscapeEditor:
@@ -1113,7 +1115,7 @@ void Ride::Update()
         income_per_hour = CalculateIncomePerHour();
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-        if (upkeep_cost != MONEY64_UNDEFINED)
+        if (upkeep_cost != kMoney64Undefined)
             profit = income_per_hour - (upkeep_cost * 16);
     }
 
@@ -4330,7 +4332,7 @@ money64 RideGetCommonPrice(const Ride& forRide)
         }
     }
 
-    return MONEY64_UNDEFINED;
+    return kMoney64Undefined;
 }
 
 void Ride::SetNameToDefault()
@@ -4815,7 +4817,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
           SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 },     // TRACK_HALF_LOOP_LARGE
-        { SpriteGroupType::Slopes25Banked45, SpritePrecision::Sprites16 }, // TRACK_SLOPE_CURVE_BANKED
+        { SpriteGroupType::Slopes12Banked22, SpritePrecision::Sprites16 }, // TRACK_SLOPE_CURVE_BANKED
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },        // TRACK_LOG_FLUME_REVERSER
         { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
           SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
@@ -5599,9 +5601,10 @@ void DetermineRideEntranceAndExitLocations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            for (int32_t y = 1; y < gMapSize.y - 1; y++)
+            auto& gameState = GetGameState();
+            for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
             {
-                for (int32_t x = 1; x < gMapSize.x - 1; x++)
+                for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
 
@@ -5685,9 +5688,10 @@ void DetermineRideEntranceAndExitLocations()
 
 void RideClearLeftoverEntrances(const Ride& ride)
 {
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
+    auto& gameState = GetGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
         {
             for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
             {
@@ -5764,9 +5768,10 @@ void Ride::IncreaseNumShelteredSections()
 
 void Ride::UpdateRideTypeForAllPieces()
 {
-    for (int32_t y = 0; y < gMapSize.y; y++)
+    auto& gameState = GetGameState();
+    for (int32_t y = 0; y < gameState.MapSize.y; y++)
     {
-        for (int32_t x = 0; x < gMapSize.x; x++)
+        for (int32_t x = 0; x < gameState.MapSize.x; x++)
         {
             auto* tileElement = MapGetFirstElementAt(TileCoordsXY(x, y));
             if (tileElement == nullptr)

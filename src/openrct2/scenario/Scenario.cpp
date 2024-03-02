@@ -69,7 +69,6 @@ const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 
 std::string gScenarioSavePath;
 bool gFirstTimeSaving = true;
-uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 bool gAllowEarlyCompletionInNetworkPlay;
@@ -104,8 +103,8 @@ void ScenarioReset(GameState_t& gameState)
     auto& park = GetContext()->GetGameState()->GetPark();
     gameState.ParkRating = park.CalculateParkRating();
     gameState.ParkValue = park.CalculateParkValue();
-    gCompanyValue = park.CalculateCompanyValue();
-    gHistoricalProfit = gameState.InitialCash - gBankLoan;
+    gameState.CompanyValue = park.CalculateCompanyValue();
+    gHistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
     {
@@ -135,15 +134,15 @@ void ScenarioReset(GameState_t& gameState)
     auto savePath = env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
     gScenarioSavePath = Path::Combine(savePath, park.Name + u8".park");
 
-    gCurrentExpenditure = 0;
-    gCurrentProfit = 0;
+    gameState.CurrentExpenditure = 0;
+    gameState.CurrentProfit = 0;
     gameState.WeeklyProfitAverageDividend = 0;
     gameState.WeeklyProfitAverageDivisor = 0;
-    gTotalAdmissions = 0;
-    gTotalIncomeFromAdmissions = 0;
+    gameState.TotalAdmissions = 0;
+    gameState.TotalIncomeFromAdmissions = 0;
 
     gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.ScenarioCompletedBy = "?";
 
     park.ResetHistories();
@@ -202,7 +201,7 @@ void ScenarioFailure(GameState_t& gameState)
  */
 void ScenarioSuccess(GameState_t& gameState)
 {
-    auto companyValue = gCompanyValue;
+    auto companyValue = gameState.CompanyValue;
 
     gameState.ScenarioCompletedCompanyValue = companyValue;
     PeepApplause();
@@ -235,9 +234,9 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
  */
 static void ScenarioCheckEntranceFeeTooHigh()
 {
-    const auto max_fee = AddClamp_money64(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
-
     const auto& gameState = GetGameState();
+    const auto max_fee = AddClamp_money64(gameState.TotalRideValueForMoney, gameState.TotalRideValueForMoney / 2);
+
     if ((gameState.ParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
     {
         if (!gameState.ParkEntrances.empty())
@@ -362,7 +361,7 @@ static void ScenarioUpdateDayNightCycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
     {
-        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(TICKS_PER_MONTH);
+        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -434,8 +433,9 @@ bool ScenarioCreateDucks()
     constexpr int32_t SquareRadiusSize = SquareCentre * 32;
 
     CoordsXY centrePos;
-    centrePos.x = SquareRadiusSize + (ScenarioRandMax(gMapSize.x - SquareCentre) * 32);
-    centrePos.y = SquareRadiusSize + (ScenarioRandMax(gMapSize.y - SquareCentre) * 32);
+    auto& gameState = GetGameState();
+    centrePos.x = SquareRadiusSize + (ScenarioRandMax(gameState.MapSize.x - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (ScenarioRandMax(gameState.MapSize.y - SquareCentre) * 32);
 
     Guard::Assert(MapIsLocationValid(centrePos));
 
@@ -819,7 +819,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
     const auto& gameState = GetGameState();
     money64 parkValue = gameState.ParkValue;
-    money64 currentLoan = gBankLoan;
+    money64 currentLoan = gameState.BankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)
     {
@@ -881,7 +881,7 @@ static void ScenarioCheckObjective(GameState_t& gameState)
  */
 ObjectiveStatus Objective::Check(GameState_t& gameState) const
 {
-    if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+    if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
     {
         return ObjectiveStatus::Undecided;
     }

@@ -54,8 +54,8 @@ public:
         WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
-        gWaterToolRaiseCost = MONEY64_UNDEFINED;
-        gWaterToolLowerCost = MONEY64_UNDEFINED;
+        gWaterToolRaiseCost = kMoney64Undefined;
+        gWaterToolLowerCost = kMoney64Undefined;
     }
 
     void OnClose() override
@@ -86,14 +86,14 @@ public:
         {
             case WIDX_DECREMENT:
                 // Decrement land tool size
-                gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+                gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                 // Invalidate the window
                 Invalidate();
                 break;
             case WIDX_INCREMENT:
                 // Increment land tool size
-                gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+                gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                 // Invalidate the window
                 Invalidate();
@@ -124,8 +124,8 @@ public:
         size = strtol(textStr.c_str(), &end, 10);
         if (*end == '\0')
         {
-            size = std::max(MINIMUM_TOOL_SIZE, size);
-            size = std::min(MAXIMUM_TOOL_SIZE, size);
+            size = std::max<uint16_t>(kLandToolMinimumSize, size);
+            size = std::min<uint16_t>(kLandToolMaximumSize, size);
             gLandToolSize = size;
 
             Invalidate();
@@ -148,7 +148,7 @@ public:
 
         DrawWidgets(dpi);
         // Draw number for tool sizes bigger than 7
-        if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (gLandToolSize > kLandToolMaximumSizeWithSprite)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
@@ -159,7 +159,7 @@ public:
         {
             // Draw raise cost amount
             screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
-            if (gWaterToolRaiseCost != MONEY64_UNDEFINED && gWaterToolRaiseCost != 0)
+            if (gWaterToolRaiseCost != kMoney64Undefined && gWaterToolRaiseCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolRaiseCost);
@@ -168,7 +168,7 @@ public:
             screenCoords.y += 10;
 
             // Draw lower cost amount
-            if (gWaterToolLowerCost != MONEY64_UNDEFINED && gWaterToolLowerCost != 0)
+            if (gWaterToolLowerCost != kMoney64Undefined && gWaterToolLowerCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolLowerCost);
@@ -186,8 +186,8 @@ private:
     void InputSize()
     {
         Formatter ft;
-        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+        ft.Add<uint16_t>(kLandToolMinimumSize);
+        ft.Add<uint16_t>(kLandToolMaximumSize);
         WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 };

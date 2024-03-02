@@ -435,7 +435,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gameState.ScenarioParkRatingWarningDays);
 
                 cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
-                if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED
+                if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
                     || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 {
                     cs.Write("");
@@ -542,12 +542,12 @@ namespace OpenRCT2
                     cs.ReadWrite(tempLandPrice);
                     cs.ReadWrite(tempConstructionRightPrice);
                     gLandPrice = ToMoney64(tempLandPrice);
-                    gConstructionRightsPrice = ToMoney64(tempConstructionRightPrice);
+                    gameState.ConstructionRightsPrice = ToMoney64(tempConstructionRightPrice);
                 }
                 else
                 {
                     cs.ReadWrite(gLandPrice);
-                    cs.ReadWrite(gConstructionRightsPrice);
+                    cs.ReadWrite(gameState.ConstructionRightsPrice);
                 }
                 cs.ReadWrite(gGrassSceneryTileLoopPosition);
                 cs.ReadWrite(gWidePathTileLoopPosition);
@@ -604,21 +604,21 @@ namespace OpenRCT2
 
         void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gSavedView.x);
-                cs.ReadWrite(gSavedView.y);
+            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [&gameState](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(gameState.SavedView.x);
+                cs.ReadWrite(gameState.SavedView.y);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto savedZoomlevel = static_cast<ZoomLevel>(cs.Read<int8_t>());
-                    gSavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
+                    gameState.SavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
                 }
                 else
                 {
-                    cs.Write(static_cast<int8_t>(gSavedViewZoom));
+                    cs.Write(static_cast<int8_t>(gameState.SavedViewZoom));
                 }
-                cs.ReadWrite(gSavedViewRotation);
+                cs.ReadWrite(gameState.SavedViewRotation);
                 cs.ReadWrite(gLastEntranceStyle);
-                cs.ReadWrite(gEditorStep);
+                cs.ReadWrite(gameState.EditorStep);
             });
         }
 
@@ -803,9 +803,9 @@ namespace OpenRCT2
                     auto& park = GetContext()->GetGameState()->GetPark();
                     cs.ReadWrite(park.Name);
                     cs.ReadWrite(gameState.Cash);
-                    cs.ReadWrite(gBankLoan);
-                    cs.ReadWrite(gMaxBankLoan);
-                    cs.ReadWrite(gBankLoanInterestRate);
+                    cs.ReadWrite(gameState.BankLoan);
+                    cs.ReadWrite(gameState.MaxBankLoan);
+                    cs.ReadWrite(gameState.BankLoanInterestRate);
                     cs.ReadWrite(gameState.ParkFlags);
                     if (version <= 18)
                     {
@@ -885,39 +885,39 @@ namespace OpenRCT2
                         });
                     }
                     cs.ReadWrite(gameState.ParkValue);
-                    cs.ReadWrite(gCompanyValue);
+                    cs.ReadWrite(gameState.CompanyValue);
                     cs.ReadWrite(gameState.ParkSize);
                     cs.ReadWrite(gameState.NumGuestsInPark);
                     cs.ReadWrite(gameState.NumGuestsHeadingForPark);
                     cs.ReadWrite(gameState.ParkRating);
                     cs.ReadWrite(gParkRatingCasualtyPenalty);
-                    cs.ReadWrite(gCurrentExpenditure);
-                    cs.ReadWrite(gCurrentProfit);
+                    cs.ReadWrite(gameState.CurrentExpenditure);
+                    cs.ReadWrite(gameState.CurrentProfit);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDivisor);
-                    cs.ReadWrite(gTotalAdmissions);
-                    cs.ReadWrite(gTotalIncomeFromAdmissions);
+                    cs.ReadWrite(gameState.TotalAdmissions);
+                    cs.ReadWrite(gameState.TotalIncomeFromAdmissions);
                     if (version <= 16)
                     {
                         money16 legacyTotalRideValueForMoney = 0;
                         cs.ReadWrite(legacyTotalRideValueForMoney);
-                        gTotalRideValueForMoney = legacyTotalRideValueForMoney;
+                        gameState.TotalRideValueForMoney = legacyTotalRideValueForMoney;
                     }
                     else
                     {
-                        cs.ReadWrite(gTotalRideValueForMoney);
+                        cs.ReadWrite(gameState.TotalRideValueForMoney);
                     }
-                    cs.ReadWrite(gNumGuestsInParkLastWeek);
+                    cs.ReadWrite(gameState.NumGuestsInParkLastWeek);
                     cs.ReadWrite(gGuestChangeModifier);
-                    cs.ReadWrite(_guestGenerationProbability);
-                    cs.ReadWrite(_suggestedGuestMaximum);
+                    cs.ReadWrite(gameState.GuestGenerationProbability);
+                    cs.ReadWrite(gameState.SuggestedGuestMaximum);
 
                     cs.ReadWriteArray(gPeepWarningThrottle, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
 
-                    cs.ReadWriteArray(gParkRatingHistory, [&cs](uint8_t& value) {
+                    cs.ReadWriteArray(gameState.ParkRatingHistory, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
@@ -1000,16 +1000,16 @@ namespace OpenRCT2
 
         void ReadWriteNotificationsChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [&gameState](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    gNewsItems.Clear();
+                    gameState.NewsItems.Clear();
 
                     std::vector<News::Item> recent;
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                     for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
                     {
-                        gNewsItems[i] = recent[i];
+                        gameState.NewsItems[i] = recent[i];
                     }
 
                     std::vector<News::Item> archived;
@@ -1017,19 +1017,21 @@ namespace OpenRCT2
                     size_t offset = News::ItemHistoryStart;
                     for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
                     {
-                        gNewsItems[offset + i] = archived[i];
+                        gameState.NewsItems[offset + i] = archived[i];
                     }
 
                     // Still need to set the correct type to properly terminate the queue
                     if (archived.size() < News::MaxItemsArchive)
-                        gNewsItems[offset + archived.size()].Type = News::ItemType::Null;
+                        gameState.NewsItems[offset + archived.size()].Type = News::ItemType::Null;
                 }
                 else
                 {
-                    std::vector<News::Item> recent(std::begin(gNewsItems.GetRecent()), std::end(gNewsItems.GetRecent()));
+                    std::vector<News::Item> recent(
+                        std::begin(gameState.NewsItems.GetRecent()), std::end(gameState.NewsItems.GetRecent()));
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    std::vector<News::Item> archived(std::begin(gNewsItems.GetArchived()), std::end(gNewsItems.GetArchived()));
+                    std::vector<News::Item> archived(
+                        std::begin(gameState.NewsItems.GetArchived()), std::end(gameState.NewsItems.GetArchived()));
                     cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });
@@ -1062,14 +1064,14 @@ namespace OpenRCT2
 
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
-                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWrite(gMapSize.x);
-                    cs.ReadWrite(gMapSize.y);
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState](OrcaStream::ChunkStream& cs) {
+                    cs.ReadWrite(gameState.MapSize.x);
+                    cs.ReadWrite(gameState.MapSize.y);
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
                         // TODO: Use the passed gameState instead of the global one.
-                        OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
+                        OpenRCT2::GetContext()->GetGameState()->InitAll(gameState.MapSize);
 
                         auto numElements = cs.Read<uint32_t>();
 
@@ -1151,9 +1153,10 @@ namespace OpenRCT2
 
         void UpdateTrackElementsRideType()
         {
-            for (int32_t y = 0; y < gMapSize.y; y++)
+            auto& gameState = GetGameState();
+            for (int32_t y = 0; y < gameState.MapSize.y; y++)
             {
-                for (int32_t x = 0; x < gMapSize.x; x++)
+                for (int32_t x = 0; x < gameState.MapSize.x; x++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)

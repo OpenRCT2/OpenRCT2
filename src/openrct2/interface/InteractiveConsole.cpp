@@ -209,7 +209,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 else
                 {
                     auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
-                    if (res == MONEY64_UNDEFINED)
+                    if (res == kMoney64Undefined)
                     {
                         if (!gCheatsAllowArbitraryRideTypeChanges)
                         {
@@ -565,7 +565,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteFormatLine("company_value %d", gCompanyValue / 10);
+            console.WriteFormatLine("company_value %d", gameState.CompanyValue / 10);
         }
         else if (argv[0] == "money")
         {
@@ -577,11 +577,11 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "current_loan")
         {
-            console.WriteFormatLine("current_loan %d", gBankLoan / 10);
+            console.WriteFormatLine("current_loan %d", gameState.BankLoan / 10);
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteFormatLine("max_loan %d", gMaxBankLoan / 10);
+            console.WriteFormatLine("max_loan %d", gameState.MaxBankLoan / 10);
         }
         else if (argv[0] == "guest_initial_cash")
         {
@@ -673,7 +673,8 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "construction_rights_cost")
         {
             console.WriteFormatLine(
-                "construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
+                "construction_rights_cost %d.%d0", gameState.ConstructionRightsPrice / 10,
+                gameState.ConstructionRightsPrice % 10);
         }
         else if (argv[0] == "climate")
         {
@@ -812,7 +813,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
-                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan);
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.MaxBankLoan);
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, amount);
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
@@ -1452,7 +1453,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
 
     // All cases involve providing a year, so grab that first
     year = atoi(argv[0].c_str());
-    if (year < 1 || year > MAX_YEAR)
+    if (year < 1 || year > kMaxYear)
     {
         return -1;
     }

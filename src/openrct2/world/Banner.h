@@ -36,6 +36,7 @@ struct Banner
     ObjectEntryIndex type = BANNER_NULL;
     uint8_t flags{};
     std::string text;
+    mutable std::string formattedTextBuffer;
     uint8_t colour{};
     RideId ride_index{};
     uint8_t text_colour{};

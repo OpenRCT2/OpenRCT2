@@ -382,7 +382,7 @@ money64 StringToMoney(const char* string_to_monetise)
         else if (*src_ptr == decimal_char[0])
         {
             if (hasDecSep)
-                return MONEY64_UNDEFINED;
+                return kMoney64Undefined;
             hasDecSep = true;
 
             // Replace localised decimal separator with an English one.
@@ -393,7 +393,7 @@ money64 StringToMoney(const char* string_to_monetise)
         else if (*src_ptr == '-')
         {
             if (hasMinus)
-                return MONEY64_UNDEFINED;
+                return kMoney64Undefined;
             hasMinus = true;
         }
         else
@@ -412,12 +412,12 @@ money64 StringToMoney(const char* string_to_monetise)
     *dst_ptr = '\0';
 
     if (numNumbers == 0)
-        return MONEY64_UNDEFINED;
+        return kMoney64Undefined;
 
     if (hasMinus && processedString[0] != '-')
     {
         // If there is a minus sign, it has to be at position 0 in order to be valid.
-        return MONEY64_UNDEFINED;
+        return kMoney64Undefined;
     }
 
     // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
@@ -445,7 +445,7 @@ money64 StringToMoney(const char* string_to_monetise)
  */
 void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
 {
-    if (amount == MONEY64_UNDEFINED)
+    if (amount == kMoney64Undefined)
     {
         snprintf(buffer_to_put_value_to, buffer_len, "0");
         return;

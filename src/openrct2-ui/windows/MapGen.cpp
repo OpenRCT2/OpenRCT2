@@ -813,7 +813,7 @@ private:
                 mapgenSettings.mapSize = _mapSize;
 
                 mapgenSettings.height = _baseHeight;
-                mapgenSettings.water_level = _waterLevel + MINIMUM_WATER_HEIGHT;
+                mapgenSettings.water_level = _waterLevel + kMinimumWaterHeight;
                 mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
                 mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
                 mapgenSettings.trees = _placeTrees;
@@ -886,11 +886,11 @@ private:
                 Invalidate();
                 break;
             case WIDX_SIMPLEX_WATER_LEVEL_UP:
-                _waterLevel = std::min(_waterLevel + MINIMUM_WATER_HEIGHT, MINIMUM_WATER_HEIGHT + MAXIMUM_WATER_HEIGHT);
+                _waterLevel = std::min(_waterLevel + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
                 Invalidate();
                 break;
             case WIDX_SIMPLEX_WATER_LEVEL_DOWN:
-                _waterLevel = std::max(_waterLevel - MINIMUM_WATER_HEIGHT, 0);
+                _waterLevel = std::max(_waterLevel - kMinimumWaterHeight, 0);
                 Invalidate();
                 break;
             case WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX:
@@ -1093,11 +1093,11 @@ private:
                 InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                 break;
             case WIDX_HEIGHTMAP_WATER_LEVEL_UP:
-                _waterLevel = std::min(_waterLevel + MINIMUM_WATER_HEIGHT, MINIMUM_WATER_HEIGHT + MAXIMUM_WATER_HEIGHT);
+                _waterLevel = std::min(_waterLevel + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
                 InvalidateWidget(WIDX_HEIGHTMAP_WATER_LEVEL);
                 break;
             case WIDX_HEIGHTMAP_WATER_LEVEL_DOWN:
-                _waterLevel = std::max(_waterLevel - MINIMUM_WATER_HEIGHT, 0);
+                _waterLevel = std::max(_waterLevel - kMinimumWaterHeight, 0);
                 InvalidateWidget(WIDX_HEIGHTMAP_WATER_LEVEL);
                 break;
         }

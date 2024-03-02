@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include <vector>
 #ifndef _WIN32
+#    include <alloca.h>
 #    include <unicode/ucnv.h>
 #    include <unicode/unistr.h>
 #    include <unicode/utypes.h>
@@ -26,7 +27,6 @@
 
 #include "../common.h"
 #include "../localisation/ConversionTables.h"
-#include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
 #include "Memory.hpp"

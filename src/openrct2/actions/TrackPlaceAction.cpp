@@ -232,7 +232,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
 
-        int32_t clearanceZ = trackBlock->var_07;
+        int32_t clearanceZ = trackBlock->ClearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
@@ -265,11 +265,14 @@ GameActions::Result TrackPlaceAction::Query() const
 
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
+        if (!(ted.Flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
         {
-            return GameActions::Result(
-                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+            if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
+            {
+                return GameActions::Result(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+            }
         }
 
         resultData.GroundFlags = mapGroundFlags;
@@ -447,7 +450,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
         int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
-        int32_t clearanceZ = trackBlock->var_07;
+        int32_t clearanceZ = trackBlock->ClearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
@@ -508,11 +511,14 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
+        if (!(ted.Flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
         {
-            return GameActions::Result(
-                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+            if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
+            {
+                return GameActions::Result(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+            }
         }
 
         resultData.GroundFlags = mapGroundFlags;

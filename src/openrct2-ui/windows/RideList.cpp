@@ -600,7 +600,7 @@ public:
                     break;
                 case INFORMATION_TYPE_PROFIT:
                     formatSecondary = 0;
-                    if (ridePtr->profit != MONEY64_UNDEFINED)
+                    if (ridePtr->profit != kMoney64Undefined)
                     {
                         formatSecondary = STR_PROFIT_LABEL;
                         ft.Add<money64>(ridePtr->profit);
@@ -612,7 +612,7 @@ public:
                     break;
                 case INFORMATION_TYPE_TOTAL_PROFIT:
                     formatSecondary = 0;
-                    if (ridePtr->total_profit != MONEY64_UNDEFINED)
+                    if (ridePtr->total_profit != kMoney64Undefined)
                     {
                         formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
                         ft.Add<money64>(ridePtr->total_profit);
@@ -642,7 +642,7 @@ public:
                 }
                 case INFORMATION_TYPE_INCOME:
                     formatSecondary = 0;
-                    if (ridePtr->income_per_hour != MONEY64_UNDEFINED)
+                    if (ridePtr->income_per_hour != kMoney64Undefined)
                     {
                         formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
                         ft.Add<money64>(ridePtr->income_per_hour);
@@ -650,7 +650,7 @@ public:
                     break;
                 case INFORMATION_TYPE_RUNNING_COST:
                     formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-                    if (ridePtr->upkeep_cost != MONEY64_UNDEFINED)
+                    if (ridePtr->upkeep_cost != kMoney64Undefined)
                     {
                         formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
                         ft.Add<money64>(ridePtr->upkeep_cost * 16);

@@ -136,11 +136,10 @@ namespace RCT1
                 td->ride_mode = RideMode::PoweredLaunch;
             }
 
-            // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
             std::string_view vehicleObject;
             if (td4Base.Type == RideType::HedgeMaze)
             {
-                vehicleObject = RCT1::GetRideTypeObject(td4Base.Type);
+                vehicleObject = RCT1::GetRideTypeObject(td4Base.Type, false);
             }
             else
             {
@@ -148,7 +147,7 @@ namespace RCT1
             }
             assert(!vehicleObject.empty());
             td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
-            td->vehicle_type = td4Base.VehicleType;
+            td->vehicle_type = EnumValue(td4Base.VehicleType);
 
             td->flags = td4Base.Flags;
             td->colour_scheme = td4Base.VersionAndColourScheme & 0x3;

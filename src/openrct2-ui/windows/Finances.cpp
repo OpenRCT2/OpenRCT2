@@ -484,16 +484,17 @@ public:
 
     void OnMouseDownSummary(WidgetIndex widgetIndex)
     {
+        auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_LOAN_INCREASE:
             {
                 // If loan can be increased, do so.
                 // If not, action shows error message.
-                auto newLoan = gBankLoan + 1000.00_GBP;
-                if (gBankLoan < gMaxBankLoan)
+                auto newLoan = gameState.BankLoan + 1000.00_GBP;
+                if (gameState.BankLoan < gameState.MaxBankLoan)
                 {
-                    newLoan = std::min(gMaxBankLoan, newLoan);
+                    newLoan = std::min(gameState.MaxBankLoan, newLoan);
                 }
                 auto gameAction = ParkSetLoanAction(newLoan);
                 GameActions::Execute(&gameAction);
@@ -504,10 +505,10 @@ public:
                 // If loan is positive, decrease it.
                 // If loan is negative, action shows error message.
                 // If loan is exactly 0, prevent error message.
-                if (gBankLoan != 0)
+                if (gameState.BankLoan != 0)
                 {
-                    auto newLoan = gBankLoan - 1000.00_GBP;
-                    if (gBankLoan > 0)
+                    auto newLoan = gameState.BankLoan - 1000.00_GBP;
+                    if (gameState.BankLoan > 0)
                     {
                         newLoan = std::max(static_cast<money64>(0LL), newLoan);
                     }
@@ -526,7 +527,7 @@ public:
         // drawing has completed.
         auto ft = Formatter::Common();
         ft.Increment(6);
-        ft.Add<money64>(gBankLoan);
+        ft.Add<money64>(GetGameState().BankLoan);
 
         // Keep up with new months being added in the first two years.
         if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
@@ -568,7 +569,7 @@ public:
         if (!(gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST))
         {
             auto ft = Formatter();
-            ft.Add<uint16_t>(gBankLoanInterestRate);
+            ft.Add<uint16_t>(gameState.BankLoanInterestRate);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
         }
 
@@ -594,7 +595,7 @@ public:
             ft.Add<money64>(gameState.ParkValue);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
             ft = Formatter();
-            ft.Add<money64>(gCompanyValue);
+            ft.Add<money64>(gameState.CompanyValue);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
         }
     }
@@ -614,8 +615,10 @@ public:
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
+        const auto& gameState = GetGameState();
+
         // Cash (less loan)
-        auto cashLessLoan = GetGameState().Cash - gBankLoan;
+        auto cashLessLoan = gameState.Cash - gameState.BankLoan;
         auto ft = Formatter();
         ft.Add<money64>(cashLessLoan);
 
@@ -633,7 +636,7 @@ public:
         for (int32_t i = 0; i < 64; i++)
         {
             auto balance = gCashHistory[i];
-            if (balance == MONEY64_UNDEFINED)
+            if (balance == kMoney64Undefined)
                 continue;
 
             // Modifier balance then keep halving until less than 127 pixels
@@ -692,7 +695,7 @@ public:
         for (int32_t i = 0; i < 64; i++)
         {
             auto balance = gameState.ParkValueHistory[i];
-            if (balance == MONEY64_UNDEFINED)
+            if (balance == kMoney64Undefined)
                 continue;
 
             // Modifier balance then keep halving until less than 255 pixels
@@ -739,10 +742,10 @@ public:
 
         // Weekly profit
         auto ft = Formatter();
-        ft.Add<money64>(gCurrentProfit);
+        ft.Add<money64>(gameState.CurrentProfit);
         DrawTextBasic(
             dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
-            gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
+            gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
         GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
@@ -752,7 +755,7 @@ public:
         for (int32_t i = 0; i < 64; i++)
         {
             auto balance = gameState.WeeklyProfitHistory[i];
-            if (balance == MONEY64_UNDEFINED)
+            if (balance == kMoney64Undefined)
                 continue;
 
             // Modifier balance then keep halving until less than 127 pixels

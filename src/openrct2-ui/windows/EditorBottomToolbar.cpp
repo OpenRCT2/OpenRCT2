@@ -92,11 +92,13 @@ public:
         }
         else
         {
-            if (gEditorStep == EditorStep::ObjectSelection)
+            auto& gameState = GetGameState();
+
+            if (gameState.EditorStep == EditorStep::ObjectSelection)
             {
                 HidePreviousStepButton();
             }
-            else if (gEditorStep == EditorStep::RollercoasterDesigner)
+            else if (gameState.EditorStep == EditorStep::RollercoasterDesigner)
             {
                 HideNextStepButton();
             }
@@ -134,17 +136,18 @@ public:
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
+        auto& gameState = GetGameState();
         if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
         {
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 || (GetNumFreeEntities() == MAX_ENTITIES && !(GetGameState().ParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
             {
-                ((this)->*(_previousButtonMouseUp[EnumValue(gEditorStep)]))();
+                ((this)->*(_previousButtonMouseUp[EnumValue(gameState.EditorStep)]))();
             }
         }
         else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
         {
-            ((this)->*(_nextButtonMouseUp[EnumValue(gEditorStep)]))();
+            ((this)->*(_nextButtonMouseUp[EnumValue(gameState.EditorStep)]))();
         }
     }
 
@@ -152,7 +155,7 @@ private:
     void JumpBackToObjectSelection() const
     {
         WindowCloseAll();
-        gEditorStep = EditorStep::ObjectSelection;
+        GetGameState().EditorStep = EditorStep::ObjectSelection;
         GfxInvalidateScreen();
     }
 
@@ -161,7 +164,7 @@ private:
         WindowCloseAll();
         SetAllSceneryItemsInvented();
         ScenerySetDefaultPlacementConfiguration();
-        gEditorStep = EditorStep::LandscapeEditor;
+        GetGameState().EditorStep = EditorStep::LandscapeEditor;
         ContextOpenWindow(WindowClass::Map);
         GfxInvalidateScreen();
     }
@@ -170,7 +173,7 @@ private:
     {
         WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorInventionList);
-        gEditorStep = EditorStep::InventionsListSetUp;
+        GetGameState().EditorStep = EditorStep::InventionsListSetUp;
         GfxInvalidateScreen();
     }
 
@@ -178,7 +181,7 @@ private:
     {
         WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
-        gEditorStep = EditorStep::OptionsSelection;
+        GetGameState().EditorStep = EditorStep::OptionsSelection;
         GfxInvalidateScreen();
     }
 
@@ -226,7 +229,7 @@ private:
         {
             WindowCloseAll();
             ContextOpenWindow(WindowClass::EditorInventionList);
-            gEditorStep = EditorStep::InventionsListSetUp;
+            GetGameState().EditorStep = EditorStep::InventionsListSetUp;
         }
         else
         {
@@ -240,7 +243,7 @@ private:
     {
         WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
-        gEditorStep = EditorStep::OptionsSelection;
+        GetGameState().EditorStep = EditorStep::OptionsSelection;
         GfxInvalidateScreen();
     }
 
@@ -248,7 +251,7 @@ private:
     {
         WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorObjectiveOptions);
-        gEditorStep = EditorStep::ObjectiveSelection;
+        GetGameState().EditorStep = EditorStep::ObjectiveSelection;
         GfxInvalidateScreen();
     }
 
@@ -312,7 +315,7 @@ private:
         int16_t textX = (widgets[WIDX_PREVIOUS_IMAGE].left + 30 + widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_PREVIOUS_IMAGE].top + 6 + windowPos.y;
 
-        StringId stringId = _editorStepNames[EnumValue(gEditorStep) - 1];
+        StringId stringId = _editorStepNames[EnumValue(GetGameState().EditorStep) - 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
@@ -350,7 +353,7 @@ private:
         int16_t textX = (widgets[WIDX_NEXT_IMAGE].left + widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_NEXT_IMAGE].top + 6 + windowPos.y;
 
-        StringId stringId = _editorStepNames[EnumValue(gEditorStep) + 1];
+        StringId stringId = _editorStepNames[EnumValue(GetGameState().EditorStep) + 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
@@ -363,7 +366,7 @@ private:
         int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
         int16_t stateY = height - 0x0C + windowPos.y;
         DrawTextBasic(
-            dpi, { stateX, stateY }, _editorStepNames[EnumValue(gEditorStep)], {},
+            dpi, { stateX, stateY }, _editorStepNames[EnumValue(GetGameState().EditorStep)], {},
             { static_cast<colour_t>(NOT_TRANSLUCENT(colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
     }
 

@@ -11,9 +11,7 @@
 
 #include "../core/EnumMap.hpp"
 
-#include <mutex>
 #include <string>
-#include <vector>
 
 // clang-format off
 static const EnumMap<FormatToken> FormatTokenMap = {
@@ -65,43 +63,24 @@ static const EnumMap<FormatToken> FormatTokenMap = {
 };
 // clang-format on
 
-std::string_view GetFormatTokenStringWithBraces(FormatToken token)
-{
-    // Ensure cache is thread safe
-    static std::mutex mutex;
-    std::lock_guard<std::mutex> guard(mutex);
-
-    static std::vector<std::string> cache;
-    auto index = static_cast<size_t>(token);
-    if (cache.size() <= index)
-    {
-        cache.resize(index + 1);
-    }
-    if (cache[index].empty())
-    {
-        cache[index] = "{" + std::string(FormatTokenToString(token)) + "}";
-    }
-    return cache[index];
-}
-
 FormatToken FormatTokenFromString(std::string_view token)
 {
     auto result = FormatTokenMap.find(token);
     return result != std::end(FormatTokenMap) ? result->second : FormatToken::Unknown;
 }
 
-std::string_view FormatTokenToString(FormatToken token, bool withBraces)
+std::string FormatTokenToString(FormatToken token)
 {
-    if (withBraces)
-    {
-        return GetFormatTokenStringWithBraces(token);
-    }
-
     auto it = FormatTokenMap.find(token);
     if (it != FormatTokenMap.end())
-        return it->first;
+        return std::string(it->first);
 
     return {};
+}
+
+std::string FormatTokenToStringWithBraces(FormatToken token)
+{
+    return "{" + FormatTokenToString(token) + "}";
 }
 
 bool FormatTokenTakesArgument(FormatToken token)

@@ -186,23 +186,23 @@ StringId LandSetHeightAction::CheckParameters() const
         return STR_OFF_EDGE_OF_MAP;
     }
 
-    if (_height < MINIMUM_LAND_HEIGHT)
+    if (_height < kMinimumLandHeight)
     {
         return STR_TOO_LOW;
     }
 
     // Divide by 2 and subtract 7 to get the in-game units.
-    if (_height > MAXIMUM_LAND_HEIGHT)
+    if (_height > kMaximumLandHeight)
     {
         return STR_TOO_HIGH;
     }
 
-    if (_height > MAXIMUM_LAND_HEIGHT - 2 && (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
+    if (_height > kMaximumLandHeight - 2 && (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
     {
         return STR_TOO_HIGH;
     }
 
-    if (_height == MAXIMUM_LAND_HEIGHT - 2 && (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
+    if (_height == kMaximumLandHeight - 2 && (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
     {
         return STR_TOO_HIGH;
     }

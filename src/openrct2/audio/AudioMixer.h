@@ -13,9 +13,9 @@
 
 namespace OpenRCT2::Audio
 {
-    constexpr int32_t MIXER_VOLUME_MAX = 128;
-    constexpr int32_t MIXER_LOOP_NONE = 0;
-    constexpr int32_t MIXER_LOOP_INFINITE = -1;
+    constexpr int32_t kMixerVolumeMax = 128;
+    constexpr int32_t kMixerLoopNone = 0;
+    constexpr int32_t kMixerLoopInfinite = -1;
 
     enum class SoundId : uint8_t;
 

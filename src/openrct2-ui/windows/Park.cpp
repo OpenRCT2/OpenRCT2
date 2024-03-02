@@ -728,7 +728,7 @@ private:
         // Graph
         screenPos = windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-        Graph::Draw(dpi, gParkRatingHistory, 32, screenPos);
+        Graph::Draw(dpi, GetGameState().ParkRatingHistory, 32, screenPos);
     }
 
 #pragma endregion
@@ -900,7 +900,7 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
         auto ft = Formatter();
-        ft.Add<money64>(gTotalIncomeFromAdmissions);
+        ft.Add<money64>(GetGameState().TotalIncomeFromAdmissions);
         DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
         money64 parkEntranceFee = ParkGetEntranceFee();
@@ -964,8 +964,9 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
+        auto& gameState = GetGameState();
         // Draw park size
-        auto parkSize = GetGameState().ParkSize * 10;
+        auto parkSize = gameState.ParkSize * 10;
         auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
         if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
@@ -997,12 +998,12 @@ private:
 
         // Draw number of guests in park
         ft = Formatter();
-        ft.Add<uint32_t>(OpenRCT2::GetGameState().NumGuestsInPark);
+        ft.Add<uint32_t>(gameState.NumGuestsInPark);
         DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
-        ft.Add<uint32_t>(gTotalAdmissions);
+        ft.Add<uint32_t>(gameState.TotalAdmissions);
         DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
     }
 #pragma endregion
@@ -1110,7 +1111,7 @@ private:
         screenCoords.y += 5;
 
         // Objective outcome
-        if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+        if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
         {
             if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {

@@ -149,7 +149,7 @@ money64 FootpathProvisionalSet(
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+    cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
     if (res.Error == GameActions::Status::Ok)
     {
         gProvisionalFootpath.SurfaceIndex = type;

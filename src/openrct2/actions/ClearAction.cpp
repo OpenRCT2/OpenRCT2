@@ -10,6 +10,7 @@
 #include "ClearAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
@@ -88,7 +89,7 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
             if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
             {
                 auto cost = ClearSceneryFromTile({ x, y }, executing);
-                if (cost != MONEY64_UNDEFINED)
+                if (cost != kMoney64Undefined)
                 {
                     noValidTiles = false;
                     totalCost += cost;
@@ -216,10 +217,11 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 
 void ClearAction::ResetClearLargeSceneryFlag()
 {
+    auto& gameState = OpenRCT2::GetGameState();
     // TODO: Improve efficiency of this
-    for (int32_t y = 0; y < gMapSize.y; y++)
+    for (int32_t y = 0; y < gameState.MapSize.y; y++)
     {
-        for (int32_t x = 0; x < gMapSize.x; x++)
+        for (int32_t x = 0; x < gameState.MapSize.x; x++)
         {
             auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             do

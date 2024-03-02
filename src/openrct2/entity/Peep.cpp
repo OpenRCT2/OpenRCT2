@@ -67,11 +67,8 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
 uint8_t gGuestChangeModifier;
-uint32_t gNumGuestsInParkLastWeek;
 
 uint8_t gPeepWarningThrottle[16];
-
-std::unique_ptr<GuestPathfinding> gGuestPathfinder = std::make_unique<OriginalPathfinding>();
 
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
@@ -1972,12 +1969,12 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 return true;
             }
 
-            gTotalIncomeFromAdmissions += entranceFee;
+            gameState.TotalIncomeFromAdmissions += entranceFee;
             guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
             guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
-        gTotalAdmissions++;
+        GetGameState().TotalAdmissions++;
         WindowInvalidateByNumber(WindowClass::ParkInformation, 0);
 
         guest->Var37 = 1;
@@ -2394,7 +2391,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
         if (guest != nullptr)
         {
-            result = gGuestPathfinder->CalculateNextDestination(*guest);
+            result = PathFinding::CalculateNextDestination(*guest);
         }
         else
         {
@@ -2853,4 +2850,14 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
             return;
         }
     }
+}
+
+/**
+ *
+ *  rct2: 0x0069A98C
+ */
+void Peep::ResetPathfindGoal()
+{
+    PathfindGoal.SetNull();
+    PathfindGoal.direction = INVALID_DIRECTION;
 }

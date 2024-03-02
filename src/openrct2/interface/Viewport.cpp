@@ -65,10 +65,6 @@ Viewport* g_music_tracking_viewport;
 static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
 
-ScreenCoordsXY gSavedView;
-ZoomLevel gSavedViewZoom;
-uint8_t gSavedViewRotation;
-
 uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
@@ -1596,13 +1592,13 @@ static bool IsSpriteInteractedWithPaletteSet(
         {
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             DrawPixelInfo zoomed_dpi = {
-                /* .bits = */ dpi.bits,
-                /* .x = */ dpi.x >> 1,
-                /* .y = */ dpi.y >> 1,
-                /* .height = */ dpi.height,
-                /* .width = */ dpi.width,
-                /* .pitch = */ dpi.pitch,
-                /* .zoom_level = */ dpi.zoom_level - 1,
+                .bits = dpi.bits,
+                .x = dpi.x >> 1,
+                .y = dpi.y >> 1,
+                .width = dpi.width,
+                .height = dpi.height,
+                .pitch = dpi.pitch,
+                .zoom_level = dpi.zoom_level - 1,
             };
 
             auto zoomImageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
@@ -2080,11 +2076,12 @@ void ViewportSetSavedView()
     if (w != nullptr)
     {
         Viewport* viewport = w->viewport;
+        auto& gameState = GetGameState();
 
-        gSavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
+        gameState.SavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 
-        gSavedViewZoom = viewport->zoom;
-        gSavedViewRotation = GetCurrentRotation();
+        gameState.SavedViewZoom = viewport->zoom;
+        gameState.SavedViewRotation = GetCurrentRotation();
     }
 }
 

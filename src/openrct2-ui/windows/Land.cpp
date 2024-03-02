@@ -62,8 +62,8 @@ private:
     void InputSize()
     {
         Formatter ft;
-        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+        ft.Add<uint16_t>(kLandToolMinimumSize);
+        ft.Add<uint16_t>(kLandToolMaximumSize);
         WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 
@@ -80,10 +80,10 @@ public:
         gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
         gLandMountainMode = false;
         gLandPaintMode = false;
-        _selectedFloorTexture = 0;
-        _selectedWallTexture = 0;
-        gLandToolRaiseCost = MONEY64_UNDEFINED;
-        gLandToolLowerCost = MONEY64_UNDEFINED;
+        _selectedFloorTexture = LandTool::GetSurfaceStyleFromDropdownIndex(0);
+        _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
+        gLandToolRaiseCost = kMoney64Undefined;
+        gLandToolLowerCost = kMoney64Undefined;
     }
 
     void OnClose() override
@@ -132,14 +132,14 @@ public:
                 break;
             case WIDX_DECREMENT:
                 // Decrement land tool size
-                gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+                gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                 // Invalidate the window
                 Invalidate();
                 break;
             case WIDX_INCREMENT:
                 // Increment land tool size
-                gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+                gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                 // Invalidate the window
                 Invalidate();
@@ -202,8 +202,8 @@ public:
         int32_t size = strtol(textStr.c_str(), &end, 10);
         if (*end == '\0')
         {
-            size = std::max(MINIMUM_TOOL_SIZE, size);
-            size = std::min(MAXIMUM_TOOL_SIZE, size);
+            size = std::max<uint16_t>(kLandToolMinimumSize, size);
+            size = std::min<uint16_t>(kLandToolMaximumSize, size);
             gLandToolSize = size;
 
             Invalidate();
@@ -244,7 +244,7 @@ public:
         DrawDropdownButtons(dpi);
 
         // Draw number for tool sizes bigger than 7
-        if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (gLandToolSize > kLandToolMaximumSizeWithSprite)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
@@ -265,7 +265,7 @@ public:
         if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Draw raise cost amount
-            if (gLandToolRaiseCost != MONEY64_UNDEFINED && gLandToolRaiseCost != 0)
+            if (gLandToolRaiseCost != kMoney64Undefined && gLandToolRaiseCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolRaiseCost);
@@ -274,7 +274,7 @@ public:
             screenCoords.y += 10;
 
             // Draw lower cost amount
-            if (gLandToolLowerCost != MONEY64_UNDEFINED && gLandToolLowerCost != 0)
+            if (gLandToolLowerCost != kMoney64Undefined && gLandToolLowerCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolLowerCost);

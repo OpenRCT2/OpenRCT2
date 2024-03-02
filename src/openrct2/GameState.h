@@ -10,7 +10,12 @@
 #pragma once
 
 #include "Date.h"
+#include "Editor.h"
+#include "Limits.h"
+#include "interface/ZoomLevel.h"
 #include "management/Finance.h"
+#include "management/NewsItem.h"
+#include "ride/Ride.h"
 #include "scenario/Scenario.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
@@ -36,6 +41,11 @@ namespace OpenRCT2
         uint32_t ParkSize;
         money64 ParkValue;
         money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
+        money64 CompanyValue;
+        money64 ConstructionRightsPrice;
+        money64 CurrentExpenditure;
+        money64 CurrentProfit;
+        uint8_t ParkRatingHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;
@@ -49,14 +59,24 @@ namespace OpenRCT2
         uint32_t NextGuestNumber;
         uint32_t NumGuestsInPark;
         uint32_t NumGuestsHeadingForPark;
+        uint32_t NumGuestsInParkLastWeek;
         money64 WeeklyProfitAverageDividend;
+        uint64_t TotalAdmissions;
+        money64 TotalIncomeFromAdmissions;
+        money64 TotalRideValueForMoney;
         uint16_t WeeklyProfitAverageDivisor;
         money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
         Objective ScenarioObjective;
         uint16_t ScenarioParkRatingWarningDays;
         money64 ScenarioCompletedCompanyValue;
         money64 ScenarioCompanyValueRecord;
+        money64 BankLoan;
+        uint8_t BankLoanInterestRate;
+        money64 MaxBankLoan;
         random_engine_t ScenarioRand;
+        TileCoordsXY MapSize;
+
+        ::EditorStep EditorStep;
 
         SCENARIO_CATEGORY ScenarioCategory;
         std::string ScenarioName;
@@ -64,6 +84,13 @@ namespace OpenRCT2
         std::string ScenarioCompletedBy;
 
         std::vector<Banner> Banners;
+        // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
+        std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
+        std::vector<TileElement> TileElements;
+
+        std::vector<ScenerySelection> RestrictedScenery;
+
+        News::ItemQueues NewsItems;
 
         colour_t StaffHandymanColour;
         colour_t StaffMechanicColour;
@@ -81,6 +108,22 @@ namespace OpenRCT2
         std::vector<ResearchItem> ResearchItemsUninvented;
         std::vector<ResearchItem> ResearchItemsInvented;
         uint8_t ResearchUncompletedCategories;
+
+        ScreenCoordsXY SavedView;
+        uint8_t SavedViewRotation;
+        ZoomLevel SavedViewZoom;
+
+        /**
+         * Probability out of 65535, of gaining a new guest per game tick.
+         * new guests per second = 40 * (probability / 65535)
+         * With a full park rating, non-overpriced entrance fee, less guests than the suggested maximum and four positive
+         * awards, approximately 1 guest per second can be generated (+60 guests in one minute).
+         */
+        int32_t GuestGenerationProbability;
+        /**
+         * In a difficult guest generation scenario, no guests will be generated if over this value.
+         */
+        uint32_t SuggestedGuestMaximum;
     };
 
     GameState_t& GetGameState();

@@ -31,6 +31,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
 #include "../object/SceneryGroupEntry.h"
+#include "../object/SceneryGroupObject.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../scenario/Scenario.h"
@@ -60,7 +61,7 @@ int16_t gSceneryCtrlPressZ;
 
 money64 gClearSceneryCost;
 
-static std::vector<ScenerySelection> _restrictedScenery;
+using namespace OpenRCT2;
 
 // rct2: 0x009A3E74
 const CoordsXY SceneryQuadrantOffsets[] = {
@@ -373,29 +374,69 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
 
 bool IsSceneryItemRestricted(const ScenerySelection& item)
 {
-    return std::find(std::begin(_restrictedScenery), std::end(_restrictedScenery), item) != std::end(_restrictedScenery);
+    auto& gameState = GetGameState();
+    return std::find(std::begin(gameState.RestrictedScenery), std::end(gameState.RestrictedScenery), item)
+        != std::end(gameState.RestrictedScenery);
 }
 
 void ClearRestrictedScenery()
 {
-    _restrictedScenery.clear();
+    GetGameState().RestrictedScenery.clear();
 }
 
 std::vector<ScenerySelection>& GetRestrictedScenery()
 {
-    return _restrictedScenery;
+    return GetGameState().RestrictedScenery;
+}
+
+void SetSceneryItemRestricted(const ScenerySelection& item, bool on)
+{
+    auto& gameState = GetGameState();
+    auto existingItem = std::find(std::begin(gameState.RestrictedScenery), std::end(gameState.RestrictedScenery), item);
+    const bool existingItemIsPresent = existingItem != std::end(gameState.RestrictedScenery);
+    if (on)
+    {
+        if (!existingItemIsPresent)
+        {
+            gameState.RestrictedScenery.push_back(item);
+        }
+    }
+    else
+    {
+        if (existingItemIsPresent)
+        {
+            gameState.RestrictedScenery.erase(existingItem);
+        }
+    }
+}
+
+bool ObjectTypeCanBeRestricted(ObjectType objectType)
+{
+    switch (objectType)
+    {
+        case ObjectType::SmallScenery:
+        case ObjectType::LargeScenery:
+        case ObjectType::Walls:
+        case ObjectType::Banners:
+        case ObjectType::PathAdditions:
+            return true;
+        default:
+            return false;
+    }
 }
 
 static std::vector<ScenerySelection> GetAllMiscScenery()
 {
     std::vector<ScenerySelection> miscScenery;
     std::vector<ScenerySelection> nonMiscScenery;
+    std::vector<ObjectEntryIndex> sceneryGroupIds;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)
         {
             nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
+            sceneryGroupIds.emplace_back(i);
         }
     }
     for (uint8_t sceneryType = SCENERY_TYPE_SMALL; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
@@ -403,6 +444,59 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
         const auto maxObjects = GetMaxObjectsForSceneryType(sceneryType);
         for (ObjectEntryIndex i = 0; i < maxObjects; i++)
         {
+            ObjectEntryIndex linkedSceneryGroup = OBJECT_ENTRY_INDEX_NULL;
+            const auto objectType = GetObjectTypeFromSceneryType(sceneryType);
+            switch (objectType)
+            {
+                case ObjectType::SmallScenery:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::LargeScenery:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::Walls:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::Banners:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::PathAdditions:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            // An object may be link itself against a scenery group, in which case it should not be marked as miscellaneous.
+            if (linkedSceneryGroup != OBJECT_ENTRY_INDEX_NULL)
+            {
+                if (std::find(std::begin(sceneryGroupIds), std::end(sceneryGroupIds), linkedSceneryGroup)
+                    != std::end(sceneryGroupIds))
+                {
+                    continue;
+                }
+            }
+
             const ScenerySelection sceneryItem = { sceneryType, i };
             if (IsSceneryEntryValid(sceneryItem))
             {
@@ -418,16 +512,19 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
 
 void RestrictAllMiscScenery()
 {
+    auto& gameState = GetGameState();
     auto miscScenery = GetAllMiscScenery();
-    _restrictedScenery.insert(_restrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
+    gameState.RestrictedScenery.insert(gameState.RestrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
 }
 
 void MarkAllUnrestrictedSceneryAsInvented()
 {
+    auto& gameState = GetGameState();
     auto miscScenery = GetAllMiscScenery();
     for (const auto& sceneryItem : miscScenery)
     {
-        if (std::find(_restrictedScenery.begin(), _restrictedScenery.end(), sceneryItem) == _restrictedScenery.end())
+        if (std::find(gameState.RestrictedScenery.begin(), gameState.RestrictedScenery.end(), sceneryItem)
+            == gameState.RestrictedScenery.end())
         {
             ScenerySetInvented(sceneryItem);
         }

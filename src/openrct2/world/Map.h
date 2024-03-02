@@ -16,10 +16,14 @@
 #include <initializer_list>
 #include <vector>
 
-constexpr uint8_t MINIMUM_LAND_HEIGHT = 2;
-constexpr uint8_t MAXIMUM_LAND_HEIGHT = 254;
-constexpr uint8_t MINIMUM_WATER_HEIGHT = 2;
-constexpr uint8_t MAXIMUM_WATER_HEIGHT = 254;
+constexpr uint8_t kMinimumLandHeight = 2;
+constexpr uint8_t kMaximumLandHeight = 254;
+constexpr uint8_t kMinimumWaterHeight = 2;
+constexpr uint8_t kMaximumWaterHeight = 254;
+/**
+ * The land height that counts as 0 metres/feet for the land height labels and altitude graphs.
+ */
+constexpr uint8_t kMapBaseZ = 7;
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 5
 #define MAXIMUM_MAP_SIZE_TECHNICAL 1001
@@ -29,7 +33,7 @@ constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * MAXIMUM_MAP_SIZE
 constexpr int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP;
 constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t WATER_HEIGHT_STEP = 2 * COORDS_Z_STEP;
-constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z_STEP;
+constexpr const int32_t kMinimumLandZ = kMinimumLandHeight * COORDS_Z_STEP;
 constexpr TileCoordsXY DEFAULT_MAP_SIZE = { 150, 150 };
 // How high construction has to be off the ground when the player owns construction rights, in tile coords.
 constexpr uint8_t ConstructionRightsClearanceSmall = 3;
@@ -106,22 +110,9 @@ extern const TileCoordsXY TileDirectionDelta[];
 extern TileCoordsXY gWidePathTileLoopPosition;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
-extern TileCoordsXY gMapSize;
-extern int32_t gMapBaseZ;
-
-inline CoordsXY GetMapSizeUnits()
-{
-    return { (gMapSize.x - 1) * COORDS_XY_STEP, (gMapSize.y - 1) * COORDS_XY_STEP };
-}
-inline CoordsXY GetMapSizeMinus2()
-{
-    return { (gMapSize.x * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2),
-             (gMapSize.y * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2) };
-}
-inline CoordsXY GetMapSizeMaxXY()
-{
-    return GetMapSizeUnits() - CoordsXY{ 1, 1 };
-}
+CoordsXY GetMapSizeUnits();
+CoordsXY GetMapSizeMinus2();
+CoordsXY GetMapSizeMaxXY();
 
 extern uint16_t gMapSelectFlags;
 extern uint16_t gMapSelectType;

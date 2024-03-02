@@ -903,7 +903,7 @@ enum
 };
 
 #define MAX_RIDE_MEASUREMENTS 8
-constexpr money64 RIDE_VALUE_UNDEFINED = MONEY64_UNDEFINED;
+constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) | 0xFF) // Upper byte is percentage, lower byte is "decimal".
 
 #define STATION_DEPART_FLAG (1 << 7)
@@ -1011,8 +1011,6 @@ void RideDelete(RideId id);
 
 const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
-
-extern money64 gTotalRideValueForMoney;
 
 extern const StringId ColourSchemeNames[4];
 

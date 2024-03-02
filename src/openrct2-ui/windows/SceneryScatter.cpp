@@ -80,8 +80,8 @@ public:
         switch (widgetIndex)
         {
             case WIDX_PREVIEW:
-                ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-                ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+                ft.Add<uint16_t>(kLandToolMinimumSize);
+                ft.Add<uint16_t>(kLandToolMaximumSize);
                 maxLength = 3;
                 break;
         }
@@ -120,13 +120,13 @@ public:
         {
             case WIDX_DECREMENT:
                 // Decrement land tool size, if it stays within the limit
-                gWindowSceneryScatterSize = std::max(MINIMUM_TOOL_SIZE, gWindowSceneryScatterSize - 1);
+                gWindowSceneryScatterSize = std::max<uint16_t>(kLandToolMinimumSize, gWindowSceneryScatterSize - 1);
                 Invalidate();
                 break;
 
             case WIDX_INCREMENT:
                 // Increment land tool size, if it stays within the limit
-                gWindowSceneryScatterSize = std::min(MAXIMUM_TOOL_SIZE, gWindowSceneryScatterSize + 1);
+                gWindowSceneryScatterSize = std::min<uint16_t>(kLandToolMaximumSize, gWindowSceneryScatterSize + 1);
                 Invalidate();
                 break;
         }
@@ -144,7 +144,7 @@ public:
             switch (widgetIndex)
             {
                 case WIDX_PREVIEW:
-                    gWindowSceneryScatterSize = std::clamp<int32_t>(res.value(), MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
+                    gWindowSceneryScatterSize = std::clamp<int32_t>(res.value(), kLandToolMinimumSize, kLandToolMaximumSize);
                     break;
             }
             Invalidate();
@@ -181,7 +181,7 @@ public:
         WindowDrawWidgets(*this, dpi);
 
         // Draw area as a number for tool sizes bigger than 7
-        if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (gWindowSceneryScatterSize > kLandToolMaximumSizeWithSprite)
         {
             const auto& preview = widgets[WIDX_PREVIEW];
             const auto screenCoords = ScreenCoordsXY{ windowPos.x + preview.midX(), windowPos.y + preview.midY() };

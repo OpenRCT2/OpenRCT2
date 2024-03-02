@@ -186,7 +186,7 @@ money64 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
         return execRes.Cost;
     }
 
-    return MONEY64_UNDEFINED;
+    return kMoney64Undefined;
 }
 
 money64 RideDemolishAction::DemolishTracks() const
@@ -195,10 +195,11 @@ money64 RideDemolishAction::DemolishTracks() const
 
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
+    auto& gameState = GetGameState();
 
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
             // Loop over all elements of the tile until there are no more items to remove
@@ -249,7 +250,7 @@ money64 RideDemolishAction::DemolishTracks() const
                     {
                         const CoordsXYZ off = { DirOffsets[dir], 0 };
                         money64 removePrice = MazeRemoveTrack({ location + off, dir });
-                        if (removePrice != MONEY64_UNDEFINED)
+                        if (removePrice != kMoney64Undefined)
                         {
                             refundPrice += removePrice;
                         }

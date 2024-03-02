@@ -4,7 +4,9 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
   <name>OpenRCT2</name>
-  <summary>A construction and management simulation video game that simulates amusement park management</summary>
+  <summary>Amusement park simulation</summary>
+  <developer_name>The OpenRCT2 Team</developer_name>
+  <launchable type="desktop-id">openrct2.desktop</launchable>
   <description>
     <p>
       OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2).
@@ -35,7 +37,8 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://camo.githubusercontent.com/888d993a9716208446bd0d5a762977d6b7993058/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
+      <image>https://camo.githubusercontent.com/fdb7e0506eedc4625f2f776f495c1072c520496dba3ee6c07bfdbf907d478afd/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
+      <caption>Amusement park featuring an inverted roller coaster, a river rapids ride and custom scenery</caption>
     </screenshot>
   </screenshots>
   <url type="homepage">https://openrct2.io/</url>
