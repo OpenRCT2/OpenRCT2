@@ -85,7 +85,7 @@ private:
             (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
 
         if (viewport != nullptr)
-            viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
         Invalidate();
     }
 

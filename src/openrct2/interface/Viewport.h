@@ -30,6 +30,8 @@ struct PaintEntry;
 // Values can be changed when plugins move to using named constants.
 enum : uint32_t
 {
+    VIEWPORT_FLAG_NONE = 0U,
+
     VIEWPORT_FLAG_GRIDLINES = (1U << 7),
     VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1U << 0),
     VIEWPORT_FLAG_HIDE_BASE = (1U << 12),

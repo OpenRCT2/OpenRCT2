@@ -628,7 +628,7 @@ private:
         int32_t viewportFlags{};
         if (viewport == nullptr)
         {
-            viewportFlags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewportFlags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
         }
         else
         {
