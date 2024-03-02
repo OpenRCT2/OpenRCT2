@@ -890,7 +890,14 @@ void ViewportRotateSingle(WindowBase* window, int32_t direction)
 
 void ViewportRotateAll(int32_t direction)
 {
-    WindowVisitEach([direction](WindowBase* w) { ViewportRotateSingleInternal(*w, direction); });
+    WindowVisitEach([direction](WindowBase* w) {
+        auto* viewport = w->viewport;
+        if (viewport == nullptr)
+            return;
+        if (viewport->flags & VIEWPORT_FLAG_INDEPEDENT_ROTATION)
+            return;
+        ViewportRotateSingleInternal(*w, direction);
+    });
     ResetAllSpriteQuadrantPlacements();
 }
 

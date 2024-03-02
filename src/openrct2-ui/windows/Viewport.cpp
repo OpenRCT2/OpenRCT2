@@ -95,7 +95,7 @@ public:
             savedViewPos = { x - (viewport->view_width / 2), y - (viewport->view_height / 2) };
         }
 
-        viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+        viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
 
         min_width = WW;
         min_height = WH;
@@ -111,7 +111,7 @@ public:
 
         if (viewport != nullptr && viewport->flags != mainWindow->viewport->flags)
         {
-            viewport->flags = mainWindow->viewport->flags;
+            viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
             Invalidate();
         }
 
