@@ -28,6 +28,7 @@ enum WindowViewportWidgetIdx
     WIDX_ZOOM_IN,
     WIDX_ZOOM_OUT,
     WIDX_LOCATE,
+    WIDX_ROTATE,
 };
 
 #pragma region MEASUREMENTS
@@ -48,6 +49,7 @@ static Widget _viewportWidgets[] =
     MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
     MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
     MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
+    MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
     WIDGETS_END,
 };
 
@@ -125,20 +127,25 @@ public:
                 Close();
                 break;
             case WIDX_ZOOM_IN:
+            {
                 if (viewport != nullptr && viewport->zoom > ZoomLevel::min())
                 {
                     viewport->zoom--;
                     Invalidate();
                 }
                 break;
+            }
             case WIDX_ZOOM_OUT:
+            {
                 if (viewport != nullptr && viewport->zoom < ZoomLevel::max())
                 {
                     viewport->zoom++;
                     Invalidate();
                 }
                 break;
+            }
             case WIDX_LOCATE:
+            {
                 auto* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
@@ -147,6 +154,13 @@ public:
                     WindowScrollToLocation(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                 }
                 break;
+            }
+            case WIDX_ROTATE:
+            {
+                ViewportRotateSingle(this, 1);
+                Invalidate();
+                break;
+            }
         }
     }
 
@@ -184,6 +198,8 @@ public:
         widgets[WIDX_ZOOM_OUT].right = width - 2;
         widgets[WIDX_LOCATE].left = width - 27;
         widgets[WIDX_LOCATE].right = width - 2;
+        widgets[WIDX_ROTATE].left = width - 27;
+        widgets[WIDX_ROTATE].right = width - 2;
         widgets[WIDX_VIEWPORT].right = widgets[WIDX_ZOOM_IN].left - 1;
         widgets[WIDX_VIEWPORT].bottom = widgets[WIDX_BACKGROUND].bottom - 3;
 
