@@ -6,6 +6,7 @@
 - Feature: [#21413, OpenSFX#19] Add log flume lift sound effect (when “chainlift” is enabled).
 - Feature: [#21455] Add option to control hidden scenery.
 - Feature: [objects#282] Added RCT1 beta terrains.
+- Improved: [#20093] Use new colours for guests’ clothing when they spawn.
 - Improved: [#21356] Resize the title bar when moving between displays with different scaling factors on Windows systems.
 - Improved: [#21388] Tooltips will now show even when an error message is present.
 - Improved: [#21423] Add mechanism to allow building partly underground.
