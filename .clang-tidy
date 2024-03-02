@@ -6,6 +6,6 @@ Checks: >
     modernize-use-override
 CheckOptions:
     - key: cppcoreguidelines-macro-usage.AllowedRegexp
-      value: 'validate_global_widx'
+      value: 'validate_global_widx|NETWORK_STREAM_VERSION'
 WarningsAsErrors: true
 FormatStyle: 'file'
