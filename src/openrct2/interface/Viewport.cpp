@@ -190,6 +190,7 @@ void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t w
     viewport->view_height = zoom.ApplyTo(height);
     viewport->zoom = zoom;
     viewport->flags = 0;
+    viewport->rotation = GetCurrentRotation();
 
     if (gConfigGeneral.AlwaysShowGridlines)
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
