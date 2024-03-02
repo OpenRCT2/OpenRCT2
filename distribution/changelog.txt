@@ -31,6 +31,7 @@
 - Fix: [#21347] Too many options are hidden if the platform has no file picker.
 - Fix: [#21350] Maze and Mini Golf track designs from RCT1 not shown in track designs list.
 - Fix: [#21425] Additional missing/misplaced land & construction rights tiles in Japanese Coastal Reclaim.
+- Fix: [#21498] Crash when the size of text can’t be determined.
 - Fix: [objects#262, objects#263, objects#265, objects#266, objects#267, objects#268, objects#270, objects#271, objects#283] Various errors in expansion pack objects (original bug).
 - Fix: [OpenSFX#18] B&M Roar sound effect not looping correctly.
 
