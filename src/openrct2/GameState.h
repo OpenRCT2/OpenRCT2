@@ -51,6 +51,7 @@ namespace OpenRCT2
         ClimateState ClimateNext;
         uint16_t ClimateUpdateTimer;
         money64 Cash;
+        money64 CashHistory[FINANCE_GRAPH_SIZE];
         money64 InitialCash;
         money64 GuestInitialCash;
         uint8_t GuestInitialHappiness;

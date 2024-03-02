@@ -40,7 +40,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
 };
 
 money64 gHistoricalProfit;
-money64 gCashHistory[FINANCE_GRAPH_SIZE];
 money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 /**
@@ -190,7 +189,7 @@ void FinanceResetHistory()
     auto& gameState = GetGameState();
     for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
-        gCashHistory[i] = kMoney64Undefined;
+        gameState.CashHistory[i] = kMoney64Undefined;
         gameState.WeeklyProfitHistory[i] = kMoney64Undefined;
         gameState.ParkValueHistory[i] = kMoney64Undefined;
     }

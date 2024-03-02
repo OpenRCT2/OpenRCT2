@@ -1441,7 +1441,7 @@ namespace RCT1
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
-                gCashHistory[i] = ToMoney64(_s4.CashHistory[i]);
+                gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.ParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
