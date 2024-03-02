@@ -234,6 +234,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Michael Bernardi (mrmbernardi)
 * Aram Kazorian (aramk-hub)
 * Harry Hopkinson (Harry-Hopkinson)
+* Jan Kelemen (jan-kelemen)
 
 ## Toolchain
 * (Balletie) - macOS
