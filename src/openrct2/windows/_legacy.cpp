@@ -31,6 +31,7 @@
 #include <iterator>
 #include <tuple>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 bool gDisableErrorWindowSound = false;
 
@@ -308,7 +309,7 @@ bool WindowRideConstructionUpdateState(
         if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
         {
             trackType = alternativeType;
-            if (!OpenRCT2::GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
                 liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
     }
@@ -358,7 +359,7 @@ bool WindowRideConstructionUpdateState(
         turnOffLiftHill = true;
     }
 
-    if (turnOffLiftHill && !OpenRCT2::GetGameState().Cheats.EnableChainLiftOnAllTrack)
+    if (turnOffLiftHill && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
     {
         liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;

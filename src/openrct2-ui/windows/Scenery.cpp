@@ -661,7 +661,7 @@ public:
                 widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
             {
                 widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                 if (IsSceneryItemRestricted(tabSelectedScenery))

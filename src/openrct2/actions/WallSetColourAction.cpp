@@ -20,6 +20,8 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 
+using namespace OpenRCT2;
+
 WallSetColourAction::WallSetColourAction(
     const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
     : _loc(loc)
@@ -64,8 +66,7 @@ GameActions::Result WallSetColourAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !MapIsLocationInPark(_loc)
-        && !OpenRCT2::GetGameState().Cheats.SandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !MapIsLocationInPark(_loc) && !GetGameState().Cheats.SandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }

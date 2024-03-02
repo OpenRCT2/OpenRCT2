@@ -20,6 +20,7 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
@@ -441,7 +442,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
         InvalidateTestResults(*ride);
         FootpathQueueChainReset();
-        if (!OpenRCT2::GetGameState().Cheats.DisableClearanceChecks || !(tileElement->IsGhost()))
+        if (!GetGameState().Cheats.DisableClearanceChecks || !(tileElement->IsGhost()))
         {
             FootpathRemoveEdgesAt(mapLoc, tileElement);
         }

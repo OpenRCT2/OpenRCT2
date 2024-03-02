@@ -22,6 +22,8 @@
 #include "../world/Wall.h"
 #include "BannerRemoveAction.h"
 
+using namespace OpenRCT2;
+
 FootpathRemoveAction::FootpathRemoveAction(const CoordsXYZ& location)
     : _loc(location)
 {
@@ -57,7 +59,7 @@ GameActions::Result FootpathRemoveAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode)
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
         && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(

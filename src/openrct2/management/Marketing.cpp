@@ -25,6 +25,8 @@
 #include "Finance.h"
 #include "NewsItem.h"
 
+using namespace OpenRCT2;
+
 const money64 AdvertisingCampaignPricePerWeek[] = {
     50.00_GBP,  // PARK_ENTRY_FREE
     50.00_GBP,  // RIDE_FREE
@@ -101,7 +103,7 @@ void MarketingUpdate()
 {
     PROFILED_FUNCTION();
 
-    if (OpenRCT2::GetGameState().Cheats.NeverendingMarketing)
+    if (GetGameState().Cheats.NeverendingMarketing)
         return;
 
     for (auto it = gMarketingCampaigns.begin(); it != gMarketingCampaigns.end();)

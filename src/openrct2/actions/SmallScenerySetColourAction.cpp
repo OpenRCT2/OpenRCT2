@@ -25,6 +25,8 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 
+using namespace OpenRCT2;
+
 SmallScenerySetColourAction::SmallScenerySetColourAction(
     const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
     uint8_t tertiaryColour)
@@ -84,7 +86,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
     {
         if (!MapIsLocationOwned(_loc))
         {
