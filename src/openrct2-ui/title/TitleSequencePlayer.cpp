@@ -349,6 +349,7 @@ namespace OpenRCT2::Title
                     auto& gameState = GetGameState();
 
                     parkImporter->Import(gameState);
+                    MapAnimationAutoCreate();
                 }
                 PrepareParkForPlayback();
                 success = true;
