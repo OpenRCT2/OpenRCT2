@@ -10,6 +10,7 @@
 - Improved: [#21423] Add mechanism to allow building partly underground.
 - Change: [#21453] Reintroduce lost RCT1 Jet skis colour presets to the boat hire.
 - Fix: [#18963] Research table in parks from Loopy Landscapes is imported incorrectly.
+- Fix: [#20164] Grass and Rock terrain objects cannot be de-selected.
 - Fix: [#20907] RCT1/AA scenarios use the 4-across train for the Inverted Roller Coaster.
 - Fix: [#21208] Error message will stay open only for a brief moment when the game has been running a while.
 - Fix: [#21220] When creating a new park from a SC4 file, the localised park name is not applied.
