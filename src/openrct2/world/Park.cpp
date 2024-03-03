@@ -752,7 +752,9 @@ void Park::UpdateHistories()
     // Update park rating, guests in park and current cash history
     HistoryPushRecord<uint8_t, 32>(gameState.ParkRatingHistory, gameState.ParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gameState.NumGuestsInPark);
-    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gameState.BankLoan);
+
+    constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::CashHistory)>;
+    HistoryPushRecord<money64, cashHistorySize>(gameState.CashHistory, FinanceGetCurrentCash() - gameState.BankLoan);
 
     // Update weekly profit history
     auto currentWeeklyProfit = gameState.WeeklyProfitAverageDividend;

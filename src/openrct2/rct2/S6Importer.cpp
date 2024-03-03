@@ -366,7 +366,7 @@ namespace RCT2
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
-                gCashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
+                gameState.CashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
                 gameState.ParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }

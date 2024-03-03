@@ -635,7 +635,7 @@ public:
         int32_t yAxisScale = 0;
         for (int32_t i = 0; i < 64; i++)
         {
-            auto balance = gCashHistory[i];
+            auto balance = gameState.CashHistory[i];
             if (balance == kMoney64Undefined)
                 continue;
 
@@ -667,7 +667,7 @@ public:
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(dpi, gCashHistory, 64, coords, yAxisScale, 128);
+        Graph::Draw(dpi, gameState.CashHistory, 64, coords, yAxisScale, 128);
     }
 
 #pragma endregion
