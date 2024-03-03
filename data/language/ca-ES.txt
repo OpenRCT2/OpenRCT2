@@ -3687,6 +3687,10 @@ STR_6610    :L’element de camí no s’ha trobat
 STR_6611    :L’element de mur no s’ha trobat
 STR_6612    :L’element de text de cartell no s’ha trobat
 STR_6613    :Recarrega l’objecte
+STR_6614    :El preu de l’entrada al parc no es pot canviar
+STR_6615    :La via d'aquesta casella necessita aigua
+STR_6616    :L’acció no és vàlida per a aquest tipus d’empleat
+STR_6617    :No es pot intercanviar l’element de la casella amb si mateix
 
 #############
 # Scenarios #
