@@ -488,7 +488,7 @@ public:
                 _selected_tab = static_cast<uint8_t>(newSelectedTab);
                 scrolls[0].v_top = 0;
                 frame_no = 0;
-                WindowEventResizeCall(this);
+                OnResize();
                 Invalidate();
                 break;
             case WIDX_THEMES_PRESETS_DROPDOWN:

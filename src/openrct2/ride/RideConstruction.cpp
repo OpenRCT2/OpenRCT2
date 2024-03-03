@@ -22,7 +22,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
@@ -239,7 +239,7 @@ void RideClearForConstruction(Ride& ride)
 
     auto w = WindowFindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w != nullptr)
-        WindowEventResizeCall(w);
+        w->OnResize();
 }
 
 /**

@@ -468,8 +468,8 @@ public:
             width = WW_OTHER_TABS;
             height = WH_OTHER_TABS;
         }
-        WindowEventResizeCall(this);
-        WindowEventOnPrepareDrawCall(this);
+        OnResize();
+        OnPrepareDraw();
 
         WindowInitScrollWidgets(*this);
 

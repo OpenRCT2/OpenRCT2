@@ -565,7 +565,7 @@ static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, 
  */
 void ViewportUpdatePosition(WindowBase* window)
 {
-    WindowEventResizeCall(window);
+    window->OnResize();
 
     Viewport* viewport = window->viewport;
     if (viewport == nullptr)

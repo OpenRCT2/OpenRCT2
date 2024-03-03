@@ -25,7 +25,7 @@
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
-#include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
@@ -556,7 +556,7 @@ void PeepWindowStateUpdate(Peep* peep)
 {
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
-        WindowEventOnPrepareDrawCall(w);
+        w->OnPrepareDraw();
 
     if (peep->Is<Guest>())
     {

@@ -128,7 +128,7 @@ public:
 
         _trackName = std::string(text);
 
-        WindowEventMouseUpCall(this, WIDX_INSTALL);
+        OnMouseUp(WIDX_INSTALL);
     }
 
     void OnPrepareDraw() override

@@ -63,10 +63,9 @@ public:
         WindowInitScrollWidgets(*this);
         _pressedNewsItemIndex = -1;
 
-        int32_t w = 0, h = 0;
         Widget* widget = &widgets[WIDX_SCROLL];
-        WindowGetScrollSize(this, 0, &w, &h);
-        scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
+        ScreenSize scrollSize = OnScrollGetSize(0);
+        scrolls[0].v_top = std::max(0, scrollSize.height - (widget->height() - 1));
         WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
 

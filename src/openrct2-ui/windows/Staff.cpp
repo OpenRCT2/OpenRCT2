@@ -1095,8 +1095,8 @@ private:
         RemoveViewport();
 
         Invalidate();
-        WindowEventResizeCall(this);
-        WindowEventOnPrepareDrawCall(this);
+        OnResize();
+        OnPrepareDraw();
         InitScrollWidgets();
         ViewportInit();
         Invalidate();
@@ -1159,7 +1159,7 @@ private:
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 
-        WindowEventOnPrepareDrawCall(this);
+        OnPrepareDraw();
 
         focus = tempFocus;
 

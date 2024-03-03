@@ -637,7 +637,7 @@ private:
         }
 
         // Call invalidate event
-        WindowEventOnPrepareDrawCall(this);
+        OnPrepareDraw();
 
         focus = newFocus;
 
@@ -1200,9 +1200,9 @@ private:
         SetDisabledTabs();
         Invalidate();
 
-        WindowEventResizeCall(this);
-        WindowEventOnPrepareDrawCall(this);
-        WindowEventUpdateCall(this);
+        OnResize();
+        OnPrepareDraw();
+        OnUpdate();
         if (listen && viewport != nullptr)
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
     }

@@ -327,11 +327,13 @@ private:
     {
         if (HasParentWindow())
         {
-            auto w = GetParentWindow();
-            if (w != nullptr)
+            if (hasValue)
             {
-                auto value = hasValue ? _buffer.data() : nullptr;
-                WindowEventTextinputCall(w, _parentWidget.widget_index, value);
+                auto w = GetParentWindow();
+                if (w != nullptr)
+                {
+                    w->OnTextInput(_parentWidget.widget_index, _buffer);
+                }
             }
         }
         else

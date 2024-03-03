@@ -169,7 +169,7 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
         return;
 
     auto widget = &widgetWindow->widgets[widgetIndex];
-    WindowEventOnPrepareDrawCall(widgetWindow);
+    widgetWindow->OnPrepareDraw();
 
     OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
@@ -192,7 +192,7 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
         gTooltipWidget.window_classification = widgetWindow->classification;
         gTooltipWidget.window_number = widgetWindow->number;
         gTooltipWidget.widget_index = widgetIndex;
-        result = WindowEventTooltipCall(widgetWindow, widgetIndex, stringId);
+        result = widgetWindow->OnTooltip(widgetIndex, stringId);
         if (result.str == STR_NONE)
             return;
     }
