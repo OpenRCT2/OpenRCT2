@@ -851,7 +851,7 @@ namespace OpenRCT2
                             }
                         }
                     }
-                    cs.ReadWrite(gHistoricalProfit);
+                    cs.ReadWrite(gameState.HistoricalProfit);
 
                     // Marketing
                     cs.ReadWriteVector(gMarketingCampaigns, [&cs](MarketingCampaign& campaign) {

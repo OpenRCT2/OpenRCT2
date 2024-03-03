@@ -104,7 +104,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.ParkRating = park.CalculateParkRating();
     gameState.ParkValue = park.CalculateParkValue();
     gameState.CompanyValue = park.CalculateCompanyValue();
-    gHistoricalProfit = gameState.InitialCash - gameState.BankLoan;
+    gameState.HistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
     {
