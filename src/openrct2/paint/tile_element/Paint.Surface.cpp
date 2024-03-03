@@ -40,6 +40,8 @@
 #include <cstring>
 #include <iterator>
 
+using namespace OpenRCT2;
+
 // Needed to make the sign appear above footpaths.
 static constexpr int16_t ForSaleSignZOffset = 3;
 
@@ -1188,7 +1190,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     PaintPatrolArea(session, tileElement, height, surfaceShape);
 
     // Draw Peep Spawns
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
         && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const CoordsXY& pos = session.MapPosition;

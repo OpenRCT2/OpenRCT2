@@ -10,6 +10,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Identifiers.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.h"
@@ -825,7 +826,7 @@ static void Loc6A6D7E(
     FootpathNeighbourList* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && MapIsEdge(targetPos))
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode) && MapIsEdge(targetPos))
     {
         if (query)
         {
@@ -2353,7 +2354,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 
 static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode);
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
     {
         auto pathEntry = GetPathSurfaceEntry(i);
@@ -2377,7 +2378,7 @@ static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
     auto pathEntry = GetPathSurfaceEntry(index);
     if (pathEntry != nullptr)
     {
-        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode);
         if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
         {
             return false;
@@ -2405,7 +2406,7 @@ static ObjectEntryIndex FootpathGetDefaultRailings()
 
 static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode);
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto footpathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, index));
     if (footpathObj != nullptr)

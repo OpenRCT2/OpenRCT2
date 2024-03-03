@@ -638,7 +638,7 @@ private:
 
         uint32_t numPathTypes = 0;
         // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
 
         _dropdownEntries.clear();
         std::optional<size_t> defaultIndex;
@@ -656,12 +656,15 @@ private:
             }
             // If regular paths can be used as queue, only hide the path if we’re _not_ looking at a queue,
             // but the path surface is one.
-            if (gCheatsAllowRegularPathAsQueue && !showQueues && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            if (GetGameState().Cheats.AllowRegularPathAsQueue && !showQueues
+                && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
             {
                 continue;
             }
             // If the cheat is disabled, hide queues from the regular path view and vice versa.
-            else if (!gCheatsAllowRegularPathAsQueue && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            else if (
+                !GetGameState().Cheats.AllowRegularPathAsQueue
+                && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
             {
                 continue;
             }
@@ -1393,7 +1396,7 @@ public:
     void KeyboardShortcutDemolishCurrent()
     {
         if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
-            || (!gCheatsBuildInPauseMode && GameIsPaused()))
+            || (!GetGameState().Cheats.BuildInPauseMode && GameIsPaused()))
         {
             return;
         }

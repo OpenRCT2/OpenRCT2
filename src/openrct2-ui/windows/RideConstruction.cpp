@@ -404,7 +404,7 @@ public:
             }
         }
         if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
-            && !gCheatsEnableAllDrawableTrackPieces)
+            && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
         {
             // Disable lift hill toggle and banking if current track piece is uphill
             if (_previousTrackPitchEnd == TrackPitch::Up25 || _previousTrackPitchEnd == TrackPitch::Up60
@@ -714,7 +714,7 @@ public:
         {
             disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
         }
-        if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !gCheatsEnableChainLiftOnAllTrack)
+        if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
         {
             if (_currentTrackPitchEnd != TrackPitch::None && !IsTrackEnabled(TRACK_LIFT_HILL_CURVE))
             {
@@ -808,7 +808,7 @@ public:
                 {
                     if (_currentTrackPitchEnd == TrackPitch::None && _previousTrackRollEnd != TrackRoll::None
                         && (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
-                            || gCheatsEnableAllDrawableTrackPieces))
+                            || GetGameState().Cheats.EnableAllDrawableTrackPieces))
                     {
                         disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
                     }
@@ -873,7 +873,7 @@ public:
         }
 
         // If chain lift cheat is enabled then show the chain lift widget no matter what
-        if (gCheatsEnableChainLiftOnAllTrack)
+        if (GetGameState().Cheats.EnableChainLiftOnAllTrack)
         {
             disabledWidgets &= ~(1uLL << WIDX_CHAIN_LIFT);
         }
@@ -1290,7 +1290,8 @@ public:
             case WIDX_CHAIN_LIFT:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackLiftHill ^= CONSTRUCTION_LIFT_HILL_SELECTED;
-                if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !gCheatsEnableChainLiftOnAllTrack)
+                if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
+                    && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
                     _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
                 _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
@@ -1369,7 +1370,7 @@ public:
             case WIDX_O_TRACK:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
-                if (!gCheatsEnableChainLiftOnAllTrack)
+                if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
                     _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
                 _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
@@ -1686,13 +1687,14 @@ public:
 
         if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
             && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
-            && !gCheatsEnableAllDrawableTrackPieces)
+            && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
         {
             _currentTrackLiftHill |= CONSTRUCTION_LIFT_HILL_SELECTED;
         }
 
         if ((IsTrackEnabled(TRACK_LIFT_HILL) && (_currentTrackCurve & RideConstructionSpecialPieceSelected) == 0)
-            || (gCheatsEnableChainLiftOnAllTrack && currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK)))
+            || (GetGameState().Cheats.EnableChainLiftOnAllTrack
+                && currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK)))
         {
             widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
         }
@@ -2190,7 +2192,7 @@ private:
         }
 
         auto trackPlaceAction = TrackPlaceAction(
-            rideIndex, trackType, currentRide->type, { trackPos, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF,
+            rideIndex, trackType, currentRide->type, { trackPos, static_cast<uint8_t>(trackDirection) }, properties & 0xFF,
             (properties >> 8) & 0x0F, (properties >> 12) & 0x0F, liftHillAndAlternativeState, false);
         if (_rideConstructionState == RideConstructionState::Back)
         {
@@ -2414,7 +2416,7 @@ private:
     {
         _currentTrackPitchEnd = slope;
         _currentTrackPrice = kMoney64Undefined;
-        if (_rideConstructionState == RideConstructionState::Front && !gCheatsEnableChainLiftOnAllTrack)
+        if (_rideConstructionState == RideConstructionState::Front && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
         {
             switch (slope)
             {
@@ -3487,7 +3489,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
         z -= bx;
 
         // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable clearance
-        if (!gCheatsDisableClearanceChecks && z > kMinimumLandZ)
+        if (!GetGameState().Cheats.DisableClearanceChecks && z > kMinimumLandZ)
         {
             z -= LAND_HEIGHT_STEP;
         }

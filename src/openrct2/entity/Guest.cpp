@@ -2048,7 +2048,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+                    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
                     {
                         PeepRideIsTooIntense(this, ride, peepAtRide);
                         return false;
@@ -2074,7 +2074,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     // ride intensity check and get me on a sheltered ride!
                     if (!ClimateIsRaining() || !ShouldRideWhileRaining(ride))
                     {
-                        if (!gCheatsIgnoreRideIntensity)
+                        if (!GetGameState().Cheats.IgnoreRideIntensity)
                         {
                             // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                             // at 10.0 (before happiness calculations). A full happiness bar will increase the max
@@ -2140,7 +2140,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     return false;
                 }
 
-                if (!gCheatsIgnoreRideIntensity)
+                if (!GetGameState().Cheats.IgnoreRideIntensity)
                 {
                     if (ride.max_positive_vertical_g > FIXED_2DP(5, 00) || ride.max_negative_vertical_g < FIXED_2DP(-4, 00)
                         || ride.max_lateral_g > FIXED_2DP(4, 00))
@@ -2854,7 +2854,7 @@ static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     if (peep->Happiness < 180)
         return false;
@@ -2899,7 +2899,7 @@ static bool PeepReallyLikedRide(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     return true;
 }
@@ -3018,7 +3018,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     if (nearby_music == 1 && num_rubbish < 20)
         return PeepThoughtType::Music;
 
-    if (num_rubbish < 2 && !gCheatsDisableLittering)
+    if (num_rubbish < 2 && !GetGameState().Cheats.DisableLittering)
         // if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
         return PeepThoughtType::VeryClean;
 
@@ -6188,7 +6188,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
  */
 static void PeepUpdateWalkingBreakScenery(Guest* peep)
 {
-    if (gCheatsDisableVandalism)
+    if (GetGameState().Cheats.DisableVandalism)
         return;
 
     if (!(peep->PeepFlags & PEEP_FLAGS_ANGRY))

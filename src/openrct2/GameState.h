@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Cheats.h"
 #include "Date.h"
 #include "Editor.h"
 #include "Limits.h"
@@ -128,6 +129,8 @@ namespace OpenRCT2
          * In a difficult guest generation scenario, no guests will be generated if over this value.
          */
         uint32_t SuggestedGuestMaximum;
+
+        CheatsState Cheats;
     };
 
     GameState_t& GetGameState();

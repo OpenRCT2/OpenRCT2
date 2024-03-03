@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
 #include "../interface/Window.h"
@@ -23,6 +24,8 @@
 #include "../world/Park.h"
 #include "Finance.h"
 #include "NewsItem.h"
+
+using namespace OpenRCT2;
 
 const money64 AdvertisingCampaignPricePerWeek[] = {
     50.00_GBP,  // PARK_ENTRY_FREE
@@ -100,7 +103,7 @@ void MarketingUpdate()
 {
     PROFILED_FUNCTION();
 
-    if (gCheatsNeverendingMarketing)
+    if (GetGameState().Cheats.NeverendingMarketing)
         return;
 
     for (auto it = gMarketingCampaigns.begin(); it != gMarketingCampaigns.end();)

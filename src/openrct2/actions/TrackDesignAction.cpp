@@ -10,6 +10,7 @@
 #include "TrackDesignAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
@@ -21,6 +22,8 @@
 #include "RideSetNameAction.h"
 #include "RideSetSettingAction.h"
 #include "RideSetVehicleAction.h"
+
+using namespace OpenRCT2;
 
 TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
     : _loc(location)
@@ -61,13 +64,13 @@ GameActions::Result TrackDesignAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
     if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
         // Force a fallback if the entry is not invented yet a td6 of it is selected,
         // which can happen in select-by-track-type mode
-        if (!RideEntryIsInvented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
@@ -133,13 +136,13 @@ GameActions::Result TrackDesignAction::Execute() const
     res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::RideConstruction;
 
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
-        if (!RideEntryIsInvented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
@@ -247,14 +250,14 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->entrance_style = gLastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < Limits::NumColourSchemes; i++)
     {
         ride->track_colour[i].main = _td.track_spine_colour[i];
         ride->track_colour[i].additional = _td.track_rail_colour[i];
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (size_t i = 0; i < OpenRCT2::Limits::MaxVehicleColours; i++)
+    for (size_t i = 0; i < Limits::MaxVehicleColours; i++)
     {
         ride->vehicle_colours[i] = _td.vehicle_colours[i];
     }

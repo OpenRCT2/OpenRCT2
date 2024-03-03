@@ -116,7 +116,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
-    gCheatsIgnoreRideIntensity = true;
+    GetGameState().Cheats.IgnoreRideIntensity = true;
 
     // Insert a rich guest
     auto richGuest = gs->GetPark().GenerateGuest();
@@ -176,7 +176,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     execute<RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride
-    gCheatsIgnoreRideIntensity = true;
+    GetGameState().Cheats.IgnoreRideIntensity = true;
 
     // Create some guests
     std::vector<Peep*> guests;

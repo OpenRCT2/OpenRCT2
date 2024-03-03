@@ -9,6 +9,7 @@
 
 #include "LargeSceneryPlaceAction.h"
 
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
@@ -20,6 +21,8 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
+
+using namespace OpenRCT2;
 
 LargeSceneryPlaceAction::LargeSceneryPlaceAction(
     const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour, uint8_t tertiaryColour)
@@ -81,7 +84,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
-    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
+    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
@@ -134,7 +137,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         int32_t tempSceneryGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        if (!gCheatsDisableClearanceChecks)
+        if (!GetGameState().Cheats.DisableClearanceChecks)
         {
             if ((clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER) || (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND))
             {
@@ -156,7 +159,8 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !MapIsLocationOwned({ curTile, zLow }) && !gCheatsSandboxMode)
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !MapIsLocationOwned({ curTile, zLow })
+            && !GetGameState().Cheats.SandboxMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -194,7 +198,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
     money64 supportsCost = 0;
 
-    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
+    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
@@ -279,7 +283,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             FootpathRemoveLitter({ curTile, zLow });
-            if (!gCheatsDisableClearanceChecks)
+            if (!GetGameState().Cheats.DisableClearanceChecks)
             {
                 WallRemoveAt({ curTile, zLow, zHigh });
             }

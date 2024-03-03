@@ -1615,7 +1615,7 @@ private:
 
     void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
     {
-        if (!canRaiseItem && !gCheatsDisableSupportLimits)
+        if (!canRaiseItem && !GetGameState().Cheats.DisableSupportLimits)
         {
             gSceneryCtrlPressed = false;
             gSceneryShiftPressed = false;
@@ -3230,7 +3230,7 @@ public:
             GfxDrawSprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
             // Draw an overlay if clearance checks are disabled
-            if (gCheatsDisableClearanceChecks)
+            if (GetGameState().Cheats.DisableClearanceChecks)
             {
                 auto colour = static_cast<colour_t>(EnumValue(COLOUR_DARK_ORANGE) | EnumValue(COLOUR_FLAG_OUTLINE));
                 DrawTextBasic(
@@ -3746,15 +3746,15 @@ void TopToolbar::InitCheatsMenu(Widget& widget)
         Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
     }
 
-    if (gCheatsSandboxMode)
+    if (GetGameState().Cheats.SandboxMode)
     {
         Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
     }
-    if (gCheatsDisableClearanceChecks)
+    if (GetGameState().Cheats.DisableClearanceChecks)
     {
         Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
     }
-    if (gCheatsDisableSupportLimits)
+    if (GetGameState().Cheats.DisableSupportLimits)
     {
         Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
     }
@@ -3786,13 +3786,13 @@ void TopToolbar::CheatsMenuDropdown(int16_t dropdownIndex)
             ContextOpenWindow(WindowClass::EditorObjectiveOptions);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
-            CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);
+            CheatsSet(CheatType::SandboxMode, !GetGameState().Cheats.SandboxMode);
             break;
         case DDIDX_DISABLE_CLEARANCE_CHECKS:
-            CheatsSet(CheatType::DisableClearanceChecks, !gCheatsDisableClearanceChecks);
+            CheatsSet(CheatType::DisableClearanceChecks, !GetGameState().Cheats.DisableClearanceChecks);
             break;
         case DDIDX_DISABLE_SUPPORT_LIMITS:
-            CheatsSet(CheatType::DisableSupportLimits, !gCheatsDisableSupportLimits);
+            CheatsSet(CheatType::DisableSupportLimits, !GetGameState().Cheats.DisableSupportLimits);
             break;
     }
 }
