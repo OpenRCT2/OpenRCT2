@@ -48,6 +48,7 @@ namespace OpenRCT2::Scripting
         uint32_t guests_get() const;
 
         uint32_t suggestedGuestMaximum_get() const;
+        void suggestedGuestMaximum_set(uint32_t value);
 
         int32_t guestGenerationProbability_get() const;
 

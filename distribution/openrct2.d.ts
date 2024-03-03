@@ -3474,7 +3474,7 @@ declare global {
          * In scenarios with difficult guest generation, guests will not spawn above
          * this value without advertisements.
          */
-        readonly suggestedGuestMaximum: number;
+        suggestedGuestMaximum: number;
 
         /**
          * The probability out of 65535 that guests will spawn per tick.
