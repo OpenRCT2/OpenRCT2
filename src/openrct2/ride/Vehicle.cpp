@@ -2044,7 +2044,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         // Boat Hire with passengers on it.
         if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
         {
-            curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+            curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
             return;
         }
@@ -2055,7 +2055,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         uint8_t seat = ((-Pitch) / 8) & 0xF;
         if (!peep[seat].IsNull())
         {
-            curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+            curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
             SetState(Vehicle::Status::UnloadingPassengers);
             return;
         }
@@ -2063,7 +2063,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         if (num_peeps == 0)
             return;
 
-        curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+        curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
         sub_state = 2;
         return;
     }
@@ -2071,7 +2071,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (num_peeps_on_train == 0)
         return;
 
-    curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+    curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
     SetState(Vehicle::Status::WaitingForPassengers);
 }
 
@@ -2116,7 +2116,7 @@ void Vehicle::UpdateWaitingForPassengers()
         auto& station = curRide->GetStation(current_station);
         if (station.Entrance.IsNull())
         {
-            station.TrainAtStation = RideStation::NO_TRAIN;
+            station.TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
             return;
         }
@@ -2127,7 +2127,7 @@ void Vehicle::UpdateWaitingForPassengers()
             return;
         }
 
-        if (station.TrainAtStation != RideStation::NO_TRAIN)
+        if (station.TrainAtStation != RideStation::kNoTrain)
             return;
 
         station.TrainAtStation = trainIndex.value();

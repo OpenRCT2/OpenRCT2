@@ -145,7 +145,7 @@ GameActions::Result RideCreateAction::Execute() const
         station.Start.SetNull();
         station.Entrance.SetNull();
         station.Exit.SetNull();
-        station.TrainAtStation = RideStation::NO_TRAIN;
+        station.TrainAtStation = RideStation::kNoTrain;
         station.QueueTime = 0;
         station.SegmentLength = 0;
         station.QueueLength = 0;
