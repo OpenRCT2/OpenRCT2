@@ -314,7 +314,7 @@ namespace RCT2
             {
                 if (_s6.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
                 {
-                    gGuestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
+                    gameState.GuestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
                 }
             }
 

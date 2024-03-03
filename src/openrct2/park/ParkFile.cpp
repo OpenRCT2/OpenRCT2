@@ -922,7 +922,7 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWriteArray(gGuestsInParkHistory, [&cs](uint32_t& value) {
+                    cs.ReadWriteArray(gameState.GuestsInParkHistory, [&cs](uint32_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

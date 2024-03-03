@@ -2156,7 +2156,7 @@ namespace RCT1
             {
                 if (_s4.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
                 {
-                    gGuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
+                    gameState.GuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
                 }
             }
 
@@ -2171,12 +2171,14 @@ namespace RCT1
             }
 
             // Number of guests history
-            std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
+            std::fill(
+                std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory),
+                std::numeric_limits<uint32_t>::max());
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != std::numeric_limits<uint8_t>::max())
                 {
-                    gGuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
+                    gameState.GuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
                 }
             }
 

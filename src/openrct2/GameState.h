@@ -46,6 +46,7 @@ namespace OpenRCT2
         money64 CurrentExpenditure;
         money64 CurrentProfit;
         uint8_t ParkRatingHistory[32];
+        uint32_t GuestsInParkHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;

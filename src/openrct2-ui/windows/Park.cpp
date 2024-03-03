@@ -770,9 +770,11 @@ private:
         auto screenPos = windowPos;
         Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
+        const auto& gameState = OpenRCT2::GetGameState();
+
         // Current value
         auto ft = Formatter();
-        ft.Add<uint32_t>(OpenRCT2::GetGameState().NumGuestsInPark);
+        ft.Add<uint32_t>(gameState.NumGuestsInPark);
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
         // Graph border
@@ -803,7 +805,7 @@ private:
         uint8_t cappedHistory[32];
         for (size_t i = 0; i < std::size(cappedHistory); i++)
         {
-            auto value = gGuestsInParkHistory[i];
+            auto value = gameState.GuestsInParkHistory[i];
             if (value != std::numeric_limits<uint32_t>::max())
             {
                 cappedHistory[i] = static_cast<uint8_t>(std::min<uint32_t>(value, 5000) / 20);
