@@ -50,13 +50,13 @@ constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
 struct RideStation
 {
-    static constexpr uint8_t NO_TRAIN = std::numeric_limits<uint8_t>::max();
+    static constexpr uint8_t kNoTrain = std::numeric_limits<uint8_t>::max();
 
     CoordsXY Start;
     uint8_t Height{};
     uint8_t Length{};
     uint8_t Depart{};
-    uint8_t TrainAtStation{ NO_TRAIN };
+    uint8_t TrainAtStation{ kNoTrain };
     TileCoordsXYZD Entrance;
     TileCoordsXYZD Exit;
     int32_t SegmentLength{}; // Length of track between this station and the next.

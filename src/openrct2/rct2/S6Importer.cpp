@@ -1397,7 +1397,7 @@ namespace RCT2
                 auto& destStation = dst->GetStation(stationIndex);
 
                 destStation.Start.SetNull();
-                destStation.TrainAtStation = RideStation::NO_TRAIN;
+                destStation.TrainAtStation = RideStation::kNoTrain;
                 destStation.Entrance.SetNull();
                 destStation.Exit.SetNull();
                 destStation.LastPeepInQueue = EntityId::GetNull();
