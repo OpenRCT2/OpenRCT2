@@ -745,8 +745,8 @@ namespace OpenRCT2::Ui::Windows
             RefreshWidgets();
 
             Invalidate();
-            WindowEventResizeCall(this);
-            WindowEventOnPrepareDrawCall(this);
+            OnResize();
+            OnPrepareDraw();
             WindowInitScrollWidgets(*this);
             Invalidate();
 

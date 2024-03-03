@@ -10,6 +10,7 @@
 #include "Window.h"
 
 #include "Theme.h"
+#include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
 #include <algorithm>
@@ -503,7 +504,7 @@ static bool WindowOtherWheelInput(WindowBase& w, WidgetIndex widgetIndex, int32_
         return false;
     }
 
-    WindowEventMouseDownCall(&w, buttonWidgetIndex);
+    w.OnMouseDown(buttonWidgetIndex);
     return true;
 }
 
@@ -580,7 +581,6 @@ void WindowInitScrollWidgets(WindowBase& w)
 {
     Widget* widget;
     int32_t widget_index, scroll_index;
-    int32_t width, height;
 
     widget_index = 0;
     scroll_index = 0;
@@ -594,13 +594,11 @@ void WindowInitScrollWidgets(WindowBase& w)
 
         auto& scroll = w.scrolls[scroll_index];
         scroll.flags = 0;
-        width = 0;
-        height = 0;
-        WindowGetScrollSize(&w, scroll_index, &width, &height);
+        ScreenSize scrollSize = w.OnScrollGetSize(scroll_index);
         scroll.h_left = 0;
-        scroll.h_right = width + 1;
+        scroll.h_right = scrollSize.width + 1;
         scroll.v_top = 0;
-        scroll.v_bottom = height + 1;
+        scroll.v_bottom = scrollSize.height + 1;
 
         if (widget->content & SCROLL_HORIZONTAL)
             scroll.flags |= HSCROLLBAR_VISIBLE;
@@ -688,7 +686,7 @@ void InvalidateAllWindowsAfterInput()
     WindowVisitEach([](WindowBase* w) {
         WindowUpdateScrollWidgets(*w);
         WindowInvalidatePressedImageButton(*w);
-        WindowEventResizeCall(w);
+        w->OnResize();
     });
 }
 

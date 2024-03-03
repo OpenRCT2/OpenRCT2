@@ -250,7 +250,7 @@ public:
                         {
                             RideInitialiseConstructionWindow(*getRide);
                             auto wnd = WindowFindByClass(WindowClass::RideConstruction);
-                            WindowEventMouseUpCall(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                            wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                         }
                     }
                 }

@@ -390,7 +390,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         break;
                     }
 
-                    WindowEventToolDragCall(w, gCurrentToolWidget.widget_index, screenCoords);
+                    w->OnToolDrag(gCurrentToolWidget.widget_index, screenCoords);
                     break;
                 case MouseState::LeftRelease:
                     _inputState = InputState::Reset;
@@ -401,7 +401,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                             w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                             if (w != nullptr)
                             {
-                                WindowEventToolUpCall(w, gCurrentToolWidget.widget_index, screenCoords);
+                                w->OnToolUp(gCurrentToolWidget.widget_index, screenCoords);
                             }
                         }
                         else if (!(_inputFlags & INPUT_FLAG_4))
@@ -482,7 +482,7 @@ static void InputWindowPositionEnd(WindowBase& w, const ScreenCoordsXY& screenCo
     _inputState = InputState::Normal;
     gTooltipCloseTimeout = 0;
     gTooltipWidget = _dragWidget;
-    WindowEventMovedCall(&w, screenCoords);
+    w.OnMoved(screenCoords);
 }
 
 static void InputWindowResizeBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -625,10 +625,10 @@ static void InputScrollBegin(WindowBase& w, WidgetIndex widgetIndex, const Scree
 
     _currentScrollArea = scroll_area;
     _currentScrollIndex = scroll_id;
-    WindowEventScrollSelectCall(&w, scroll_id, scroll_area);
+    w.OnScrollSelect(scroll_id, scroll_area);
     if (scroll_area == SCROLL_PART_VIEW)
     {
-        WindowEventScrollMousedownCall(&w, scroll_id, scrollCoords);
+        w.OnScrollMouseDown(scroll_id, scrollCoords);
         return;
     }
 
@@ -718,7 +718,7 @@ static void InputScrollContinue(WindowBase& w, WidgetIndex widgetIndex, const Sc
     switch (scroll_part)
     {
         case SCROLL_PART_VIEW:
-            WindowEventScrollMousedragCall(&w, scroll_id, newScreenCoords);
+            w.OnScrollMouseDrag(scroll_id, newScreenCoords);
             break;
         case SCROLL_PART_HSCROLLBAR_LEFT:
             InputScrollPartUpdateHLeft(w, widgetIndex, scroll_id);
@@ -938,7 +938,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, W
             WindowTooltipClose();
         else
         {
-            WindowEventScrollMouseoverCall(w, scrollId, newScreenCoords);
+            w->OnScrollMouseOver(scrollId, newScreenCoords);
             InputUpdateTooltip(w, widgetIndex, screenCoords);
         }
     }
@@ -985,7 +985,7 @@ static void InputWidgetOverFlatbuttonInvalidate()
     WindowBase* w = WindowFindByNumber(gHoverWidget.window_classification, gHoverWidget.window_number);
     if (w != nullptr)
     {
-        WindowEventOnPrepareDrawCall(w);
+        w->OnPrepareDraw();
         if (w->widgets[gHoverWidget.widget_index].type == WindowWidgetType::FlatBtn)
         {
             WidgetInvalidateByNumber(gHoverWidget.window_classification, gHoverWidget.window_number, gHoverWidget.widget_index);
@@ -1047,7 +1047,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
                 if (w != nullptr)
                 {
                     InputSetFlag(INPUT_FLAG_4, true);
-                    WindowEventToolDownCall(w, gCurrentToolWidget.widget_index, screenCoords);
+                    w->OnToolDown(gCurrentToolWidget.widget_index, screenCoords);
                 }
             }
             break;
@@ -1091,7 +1091,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
                 _clickRepeatTicks = gCurrentRealTimeTicks;
 
                 WidgetInvalidateByNumber(windowClass, windowNumber, widgetIndex);
-                WindowEventMouseDownCall(w, widgetIndex);
+                w->OnMouseDown(widgetIndex);
             }
             break;
     }
@@ -1162,13 +1162,13 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
                         break;
                     }
                     // Same as default but with scroll_x/y
-                    cursorId = WindowEventCursorCall(window, widgetId, scrollCoords);
+                    cursorId = window->OnCursor(widgetId, scrollCoords, CursorID::Arrow);
                     if (cursorId == CursorID::Undefined)
                         cursorId = CursorID::Arrow;
                     break;
                 }
                 default:
-                    cursorId = WindowEventCursorCall(window, widgetId, screenCoords);
+                    cursorId = window->OnCursor(widgetId, screenCoords, CursorID::Arrow);
                     if (cursorId == CursorID::Undefined)
                         cursorId = CursorID::Arrow;
                     break;
@@ -1193,7 +1193,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
         if (w == nullptr)
             ToolCancel();
         else if (InputGetState() != InputState::ViewportRight)
-            WindowEventToolUpdateCall(w, gCurrentToolWidget.widget_index, screenCoords);
+            w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
     }
 }
 
@@ -1323,7 +1323,7 @@ void InputStateWidgetPressed(
                 {
                     if (WidgetIsHoldable(*w, widgetIndex))
                     {
-                        WindowEventMouseDownCall(w, widgetIndex);
+                        w->OnMouseDown(widgetIndex);
                     }
 
                     // Subtract initial delay from here on we want the event each third tick.
@@ -1413,7 +1413,7 @@ void InputStateWidgetPressed(
                                 dropdown_index = gDropdownDefaultIndex;
                             }
                         }
-                        WindowEventDropdownCall(cursor_w, cursor_widgetIndex, dropdown_index);
+                        cursor_w->OnDropdown(cursor_widgetIndex, dropdown_index);
                     }
                 }
             }
@@ -1445,7 +1445,7 @@ void InputStateWidgetPressed(
                 break;
 
             WidgetInvalidateByNumber(cursor_w_class, cursor_w_number, widgetIndex);
-            WindowEventMouseUpCall(w, widgetIndex);
+            w->OnMouseUp(widgetIndex);
             return;
 
         default:

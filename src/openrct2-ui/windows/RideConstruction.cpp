@@ -2752,7 +2752,7 @@ static void CloseConstructWindowOnCompletion(const Ride& ride)
             }
             else
             {
-                WindowEventMouseUpCall(w, WIDX_ENTRANCE);
+                w->OnMouseUp(WIDX_ENTRANCE);
             }
         }
     }
@@ -2774,7 +2774,7 @@ static void WindowRideConstructionDoEntranceExitCheck()
         {
             if (!RideAreAllPossibleEntrancesAndExitsBuilt(*ride).Successful)
             {
-                WindowEventMouseUpCall(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                w->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }
         }
     }
@@ -3582,7 +3582,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
             break;
 
         gDisableErrorWindowSound = true;
-        WindowEventMouseUpCall(w, WIDX_CONSTRUCT);
+        w->OnMouseUp(WIDX_CONSTRUCT);
         gDisableErrorWindowSound = false;
 
         if (_trackPlaceCost == kMoney64Undefined)
@@ -3642,20 +3642,20 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             break;
         case EnumValue(TrackCurve::Left):
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3665,19 +3665,19 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
         case EnumValue(TrackCurve::LeftLarge):
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3688,23 +3688,23 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3714,29 +3714,29 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
         case EnumValue(TrackCurve::RightLarge):
             if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3747,33 +3747,33 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3783,39 +3783,39 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
         case EnumValue(TrackCurve::RightSmall):
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3826,43 +3826,43 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3888,20 +3888,20 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             break;
         case EnumValue(TrackCurve::Right):
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3911,19 +3911,19 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
         case EnumValue(TrackCurve::RightLarge):
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3934,23 +3934,23 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3960,29 +3960,29 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
         case EnumValue(TrackCurve::LeftLarge):
             if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3993,33 +3993,33 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4029,39 +4029,39 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
         case EnumValue(TrackCurve::LeftSmall):
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4072,43 +4072,43 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
+                w->OnMouseDown(WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+                w->OnMouseDown(WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
+                w->OnMouseDown(WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4130,23 +4130,23 @@ void WindowRideConstructionKeyboardShortcutUseTrackDefault()
 
     if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseDownCall(w, WIDX_STRAIGHT);
+        w->OnMouseDown(WIDX_STRAIGHT);
     }
 
     if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseDownCall(w, WIDX_LEVEL);
+        w->OnMouseDown(WIDX_LEVEL);
     }
 
     if (!WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].type != WindowWidgetType::Empty
         && _currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
     {
-        WindowEventMouseDownCall(w, WIDX_CHAIN_LIFT);
+        w->OnMouseDown(WIDX_CHAIN_LIFT);
     }
 
     if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseDownCall(w, WIDX_BANK_STRAIGHT);
+        w->OnMouseDown(WIDX_BANK_STRAIGHT);
     }
 }
 
@@ -4165,20 +4165,20 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
                 && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
                 && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
             }
             break;
         case TrackPitch::Down25:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         case TrackPitch::None:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
+                w->OnMouseDown(WIDX_SLOPE_DOWN);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4190,7 +4190,7 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
                 !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
             }
             else
             {
@@ -4200,17 +4200,17 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
         case TrackPitch::Up25:
             if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEVEL);
+                w->OnMouseDown(WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
+                w->OnMouseDown(WIDX_SLOPE_DOWN);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
             }
             else
             {
@@ -4220,15 +4220,15 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
         case TrackPitch::Up60:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
+                w->OnMouseDown(WIDX_SLOPE_UP);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEVEL);
+                w->OnMouseDown(WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
+                w->OnMouseDown(WIDX_SLOPE_DOWN);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4240,7 +4240,7 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
                 !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
             }
             else
             {
@@ -4252,7 +4252,7 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
             }
             break;
         default:
@@ -4275,19 +4275,19 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         case TrackPitch::Up25:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
             }
             break;
         case TrackPitch::None:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
+                w->OnMouseDown(WIDX_SLOPE_UP);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4298,7 +4298,7 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
             }
             else
             {
@@ -4308,16 +4308,16 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
         case TrackPitch::Down25:
             if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEVEL);
+                w->OnMouseDown(WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
+                w->OnMouseDown(WIDX_SLOPE_UP);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
             }
             else
             {
@@ -4327,15 +4327,15 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
         case TrackPitch::Down60:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
+                w->OnMouseDown(WIDX_SLOPE_DOWN);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_LEVEL);
+                w->OnMouseDown(WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
+                w->OnMouseDown(WIDX_SLOPE_UP);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4346,7 +4346,7 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
             }
             else
             {
@@ -4358,7 +4358,7 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
                 && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
+                w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         default:
@@ -4374,7 +4374,7 @@ void WindowRideConstructionKeyboardShortcutChainLiftToggle()
         return;
     }
 
-    WindowEventMouseDownCall(w, WIDX_CHAIN_LIFT);
+    w->OnMouseDown(WIDX_CHAIN_LIFT);
 }
 
 void WindowRideConstructionKeyboardShortcutBankLeft()
@@ -4391,17 +4391,17 @@ void WindowRideConstructionKeyboardShortcutBankLeft()
         case TrackRoll::None:
             if (!WidgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_BANK_LEFT);
+                w->OnMouseDown(WIDX_BANK_LEFT);
             }
             break;
         case TrackRoll::Right:
             if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_BANK_STRAIGHT);
+                w->OnMouseDown(WIDX_BANK_STRAIGHT);
             }
             else if (!WidgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_BANK_LEFT);
+                w->OnMouseDown(WIDX_BANK_LEFT);
             }
             else
             {
@@ -4427,17 +4427,17 @@ void WindowRideConstructionKeyboardShortcutBankRight()
         case TrackRoll::None:
             if (!WidgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_BANK_RIGHT);
+                w->OnMouseDown(WIDX_BANK_RIGHT);
             }
             break;
         case TrackRoll::Left:
             if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_BANK_STRAIGHT);
+                w->OnMouseDown(WIDX_BANK_STRAIGHT);
             }
             else if (!WidgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WindowWidgetType::Empty)
             {
-                WindowEventMouseDownCall(w, WIDX_BANK_RIGHT);
+                w->OnMouseDown(WIDX_BANK_RIGHT);
             }
             else
             {
@@ -4458,7 +4458,7 @@ void WindowRideConstructionKeyboardShortcutPreviousTrack()
         return;
     }
 
-    WindowEventMouseUpCall(w, WIDX_PREVIOUS_SECTION);
+    w->OnMouseUp(WIDX_PREVIOUS_SECTION);
 }
 
 void WindowRideConstructionKeyboardShortcutNextTrack()
@@ -4470,7 +4470,7 @@ void WindowRideConstructionKeyboardShortcutNextTrack()
         return;
     }
 
-    WindowEventMouseUpCall(w, WIDX_NEXT_SECTION);
+    w->OnMouseUp(WIDX_NEXT_SECTION);
 }
 
 void WindowRideConstructionKeyboardShortcutBuildCurrent()
@@ -4481,7 +4481,7 @@ void WindowRideConstructionKeyboardShortcutBuildCurrent()
         return;
     }
 
-    WindowEventMouseUpCall(w, WIDX_CONSTRUCT);
+    w->OnMouseUp(WIDX_CONSTRUCT);
 }
 
 void WindowRideConstructionKeyboardShortcutDemolishCurrent()
@@ -4492,7 +4492,7 @@ void WindowRideConstructionKeyboardShortcutDemolishCurrent()
         return;
     }
 
-    WindowEventMouseUpCall(w, WIDX_DEMOLISH);
+    w->OnMouseUp(WIDX_DEMOLISH);
 }
 
 static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type)

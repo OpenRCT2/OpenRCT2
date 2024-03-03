@@ -616,33 +616,6 @@ void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords);
 void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords);
 void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords);
 
-void WindowEventCloseCall(WindowBase* w);
-void WindowEventMouseUpCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowEventResizeCall(WindowBase* w);
-void WindowEventMouseDownCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowEventDropdownCall(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-void WindowEventUnknown05Call(WindowBase* w);
-void WindowEventUpdateCall(WindowBase* w);
-void WindowEventPeriodicUpdateCall(WindowBase* w);
-void WindowEventToolUpdateCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolDownCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolDragCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolUpCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolAbortCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowGetScrollSize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-void WindowEventScrollMousedownCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventScrollMousedragCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventScrollMouseoverCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, const char* text);
-void WindowEventViewportRotateCall(WindowBase* w);
-void WindowEventScrollSelectCall(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType);
-OpenRCT2String WindowEventTooltipCall(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);
-CursorID WindowEventCursorCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventMovedCall(WindowBase* w, const ScreenCoordsXY& screenCoords);
-void WindowEventOnPrepareDrawCall(WindowBase* w);
-void WindowEventOnDrawCall(WindowBase* w, DrawPixelInfo& dpi);
-void WindowEventScrollDrawCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
-
 void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
 

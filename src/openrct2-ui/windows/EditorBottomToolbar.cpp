@@ -201,7 +201,7 @@ private:
         if (w != nullptr)
         {
             // Click tab with missing object
-            WindowEventMouseUpCall(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
+            w->OnMouseUp(WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
         }
         return false;
     }

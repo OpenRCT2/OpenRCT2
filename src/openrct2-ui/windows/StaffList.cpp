@@ -463,7 +463,7 @@ public:
             {
                 ToolCancel();
                 auto* staffWindow = WindowStaffOpen(closestStaffMember);
-                WindowEventDropdownCall(staffWindow, WC_PEEP__WIDX_PATROL, 0);
+                staffWindow->OnDropdown(WC_PEEP__WIDX_PATROL, 0);
             }
             else
             {

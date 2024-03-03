@@ -2053,8 +2053,8 @@ private:
         widgets = window_options_page_widgets[page];
 
         Invalidate();
-        WindowEventResizeCall(this);
-        WindowEventOnPrepareDrawCall(this);
+        OnResize();
+        OnPrepareDraw();
         InitScrollWidgets();
         Invalidate();
     }
