@@ -25,6 +25,8 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
+#include <numeric>
+
 using namespace OpenRCT2;
 
 // Monthly research funding costs
@@ -39,7 +41,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money64 gHistoricalProfit;
 money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 /**
@@ -229,11 +230,10 @@ void FinanceInit()
     gameState.BankLoan = 10000.00_GBP;
     gameState.MaxBankLoan = 20000.00_GBP;
 
-    gHistoricalProfit = 0;
-
     gameState.BankLoanInterestRate = 10;
     gameState.ParkValue = 0;
     gameState.CompanyValue = 0;
+    gameState.HistoricalProfit = 0;
     gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.TotalAdmissions = 0;
     gameState.TotalIncomeFromAdmissions = 0;
@@ -322,12 +322,11 @@ void FinanceShiftExpenditureTable()
     // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
     if (GetDate().GetMonthsElapsed() >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
-        money64 sum = 0;
-        for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
-        {
-            sum += gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1][i];
-        }
-        gHistoricalProfit += sum;
+        const money64 sum = std::accumulate(
+            std::cbegin(gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]),
+            std::cend(gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]), money64{});
+
+        GetGameState().HistoricalProfit += sum;
     }
 
     // Shift the table

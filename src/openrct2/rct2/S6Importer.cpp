@@ -314,7 +314,7 @@ namespace RCT2
             {
                 if (_s6.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
                 {
-                    gGuestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
+                    gameState.GuestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
                 }
             }
 
@@ -396,7 +396,7 @@ namespace RCT2
             gameState.ScenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
             // _s6.LoanHash;
             // Pad013587CA
-            gHistoricalProfit = ToMoney64(_s6.HistoricalProfit);
+            gameState.HistoricalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
             gameState.ScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
             gameState.Cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));

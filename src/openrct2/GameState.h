@@ -42,10 +42,13 @@ namespace OpenRCT2
         money64 ParkValue;
         money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
         money64 CompanyValue;
+        // The total profit for the entire scenario that precedes the current financial table.
+        money64 HistoricalProfit;
         money64 ConstructionRightsPrice;
         money64 CurrentExpenditure;
         money64 CurrentProfit;
         uint8_t ParkRatingHistory[32];
+        uint32_t GuestsInParkHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;

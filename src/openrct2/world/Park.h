@@ -95,7 +95,6 @@ namespace OpenRCT2
 extern money64 gLandPrice;
 
 extern int16_t gParkRatingCasualtyPenalty;
-extern uint32_t gGuestsInParkHistory[32];
 
 void ParkSetForcedRating(int32_t rating);
 int32_t ParkGetForcedRating();
