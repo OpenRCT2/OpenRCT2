@@ -387,6 +387,7 @@ public:
             screenCoords.y += TABLE_CELL_HEIGHT;
         }
 
+        auto& gameState = GetGameState();
         // Expenditure / Income values for each month
         auto currentMonthYear = GetDate().GetMonthsElapsed();
         for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
@@ -409,7 +410,7 @@ public:
             money64 profit = 0;
             for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
             {
-                auto expenditure = gExpenditureTable[i][j];
+                auto expenditure = gameState.ExpenditureTable[i][j];
                 if (expenditure != 0)
                 {
                     profit += expenditure;

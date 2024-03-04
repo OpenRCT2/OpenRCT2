@@ -295,7 +295,7 @@ namespace RCT2
             {
                 for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
                 {
-                    gExpenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
+                    gameState.ExpenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
                 }
             }
 

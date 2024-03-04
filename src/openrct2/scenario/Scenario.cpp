@@ -743,7 +743,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
 
 ObjectiveStatus Objective::CheckMonthlyRideIncome() const
 {
-    money64 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
+    money64 lastMonthRideIncome = GetGameState().ExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
     if (lastMonthRideIncome >= Currency)
     {
         return ObjectiveStatus::Success;
@@ -831,7 +831,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 
 ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
 {
-    const auto* lastMonthExpenditure = gExpenditureTable[1];
+    const auto* lastMonthExpenditure = GetGameState().ExpenditureTable[1];
     auto lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)]
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]

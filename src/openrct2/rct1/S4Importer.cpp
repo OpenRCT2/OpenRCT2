@@ -1450,7 +1450,7 @@ namespace RCT1
             {
                 for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
                 {
-                    gExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
+                    gameState.ExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
             }
             gameState.CurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
