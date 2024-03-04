@@ -832,7 +832,7 @@ namespace OpenRCT2
                         {
                             for (uint32_t j = 0; j < numTypes; j++)
                             {
-                                gExpenditureTable[i][j] = cs.Read<money64>();
+                                gameState.ExpenditureTable[i][j] = cs.Read<money64>();
                             }
                         }
                     }
@@ -847,7 +847,7 @@ namespace OpenRCT2
                         {
                             for (uint32_t j = 0; j < numTypes; j++)
                             {
-                                cs.Write(gExpenditureTable[i][j]);
+                                cs.Write(gameState.ExpenditureTable[i][j]);
                             }
                         }
                     }

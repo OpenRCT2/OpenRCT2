@@ -41,8 +41,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
-
 /**
  * Checks the condition if the game is required to use money.
  * @param flags game command flags.
@@ -82,7 +80,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
     auto& gameState = GetGameState();
     gameState.Cash = AddClamp_money64(gameState.Cash, -amount);
 
-    gExpenditureTable[0][static_cast<int32_t>(type)] -= amount;
+    gameState.ExpenditureTable[0][static_cast<int32_t>(type)] -= amount;
     if (dword_988E60[static_cast<int32_t>(type)] & 1)
     {
         // Cumulative amount of money spent this day
@@ -199,7 +197,7 @@ void FinanceResetHistory()
     {
         for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); ++j)
         {
-            gExpenditureTable[i][j] = 0;
+            gameState.ExpenditureTable[i][j] = 0;
         }
     }
 }
@@ -215,7 +213,7 @@ void FinanceInit()
     // It only initialises the first month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
-        gExpenditureTable[0][i] = 0;
+        gameState.ExpenditureTable[0][i] = 0;
     }
 
     gameState.CurrentExpenditure = 0;
@@ -319,12 +317,13 @@ money64 FinanceGetCurrentCash()
  */
 void FinanceShiftExpenditureTable()
 {
+    auto& gameState = GetGameState();
     // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
     if (GetDate().GetMonthsElapsed() >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
         const money64 sum = std::accumulate(
-            std::cbegin(gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]),
-            std::cend(gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]), money64{});
+            std::cbegin(gameState.ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]),
+            std::cend(gameState.ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]), money64{});
 
         GetGameState().HistoricalProfit += sum;
     }
@@ -334,14 +333,14 @@ void FinanceShiftExpenditureTable()
     {
         for (size_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
         {
-            gExpenditureTable[i][j] = gExpenditureTable[i - 1][j];
+            gameState.ExpenditureTable[i][j] = gameState.ExpenditureTable[i - 1][j];
         }
     }
 
     // Zero the beginning of the table, which is the new month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
-        gExpenditureTable[0][i] = 0;
+        gameState.ExpenditureTable[0][i] = 0;
     }
 
     WindowInvalidateByClass(WindowClass::Finances);
@@ -365,7 +364,7 @@ money64 FinanceGetLastMonthShopProfit()
     money64 profit = 0;
     if (GetDate().GetMonthsElapsed() != 0)
     {
-        const auto* lastMonthExpenditure = gExpenditureTable[1];
+        const auto* lastMonthExpenditure = GetGameState().ExpenditureTable[1];
 
         profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)];
         profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)];
