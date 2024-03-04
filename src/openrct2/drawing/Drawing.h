@@ -44,13 +44,13 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
-constexpr auto PALETTE_SIZE = 256;
+constexpr auto PALETTE_SIZE = 256U;
 
 struct GamePalette
 {
     PaletteBGRA Colour[PALETTE_SIZE]{};
 
-    PaletteBGRA& operator[](uint16_t idx)
+    PaletteBGRA& operator[](size_t idx)
     {
         assert(idx < PALETTE_SIZE);
         if (idx >= PALETTE_SIZE)
@@ -62,7 +62,7 @@ struct GamePalette
         return Colour[idx];
     }
 
-    const PaletteBGRA operator[](uint16_t idx) const
+    const PaletteBGRA operator[](size_t idx) const
     {
         assert(idx < PALETTE_SIZE);
         if (idx >= PALETTE_SIZE)

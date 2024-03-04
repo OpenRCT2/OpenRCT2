@@ -21,7 +21,7 @@
 #endif
 
 [[maybe_unused]] static bool _log_location_enabled = true;
-bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::Count)] = {
+bool _log_levels[EnumValue(DiagnosticLevel::Count)] = {
     true, true, true, false, true,
 };
 
@@ -47,7 +47,7 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
 
-    if (!_log_levels[static_cast<uint8_t>(diagnosticLevel)])
+    if (!_log_levels[EnumValue(diagnosticLevel)])
         return;
 
     va_start(args, format);
@@ -61,7 +61,7 @@ void DiagnosticLogWithLocation(
     va_list args;
     char buf[1024];
 
-    if (!_log_levels[static_cast<uint8_t>(diagnosticLevel)])
+    if (!_log_levels[EnumValue(diagnosticLevel)])
         return;
 
     snprintf(buf, 1024, "[%s:%d (%s)]: ", file, line, function);
@@ -89,7 +89,7 @@ static void DiagnosticPrint(DiagnosticLevel level, const std::string& prefix, co
 void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
-    if (_log_levels[static_cast<uint8_t>(diagnosticLevel)])
+    if (_log_levels[EnumValue(diagnosticLevel)])
     {
         // Level
         auto prefix = String::StdFormat("%s: ", _level_strings[EnumValue(diagnosticLevel)]);
@@ -107,7 +107,7 @@ void DiagnosticLogWithLocation(
     DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
 {
     va_list args;
-    if (_log_levels[static_cast<uint8_t>(diagnosticLevel)])
+    if (_log_levels[EnumValue(diagnosticLevel)])
     {
         // Level and source code information
         std::string prefix;

@@ -4823,17 +4823,17 @@ void Vehicle::UpdateRotating()
         timeToSpriteMap = Rotation3TimeToSpriteMaps[sub_state];
     }
 
-    int32_t time = current_time;
+    uint16_t time = current_time;
     if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
     {
         time += (curRide->breakdown_sound_modifier >> 6) + 1;
     }
     time++;
 
-    uint8_t sprite = timeToSpriteMap[static_cast<uint32_t>(time)];
+    uint8_t sprite = timeToSpriteMap[time];
     if (sprite != 0xFF)
     {
-        current_time = static_cast<uint16_t>(time);
+        current_time = time;
         if (sprite == Pitch)
             return;
         Pitch = sprite;
