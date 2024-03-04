@@ -1204,7 +1204,7 @@ private:
                     if (targetRide != nullptr)
                     {
                         const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
-                        colourA = RideKeyColours[static_cast<size_t>(colourKey)];
+                        colourA = RideKeyColours[EnumValue(colourKey)];
                     }
                     break;
                 }
@@ -1214,7 +1214,7 @@ private:
                     if (targetRide != nullptr)
                     {
                         const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
-                        colourA = RideKeyColours[static_cast<size_t>(colourKey)];
+                        colourA = RideKeyColours[EnumValue(colourKey)];
                     }
 
                     break;
