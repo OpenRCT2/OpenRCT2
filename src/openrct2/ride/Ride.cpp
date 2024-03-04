@@ -4923,7 +4923,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         {
             for (auto& group : trackPieceRequiredSprites[i])
             {
-                auto precision = defaultVehicle->SpriteGroups[static_cast<uint8_t>(group.VehicleSpriteGroup)].spritePrecision;
+                auto precision = defaultVehicle->SpriteGroups[EnumValue(group.VehicleSpriteGroup)].spritePrecision;
                 if (precision < group.MinPrecision)
                     supportedPieces.set(i, false);
             }

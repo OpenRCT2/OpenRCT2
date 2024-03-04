@@ -16,22 +16,22 @@
 
 uint32_t CarEntry::NumRotationSprites(SpriteGroupType spriteGroup) const
 {
-    return NumSpritesPrecision(SpriteGroups[static_cast<uint8_t>(spriteGroup)].spritePrecision);
+    return NumSpritesPrecision(SpriteGroups[EnumValue(spriteGroup)].spritePrecision);
 }
 
 int32_t CarEntry::SpriteByYaw(int32_t yaw, SpriteGroupType spriteGroup) const
 {
-    return YawToPrecision(yaw, SpriteGroups[static_cast<uint8_t>(spriteGroup)].spritePrecision);
+    return YawToPrecision(yaw, SpriteGroups[EnumValue(spriteGroup)].spritePrecision);
 }
 
 bool CarEntry::GroupEnabled(SpriteGroupType spriteGroup) const
 {
-    return SpriteGroups[static_cast<uint8_t>(spriteGroup)].Enabled();
+    return SpriteGroups[EnumValue(spriteGroup)].Enabled();
 }
 
 uint32_t CarEntry::GroupImageId(SpriteGroupType spriteGroup) const
 {
-    return SpriteGroups[static_cast<uint8_t>(spriteGroup)].imageId;
+    return SpriteGroups[EnumValue(spriteGroup)].imageId;
 }
 
 uint32_t CarEntry::SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const

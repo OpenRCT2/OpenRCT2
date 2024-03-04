@@ -512,7 +512,7 @@ extern const CarEntry CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 
-extern const StringId RideModeNames[static_cast<uint8_t>(RideMode::Count)];
+extern const StringId RideModeNames[EnumValue(RideMode::Count)];
 
 // clang-format off
 constexpr RideTypeDescriptor DummyRTD =
@@ -546,7 +546,7 @@ constexpr RideTypeDescriptor DummyRTD =
     .ColourPreview = { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) },
     .ColourKey = RideColourKey::Ride,
     .Name = "invalid",
-	.RatingsData = 
+	.RatingsData =
     {
         RatingsCalculationType::FlatRide,
         { RIDE_RATING(1, 00), RIDE_RATING(1, 00), RIDE_RATING(1, 00) },

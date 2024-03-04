@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../util/Util.h"
+
 #include <cstdint>
 
 namespace OpenRCT2::Entity::Yaw
@@ -63,7 +65,7 @@ namespace OpenRCT2::Entity::Yaw
 
     [[nodiscard]] constexpr int32_t YawToPrecision(int32_t yaw, SpritePrecision precision)
     {
-        return yaw >> PrecisionOffset[static_cast<uint8_t>(precision)];
+        return yaw >> PrecisionOffset[EnumValue(precision)];
     }
 
     [[nodiscard]] constexpr uint8_t NumSpritesPrecision(SpritePrecision precision)

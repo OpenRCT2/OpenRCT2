@@ -517,7 +517,7 @@ static bool vehicle_move_info_valid(
     {
         return false;
     }
-    if (offset >= gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size)
+    if (offset >= gTrackVehicleInfo[EnumValue(trackSubposition)][typeAndDirection]->size)
     {
         return false;
     }
@@ -534,7 +534,7 @@ static const VehicleInfo* vehicle_get_move_info(
         static constexpr VehicleInfo zero = {};
         return &zero;
     }
-    return &gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[offset];
+    return &gTrackVehicleInfo[EnumValue(trackSubposition)][typeAndDirection]->info[offset];
 }
 
 const VehicleInfo* Vehicle::GetMoveInfo() const
@@ -550,7 +550,7 @@ uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, track_
     {
         return 0;
     }
-    return gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size;
+    return gTrackVehicleInfo[EnumValue(trackSubposition)][typeAndDirection]->size;
 }
 
 uint16_t Vehicle::GetTrackProgress() const

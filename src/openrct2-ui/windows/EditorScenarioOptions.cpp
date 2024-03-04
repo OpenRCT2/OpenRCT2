@@ -1274,7 +1274,7 @@ private:
         // Climate value
         screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
         auto ft = Formatter();
-        ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(gameState.Climate)]);
+        ft.Add<StringId>(ClimateNames[EnumValue(gameState.Climate)]);
         DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 

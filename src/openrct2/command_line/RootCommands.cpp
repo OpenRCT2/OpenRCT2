@@ -71,10 +71,10 @@ static constexpr CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_SWITCH,  &_about,            NAC, "about",              "show information about " OPENRCT2_NAME                      },
     { CMDLINE_TYPE_SWITCH,  &_verbose,          NAC, "verbose",            "log verbose messages"                                       },
     { CMDLINE_TYPE_SWITCH,  &_headless,         NAC, "headless",           "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
-#ifndef DISABLE_NETWORK                                                    
+#ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,             NAC, "port",               "port to use for hosting or joining a server"                },
     { CMDLINE_TYPE_STRING,  &_address,          NAC, "address",            "address to listen on when hosting a server"                 },
-#endif                                                                     
+#endif
     { CMDLINE_TYPE_STRING,  &_password,         NAC, "password",           "password needed to join the server"                         },
     { CMDLINE_TYPE_STRING,  &_userDataPath,     NAC, "user-data-path",     "path to the user data directory (containing config.ini)"    },
     { CMDLINE_TYPE_STRING,  &_openrct2DataPath, NAC, "openrct2-data-path", "path to the OpenRCT2 data directory (containing languages)" },
@@ -173,7 +173,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     {
         if (_verbose)
         {
-            _log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)] = true;
+            _log_levels[EnumValue(DiagnosticLevel::Verbose)] = true;
             PrintLaunchInformation();
         }
 

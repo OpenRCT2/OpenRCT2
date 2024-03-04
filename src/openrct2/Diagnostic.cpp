@@ -11,6 +11,7 @@
 
 #include "core/Console.hpp"
 #include "core/String.hpp"
+#include "util/Util.h"
 
 #include <cstdarg>
 #include <cstdio>
@@ -38,7 +39,7 @@ static FILE* diagnostic_get_stream(DiagnosticLevel level)
 
 #ifdef __ANDROID__
 
-int _android_log_priority[static_cast<uint8_t>(DiagnosticLevel::Count)] = {
+int _android_log_priority[EnumValue(DiagnosticLevel::Count)] = {
     ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO,
 };
 
@@ -50,7 +51,7 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
         return;
 
     va_start(args, format);
-    __android_log_vprint(_android_log_priority[static_cast<uint8_t>(diagnosticLevel)], "OpenRCT2", format, args);
+    __android_log_vprint(_android_log_priority[EnumValue(diagnosticLevel)], "OpenRCT2", format, args);
     va_end(args);
 }
 
@@ -66,7 +67,7 @@ void DiagnosticLogWithLocation(
     snprintf(buf, 1024, "[%s:%d (%s)]: ", file, line, function);
 
     va_start(args, format);
-    __android_log_vprint(_android_log_priority[static_cast<uint8_t>(diagnosticLevel)], file, format, args);
+    __android_log_vprint(_android_log_priority[EnumValue(diagnosticLevel)], file, format, args);
     va_end(args);
 }
 
@@ -91,7 +92,7 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
     if (_log_levels[static_cast<uint8_t>(diagnosticLevel)])
     {
         // Level
-        auto prefix = String::StdFormat("%s: ", _level_strings[static_cast<uint8_t>(diagnosticLevel)]);
+        auto prefix = String::StdFormat("%s: ", _level_strings[EnumValue(diagnosticLevel)]);
 
         // Message
         va_start(args, format);
@@ -112,12 +113,11 @@ void DiagnosticLogWithLocation(
         std::string prefix;
         if (_log_location_enabled)
         {
-            prefix = String::StdFormat(
-                "%s[%s:%d (%s)]: ", _level_strings[static_cast<uint8_t>(diagnosticLevel)], file, line, function);
+            prefix = String::StdFormat("%s[%s:%d (%s)]: ", _level_strings[EnumValue(diagnosticLevel)], file, line, function);
         }
         else
         {
-            prefix = String::StdFormat("%s: ", _level_strings[static_cast<uint8_t>(diagnosticLevel)]);
+            prefix = String::StdFormat("%s: ", _level_strings[EnumValue(diagnosticLevel)]);
         }
 
         // Message

@@ -3435,7 +3435,7 @@ private:
         }
 
         // Mode
-        widgets[WIDX_MODE].text = RideModeNames[static_cast<int>(ride->mode)];
+        widgets[WIDX_MODE].text = RideModeNames[EnumValue(ride->mode)];
 
         // Waiting
         widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];

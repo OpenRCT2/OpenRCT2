@@ -127,7 +127,7 @@ static Widget* window_staff_page_widgets[] = {
 class StaffWindow final : public Window
 {
 private:
-    EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)]{};
+    EntertainerCostume _availableCostumes[EnumValue(EntertainerCostume::Count)]{};
     uint16_t _tabAnimationOffset = 0;
     int32_t _pickedPeepOldX = LOCATION_NULL;
 
@@ -778,7 +778,7 @@ private:
             {
                 checkedIndex = i;
             }
-            gDropdownItems[i].Args = StaffCostumeNames[static_cast<uint8_t>(costume)];
+            gDropdownItems[i].Args = StaffCostumeNames[EnumValue(costume)];
             gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
         }
 

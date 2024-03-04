@@ -679,8 +679,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "climate")
         {
             console.WriteFormatLine(
-                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gameState.Climate)],
-                static_cast<uint8_t>(gameState.Climate));
+                "climate %s  (%d)", ClimateNames[EnumValue(gameState.Climate)], EnumValue(gameState.Climate));
         }
         else if (argv[0] == "game_speed")
         {
