@@ -177,7 +177,7 @@ public:
             SDL_WINDOW_FULLSCREEN,
             SDL_WINDOW_FULLSCREEN_DESKTOP,
         };
-        uint32_t windowFlags = _sdlFullscreenFlags[static_cast<int32_t>(mode)];
+        uint32_t windowFlags = _sdlFullscreenFlags[EnumValue(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FULLSCREEN_MODE::FULLSCREEN)

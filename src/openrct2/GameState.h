@@ -18,6 +18,7 @@
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "scenario/Scenario.h"
+#include "util/Util.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
@@ -78,7 +79,7 @@ namespace OpenRCT2
         money64 BankLoan;
         uint8_t BankLoanInterestRate;
         money64 MaxBankLoan;
-        money64 ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
+        money64 ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][EnumValue(ExpenditureType::Count)];
         random_engine_t ScenarioRand;
         TileCoordsXY MapSize;
 
