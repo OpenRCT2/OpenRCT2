@@ -13832,7 +13832,7 @@ static void TrackLeftZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 1)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13842,21 +13842,21 @@ static void TrackLeftZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 5)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 18, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
 
@@ -13942,7 +13942,7 @@ static void TrackLeftZeroGRollUp(
                 PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 40, session.SupportColours);
             PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
             break;
     }
@@ -13962,14 +13962,14 @@ static void TrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 18, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 20)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -13979,7 +13979,7 @@ static void TrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 25)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -13989,7 +13989,7 @@ static void TrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_ZERO_G_ROLL + 29)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -14074,7 +14074,7 @@ static void TrackRightZeroGRollUp(
                 PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 40, session.SupportColours);
             PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
             break;
     }
@@ -14378,7 +14378,7 @@ static void TrackRightLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_LARGE_ZERO_G_ROLL + 24)),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 4, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 34,
                         session.SupportColours);
                     break;
                 case 1:
@@ -14389,7 +14389,7 @@ static void TrackRightLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_LARGE_ZERO_G_ROLL + 30)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 4, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 38,
                         session.SupportColours);
                     break;
                 case 2:
@@ -14397,7 +14397,7 @@ static void TrackRightLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_LARGE_ZERO_G_ROLL + 34)),
                         { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 4, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 38,
                         session.SupportColours);
                     break;
                 case 3:
@@ -14405,7 +14405,7 @@ static void TrackRightLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_LARGE_ZERO_G_ROLL + 39)),
                         { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 4, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 38,
                         session.SupportColours);
                     break;
             }
@@ -14418,7 +14418,7 @@ static void TrackRightLargeZeroGRollUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 44, 0x20);
             break;
     }
 }
