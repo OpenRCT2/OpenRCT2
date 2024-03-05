@@ -5914,23 +5914,24 @@ private:
 
     static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
     {
+        const auto& gameState = GetGameState();
+        const auto existingFlags = gameState.SamePriceThroughoutPark;
+
+        auto newFlags = existingFlags;
         if (GetShopItemDescriptor(shop_item).IsPhoto())
         {
-            auto newFlags = gSamePriceThroughoutPark;
-            if (gSamePriceThroughoutPark & EnumToFlag(shop_item))
+            if (existingFlags & EnumToFlag(shop_item))
                 newFlags &= ~EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
             else
                 newFlags |= EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
-            auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
-            GameActions::Execute(&parkSetParameter);
         }
         else
         {
-            auto newFlags = gSamePriceThroughoutPark;
             newFlags ^= EnumToFlag(shop_item);
-            auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
-            GameActions::Execute(&parkSetParameter);
         }
+
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
+        GameActions::Execute(&parkSetParameter);
     }
 
     void IncomeTogglePrimaryPrice()

@@ -2236,10 +2236,10 @@ namespace RCT1
 
             gameState.ParkSize = _s4.ParkSize;
             gameState.TotalRideValueForMoney = _s4.TotalRideValueForMoney;
-            gSamePriceThroughoutPark = 0;
+            gameState.SamePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
             {
-                gSamePriceThroughoutPark = _s4.SamePriceThroughout;
+                gameState.SamePriceThroughoutPark = _s4.SamePriceThroughout;
             }
         }
 
