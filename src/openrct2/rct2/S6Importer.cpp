@@ -1613,7 +1613,7 @@ namespace RCT2
             const auto& src = _s6.RideRatingsCalcData;
             // S6 has only one state, ensure we reset all states before reading the first one.
             RideRatingResetUpdateStates();
-            auto& rideRatingStates = RideRatingGetUpdateStates();
+            auto& rideRatingStates = GetGameState().RideRatingUpdateStates;
             auto& dst = rideRatingStates[0];
             dst = {};
             dst.Proximity = { src.ProximityX, src.ProximityY, src.ProximityZ };

@@ -17,6 +17,7 @@
 #include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
+#include "ride/RideRatings.h"
 #include "scenario/Scenario.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
@@ -92,6 +93,7 @@ namespace OpenRCT2
         std::vector<Banner> Banners;
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
         std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
+        ::RideRatingUpdateStates RideRatingUpdateStates;
         std::vector<TileElement> TileElements;
 
         std::vector<ScenerySelection> RestrictedScenery;

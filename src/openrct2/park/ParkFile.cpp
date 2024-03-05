@@ -552,7 +552,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gGrassSceneryTileLoopPosition);
                 cs.ReadWrite(gWidePathTileLoopPosition);
 
-                auto& rideRatings = RideRatingGetUpdateStates();
+                auto& rideRatings = gameState.RideRatingUpdateStates;
                 if (os.GetHeader().TargetVersion >= 21)
                 {
                     cs.ReadWriteArray(rideRatings, [this, &cs](RideRatingUpdateState& calcData) {
