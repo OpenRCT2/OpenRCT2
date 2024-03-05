@@ -61,6 +61,7 @@ namespace OpenRCT2
         uint8_t GuestInitialHappiness;
         uint8_t GuestInitialHunger;
         uint8_t GuestInitialThirst;
+        uint8_t GuestChangeModifier;
         uint32_t NextGuestNumber;
         uint32_t NumGuestsInPark;
         uint32_t NumGuestsHeadingForPark;

@@ -125,8 +125,8 @@ private:
             Widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
-            StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
-                                                               : _guestCountFormats[gGuestChangeModifier];
+            StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.GuestChangeModifier]
+                                                               : _guestCountFormats[gameState.GuestChangeModifier];
             colour_t colour
                 = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_GUESTS
                        ? COLOUR_WHITE

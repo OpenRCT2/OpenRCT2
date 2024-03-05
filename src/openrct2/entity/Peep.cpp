@@ -66,8 +66,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-uint8_t gGuestChangeModifier;
-
 uint8_t gPeepWarningThrottle[16];
 
 static uint8_t _unk_F1AEF0;

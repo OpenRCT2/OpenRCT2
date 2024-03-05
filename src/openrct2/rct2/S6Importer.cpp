@@ -282,7 +282,7 @@ namespace RCT2
 
             ImportPeepSpawns();
 
-            gGuestChangeModifier = _s6.GuestCountChangeModifier;
+            gameState.GuestChangeModifier = _s6.GuestCountChangeModifier;
             gameState.ResearchFundingLevel = _s6.CurrentResearchLevel;
             // Pad01357400
             // _s6.ResearchedTrackTypesA
