@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#775] Add 2x and 4x zoom levels to software renderer (previously limited to OpenGL).
 - Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
+- Feature: [#20539] [Plugin] Add API for getting Rides' Additional Stats.
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
 - Feature: [#22694] Park graphs have tooltips and can be resized like finance graphs.
 - Feature: [#22758] The table of ‘real’ peep names can now be changed using Peep Names objects.
@@ -316,7 +317,6 @@
 - Feature: [#12078] Add shortcut key for toggling wall slope.
 - Feature: [#19919] Add diagonal brakes and diagonal block brakes to most coaster types.
 - Feature: [#20141] Add additional track pieces to the Giga Coaster.
-- Feature: [#20539] [Plugin] Add additional ride stats to plugin interface.
 - Feature: [#20825] Made setting the game speed a game action.
 - Feature: [#20830] Display author field on scenery window.
 - Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
