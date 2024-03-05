@@ -879,7 +879,7 @@ static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
     }
 
     w.Invalidate();
-    WindowEventViewportRotateCall(&w);
+    w.OnViewportRotate();
 }
 
 void ViewportRotateSingle(WindowBase* window, int32_t direction)
