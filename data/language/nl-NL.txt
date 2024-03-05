@@ -3685,6 +3685,11 @@ STR_6614    :Kan de toegangsprijs niet aanpassen
 STR_6615    :Dit baantype vereist water
 STR_6616    :Ongeldige actie voor dit type werknemer
 STR_6617    :Kan een kaartelement niet met zichzelf verwisselen
+STR_6618    :Kan de beperkingen van dit object niet aanpassen…
+STR_6619    :Dit objecttype kan niet worden beperkt!
+STR_6620    :Object niet gevonden!
+STR_6621    :Beperken
+STR_6622    :Maakt het object enkel beschikbaar in de scenariobewerker en zandbakmodus.
 
 #############
 # Scenarios #

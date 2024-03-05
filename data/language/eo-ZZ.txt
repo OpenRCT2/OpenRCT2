@@ -3686,6 +3686,11 @@ STR_6614    :Ne povas ŝanĝi enirpagon de parko
 STR_6615    :Trako sur ĉi tiu bloko bezonas akvon
 STR_6616    :Ago estas nevalida por tiu dungitotipo
 STR_6617    :Ne povas permuti blokelementon kun si mem
+STR_6618    :Ne povas limigi aŭ mallimigi objekton…
+STR_6619    :Objekotipo ne povas esti limigita!
+STR_6620    :Objekto ne troviĝis!
+STR_6621    :Limigi
+STR_6622    :Limigi objekton al la Scenaroredaktilo kaj Provejo-reĝimo.
 
 #############
 # Scenarios #
