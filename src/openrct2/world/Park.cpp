@@ -240,7 +240,7 @@ void Park::Initialise()
     gameState.NumGuestsInPark = 0;
     gameState.NumGuestsInParkLastWeek = 0;
     gameState.NumGuestsHeadingForPark = 0;
-    gGuestChangeModifier = 0;
+    gameState.GuestChangeModifier = 0;
     gameState.ParkRating = 0;
     gameState.GuestGenerationProbability = 0;
     gameState.TotalRideValueForMoney = 0;
@@ -745,7 +745,7 @@ void Park::UpdateHistories()
             guestChangeModifier = 0;
         }
     }
-    gGuestChangeModifier = guestChangeModifier;
+    gameState.GuestChangeModifier = guestChangeModifier;
     gameState.NumGuestsInParkLastWeek = gameState.NumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
