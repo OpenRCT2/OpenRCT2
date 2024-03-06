@@ -1503,12 +1503,12 @@ declare global {
 
         edges: number;
         corners: number;
-        slopeDirection: number | null;
+        slopeDirection: Direction | null;
         isBlockedByVehicle: boolean;
         isWide: boolean;
 
         isQueue: boolean;
-        queueBannerDirection: number | null;
+        queueBannerDirection: Direction | null;
         ride: number | null;
         station: number | null;
 
