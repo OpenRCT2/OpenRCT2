@@ -2154,7 +2154,7 @@ uint8_t GetCurrentRotation()
     auto* viewport = ViewportGetMain();
     if (viewport == nullptr)
     {
-        LOG_ERROR("No viewport found! Will return 0.");
+        LOG_VERBOSE("No viewport found! Will return 0.");
         return 0;
     }
     uint8_t rotation = viewport->rotation;
