@@ -885,7 +885,6 @@ static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
 void ViewportRotateSingle(WindowBase* window, int32_t direction)
 {
     ViewportRotateSingleInternal(*window, direction);
-    ResetAllSpriteQuadrantPlacements();
 }
 
 void ViewportRotateAll(int32_t direction)
@@ -898,7 +897,6 @@ void ViewportRotateAll(int32_t direction)
             return;
         ViewportRotateSingleInternal(*w, direction);
     });
-    ResetAllSpriteQuadrantPlacements();
 }
 
 /**
