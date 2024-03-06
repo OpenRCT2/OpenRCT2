@@ -42,6 +42,7 @@ enum class FormatToken
     DurationShort,
     DurationLong,
     Length,
+    Height,
     Sprite,
     Pop16,
     Push16,

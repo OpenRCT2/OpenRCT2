@@ -51,6 +51,12 @@ int32_t MphToDmps(int32_t mph)
     return (mph * 73243) >> 14;
 }
 
+int32_t HeightUnitsToMetres(int32_t heightUnit)
+{
+    // 1 unit = 0.75 metres
+    return (heightUnit * 3) >> 2;
+}
+
 int32_t UtilBitScanForward(int32_t source)
 {
 #if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005

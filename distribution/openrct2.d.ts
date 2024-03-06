@@ -2076,7 +2076,7 @@ declare global {
         readonly downtime: number;
 
         /**
-         * The currently set chain lift speed in miles per hour.
+         * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert speed values to a localised value/unit string. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
          */
         liftHillSpeed: number;
 
@@ -2089,6 +2089,61 @@ declare global {
          * The min chain lift speed for this ride in miles per hour.
          */
         readonly minLiftHillSpeed: number;
+
+        /**
+         * The max speed in miles per hour.
+         */
+        readonly maxSpeed: number;
+
+        /**
+         * The average speed in miles per hour.
+         */
+        readonly averageSpeed: number;
+
+        /**
+         * The ride time in seconds.
+         */
+        readonly rideTime: number;
+
+        /**
+         * Total length of the ride in meters. Use `context.formatString()` to convert into localised value/unit string. Ex: `formatString('{LENGTH}', ride.rideLength)`.
+         */
+        readonly rideLength: number;
+
+        /**
+         * The max positive vertical Gs.
+         */
+        readonly maxPositiveVerticalGs: number;
+
+        /**
+         * The max negative vertical Gs.
+         */
+        readonly maxNegativeVerticalGs: number;
+
+        /**
+         * The max lateral Gs.
+         */
+        readonly maxLateralGs: number;
+
+        /**
+         * The total airtime in seconds.
+         */
+        readonly totalAirTime: number;
+
+        /**
+         * The number of drops.
+         */
+        readonly drops: number;
+
+        /**
+         * The number of powered lifts.
+         */
+        readonly poweredLifts: number;
+
+        /**
+         * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
+         */
+        readonly highestDropHeight: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";

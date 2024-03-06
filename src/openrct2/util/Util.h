@@ -22,6 +22,7 @@ int32_t SquaredMetresToSquaredFeet(int32_t squaredMetres);
 int32_t MetresToFeet(int32_t metres);
 int32_t MphToKmph(int32_t mph);
 int32_t MphToDmps(int32_t mph);
+int32_t HeightUnitsToMetres(int32_t heightUnit);
 
 bool SSE41Available();
 bool AVX2Available();
