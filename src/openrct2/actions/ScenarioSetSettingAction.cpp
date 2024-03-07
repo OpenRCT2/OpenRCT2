@@ -146,7 +146,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
-            gLandPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.LandPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::CostToBuyConstructionRights:
             gameState.ConstructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);

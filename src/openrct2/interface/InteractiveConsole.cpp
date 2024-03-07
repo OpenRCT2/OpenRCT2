@@ -668,7 +668,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "land_rights_cost")
         {
-            console.WriteFormatLine("land_rights_cost %d.%d0", gLandPrice / 10, gLandPrice % 10);
+            console.WriteFormatLine("land_rights_cost %d.%d0", gameState.LandPrice / 10, gameState.LandPrice % 10);
         }
         else if (argv[0] == "construction_rights_cost")
         {

@@ -1005,10 +1005,10 @@ private:
         switch (widgetIndex)
         {
             case WIDX_LAND_COST_INCREASE:
-                if (gLandPrice < 200.00_GBP)
+                if (gameState.LandPrice < 200.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyLand, gLandPrice + 1.00_GBP);
+                        ScenarioSetSetting::CostToBuyLand, gameState.LandPrice + 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -1018,10 +1018,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_LAND_COST_DECREASE:
-                if (gLandPrice > 5.00_GBP)
+                if (gameState.LandPrice > 5.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyLand, gLandPrice - 1.00_GBP);
+                        ScenarioSetSetting::CostToBuyLand, gameState.LandPrice - 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -1215,7 +1215,7 @@ private:
             // Cost to buy land value
             screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gLandPrice);
+            ft.Add<money64>(gameState.LandPrice);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 

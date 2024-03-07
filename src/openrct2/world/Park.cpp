@@ -47,8 +47,6 @@
 
 using namespace OpenRCT2;
 
-money64 gLandPrice;
-
 int16_t gParkRatingCasualtyPenalty;
 
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
@@ -272,7 +270,7 @@ void Park::Initialise()
     gameState.ScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
     gameState.ScenarioObjective.Year = 4;
     gameState.ScenarioObjective.NumGuests = 1000;
-    gLandPrice = 90.00_GBP;
+    gameState.LandPrice = 90.00_GBP;
     gameState.ConstructionRightsPrice = 40.00_GBP;
     gameState.ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
