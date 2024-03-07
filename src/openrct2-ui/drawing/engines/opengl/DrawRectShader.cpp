@@ -11,6 +11,8 @@
 
 #    include "DrawRectShader.h"
 
+using namespace OpenRCT2::Ui;
+
 namespace
 {
     struct VDStruct
