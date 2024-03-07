@@ -517,7 +517,7 @@ static bool vehicle_move_info_valid(
     {
         return false;
     }
-    if (offset >= gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size)
+    if (offset >= gTrackVehicleInfo[EnumValue(trackSubposition)][typeAndDirection]->size)
     {
         return false;
     }
@@ -534,7 +534,7 @@ static const VehicleInfo* vehicle_get_move_info(
         static constexpr VehicleInfo zero = {};
         return &zero;
     }
-    return &gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[offset];
+    return &gTrackVehicleInfo[EnumValue(trackSubposition)][typeAndDirection]->info[offset];
 }
 
 const VehicleInfo* Vehicle::GetMoveInfo() const
@@ -550,7 +550,7 @@ uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, track_
     {
         return 0;
     }
-    return gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size;
+    return gTrackVehicleInfo[EnumValue(trackSubposition)][typeAndDirection]->size;
 }
 
 uint16_t Vehicle::GetTrackProgress() const
@@ -4823,17 +4823,17 @@ void Vehicle::UpdateRotating()
         timeToSpriteMap = Rotation3TimeToSpriteMaps[sub_state];
     }
 
-    int32_t time = current_time;
+    uint16_t time = current_time;
     if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
     {
         time += (curRide->breakdown_sound_modifier >> 6) + 1;
     }
     time++;
 
-    uint8_t sprite = timeToSpriteMap[static_cast<uint32_t>(time)];
+    uint8_t sprite = timeToSpriteMap[time];
     if (sprite != 0xFF)
     {
-        current_time = static_cast<uint16_t>(time);
+        current_time = time;
         if (sprite == Pitch)
             return;
         Pitch = sprite;

@@ -94,7 +94,7 @@ public:
 
     u8string GetDirectoryPath(DIRBASE base) const override
     {
-        return _basePath[static_cast<size_t>(base)];
+        return _basePath[EnumValue(base)];
     }
 
     u8string GetDirectoryPath(DIRBASE base, DIRID did) const override
@@ -105,15 +105,15 @@ public:
         {
             default:
             case DIRBASE::RCT1:
-                directoryName = DirectoryNamesRCT2[static_cast<size_t>(did)];
+                directoryName = DirectoryNamesRCT2[EnumValue(did)];
                 break;
             case DIRBASE::RCT2:
-                directoryName = _usingRCTClassic ? "Assets" : DirectoryNamesRCT2[static_cast<size_t>(did)];
+                directoryName = _usingRCTClassic ? "Assets" : DirectoryNamesRCT2[EnumValue(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
             case DIRBASE::CONFIG:
-                directoryName = DirectoryNamesOpenRCT2[static_cast<size_t>(did)];
+                directoryName = DirectoryNamesOpenRCT2[EnumValue(did)];
                 break;
         }
 
@@ -124,7 +124,7 @@ public:
     {
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
-        auto fileName = FileNames[static_cast<size_t>(pathid)];
+        auto fileName = FileNames[EnumValue(pathid)];
         return Path::Combine(basePath, fileName);
     }
 
@@ -161,7 +161,7 @@ public:
 
     void SetBasePath(DIRBASE base, u8string_view path) override
     {
-        _basePath[static_cast<size_t>(base)] = path;
+        _basePath[EnumValue(base)] = path;
 
         if (base == DIRBASE::RCT2)
         {
@@ -223,38 +223,35 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 
     // Set default paths
     std::string basePaths[DIRBASE_COUNT];
-    basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)] = Platform::GetInstallPath();
-    basePaths[static_cast<size_t>(DIRBASE::USER)] = Path::Combine(
-        Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
-    basePaths[static_cast<size_t>(DIRBASE::CONFIG)] = Path::Combine(
-        Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);
-    basePaths[static_cast<size_t>(DIRBASE::CACHE)] = Path::Combine(
-        Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), subDirectory);
-    basePaths[static_cast<size_t>(DIRBASE::DOCUMENTATION)] = Platform::GetDocsPath();
+    basePaths[EnumValue(DIRBASE::OPENRCT2)] = Platform::GetInstallPath();
+    basePaths[EnumValue(DIRBASE::USER)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
+    basePaths[EnumValue(DIRBASE::CONFIG)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);
+    basePaths[EnumValue(DIRBASE::CACHE)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), subDirectory);
+    basePaths[EnumValue(DIRBASE::DOCUMENTATION)] = Platform::GetDocsPath();
 
     // Override paths that have been specified via the command line
     if (!gCustomRCT1DataPath.empty())
     {
-        basePaths[static_cast<size_t>(DIRBASE::RCT1)] = gCustomRCT1DataPath;
+        basePaths[EnumValue(DIRBASE::RCT1)] = gCustomRCT1DataPath;
     }
     if (!gCustomRCT2DataPath.empty())
     {
-        basePaths[static_cast<size_t>(DIRBASE::RCT2)] = gCustomRCT2DataPath;
+        basePaths[EnumValue(DIRBASE::RCT2)] = gCustomRCT2DataPath;
     }
     if (!gCustomOpenRCT2DataPath.empty())
     {
-        basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)] = gCustomOpenRCT2DataPath;
+        basePaths[EnumValue(DIRBASE::OPENRCT2)] = gCustomOpenRCT2DataPath;
     }
     if (!gCustomUserDataPath.empty())
     {
-        basePaths[static_cast<size_t>(DIRBASE::USER)] = gCustomUserDataPath;
-        basePaths[static_cast<size_t>(DIRBASE::CONFIG)] = gCustomUserDataPath;
-        basePaths[static_cast<size_t>(DIRBASE::CACHE)] = gCustomUserDataPath;
+        basePaths[EnumValue(DIRBASE::USER)] = gCustomUserDataPath;
+        basePaths[EnumValue(DIRBASE::CONFIG)] = gCustomUserDataPath;
+        basePaths[EnumValue(DIRBASE::CACHE)] = gCustomUserDataPath;
     }
 
-    if (basePaths[static_cast<size_t>(DIRBASE::DOCUMENTATION)].empty())
+    if (basePaths[EnumValue(DIRBASE::DOCUMENTATION)].empty())
     {
-        basePaths[static_cast<size_t>(DIRBASE::DOCUMENTATION)] = basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)];
+        basePaths[EnumValue(DIRBASE::DOCUMENTATION)] = basePaths[EnumValue(DIRBASE::OPENRCT2)];
     }
 
     auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);

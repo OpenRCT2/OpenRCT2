@@ -2401,11 +2401,11 @@ private:
         if (ride->type == RIDE_TYPE_MINI_GOLF)
             return STR_EMPTY;
 
-        auto stringId = VehicleStatusNames[static_cast<size_t>(vehicle->status)];
+        auto stringId = VehicleStatusNames[EnumValue(vehicle->status)];
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SINGLE_SESSION)
             && vehicle->status <= Vehicle::Status::UnloadingPassengers)
         {
-            stringId = SingleSessionVehicleStatusNames[static_cast<size_t>(vehicle->status)];
+            stringId = SingleSessionVehicleStatusNames[EnumValue(vehicle->status)];
         }
 
         ft.Add<StringId>(stringId);
@@ -3435,7 +3435,7 @@ private:
         }
 
         // Mode
-        widgets[WIDX_MODE].text = RideModeNames[static_cast<int>(ride->mode)];
+        widgets[WIDX_MODE].text = RideModeNames[EnumValue(ride->mode)];
 
         // Waiting
         widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];

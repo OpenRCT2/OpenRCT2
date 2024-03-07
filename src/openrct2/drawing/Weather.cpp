@@ -16,6 +16,7 @@
 #include "../ride/TrackDesign.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "Drawing.h"
 #include "IDrawingEngine.h"
@@ -66,10 +67,10 @@ void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
         auto weatherLevel = GetGameState().ClimateCurrent.Level;
         if (weatherLevel != WeatherLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
-            auto drawFunc = DrawRainFunctions[static_cast<int8_t>(weatherLevel)];
+            auto drawFunc = DrawRainFunctions[EnumValue(weatherLevel)];
             if (ClimateIsSnowing())
             {
-                drawFunc = DrawSnowFunctions[static_cast<int8_t>(weatherLevel)];
+                drawFunc = DrawSnowFunctions[EnumValue(weatherLevel)];
             }
             auto uiContext = GetContext()->GetUiContext();
             uiContext->DrawWeatherAnimation(weatherDrawer, dpi, drawFunc);

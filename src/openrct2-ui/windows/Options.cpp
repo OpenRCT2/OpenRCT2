@@ -1043,7 +1043,7 @@ private:
             STR_VIRTUAL_FLOOR_STYLE_GLASSY,
         };
 
-        widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[static_cast<int32_t>(gConfigGeneral.VirtualFloorStyle)];
+        widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[EnumValue(gConfigGeneral.VirtualFloorStyle)];
 
         SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.EnableLightFx);
         if (gConfigGeneral.DayNightCycle && gConfigGeneral.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay)

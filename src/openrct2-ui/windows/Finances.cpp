@@ -181,7 +181,7 @@ static_assert(std::size(_windowFinancesPageWidgets) == WINDOW_FINANCES_PAGE_COUN
 
 #pragma endregion
 
-static constexpr StringId _windowFinancesSummaryRowLabels[static_cast<int32_t>(ExpenditureType::Count)] = {
+static constexpr StringId _windowFinancesSummaryRowLabels[EnumValue(ExpenditureType::Count)] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
     STR_FINANCES_SUMMARY_LAND_PURCHASE,

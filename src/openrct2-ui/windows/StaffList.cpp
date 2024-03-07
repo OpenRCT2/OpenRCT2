@@ -677,7 +677,7 @@ private:
     static EntertainerCostume GetRandomEntertainerCostume()
     {
         auto result = EntertainerCostume::Panda;
-        EntertainerCostume costumeList[static_cast<uint8_t>(EntertainerCostume::Count)];
+        EntertainerCostume costumeList[EnumValue(EntertainerCostume::Count)];
         int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(costumeList);
         if (numCostumes > 0)
         {

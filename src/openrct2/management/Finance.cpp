@@ -37,7 +37,7 @@ const money64 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     400.00_GBP, // Maximum funding
 };
 
-static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Count)] = {
+static constexpr int32_t dword_988E60[EnumValue(ExpenditureType::Count)] = {
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
@@ -80,8 +80,8 @@ void FinancePayment(money64 amount, ExpenditureType type)
     auto& gameState = GetGameState();
     gameState.Cash = AddClamp_money64(gameState.Cash, -amount);
 
-    gameState.ExpenditureTable[0][static_cast<int32_t>(type)] -= amount;
-    if (dword_988E60[static_cast<int32_t>(type)] & 1)
+    gameState.ExpenditureTable[0][EnumValue(type)] -= amount;
+    if (dword_988E60[EnumValue(type)] & 1)
     {
         // Cumulative amount of money spent this day
         gameState.CurrentExpenditure -= amount;
@@ -366,10 +366,10 @@ money64 FinanceGetLastMonthShopProfit()
     {
         const auto* lastMonthExpenditure = GetGameState().ExpenditureTable[1];
 
-        profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)];
-        profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)];
-        profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)];
-        profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::ShopSales)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::ShopStock)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkSales)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkStock)];
     }
     return profit;
 }
