@@ -78,8 +78,6 @@ struct ShelteredEights
     uint8_t TotalShelteredEighths;
 };
 
-static RideRatingUpdateStates gRideRatingUpdateStates;
-
 // Amount of updates allowed per updating state on the current tick.
 // The total amount would be MaxRideRatingSubSteps * RideRatingMaxUpdateStates which
 // would be currently 80, this is the worst case of sub-steps and may break out earlier.
@@ -153,17 +151,13 @@ static void RideRatingsApplyRequirementStations(RatingTuple& ratings, const Ride
 static void RideRatingsApplyRequirementSplashdown(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyPenaltyLateralGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 
-RideRatingUpdateStates& RideRatingGetUpdateStates()
-{
-    return gRideRatingUpdateStates;
-}
-
 void RideRatingResetUpdateStates()
 {
     RideRatingUpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
-    std::fill(gRideRatingUpdateStates.begin(), gRideRatingUpdateStates.end(), nullState);
+    auto& updateStates = GetGameState().RideRatingUpdateStates;
+    std::fill(updateStates.begin(), updateStates.end(), nullState);
 }
 
 /**
@@ -197,7 +191,7 @@ void RideRatingsUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    for (auto& updateState : gRideRatingUpdateStates)
+    for (auto& updateState : GetGameState().RideRatingUpdateStates)
     {
         for (size_t i = 0; i < MaxRideRatingUpdateSubSteps; ++i)
         {
@@ -237,7 +231,8 @@ static void ride_ratings_update_state(RideRatingUpdateState& state)
 
 static bool RideRatingIsUpdatingRide(RideId id)
 {
-    return std::any_of(gRideRatingUpdateStates.begin(), gRideRatingUpdateStates.end(), [id](auto& state) {
+    const auto& updateStates = GetGameState().RideRatingUpdateStates;
+    return std::any_of(updateStates.begin(), updateStates.end(), [id](auto& state) {
         return state.CurrentRide == id && state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
     });
 }

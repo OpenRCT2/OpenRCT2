@@ -9,18 +9,19 @@
 
 #include "ShopItem.h"
 
+#include "../GameState.h"
 #include "../common.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../ride/RideEntry.h"
 #include "../sprites.h"
 
+using namespace OpenRCT2;
+
 ShopItem& operator++(ShopItem& d, int)
 {
     return d = (d == ShopItem::Count) ? ShopItem::Balloon : ShopItem(EnumValue(d) + 1);
 }
-
-uint64_t gSamePriceThroughoutPark;
 
 // clang-format off
 /** rct2: 0x00982164 (cost, base value, hot and cold value); 0x00982358 (default price) */
@@ -146,7 +147,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
 
 bool ShopItemHasCommonPrice(const ShopItem shopItem)
 {
-    return (gSamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
+    return (GetGameState().SamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
 }
 
 bool ShopItemDescriptor::IsFood() const

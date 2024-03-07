@@ -403,7 +403,8 @@ namespace RCT2
             // Pad013587FC
             gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gameState.MapSize = { _s6.MapSize, _s6.MapSize };
-            gSamePriceThroughoutPark = _s6.SamePriceThroughout | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
+            gameState.SamePriceThroughoutPark = _s6.SamePriceThroughout
+                | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
             gameState.SuggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.ScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gLastEntranceStyle = _s6.LastEntranceStyle;
@@ -1612,7 +1613,7 @@ namespace RCT2
             const auto& src = _s6.RideRatingsCalcData;
             // S6 has only one state, ensure we reset all states before reading the first one.
             RideRatingResetUpdateStates();
-            auto& rideRatingStates = RideRatingGetUpdateStates();
+            auto& rideRatingStates = GetGameState().RideRatingUpdateStates;
             auto& dst = rideRatingStates[0];
             dst = {};
             dst.Proximity = { src.ProximityX, src.ProximityY, src.ProximityZ };
