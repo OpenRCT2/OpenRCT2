@@ -18,15 +18,8 @@ private:
     GLuint uTexture;
     GLuint uPalette;
 
-    GLuint vPosition;
-    GLuint vTextureCoordinate;
-
-    GLuint _vbo;
-    GLuint _vao;
-
 public:
     ApplyPaletteShader();
-    ~ApplyPaletteShader() override;
 
     static void SetTexture(GLuint texture);
     void SetPalette(const vec4* glPalette);

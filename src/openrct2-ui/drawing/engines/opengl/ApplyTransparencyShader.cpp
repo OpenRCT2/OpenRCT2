@@ -11,43 +11,10 @@
 
 #    include "ApplyTransparencyShader.h"
 
-namespace
-{
-    struct VDStruct
-    {
-        GLfloat position[2];
-        GLfloat texturecoordinate[2];
-    };
-} // namespace
-
-constexpr VDStruct VertexData[4] = {
-    { -1.0f, -1.0f, 0.0f, 0.0f },
-    { 1.0f, -1.0f, 1.0f, 0.0f },
-    { -1.0f, 1.0f, 0.0f, 1.0f },
-    { 1.0f, 1.0f, 1.0f, 1.0f },
-};
-
 ApplyTransparencyShader::ApplyTransparencyShader()
     : OpenGLShaderProgram("applytransparency")
 {
     GetLocations();
-
-    glGenBuffers(1, &_vbo);
-    glGenVertexArrays(1, &_vao);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
-
-    glBindVertexArray(_vao);
-    glVertexAttribPointer(
-        vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, position)));
-    glVertexAttribPointer(
-        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct),
-        reinterpret_cast<void*>(offsetof(VDStruct, texturecoordinate)));
-
-    glEnableVertexAttribArray(vPosition);
-    glEnableVertexAttribArray(vTextureCoordinate);
-
     Use();
     glUniform1i(uOpaqueTex, 0);
     glUniform1i(uOpaqueDepth, 1);
@@ -55,12 +22,6 @@ ApplyTransparencyShader::ApplyTransparencyShader()
     glUniform1i(uTransparentDepth, 3);
     glUniform1i(uPaletteTex, 4);
     glUniform1i(uBlendPaletteTex, 5);
-}
-
-ApplyTransparencyShader::~ApplyTransparencyShader()
-{
-    glDeleteBuffers(1, &_vbo);
-    glDeleteVertexArrays(1, &_vao);
 }
 
 void ApplyTransparencyShader::GetLocations()
@@ -71,9 +32,6 @@ void ApplyTransparencyShader::GetLocations()
     uTransparentDepth = GetUniformLocation("uTransparentDepth");
     uPaletteTex = GetUniformLocation("uPaletteTex");
     uBlendPaletteTex = GetUniformLocation("uBlendPaletteTex");
-
-    vPosition = GetAttributeLocation("vPosition");
-    vTextureCoordinate = GetAttributeLocation("vTextureCoordinate");
 }
 
 void ApplyTransparencyShader::SetTextures(
@@ -90,8 +48,7 @@ void ApplyTransparencyShader::SetTextures(
 
 void ApplyTransparencyShader::Draw()
 {
-    glBindVertexArray(_vao);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 #endif /* DISABLE_OPENGL */

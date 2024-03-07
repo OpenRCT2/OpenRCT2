@@ -22,15 +22,8 @@ private:
     GLuint uPaletteTex;
     GLuint uBlendPaletteTex;
 
-    GLuint vPosition;
-    GLuint vTextureCoordinate;
-
-    GLuint _vbo;
-    GLuint _vao;
-
 public:
     ApplyTransparencyShader();
-    ~ApplyTransparencyShader() override;
 
     static void SetTextures(
         GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex,
