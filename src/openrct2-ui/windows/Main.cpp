@@ -35,8 +35,8 @@ public:
         if (viewport != nullptr)
         {
             SetViewportFlags();
+            viewport->rotation = 0;
         }
-        gCurrentRotation = 0;
         gShowGridLinesRefCount = 0;
         gShowLandRightsRefCount = 0;
         gShowConstructionRightsRefCount = 0;

@@ -498,7 +498,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             auto zoom = ZoomLevel{ customZoom };
             auto rotation = std::atoi(argv[4]) & 3;
             viewport = GetGiantViewport(rotation, zoom);
-            gCurrentRotation = rotation;
+            viewport.rotation = rotation;
         }
         else
         {
@@ -554,7 +554,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
                                      coords2d.y - ((viewport.view_height << customZoom) / 2) };
                 viewport.zoom = ZoomLevel{ static_cast<int8_t>(customZoom) };
-                gCurrentRotation = customRotation;
+                viewport.rotation = customRotation;
             }
             else
             {
@@ -562,7 +562,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 viewport.viewPos = { gameState.SavedView
                                      - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
                 viewport.zoom = gameState.SavedViewZoom;
-                gCurrentRotation = gameState.SavedViewRotation;
+                viewport.rotation = gameState.SavedViewRotation;
             }
         }
 
@@ -656,8 +656,7 @@ void CaptureImage(const CaptureOptions& options)
         viewport = GetGiantViewport(options.Rotation, options.Zoom);
     }
 
-    auto backupRotation = gCurrentRotation;
-    gCurrentRotation = options.Rotation;
+    viewport.rotation = options.Rotation;
 
     if (options.Transparent)
     {
@@ -669,6 +668,4 @@ void CaptureImage(const CaptureOptions& options)
     RenderViewport(nullptr, viewport, dpi);
     WriteDpiToFile(outputPath, dpi, gPalette);
     ReleaseDPI(dpi);
-
-    gCurrentRotation = backupRotation;
 }

@@ -28,40 +28,44 @@ struct PaintEntry;
 
 // Flags must currenly retain their values to avoid breaking plugins.
 // Values can be changed when plugins move to using named constants.
-enum
+enum : uint32_t
 {
-    VIEWPORT_FLAG_GRIDLINES = (1 << 7),
-    VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1 << 0),
-    VIEWPORT_FLAG_HIDE_BASE = (1 << 12),
-    VIEWPORT_FLAG_HIDE_VERTICAL = (1 << 13),
+    VIEWPORT_FLAG_NONE = 0U,
 
-    VIEWPORT_FLAG_SOUND_ON = (1 << 10),
-    VIEWPORT_FLAG_LAND_OWNERSHIP = (1 << 8),
-    VIEWPORT_FLAG_CONSTRUCTION_RIGHTS = (1 << 9),
-    VIEWPORT_FLAG_HIDE_ENTITIES = (1 << 14),
-    VIEWPORT_FLAG_CLIP_VIEW = (1 << 17),
-    VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1 << 18),
-    VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
+    VIEWPORT_FLAG_GRIDLINES = (1U << 7),
+    VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1U << 0),
+    VIEWPORT_FLAG_HIDE_BASE = (1U << 12),
+    VIEWPORT_FLAG_HIDE_VERTICAL = (1U << 13),
 
-    VIEWPORT_FLAG_LAND_HEIGHTS = (1 << 4),
-    VIEWPORT_FLAG_TRACK_HEIGHTS = (1 << 5),
-    VIEWPORT_FLAG_PATH_HEIGHTS = (1 << 6),
+    VIEWPORT_FLAG_SOUND_ON = (1U << 10),
+    VIEWPORT_FLAG_LAND_OWNERSHIP = (1U << 8),
+    VIEWPORT_FLAG_CONSTRUCTION_RIGHTS = (1U << 9),
+    VIEWPORT_FLAG_HIDE_ENTITIES = (1U << 14),
+    VIEWPORT_FLAG_CLIP_VIEW = (1U << 17),
+    VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1U << 18),
+    VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1U << 19),
 
-    VIEWPORT_FLAG_HIDE_RIDES = (1 << 1),
-    VIEWPORT_FLAG_HIDE_VEHICLES = (1 << 20),
-    VIEWPORT_FLAG_HIDE_VEGETATION = (1 << 21),
-    VIEWPORT_FLAG_HIDE_SCENERY = (1 << 2),
-    VIEWPORT_FLAG_HIDE_PATHS = (1 << 16),
-    VIEWPORT_FLAG_HIDE_SUPPORTS = (1 << 3),
-    VIEWPORT_FLAG_HIDE_GUESTS = (1 << 11),
-    VIEWPORT_FLAG_HIDE_STAFF = (1 << 23),
+    VIEWPORT_FLAG_LAND_HEIGHTS = (1U << 4),
+    VIEWPORT_FLAG_TRACK_HEIGHTS = (1U << 5),
+    VIEWPORT_FLAG_PATH_HEIGHTS = (1U << 6),
 
-    VIEWPORT_FLAG_INVISIBLE_RIDES = (1 << 24),
-    VIEWPORT_FLAG_INVISIBLE_VEHICLES = (1 << 25),
-    VIEWPORT_FLAG_INVISIBLE_VEGETATION = (1 << 26),
-    VIEWPORT_FLAG_INVISIBLE_SCENERY = (1 << 27),
-    VIEWPORT_FLAG_INVISIBLE_PATHS = (1 << 28),
-    VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1 << 29),
+    VIEWPORT_FLAG_HIDE_RIDES = (1U << 1),
+    VIEWPORT_FLAG_HIDE_VEHICLES = (1U << 20),
+    VIEWPORT_FLAG_HIDE_VEGETATION = (1U << 21),
+    VIEWPORT_FLAG_HIDE_SCENERY = (1U << 2),
+    VIEWPORT_FLAG_HIDE_PATHS = (1U << 16),
+    VIEWPORT_FLAG_HIDE_SUPPORTS = (1U << 3),
+    VIEWPORT_FLAG_HIDE_GUESTS = (1U << 11),
+    VIEWPORT_FLAG_HIDE_STAFF = (1U << 23),
+
+    VIEWPORT_FLAG_INVISIBLE_RIDES = (1U << 24),
+    VIEWPORT_FLAG_INVISIBLE_VEHICLES = (1U << 25),
+    VIEWPORT_FLAG_INVISIBLE_VEGETATION = (1U << 26),
+    VIEWPORT_FLAG_INVISIBLE_SCENERY = (1U << 27),
+    VIEWPORT_FLAG_INVISIBLE_PATHS = (1U << 28),
+    VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1U << 29),
+
+    VIEWPORT_FLAG_INDEPEDENT_ROTATION = (1U << 30),
 };
 
 enum class VisibilityKind
@@ -123,12 +127,13 @@ extern uint8_t gShowConstructionRightsRefCount;
 // rct2: 0x014234BC
 extern Viewport* g_music_tracking_viewport;
 
-extern uint8_t gCurrentRotation;
-
 void ViewportInitAll();
 std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
 void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
 void ViewportRemove(Viewport* viewport);
+Viewport* ViewportGetMain();
+void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom);
+void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom);
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom = ZoomLevel{ -1 });
 void ViewportUpdatePosition(WindowBase* window);
 void ViewportUpdateFollowSprite(WindowBase* window);
@@ -136,12 +141,13 @@ void ViewportUpdateSmartFollowEntity(WindowBase* window);
 void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep);
 void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep);
 void ViewportUpdateSmartFollowVehicle(WindowBase* window);
+void ViewportRotateSingle(WindowBase* window, int32_t direction);
+void ViewportRotateAll(int32_t direction);
 void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect);
-void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect);
 
-CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords);
+CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 
-CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z);
+CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z, uint8_t rotation);
 std::optional<CoordsXY> ScreenPosToMapPos(const ScreenCoordsXY& screenCoords, int32_t* direction);
 
 void ShowGridlines();

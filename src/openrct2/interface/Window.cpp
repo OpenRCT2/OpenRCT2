@@ -836,7 +836,7 @@ void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), coords);
+        auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -889,66 +889,6 @@ void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords)
     }
 }
 
-/**
- *
- *  rct2: 0x00688956
- */
-static void call_event_viewport_rotate_on_all_windows()
-{
-    WindowVisitEach([](WindowBase* w) { w->OnViewportRotate(); });
-}
-
-/**
- *
- *  rct2: 0x0068881A
- * direction can be used to alter the camera rotation:
- *      1: clockwise
- *      -1: anti-clockwise
- */
-void WindowRotateCamera(WindowBase& w, int32_t direction)
-{
-    Viewport* viewport = w.viewport;
-    if (viewport == nullptr)
-        return;
-
-    auto windowPos = ScreenCoordsXY{ (viewport->width >> 1), (viewport->height >> 1) } + viewport->pos;
-
-    // has something to do with checking if middle of the viewport is obstructed
-    Viewport* other;
-    auto mapXYCoords = ScreenGetMapXY(windowPos, &other);
-    CoordsXYZ coords{};
-
-    // other != viewport probably triggers on viewports in ride or guest window?
-    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
-    if (!mapXYCoords.has_value() || other != viewport)
-    {
-        auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
-
-        coords = ViewportAdjustForMapHeight(viewPos);
-    }
-    else
-    {
-        coords.x = mapXYCoords->x;
-        coords.y = mapXYCoords->y;
-        coords.z = TileElementHeight(coords);
-    }
-
-    gCurrentRotation = (GetCurrentRotation() + direction) & 3;
-
-    auto centreLoc = centre_2d_coordinates(coords, viewport);
-
-    if (centreLoc.has_value())
-    {
-        w.savedViewPos = centreLoc.value();
-        viewport->viewPos = *centreLoc;
-    }
-
-    w.Invalidate();
-
-    call_event_viewport_rotate_on_all_windows();
-    ResetAllSpriteQuadrantPlacements();
-}
-
 void WindowViewportGetMapCoordsByCursor(
     const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
@@ -957,8 +897,8 @@ void WindowViewportGetMapCoordsByCursor(
 
     // Compute map coordinate by mouse position.
     auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
-    auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos);
-    auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z);
+    auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos, w.viewport->rotation);
+    auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z, w.viewport->rotation);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 

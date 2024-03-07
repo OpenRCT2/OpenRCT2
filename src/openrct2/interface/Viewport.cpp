@@ -65,8 +65,6 @@ Viewport* g_music_tracking_viewport;
 static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
 
-uint8_t gCurrentRotation;
-
 static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const PaintStruct* ps)
     : Loc(ps->MapPos)
@@ -75,7 +73,9 @@ InteractionInfo::InteractionInfo(const PaintStruct* ps)
     , SpriteType(ps->InteractionItem)
 {
 }
+
 static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi);
+static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -122,7 +122,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewpo
         return std::nullopt;
     }
 
-    auto screenCoord = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
+    auto screenCoord = Translate3DTo2DWithZ(viewport->rotation, loc);
     screenCoord.x -= viewport->view_width / 2;
     screenCoord.y -= viewport->view_height / 2;
     return { screenCoord };
@@ -190,6 +190,7 @@ void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t w
     viewport->view_height = zoom.ApplyTo(height);
     viewport->zoom = zoom;
     viewport->flags = 0;
+    viewport->rotation = GetCurrentRotation();
 
     if (gConfigGeneral.AlwaysShowGridlines)
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
@@ -227,6 +228,53 @@ void ViewportRemove(Viewport* viewport)
     _viewports.erase(it);
 }
 
+Viewport* ViewportGetMain()
+{
+    auto mainWindow = WindowGetMain();
+    if (mainWindow == nullptr)
+    {
+        return nullptr;
+    }
+    return mainWindow->viewport;
+}
+
+void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom)
+{
+    for (auto& vp : _viewports)
+    {
+        if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
+        {
+            int32_t x1, y1, x2, y2;
+
+            x += 16;
+            y += 16;
+            auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x, y, 0 });
+
+            x1 = screenCoord.x - 32;
+            y1 = screenCoord.y - 32 - z1;
+            x2 = screenCoord.x + 32;
+            y2 = screenCoord.y + 32 - z0;
+
+            ViewportInvalidate(&vp, ScreenRect{ { x1, y1 }, { x2, y2 } });
+        }
+    }
+}
+
+void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom)
+{
+    for (auto& vp : _viewports)
+    {
+        if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
+        {
+            auto screenCoords = Translate3DTo2DWithZ(vp.rotation, pos);
+            auto screenPos = ScreenRect(
+                screenCoords - ScreenCoordsXY{ width, minHeight }, screenCoords + ScreenCoordsXY{ width, maxHeight });
+
+            ViewportInvalidate(&vp, screenPos);
+        }
+    }
+}
+
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
 {
     for (auto& vp : _viewports)
@@ -244,15 +292,14 @@ void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */
-CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords)
+CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation)
 {
     int32_t height = 0;
 
-    uint32_t rotation = GetCurrentRotation();
     CoordsXY pos{};
     for (int32_t i = 0; i < 6; i++)
     {
-        pos = ViewportPosToMapPos(startCoords, height);
+        pos = ViewportPosToMapPos(startCoords, height, rotation);
         height = TileElementHeight(pos);
 
         // HACK: This is to prevent the x and y values being set to values outside
@@ -587,7 +634,7 @@ void ViewportUpdatePosition(WindowBase* window)
     auto viewportMidPoint = ScreenCoordsXY{ window->savedViewPos.x + viewport->view_width / 2,
                                             window->savedViewPos.y + viewport->view_height / 2 };
 
-    auto mapCoord = ViewportPosToMapPos(viewportMidPoint, 0);
+    auto mapCoord = ViewportPosToMapPos(viewportMidPoint, 0, viewport->rotation);
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
@@ -793,6 +840,65 @@ void ViewportUpdateSmartFollowVehicle(WindowBase* window)
     window->viewport_target_sprite = window->viewport_smart_follow_sprite;
 }
 
+static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
+{
+    auto* viewport = w.viewport;
+    if (viewport == nullptr)
+        return;
+
+    auto windowPos = ScreenCoordsXY{ (viewport->width >> 1), (viewport->height >> 1) } + viewport->pos;
+
+    // has something to do with checking if middle of the viewport is obstructed
+    Viewport* other;
+    auto mapXYCoords = ScreenGetMapXY(windowPos, &other);
+    CoordsXYZ coords{};
+
+    // other != viewport probably triggers on viewports in ride or guest window?
+    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
+    if (!mapXYCoords.has_value() || other != viewport)
+    {
+        auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
+
+        coords = ViewportAdjustForMapHeight(viewPos, viewport->rotation);
+    }
+    else
+    {
+        coords.x = mapXYCoords->x;
+        coords.y = mapXYCoords->y;
+        coords.z = TileElementHeight(coords);
+    }
+
+    viewport->rotation = (viewport->rotation + direction) & 3;
+
+    auto centreLoc = centre_2d_coordinates(coords, viewport);
+
+    if (centreLoc.has_value())
+    {
+        w.savedViewPos = centreLoc.value();
+        viewport->viewPos = *centreLoc;
+    }
+
+    w.Invalidate();
+    w.OnViewportRotate();
+}
+
+void ViewportRotateSingle(WindowBase* window, int32_t direction)
+{
+    ViewportRotateSingleInternal(*window, direction);
+}
+
+void ViewportRotateAll(int32_t direction)
+{
+    WindowVisitEach([direction](WindowBase* w) {
+        auto* viewport = w->viewport;
+        if (viewport == nullptr)
+            return;
+        if (viewport->flags & VIEWPORT_FLAG_INDEPEDENT_ROTATION)
+            return;
+        ViewportRotateSingleInternal(*w, direction);
+    });
+}
+
 /**
  *
  *  rct2: 0x00685C02
@@ -891,7 +997,7 @@ static void ViewportPaintColumn(PaintSession& session)
  *  edi: dpi
  *  ebp: bottom
  */
-void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect)
+static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect)
 {
     PROFILED_FUNCTION();
 
@@ -952,7 +1058,7 @@ void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRec
     // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32)
     {
-        PaintSession* session = PaintSessionAlloc(dpi1, viewFlags);
+        PaintSession* session = PaintSessionAlloc(dpi1, viewFlags, viewport->rotation);
         _paintColumns.push_back(session);
 
         DrawPixelInfo& dpi2 = session->DPI;
@@ -1091,11 +1197,11 @@ void Viewport::Invalidate() const
     ViewportInvalidate(this, { viewPos, viewPos + ScreenCoordsXY{ view_width, view_height } });
 }
 
-CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z)
+CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z, uint8_t rotation)
 {
     // Reverse of Translate3DTo2DWithZ
     CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
-    auto inverseRotation = DirectionFlipXAxis(GetCurrentRotation());
+    auto inverseRotation = DirectionFlipXAxis(rotation);
     return ret.Rotate(inverseRotation);
 }
 
@@ -1819,31 +1925,31 @@ InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenC
         return info;
     }
 
-    Viewport* myviewport = window->viewport;
+    Viewport* viewport = window->viewport;
     auto viewLoc = screenCoords;
-    viewLoc -= myviewport->pos;
-    if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(myviewport->width) && viewLoc.y >= 0
-        && viewLoc.y < static_cast<int32_t>(myviewport->height))
+    viewLoc -= viewport->pos;
+    if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(viewport->width) && viewLoc.y >= 0
+        && viewLoc.y < static_cast<int32_t>(viewport->height))
     {
-        viewLoc.x = myviewport->zoom.ApplyTo(viewLoc.x);
-        viewLoc.y = myviewport->zoom.ApplyTo(viewLoc.y);
-        viewLoc += myviewport->viewPos;
-        if (myviewport->zoom > ZoomLevel{ 0 })
+        viewLoc.x = viewport->zoom.ApplyTo(viewLoc.x);
+        viewLoc.y = viewport->zoom.ApplyTo(viewLoc.y);
+        viewLoc += viewport->viewPos;
+        if (viewport->zoom > ZoomLevel{ 0 })
         {
-            viewLoc.x &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
-            viewLoc.y &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
+            viewLoc.x &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
+            viewLoc.y &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
         }
         DrawPixelInfo dpi;
         dpi.x = viewLoc.x;
         dpi.y = viewLoc.y;
         dpi.height = 1;
-        dpi.zoom_level = myviewport->zoom;
+        dpi.zoom_level = viewport->zoom;
         dpi.width = 1;
 
-        PaintSession* session = PaintSessionAlloc(dpi, myviewport->flags);
+        PaintSession* session = PaintSessionAlloc(dpi, viewport->flags, viewport->rotation);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
-        info = SetInteractionInfoFromPaintSession(session, myviewport->flags, flags & 0xFFFF);
+        info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags & 0xFFFF);
         PaintSessionFree(session);
     }
     return info;
@@ -1944,7 +2050,7 @@ std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewp
     for (int32_t i = 0; i < 5; i++)
     {
         int32_t z = TileElementHeight(cursorMapPos);
-        cursorMapPos = ViewportPosToMapPos(start_vp_pos, z);
+        cursorMapPos = ViewportPosToMapPos(start_vp_pos, z, myViewport->rotation);
         cursorMapPos.x = std::clamp(cursorMapPos.x, info.Loc.x, info.Loc.x + 31);
         cursorMapPos.y = std::clamp(cursorMapPos.y, info.Loc.y, info.Loc.y + 31);
     }
@@ -1968,7 +2074,7 @@ std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, 
     }
 
     auto vpCoords = viewport->ScreenToViewportCoord(screenCoords);
-    auto mapPosition = ViewportPosToMapPos(vpCoords, z);
+    auto mapPosition = ViewportPosToMapPos(vpCoords, z, viewport->rotation);
     if (!MapIsLocationValid(mapPosition))
     {
         return std::nullopt;
@@ -2043,7 +2149,13 @@ std::optional<CoordsXY> ScreenGetMapXYSideWithZ(const ScreenCoordsXY& screenCoor
  */
 uint8_t GetCurrentRotation()
 {
-    uint8_t rotation = gCurrentRotation;
+    auto* viewport = ViewportGetMain();
+    if (viewport == nullptr)
+    {
+        LOG_VERBOSE("No viewport found! Will return 0.");
+        return 0;
+    }
+    uint8_t rotation = viewport->rotation;
     uint8_t rotation_masked = rotation & 3;
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (rotation != rotation_masked)
@@ -2081,7 +2193,7 @@ void ViewportSetSavedView()
         gameState.SavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 
         gameState.SavedViewZoom = viewport->zoom;
-        gameState.SavedViewRotation = GetCurrentRotation();
+        gameState.SavedViewRotation = viewport->rotation;
     }
 }
 

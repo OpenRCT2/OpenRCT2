@@ -111,7 +111,6 @@ static std::vector<TileElement> _tileElementsStash;
 static size_t _tileElementsInUse;
 static size_t _tileElementsInUseStash;
 static TileCoordsXY _mapSizeStash;
-static int32_t _currentRotationStash;
 
 void StashMap()
 {
@@ -119,7 +118,6 @@ void StashMap()
     _tileIndexStash = std::move(_tileIndex);
     _tileElementsStash = std::move(gameState.TileElements);
     _mapSizeStash = GetGameState().MapSize;
-    _currentRotationStash = gCurrentRotation;
     _tileElementsInUseStash = _tileElementsInUse;
 }
 
@@ -129,7 +127,6 @@ void UnstashMap()
     _tileIndex = std::move(_tileIndexStash);
     gameState.TileElements = std::move(_tileElementsStash);
     GetGameState().MapSize = _mapSizeStash;
-    gCurrentRotation = _currentRotationStash;
     _tileElementsInUse = _tileElementsInUseStash;
 }
 
@@ -1797,18 +1794,7 @@ static void MapInvalidateTileUnderZoom(int32_t x, int32_t y, int32_t z0, int32_t
     if (gOpenRCT2Headless)
         return;
 
-    int32_t x1, y1, x2, y2;
-
-    x += 16;
-    y += 16;
-    auto screenCoord = Translate3DTo2D(GetCurrentRotation(), { x, y });
-
-    x1 = screenCoord.x - 32;
-    y1 = screenCoord.y - 32 - z1;
-    x2 = screenCoord.x + 32;
-    y2 = screenCoord.y + 32 - z0;
-
-    ViewportsInvalidate({ { x1, y1 }, { x2, y2 } }, maxZoom);
+    ViewportsInvalidate(x, y, z0, z1, maxZoom);
 }
 
 /**

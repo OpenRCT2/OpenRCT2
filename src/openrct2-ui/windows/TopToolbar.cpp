@@ -3689,19 +3689,13 @@ void TopToolbar::InitRotateMenu(Widget& widget)
 
 void TopToolbar::RotateMenuDropdown(int16_t dropdownIndex)
 {
-    auto* w = WindowGetMain();
-    if (w != nullptr)
+    if (dropdownIndex == 0)
     {
-        if (dropdownIndex == 0)
-        {
-            WindowRotateCamera(*w, 1);
-            w->Invalidate();
-        }
-        else if (dropdownIndex == 1)
-        {
-            WindowRotateCamera(*w, -1);
-            w->Invalidate();
-        }
+        ViewportRotateAll(1);
+    }
+    else if (dropdownIndex == 1)
+    {
+        ViewportRotateAll(-1);
     }
 }
 

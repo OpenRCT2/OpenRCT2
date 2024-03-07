@@ -289,7 +289,7 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
         {
             z = TileElementHeight(position);
         }
-        position = ViewportPosToMapPos(start_vp_pos, z);
+        position = ViewportPosToMapPos(start_vp_pos, z, viewport->rotation);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
         position.y = std::clamp(position.y, minPosition.y, maxPosition.y);
     }

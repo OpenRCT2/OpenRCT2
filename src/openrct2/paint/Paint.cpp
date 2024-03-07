@@ -55,7 +55,7 @@ bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
 static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags);
-static void PaintPSImageWithBoundingBoxes(DrawPixelInfo& dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
+static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
@@ -243,7 +243,6 @@ template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& sessio
  */
 void PaintSessionGenerate(PaintSession& session)
 {
-    session.CurrentRotation = GetCurrentRotation();
     switch (DirectionFlipXAxis(session.CurrentRotation))
     {
         case 0:
@@ -533,7 +532,7 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
     if (gPaintBoundingBoxes && session.DPI.zoom_level == ZoomLevel{ 0 })
     {
-        PaintPSImageWithBoundingBoxes(session.DPI, ps, imageId, screenPos.x, screenPos.y);
+        PaintPSImageWithBoundingBoxes(session, ps, imageId, screenPos.x, screenPos.y);
     }
     else
     {
@@ -588,10 +587,12 @@ static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFl
     }
 }
 
-static void PaintPSImageWithBoundingBoxes(DrawPixelInfo& dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
+static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
+    auto& dpi = session.DPI;
+
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->InteractionItem)];
-    const uint8_t rotation = GetCurrentRotation();
+    const uint8_t rotation = session.CurrentRotation;
 
     const CoordsXYZ frontTop = {
         ps->Bounds.x_end,
@@ -688,9 +689,9 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
     }
 }
 
-PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags)
+PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags, uint8_t rotation)
 {
-    return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
+    return GetContext()->GetPainter()->CreateSession(dpi, viewFlags, rotation);
 }
 
 void PaintSessionFree(PaintSession* session)

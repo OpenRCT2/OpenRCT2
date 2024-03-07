@@ -2081,10 +2081,9 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
     for (uint8_t i = 0; i < 4; i++)
     {
-        gCurrentRotation = i;
-
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
-        ViewportPaint(&view, dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
+        view.rotation = i;
+        ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }
