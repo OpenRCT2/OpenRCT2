@@ -243,12 +243,12 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::landPrice_get() const
     {
-        return gLandPrice;
+        return GetGameState().LandPrice;
     }
     void ScPark::landPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        gLandPrice = value;
+        GetGameState().LandPrice = value;
     }
 
     money64 ScPark::constructionRightsPrice_get() const

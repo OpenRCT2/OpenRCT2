@@ -144,7 +144,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                 ParkUpdateFencesAroundTile(loc);
             }
-            res.Cost = gLandPrice;
+            res.Cost = GetGameState().LandPrice;
             return res;
 
         case LandBuyRightSetting::BuyConstructionRights: // 2

@@ -387,7 +387,7 @@ namespace RCT2
                 }
             }
 
-            gLandPrice = ToMoney64(_s6.LandPrice);
+            gameState.LandPrice = ToMoney64(_s6.LandPrice);
             gameState.ConstructionRightsPrice = ToMoney64(_s6.ConstructionRightsPrice);
             // unk_01358774
             // Pad01358776

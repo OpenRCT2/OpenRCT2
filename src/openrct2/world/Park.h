@@ -92,8 +92,6 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern money64 gLandPrice;
-
 extern int16_t gParkRatingCasualtyPenalty;
 
 void ParkSetForcedRating(int32_t rating);

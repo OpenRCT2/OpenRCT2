@@ -184,7 +184,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 }
             }
 
-            res.Cost = gLandPrice;
+            res.Cost = GetGameState().LandPrice;
             if (isExecuting)
             {
                 if (_ownership != OWNERSHIP_UNOWNED)

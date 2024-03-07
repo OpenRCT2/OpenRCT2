@@ -82,6 +82,7 @@ namespace OpenRCT2
         money64 ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
         random_engine_t ScenarioRand;
         TileCoordsXY MapSize;
+        money64 LandPrice;
 
         ::EditorStep EditorStep;
 

@@ -1425,7 +1425,7 @@ namespace RCT1
         void ImportFinance(GameState_t& gameState)
         {
             gameState.ParkEntranceFee = _s4.ParkEntranceFee;
-            gLandPrice = ToMoney64(_s4.LandPrice);
+            gameState.LandPrice = ToMoney64(_s4.LandPrice);
             gameState.ConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.Cash = ToMoney64(_s4.Cash);
