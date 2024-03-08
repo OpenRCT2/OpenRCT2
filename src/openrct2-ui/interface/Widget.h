@@ -84,8 +84,10 @@ constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NO
     return MakeWidget(origin, size, type, colour, content, tooltip);
 }
 
+// NOLINTBEGIN
 #define MakeSpinnerWidgets(...)                                                                                                \
     MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
+// NOLINTEND
 
 constexpr Widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
@@ -111,6 +113,7 @@ constexpr Widget MakeSpinnerIncreaseWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
 }
 
+// NOLINTNEXTLINE
 #define MakeDropdownWidgets(...) MakeDropdownBoxWidget(__VA_ARGS__), MakeDropdownButtonWidget(__VA_ARGS__)
 
 constexpr Widget MakeDropdownBoxWidget(
