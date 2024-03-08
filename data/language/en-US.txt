@@ -7,6 +7,7 @@
 # Vanilla strings. Only change strings that differ from UK English!
 STR_0007    :Miniature Railroad
 STR_0015    :Bobsled Coaster
+STR_0027    :Bumper Cars
 STR_0035    :Carousel
 STR_0038    :Restroom
 STR_0041    :3D Theater

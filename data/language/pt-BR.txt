@@ -3686,6 +3686,11 @@ STR_6614    :Não é possível mudar o preço de entrada do parque
 STR_6615    :A pista nesse azulejo precisa de água
 STR_6616    :Ação inválida para esse tipo de funcionário
 STR_6617    :Não é possível trocar o elemento do azulejo com ele mesmo
+STR_6618    :Não é possível restringir ou liberar o objeto…
+STR_6619    :Tipo de objeto não pode ser restringido!
+STR_6620    :Objeto não encontrado!
+STR_6621    :Restringir
+STR_6622    :Restringir objeto ao Editor de Cenário e ao modo sandbox.
 
 #############
 # Scenarios #
