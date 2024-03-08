@@ -58,7 +58,7 @@ static Widget _viewClippingWidgets[] = {
     MakeWidget        ({     11, 105}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
     MakeWidget        ({     11, 126}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
 
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 #pragma endregion

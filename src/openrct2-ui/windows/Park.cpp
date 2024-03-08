@@ -105,40 +105,40 @@ static Widget _entranceWidgets[] = {
     MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
     MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
     MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _ratingWidgets[] = {
     MAIN_PARK_WIDGETS(255),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _guestsWidgets[] = {
     MAIN_PARK_WIDGETS(255),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _priceWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
     MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _statsWidgets[] = {
     MAIN_PARK_WIDGETS(230),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _objectiveWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _awardsWidgets[] = {
     MAIN_PARK_WIDGETS(230),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {

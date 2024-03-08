@@ -19,8 +19,8 @@ ImageId GetColourButtonImage(colour_t colour);
 Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
 
 
-constexpr auto WIDGETS_END = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
-#define BAR_BLINK (1u << 31)
+constexpr auto kWidgetsEnd = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
+constexpr auto kBarBlink = (1u << 31);
 
 
 enum class WindowColour : uint8_t
@@ -31,9 +31,9 @@ enum class WindowColour : uint8_t
     Quaternary,
 };
 
-constexpr uint8_t SCROLLBAR_WIDTH = 10;
+constexpr uint8_t kScrollBarWidth = 10;
 
-constexpr ScreenSize TAB_SIZE = { 31, 27 };
+constexpr ScreenSize kTabSize = { 31, 27 };
 
 constexpr Widget MakeWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
@@ -78,7 +78,7 @@ constexpr Widget MakeRemapWidget(
 
 constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NONE)
 {
-    const ScreenSize size = TAB_SIZE;
+    const ScreenSize size = kTabSize;
     const WindowWidgetType type = WindowWidgetType::Tab;
     const WindowColour colour = WindowColour::Secondary;
     const auto content = ImageId(ImageIndexUndefined);

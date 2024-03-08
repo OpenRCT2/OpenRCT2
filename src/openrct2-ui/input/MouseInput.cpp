@@ -637,12 +637,12 @@ static void InputScrollBegin(WindowBase& w, WidgetIndex widgetIndex, const Scree
 
     int32_t widget_width = widg.width() - 1;
     if (scroll.flags & VSCROLLBAR_VISIBLE)
-        widget_width -= SCROLLBAR_WIDTH + 1;
+        widget_width -= kScrollBarWidth + 1;
     int32_t widget_content_width = std::max(scroll.h_right - widget_width, 0);
 
     int32_t widget_height = widg.bottom - widg.top - 1;
     if (scroll.flags & HSCROLLBAR_VISIBLE)
-        widget_height -= SCROLLBAR_WIDTH + 1;
+        widget_height -= kScrollBarWidth + 1;
     int32_t widget_content_height = std::max(scroll.v_bottom - widget_height, 0);
 
     switch (scroll_area)
@@ -757,7 +757,7 @@ static void InputScrollPartUpdateHThumb(WindowBase& w, WidgetIndex widgetIndex, 
         newLeft *= x;
         x = widget.width() - 21;
         if (scroll.flags & VSCROLLBAR_VISIBLE)
-            x -= SCROLLBAR_WIDTH + 1;
+            x -= kScrollBarWidth + 1;
         newLeft /= x;
         x = newLeft;
         scroll.flags |= HSCROLLBAR_THUMB_PRESSED;
@@ -767,7 +767,7 @@ static void InputScrollPartUpdateHThumb(WindowBase& w, WidgetIndex widgetIndex, 
             newLeft = 0;
         x = widget.width() - 1;
         if (scroll.flags & VSCROLLBAR_VISIBLE)
-            x -= SCROLLBAR_WIDTH + 1;
+            x -= kScrollBarWidth + 1;
         x *= -1;
         x += scroll.h_right;
         if (x < 0)
@@ -796,7 +796,7 @@ static void InputScrollPartUpdateVThumb(WindowBase& w, WidgetIndex widgetIndex, 
         newTop *= y;
         y = widget.height() - 21;
         if (scroll.flags & HSCROLLBAR_VISIBLE)
-            y -= SCROLLBAR_WIDTH + 1;
+            y -= kScrollBarWidth + 1;
         newTop /= y;
         y = newTop;
         scroll.flags |= VSCROLLBAR_THUMB_PRESSED;
@@ -806,7 +806,7 @@ static void InputScrollPartUpdateVThumb(WindowBase& w, WidgetIndex widgetIndex, 
             newTop = 0;
         y = widget.height() - 1;
         if (scroll.flags & HSCROLLBAR_VISIBLE)
-            y -= SCROLLBAR_WIDTH + 1;
+            y -= kScrollBarWidth + 1;
         y *= -1;
         y += scroll.v_bottom;
         if (y < 0)
@@ -850,7 +850,7 @@ static void InputScrollPartUpdateHRight(WindowBase& w, WidgetIndex widgetIndex, 
         scroll.h_left += 3;
         int32_t newLeft = widget.width() - 1;
         if (scroll.flags & VSCROLLBAR_VISIBLE)
-            newLeft -= SCROLLBAR_WIDTH + 1;
+            newLeft -= kScrollBarWidth + 1;
         newLeft *= -1;
         newLeft += scroll.h_right;
         if (newLeft < 0)
@@ -893,7 +893,7 @@ static void InputScrollPartUpdateVBottom(WindowBase& w, WidgetIndex widgetIndex,
         scroll.v_top += 3;
         int32_t newTop = widget.height() - 1;
         if (scroll.flags & HSCROLLBAR_VISIBLE)
-            newTop -= SCROLLBAR_WIDTH + 1;
+            newTop -= kScrollBarWidth + 1;
         newTop *= -1;
         newTop += scroll.v_bottom;
         if (newTop < 0)

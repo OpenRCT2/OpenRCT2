@@ -58,7 +58,7 @@ static Widget window_clear_scenery_widgets[] = {
     MakeRemapWidget(
         { 67, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,
         STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP), // footpaths
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 class CleanSceneryWindow final : public Window

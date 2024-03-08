@@ -96,7 +96,7 @@ static Widget _staffOverviewWidgets[] = {
     MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
     MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
     MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    ), // Fire Button
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 //0x9AF910
@@ -108,14 +108,14 @@ static Widget _staffOptionsWidgets[] = {
     MakeWidget     ({      5, 101}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 4
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                            ), // Costume Dropdown
     MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 
 // 0x9AF9F4
 static Widget _staffStatsWidgets[] = {
     MAIN_STAFF_WIDGETS,
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget* window_staff_page_widgets[] = {
@@ -1041,7 +1041,7 @@ private:
             return;
         }
 
-        for (WidgetIndex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != WIDGETS_END.type; widgetIndex++)
+        for (WidgetIndex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != kWidgetsEnd.type; widgetIndex++)
         {
             SetWidgetDisabled(widgetIndex, false);
         }

@@ -24,7 +24,7 @@ enum
 
 static Widget _titleLogoWidgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 class TitleLogoWindow final : public Window

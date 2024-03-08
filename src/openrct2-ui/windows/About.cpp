@@ -70,12 +70,12 @@ static Widget _windowAboutOpenRCT2Widgets[] = {
     MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
     MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
     MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _windowAboutRCT2Widgets[] = {
     WIDGETS_MAIN,
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget *_windowAboutPageWidgets[] = {

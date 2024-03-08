@@ -36,7 +36,7 @@ static Widget _staffFireWidgets[] = {
     WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
     MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
     MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 // clang-format on

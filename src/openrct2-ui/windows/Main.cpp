@@ -18,7 +18,7 @@
 // clang-format off
 static Widget _mainWidgets[] = {
     MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

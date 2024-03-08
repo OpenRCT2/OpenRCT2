@@ -45,7 +45,7 @@ enum
 
 static Widget window_dropdown_widgets[] = {
     MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 int32_t gDropdownNumItems;

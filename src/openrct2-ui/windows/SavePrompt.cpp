@@ -45,7 +45,7 @@ static Widget _savePromptWidgets[] = {
     MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
     MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
     MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ), // cancel
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 enum WindowQuitPromptWidgetIdx {
@@ -60,7 +60,7 @@ static Widget _quitPromptWidgets[] = {
     WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
     MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
     MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static constexpr StringId window_save_prompt_labels[][2] = {

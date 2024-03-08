@@ -219,7 +219,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
     MakeTab   ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
     // Copied object type times...
 
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 
