@@ -706,7 +706,7 @@ private:
             return;
         }
 
-        ViewportUpdateSmartFollowGuest(this, peep);
+        ViewportUpdateSmartFollowGuest(this, *peep);
         bool reCreateViewport = false;
         uint16_t origViewportFlags{};
         if (viewport != nullptr)

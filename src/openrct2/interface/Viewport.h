@@ -136,7 +136,7 @@ void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel
 void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom);
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom = ZoomLevel{ -1 });
 void ViewportUpdatePosition(WindowBase* window);
-void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep);
+void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
 void ViewportRotateSingle(WindowBase* window, int32_t direction);
 void ViewportRotateAll(int32_t direction);
 void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect);

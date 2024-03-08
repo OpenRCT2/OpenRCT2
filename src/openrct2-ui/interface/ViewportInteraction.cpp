@@ -66,7 +66,7 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
  *
  *  rct2: 0x006ED9D0
  */
-InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords)
+static InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords)
 {
     InteractionInfo info{};
     // No click input for scenario editor or track manager
@@ -250,7 +250,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
  *
  *  rct2: 0x006EDE88
  */
-InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
+static InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
 {
     Ride* ride;
     int32_t i;
