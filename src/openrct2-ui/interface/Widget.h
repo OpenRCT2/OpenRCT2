@@ -18,10 +18,8 @@
 ImageId GetColourButtonImage(colour_t colour);
 Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
 
-
 constexpr auto kWidgetsEnd = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
 constexpr auto kBarBlink = (1u << 31);
-
 
 enum class WindowColour : uint8_t
 {
@@ -133,7 +131,6 @@ constexpr Widget MakeDropdownButtonWidget(
 
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
 }
-
 
 void WidgetDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 
