@@ -156,11 +156,11 @@ void ScenarioReset(GameState_t& gameState)
     Staff::ResetStats();
 
     auto& objManager = GetContext()->GetObjectManager();
-    gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+    if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
     {
         // Fall back to first entrance object
-        gLastEntranceStyle = 0;
+        gameState.LastEntranceStyle = 0;
     }
 
     gMarketingCampaigns.clear();

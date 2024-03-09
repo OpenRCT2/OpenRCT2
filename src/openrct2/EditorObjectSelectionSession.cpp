@@ -487,10 +487,10 @@ void FinishObjectSelection()
         SetEveryRideEntryInvented();
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-        if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+        gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+        if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
         {
-            gLastEntranceStyle = 0;
+            gameState.LastEntranceStyle = 0;
         }
 
         gameState.EditorStep = EditorStep::RollercoasterDesigner;

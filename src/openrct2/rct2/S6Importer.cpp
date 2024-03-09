@@ -407,7 +407,7 @@ namespace RCT2
                 | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
             gameState.SuggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.ScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
-            gLastEntranceStyle = _s6.LastEntranceStyle;
+            gameState.LastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);

@@ -4322,7 +4322,7 @@ private:
                 rideSetAppearanceAction.SetCallback([objIndex](const GameAction*, const GameActions::Result* res) {
                     if (res->Error != GameActions::Status::Ok)
                         return;
-                    gLastEntranceStyle = objIndex;
+                    GetGameState().LastEntranceStyle = objIndex;
                 });
                 GameActions::Execute(&rideSetAppearanceAction);
                 break;

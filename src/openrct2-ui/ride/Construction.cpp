@@ -9,6 +9,7 @@
 
 #include "Construction.h"
 
+#include <openrct2/GameState.h>
 #include <openrct2/actions/RideCreateAction.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -28,7 +29,8 @@ void RideConstructNew(RideSelection listItem)
     int32_t colour1 = RideGetRandomColourPresetIndex(listItem.Type);
     int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
-    auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2, gLastEntranceStyle);
+    auto gameAction = RideCreateAction(
+        listItem.Type, listItem.EntryIndex, colour1, colour2, OpenRCT2::GetGameState().LastEntranceStyle);
 
     gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)

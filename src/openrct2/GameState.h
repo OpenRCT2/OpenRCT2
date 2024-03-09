@@ -125,6 +125,8 @@ namespace OpenRCT2
         uint8_t SavedViewRotation;
         ZoomLevel SavedViewZoom;
 
+        ObjectEntryIndex LastEntranceStyle;
+
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
          * new guests per second = 40 * (probability / 65535)

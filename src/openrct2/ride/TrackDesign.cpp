@@ -1873,7 +1873,7 @@ int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride& ride, const CoordsXYZD&
 static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = RideCreateAction(type, subType, 0, 0, gLastEntranceStyle);
+    auto gameAction = RideCreateAction(type, subType, 0, 0, GetGameState().LastEntranceStyle);
     gameAction.SetFlags(flags);
 
     auto res = GameActions::ExecuteNested(&gameAction);
@@ -1900,6 +1900,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     *outRide = nullptr;
     *flags = 0;
 
+    auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
 
@@ -1919,7 +1920,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td6->StationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
-        ride->entrance_style = gLastEntranceStyle;
+        ride->entrance_style = gameState.LastEntranceStyle;
     }
 
     for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
@@ -1939,7 +1940,6 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         }
     }
 
-    auto& gameState = GetGameState();
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
     uint32_t backup_park_flags = gameState.ParkFlags;
