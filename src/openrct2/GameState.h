@@ -103,6 +103,8 @@ namespace OpenRCT2
 
         News::ItemQueues NewsItems;
 
+        TileCoordsXY WidePathTileLoopPosition;
+
         colour_t StaffHandymanColour;
         colour_t StaffMechanicColour;
         colour_t StaffSecurityColour;

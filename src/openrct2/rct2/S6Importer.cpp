@@ -496,8 +496,7 @@ namespace RCT2
 
             // Pad13CE730
             // rct1_scenario_flags
-            gWidePathTileLoopPosition.x = _s6.WidePathTileLoopX;
-            gWidePathTileLoopPosition.y = _s6.WidePathTileLoopY;
+            gameState.WidePathTileLoopPosition = { _s6.WidePathTileLoopX, _s6.WidePathTileLoopY };
             // Pad13CE778
 
             // Fix and set dynamic variables

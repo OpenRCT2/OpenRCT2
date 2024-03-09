@@ -88,7 +88,6 @@ CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
-TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
 std::vector<CoordsXY> gMapSelectionTiles;
@@ -464,7 +463,7 @@ void MapInit(const TileCoordsXY& size)
     auto& gameState = GetGameState();
 
     gGrassSceneryTileLoopPosition = 0;
-    gWidePathTileLoopPosition = {};
+    gameState.WidePathTileLoopPosition = {};
     gameState.MapSize = size;
     MapRemoveOutOfRangeElements();
     MapAnimationAutoCreate();
@@ -762,26 +761,23 @@ void MapUpdatePathWideFlags()
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    auto x = gWidePathTileLoopPosition.x;
-    auto y = gWidePathTileLoopPosition.y;
+    TileCoordsXY& loopPosition = GetGameState().WidePathTileLoopPosition;
     for (int32_t i = 0; i < 128; i++)
     {
-        FootpathUpdatePathWideFlags({ x, y });
+        FootpathUpdatePathWideFlags(loopPosition.ToCoordsXY());
 
         // Next x, y tile
-        x += COORDS_XY_STEP;
-        if (x >= MAXIMUM_MAP_SIZE_BIG)
+        loopPosition.x += COORDS_XY_STEP;
+        if (loopPosition.x >= MAXIMUM_MAP_SIZE_BIG)
         {
-            x = 0;
-            y += COORDS_XY_STEP;
-            if (y >= MAXIMUM_MAP_SIZE_BIG)
+            loopPosition.x = 0;
+            loopPosition.y += COORDS_XY_STEP;
+            if (loopPosition.y >= MAXIMUM_MAP_SIZE_BIG)
             {
-                y = 0;
+                loopPosition.y = 0;
             }
         }
     }
-    gWidePathTileLoopPosition.x = x;
-    gWidePathTileLoopPosition.y = y;
 }
 
 /**
