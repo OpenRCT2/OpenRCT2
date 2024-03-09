@@ -131,11 +131,11 @@ static Widget _tooltipWidgets[] = {
         // Returns the width of the new tooltip text
         int32_t FormatTextForTooltip(const OpenRCT2String& message)
         {
-            const u8string tempString = FormatStringID(message.str, message.args.Data());
+            const u8string tempString = ::FormatStringID(message.str, message.args.Data());
 
             OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
             formattedMessage.args.Add<const char*>(tempString.c_str());
-            const u8string tooltipTextUnwrapped = FormatStringID(formattedMessage.str, formattedMessage.args.Data());
+            const u8string tooltipTextUnwrapped = ::FormatStringID(formattedMessage.str, formattedMessage.args.Data());
 
             auto textWidth = GfxGetStringWidthNewLined(tooltipTextUnwrapped, FontStyle::Small);
             textWidth = std::min(textWidth, 196);
