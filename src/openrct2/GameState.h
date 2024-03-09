@@ -103,6 +103,7 @@ namespace OpenRCT2
 
         News::ItemQueues NewsItems;
 
+        uint16_t GrassSceneryTileLoopPosition;
         TileCoordsXY WidePathTileLoopPosition;
 
         colour_t StaffHandymanColour;

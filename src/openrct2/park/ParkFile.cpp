@@ -549,7 +549,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.LandPrice);
                     cs.ReadWrite(gameState.ConstructionRightsPrice);
                 }
-                cs.ReadWrite(gGrassSceneryTileLoopPosition);
+                cs.ReadWrite(gameState.GrassSceneryTileLoopPosition);
                 cs.ReadWrite(gameState.WidePathTileLoopPosition);
 
                 auto& rideRatings = gameState.RideRatingUpdateStates;

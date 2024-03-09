@@ -107,8 +107,6 @@ enum
 extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
-extern uint16_t gGrassSceneryTileLoopPosition;
-
 CoordsXY GetMapSizeUnits();
 CoordsXY GetMapSizeMinus2();
 CoordsXY GetMapSizeMaxXY();

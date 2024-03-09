@@ -448,7 +448,7 @@ namespace RCT2
             ImportRideRatingsCalcData();
             ImportRideMeasurements();
             gameState.NextGuestNumber = _s6.NextGuestIndex;
-            gGrassSceneryTileLoopPosition = _s6.GrassAndSceneryTilepos;
+            gameState.GrassSceneryTileLoopPosition = _s6.GrassAndSceneryTilepos;
             // unk_13CA73E
             // Pad13CA73F
             // unk_13CA740

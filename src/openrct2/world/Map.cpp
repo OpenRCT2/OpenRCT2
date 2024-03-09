@@ -88,8 +88,6 @@ CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
-uint16_t gGrassSceneryTileLoopPosition;
-
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
 
@@ -462,7 +460,7 @@ void MapInit(const TileCoordsXY& size)
 
     auto& gameState = GetGameState();
 
-    gGrassSceneryTileLoopPosition = 0;
+    gameState.GrassSceneryTileLoopPosition = 0;
     gameState.WidePathTileLoopPosition = {};
     gameState.MapSize = size;
     MapRemoveOutOfRangeElements();
@@ -1263,7 +1261,7 @@ void MapUpdateTiles()
         int32_t x = 0;
         int32_t y = 0;
 
-        uint16_t interleaved_xy = gGrassSceneryTileLoopPosition;
+        uint16_t interleaved_xy = gameState.GrassSceneryTileLoopPosition;
         for (int32_t i = 0; i < 8; i++)
         {
             x = (x << 1) | (interleaved_xy & 1);
@@ -1290,7 +1288,7 @@ void MapUpdateTiles()
             }
         }
 
-        gGrassSceneryTileLoopPosition++;
+        gameState.GrassSceneryTileLoopPosition++;
     }
 }
 
