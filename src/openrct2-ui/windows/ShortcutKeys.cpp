@@ -18,7 +18,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     WindowBase* ResetShortcutKeysPromptOpen();
 
     static constexpr StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;

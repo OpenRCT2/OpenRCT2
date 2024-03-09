@@ -24,7 +24,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     // The maximum number of rows to list before items overflow into new columns
     constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 

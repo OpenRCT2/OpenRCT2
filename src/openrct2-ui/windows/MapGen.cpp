@@ -27,7 +27,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     enum
     {
         WINDOW_MAPGEN_PAGE_BASE,

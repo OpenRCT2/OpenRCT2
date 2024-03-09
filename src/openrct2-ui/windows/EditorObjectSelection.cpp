@@ -44,7 +44,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     enum
     {
         FILTER_RCT1 = (1 << 0),

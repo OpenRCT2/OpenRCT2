@@ -30,7 +30,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     // clang-format off
 enum {
     WIDX_PREVIOUS_IMAGE,        // 1

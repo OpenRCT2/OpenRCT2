@@ -40,7 +40,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     static constexpr StringId WINDOW_TITLE = STR_NONE;
     constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
     constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;

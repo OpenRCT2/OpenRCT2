@@ -31,7 +31,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     // clang-format off
 enum WindowGameBottomToolbarWidgetIdx
 {

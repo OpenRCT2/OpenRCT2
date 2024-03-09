@@ -32,7 +32,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     // clang-format off
 enum WINDOW_TRANSPARENCY_WIDGET_IDX
 {

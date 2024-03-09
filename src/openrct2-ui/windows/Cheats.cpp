@@ -31,7 +31,6 @@
 using OpenRCT2::Date;
 namespace OpenRCT2::Ui::Windows
 {
-
     constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
     constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
 

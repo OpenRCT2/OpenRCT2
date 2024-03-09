@@ -20,7 +20,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     enum WindowClearSceneryWidgetIdx
     {
         WIDX_BACKGROUND,

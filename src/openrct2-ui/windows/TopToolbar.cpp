@@ -75,7 +75,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     enum
     {
         WIDX_PAUSE,

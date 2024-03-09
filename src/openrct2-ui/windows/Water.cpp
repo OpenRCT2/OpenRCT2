@@ -20,7 +20,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     static constexpr StringId WINDOW_TITLE = STR_WATER;
     static constexpr int32_t WH = 77;
     static constexpr int32_t WW = 76;

@@ -38,7 +38,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     enum
     {
         WINDOW_STAFF_LIST_TAB_HANDYMEN,

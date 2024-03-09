@@ -21,7 +21,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     static constexpr int32_t WW = 400;
     static constexpr int32_t WH = 450;
     static constexpr StringId WINDOW_TITLE = STR_ABOUT;

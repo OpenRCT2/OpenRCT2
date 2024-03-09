@@ -41,7 +41,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
 #pragma region Widgets
 
     static constexpr StringId WINDOW_TITLE = STR_NONE;

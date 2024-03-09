@@ -30,7 +30,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     enum
     {
         WINDOW_FINANCES_PAGE_SUMMARY,

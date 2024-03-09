@@ -32,7 +32,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     static constexpr int32_t WW_FINANCIAL = 280;
     static constexpr int32_t WH_FINANCIAL = 149;
 

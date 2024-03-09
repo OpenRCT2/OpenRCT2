@@ -26,7 +26,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     static constexpr int32_t WH_DEVELOPMENT = 196;
     static constexpr int32_t WW_DEVELOPMENT = 300;
     static constexpr int32_t WH_FUNDING = 207;

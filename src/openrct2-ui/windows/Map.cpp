@@ -42,7 +42,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-
     static constexpr uint16_t MapColour2(uint8_t colourA, uint8_t colourB)
     {
         return (colourA << 8) | colourB;
