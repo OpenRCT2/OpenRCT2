@@ -335,7 +335,7 @@ static Widget _serverListWidgets[] = {
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-            GfxClear(&dpi, paletteIndex);
+            GfxClear(dpi, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];
             int32_t listWidgetWidth = listWidget.width();

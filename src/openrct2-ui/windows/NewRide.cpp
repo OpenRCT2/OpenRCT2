@@ -479,7 +479,7 @@ static Widget window_new_ride_widgets[] = {
                 return;
             }
 
-            GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
@@ -497,7 +497,7 @@ static Widget window_new_ride_widgets[] = {
                 // Draw ride image with feathered border
                 auto mask = ImageId(SPR_NEW_RIDE_MASK);
                 auto rideImage = ImageId(GetRideImage(*listItem));
-                GfxDrawSpriteRawMasked(&dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, rideImage);
+                GfxDrawSpriteRawMasked(dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, rideImage);
 
                 // Next position
                 coords.x += 116;

@@ -720,7 +720,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
 
             uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-            GfxClear(&dpi, paletteIndex);
+            GfxClear(dpi, paletteIndex);
 
             screenCoords.y = 0;
             for (size_t i = 0; i < _listItems.size(); i++)
