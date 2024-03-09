@@ -45,14 +45,14 @@ uint16_t TrackRemoveAction::GetActionFlags() const
 
 int32_t TrackRemoveAction::NormaliseTrackType(int32_t trackType) const
 {
-    switch (_trackType)
+    switch (trackType)
     {
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
             return TrackElemType::EndStation;
     }
 
-    return _trackType;
+    return trackType;
 }
 
 void TrackRemoveAction::Serialise(DataSerialiser& stream)
