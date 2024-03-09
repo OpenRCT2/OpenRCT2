@@ -1012,8 +1012,6 @@ void RideDelete(RideId id);
 const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
 
-extern const StringId ColourSchemeNames[4];
-
 int32_t RideGetCount();
 void RideInitAll();
 void ResetAllRideBuildDates();

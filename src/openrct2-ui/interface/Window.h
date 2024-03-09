@@ -69,4 +69,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutDemolishCurrent();
 
     void WindowTileInspectorKeyboardShortcutToggleInvisibility();
+
+    extern const StringId ColourSchemeNames[4];
 } // namespace OpenRCT2::Ui::Windows
