@@ -53,6 +53,7 @@
 #include <openrct2/world/Wall.h>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Ui::Windows;
 
 static void ViewportInteractionRemoveScenery(const SmallSceneryElement& smallSceneryElement, const CoordsXY& mapCoords);
 static void ViewportInteractionRemoveFootpath(const PathElement& pathElement, const CoordsXY& mapCoords);

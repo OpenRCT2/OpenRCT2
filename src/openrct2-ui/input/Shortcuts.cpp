@@ -47,6 +47,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
+using namespace OpenRCT2::Ui::Windows;
 
 #pragma region Shortcut Commands
 

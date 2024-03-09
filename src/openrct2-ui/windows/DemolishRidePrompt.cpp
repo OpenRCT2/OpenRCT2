@@ -19,12 +19,13 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-using namespace OpenRCT2;
+namespace OpenRCT2::Ui::Windows
+{
 
-static constexpr int32_t WW = 200;
-static constexpr int32_t WH = 100;
+    static constexpr int32_t WW = 200;
+    static constexpr int32_t WH = 100;
 
-// clang-format off
+    // clang-format off
 enum WindowRideDemolishWidgetIdx
 {
     WIDX_BACKGROUND,
@@ -41,85 +42,87 @@ static Widget window_ride_demolish_widgets[] =
     MakeWidget({WW - 95, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     kWidgetsEnd,
 };
-// clang-format on
+    // clang-format on
 
-class DemolishRidePromptWindow final : public Window
-{
-    money64 _demolishRideCost;
-
-public:
-    void SetRide(const Ride& currentRide)
+    class DemolishRidePromptWindow final : public Window
     {
-        rideId = currentRide.id;
-        _demolishRideCost = -RideGetRefundPrice(currentRide);
-    }
+        money64 _demolishRideCost;
 
-    void OnOpen() override
-    {
-        widgets = window_ride_demolish_widgets;
-        WindowInitScrollWidgets(*this);
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        switch (widgetIndex)
+    public:
+        void SetRide(const Ride& currentRide)
         {
-            case WIDX_DEMOLISH:
+            rideId = currentRide.id;
+            _demolishRideCost = -RideGetRefundPrice(currentRide);
+        }
+
+        void OnOpen() override
+        {
+            widgets = window_ride_demolish_widgets;
+            WindowInitScrollWidgets(*this);
+        }
+
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
             {
-                auto gameAction = RideDemolishAction(rideId, RIDE_MODIFY_DEMOLISH);
-                GameActions::Execute(&gameAction);
-                break;
+                case WIDX_DEMOLISH:
+                {
+                    auto gameAction = RideDemolishAction(rideId, RIDE_MODIFY_DEMOLISH);
+                    GameActions::Execute(&gameAction);
+                    break;
+                }
+                case WIDX_CANCEL:
+                case WIDX_CLOSE:
+                    Close();
+                    break;
             }
-            case WIDX_CANCEL:
-            case WIDX_CLOSE:
-                Close();
-                break;
         }
-    }
 
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        WindowDrawWidgets(*this, dpi);
-
-        auto currentRide = GetRide(rideId);
-        if (currentRide != nullptr)
+        void OnDraw(DrawPixelInfo& dpi) override
         {
-            auto stringId = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID
-                                                                             : STR_DEMOLISH_RIDE_ID_MONEY;
-            auto ft = Formatter();
-            currentRide->FormatNameTo(ft);
-            ft.Add<money64>(_demolishRideCost);
+            WindowDrawWidgets(*this, dpi);
 
-            ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
-            DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
+            auto currentRide = GetRide(rideId);
+            if (currentRide != nullptr)
+            {
+                auto stringId = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID
+                                                                                 : STR_DEMOLISH_RIDE_ID_MONEY;
+                auto ft = Formatter();
+                currentRide->FormatNameTo(ft);
+                ft.Add<money64>(_demolishRideCost);
+
+                ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
+                DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
+            }
         }
-    }
 
-    void OnResize() override
+        void OnResize() override
+        {
+            ResizeFrame();
+        }
+    };
+
+    WindowBase* WindowRideDemolishPromptOpen(const Ride& ride)
     {
-        ResizeFrame();
+        WindowBase* w;
+        DemolishRidePromptWindow* newWindow;
+
+        w = WindowFindByClass(WindowClass::DemolishRidePrompt);
+        if (w != nullptr)
+        {
+            auto windowPos = w->windowPos;
+            WindowClose(*w);
+            newWindow = WindowCreate<DemolishRidePromptWindow>(
+                WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
+        }
+        else
+        {
+            newWindow = WindowCreate<DemolishRidePromptWindow>(
+                WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+        }
+
+        newWindow->SetRide(ride);
+
+        return newWindow;
     }
-};
-
-WindowBase* WindowRideDemolishPromptOpen(const Ride& ride)
-{
-    WindowBase* w;
-    DemolishRidePromptWindow* newWindow;
-
-    w = WindowFindByClass(WindowClass::DemolishRidePrompt);
-    if (w != nullptr)
-    {
-        auto windowPos = w->windowPos;
-        WindowClose(*w);
-        newWindow = WindowCreate<DemolishRidePromptWindow>(WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
-    }
-    else
-    {
-        newWindow = WindowCreate<DemolishRidePromptWindow>(
-            WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
-    }
-
-    newWindow->SetRide(ride);
-
-    return newWindow;
-}
+} // namespace OpenRCT2::Ui::Windows

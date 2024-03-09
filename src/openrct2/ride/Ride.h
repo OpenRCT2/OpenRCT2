@@ -1084,8 +1084,6 @@ enum class RideSetSetting : uint8_t;
 money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);
 money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
-void UpdateGhostTrackAndArrow();
-
 uint32_t RideCustomersPerHour(const Ride& ride);
 uint32_t RideCustomersInLast5Minutes(const Ride& ride);
 

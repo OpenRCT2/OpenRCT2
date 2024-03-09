@@ -18,11 +18,13 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
-static constexpr StringId WINDOW_TITLE = STR_SACK_STAFF;
-static constexpr int32_t WW = 200;
-static constexpr int32_t WH = 100;
+namespace OpenRCT2::Ui::Windows
+{
+    static constexpr StringId WINDOW_TITLE = STR_SACK_STAFF;
+    static constexpr int32_t WW = 200;
+    static constexpr int32_t WH = 100;
 
-// clang-format off
+    // clang-format off
 enum WindowStaffFireWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -39,62 +41,63 @@ static Widget _staffFireWidgets[] = {
     kWidgetsEnd,
 };
 
-// clang-format on
+    // clang-format on
 
-class StaffFirePromptWindow final : public Window
-{
-public:
-    void SetWindowNumber(rct_windownumber windownumber)
+    class StaffFirePromptWindow final : public Window
     {
-        number = windownumber;
-    }
-
-    void OnOpen() override
-    {
-        widgets = _staffFireWidgets;
-        WindowInitScrollWidgets(*this);
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        switch (widgetIndex)
+    public:
+        void SetWindowNumber(rct_windownumber windownumber)
         {
-            case WIDX_YES:
-            {
-                auto staffFireAction = StaffFireAction(EntityId::FromUnderlying(number));
-                GameActions::Execute(&staffFireAction);
-                break;
-            }
-            case WIDX_CLOSE:
-            case WIDX_CANCEL:
-                Close();
-                break;
+            number = windownumber;
         }
-    }
 
-    void OnDraw(DrawPixelInfo& dpi) override
+        void OnOpen() override
+        {
+            widgets = _staffFireWidgets;
+            WindowInitScrollWidgets(*this);
+        }
+
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_YES:
+                {
+                    auto staffFireAction = StaffFireAction(EntityId::FromUnderlying(number));
+                    GameActions::Execute(&staffFireAction);
+                    break;
+                }
+                case WIDX_CLOSE:
+                case WIDX_CANCEL:
+                    Close();
+                    break;
+            }
+        }
+
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            DrawWidgets(dpi);
+
+            Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
+            auto ft = Formatter();
+            peep->FormatNameTo(ft);
+
+            ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
+            DrawTextWrapped(dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+        }
+
+        void OnResize() override
+        {
+            ResizeFrame();
+        }
+    };
+
+    WindowBase* WindowStaffFirePromptOpen(Peep* peep)
     {
-        DrawWidgets(dpi);
-
-        Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
-        auto ft = Formatter();
-        peep->FormatNameTo(ft);
-
-        ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
-        DrawTextWrapped(dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+        // Check if the confirm window already exists
+        auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(
+            WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+        window->SetWindowNumber(peep->Id.ToUnderlying());
+        return window;
     }
-
-    void OnResize() override
-    {
-        ResizeFrame();
-    }
-};
-
-WindowBase* WindowStaffFirePromptOpen(Peep* peep)
-{
-    // Check if the confirm window already exists
-    auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(
-        WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
-    window->SetWindowNumber(peep->Id.ToUnderlying());
-    return window;
-}
+} // namespace OpenRCT2::Ui::Windows

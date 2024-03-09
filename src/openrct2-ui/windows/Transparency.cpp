@@ -30,9 +30,10 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-using namespace OpenRCT2;
+namespace OpenRCT2::Ui::Windows
+{
 
-// clang-format off
+    // clang-format off
 enum WINDOW_TRANSPARENCY_WIDGET_IDX
 {
     WIDX_BACKGROUND,
@@ -87,176 +88,177 @@ static Widget _transparancyWidgets[] =
 
     { kWidgetsEnd },
 };
-// clang-format on
+    // clang-format on
 
-class TransparencyWindow final : public Window
-{
-private:
-public:
-    void OnOpen() override
+    class TransparencyWindow final : public Window
     {
-        widgets = _transparancyWidgets;
-        WindowPushOthersBelow(*this);
-
-        auto* w = WindowGetMain();
-        if (w != nullptr)
-            windowPos.x = ((w->width / 2) - (width / 2));
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        switch (widgetIndex)
+    private:
+    public:
+        void OnOpen() override
         {
-            case WIDX_CLOSE:
-                Close();
-                break;
-            default:
-                ToggleViewportFlag(widgetIndex);
-                break;
+            widgets = _transparancyWidgets;
+            WindowPushOthersBelow(*this);
+
+            auto* w = WindowGetMain();
+            if (w != nullptr)
+                windowPos.x = ((w->width / 2) - (width / 2));
         }
-    }
 
-    void OnPrepareDraw() override
-    {
-        uint32_t wflags = 0;
-        WindowBase* w = WindowGetMain();
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_CLOSE:
+                    Close();
+                    break;
+                default:
+                    ToggleViewportFlag(widgetIndex);
+                    break;
+            }
+        }
 
-        pressed_widgets = 0;
-        disabled_widgets = 0;
+        void OnPrepareDraw() override
+        {
+            uint32_t wflags = 0;
+            WindowBase* w = WindowGetMain();
 
-        if (w != nullptr)
+            pressed_widgets = 0;
+            disabled_widgets = 0;
+
+            if (w != nullptr)
+                wflags = w->viewport->flags;
+
+            SetWidgetPressed(WIDX_HIDE_VEGETATION, (wflags & VIEWPORT_FLAG_HIDE_VEGETATION));
+            SetWidgetPressed(WIDX_HIDE_SCENERY, (wflags & VIEWPORT_FLAG_HIDE_SCENERY));
+            SetWidgetPressed(WIDX_HIDE_PATHS, (wflags & VIEWPORT_FLAG_HIDE_PATHS));
+            SetWidgetPressed(WIDX_HIDE_RIDES, (wflags & VIEWPORT_FLAG_HIDE_RIDES));
+            SetWidgetPressed(WIDX_HIDE_VEHICLES, (wflags & VIEWPORT_FLAG_HIDE_VEHICLES));
+            SetWidgetPressed(WIDX_HIDE_SUPPORTS, (wflags & VIEWPORT_FLAG_HIDE_SUPPORTS));
+            SetWidgetPressed(WIDX_HIDE_GUESTS, (wflags & VIEWPORT_FLAG_HIDE_GUESTS));
+            SetWidgetPressed(WIDX_HIDE_STAFF, (wflags & VIEWPORT_FLAG_HIDE_STAFF));
+            SetWidgetPressed(WIDX_INVISIBLE_VEGETATION, (wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION));
+            SetWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
+            SetWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags & VIEWPORT_FLAG_INVISIBLE_PATHS));
+            SetWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags & VIEWPORT_FLAG_INVISIBLE_RIDES));
+            SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
+            SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
+
+            for (WidgetIndex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
+            {
+                widgets[i].image = ImageId(IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL);
+            }
+        }
+
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            DrawWidgets(dpi);
+            // Locate mechanic button image
+            const auto& widget = widgets[WIDX_HIDE_STAFF];
+            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
+            auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, GetGameState().StaffMechanicColour);
+            GfxDrawSprite(dpi, image, screenCoords);
+        }
+
+    private:
+        uint32_t ToggleTransparency(uint32_t wflags, uint32_t transparencyFlag, uint32_t seeThroughFlag)
+        {
+            wflags ^= transparencyFlag;
+            if (wflags & transparencyFlag)
+            {
+                wflags |= seeThroughFlag;
+            }
+            SaveInConfig(wflags);
+            return wflags;
+        }
+
+        void ToggleViewportFlag(WidgetIndex widgetIndex)
+        {
+            uint32_t wflags = 0;
+            WindowBase* w = WindowGetMain();
+
+            if (w == nullptr)
+                return;
+
             wflags = w->viewport->flags;
 
-        SetWidgetPressed(WIDX_HIDE_VEGETATION, (wflags & VIEWPORT_FLAG_HIDE_VEGETATION));
-        SetWidgetPressed(WIDX_HIDE_SCENERY, (wflags & VIEWPORT_FLAG_HIDE_SCENERY));
-        SetWidgetPressed(WIDX_HIDE_PATHS, (wflags & VIEWPORT_FLAG_HIDE_PATHS));
-        SetWidgetPressed(WIDX_HIDE_RIDES, (wflags & VIEWPORT_FLAG_HIDE_RIDES));
-        SetWidgetPressed(WIDX_HIDE_VEHICLES, (wflags & VIEWPORT_FLAG_HIDE_VEHICLES));
-        SetWidgetPressed(WIDX_HIDE_SUPPORTS, (wflags & VIEWPORT_FLAG_HIDE_SUPPORTS));
-        SetWidgetPressed(WIDX_HIDE_GUESTS, (wflags & VIEWPORT_FLAG_HIDE_GUESTS));
-        SetWidgetPressed(WIDX_HIDE_STAFF, (wflags & VIEWPORT_FLAG_HIDE_STAFF));
-        SetWidgetPressed(WIDX_INVISIBLE_VEGETATION, (wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION));
-        SetWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
-        SetWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags & VIEWPORT_FLAG_INVISIBLE_PATHS));
-        SetWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags & VIEWPORT_FLAG_INVISIBLE_RIDES));
-        SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
-        SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
+            switch (widgetIndex)
+            {
+                case WIDX_HIDE_RIDES:
+                    wflags ^= VIEWPORT_FLAG_HIDE_RIDES;
+                    break;
+                case WIDX_HIDE_VEHICLES:
+                    wflags ^= VIEWPORT_FLAG_HIDE_VEHICLES;
+                    break;
+                case WIDX_HIDE_SCENERY:
+                    wflags ^= VIEWPORT_FLAG_HIDE_SCENERY;
+                    break;
+                case WIDX_HIDE_VEGETATION:
+                    wflags ^= VIEWPORT_FLAG_HIDE_VEGETATION;
+                    break;
+                case WIDX_HIDE_PATHS:
+                    wflags ^= VIEWPORT_FLAG_HIDE_PATHS;
+                    break;
+                case WIDX_HIDE_SUPPORTS:
+                    wflags ^= VIEWPORT_FLAG_HIDE_SUPPORTS;
+                    break;
+                case WIDX_INVISIBLE_RIDES:
+                    wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_RIDES, VIEWPORT_FLAG_HIDE_RIDES);
+                    break;
+                case WIDX_INVISIBLE_VEHICLES:
+                    wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_VEHICLES, VIEWPORT_FLAG_HIDE_VEHICLES);
+                    break;
+                case WIDX_INVISIBLE_SCENERY:
+                    wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_SCENERY, VIEWPORT_FLAG_HIDE_SCENERY);
+                    break;
+                case WIDX_INVISIBLE_VEGETATION:
+                    wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_VEGETATION, VIEWPORT_FLAG_HIDE_VEGETATION);
+                    break;
+                case WIDX_INVISIBLE_PATHS:
+                    wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_PATHS, VIEWPORT_FLAG_HIDE_PATHS);
+                    break;
+                case WIDX_INVISIBLE_SUPPORTS:
+                    wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_SUPPORTS, VIEWPORT_FLAG_HIDE_SUPPORTS);
+                    break;
+                case WIDX_HIDE_GUESTS:
+                    wflags ^= VIEWPORT_FLAG_HIDE_GUESTS;
+                    break;
+                case WIDX_HIDE_STAFF:
+                    wflags ^= VIEWPORT_FLAG_HIDE_STAFF;
+                    break;
+                default:
+                    return;
+            }
 
-        for (WidgetIndex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
-        {
-            widgets[i].image = ImageId(IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL);
-        }
-    }
-
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        DrawWidgets(dpi);
-        // Locate mechanic button image
-        const auto& widget = widgets[WIDX_HIDE_STAFF];
-        auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-        auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, GetGameState().StaffMechanicColour);
-        GfxDrawSprite(dpi, image, screenCoords);
-    }
-
-private:
-    uint32_t ToggleTransparency(uint32_t wflags, uint32_t transparencyFlag, uint32_t seeThroughFlag)
-    {
-        wflags ^= transparencyFlag;
-        if (wflags & transparencyFlag)
-        {
-            wflags |= seeThroughFlag;
-        }
-        SaveInConfig(wflags);
-        return wflags;
-    }
-
-    void ToggleViewportFlag(WidgetIndex widgetIndex)
-    {
-        uint32_t wflags = 0;
-        WindowBase* w = WindowGetMain();
-
-        if (w == nullptr)
-            return;
-
-        wflags = w->viewport->flags;
-
-        switch (widgetIndex)
-        {
-            case WIDX_HIDE_RIDES:
-                wflags ^= VIEWPORT_FLAG_HIDE_RIDES;
-                break;
-            case WIDX_HIDE_VEHICLES:
-                wflags ^= VIEWPORT_FLAG_HIDE_VEHICLES;
-                break;
-            case WIDX_HIDE_SCENERY:
-                wflags ^= VIEWPORT_FLAG_HIDE_SCENERY;
-                break;
-            case WIDX_HIDE_VEGETATION:
-                wflags ^= VIEWPORT_FLAG_HIDE_VEGETATION;
-                break;
-            case WIDX_HIDE_PATHS:
-                wflags ^= VIEWPORT_FLAG_HIDE_PATHS;
-                break;
-            case WIDX_HIDE_SUPPORTS:
-                wflags ^= VIEWPORT_FLAG_HIDE_SUPPORTS;
-                break;
-            case WIDX_INVISIBLE_RIDES:
-                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_RIDES, VIEWPORT_FLAG_HIDE_RIDES);
-                break;
-            case WIDX_INVISIBLE_VEHICLES:
-                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_VEHICLES, VIEWPORT_FLAG_HIDE_VEHICLES);
-                break;
-            case WIDX_INVISIBLE_SCENERY:
-                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_SCENERY, VIEWPORT_FLAG_HIDE_SCENERY);
-                break;
-            case WIDX_INVISIBLE_VEGETATION:
-                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_VEGETATION, VIEWPORT_FLAG_HIDE_VEGETATION);
-                break;
-            case WIDX_INVISIBLE_PATHS:
-                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_PATHS, VIEWPORT_FLAG_HIDE_PATHS);
-                break;
-            case WIDX_INVISIBLE_SUPPORTS:
-                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_SUPPORTS, VIEWPORT_FLAG_HIDE_SUPPORTS);
-                break;
-            case WIDX_HIDE_GUESTS:
-                wflags ^= VIEWPORT_FLAG_HIDE_GUESTS;
-                break;
-            case WIDX_HIDE_STAFF:
-                wflags ^= VIEWPORT_FLAG_HIDE_STAFF;
-                break;
-            default:
+            if (w->viewport->flags == wflags)
                 return;
+
+            w->viewport->flags = wflags;
+            w->Invalidate();
         }
 
-        if (w->viewport->flags == wflags)
-            return;
+        void SaveInConfig(uint32_t wflags)
+        {
+            gConfigGeneral.InvisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
+            gConfigGeneral.InvisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+            gConfigGeneral.InvisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
+            gConfigGeneral.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+            gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
+            gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+            ConfigSaveDefault();
+        }
 
-        w->viewport->flags = wflags;
-        w->Invalidate();
-    }
+        void OnResize() override
+        {
+            ResizeFrame();
+        }
+    };
 
-    void SaveInConfig(uint32_t wflags)
+    WindowBase* WindowTransparencyOpen()
     {
-        gConfigGeneral.InvisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
-        gConfigGeneral.InvisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-        gConfigGeneral.InvisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
-        gConfigGeneral.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-        gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
-        gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-        ConfigSaveDefault();
+        auto* window = WindowBringToFrontByClass(WindowClass::Transparency);
+        if (window == nullptr)
+            window = WindowCreate<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
+
+        return window;
     }
-
-    void OnResize() override
-    {
-        ResizeFrame();
-    }
-};
-
-WindowBase* WindowTransparencyOpen()
-{
-    auto* window = WindowBringToFrontByClass(WindowClass::Transparency);
-    if (window == nullptr)
-        window = WindowCreate<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
-
-    return window;
-}
+} // namespace OpenRCT2::Ui::Windows

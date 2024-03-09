@@ -23,7 +23,9 @@
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 
-// clang-format off
+namespace OpenRCT2::Ui::Windows
+{
+    // clang-format off
 enum {
     WIDX_START_NEW_GAME,
     WIDX_CONTINUE_SAVED_GAME,
@@ -53,238 +55,239 @@ static Widget _titleMenuWidgets[] = {
     MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     kWidgetsEnd,
 };
-// clang-format on
+    // clang-format on
 
-static void WindowTitleMenuScenarioselectCallback(const utf8* path)
-{
-    GameNotifyMapChange();
-    OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
-    GameLoadScripts();
-    GameNotifyMapChanged();
-}
-
-static void InvokeCustomToolboxMenuItem(size_t index)
-{
-#ifdef ENABLE_SCRIPTING
-    const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
-    size_t i = 0;
-    for (const auto& item : customMenuItems)
+    static void WindowTitleMenuScenarioselectCallback(const utf8* path)
     {
-        if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
-        {
-            if (i == index)
-            {
-                item.Invoke();
-                break;
-            }
-            i++;
-        }
+        GameNotifyMapChange();
+        OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
-#endif
-}
 
-class TitleMenuWindow final : public Window
-{
-private:
-    ScreenRect _filterRect;
-
-public:
-    void OnOpen() override
+    static void InvokeCustomToolboxMenuItem(size_t index)
     {
-        widgets = _titleMenuWidgets;
+#ifdef ENABLE_SCRIPTING
+        const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+        size_t i = 0;
+        for (const auto& item : customMenuItems)
+        {
+            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
+            {
+                if (i == index)
+                {
+                    item.Invoke();
+                    break;
+                }
+                i++;
+            }
+        }
+#endif
+    }
+
+    class TitleMenuWindow final : public Window
+    {
+    private:
+        ScreenRect _filterRect;
+
+    public:
+        void OnOpen() override
+        {
+            widgets = _titleMenuWidgets;
 
 #ifdef DISABLE_NETWORK
-        widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
+            widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
 
-        int32_t x = 0;
-        for (Widget* widget = widgets; widget != &widgets[WIDX_NEW_VERSION]; widget++)
-        {
-            if (widget->type != WindowWidgetType::Empty)
+            int32_t x = 0;
+            for (Widget* widget = widgets; widget != &widgets[WIDX_NEW_VERSION]; widget++)
             {
-                widget->left = x;
-                widget->right = x + MenuButtonDims.width - 1;
+                if (widget->type != WindowWidgetType::Empty)
+                {
+                    widget->left = x;
+                    widget->right = x + MenuButtonDims.width - 1;
 
-                x += MenuButtonDims.width;
+                    x += MenuButtonDims.width;
+                }
+            }
+            width = x;
+            widgets[WIDX_NEW_VERSION].right = width;
+            windowPos.x = (ContextGetWidth() - width) / 2;
+            colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
+
+            InitScrollWidgets();
+        }
+
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            WindowBase* windowToOpen = nullptr;
+
+            switch (widgetIndex)
+            {
+                case WIDX_START_NEW_GAME:
+                    windowToOpen = WindowFindByClass(WindowClass::ScenarioSelect);
+                    if (windowToOpen != nullptr)
+                    {
+                        WindowBringToFront(*windowToOpen);
+                    }
+                    else
+                    {
+                        WindowCloseByClass(WindowClass::Loadsave);
+                        WindowCloseByClass(WindowClass::ServerList);
+                        WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
+                    }
+                    break;
+                case WIDX_CONTINUE_SAVED_GAME:
+                    windowToOpen = WindowFindByClass(WindowClass::Loadsave);
+                    if (windowToOpen != nullptr)
+                    {
+                        WindowBringToFront(*windowToOpen);
+                    }
+                    else
+                    {
+                        WindowCloseByClass(WindowClass::ScenarioSelect);
+                        WindowCloseByClass(WindowClass::ServerList);
+                        auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+                        GameActions::Execute(&loadOrQuitAction);
+                    }
+                    break;
+                case WIDX_MULTIPLAYER:
+                    windowToOpen = WindowFindByClass(WindowClass::ServerList);
+                    if (windowToOpen != nullptr)
+                    {
+                        WindowBringToFront(*windowToOpen);
+                    }
+                    else
+                    {
+                        WindowCloseByClass(WindowClass::ScenarioSelect);
+                        WindowCloseByClass(WindowClass::Loadsave);
+                        ContextOpenWindow(WindowClass::ServerList);
+                    }
+                    break;
+                case WIDX_NEW_VERSION:
+                    ContextOpenWindowView(WV_NEW_VERSION_INFO);
+                    break;
             }
         }
-        width = x;
-        widgets[WIDX_NEW_VERSION].right = width;
-        windowPos.x = (ContextGetWidth() - width) / 2;
-        colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
-        InitScrollWidgets();
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        WindowBase* windowToOpen = nullptr;
-
-        switch (widgetIndex)
+        void OnMouseDown(WidgetIndex widgetIndex) override
         {
-            case WIDX_START_NEW_GAME:
-                windowToOpen = WindowFindByClass(WindowClass::ScenarioSelect);
-                if (windowToOpen != nullptr)
-                {
-                    WindowBringToFront(*windowToOpen);
-                }
-                else
-                {
-                    WindowCloseByClass(WindowClass::Loadsave);
-                    WindowCloseByClass(WindowClass::ServerList);
-                    WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
-                }
-                break;
-            case WIDX_CONTINUE_SAVED_GAME:
-                windowToOpen = WindowFindByClass(WindowClass::Loadsave);
-                if (windowToOpen != nullptr)
-                {
-                    WindowBringToFront(*windowToOpen);
-                }
-                else
-                {
-                    WindowCloseByClass(WindowClass::ScenarioSelect);
-                    WindowCloseByClass(WindowClass::ServerList);
-                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
-                    GameActions::Execute(&loadOrQuitAction);
-                }
-                break;
-            case WIDX_MULTIPLAYER:
-                windowToOpen = WindowFindByClass(WindowClass::ServerList);
-                if (windowToOpen != nullptr)
-                {
-                    WindowBringToFront(*windowToOpen);
-                }
-                else
-                {
-                    WindowCloseByClass(WindowClass::ScenarioSelect);
-                    WindowCloseByClass(WindowClass::Loadsave);
-                    ContextOpenWindow(WindowClass::ServerList);
-                }
-                break;
-            case WIDX_NEW_VERSION:
-                ContextOpenWindowView(WV_NEW_VERSION_INFO);
-                break;
-        }
-    }
-
-    void OnMouseDown(WidgetIndex widgetIndex) override
-    {
-        if (widgetIndex == WIDX_GAME_TOOLS)
-        {
-            int32_t i = 0;
-            gDropdownItems[i++].Format = STR_SCENARIO_EDITOR;
-            gDropdownItems[i++].Format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
-            gDropdownItems[i++].Format = STR_ROLLER_COASTER_DESIGNER;
-            gDropdownItems[i++].Format = STR_TRACK_DESIGNS_MANAGER;
-            gDropdownItems[i++].Format = STR_OPEN_USER_CONTENT_FOLDER;
+            if (widgetIndex == WIDX_GAME_TOOLS)
+            {
+                int32_t i = 0;
+                gDropdownItems[i++].Format = STR_SCENARIO_EDITOR;
+                gDropdownItems[i++].Format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
+                gDropdownItems[i++].Format = STR_ROLLER_COASTER_DESIGNER;
+                gDropdownItems[i++].Format = STR_TRACK_DESIGNS_MANAGER;
+                gDropdownItems[i++].Format = STR_OPEN_USER_CONTENT_FOLDER;
 
 #ifdef ENABLE_SCRIPTING
-            auto hasCustomItems = false;
-            const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
-            if (!customMenuItems.empty())
-            {
-                for (const auto& item : customMenuItems)
+                auto hasCustomItems = false;
+                const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+                if (!customMenuItems.empty())
                 {
-                    if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
+                    for (const auto& item : customMenuItems)
                     {
-                        // Add seperator
-                        if (!hasCustomItems)
+                        if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
                         {
-                            hasCustomItems = true;
-                            gDropdownItems[i++].Format = STR_EMPTY;
-                        }
+                            // Add seperator
+                            if (!hasCustomItems)
+                            {
+                                hasCustomItems = true;
+                                gDropdownItems[i++].Format = STR_EMPTY;
+                            }
 
-                        gDropdownItems[i].Format = STR_STRING;
-                        auto sz = item.Text.c_str();
-                        std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
-                        i++;
+                            gDropdownItems[i].Format = STR_STRING;
+                            auto sz = item.Text.c_str();
+                            std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                            i++;
+                        }
                     }
                 }
-            }
 #endif
 
-            Widget* widget = &widgets[widgetIndex];
-            int32_t yOffset = 0;
-            if (i > 5)
-            {
-                yOffset = -(widget->height() + 5 + (i * 12));
-            }
-
-            WindowDropdownShowText(
-                windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height() + 1,
-                TRANSLUCENT(colours[0]), Dropdown::Flag::StayOpen, i);
-        }
-    }
-
-    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
-    {
-        if (selectedIndex == -1)
-        {
-            return;
-        }
-        if (widgetIndex == WIDX_GAME_TOOLS)
-        {
-            switch (selectedIndex)
-            {
-                case DDIDX_SCENARIO_EDITOR:
-                    Editor::Load();
-                    break;
-                case DDIDX_CONVERT_SAVED_GAME:
-                    Editor::ConvertSaveToScenario();
-                    break;
-                case DDIDX_TRACK_DESIGNER:
-                    Editor::LoadTrackDesigner();
-                    break;
-                case DDIDX_TRACK_MANAGER:
-                    Editor::LoadTrackManager();
-                    break;
-                case DDIDX_OPEN_CONTENT_FOLDER:
+                Widget* widget = &widgets[widgetIndex];
+                int32_t yOffset = 0;
+                if (i > 5)
                 {
-                    auto context = OpenRCT2::GetContext();
-                    auto env = context->GetPlatformEnvironment();
-                    auto uiContext = context->GetUiContext();
-                    uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
-                    break;
+                    yOffset = -(widget->height() + 5 + (i * 12));
                 }
-                default:
-                    InvokeCustomToolboxMenuItem(selectedIndex - DDIDX_CUSTOM_BEGIN);
-                    break;
+
+                WindowDropdownShowText(
+                    windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height() + 1,
+                    TRANSLUCENT(colours[0]), Dropdown::Flag::StayOpen, i);
             }
         }
-    }
 
-    CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
-    {
-        gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
-        return cursorId;
-    }
-
-    void OnPrepareDraw() override
-    {
-        _filterRect = { windowPos + ScreenCoordsXY{ 0, UpdateButtonDims.height },
-                        windowPos + ScreenCoordsXY{ width - 1, MenuButtonDims.height + UpdateButtonDims.height - 1 } };
-        if (OpenRCT2::GetContext()->HasNewVersionInfo())
+        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
-            widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
-            _filterRect.Point1.y = windowPos.y;
+            if (selectedIndex == -1)
+            {
+                return;
+            }
+            if (widgetIndex == WIDX_GAME_TOOLS)
+            {
+                switch (selectedIndex)
+                {
+                    case DDIDX_SCENARIO_EDITOR:
+                        Editor::Load();
+                        break;
+                    case DDIDX_CONVERT_SAVED_GAME:
+                        Editor::ConvertSaveToScenario();
+                        break;
+                    case DDIDX_TRACK_DESIGNER:
+                        Editor::LoadTrackDesigner();
+                        break;
+                    case DDIDX_TRACK_MANAGER:
+                        Editor::LoadTrackManager();
+                        break;
+                    case DDIDX_OPEN_CONTENT_FOLDER:
+                    {
+                        auto context = OpenRCT2::GetContext();
+                        auto env = context->GetPlatformEnvironment();
+                        auto uiContext = context->GetUiContext();
+                        uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
+                        break;
+                    }
+                    default:
+                        InvokeCustomToolboxMenuItem(selectedIndex - DDIDX_CUSTOM_BEGIN);
+                        break;
+                }
+            }
         }
-    }
 
-    void OnDraw(DrawPixelInfo& dpi) override
+        CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
+        {
+            gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
+            return cursorId;
+        }
+
+        void OnPrepareDraw() override
+        {
+            _filterRect = { windowPos + ScreenCoordsXY{ 0, UpdateButtonDims.height },
+                            windowPos + ScreenCoordsXY{ width - 1, MenuButtonDims.height + UpdateButtonDims.height - 1 } };
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+            {
+                widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
+                _filterRect.Point1.y = windowPos.y;
+            }
+        }
+
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            GfxFilterRect(dpi, _filterRect, FilterPaletteID::Palette51);
+            DrawWidgets(dpi);
+        }
+    };
+
+    /**
+     * Creates the window containing the menu buttons on the title screen.
+     */
+    WindowBase* WindowTitleMenuOpen()
     {
-        GfxFilterRect(dpi, _filterRect, FilterPaletteID::Palette51);
-        DrawWidgets(dpi);
+        const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
+        return WindowCreate<TitleMenuWindow>(
+            WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), 0, windowHeight,
+            WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     }
-};
-
-/**
- * Creates the window containing the menu buttons on the title screen.
- */
-WindowBase* WindowTitleMenuOpen()
-{
-    const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
-    return WindowCreate<TitleMenuWindow>(
-        WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), 0, windowHeight,
-        WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
-}
+} // namespace OpenRCT2::Ui::Windows
