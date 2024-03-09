@@ -131,16 +131,12 @@ void ViewportInitAll();
 std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
 void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
 void ViewportRemove(Viewport* viewport);
-Viewport* ViewportGetMain();
+
 void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom);
 void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom);
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom = ZoomLevel{ -1 });
 void ViewportUpdatePosition(WindowBase* window);
-void ViewportUpdateFollowSprite(WindowBase* window);
-void ViewportUpdateSmartFollowEntity(WindowBase* window);
-void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep);
-void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep);
-void ViewportUpdateSmartFollowVehicle(WindowBase* window);
+void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
 void ViewportRotateSingle(WindowBase* window, int32_t direction);
 void ViewportRotateAll(int32_t direction);
 void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect);
@@ -162,16 +158,12 @@ InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int
 InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32_t viewFlags, uint16_t filter);
-InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
-InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
-
-void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect);
 
 std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport);
 std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, int32_t z);

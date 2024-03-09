@@ -116,25 +116,25 @@ static Widget _windowFinancesSummaryWidgets[] =
     MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
     MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
     MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _windowFinancesCashWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _windowFinancesParkValueWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _windowFinancesProfitWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _windowFinancesMarketingWidgets[] =
@@ -148,7 +148,7 @@ static Widget _windowFinancesMarketingWidgets[] =
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _windowFinancesResearchWidgets[] =
@@ -165,7 +165,7 @@ static Widget _windowFinancesResearchWidgets[] =
     MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
     MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
     MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

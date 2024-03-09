@@ -67,7 +67,7 @@ static Widget window_guest_list_widgets[] = {
     MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
     MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
     MakeWidget({  3, 72}, {344, 255}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

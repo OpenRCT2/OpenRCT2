@@ -10,6 +10,7 @@
 #include "Window.h"
 
 #include "Theme.h"
+#include "Widget.h"
 #include "openrct2/world/Location.hpp"
 
 #include <SDL.h>

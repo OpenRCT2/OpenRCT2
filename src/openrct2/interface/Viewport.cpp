@@ -76,6 +76,11 @@ InteractionInfo::InteractionInfo(const PaintStruct* ps)
 
 static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi);
 static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect);
+static void ViewportUpdateFollowSprite(WindowBase* window);
+static void ViewportUpdateSmartFollowEntity(WindowBase* window);
+static void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep);
+static void ViewportUpdateSmartFollowVehicle(WindowBase* window);
+static void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -228,7 +233,7 @@ void ViewportRemove(Viewport* viewport)
     _viewports.erase(it);
 }
 
-Viewport* ViewportGetMain()
+static Viewport* ViewportGetMain()
 {
     auto mainWindow = WindowGetMain();
     if (mainWindow == nullptr)
@@ -754,13 +759,25 @@ void ViewportUpdateSmartFollowEntity(WindowBase* window)
             break;
 
         case EntityType::Guest:
-            ViewportUpdateSmartFollowGuest(window, entity->As<Guest>());
+        {
+            auto* guest = entity->As<Guest>();
+            if (guest == nullptr)
+            {
+                return;
+            }
+            ViewportUpdateSmartFollowGuest(window, *guest);
             break;
-
+        }
         case EntityType::Staff:
-            ViewportUpdateSmartFollowStaff(window, entity->As<Staff>());
+        {
+            auto* staff = entity->As<Staff>();
+            if (staff == nullptr)
+            {
+                return;
+            }
+            ViewportUpdateSmartFollowStaff(window, *staff);
             break;
-
+        }
         default: // All other types don't need any "smart" following; steam particle, duck, money effect, etc.
             window->focus = Focus(window->viewport_smart_follow_sprite);
             window->viewport_target_sprite = window->viewport_smart_follow_sprite;
@@ -768,12 +785,12 @@ void ViewportUpdateSmartFollowEntity(WindowBase* window)
     }
 }
 
-void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep)
+void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
 {
-    Focus focus = Focus(peep->Id);
-    window->viewport_target_sprite = peep->Id;
+    Focus focus = Focus(peep.Id);
+    window->viewport_target_sprite = peep.Id;
 
-    if (peep->State == PeepState::Picked)
+    if (peep.State == PeepState::Picked)
     {
         window->viewport_smart_follow_sprite = EntityId::GetNull();
         window->viewport_target_sprite = EntityId::GetNull();
@@ -782,16 +799,16 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep)
     }
 
     bool overallFocus = true;
-    if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
-        || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
+    if (peep.State == PeepState::OnRide || peep.State == PeepState::EnteringRide
+        || (peep.State == PeepState::LeavingRide && peep.x == LOCATION_NULL))
     {
-        auto ride = GetRide(peep->CurrentRide);
+        auto ride = GetRide(peep.CurrentRide);
         if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         {
-            auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+            auto train = GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
             if (train != nullptr)
             {
-                const auto car = train->GetCar(peep->CurrentCar);
+                const auto car = train->GetCar(peep.CurrentCar);
                 if (car != nullptr)
                 {
                     focus = Focus(car->Id);
@@ -802,9 +819,9 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep)
         }
     }
 
-    if (peep->x == LOCATION_NULL && overallFocus)
+    if (peep.x == LOCATION_NULL && overallFocus)
     {
-        auto ride = GetRide(peep->CurrentRide);
+        auto ride = GetRide(peep.CurrentRide);
         if (ride != nullptr)
         {
             auto xy = ride->overall_view.ToTileCentre();
@@ -820,9 +837,9 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep)
     window->focus = focus;
 }
 
-void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep)
+void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep)
 {
-    if (peep->State == PeepState::Picked)
+    if (peep.State == PeepState::Picked)
     {
         window->viewport_smart_follow_sprite = EntityId::GetNull();
         window->viewport_target_sprite = EntityId::GetNull();

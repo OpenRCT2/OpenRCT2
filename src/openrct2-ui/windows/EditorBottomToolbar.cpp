@@ -43,7 +43,7 @@ static Widget _editorBottomToolbarWidgets[] = {
     MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
     MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
     MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

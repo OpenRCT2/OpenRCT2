@@ -77,7 +77,7 @@ static Widget _rideListWidgets[] = {
     MakeWidget({320, 62}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                    ),
     MakeWidget({320, 76}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                     ),
     MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH),               STR_QUICK_DEMOLISH_RIDE           ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

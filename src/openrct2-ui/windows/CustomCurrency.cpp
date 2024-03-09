@@ -41,7 +41,7 @@ static Widget window_custom_currency_widgets[] = {
     MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
     MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
     MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 // clang-format on

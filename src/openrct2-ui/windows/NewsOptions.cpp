@@ -83,7 +83,7 @@ static Widget WindowNewsOptionsWidgets[] = {
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

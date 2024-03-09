@@ -126,13 +126,13 @@ static Widget window_editor_objective_options_main_widgets[] = {
     MakeWidget        ({ 98, 133}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
     MakeWidget        ({266, 134}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
     MakeWidget        ({370, 150}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget window_editor_objective_options_rides_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget *window_editor_objective_options_widgets[] = {

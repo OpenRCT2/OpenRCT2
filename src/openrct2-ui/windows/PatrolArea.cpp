@@ -45,7 +45,7 @@ static Widget PatrolAreaWidgets[] = {
     MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0)                                           ), // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_PATROL_AREA_TIP), // decrement size
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_PATROL_AREA_TIP ), // increment size
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

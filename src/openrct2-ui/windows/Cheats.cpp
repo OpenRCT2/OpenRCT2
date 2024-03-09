@@ -219,7 +219,7 @@ static Widget window_cheats_money_widgets[] =
     MakeSpinnerWidgets({120, 239}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // Day box
     MakeWidget        ({ 11, 258}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_SET          ), // Set Date
     MakeWidget        ({127, 258}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_RESET        ), // Reset Date
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget window_cheats_guests_widgets[] =
@@ -252,7 +252,7 @@ static Widget window_cheats_guests_widgets[] =
     MakeWidget({127, 384}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
     MakeWidget({ 11, 426}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
     MakeWidget({127, 426}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 //Strings for following moved to window_cheats_paint()
@@ -293,7 +293,7 @@ static Widget window_cheats_misc_widgets[] =
     MakeWidget        ({ 11, 407}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
     MakeWidget        ({ 11, 428}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES,   STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP  ), // Allow special colours in dropdown
 
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 static Widget window_cheats_rides_widgets[] =
 {
@@ -319,7 +319,7 @@ static Widget window_cheats_rides_widgets[] =
     MakeWidget({ 11, 384}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
     MakeWidget({ 11, 405}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
     MakeWidget({ 11, 426}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget *window_cheats_page_widgets[] =

@@ -69,7 +69,7 @@ static Widget _serverListWidgets[] = {
     MakeWidget({  6, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
     MakeWidget({112, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
     MakeWidget({218, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 
@@ -252,7 +252,7 @@ public:
         }
         else
         {
-            const int32_t iconX = listWidget.width() - SCROLLBAR_WIDTH - 7 - 10;
+            const int32_t iconX = listWidget.width() - kScrollBarWidth - 7 - 10;
             showNetworkVersionTooltip = screenCoords.x > iconX;
         }
 
@@ -376,7 +376,7 @@ public:
             const int16_t numPlayersStringWidth = GfxGetStringWidth(players, FontStyle::Medium);
 
             // How much space we have for the server info depends on the size of everything rendered after.
-            const int16_t spaceAvailableForInfo = listWidgetWidth - numPlayersStringWidth - SCROLLBAR_WIDTH - 35;
+            const int16_t spaceAvailableForInfo = listWidgetWidth - numPlayersStringWidth - kScrollBarWidth - 35;
 
             // Are we showing the server's name or description?
             const char* serverInfoToShow = serverDetails.Name.c_str();
@@ -390,7 +390,7 @@ public:
             ft.Add<const char*>(serverInfoToShow);
             DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
 
-            int32_t right = listWidgetWidth - 7 - SCROLLBAR_WIDTH;
+            int32_t right = listWidgetWidth - 7 - kScrollBarWidth;
 
             // Draw compatibility icon
             right -= 10;

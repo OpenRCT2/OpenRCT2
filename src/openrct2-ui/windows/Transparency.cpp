@@ -85,7 +85,7 @@ static Widget _transparancyWidgets[] =
     MakeWidget({102, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
     MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
 
-    { WIDGETS_END },
+    { kWidgetsEnd },
 };
 // clang-format on
 

@@ -21,7 +21,7 @@ enum WindowTitleOptionsWidgetIdx {
 
 static Widget _windowTitleOptionsWidgets[] = {
     MakeWidget({0, 0}, {80, 15}, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 

@@ -96,7 +96,7 @@ static Widget _themesWidgets[] = {
     MakeWidget({ 10, 69}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
     MakeWidget({ 10, 84}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
     MakeWidget({ 10, 99}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 #pragma region Tabs

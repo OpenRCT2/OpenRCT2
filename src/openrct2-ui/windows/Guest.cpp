@@ -104,39 +104,39 @@ static Widget _guestWindowWidgetsOverview[] = {
     MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_GUEST_TIP           ), // Rename Button
     MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
     MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 
 static Widget _guestWindowWidgetsStats[] = {
     MAIN_GUEST_WIDGETS,
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _guestWindowWidgetsRides[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _guestWindowWidgetsFinance[] = {
     MAIN_GUEST_WIDGETS,
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _guestWindowWidgetsThoughts[] = {
     MAIN_GUEST_WIDGETS,
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _guestWindowWidgetsInventory[] = {
     MAIN_GUEST_WIDGETS,
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget _guestWindowWidgetsDebug[] = {
     MAIN_GUEST_WIDGETS,
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 // clang-format off
@@ -706,7 +706,7 @@ private:
             return;
         }
 
-        ViewportUpdateSmartFollowGuest(this, peep);
+        ViewportUpdateSmartFollowGuest(this, *peep);
         bool reCreateViewport = false;
         uint16_t origViewportFlags{};
         if (viewport != nullptr)

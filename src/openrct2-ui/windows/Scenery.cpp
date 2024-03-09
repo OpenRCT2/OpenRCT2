@@ -94,7 +94,7 @@ static Widget WindowSceneryBaseWidgets[] = {
     MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
     MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
     MakeWidget     ({539,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 // clang-format on
 
@@ -1009,7 +1009,7 @@ private:
     int32_t GetNumColumns() const
     {
         const auto& listWidget = widgets[WIDX_SCENERY_LIST];
-        const auto contentWidth = listWidget.width() - SCROLLBAR_WIDTH;
+        const auto contentWidth = listWidget.width() - kScrollBarWidth;
         return contentWidth / SCENERY_BUTTON_WIDTH;
     }
 

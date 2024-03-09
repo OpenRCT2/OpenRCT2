@@ -687,21 +687,21 @@ static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widg
     // Horizontal scrollbar
     if (scroll.flags & HSCROLLBAR_VISIBLE)
         WidgetHScrollbarDraw(
-            dpi, scroll, topLeft.x, bottomRight.y - SCROLLBAR_WIDTH,
-            ((scroll.flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (SCROLLBAR_WIDTH + 1) : bottomRight.x), bottomRight.y,
+            dpi, scroll, topLeft.x, bottomRight.y - kScrollBarWidth,
+            ((scroll.flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (kScrollBarWidth + 1) : bottomRight.x), bottomRight.y,
             colour);
 
     // Vertical scrollbar
     if (scroll.flags & VSCROLLBAR_VISIBLE)
         WidgetVScrollbarDraw(
-            dpi, scroll, bottomRight.x - SCROLLBAR_WIDTH, topLeft.y, bottomRight.x,
-            ((scroll.flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (SCROLLBAR_WIDTH + 1) : bottomRight.y), colour);
+            dpi, scroll, bottomRight.x - kScrollBarWidth, topLeft.y, bottomRight.x,
+            ((scroll.flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (kScrollBarWidth + 1) : bottomRight.y), colour);
 
     // Contents
     if (scroll.flags & HSCROLLBAR_VISIBLE)
-        bottomRight.y -= (SCROLLBAR_WIDTH + 1);
+        bottomRight.y -= (kScrollBarWidth + 1);
     if (scroll.flags & VSCROLLBAR_VISIBLE)
-        bottomRight.x -= (SCROLLBAR_WIDTH + 1);
+        bottomRight.x -= (kScrollBarWidth + 1);
 
     bottomRight.y++;
     bottomRight.x++;
@@ -734,25 +734,25 @@ static void WidgetHScrollbarDraw(
 {
     colour &= 0x7F;
     // Trough
-    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 2 }, { r - SCROLLBAR_WIDTH, t + 2 } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 3 }, { r - SCROLLBAR_WIDTH, t + 3 } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 7 }, { r - SCROLLBAR_WIDTH, t + 7 } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 8 }, { r - SCROLLBAR_WIDTH, t + 8 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour].lighter);
 
     // Left button
     {
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        GfxFillRectInset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
+        GfxFillRectInset(dpi, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, flags);
         GfxDrawString(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
     }
 
     // Thumb
     {
-        int16_t left = std::max(l + SCROLLBAR_WIDTH, l + scroll.h_thumb_left - 1);
-        int16_t right = std::min(r - SCROLLBAR_WIDTH, l + scroll.h_thumb_right - 1);
+        int16_t left = std::max(l + kScrollBarWidth, l + scroll.h_thumb_left - 1);
+        int16_t right = std::min(r - kScrollBarWidth, l + scroll.h_thumb_right - 1);
         uint8_t flags = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { left, t }, { right, b } }, colour, flags);
@@ -762,7 +762,7 @@ static void WidgetHScrollbarDraw(
     {
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        GfxFillRectInset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
+        GfxFillRectInset(dpi, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, flags);
         GfxDrawString(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
     }
 }
@@ -772,31 +772,31 @@ static void WidgetVScrollbarDraw(
 {
     colour &= 0x7F;
     // Trough
-    GfxFillRect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + 2, t + SCROLLBAR_WIDTH }, { l + 2, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + 3, t + SCROLLBAR_WIDTH }, { l + 3, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l + 7, t + SCROLLBAR_WIDTH }, { l + 7, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + 8, t + SCROLLBAR_WIDTH }, { l + 8, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour].lighter);
 
     // Up button
     GfxFillRectInset(
-        dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
+        dpi, { { l, t }, { r, t + (kScrollBarWidth - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
     GfxDrawString(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
     GfxFillRectInset(
         dpi,
-        { { l, std::max(t + SCROLLBAR_WIDTH, t + scroll.v_thumb_top - 1) },
-          { r, std::min(b - SCROLLBAR_WIDTH, t + scroll.v_thumb_bottom - 1) } },
+        { { l, std::max(t + kScrollBarWidth, t + scroll.v_thumb_top - 1) },
+          { r, std::min(b - kScrollBarWidth, t + scroll.v_thumb_bottom - 1) } },
         colour, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
     GfxFillRectInset(
-        dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
+        dpi, { { l, b - (kScrollBarWidth - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    GfxDrawString(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
+    GfxDrawString(dpi, { l + 1, b - (kScrollBarWidth - 1) }, static_cast<const char*>(BlackDownArrowString), {});
 }
 
 /**
@@ -952,15 +952,15 @@ void WidgetScrollGetPart(
     }
 
     const auto& scroll = w.scrolls[*scroll_id];
-    if ((scroll.flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w.windowPos.y + widget->bottom - (SCROLLBAR_WIDTH + 1)))
+    if ((scroll.flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w.windowPos.y + widget->bottom - (kScrollBarWidth + 1)))
     {
         // horizontal scrollbar
         int32_t rightOffset = 0;
-        int32_t iteratorLeft = widget->left + w.windowPos.x + SCROLLBAR_WIDTH;
-        int32_t iteratorRight = widget->right + w.windowPos.x - SCROLLBAR_WIDTH;
+        int32_t iteratorLeft = widget->left + w.windowPos.x + kScrollBarWidth;
+        int32_t iteratorRight = widget->right + w.windowPos.x - kScrollBarWidth;
         if (!(scroll.flags & VSCROLLBAR_VISIBLE))
         {
-            rightOffset = SCROLLBAR_WIDTH + 1;
+            rightOffset = kScrollBarWidth + 1;
         }
 
         if (screenCoords.x <= iteratorLeft)
@@ -971,7 +971,7 @@ void WidgetScrollGetPart(
         {
             *output_scroll_area = SCROLL_PART_NONE;
         }
-        else if (screenCoords.x >= iteratorRight + rightOffset - SCROLLBAR_WIDTH)
+        else if (screenCoords.x >= iteratorRight + rightOffset - kScrollBarWidth)
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
         }
@@ -988,15 +988,15 @@ void WidgetScrollGetPart(
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
         }
     }
-    else if ((scroll.flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w.windowPos.x + widget->right - (SCROLLBAR_WIDTH + 1)))
+    else if ((scroll.flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w.windowPos.x + widget->right - (kScrollBarWidth + 1)))
     {
         // vertical scrollbar
         int32_t bottomOffset = 0;
-        int32_t iteratorTop = widget->top + w.windowPos.y + SCROLLBAR_WIDTH;
+        int32_t iteratorTop = widget->top + w.windowPos.y + kScrollBarWidth;
         int32_t iteratorBottom = widget->bottom + w.windowPos.y;
         if (scroll.flags & HSCROLLBAR_VISIBLE)
         {
-            bottomOffset = (SCROLLBAR_WIDTH + 1);
+            bottomOffset = (kScrollBarWidth + 1);
         }
 
         if (screenCoords.y <= iteratorTop)
@@ -1007,7 +1007,7 @@ void WidgetScrollGetPart(
         {
             *output_scroll_area = SCROLL_PART_NONE;
         }
-        else if (screenCoords.y >= (iteratorBottom - bottomOffset - SCROLLBAR_WIDTH))
+        else if (screenCoords.y >= (iteratorBottom - bottomOffset - kScrollBarWidth))
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
         }

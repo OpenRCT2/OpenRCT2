@@ -53,7 +53,7 @@ static Widget window_install_track_widgets[] = {
     MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_SCENERY),                          STR_TOGGLE_SCENERY_TIP),
     MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
     MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 // clang-format on

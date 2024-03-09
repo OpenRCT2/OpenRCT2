@@ -66,7 +66,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
     MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
     MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel
     MakeWidget({500,  2}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Date
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 uint8_t gToolbarDirtyFlags;
@@ -151,7 +151,7 @@ private:
         int16_t bar_width = (factor * 114) / 255;
         GfxFillRectInset(
             dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[1], INSET_RECT_F_30);
-        if (!(colour & BAR_BLINK) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
+        if (!(colour & kBarBlink) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
         {
             if (bar_width > 2)
             {

@@ -20,7 +20,7 @@
 // clang-format off
 static Widget window_map_tooltip_widgets[] = {
     MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 // clang-format on
