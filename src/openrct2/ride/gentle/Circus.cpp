@@ -94,24 +94,24 @@ static void PaintCircus(
     {
         case 1:
             // Top
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide;
             break;
         case 3:
             // Right
-            cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
+            cornerSegments = kSegmentTopRightSide | kSegmentRightCorner | kSegmentBottomRightSide;
             break;
         case 6:
             // Left
-            cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
+            cornerSegments = kSegmentTopLeftSide | kSegmentLeftCorner | kSegmentBottomLeftSide;
             break;
         case 7:
             // Bottom
-            cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
+            cornerSegments = kSegmentBottomLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide;
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 

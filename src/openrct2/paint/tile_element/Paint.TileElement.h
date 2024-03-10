@@ -26,17 +26,19 @@ enum edge_t
     EDGE_TOPRIGHT = EDGE_NE
 };
 
+// This controls in which segment of a tile something is drawn.
+// This is from a screen perspective, e.g. kSegmentTopCorner will always represent the part of top of the screen.
 enum
 {
-    SEGMENT_B4 = (1 << 0), // 0
-    SEGMENT_CC = (1 << 1), // 6
-    SEGMENT_BC = (1 << 2), // 2
-    SEGMENT_D4 = (1 << 3), // 8
-    SEGMENT_C0 = (1 << 4), // 3
-    SEGMENT_D0 = (1 << 5), // 7
-    SEGMENT_B8 = (1 << 6), // 1
-    SEGMENT_C8 = (1 << 7), // 5
-    SEGMENT_C4 = (1 << 8), // 4
+    kSegmentTopCorner = (1 << 0), // 0
+    kSegmentTopRightSide = (1 << 1), // 6
+    kSegmentRightCorner = (1 << 2), // 2
+    kSegmentBottomRightSide = (1 << 3), // 8
+    kSegmentBottomCorner = (1 << 4), // 3
+    kSegmentBottomLeftSide = (1 << 5), // 7
+    kSegmentLeftCorner = (1 << 6), // 1
+    kSegmentTopLeftSide = (1 << 7), // 5
+    kSegmentCentre = (1 << 8), // 4
 };
 
 enum
@@ -71,7 +73,7 @@ enum
     TUNNEL_TYPE_COUNT
 };
 
-extern const int32_t SEGMENTS_ALL;
+extern const int32_t kSegmentsAll;
 extern const uint16_t segment_offsets[9];
 
 extern bool gShowSupportSegmentHeights;

@@ -913,36 +913,36 @@ static void PathPaintSegmentSupportHeight(
 
     if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         return;
     }
 
     if (pathElement.GetEdgesAndCorners() == 0xFF)
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide, 0xFFFF, 0);
         return;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentCentre, 0xFFFF, 0);
 
     if (edges & EDGE_NE)
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentTopRightSide, 0xFFFF, 0);
     }
 
     if (edges & EDGE_SE)
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D4, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentBottomRightSide, 0xFFFF, 0);
     }
 
     if (edges & EDGE_SW)
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide, 0xFFFF, 0);
     }
 
     if (edges & EDGE_NW)
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide, 0xFFFF, 0);
     }
 }
 

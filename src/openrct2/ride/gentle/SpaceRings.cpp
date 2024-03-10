@@ -145,32 +145,32 @@ static void PaintSpaceRings(
             cornerSegments = 0;
             break;
         case 1:
-            cornerSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            cornerSegments = kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner;
             break;
         case 2:
-            cornerSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            cornerSegments = kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner;
             break;
         case 3:
-            cornerSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            cornerSegments = kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner | kSegmentBottomRightSide | kSegmentBottomCorner;
             break;
         case 4:
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8;
+            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentLeftCorner;
             break;
         case 5:
-            cornerSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            cornerSegments = kSegmentRightCorner | kSegmentBottomRightSide | kSegmentBottomCorner;
             break;
         case 6:
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner;
             break;
         case 7:
-            cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC;
+            cornerSegments = kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
             break;
         case 8:
-            cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            cornerSegments = kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner;
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 

@@ -1466,8 +1466,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             //     00
             PaintUtilSetSegmentSupportHeight(
                 session,
-                SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0
-                    | SEGMENT_D4,
+                kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide
+                    | kSegmentBottomRightSide,
                 height, 0);
             PaintUtilForceSetGeneralSupportHeight(session, height, 0);
             break;
@@ -1479,10 +1479,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 01  01  01
             //   1B  1B
             //     1B
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, height, 0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 1);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0, height + 6 + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide, height, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentCentre | kSegmentRightCorner, height, 1);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentBottomRightSide, height + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomCorner, height + 6 + 6, 0x1B);
             PaintUtilForceSetGeneralSupportHeight(session, height, 1);
             break;
 
@@ -1493,10 +1493,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 17  02  00
             //   17  00
             //     02
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, height, 0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 2);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 6 + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentRightCorner | kSegmentTopRightSide | kSegmentBottomRightSide, height, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentCentre | kSegmentBottomCorner, height, 2);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentBottomLeftSide, height + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner, height + 6 + 6, 0x17);
             PaintUtilForceSetGeneralSupportHeight(session, height, 2);
             break;
 
@@ -1507,9 +1507,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 03  03  03
             //   03  03
             //     03
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2, 3);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 3);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2 + 6 + 6, 3);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner, height + 2, 3);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentCentre | kSegmentBottomRightSide, height + 2 + 6, 3);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner, height + 2 + 6 + 6, 3);
             PaintUtilForceSetGeneralSupportHeight(session, height, 3);
             break;
 
@@ -1520,10 +1520,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 04  04  04
             //   00  00
             //     00
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0 | SEGMENT_D0 | SEGMENT_D4, height, 0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 4);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4, height + 6 + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomCorner | kSegmentBottomLeftSide | kSegmentBottomRightSide, height, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentCentre | kSegmentRightCorner, height, 4);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentTopRightSide, height + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner, height + 6 + 6, 0x1E);
             PaintUtilForceSetGeneralSupportHeight(session, height, 4);
             break;
 
@@ -1534,11 +1534,11 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 05  05  05  ░░  ░░  ░░
             //   1B  1B      ▒▒  ▒▒
             //     1B          ▓▓
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4, height + 6 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 5);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0, height + 6 + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner, height + 6 + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentTopRightSide, height + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentCentre | kSegmentRightCorner, height, 5);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentBottomRightSide, height + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomCorner, height + 6 + 6, 0x1B);
             PaintUtilForceSetGeneralSupportHeight(session, height, 5);
             break;
 
@@ -1549,9 +1549,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 06  06  06  ▓▓  ▒▒  ░░
             //   06  06      ▒▒  ░░
             //     06          ░░
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0, height + 2, 6);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 6);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, height + 2 + 6 + 6, 6);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentRightCorner | kSegmentBottomRightSide | kSegmentBottomCorner, height + 2, 6);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, height + 2 + 6, 6);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner, height + 2 + 6 + 6, 6);
             PaintUtilForceSetGeneralSupportHeight(session, height, 6);
             break;
 
@@ -1562,113 +1562,113 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 00  07  17  ▓▓  ▓▓  ░░
             //   00  17      ▓▓  ▒▒
             //     07          ▓▓
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC, height + 4, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 7);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0 | SEGMENT_B8, height + 4 + 6 + 6, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentRightCorner, height + 4, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopRightSide | kSegmentBottomRightSide, height + 4 + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentCentre | kSegmentBottomCorner, height + 4 + 6 + 6, 7);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentBottomLeftSide | kSegmentLeftCorner, height + 4 + 6 + 6, 0);
             PaintUtilForceSetGeneralSupportHeight(session, height, 7);
             break;
 
         case 8:
             // Loc6620D8
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D0, height, 0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 8);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC, height + 6 + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentBottomLeftSide, height, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentCentre | kSegmentBottomCorner, height, 8);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopRightSide | kSegmentBottomRightSide, height + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentRightCorner, height + 6 + 6, 0x1D);
             PaintUtilForceSetGeneralSupportHeight(session, height, 8);
             break;
 
         case 9:
             // Loc66216D
             PaintUtilForceSetGeneralSupportHeight(session, height, 9);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8, height + 2, 9);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 9);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, height + 2 + 6 + 6, 9);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentTopLeftSide | kSegmentLeftCorner, height + 2, 9);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, height + 2 + 6, 9);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner, height + 2 + 6 + 6, 9);
             break;
 
         case 10:
             // Loc662206
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xA);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 6 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 0xA);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC, height + 6 + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner, height + 6 + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentBottomLeftSide, height + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentCentre | kSegmentBottomCorner, height, 0xA);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopRightSide | kSegmentBottomRightSide, height + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentRightCorner, height + 6 + 6, 0x1D);
             break;
 
         case 11:
             // Loc66229B
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xB);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4, height + 4, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xB);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4 | SEGMENT_C0, height + 4 + 6 + 6, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner, height + 4, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentTopRightSide, height + 4 + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentCentre | kSegmentRightCorner, height + 4 + 6 + 6, 0xB);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentBottomRightSide | kSegmentBottomCorner, height + 4 + 6 + 6, 0);
             break;
 
         case 12:
             // Loc662334
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xC);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2, 0xC);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 0xC);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2 + 6 + 6, 0xC);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner, height + 2, 0xC);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentCentre | kSegmentBottomRightSide, height + 2 + 6, 0xC);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner, height + 2 + 6 + 6, 0xC);
             break;
 
         case 13:
             // Loc6623CD
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xD);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 4, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0xD);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC, height + 4 + 6 + 6, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner, height + 4, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentBottomLeftSide, height + 4 + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentCentre | kSegmentBottomCorner, height + 4 + 6 + 6, 0xD);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopRightSide | kSegmentBottomRightSide | kSegmentRightCorner, height + 4 + 6 + 6, 0);
             break;
 
         case 14:
             // Loc662466
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xE);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0, height + 4, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xE);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_B4, height + 4 + 6 + 6, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomCorner, height + 4, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentBottomRightSide, height + 4 + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentCentre | kSegmentRightCorner, height + 4 + 6 + 6, 0xE);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentTopCorner, height + 4 + 6 + 6, 0);
             break;
 
         case 23:
             // Loc6624FF
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC, height + 4, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6 + 6 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 4 + 6 + 6 + 6 + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentRightCorner, height + 4, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopRightSide | kSegmentBottomRightSide, height + 4 + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentCentre | kSegmentBottomCorner, height + 4 + 6 + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentBottomLeftSide, height + 4 + 6 + 6 + 6, 0x17);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner, height + 4 + 6 + 6 + 6 + 6, 0x17);
             break;
 
         case 27:
             // Loc6625A0
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4, height + 4, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0, height + 4 + 6 + 6 + 6 + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner, height + 4, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentTopRightSide, height + 4 + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentCentre | kSegmentRightCorner, height + 4 + 6 + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentBottomRightSide, height + 4 + 6 + 6 + 6, 0x1B);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomCorner, height + 4 + 6 + 6 + 6 + 6, 0x1B);
             break;
 
         case 29:
             // Loc662641
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 4, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC, height + 4 + 6 + 6 + 6 + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner, height + 4, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentBottomLeftSide, height + 4 + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner | kSegmentCentre | kSegmentBottomCorner, height + 4 + 6 + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopRightSide | kSegmentBottomRightSide, height + 4 + 6 + 6 + 6, 0x1D);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentRightCorner, height + 4 + 6 + 6 + 6 + 6, 0x1D);
             break;
 
         case 30:
             // Loc6626E2
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0, height + 4, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6 + 6 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4, height + 4 + 6 + 6 + 6 + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomCorner, height + 4, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentBottomLeftSide | kSegmentBottomRightSide, height + 4 + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentLeftCorner | kSegmentCentre | kSegmentRightCorner, height + 4 + 6 + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopLeftSide | kSegmentTopRightSide, height + 4 + 6 + 6 + 6, 0x1E);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentTopCorner, height + 4 + 6 + 6 + 6 + 6, 0x1E);
             break;
     }
 }

@@ -266,7 +266,7 @@ static void ChairliftPaintStationNeSw(
             session, imageId, { 30, 16, height + 2 }, { { 1, 16, height + 2 }, { 1, 1, 7 } }); // bound offset x is wrong?
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -363,7 +363,7 @@ static void ChairliftPaintStationSeNw(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -400,7 +400,7 @@ static void ChairliftPaintFlat(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -438,7 +438,7 @@ static void ChairliftPaint25DegUp(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -492,8 +492,8 @@ static void ChairliftPaintFlatTo25DegUp(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, SEGMENT_C4, height);
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    ChairliftPaintUtilDrawSupports(session, kSegmentCentre, height);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -547,8 +547,8 @@ static void ChairliftPaint25DegUpToFlat(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, SEGMENT_C4, height);
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    ChairliftPaintUtilDrawSupports(session, kSegmentCentre, height);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
@@ -637,9 +637,9 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_D0, direction), height);
+    ChairliftPaintUtilDrawSupports(session, PaintUtilRotateSegments(kSegmentTopLeftSide | kSegmentBottomLeftSide, direction), height);
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
