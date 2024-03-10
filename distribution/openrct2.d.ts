@@ -501,7 +501,17 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
-        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
+        subscribe(hook: "guest.generation", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.removal", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.drown", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.enter_park", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.leave_park", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.thought", callback: (e: GuestThoughtArgs) => void): IDisposable;
+        subscribe(hook: "guest.join_queue", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.enter_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.leave_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.use_facility", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.buy_item", callback: (e: GuestShopArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
@@ -615,10 +625,31 @@ declare global {
         "footpath_railings";
 
     type HookType =
-        "interval.tick" | "interval.day" |
-        "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.change" | "map.changed" | "map.save";
+        "action.query" |
+        "action.execute" |
+        "interval.tick" |
+        "interval.day" |
+        "network.chat" |
+        "network.authenticate" |
+        "network.join" |
+        "network.leave" |
+        "ride.ratings.calculate" |
+        "action.location" |
+        "guest.generation" |
+        "guest.removal" |
+        "guest.drown" |
+        "guest.enter_park" |
+        "guest.leave_park" |
+        "guest.thought" |
+        "guest.join_queue" |
+        "guest.enter_ride" |
+        "guest.leave_ride" |
+        "guest.use_facility" |
+        "guest.buy_item" |
+        "vehicle.crash" |
+        "map.save" |
+        "map.change" |
+        "map.changed";
 
     type ExpenditureType =
         "ride_construction" |
@@ -1375,8 +1406,20 @@ declare global {
         result: boolean;
     }
 
-    interface GuestGenerationArgs {
+    interface GuestEventArgs {
         readonly id: number;
+    }
+
+    interface GuestThoughtArgs extends GuestEventArgs {
+        readonly thought: Thought;
+    }
+
+    interface GuestRideArgs extends GuestEventArgs {
+        readonly rideId: number;
+    }
+
+    interface GuestShopArgs extends GuestRideArgs {
+        readonly shopItem: GuestItem;
     }
 
     type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
