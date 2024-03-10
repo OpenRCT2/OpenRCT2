@@ -13,6 +13,9 @@
 
 #include <cstdint>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-const-variable"
+
 static constexpr ImageIndex kClassicStandUpRcFlatToRightBank0 = SPR_CSG_BEGIN + 67009;
 static constexpr ImageIndex kClassicStandUpRcFlatToLeftBank2 = SPR_CSG_BEGIN + 67010;
 static constexpr ImageIndex kClassicStandUpRcFlatToLeftBank0 = SPR_CSG_BEGIN + 67011;
@@ -21,59 +24,59 @@ static constexpr ImageIndex kClassicStandUpRcFlatToLeftBank3 = SPR_CSG_BEGIN + 6
 static constexpr ImageIndex kClassicStandUpRcFlatToRightBank1 = SPR_CSG_BEGIN + 67014;
 static constexpr ImageIndex kClassicStandUpRcFlatToRightBank3 = SPR_CSG_BEGIN + 67015;
 static constexpr ImageIndex kClassicStandUpRcFlatToLeftBank1 = SPR_CSG_BEGIN + 67016;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked0_0 = SPR_CSG_BEGIN + 67017;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked0_1 = SPR_CSG_BEGIN + 67018;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked0_2 = SPR_CSG_BEGIN + 67019;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked0_3 = SPR_CSG_BEGIN + 67020;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked0_4 = SPR_CSG_BEGIN + 67021;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked1_0 = SPR_CSG_BEGIN + 67022;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked1_1 = SPR_CSG_BEGIN + 67023;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked1_2 = SPR_CSG_BEGIN + 67024;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked1_3 = SPR_CSG_BEGIN + 67025;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked1_4 = SPR_CSG_BEGIN + 67026;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked2_0 = SPR_CSG_BEGIN + 67027;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked2_1 = SPR_CSG_BEGIN + 67028;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked2_2 = SPR_CSG_BEGIN + 67029;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked2_3 = SPR_CSG_BEGIN + 67030;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked2_4 = SPR_CSG_BEGIN + 67031;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked3_0 = SPR_CSG_BEGIN + 67032;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked3_1 = SPR_CSG_BEGIN + 67033;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked3_2 = SPR_CSG_BEGIN + 67034;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked3_3 = SPR_CSG_BEGIN + 67035;
-static constexpr ImageIndex kClassicStandUpRcRightTurn5_TilesBanked3_4 = SPR_CSG_BEGIN + 67036;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatRightBanked0 = SPR_CSG_BEGIN + 67037;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatRightBanked1 = SPR_CSG_BEGIN + 67038;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatRightBanked2 = SPR_CSG_BEGIN + 67039;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatRightBanked3 = SPR_CSG_BEGIN + 67040;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatLeftBanked0 = SPR_CSG_BEGIN + 67041;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatLeftBanked1 = SPR_CSG_BEGIN + 67042;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatLeftBanked2 = SPR_CSG_BEGIN + 67043;
-static constexpr ImageIndex kClassicStandUpRc25_DegUpToFlatLeftBanked3 = SPR_CSG_BEGIN + 67044;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25_DegUp0 = SPR_CSG_BEGIN + 67045;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25_DegUp1 = SPR_CSG_BEGIN + 67046;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25_DegUp2 = SPR_CSG_BEGIN + 67047;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25_DegUp3 = SPR_CSG_BEGIN + 67048;
-static constexpr ImageIndex kClassicStandUpRcRightBankedTo25_DegUp0 = SPR_CSG_BEGIN + 67049;
-static constexpr ImageIndex kClassicStandUpRcRightBankedTo25_DegUp1 = SPR_CSG_BEGIN + 67050;
-static constexpr ImageIndex kClassicStandUpRcRightBankedTo25_DegUp2 = SPR_CSG_BEGIN + 67051;
-static constexpr ImageIndex kClassicStandUpRcRightBankedTo25_DegUp3 = SPR_CSG_BEGIN + 67052;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked0_0 = SPR_CSG_BEGIN + 67017;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked0_1 = SPR_CSG_BEGIN + 67018;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked0_2 = SPR_CSG_BEGIN + 67019;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked0_3 = SPR_CSG_BEGIN + 67020;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked0_4 = SPR_CSG_BEGIN + 67021;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked1_0 = SPR_CSG_BEGIN + 67022;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked1_1 = SPR_CSG_BEGIN + 67023;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked1_2 = SPR_CSG_BEGIN + 67024;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked1_3 = SPR_CSG_BEGIN + 67025;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked1_4 = SPR_CSG_BEGIN + 67026;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked2_0 = SPR_CSG_BEGIN + 67027;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked2_1 = SPR_CSG_BEGIN + 67028;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked2_2 = SPR_CSG_BEGIN + 67029;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked2_3 = SPR_CSG_BEGIN + 67030;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked2_4 = SPR_CSG_BEGIN + 67031;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked3_0 = SPR_CSG_BEGIN + 67032;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked3_1 = SPR_CSG_BEGIN + 67033;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked3_2 = SPR_CSG_BEGIN + 67034;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked3_3 = SPR_CSG_BEGIN + 67035;
+static constexpr ImageIndex kClassicStandUpRcRightTurn5TilesBanked3_4 = SPR_CSG_BEGIN + 67036;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatRightBanked0 = SPR_CSG_BEGIN + 67037;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatRightBanked1 = SPR_CSG_BEGIN + 67038;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatRightBanked2 = SPR_CSG_BEGIN + 67039;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatRightBanked3 = SPR_CSG_BEGIN + 67040;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatLeftBanked0 = SPR_CSG_BEGIN + 67041;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatLeftBanked1 = SPR_CSG_BEGIN + 67042;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatLeftBanked2 = SPR_CSG_BEGIN + 67043;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToFlatLeftBanked3 = SPR_CSG_BEGIN + 67044;
+static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25DegUp0 = SPR_CSG_BEGIN + 67045;
+static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25DegUp1 = SPR_CSG_BEGIN + 67046;
+static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25DegUp2 = SPR_CSG_BEGIN + 67047;
+static constexpr ImageIndex kClassicStandUpRcLeftBankedTo25DegUp3 = SPR_CSG_BEGIN + 67048;
+static constexpr ImageIndex kClassicStandUpRcRightBankedTo25DegUp0 = SPR_CSG_BEGIN + 67049;
+static constexpr ImageIndex kClassicStandUpRcRightBankedTo25DegUp1 = SPR_CSG_BEGIN + 67050;
+static constexpr ImageIndex kClassicStandUpRcRightBankedTo25DegUp2 = SPR_CSG_BEGIN + 67051;
+static constexpr ImageIndex kClassicStandUpRcRightBankedTo25DegUp3 = SPR_CSG_BEGIN + 67052;
 static constexpr ImageIndex kClassicStandUpRcLeftBanked0 = SPR_CSG_BEGIN + 67053;
 static constexpr ImageIndex kClassicStandUpRcLeftBanked1 = SPR_CSG_BEGIN + 67054;
 static constexpr ImageIndex kClassicStandUpRcLeftBanked2 = SPR_CSG_BEGIN + 67055;
 static constexpr ImageIndex kClassicStandUpRcLeftBanked3 = SPR_CSG_BEGIN + 67056;
 
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked0_0 = SPR_CSG_BEGIN + 67229;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked0_1 = SPR_CSG_BEGIN + 67230;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked0_2 = SPR_CSG_BEGIN + 67231;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked1_0 = SPR_CSG_BEGIN + 67232;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked1_1 = SPR_CSG_BEGIN + 67233;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked1_2 = SPR_CSG_BEGIN + 67234;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked2_0 = SPR_CSG_BEGIN + 67235;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked2_1 = SPR_CSG_BEGIN + 67236;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked2_2 = SPR_CSG_BEGIN + 67237;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked3_0 = SPR_CSG_BEGIN + 67238;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked3_1 = SPR_CSG_BEGIN + 67239;
-static constexpr ImageIndex kClassicStandUpRcRightTurn3_TilesBanked3_2 = SPR_CSG_BEGIN + 67240;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked0_0 = SPR_CSG_BEGIN + 67229;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked0_1 = SPR_CSG_BEGIN + 67230;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked0_2 = SPR_CSG_BEGIN + 67231;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked1_0 = SPR_CSG_BEGIN + 67232;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked1_1 = SPR_CSG_BEGIN + 67233;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked1_2 = SPR_CSG_BEGIN + 67234;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked2_0 = SPR_CSG_BEGIN + 67235;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked2_1 = SPR_CSG_BEGIN + 67236;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked2_2 = SPR_CSG_BEGIN + 67237;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked3_0 = SPR_CSG_BEGIN + 67238;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked3_1 = SPR_CSG_BEGIN + 67239;
+static constexpr ImageIndex kClassicStandUpRcRightTurn3TilesBanked3_2 = SPR_CSG_BEGIN + 67240;
 
 static constexpr ImageIndex kClassicStandUpRcRightBankedStraightDiag0 = SPR_CSG_BEGIN + 67421; 
 static constexpr ImageIndex kClassicStandUpRcRightBankedStraightDiag1 = SPR_CSG_BEGIN + 67422; 
@@ -100,14 +103,86 @@ static constexpr ImageIndex kClassicStandUpRcDownStraightToLeftBankedFlatDiag1 =
 static constexpr ImageIndex kClassicStandUpRcDownStraightToLeftBankedFlatDiag2 = SPR_CSG_BEGIN + 67447;
 static constexpr ImageIndex kClassicStandUpRcDownStraightToLeftBankedFlatDiag3 = SPR_CSG_BEGIN + 67448;
 
+#pragma GCC diagnostic pop
+
+static void classicStandUpRCTrackFlatToLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+        kClassicStandUpRcFlatToLeftBank0,
+        kClassicStandUpRcFlatToLeftBank1,
+        kClassicStandUpRcFlatToLeftBank2,
+        kClassicStandUpRcFlatToLeftBank3,
+    };
+    
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+    
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    }
+    
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+static void classicStandUpRCTrackFlatToRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+        kClassicStandUpRcFlatToRightBank0,
+        kClassicStandUpRcFlatToRightBank1,
+        kClassicStandUpRcFlatToRightBank2,
+        kClassicStandUpRcFlatToRightBank3,
+    };
+    
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+    
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    }
+    
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+static void classicStandUpRCTrackLeftBankToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    return classicStandUpRCTrackFlatToRightBank(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
+static void classicStandUpRCTrackRightBankToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    return classicStandUpRCTrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatToLeftBank:
+            return classicStandUpRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
+            return classicStandUpRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
+            return classicStandUpRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
+            return classicStandUpRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
         case TrackElemType::BankedRightQuarterTurn5Tiles:
         case TrackElemType::LeftBankToUp25:
