@@ -841,7 +841,7 @@ bool ConfigFindOrBrowseInstallDirectory()
         auto uiContext = GetContext()->GetUiContext();
         if (!uiContext->HasFilePicker())
         {
-            uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
+            uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES_MANUAL));
             return false;
         }
 
@@ -850,7 +850,7 @@ bool ConfigFindOrBrowseInstallDirectory()
             const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
-                uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES, nullptr));
+                uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
                 std::string gog = LanguageGetString(STR_OWN_ON_GOG);
                 std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
@@ -889,7 +889,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     std::string dummy;
                     if (!Platform::FindApp("innoextract", &dummy))
                     {
-                        uiContext->ShowMessageBox(FormatStringID(STR_INSTALL_INNOEXTRACT, nullptr));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
                         return false;
                     }
 

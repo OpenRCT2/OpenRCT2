@@ -4855,8 +4855,7 @@ static_assert(std::size(RatingNames) == 6);
             auto& objManager = GetContext()->GetObjectManager();
             auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
 
-            auto name = musicObj->NameStringId;
-            return FormatStringID(name, {});
+            return LanguageGetString(musicObj->NameStringId);
         }
 
         /**
