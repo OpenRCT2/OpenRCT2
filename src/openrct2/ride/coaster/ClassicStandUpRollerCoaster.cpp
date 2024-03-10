@@ -127,7 +127,7 @@ static void classicStandUpRCTrackFlatToLeftBank(
     
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session, PaintUtilRotateSegments(kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -153,7 +153,7 @@ static void classicStandUpRCTrackFlatToRightBank(
     
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session, PaintUtilRotateSegments(kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -203,7 +203,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, (direction + 3) % NumOrthogonalDirections),
+                    kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentBottomRightSide, (direction + 3) % NumOrthogonalDirections),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -235,7 +235,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, (direction + 3) % NumOrthogonalDirections),
+                PaintUtilRotateSegments(kSegmentLeftCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentBottomLeftSide | kSegmentBottomRightSide, (direction + 3) % NumOrthogonalDirections),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -262,7 +262,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
 
             }
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
+                session, PaintUtilRotateSegments(kSegmentRightCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomRightSide, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
             
@@ -293,7 +293,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, (direction + 3) % NumOrthogonalDirections),
+                PaintUtilRotateSegments(kSegmentTopCorner | kSegmentLeftCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide, (direction + 3) % NumOrthogonalDirections),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -317,7 +317,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
+                session, PaintUtilRotateSegments(kSegmentTopCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         }
