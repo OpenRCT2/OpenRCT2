@@ -52,6 +52,7 @@
 #include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
+#include "../scripting/bindings/entity/ScGuest.hpp"
 #include "../sprites.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -1694,6 +1695,24 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, Id, ft);
         }
     }
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BUY_ITEM))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", Id.ToUnderlying());
+        obj.Set("ride", ride.id.ToUnderlying());
+        obj.Set("shopItem", OpenRCT2::Scripting::ShopItemMap[shopItem]);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BUY_ITEM, e, true);
+    }
+#endif
 
     if (shopItemDescriptor.IsFood())
         AmountOfFood++;
@@ -3926,6 +3945,23 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         }
     }
 
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_RIDE))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", Id.ToUnderlying());
+        obj.Set("ride", ride.id.ToUnderlying());
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_RIDE, e, true);
+    }
+#endif
+
     const auto& rtd = ride.GetRideTypeDescriptor();
     if (rtd.specialType == RtdSpecialType::spiralSlide)
     {
@@ -5080,6 +5116,26 @@ void Guest::UpdateRideLeaveExit()
             }
         }
     }
+
+#ifdef ENABLE_SCRIPTING
+    if (ride != nullptr)
+    {
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_RIDE))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", Id.ToUnderlying());
+            obj.Set("ride", ride->id.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_RIDE, e, true);
+        }
+    }
+#endif
 
     InteractionRideIndex = RideId::GetNull();
     SetState(PeepState::Falling);
@@ -7034,6 +7090,27 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
     thought.item = thoughtArguments;
     thought.freshness = 0;
     thought.fresh_timeout = 0;
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_THOUGHT))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create thought object
+        auto scThoughtPtr = std::make_shared<OpenRCT2::Scripting::ScThought>(thought);
+        auto dukThought = OpenRCT2::Scripting::GetObjectAsDukValue(ctx, scThoughtPtr);
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", Id.ToUnderlying());
+        obj.Set("thought", dukThought);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_THOUGHT, e, true);
+    }
+#endif
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }

@@ -48,6 +48,8 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/HookEngine.h"
+#include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
@@ -715,6 +717,21 @@ void PeepEntityRemove(Peep* peep)
     auto* guest = peep->As<Guest>();
     if (guest != nullptr)
     {
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_REMOVAL))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_REMOVAL, e, true);
+        }
+#endif
         guest->RemoveFromRide();
     }
     peep->Invalidate();
@@ -788,6 +805,21 @@ void Peep::UpdateFalling()
 
         auto& gameState = GetGameState();
         gameState.Park.RatingCasualtyPenalty = std::min(gameState.Park.RatingCasualtyPenalty + 25, 1000);
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (Is<Guest>() && hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_DROWN))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", Id.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_DROWN, e, true);
+        }
+#endif
         Remove();
         return;
     }
@@ -1876,6 +1908,23 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
             }
         }
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+            obj.Set("ride", rideIndex.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE, e, true);
+        }
+#endif
     }
     else
     {
@@ -1937,6 +1986,23 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                     News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->Id, ft);
                 }
             }
+
+#ifdef ENABLE_SCRIPTING
+            auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+            if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_PARK))
+            {
+                auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+                // Create event args object
+                auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                obj.Set("id", guest->Id.ToUnderlying());
+
+                // Call the subscriptions
+                auto e = obj.Take();
+                hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_PARK, e, true);
+            }
+#endif
+
             return true;
         }
 
@@ -2058,6 +2124,22 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::ParkInformation, 0);
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_PARK))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_PARK, e, true);
+        }
+#endif
 
         guest->Var37 = 1;
         auto destination = guest->GetDestination();
@@ -2427,6 +2509,23 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
                 News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, guest->Id, ft);
             }
         }
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_USE_FACILITY))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+            obj.Set("ride", rideIndex.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_USE_FACILITY, e, true);
+        }
+#endif
     }
     else
     {
