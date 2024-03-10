@@ -265,7 +265,7 @@ const StringId PeepThoughts[] = {
 };
 // clang-format on
 
-std::string FormatStringID(StringId format, const void* args)
+std::string FormatStringIDLegacy(StringId format, const void* args)
 {
     std::string buffer(256, 0);
     size_t len{};

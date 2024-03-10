@@ -927,7 +927,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     return true;
                 }
 
-                uiContext->ShowMessageBox(FormatStringID(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
+                uiContext->ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
             }
         }
         catch (const std::exception& ex)

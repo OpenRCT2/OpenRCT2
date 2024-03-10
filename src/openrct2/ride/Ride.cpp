@@ -5712,7 +5712,7 @@ std::string Ride::GetName() const
 {
     Formatter ft;
     FormatNameTo(ft);
-    return FormatStringID(STR_STRINGID, reinterpret_cast<const void*>(ft.Data()));
+    return FormatStringIDLegacy(STR_STRINGID, reinterpret_cast<const void*>(ft.Data()));
 }
 
 void Ride::FormatNameTo(Formatter& ft) const

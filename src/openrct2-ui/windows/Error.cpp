@@ -168,8 +168,8 @@ static Widget window_error_widgets[] = {
 
     WindowBase* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
     {
-        auto titlez = FormatStringID(title, args.Data());
-        auto messagez = FormatStringID(message, args.Data());
+        auto titlez = FormatStringIDLegacy(title, args.Data());
+        auto messagez = FormatStringIDLegacy(message, args.Data());
         return WindowErrorOpen(titlez, messagez);
     }
 } // namespace OpenRCT2::Ui::Windows
