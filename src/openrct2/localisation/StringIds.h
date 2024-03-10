@@ -4035,6 +4035,8 @@ enum : uint16_t
     STR_RESTRICT_SCENERY = 6621,
     STR_RESTRICT_SCENERY_TIP = 6622,
 
+    STR_CONSOLE_HELPER_TEXT = 6623,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
