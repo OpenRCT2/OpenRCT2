@@ -519,7 +519,7 @@ namespace SpinningRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 28, height, session.SupportColours);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 26, height, session.SupportColours);
             }
         }
         else
@@ -556,7 +556,7 @@ namespace SpinningRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 28, height, session.SupportColours);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 26, height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -8066,17 +8066,13 @@ namespace SpinningRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 1, height,
-                            session.SupportColours);
+
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 5, height - 1,
-                            session.SupportColours);
+
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -8113,18 +8109,12 @@ namespace SpinningRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 4, height,
-                            session.SupportColours);
+
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 5, height - 1,
-                            session.SupportColours);
-                        break;
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -8222,17 +8212,13 @@ namespace SpinningRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 4, height,
-                            session.SupportColours);
+
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 4, height,
-                            session.SupportColours);
+
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -8269,17 +8255,13 @@ namespace SpinningRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 4, height,
-                            session.SupportColours);
+
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 4, height,
-                            session.SupportColours);
+
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13357,7 +13339,7 @@ namespace SpinningRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_LARGE_HALF_LOOP + 3)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 18, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 36, height,
                             session.SupportColours);
                         break;
                     case 1:
@@ -13365,7 +13347,7 @@ namespace SpinningRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_LARGE_HALF_LOOP + 10)),
                             { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 17, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 36, height,
                             session.SupportColours);
                         break;
                     case 2:
@@ -13620,7 +13602,7 @@ namespace SpinningRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_LARGE_HALF_LOOP + 45)),
                             { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 17, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 36, height,
                             session.SupportColours);
                         break;
                     case 3:
@@ -13628,7 +13610,7 @@ namespace SpinningRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SPINNING_TRACK_LARGE_HALF_LOOP + 52)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 17, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 36, height,
                             session.SupportColours);
                         break;
                 }
@@ -13895,7 +13877,7 @@ namespace SpinningRC
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 18, height, session.SupportColours);
         }
         else
         {
@@ -13929,7 +13911,7 @@ namespace SpinningRC
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 18, height, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -17239,7 +17221,7 @@ namespace SpinningRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -17250,7 +17232,7 @@ namespace SpinningRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                 }
                 break;
         }
@@ -17270,7 +17252,7 @@ namespace SpinningRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
