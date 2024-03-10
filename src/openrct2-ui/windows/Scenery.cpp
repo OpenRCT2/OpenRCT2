@@ -1635,7 +1635,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
         void ContentScrollDraw(DrawPixelInfo& dpi)
         {
-            GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
 
             auto numColumns = GetNumColumns();
             auto tabIndex = _activeTabIndex;

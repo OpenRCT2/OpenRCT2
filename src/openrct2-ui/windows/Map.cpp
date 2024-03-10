@@ -775,7 +775,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            GfxClear(&dpi, PALETTE_INDEX_10);
+            GfxClear(dpi, PALETTE_INDEX_10);
 
             G1Element g1temp = {};
             g1temp.offset = _mapImageData.data();

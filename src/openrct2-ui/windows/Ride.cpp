@@ -4739,7 +4739,7 @@ static_assert(std::size(RatingNames) == 6);
                         windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                         entrancePreviewWidget.width(), entrancePreviewWidget.height()))
                 {
-                    GfxClear(&clippedDpi, PALETTE_INDEX_12);
+                    GfxClear(clippedDpi, PALETTE_INDEX_12);
 
                     auto stationObj = ride->GetStationObject();
                     if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
@@ -5763,7 +5763,7 @@ static_assert(std::size(RatingNames) == 6);
 
         void GraphsOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
         {
-            GfxClear(&dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
+            GfxClear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
             auto widget = &widgets[WIDX_GRAPH];
             auto ride = GetRide(rideId);

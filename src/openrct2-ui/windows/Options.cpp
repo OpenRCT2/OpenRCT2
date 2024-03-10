@@ -2116,10 +2116,10 @@ static Widget *window_options_page_widgets[] = {
 
                 // Draw greyed out (light border bottom right shadow)
                 GfxDrawSpriteSolid(
-                    &dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
+                    dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
                 // Draw greyed out (dark)
-                GfxDrawSpriteSolid(&dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
+                GfxDrawSpriteSolid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
             }
         }
 

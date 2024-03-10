@@ -275,7 +275,7 @@ static Widget _inventionListDragWidgets[] = {
 
             // Draw background
             uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-            GfxClear(&dpi, paletteIndex);
+            GfxClear(dpi, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
             int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
