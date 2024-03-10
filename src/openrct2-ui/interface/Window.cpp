@@ -638,10 +638,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
             {
                 if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
                 {
-                    if (w.IsLegacy())
-                        WidgetDraw(dpi, w, widgetIndex);
-                    else
-                        w.OnDrawWidget(widgetIndex, dpi);
+                    w.OnDrawWidget(widgetIndex, dpi);
                 }
             }
         }
@@ -689,11 +686,6 @@ void InvalidateAllWindowsAfterInput()
         WindowInvalidatePressedImageButton(*w);
         w->OnResize();
     });
-}
-
-bool Window::IsLegacy()
-{
-    return false;
 }
 
 void Window::OnDraw(DrawPixelInfo& dpi)

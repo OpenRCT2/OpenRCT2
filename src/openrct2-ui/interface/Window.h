@@ -14,7 +14,6 @@
 
 struct Window : WindowBase
 {
-    virtual bool IsLegacy() override;
     virtual void OnDraw(DrawPixelInfo& dpi) override;
     virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override;
 
