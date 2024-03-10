@@ -506,7 +506,17 @@ declare global {
         subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
         subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
-        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
+        subscribe(hook: "guest.buy_item", callback: (e: GuestShopArgs) => void): IDisposable;
+        subscribe(hook: "guest.drown", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.enter_park", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.enter_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.generation", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.join_queue", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.leave_park", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.leave_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.removal", callback: (e: GuestEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.thought", callback: (e: GuestThoughtArgs) => void): IDisposable;
+        subscribe(hook: "guest.use_facility", callback: (e: GuestRideArgs) => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
@@ -631,7 +641,17 @@ declare global {
         "action.execute" |
         "action.location" |
         "action.query" |
+        "guest.buy_item" |
+        "guest.drown" |
+        "guest.enter_park" |
+        "guest.enter_ride" |
         "guest.generation" |
+        "guest.join_queue" |
+        "guest.leave_park" |
+        "guest.leave_ride" |
+        "guest.removal" |
+        "guest.thought" |
+        "guest.use_facility" |
         "interval.day" |
         "interval.tick" |
         "map.change" |
@@ -1406,8 +1426,20 @@ declare global {
         result: boolean;
     }
 
-    interface GuestGenerationArgs {
+    interface GuestEventArgs {
         readonly id: number;
+    }
+
+    interface GuestThoughtArgs extends GuestEventArgs {
+        readonly thought: Thought;
+    }
+
+    interface GuestRideArgs extends GuestEventArgs {
+        readonly rideId: number;
+    }
+
+    interface GuestShopArgs extends GuestRideArgs {
+        readonly shopItem: GuestItem;
     }
 
     type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
