@@ -98,7 +98,7 @@ namespace OpenRCT2::Audio
         return totalMass;
     }
 
-    bool SoundCanPlay(const Vehicle& vehicle)
+    static bool SoundCanPlay(const Vehicle& vehicle)
     {
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             return false;
@@ -149,7 +149,7 @@ namespace OpenRCT2::Audio
      *
      *  rct2: 0x006BC2F3
      */
-    uint16_t GetSoundPriority(const Vehicle& vehicle)
+    static uint16_t GetSoundPriority(const Vehicle& vehicle)
     {
         int32_t result = Train(&vehicle).Mass() + (std::abs(vehicle.velocity) >> 13);
 
@@ -165,7 +165,7 @@ namespace OpenRCT2::Audio
         return result;
     }
 
-    VehicleSoundParams CreateSoundParam(const Vehicle& vehicle, uint16_t priority)
+    static VehicleSoundParams CreateSoundParam(const Vehicle& vehicle, uint16_t priority)
     {
         VehicleSoundParams param;
         param.priority = priority;
@@ -232,7 +232,7 @@ namespace OpenRCT2::Audio
      *
      *  rct2: 0x006BB9FF
      */
-    void UpdateSoundParams(const Vehicle& vehicle, std::vector<VehicleSoundParams>& vehicleSoundParamsList)
+    static void UpdateSoundParams(const Vehicle& vehicle, std::vector<VehicleSoundParams>& vehicleSoundParamsList)
     {
         if (!SoundCanPlay(vehicle))
             return;
