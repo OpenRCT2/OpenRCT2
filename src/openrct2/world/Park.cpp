@@ -35,6 +35,7 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/ScriptEngine.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
@@ -46,6 +47,7 @@
 #include <type_traits>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 money64 gLandPrice;
 
@@ -535,6 +537,25 @@ money64 Park::CalculateTotalRideValueForMoney() const
 
 uint32_t Park::CalculateSuggestedMaxGuests() const
 {
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_GENERATION))
+    {
+        auto& gameState = GetGameState();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto originalSuggestedGuestMaximum = gameState.SuggestedGuestMaximum;
+
+        auto obj = DukObject(ctx);
+        obj.Set("suggestedGuestMaximum", originalSuggestedGuestMaximum);
+
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::GUEST_GENERATION, e, true);
+
+        auto suggestedMaxGuests = AsOrDefault(
+            e["suggestedGuestMaximum"], static_cast<int32_t>(gameState.SuggestedGuestMaximum));
+        return suggestedMaxGuests;
+    }
+#endif
     uint32_t suggestedMaxGuests = 0;
     uint32_t difficultGenerationBonus = 0;
 
