@@ -74,6 +74,7 @@
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
     <ClInclude Include="ride\Construction.h" />
+    <ClInclude Include="ride\VehicleSounds.h" />
     <ClInclude Include="scripting\CustomImages.h" />
     <ClInclude Include="scripting\CustomListView.h" />
     <ClInclude Include="scripting\CustomMenu.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="interface\Widget.cpp" />
     <ClCompile Include="interface\Window.cpp" />
     <ClCompile Include="ride\Construction.cpp" />
+    <ClCompile Include="ride\VehicleSounds.cpp" />
     <ClCompile Include="scripting\CustomImages.cpp" />
     <ClCompile Include="scripting\CustomListView.cpp" />
     <ClCompile Include="scripting\CustomMenu.cpp" />

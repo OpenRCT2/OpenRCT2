@@ -832,3 +832,31 @@ ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     const uint8_t buttonOffset = (gConfigInterface.WindowButtonsOnTheLeft) ? CloseButtonWidth + 2 : 0;
     return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
 }
+
+namespace OpenRCT2::Ui::Windows
+{
+    WindowBase* WindowGetListening()
+    {
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        {
+            auto& w = **it;
+            if (w.flags & WF_DEAD)
+                continue;
+
+            auto viewport = w.viewport;
+            if (viewport != nullptr)
+            {
+                if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+                {
+                    return &w;
+                }
+            }
+        }
+        return nullptr;
+    }
+
+    WindowClass WindowGetClassification(const WindowBase& window)
+    {
+        return window.classification;
+    }
+} // namespace OpenRCT2::Ui::Windows

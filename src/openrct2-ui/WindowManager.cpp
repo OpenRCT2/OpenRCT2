@@ -10,6 +10,7 @@
 #include "WindowManager.h"
 
 #include "interface/Theme.h"
+#include "ride/VehicleSounds.h"
 #include "windows/Window.h"
 
 #include <openrct2-ui/input/InputManager.h>
@@ -510,6 +511,10 @@ public:
             case INTENT_ACTION_UPDATE_RESEARCH:
                 WindowInvalidateByClass(WindowClass::Finances);
                 WindowInvalidateByClass(WindowClass::Research);
+                break;
+
+            case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
+                OpenRCT2::Audio::UpdateVehicleSounds();
                 break;
 
             case INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL:
