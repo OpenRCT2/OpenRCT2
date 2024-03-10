@@ -171,6 +171,168 @@ static void classicStandUpRCTrackRightBankToFlat(
     return classicStandUpRCTrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
 }
 
+static void classicStandUpRCTrackBankedRightQuarterTurn5(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    
+    switch (trackSequence)
+    {
+        case 0:
+        {
+            constexpr ImageIndex map[NumOrthogonalDirections] = {
+                kClassicStandUpRcRightTurn5TilesBanked0_0,
+                kClassicStandUpRcRightTurn5TilesBanked1_0,
+                kClassicStandUpRcRightTurn5TilesBanked2_0,
+                kClassicStandUpRcRightTurn5TilesBanked3_0,
+            };
+
+            PaintAddImageAsParentRotated(session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            switch (direction)
+            {
+                case 0:
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                    break;
+                case 3:
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, (direction + 3) % NumOrthogonalDirections),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+        }
+        case 1:
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+            
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked0_1), { 0, 16, height }, { 32, 16, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked1_1), { 0, 16, height }, { 32, 16, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked2_1), { 0, 0, height }, { 32, 16, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked3_1), { 0, 0, height }, { 32, 16, 3 });
+                    break;
+                
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, (direction + 3) % NumOrthogonalDirections),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+            
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked0_2), { 0, 0, height }, { 16, 16, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked1_2), { 16, 0, height }, { 16, 16, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked2_2), { 16, 16, height }, { 16, 16, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked3_2), { 0, 16, height }, { 16, 16, 3 });
+                    break;
+
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+            
+        case 4:
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+            
+        case 5:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked0_3), { 16, 0, height }, { 16, 32, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked1_3), { 0, 0, height }, { 16, 32, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked2_3), { 0, 0, height }, { 16, 32, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(kClassicStandUpRcRightTurn5TilesBanked3_3), { 16, 0, height }, { 16, 32, 3 });
+                    break;
+                
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, (direction + 3) % NumOrthogonalDirections),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+
+        case 6:
+        {
+            constexpr ImageIndex map[NumOrthogonalDirections] = {
+                kClassicStandUpRcRightTurn5TilesBanked0_4,
+                kClassicStandUpRcRightTurn5TilesBanked1_4,
+                kClassicStandUpRcRightTurn5TilesBanked2_4,
+                kClassicStandUpRcRightTurn5TilesBanked3_4,
+            };
+            
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(map[direction]), { 6, 0, height }, { 20, 32, 3 });
+            
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            if (direction == 1 || direction == 0)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+        }
+    }
+}
+
+static void classicStandUpRCTrackBankedLeftQuarterTurn5(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    direction = (direction + 1) % NumOrthogonalDirections;
+    return classicStandUpRCTrackBankedRightQuarterTurn5(session, ride, trackSequence, direction, height, trackElement);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
 {
     switch (trackType)
@@ -184,7 +346,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
         case TrackElemType::RightBankToFlat:
             return classicStandUpRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
+            return classicStandUpRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
+            return classicStandUpRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
         case TrackElemType::RightBankToUp25:
         case TrackElemType::Up25ToLeftBank:
