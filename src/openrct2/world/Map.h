@@ -122,7 +122,6 @@ extern CoordsXYZ gMapSelectArrowPosition;
 extern uint8_t gMapSelectArrowDirection;
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
-extern std::vector<PeepSpawn> gPeepSpawns;
 
 // Used in the land tool window to enable mountain tool / land smoothing
 extern bool gLandMountainMode;

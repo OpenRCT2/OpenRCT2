@@ -529,7 +529,7 @@ namespace Editor
             }
         }
 
-        if (gPeepSpawns.empty())
+        if (gameState.PeepSpawns.empty())
         {
             return { false, STR_PEEP_SPAWNS_NOT_SET };
         }
