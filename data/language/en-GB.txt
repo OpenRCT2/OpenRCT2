@@ -1579,7 +1579,7 @@ STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
-STR_2221    :Park Rating: {COMMA16}
+STR_2221    :Park Rating: {COMMA16},  Company Value: {CURRENCY}
 STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
