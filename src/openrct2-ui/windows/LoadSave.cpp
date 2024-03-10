@@ -462,8 +462,7 @@ static Widget window_loadsave_widgets[] =
                 auto buffer = park.Name;
                 if (buffer.empty())
                 {
-                    // Use localised "Unnamed Park" if park name was empty.
-                    buffer = FormatStringID(STR_UNNAMED_PARK, nullptr);
+                    buffer = LanguageGetString(STR_UNNAMED_PARK);
                 }
                 path = Path::Combine(path, buffer);
             }
