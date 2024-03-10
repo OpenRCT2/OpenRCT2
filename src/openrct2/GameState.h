@@ -101,6 +101,8 @@ namespace OpenRCT2
 
         std::vector<ScenerySelection> RestrictedScenery;
 
+        std::vector<PeepSpawn> PeepSpawns;
+
         News::ItemQueues NewsItems;
 
         colour_t StaffHandymanColour;
