@@ -28,6 +28,7 @@
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
+using namespace OpenRCT2::Ui::Windows;
 
 class WindowManager final : public IWindowManager
 {

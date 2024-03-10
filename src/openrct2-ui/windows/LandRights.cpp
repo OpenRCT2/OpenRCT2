@@ -23,13 +23,13 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-using namespace OpenRCT2;
+namespace OpenRCT2::Ui::Windows
+{
+    static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
+    static constexpr int32_t WH = 94;
+    static constexpr int32_t WW = 98;
 
-static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
-static constexpr int32_t WH = 94;
-static constexpr int32_t WW = 98;
-
-// clang-format off
+    // clang-format off
 enum WindowLandRightsWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -50,366 +50,369 @@ static Widget window_land_rights_widgets[] = {
     MakeRemapWidget({52, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_CONSTRUCTION_RIGHTS, STR_BUY_CONSTRUCTION_RIGHTS_TIP   ), // construction rights
     kWidgetsEnd,
 };
-// clang-format on
+    // clang-format on
 
-constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
-constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
+    constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
+    constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
 
-class LandRightsWindow final : public Window
-{
-public:
-    void OnOpen() override
+    class LandRightsWindow final : public Window
     {
-        widgets = window_land_rights_widgets;
-        hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(*this);
-        WindowPushOthersBelow(*this);
-        _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-        pressed_widgets = (1uLL << WIDX_BUY_LAND_RIGHTS);
-
-        gLandToolSize = 1;
-
-        ShowGridlines();
-        ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
-        InputSetFlag(INPUT_FLAG_6, true);
-
-        ShowLandRights();
-
-        if (gLandRemainingConstructionSales == 0)
+    public:
+        void OnOpen() override
         {
-            ShowConstructionRights();
-        }
-    }
+            widgets = window_land_rights_widgets;
+            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            WindowInitScrollWidgets(*this);
+            WindowPushOthersBelow(*this);
+            _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
+            pressed_widgets = (1uLL << WIDX_BUY_LAND_RIGHTS);
 
-    void OnClose() override
-    {
-        HideGridlines();
-        if (gLandRemainingConstructionSales == 0)
-        {
-            HideConstructionRights();
+            gLandToolSize = 1;
+
+            ShowGridlines();
+            ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+            InputSetFlag(INPUT_FLAG_6, true);
+
+            ShowLandRights();
+
+            if (gLandRemainingConstructionSales == 0)
+            {
+                ShowConstructionRights();
+            }
         }
 
-        // If the tool wasn't changed, turn tool off
-        if (LandRightsToolIsActive())
-            ToolCancel();
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        switch (widgetIndex)
+        void OnClose() override
         {
-            case WIDX_CLOSE:
+            HideGridlines();
+            if (gLandRemainingConstructionSales == 0)
+            {
+                HideConstructionRights();
+            }
+
+            // If the tool wasn't changed, turn tool off
+            if (LandRightsToolIsActive())
+                ToolCancel();
+        }
+
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_CLOSE:
+                    Close();
+                    break;
+                case WIDX_PREVIEW:
+                    InputSize();
+                    break;
+                case WIDX_BUY_LAND_RIGHTS:
+                    if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
+                    {
+                        ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+                        _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
+                        ShowLandRights();
+                        Invalidate();
+                    }
+                    break;
+                case WIDX_BUY_CONSTRUCTION_RIGHTS:
+                    if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
+                    {
+                        ToolSet(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
+                        _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
+                        ShowConstructionRights();
+                        Invalidate();
+                    }
+                    break;
+            }
+        }
+
+        void OnMouseDown(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_DECREMENT:
+                    // Decrement land rights tool size
+                    gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
+
+                    // Invalidate the window
+                    Invalidate();
+                    break;
+                case WIDX_INCREMENT:
+                    // Decrement land rights tool size
+                    gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
+
+                    // Invalidate the window
+                    Invalidate();
+                    break;
+            }
+        }
+
+        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        {
+            if (text.empty())
+                return;
+
+            if (widgetIndex != WIDX_PREVIEW)
+                return;
+
+            const auto res = String::Parse<int32_t>(text);
+            if (res.has_value())
+            {
+                uint16_t size;
+                size = res.value();
+                size = std::max(kLandToolMinimumSize, size);
+                size = std::min(kLandToolMaximumSize, size);
+                gLandToolSize = size;
+                Invalidate();
+            }
+        }
+
+        void OnUpdate() override
+        {
+            frame_no++;
+            // Close window if another tool is open
+            if (!LandRightsToolIsActive())
                 Close();
-                break;
-            case WIDX_PREVIEW:
-                InputSize();
-                break;
-            case WIDX_BUY_LAND_RIGHTS:
-                if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
+        }
+
+        void OnPrepareDraw() override
+        {
+            SetWidgetPressed(WIDX_PREVIEW, true);
+            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+            {
+                SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, true);
+                SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
+            }
+            else if (_landRightsMode == LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
+            {
+                SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, false);
+                SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
+            }
+
+            window_land_rights_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+
+            if (gLandRemainingOwnershipSales == 0)
+            {
+                SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, true);
+                window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
+            }
+            else
+            {
+                SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, false);
+                window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
+            }
+
+            if (gLandRemainingConstructionSales == 0)
+            {
+                SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
+                window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
+            }
+            else
+            {
+                SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
+                window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
+            }
+        }
+
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            auto screenCoords = ScreenCoordsXY{ windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
+                                                windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
+
+            DrawWidgets(dpi);
+            // Draw number for tool sizes bigger than 7
+            if (gLandToolSize > kLandToolMaximumSizeWithSprite)
+            {
+                auto ft = Formatter();
+                ft.Add<uint16_t>(gLandToolSize);
+                DrawTextBasic(
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            }
+
+            // Draw cost amount
+            if (_landRightsCost != kMoney64Undefined && _landRightsCost != 0
+                && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_landRightsCost);
+                screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + windowPos.x,
+                                 window_land_rights_widgets[WIDX_PREVIEW].bottom + windowPos.y + 32 };
+                DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+            }
+        }
+
+        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            MapInvalidateSelectionRect();
+            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+
+            auto info = GetMapCoordinatesFromPos(
+                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+            if (info.SpriteType == ViewportInteractionItem::None)
+            {
+                if (_landRightsCost != kMoney64Undefined)
                 {
-                    ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
-                    _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-                    ShowLandRights();
-                    Invalidate();
+                    _landRightsCost = kMoney64Undefined;
+                    WindowInvalidateByClass(WindowClass::ClearScenery);
                 }
-                break;
-            case WIDX_BUY_CONSTRUCTION_RIGHTS:
-                if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
+                return;
+            }
+            auto mapTile = info.Loc;
+
+            uint8_t state_changed = 0;
+
+            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            {
+                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                state_changed++;
+            }
+
+            if (gMapSelectType != MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
+            {
+                gMapSelectType = MAP_SELECT_TYPE_FULL_LAND_RIGHTS;
+                state_changed++;
+            }
+
+            int16_t tool_size = gLandToolSize;
+            if (tool_size == 0)
+                tool_size = 1;
+
+            int16_t tool_length = (tool_size - 1) * 32;
+
+            // Move to tool bottom left
+            mapTile.x -= (tool_size - 1) * 16;
+            mapTile.y -= (tool_size - 1) * 16;
+            mapTile = mapTile.ToTileStart();
+
+            if (gMapSelectPositionA.x != mapTile.x)
+            {
+                gMapSelectPositionA.x = mapTile.x;
+                state_changed++;
+            }
+
+            if (gMapSelectPositionA.y != mapTile.y)
+            {
+                gMapSelectPositionA.y = mapTile.y;
+                state_changed++;
+            }
+
+            mapTile.x += tool_length;
+            mapTile.y += tool_length;
+
+            if (gMapSelectPositionB.x != mapTile.x)
+            {
+                gMapSelectPositionB.x = mapTile.x;
+                state_changed++;
+            }
+
+            if (gMapSelectPositionB.y != mapTile.y)
+            {
+                gMapSelectPositionB.y = mapTile.y;
+                state_changed++;
+            }
+
+            MapInvalidateSelectionRect();
+            if (!state_changed)
+                return;
+
+            auto landBuyRightsAction = LandBuyRightsAction(
+                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? LandBuyRightSetting::BuyLand
+                                                               : LandBuyRightSetting::BuyConstructionRights);
+            auto res = GameActions::Query(&landBuyRightsAction);
+
+            _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+        }
+
+        void OnToolAbort(WidgetIndex widgetIndex) override
+        {
+            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+            {
+                HideLandRights();
+            }
+            else
+            {
+                HideConstructionRights();
+            }
+        }
+
+        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+            {
+                if (screenCoords.x != LOCATION_NULL)
                 {
-                    ToolSet(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
-                    _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
-                    ShowConstructionRights();
-                    Invalidate();
+                    auto landBuyRightsAction = LandBuyRightsAction(
+                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                        LandBuyRightSetting::BuyLand);
+                    GameActions::Execute(&landBuyRightsAction);
                 }
-                break;
-        }
-    }
-
-    void OnMouseDown(WidgetIndex widgetIndex) override
-    {
-        switch (widgetIndex)
-        {
-            case WIDX_DECREMENT:
-                // Decrement land rights tool size
-                gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
-
-                // Invalidate the window
-                Invalidate();
-                break;
-            case WIDX_INCREMENT:
-                // Decrement land rights tool size
-                gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
-
-                // Invalidate the window
-                Invalidate();
-                break;
-        }
-    }
-
-    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
-    {
-        if (text.empty())
-            return;
-
-        if (widgetIndex != WIDX_PREVIEW)
-            return;
-
-        const auto res = String::Parse<int32_t>(text);
-        if (res.has_value())
-        {
-            uint16_t size;
-            size = res.value();
-            size = std::max(kLandToolMinimumSize, size);
-            size = std::min(kLandToolMaximumSize, size);
-            gLandToolSize = size;
-            Invalidate();
-        }
-    }
-
-    void OnUpdate() override
-    {
-        frame_no++;
-        // Close window if another tool is open
-        if (!LandRightsToolIsActive())
-            Close();
-    }
-
-    void OnPrepareDraw() override
-    {
-        SetWidgetPressed(WIDX_PREVIEW, true);
-        if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
-        {
-            SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, true);
-            SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
-        }
-        else if (_landRightsMode == LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
-        {
-            SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, false);
-            SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
-        }
-
-        window_land_rights_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
-
-        if (gLandRemainingOwnershipSales == 0)
-        {
-            SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, true);
-            window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
-        }
-        else
-        {
-            SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, false);
-            window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
-        }
-
-        if (gLandRemainingConstructionSales == 0)
-        {
-            SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
-            window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
-        }
-        else
-        {
-            SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
-            window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
-        }
-    }
-
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        auto screenCoords = ScreenCoordsXY{ windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
-                                            windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
-
-        DrawWidgets(dpi);
-        // Draw number for tool sizes bigger than 7
-        if (gLandToolSize > kLandToolMaximumSizeWithSprite)
-        {
-            auto ft = Formatter();
-            ft.Add<uint16_t>(gLandToolSize);
-            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
-        }
-
-        // Draw cost amount
-        if (_landRightsCost != kMoney64Undefined && _landRightsCost != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
-        {
-            auto ft = Formatter();
-            ft.Add<money64>(_landRightsCost);
-            screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + windowPos.x,
-                             window_land_rights_widgets[WIDX_PREVIEW].bottom + windowPos.y + 32 };
-            DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
-        }
-    }
-
-    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
-    {
-        MapInvalidateSelectionRect();
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-
-        auto info = GetMapCoordinatesFromPos(
-            screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
-        if (info.SpriteType == ViewportInteractionItem::None)
-        {
-            if (_landRightsCost != kMoney64Undefined)
-            {
-                _landRightsCost = kMoney64Undefined;
-                WindowInvalidateByClass(WindowClass::ClearScenery);
             }
-            return;
-        }
-        auto mapTile = info.Loc;
-
-        uint8_t state_changed = 0;
-
-        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-        {
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            state_changed++;
-        }
-
-        if (gMapSelectType != MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
-        {
-            gMapSelectType = MAP_SELECT_TYPE_FULL_LAND_RIGHTS;
-            state_changed++;
-        }
-
-        int16_t tool_size = gLandToolSize;
-        if (tool_size == 0)
-            tool_size = 1;
-
-        int16_t tool_length = (tool_size - 1) * 32;
-
-        // Move to tool bottom left
-        mapTile.x -= (tool_size - 1) * 16;
-        mapTile.y -= (tool_size - 1) * 16;
-        mapTile = mapTile.ToTileStart();
-
-        if (gMapSelectPositionA.x != mapTile.x)
-        {
-            gMapSelectPositionA.x = mapTile.x;
-            state_changed++;
-        }
-
-        if (gMapSelectPositionA.y != mapTile.y)
-        {
-            gMapSelectPositionA.y = mapTile.y;
-            state_changed++;
-        }
-
-        mapTile.x += tool_length;
-        mapTile.y += tool_length;
-
-        if (gMapSelectPositionB.x != mapTile.x)
-        {
-            gMapSelectPositionB.x = mapTile.x;
-            state_changed++;
-        }
-
-        if (gMapSelectPositionB.y != mapTile.y)
-        {
-            gMapSelectPositionB.y = mapTile.y;
-            state_changed++;
-        }
-
-        MapInvalidateSelectionRect();
-        if (!state_changed)
-            return;
-
-        auto landBuyRightsAction = LandBuyRightsAction(
-            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-            (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? LandBuyRightSetting::BuyLand
-                                                           : LandBuyRightSetting::BuyConstructionRights);
-        auto res = GameActions::Query(&landBuyRightsAction);
-
-        _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
-    }
-
-    void OnToolAbort(WidgetIndex widgetIndex) override
-    {
-        if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
-        {
-            HideLandRights();
-        }
-        else
-        {
-            HideConstructionRights();
-        }
-    }
-
-    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
-    {
-        if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
-        {
-            if (screenCoords.x != LOCATION_NULL)
+            else
             {
-                auto landBuyRightsAction = LandBuyRightsAction(
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    LandBuyRightSetting::BuyLand);
-                GameActions::Execute(&landBuyRightsAction);
+                if (screenCoords.x != LOCATION_NULL)
+                {
+                    auto landBuyRightsAction = LandBuyRightsAction(
+                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                        LandBuyRightSetting::BuyConstructionRights);
+                    GameActions::Execute(&landBuyRightsAction);
+                }
             }
         }
-        else
+
+        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (screenCoords.x != LOCATION_NULL)
+            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
             {
-                auto landBuyRightsAction = LandBuyRightsAction(
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    LandBuyRightSetting::BuyConstructionRights);
-                GameActions::Execute(&landBuyRightsAction);
+                if (screenCoords.x != LOCATION_NULL)
+                {
+                    auto landBuyRightsAction = LandBuyRightsAction(
+                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                        LandBuyRightSetting::BuyLand);
+                    GameActions::Execute(&landBuyRightsAction);
+                }
+            }
+            else
+            {
+                if (screenCoords.x != LOCATION_NULL)
+                {
+                    auto landBuyRightsAction = LandBuyRightsAction(
+                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                        LandBuyRightSetting::BuyConstructionRights);
+                    GameActions::Execute(&landBuyRightsAction);
+                }
             }
         }
-    }
 
-    void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
-    {
-        if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+        void OnResize() override
         {
-            if (screenCoords.x != LOCATION_NULL)
-            {
-                auto landBuyRightsAction = LandBuyRightsAction(
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    LandBuyRightSetting::BuyLand);
-                GameActions::Execute(&landBuyRightsAction);
-            }
+            ResizeFrame();
         }
-        else
+
+    private:
+        uint8_t _landRightsMode;
+        money64 _landRightsCost;
+
+        void InputSize()
         {
-            if (screenCoords.x != LOCATION_NULL)
-            {
-                auto landBuyRightsAction = LandBuyRightsAction(
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    LandBuyRightSetting::BuyConstructionRights);
-                GameActions::Execute(&landBuyRightsAction);
-            }
+            Formatter ft;
+            ft.Add<uint16_t>(kLandToolMinimumSize);
+            ft.Add<uint16_t>(kLandToolMaximumSize);
+            WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
         }
-    }
 
-    void OnResize() override
+        bool LandRightsToolIsActive()
+        {
+            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
+                return false;
+            if (gCurrentToolWidget.window_classification != WindowClass::LandRights)
+                return false;
+            return true;
+        }
+    };
+
+    WindowBase* WindowLandRightsOpen()
     {
-        ResizeFrame();
+        return WindowFocusOrCreate<LandRightsWindow>(
+            WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
-
-private:
-    uint8_t _landRightsMode;
-    money64 _landRightsCost;
-
-    void InputSize()
-    {
-        Formatter ft;
-        ft.Add<uint16_t>(kLandToolMinimumSize);
-        ft.Add<uint16_t>(kLandToolMaximumSize);
-        WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
-    }
-
-    bool LandRightsToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::LandRights)
-            return false;
-        return true;
-    }
-};
-
-WindowBase* WindowLandRightsOpen()
-{
-    return WindowFocusOrCreate<LandRightsWindow>(
-        WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
-}
+} // namespace OpenRCT2::Ui::Windows

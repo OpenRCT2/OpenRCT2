@@ -807,7 +807,8 @@ void Window::TextInputOpen(
     WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
     uintptr_t existingArgs, int32_t maxLength)
 {
-    WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+    OpenRCT2::Ui::Windows::WindowTextInputOpen(
+        this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }
 
 void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
