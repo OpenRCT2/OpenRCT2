@@ -325,6 +325,8 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
     viewport.width = zoom.ApplyInversedTo(viewport.view_width);
     viewport.height = zoom.ApplyInversedTo(viewport.view_height);
     viewport.zoom = zoom;
+    viewport.rotation = rotation;
+
     return viewport;
 }
 
@@ -498,7 +500,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             auto zoom = ZoomLevel{ customZoom };
             auto rotation = std::atoi(argv[4]) & 3;
             viewport = GetGiantViewport(rotation, zoom);
-            viewport.rotation = rotation;
         }
         else
         {
@@ -650,13 +651,12 @@ void CaptureImage(const CaptureOptions& options)
         viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
                              coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
         viewport.zoom = options.Zoom;
+        viewport.rotation = options.Rotation;
     }
     else
     {
         viewport = GetGiantViewport(options.Rotation, options.Zoom);
     }
-
-    viewport.rotation = options.Rotation;
 
     if (options.Transparent)
     {
