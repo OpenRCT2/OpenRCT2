@@ -9,7 +9,8 @@
 
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/MetalSupports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
 #include "../Track.h"
@@ -499,7 +500,9 @@ static void PaintGhostTrainTrackSpinningTunnel(
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
     PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

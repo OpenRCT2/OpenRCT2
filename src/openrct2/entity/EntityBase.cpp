@@ -64,7 +64,7 @@ void EntityBase::Invalidate()
             break;
     }
 
-    ViewportsInvalidate(SpriteData.SpriteRect, maxZoom);
+    ViewportsInvalidate(GetLocation(), SpriteData.Width, SpriteData.HeightMin, SpriteData.HeightMax, maxZoom);
 }
 
 void EntityBase::Serialise(DataSerialiser& stream)

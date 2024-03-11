@@ -34,7 +34,7 @@ namespace OpenRCT2::Audio
         {
             if (SDL_Init(SDL_INIT_AUDIO) < 0)
             {
-                SDLException::Throw("SDL_Init(SDL_INIT_AUDIO)");
+                Ui::SDLException::Throw("SDL_Init(SDL_INIT_AUDIO)");
             }
             _audioMixer = std::make_unique<AudioMixer>();
         }

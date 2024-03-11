@@ -184,7 +184,7 @@ namespace GameActions
     {
         if (gGamePaused == 0)
             return true;
-        if (gCheatsBuildInPauseMode)
+        if (GetGameState().Cheats.BuildInPauseMode)
             return true;
         if (actionFlags & GameActions::Flags::AllowWhilePaused)
             return true;

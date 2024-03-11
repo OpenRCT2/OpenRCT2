@@ -10,7 +10,7 @@
 #include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
 #include "../Track.h"
@@ -88,7 +88,9 @@ static void PaintObservationTowerBase(
     int32_t edges = edges_3x3[trackSequence];
     CoordsXY position = session.MapPosition;
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 

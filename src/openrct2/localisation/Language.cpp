@@ -12,6 +12,7 @@
 #include "../core/String.hpp"
 #include "../interface/FontFamilies.h"
 #include "../interface/Fonts.h"
+#include "../interface/Window.h"
 #include "../object/ObjectManager.h"
 #include "../platform/Platform.h"
 #include "LanguagePack.h"
@@ -49,6 +50,7 @@ const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "fi-FI", "Finnish",               "Suomi",                 LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FINNISH
     { "sv-SE", "Swedish",               "Svenska",               LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SWEDISH
     { "tr-TR", "Turkish",               "Türkçe",                LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_TURKISH
+    { "uk-UA", "Ukrainian",             u8"Українська",          LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_UKRAINIAN
     { "vi-VN", "Vietnamese",            "Vietnamese",            LANGUAGE_UNDEFINED, FAMILY(&TTFFamilySansSerif),           false }, // LANGUAGE_VIETNAMESE
 };
 // clang-format on
@@ -84,6 +86,7 @@ bool LanguageOpen(int32_t id)
         // Objects and their localised strings need to be refreshed
         objectManager.ResetObjects();
         ScrollingTextInvalidate();
+        WindowNotifyLanguageChange();
         return true;
     }
     catch (const std::exception&)

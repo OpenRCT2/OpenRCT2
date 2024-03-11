@@ -10,7 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"

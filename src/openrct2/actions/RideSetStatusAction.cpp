@@ -131,7 +131,7 @@ GameActions::Result RideSetStatusAction::Execute() const
         return res;
     }
 
-    res.ErrorTitle = _StatusErrorTitles[static_cast<uint8_t>(_status)];
+    res.ErrorTitle = _StatusErrorTitles[EnumValue(_status)];
 
     Formatter ft(res.ErrorMessageArgs.data());
     ft.Increment(6);

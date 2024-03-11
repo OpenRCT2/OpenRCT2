@@ -1,3 +1,42 @@
+openrct2 (0.4.9-develop-1) unstable; urgency=medium
+
+ * Feature: [#20376] Add Ukrainian language.
+ * Feature: [#20709] [Plugin] Plugins can now check metadata from all registered plugins.
+ * Feature: [#21376] Add option to reload an object (for object developers).
+ * Feature: [#21413, OpenSFX#19] Add log flume lift sound effect (when “chainlift” is enabled).
+ * Feature: [#21455] Add option to control hidden scenery.
+ * Feature: [objects#282] Added RCT1 beta terrains.
+ * Improved: [#20093] Use new colours for guests’ clothing when they spawn.
+ * Improved: [#21356] Resize the title bar when moving between displays with different scaling factors on Windows systems.
+ * Improved: [#21388] Tooltips will now show even when an error message is present.
+ * Improved: [#21423] Add mechanism to allow building partly underground.
+ * Improved: [objects#272, objects#276, objects#277, objects#278, objects#279, objects#280, objects#281] Add most remaining ports of RCT1 ride and vehicle objects (for import only).
+ * Improved: [objects#275, objects#284, objects#286] Add remaining RCT1 walls (for import only).
+ * Change: [#21350] Group Dodgems and Flying Saucers vehicles.
+ * Change: [#21453] Reintroduce lost RCT1 Jet skis colour presets to the boat hire.
+ * Change: [objects#285] Mark old reversed train objects as compatibility objects.
+ * Fix: [#17610] Some scenery items are unavailable in RCT1 scenarios.
+ * Fix: [#18963] Research table in parks from Loopy Landscapes is imported incorrectly.
+ * Fix: [#20164] Grass and Rock terrain objects cannot be de-selected.
+ * Fix: [#20907] RCT1/AA scenarios use the 4-across train for the Inverted Roller Coaster.
+ * Fix: [#21037] Map animations in the title sequence are stuck.
+ * Fix: [#21208] Error message will stay open only for a brief moment when the game has been running a while.
+ * Fix: [#21220] When creating a new park from a SC4 file, the localised park name is not applied.
+ * Fix: [#21286] Cannot build unbanking turns with RCT1 vehicles.
+ * Fix: [#21288] Text overlaps in the “About ‘OpenRCT2’” window for Arabic, Chinese, Japanese, Korean and Vietnamese.
+ * Fix: [#21310] Some half loop elements require more clearance than their upward/downward counterparts.
+ * Fix: [#21318] Virtual Floor for building scenery is not properly invalidated.
+ * Fix: [#21330] Tooltips from dropdown widgets have the wrong position.
+ * Fix: [#21332] Mini Helicopters and Monorail Cycles ride types are swapped in research within RCT1 scenarios.
+ * Fix: [#21343] “Pause” and “Build Path” hotkeys do not work if top toolbar is hidden.
+ * Fix: [#21347] Too many options are hidden if the platform has no file picker.
+ * Fix: [#21350] Maze and Mini Golf track designs from RCT1 not shown in track designs list.
+ * Fix: [#21425] Additional missing/misplaced land & construction rights tiles in Japanese Coastal Reclaim.
+ * Fix: [#21484] Upkeep costs for some rides/facilities/shops are not calculated correctly.
+ * Fix: [#21498] Crash when the size of text can’t be determined.
+ * Fix: [objects#262, objects#263, objects#265, objects#266, objects#267, objects#268, objects#270, objects#271, objects#283] Various errors in expansion pack objects (original bug).
+ * Fix: [OpenSFX#18] B&M Roar sound effect not looping correctly.
+
 openrct2 (0.4.8-develop-1) unstable; urgency=medium
 
  * Feature: [#21062] [Plugin] Add API for managing a guest's items.

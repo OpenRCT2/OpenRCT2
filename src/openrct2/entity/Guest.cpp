@@ -1433,7 +1433,7 @@ void Guest::CheckCantFindRide()
 
     if (w != nullptr)
     {
-        WindowEventOnPrepareDrawCall(w);
+        w->OnPrepareDraw();
     }
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
@@ -2048,7 +2048,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+                    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
                     {
                         PeepRideIsTooIntense(this, ride, peepAtRide);
                         return false;
@@ -2074,7 +2074,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     // ride intensity check and get me on a sheltered ride!
                     if (!ClimateIsRaining() || !ShouldRideWhileRaining(ride))
                     {
-                        if (!gCheatsIgnoreRideIntensity)
+                        if (!GetGameState().Cheats.IgnoreRideIntensity)
                         {
                             // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                             // at 10.0 (before happiness calculations). A full happiness bar will increase the max
@@ -2140,7 +2140,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     return false;
                 }
 
-                if (!gCheatsIgnoreRideIntensity)
+                if (!GetGameState().Cheats.IgnoreRideIntensity)
                 {
                     if (ride.max_positive_vertical_g > FIXED_2DP(5, 00) || ride.max_negative_vertical_g < FIXED_2DP(-4, 00)
                         || ride.max_lateral_g > FIXED_2DP(4, 00))
@@ -2854,7 +2854,7 @@ static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     if (peep->Happiness < 180)
         return false;
@@ -2899,7 +2899,7 @@ static bool PeepReallyLikedRide(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     return true;
 }
@@ -3018,7 +3018,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     if (nearby_music == 1 && num_rubbish < 20)
         return PeepThoughtType::Music;
 
-    if (num_rubbish < 2 && !gCheatsDisableLittering)
+    if (num_rubbish < 2 && !GetGameState().Cheats.DisableLittering)
         // if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
         return PeepThoughtType::VeryClean;
 
@@ -3119,7 +3119,7 @@ static void PeepLeavePark(Guest* peep)
 
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
-        WindowEventOnPrepareDrawCall(w);
+        w->OnPrepareDraw();
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 
@@ -6188,7 +6188,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
  */
 static void PeepUpdateWalkingBreakScenery(Guest* peep)
 {
-    if (gCheatsDisableVandalism)
+    if (GetGameState().Cheats.DisableVandalism)
         return;
 
     if (!(peep->PeepFlags & PEEP_FLAGS_ANGRY))
@@ -7027,6 +7027,10 @@ static constexpr uint8_t trouser_colours[] = {
     COLOUR_SATURATED_RED,
     COLOUR_DARK_ORANGE,
     COLOUR_BORDEAUX_RED,
+    COLOUR_DARK_OLIVE_DARK,
+    COLOUR_OLIVE_DARK,
+    COLOUR_AQUA_DARK,
+    COLOUR_DULL_BROWN_DARK,
 };
 
 /** rct2: 0x009823D5 */
@@ -7064,6 +7068,28 @@ static constexpr uint8_t tshirt_colours[] = {
     COLOUR_BRIGHT_RED,
     COLOUR_DARK_PINK,
     COLOUR_BRIGHT_PINK,
+    COLOUR_DARK_OLIVE_DARK,
+    COLOUR_DARK_OLIVE_LIGHT,
+    COLOUR_SATURATED_BROWN_LIGHT,
+    COLOUR_BORDEAUX_RED_DARK,
+    COLOUR_BORDEAUX_RED_LIGHT,
+    COLOUR_GRASS_GREEN_DARK,
+    COLOUR_GRASS_GREEN_LIGHT,
+    COLOUR_OLIVE_DARK,
+    COLOUR_OLIVE_LIGHT,
+    COLOUR_SATURATED_GREEN_LIGHT,
+    COLOUR_TAN_DARK,
+    COLOUR_TAN_LIGHT,
+    COLOUR_DULL_PURPLE_LIGHT,
+    COLOUR_DULL_GREEN_DARK,
+    COLOUR_DULL_GREEN_LIGHT,
+    COLOUR_SATURATED_PURPLE_DARK,
+    COLOUR_SATURATED_PURPLE_LIGHT,
+    COLOUR_ORANGE_LIGHT,
+    COLOUR_AQUA_DARK,
+    COLOUR_MAGENTA_LIGHT,
+    COLOUR_DULL_BROWN_DARK,
+    COLOUR_DULL_BROWN_LIGHT,
 };
 // clang-format on
 
@@ -7196,7 +7222,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
         cash = 0;
     }
 
-    if (gameState.GuestInitialCash == MONEY64_UNDEFINED)
+    if (gameState.GuestInitialCash == kMoney64Undefined)
     {
         cash = 0;
     }

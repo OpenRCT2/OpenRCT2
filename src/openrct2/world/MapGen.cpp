@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../core/Imaging.h"
@@ -335,9 +336,10 @@ static void MapGenPlaceTrees()
     // Place trees
     CoordsXY pos;
     float treeToLandRatio = (10 + (UtilRand() % 30)) / 100.0f;
-    for (int32_t y = 1; y < gMapSize.y - 1; y++)
+    auto& gameState = OpenRCT2::GetGameState();
+    for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
     {
-        for (int32_t x = 1; x < gMapSize.x - 1; x++)
+        for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
         {
             pos.x = x * COORDS_XY_STEP;
             pos.y = y * COORDS_XY_STEP;
@@ -366,8 +368,8 @@ static void MapGenPlaceTrees()
                         // Get map coord, clamped to the edges
                         const auto offset = CoordsXY{ offsetX * COORDS_XY_STEP, offsetY * COORDS_XY_STEP };
                         auto neighbourPos = pos + offset;
-                        neighbourPos.x = std::clamp(neighbourPos.x, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.x - 1));
-                        neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.y - 1));
+                        neighbourPos.x = std::clamp(neighbourPos.x, COORDS_XY_STEP, COORDS_XY_STEP * (gameState.MapSize.x - 1));
+                        neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gameState.MapSize.y - 1));
 
                         const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
                         if (neighboutSurface != nullptr && neighboutSurface->GetWaterHeight() > 0)
@@ -415,9 +417,10 @@ static void MapGenPlaceTrees()
  */
 static void MapGenSetWaterLevel(int32_t waterLevel)
 {
-    for (int32_t y = 1; y < gMapSize.y - 1; y++)
+    auto& gameState = OpenRCT2::GetGameState();
+    for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
     {
-        for (int32_t x = 1; x < gMapSize.x - 1; x++)
+        for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel)

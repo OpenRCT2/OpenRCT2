@@ -11,6 +11,8 @@
 
 #    include "ApplyTransparencyShader.h"
 
+using namespace OpenRCT2::Ui;
+
 namespace
 {
     struct VDStruct

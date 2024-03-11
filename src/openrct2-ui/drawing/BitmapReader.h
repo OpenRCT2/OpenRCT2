@@ -9,4 +9,7 @@
 
 #pragma once
 
-void RegisterBitmapReader();
+namespace OpenRCT2::Ui
+{
+    void RegisterBitmapReader();
+}

@@ -2099,39 +2099,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Impossibile caricare il file…
 STR_3011    :Il file contiene dati non validi
-STR_3012    :Stile auto da scontro
-STR_3013    :Stile organo da fiera
-STR_3014    :Stile fanfara romana
-STR_3015    :Stile orientale
-STR_3016    :Stile marziano
-STR_3017    :Stile tamburi nella giungla
-STR_3018    :Stile egiziano
-STR_3019    :Stile giocattolo
-STR_3020    :
-STR_3021    :Stile spaziale
-STR_3022    :Stile horror
-STR_3023    :Stile techno
-STR_3024    :Stile tranquillo
-STR_3025    :Stile estivo
-STR_3026    :Stile acquatico
-STR_3027    :Stile far west
-STR_3028    :Stile giurassico
-STR_3029    :Stile rock
-STR_3030    :Stile ragtime
-STR_3031    :Stile fantastico
-STR_3032    :Stile rock 2
-STR_3033    :Stile ghiacciato
-STR_3034    :Stile nevoso
-STR_3035    :Musica personalizzata 1
-STR_3036    :Musica personalizzata 2
-STR_3037    :Stile medievale
-STR_3038    :Stile urbano
-STR_3039    :Stile organo
-STR_3040    :Stile meccanico
-STR_3041    :Stile moderno
-STR_3042    :Stile piratesco
-STR_3043    :Stile rock 3
-STR_3044    :Stile dolciumi
 STR_3045    :Seleziona uno stile musicale da suonare
 STR_3047    :Le autorità locali vietano la demolizione o la modifica di quest’attrazione
 STR_3048    :Campagne di marketing vietate dalle autorità locali
@@ -3721,6 +3688,11 @@ STR_6609    :Blocco di tracciato non trovato
 STR_6610    :Elemento di sentiero non trovato
 STR_6611    :Elemento di muro non trovato
 STR_6612    :Elemento cartello non trovato
+STR_6613    :Ricarica oggetto
+STR_6614    :Non è possibile modificare il prezzo di ingresso
+STR_6615    :Il tracciato su questa cella necessita acqua
+STR_6616    :Azione non valida per quel tipo di staff
+STR_6617    :Non è possibile scambiare l’elemento della cella con sé stesso
 
 
 #############

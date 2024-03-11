@@ -12,27 +12,30 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 
-class ApplyPaletteShader final : public OpenGLShaderProgram
+namespace OpenRCT2::Ui
 {
-private:
-    GLuint uTexture;
-    GLuint uPalette;
+    class ApplyPaletteShader final : public OpenGLShaderProgram
+    {
+    private:
+        GLuint uTexture;
+        GLuint uPalette;
 
-    GLuint vPosition;
-    GLuint vTextureCoordinate;
+        GLuint vPosition;
+        GLuint vTextureCoordinate;
 
-    GLuint _vbo;
-    GLuint _vao;
+        GLuint _vbo;
+        GLuint _vao;
 
-public:
-    ApplyPaletteShader();
-    ~ApplyPaletteShader() override;
+    public:
+        ApplyPaletteShader();
+        ~ApplyPaletteShader() override;
 
-    static void SetTexture(GLuint texture);
-    void SetPalette(const vec4* glPalette);
+        static void SetTexture(GLuint texture);
+        void SetPalette(const vec4* glPalette);
 
-    void Draw();
+        void Draw();
 
-private:
-    void GetLocations();
-};
+    private:
+        void GetLocations();
+    };
+} // namespace OpenRCT2::Ui

@@ -845,8 +845,8 @@ namespace RCT2
         // SC6[6]
         uint32_t NextFreeTileElementPointerIndex;
         Entity Entities[Limits::MaxEntitiesRCTCExtended];
-        uint16_t EntityListsHead[static_cast<uint8_t>(EntityListId::Count)];
-        uint16_t EntityListsCount[static_cast<uint8_t>(EntityListId::Count)];
+        uint16_t EntityListsHead[EnumValue(EntityListId::Count)];
+        uint16_t EntityListsCount[EnumValue(EntityListId::Count)];
         StringId ParkName;
         uint8_t Pad013573D6[2];
         uint32_t ParkNameArgs;
@@ -988,7 +988,7 @@ namespace RCT2
         char CustomStrings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTicks1;
         Ride Rides[Limits::MaxRidesInPark];
-        uint16_t SavedAge;
+        uint16_t SavedAge; // unused
         int16_t SavedViewX;
         int16_t SavedViewY;
         uint8_t SavedViewZoom;

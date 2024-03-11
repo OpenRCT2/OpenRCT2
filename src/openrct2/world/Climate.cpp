@@ -91,7 +91,7 @@ void ClimateReset(ClimateType climate)
     auto& gameState = GetGameState();
     auto weather = WeatherType::PartiallyCloudy;
     int32_t month = GetDate().GetMonth();
-    const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(climate)][month];
+    const WeatherTransition* transition = &ClimateTransitions[EnumValue(climate)][month];
     const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
 
     gameState.Climate = climate;
@@ -126,7 +126,7 @@ void ClimateUpdate()
     if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
         return;
 
-    if (!gCheatsFreezeWeather)
+    if (!GetGameState().Cheats.FreezeWeather)
     {
         if (gameState.ClimateUpdateTimer)
         {
@@ -202,7 +202,7 @@ void ClimateForceWeather(WeatherType weather)
 {
     auto& gameState = GetGameState();
     int32_t month = GetDate().GetMonth();
-    const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gameState.Climate)][month];
+    const WeatherTransition* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
     const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
 
     gameState.ClimateCurrent.Weather = weather;
@@ -306,7 +306,7 @@ static void ClimateDetermineFutureWeather(int32_t randomDistribution)
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly
-    const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gameState.Climate)][month];
+    const WeatherTransition* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
     WeatherType nextWeather = (transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
     gameState.ClimateNext.Weather = nextWeather;
 

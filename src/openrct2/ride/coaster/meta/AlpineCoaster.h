@@ -15,43 +15,43 @@
 // clang-format off
 constexpr RideTypeDescriptor AlpineCoasterRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
-    SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, { TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_LONG, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF}),
-    SET_FIELD(ExtraTrackPieces,  {TRACK_HELIX_UP_BANKED_HALF}),
-    SET_FIELD(CoveredTrackPieces, {}),
-    SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(AlpineRC::GetTrackPaintFunction)),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
+    .AlternateType = RIDE_TYPE_NULL,
+    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .EnabledTrackPieces = { TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_LONG, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF},
+    .ExtraTrackPieces =  {TRACK_HELIX_UP_BANKED_HALF},
+    .CoveredTrackPieces = {},
+    .StartTrackPiece = TrackElemType::EndStation,
+    .TrackPaintFunctions = TrackDrawerDescriptor(AlpineRC::GetTrackPaintFunction),
+    .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                       RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN
     | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK
     | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT
     | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT),
-    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
-    SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
-    SET_FIELD(Naming, { STR_RIDE_NAME_ALPINE_COASTER, STR_RIDE_DESCRIPTION_ALPINE_COASTER }),
-    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_ALPINE_ROLLER_COASTER)),
-    SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
-    SET_FIELD(Heights, {18, 24, 3, 7}),
-    SET_FIELD(MaxMass, 4),
-    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 4, 5 }),
-    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
-    SET_FIELD(UpkeepCosts, { 35, 20, 80, 8, 3, 10 }),
-    SET_FIELD(BuildCosts, { 22.50_GBP, 2.50_GBP, 50}),
-    SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
-    SET_FIELD(PhotoItem, ShopItem::Photo),
-    SET_FIELD(BonusValue, 65),
-    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+                     RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT,
+    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
+    .DefaultMode = RideMode::ContinuousCircuit,
+    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
+    .Naming = { STR_RIDE_NAME_ALPINE_COASTER, STR_RIDE_DESCRIPTION_ALPINE_COASTER },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
+    .EnumName = nameof(RIDE_TYPE_ALPINE_ROLLER_COASTER),
+    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .Heights = {18, 24, 3, 7},
+    .MaxMass = 4,
+    .LiftData = { OpenRCT2::Audio::SoundId::Null, 4, 5 },
+    .RatingsMultipliers = { 50, 30, 10 },
+    .UpkeepCosts = { 35, 20, 80, 8, 3, 10 },
+    .BuildCosts = { 22.50_GBP, 2.50_GBP, 50},
+    .DefaultPrices = { 20, 20 },
+    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .PhotoItem = ShopItem::Photo,
+    .BonusValue = 65,
+    .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_BLACK },
-    )),
-    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_ALPINE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_ALPINE_COASTER_SUPPORTS }),
-    SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(Name, "alpine_rc"),
-    SET_FIELD(RatingsData,
+    ),
+    .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_ALPINE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_ALPINE_COASTER_SUPPORTS },
+    .ColourKey = RideColourKey::Ride,
+    .Name = "alpine_rc",
+    .RatingsData = 
     {
         RatingsCalculationType::Normal,
         { RIDE_RATING(2, 30), RIDE_RATING(2, 10), RIDE_RATING(1, 4) },
@@ -73,6 +73,6 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
             { RatingsModifierType::RequirementMaxSpeed,   0x50000,          2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
         },
-    }),
+    },
 };
 // clang-format on

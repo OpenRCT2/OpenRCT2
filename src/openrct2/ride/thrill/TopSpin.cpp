@@ -12,7 +12,7 @@
 #include "../../localisation/Localisation.h"
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"

@@ -305,7 +305,7 @@ int32_t ImageImporter::GetPaletteIndex(const GamePalette& palette, int16_t* colo
 {
     if (!IsTransparentPixel(colour))
     {
-        for (int32_t i = 0; i < PALETTE_SIZE; i++)
+        for (uint32_t i = 0; i < PALETTE_SIZE; i++)
         {
             if (static_cast<int16_t>(palette[i].Red) == colour[0] && static_cast<int16_t>(palette[i].Green) == colour[1]
                 && static_cast<int16_t>(palette[i].Blue) == colour[2])
@@ -363,7 +363,7 @@ int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const 
 {
     auto smallestError = static_cast<uint32_t>(-1);
     auto bestMatch = PALETTE_TRANSPARENT;
-    for (int32_t x = 0; x < PALETTE_SIZE; x++)
+    for (uint32_t x = 0; x < PALETTE_SIZE; x++)
     {
         if (IsChangablePixel(x))
         {

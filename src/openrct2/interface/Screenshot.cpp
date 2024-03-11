@@ -280,22 +280,25 @@ static void ReleaseDPI(DrawPixelInfo& dpi)
 
 static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 {
+    auto& gameState = GetGameState();
     // Get the tile coordinates of each corner
     const TileCoordsXY cornerCoords[2][4] = {
         {
             // Map corners
             { 1, 1 },
-            { gMapSize.x - 2, gMapSize.y - 2 },
-            { 1, gMapSize.y - 2 },
-            { gMapSize.x - 2, 1 },
+            { gameState.MapSize.x - 2, gameState.MapSize.y - 2 },
+            { 1, gameState.MapSize.y - 2 },
+            { gameState.MapSize.x - 2, 1 },
         },
         {
             // Horizontal view clipping corners
             TileCoordsXY{ CoordsXY{ std::max(gClipSelectionA.x, 32), std::max(gClipSelectionA.y, 32) } },
-            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gMapSize.x - 2) * 32),
-                                    std::min(gClipSelectionB.y, (gMapSize.y - 2) * 32) } },
-            TileCoordsXY{ CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gMapSize.y - 2) * 32) } },
-            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gMapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
+            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32),
+                                    std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+            TileCoordsXY{
+                CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+            TileCoordsXY{
+                CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
         },
     };
 
@@ -322,6 +325,8 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
     viewport.width = zoom.ApplyInversedTo(viewport.view_width);
     viewport.height = zoom.ApplyInversedTo(viewport.view_height);
     viewport.zoom = zoom;
+    viewport.rotation = rotation;
+
     return viewport;
 }
 
@@ -495,7 +500,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             auto zoom = ZoomLevel{ customZoom };
             auto rotation = std::atoi(argv[4]) & 3;
             viewport = GetGiantViewport(rotation, zoom);
-            gCurrentRotation = rotation;
         }
         else
         {
@@ -522,7 +526,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 customRotation = std::atoi(argv[7]) & 3;
             }
 
-            const auto& mapSize = gMapSize;
+            const auto& mapSize = GetGameState().MapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
                 resolutionWidth = (mapSize.x * COORDS_XY_STEP * 2) >> customZoom;
@@ -551,13 +555,15 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
                                      coords2d.y - ((viewport.view_height << customZoom) / 2) };
                 viewport.zoom = ZoomLevel{ static_cast<int8_t>(customZoom) };
-                gCurrentRotation = customRotation;
+                viewport.rotation = customRotation;
             }
             else
             {
-                viewport.viewPos = { gSavedView - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
-                viewport.zoom = gSavedViewZoom;
-                gCurrentRotation = gSavedViewRotation;
+                auto& gameState = GetGameState();
+                viewport.viewPos = { gameState.SavedView
+                                     - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
+                viewport.zoom = gameState.SavedViewZoom;
+                viewport.rotation = gameState.SavedViewRotation;
             }
         }
 
@@ -645,14 +651,12 @@ void CaptureImage(const CaptureOptions& options)
         viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
                              coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
         viewport.zoom = options.Zoom;
+        viewport.rotation = options.Rotation;
     }
     else
     {
         viewport = GetGiantViewport(options.Rotation, options.Zoom);
     }
-
-    auto backupRotation = gCurrentRotation;
-    gCurrentRotation = options.Rotation;
 
     if (options.Transparent)
     {
@@ -664,6 +668,4 @@ void CaptureImage(const CaptureOptions& options)
     RenderViewport(nullptr, viewport, dpi);
     WriteDpiToFile(outputPath, dpi, gPalette);
     ReleaseDPI(dpi);
-
-    gCurrentRotation = backupRotation;
 }

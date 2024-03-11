@@ -47,13 +47,7 @@
 
 using namespace OpenRCT2;
 
-money64 gLandPrice;
-money64 gConstructionRightsPrice;
-
-money64 gCompanyValue;
-
 int16_t gParkRatingCasualtyPenalty;
-uint32_t gGuestsInParkHistory[32];
 
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
 static int32_t _forcedParkRating = -1;
@@ -63,9 +57,10 @@ static int32_t _forcedParkRating = -1;
  */
 static PeepSpawn* GetRandomPeepSpawn()
 {
-    if (!gPeepSpawns.empty())
+    auto& gameState = GetGameState();
+    if (!gameState.PeepSpawns.empty())
     {
-        return &gPeepSpawns[ScenarioRand() % gPeepSpawns.size()];
+        return &gameState.PeepSpawns[ScenarioRand() % gameState.PeepSpawns.size()];
     }
 
     return nullptr;
@@ -229,14 +224,14 @@ money64 Park::GetParkValue() const
 
 money64 Park::GetCompanyValue() const
 {
-    return gCompanyValue;
+    return GetGameState().CompanyValue;
 }
 
 void Park::Initialise()
 {
     auto& gameState = GetGameState();
 
-    Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
+    Name = LanguageGetString(STR_UNNAMED_PARK);
     PluginStorage = {};
     gameState.StaffHandymanColour = COLOUR_BRIGHT_RED;
     gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
@@ -244,7 +239,7 @@ void Park::Initialise()
     gameState.NumGuestsInPark = 0;
     gameState.NumGuestsInParkLastWeek = 0;
     gameState.NumGuestsHeadingForPark = 0;
-    gGuestChangeModifier = 0;
+    gameState.GuestChangeModifier = 0;
     gameState.ParkRating = 0;
     gameState.GuestGenerationProbability = 0;
     gameState.TotalRideValueForMoney = 0;
@@ -261,7 +256,7 @@ void Park::Initialise()
 
     gameState.ParkEntranceFee = 10.00_GBP;
 
-    gPeepSpawns.clear();
+    gameState.PeepSpawns.clear();
     ParkEntranceReset();
 
     gameState.ResearchPriorities = EnumsToFlags(
@@ -276,8 +271,8 @@ void Park::Initialise()
     gameState.ScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
     gameState.ScenarioObjective.Year = 4;
     gameState.ScenarioObjective.NumGuests = 1000;
-    gLandPrice = 90.00_GBP;
-    gConstructionRightsPrice = 40.00_GBP;
+    gameState.LandPrice = 90.00_GBP;
+    gameState.ConstructionRightsPrice = 40.00_GBP;
     gameState.ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     FinanceResetHistory();
@@ -305,7 +300,7 @@ void Park::Update(const Date& date)
     {
         gameState.ParkRating = CalculateParkRating();
         gameState.ParkValue = CalculateParkValue();
-        gCompanyValue = CalculateCompanyValue();
+        gameState.CompanyValue = CalculateCompanyValue();
         gameState.TotalRideValueForMoney = CalculateTotalRideValueForMoney();
         gameState.SuggestedGuestMaximum = CalculateSuggestedMaxGuests();
         gameState.GuestGenerationProbability = CalculateGuestGenerationProbability();
@@ -496,7 +491,9 @@ money64 Park::CalculateRideValue(const Ride& ride) const
 
 money64 Park::CalculateCompanyValue() const
 {
-    auto result = GetGameState().ParkValue - gBankLoan;
+    const auto& gameState = GetGameState();
+
+    auto result = gameState.ParkValue - gameState.BankLoan;
 
     // Clamp addition to prevent overflow
     result = AddClamp_money64(result, FinanceGetCurrentCash());
@@ -730,7 +727,7 @@ void Park::ResetHistories()
 {
     auto& gameState = GetGameState();
     std::fill(std::begin(gameState.ParkRatingHistory), std::end(gameState.ParkRatingHistory), ParkRatingHistoryUndefined);
-    std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), GuestsInParkHistoryUndefined);
+    std::fill(std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory), GuestsInParkHistoryUndefined);
 }
 
 void Park::UpdateHistories()
@@ -747,13 +744,15 @@ void Park::UpdateHistories()
             guestChangeModifier = 0;
         }
     }
-    gGuestChangeModifier = guestChangeModifier;
+    gameState.GuestChangeModifier = guestChangeModifier;
     gameState.NumGuestsInParkLastWeek = gameState.NumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
     HistoryPushRecord<uint8_t, 32>(gameState.ParkRatingHistory, gameState.ParkRating / 4);
-    HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gameState.NumGuestsInPark);
-    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
+    HistoryPushRecord<uint32_t, 32>(gameState.GuestsInParkHistory, gameState.NumGuestsInPark);
+
+    constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::CashHistory)>;
+    HistoryPushRecord<money64, cashHistorySize>(gameState.CashHistory, FinanceGetCurrentCash() - gameState.BankLoan);
 
     // Update weekly profit history
     auto currentWeeklyProfit = gameState.WeeklyProfitAverageDividend;

@@ -38,7 +38,9 @@ static const char* TryLoadAllProcAddresses()
 
 #    endif /* #if OPENGL_NO_LINK */
 
-namespace OpenGLState
+using namespace OpenRCT2::Ui;
+
+namespace OpenRCT2::Ui::OpenGLState
 {
     uint16_t ActiveTexture;
     GLuint CurrentProgram;
@@ -48,7 +50,7 @@ namespace OpenGLState
         ActiveTexture = UINT16_MAX;
         CurrentProgram = UINT32_MAX;
     }
-} // namespace OpenGLState
+} // namespace OpenRCT2::Ui::OpenGLState
 
 void OpenGLAPI::SetTexture(uint16_t index, GLenum type, GLuint texture)
 {

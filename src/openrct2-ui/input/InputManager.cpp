@@ -202,7 +202,7 @@ void InputManager::Process(const InputEvent& e)
             {
                 if (e.State == InputEventState::Release)
                 {
-                    WindowTextInputKey(w, e.Button);
+                    OpenRCT2::Ui::Windows::WindowTextInputKey(w, e.Button);
                 }
                 return;
             }

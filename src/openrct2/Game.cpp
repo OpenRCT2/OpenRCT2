@@ -469,10 +469,11 @@ static void FixInvalidSurfaces()
 
             // Fix the invisible border tiles.
             // At this point, we can be sure that surfaceElement is not NULL.
-            if (x == 0 || x == gMapSize.x - 1 || y == 0 || y == gMapSize.y - 1)
+            auto& gameState = GetGameState();
+            if (x == 0 || x == gameState.MapSize.x - 1 || y == 0 || y == gameState.MapSize.y - 1)
             {
-                surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
-                surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
+                surfaceElement->SetBaseZ(kMinimumLandZ);
+                surfaceElement->SetClearanceZ(kMinimumLandZ);
                 surfaceElement->SetSlope(0);
                 surfaceElement->SetWaterHeight(0);
             }
@@ -527,7 +528,8 @@ void GameLoadInit()
     }
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
+    auto& gameState = GetGameState();
+    windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
     if (NetworkGetMode() != NETWORK_MODE_CLIENT)
     {
@@ -541,6 +543,7 @@ void GameLoadInit()
     ContextBroadcastIntent(&intent);
 
     gWindowUpdateTicks = 0;
+    gCurrentRealTimeTicks = 0;
 
     LoadPalette();
 

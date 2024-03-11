@@ -500,7 +500,7 @@ namespace OpenRCT2::Audio
         }
 
         mixer->Lock();
-        auto channel = mixer->Play(source, loop ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, forget);
+        auto channel = mixer->Play(source, loop ? kMixerLoopInfinite : kMixerLoopNone, forget);
         if (channel != nullptr)
         {
             channel->SetGroup(group);
@@ -515,7 +515,7 @@ namespace OpenRCT2::Audio
 
     int32_t DStoMixerVolume(int32_t volume)
     {
-        return static_cast<int32_t>(MIXER_VOLUME_MAX * (std::pow(10.0f, static_cast<float>(volume) / 2000)));
+        return static_cast<int32_t>(kMixerVolumeMax * (std::pow(10.0f, static_cast<float>(volume) / 2000)));
     }
 
     float DStoMixerPan(int32_t pan)

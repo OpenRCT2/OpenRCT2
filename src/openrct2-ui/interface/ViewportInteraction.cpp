@@ -52,6 +52,9 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui::Windows;
+
 static void ViewportInteractionRemoveScenery(const SmallSceneryElement& smallSceneryElement, const CoordsXY& mapCoords);
 static void ViewportInteractionRemoveFootpath(const PathElement& pathElement, const CoordsXY& mapCoords);
 static void ViewportInteractionRemovePathAddition(const PathElement& pathElement, const CoordsXY& mapCoords);
@@ -64,7 +67,7 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
  *
  *  rct2: 0x006ED9D0
  */
-InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords)
+static InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords)
 {
     InteractionInfo info{};
     // No click input for scenario editor or track manager
@@ -72,7 +75,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
     info = GetMapCoordinatesFromPos(
@@ -131,7 +134,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
             break;
         case ViewportInteractionItem::ParkEntrance:
         {
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            auto& park = GetContext()->GetGameState()->GetPark();
             auto parkName = park.Name.c_str();
 
             auto ft = Formatter();
@@ -248,7 +251,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
  *
  *  rct2: 0x006EDE88
  */
-InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
+static InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
 {
     Ride* ride;
     int32_t i;
@@ -258,7 +261,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
     constexpr auto flags = static_cast<int32_t>(
@@ -362,7 +365,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             else
             {
                 // FIXME: Why does it *2 the value?
-                if (!gCheatsSandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
+                if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                 {
                     info.SpriteType = ViewportInteractionItem::None;
                     return info;
@@ -434,7 +437,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto banner = tileElement->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+                auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
@@ -492,7 +495,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             return info;
         }
         case ViewportInteractionItem::ParkEntrance:
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
                 break;
 
             if (tileElement->GetType() != TileElementType::Entrance)
@@ -716,16 +719,21 @@ struct PeepDistance
 };
 
 template<typename T>
-PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
+static PeepDistance GetClosestPeep(
+    const ScreenCoordsXY& viewportCoords, uint8_t rotation, const int32_t maxDistance, PeepDistance goal)
 {
     for (auto peep : EntityList<T>())
     {
         if (peep->x == LOCATION_NULL)
             continue;
 
-        auto distance = abs(((peep->SpriteData.SpriteRect.GetLeft() + peep->SpriteData.SpriteRect.GetRight()) / 2)
-                            - viewportCoords.x)
-            + abs(((peep->SpriteData.SpriteRect.GetTop() + peep->SpriteData.SpriteRect.GetBottom()) / 2) - viewportCoords.y);
+        auto screenCoords = Translate3DTo2DWithZ(rotation, peep->GetLocation());
+        auto spriteRect = ScreenRect(
+            screenCoords - ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMin },
+            screenCoords + ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMax });
+
+        auto distance = abs(((spriteRect.GetLeft() + spriteRect.GetRight()) / 2) - viewportCoords.x)
+            + abs(((spriteRect.GetTop() + spriteRect.GetBottom()) / 2) - viewportCoords.y);
         if (distance > maxDistance)
             continue;
 
@@ -752,9 +760,9 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
 
     PeepDistance goal;
     if (!(viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS))
-        goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, goal);
+        goal = GetClosestPeep<Guest>(viewportCoords, viewport->rotation, maxDistance, goal);
     if (!(viewport->flags & VIEWPORT_FLAG_HIDE_STAFF))
-        goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
+        goal = GetClosestPeep<Staff>(viewportCoords, viewport->rotation, maxDistance, goal);
     return goal.peep;
 }
 
@@ -798,7 +806,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         {
             z = TileElementHeight(mapPos);
         }
-        mapPos = ViewportPosToMapPos(initialVPPos, z);
+        mapPos = ViewportPosToMapPos(initialVPPos, z, viewport->rotation);
         mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);
         mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }

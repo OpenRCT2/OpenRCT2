@@ -133,7 +133,7 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags)
+PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags, uint8_t rotation)
 {
     PROFILED_FUNCTION();
 
@@ -160,6 +160,7 @@ PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags)
     session->QuadrantFrontIndex = 0;
     session->PaintEntryChain = _paintStructPool.Create();
     session->Flags = 0;
+    session->CurrentRotation = rotation;
 
     std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
     session->PaintHead = nullptr;

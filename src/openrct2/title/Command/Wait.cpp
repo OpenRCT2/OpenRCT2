@@ -18,6 +18,6 @@ namespace OpenRCT2::Title
     int16_t WaitCommand::operator()(int16_t timer)
     {
         // Return number of game ticks this wait command lasts
-        return std::max<int16_t>(1, GAME_UPDATE_FPS * Milliseconds / 1000);
+        return std::max<int16_t>(1, kGameUpdateFPS * Milliseconds / 1000);
     }
 } // namespace OpenRCT2::Title

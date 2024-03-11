@@ -2099,39 +2099,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan inte ladda fil…
 STR_3011    :Filen innehåller ogiltiga data
-STR_3012    :Radiobilstema
-STR_3013    :Tivolitema
-STR_3014    :Romerskt tema
-STR_3015    :Pagod-tema
-STR_3016    :Marstema
-STR_3017    :Djungeltema
-STR_3018    :Egyptiskt tema
-STR_3019    :Underlandstema
-STR_3020    :
-STR_3021    :Rymdtema
-STR_3022    :Skräcktema
-STR_3023    :Technotema
-STR_3024    :Stillsamt tema
-STR_3025    :Sommartider
-STR_3026    :Vattentema
-STR_3027    :Vilda västern-tema
-STR_3028    :Dinosaurietema
-STR_3029    :Rocktema
-STR_3030    :Glade Chapplies piano
-STR_3031    :Fantasitema
-STR_3032    :Rocktema 2
-STR_3033    :Istema
-STR_3034    :Snötema
-STR_3035    :Egen musik 1
-STR_3036    :Egen musik 2
-STR_3037    :Medeltidstema
-STR_3038    :Stadstema
-STR_3039    :Orgeltema
-STR_3040    :Mekaniktema
-STR_3041    :Modernt tema
-STR_3042    :Pirattema
-STR_3043    :Rocktema 3
-STR_3044    :Godislandstema
 STR_3045    :Välj musikstil som ska spelas{NEWLINE}Teman på sånger och dekorationer kan blandas utan problem
 STR_3047    :Lokala myndigheter har förbjudit rivning och modifikation av denna åktur
 STR_3048    :Kampanjer är förbjudna av lokala myndigheter

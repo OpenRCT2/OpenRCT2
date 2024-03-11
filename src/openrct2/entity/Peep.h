@@ -199,7 +199,7 @@ enum PeepFlags : uint32_t
 {
     PEEP_FLAGS_LEAVING_PARK = (1 << 0),
     PEEP_FLAGS_SLOW_WALK = (1 << 1),
-    PEEP_FLAGS_2 = (1 << 2),
+    PEEP_FLAGS_DEBUG_PATHFINDING = (1 << 2), // Enables debug logging for path finding
     PEEP_FLAGS_TRACKING = (1 << 3),
     PEEP_FLAGS_WAVING = (1 << 4),                  // Makes the peep wave
     PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY = (1 << 5), // Set on paying to enter park

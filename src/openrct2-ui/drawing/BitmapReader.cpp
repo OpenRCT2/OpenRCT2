@@ -15,90 +15,93 @@
 #include <openrct2/core/Imaging.h>
 #include <stdexcept>
 
-static std::vector<uint8_t> ReadToVector(std::istream& stream)
+namespace OpenRCT2::Ui
 {
-    std::vector<uint8_t> result;
-    if (!stream.eof() && !stream.fail())
+    static std::vector<uint8_t> ReadToVector(std::istream& stream)
     {
-        stream.seekg(0, std::ios_base::end);
-        auto size = stream.tellg();
-        result.resize(size);
-        stream.seekg(0, std::ios_base::beg);
-        stream.read(reinterpret_cast<char*>(result.data()), size);
-    }
-    return result;
-}
-
-// TODO Bitmaps aren't very complicated to read so we should probably just write our
-//      own implementation in libopenrct2 and spare the AOT implementation registration.
-static Image ReadBitmap(std::istream& istream, IMAGE_FORMAT format)
-{
-    auto buffer = ReadToVector(istream);
-    auto sdlStream = SDL_RWFromConstMem(buffer.data(), static_cast<int>(buffer.size()));
-    auto bitmap = SDL_LoadBMP_RW(sdlStream, 1);
-    if (bitmap != nullptr)
-    {
-        auto numChannels = bitmap->format->BytesPerPixel;
-        if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
+        std::vector<uint8_t> result;
+        if (!stream.eof() && !stream.fail())
         {
-            SDL_FreeSurface(bitmap);
-            throw std::runtime_error("Only 24-bit bitmaps are supported.");
+            stream.seekg(0, std::ios_base::end);
+            auto size = stream.tellg();
+            result.resize(size);
+            stream.seekg(0, std::ios_base::beg);
+            stream.read(reinterpret_cast<char*>(result.data()), size);
         }
+        return result;
+    }
 
-        // Copy pixels over, then discard the surface
-        if (SDL_LockSurface(bitmap) == 0)
+    // TODO Bitmaps aren't very complicated to read so we should probably just write our
+    //      own implementation in libopenrct2 and spare the AOT implementation registration.
+    static Image ReadBitmap(std::istream& istream, IMAGE_FORMAT format)
+    {
+        auto buffer = ReadToVector(istream);
+        auto sdlStream = SDL_RWFromConstMem(buffer.data(), static_cast<int>(buffer.size()));
+        auto bitmap = SDL_LoadBMP_RW(sdlStream, 1);
+        if (bitmap != nullptr)
         {
-            Image image;
-            image.Width = bitmap->w;
-            image.Height = bitmap->h;
-            image.Depth = 32;
-            image.Pixels.resize(bitmap->w * bitmap->h * 4);
-            image.Stride = bitmap->w * 4;
-
-            // Clear image with 0xFF
-            std::fill(image.Pixels.begin(), image.Pixels.end(), 0xFF);
-
-            // Copy pixels over
-            auto src = static_cast<const uint8_t*>(bitmap->pixels);
-            auto dst = image.Pixels.data();
-            if (numChannels == 4)
+            auto numChannels = bitmap->format->BytesPerPixel;
+            if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
             {
-                for (int32_t y = 0; y < bitmap->h; y++)
-                {
-                    std::memcpy(dst, src, bitmap->w);
-                    src += bitmap->pitch;
-                    dst += bitmap->w;
-                }
+                SDL_FreeSurface(bitmap);
+                throw std::runtime_error("Only 24-bit bitmaps are supported.");
             }
-            else
+
+            // Copy pixels over, then discard the surface
+            if (SDL_LockSurface(bitmap) == 0)
             {
-                for (int32_t y = 0; y < bitmap->h; y++)
+                Image image;
+                image.Width = bitmap->w;
+                image.Height = bitmap->h;
+                image.Depth = 32;
+                image.Pixels.resize(bitmap->w * bitmap->h * 4);
+                image.Stride = bitmap->w * 4;
+
+                // Clear image with 0xFF
+                std::fill(image.Pixels.begin(), image.Pixels.end(), 0xFF);
+
+                // Copy pixels over
+                auto src = static_cast<const uint8_t*>(bitmap->pixels);
+                auto dst = image.Pixels.data();
+                if (numChannels == 4)
                 {
-                    for (int32_t x = 0; x < bitmap->w; x++)
+                    for (int32_t y = 0; y < bitmap->h; y++)
                     {
-                        std::memcpy(dst, src, 3);
-                        src += 3;
-                        dst += 4;
+                        std::memcpy(dst, src, bitmap->w);
+                        src += bitmap->pitch;
+                        dst += bitmap->w;
                     }
-                    src += bitmap->pitch - (bitmap->w * 3);
                 }
+                else
+                {
+                    for (int32_t y = 0; y < bitmap->h; y++)
+                    {
+                        for (int32_t x = 0; x < bitmap->w; x++)
+                        {
+                            std::memcpy(dst, src, 3);
+                            src += 3;
+                            dst += 4;
+                        }
+                        src += bitmap->pitch - (bitmap->w * 3);
+                    }
+                }
+                SDL_UnlockSurface(bitmap);
+                SDL_FreeSurface(bitmap);
+
+                return image;
             }
-            SDL_UnlockSurface(bitmap);
+
             SDL_FreeSurface(bitmap);
-
-            return image;
+            throw std::runtime_error("Unable to lock surface.");
         }
-
-        SDL_FreeSurface(bitmap);
-        throw std::runtime_error("Unable to lock surface.");
+        else
+        {
+            throw std::runtime_error(SDL_GetError());
+        }
     }
-    else
+
+    void RegisterBitmapReader()
     {
-        throw std::runtime_error(SDL_GetError());
+        Imaging::SetReader(IMAGE_FORMAT::BITMAP, ReadBitmap);
     }
-}
-
-void RegisterBitmapReader()
-{
-    Imaging::SetReader(IMAGE_FORMAT::BITMAP, ReadBitmap);
-}
+} // namespace OpenRCT2::Ui

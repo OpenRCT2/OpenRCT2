@@ -147,7 +147,7 @@ namespace RCT1
             }
             assert(!vehicleObject.empty());
             td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
-            td->vehicle_type = td4Base.VehicleType;
+            td->vehicle_type = EnumValue(td4Base.VehicleType);
 
             td->flags = td4Base.Flags;
             td->colour_scheme = td4Base.VersionAndColourScheme & 0x3;

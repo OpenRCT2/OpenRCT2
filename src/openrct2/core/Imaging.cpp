@@ -201,7 +201,7 @@ namespace Imaging
                 }
                 for (size_t i = 0; i < PNG_MAX_PALETTE_LENGTH; i++)
                 {
-                    const auto& entry = (*image.Palette)[static_cast<uint16_t>(i)];
+                    const auto& entry = (*image.Palette)[i];
                     png_palette[i].blue = entry.Blue;
                     png_palette[i].green = entry.Green;
                     png_palette[i].red = entry.Red;

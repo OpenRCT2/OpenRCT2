@@ -11,6 +11,8 @@
 
 #include <SDL.h>
 
+using namespace OpenRCT2::Ui;
+
 SDLException::SDLException(const std::string& message)
     : runtime_error(message.c_str())
 {

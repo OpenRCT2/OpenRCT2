@@ -92,7 +92,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
         {
             if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
@@ -175,7 +175,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
         {
             if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {

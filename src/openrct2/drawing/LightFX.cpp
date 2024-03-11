@@ -305,7 +305,7 @@ void LightFXPrepareLightList()
                     dpi.zoom_level = _current_view_zoom_front;
                     dpi.width = 1;
 
-                    PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags);
+                    PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);
                     PaintSessionGenerate(*session);
                     PaintSessionArrange(*session);
                     auto info = SetInteractionInfoFromPaintSession(session, w->viewport->flags, ViewportInteractionItemAll);
@@ -437,7 +437,7 @@ void LightFXUpdateViewportSettings()
         Viewport* viewport = WindowGetViewport(mainWindow);
         _current_view_x_back = viewport->viewPos.x;
         _current_view_y_back = viewport->viewPos.y;
-        _current_view_rotation_back = GetCurrentRotation();
+        _current_view_rotation_back = viewport->rotation;
         _current_view_zoom_back = viewport->zoom;
     }
 }

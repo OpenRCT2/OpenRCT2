@@ -48,7 +48,7 @@ namespace OpenRCT2::Audio
         AudioChannelImpl()
         {
             AudioChannelImpl::SetRate(1);
-            AudioChannelImpl::SetVolume(MIXER_VOLUME_MAX);
+            AudioChannelImpl::SetVolume(kMixerVolumeMax);
             AudioChannelImpl::SetPan(0.5f);
         }
 
@@ -155,7 +155,7 @@ namespace OpenRCT2::Audio
 
         void SetVolume(int32_t volume) override
         {
-            _volume = std::clamp(volume, 0, MIXER_VOLUME_MAX);
+            _volume = std::clamp(volume, 0, kMixerVolumeMax);
         }
 
         [[nodiscard]] float GetPan() const override
@@ -265,7 +265,7 @@ namespace OpenRCT2::Audio
                     {
                         _done = true;
                     }
-                    else if (_loop == MIXER_LOOP_INFINITE)
+                    else if (_loop == kMixerLoopInfinite)
                     {
                         _offset = 0;
                     }

@@ -189,8 +189,7 @@ std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, 
 
     for (auto idx = 0; idx < size; idx++)
     {
-        result.push_back(
-            ToDuk<VehicleInfo>(ctx, gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[idx]));
+        result.push_back(ToDuk<VehicleInfo>(ctx, gTrackVehicleInfo[trackSubposition][typeAndDirection]->info[idx]));
     }
     return result;
 }

@@ -25,7 +25,7 @@
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
-#include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
@@ -66,11 +66,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-uint8_t gGuestChangeModifier;
-
 uint8_t gPeepWarningThrottle[16];
-
-std::unique_ptr<GuestPathfinding> gGuestPathfinder = std::make_unique<OriginalPathfinding>();
 
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
@@ -558,7 +554,7 @@ void PeepWindowStateUpdate(Peep* peep)
 {
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
-        WindowEventOnPrepareDrawCall(w);
+        w->OnPrepareDraw();
 
     if (peep->Is<Guest>())
     {
@@ -1590,7 +1586,7 @@ std::string Peep::GetName() const
 {
     Formatter ft;
     FormatNameTo(ft);
-    return ::FormatStringID(STR_STRINGID, ft.Data());
+    return FormatStringIDLegacy(STR_STRINGID, ft.Data());
 }
 
 bool Peep::SetName(std::string_view value)
@@ -2393,7 +2389,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
         if (guest != nullptr)
         {
-            result = gGuestPathfinder->CalculateNextDestination(*guest);
+            result = PathFinding::CalculateNextDestination(*guest);
         }
         else
         {
@@ -2852,4 +2848,14 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
             return;
         }
     }
+}
+
+/**
+ *
+ *  rct2: 0x0069A98C
+ */
+void Peep::ResetPathfindGoal()
+{
+    PathfindGoal.SetNull();
+    PathfindGoal.direction = INVALID_DIRECTION;
 }

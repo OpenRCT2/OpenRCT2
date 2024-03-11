@@ -16,6 +16,8 @@
 #    include <memory>
 #    include <openrct2/common.h>
 
+using namespace OpenRCT2::Ui;
+
 constexpr GLuint BACKBUFFER_ID = 0;
 
 OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)

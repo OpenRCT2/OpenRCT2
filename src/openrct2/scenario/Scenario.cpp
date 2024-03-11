@@ -69,7 +69,6 @@ const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 
 std::string gScenarioSavePath;
 bool gFirstTimeSaving = true;
-uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 bool gAllowEarlyCompletionInNetworkPlay;
@@ -104,8 +103,8 @@ void ScenarioReset(GameState_t& gameState)
     auto& park = GetContext()->GetGameState()->GetPark();
     gameState.ParkRating = park.CalculateParkRating();
     gameState.ParkValue = park.CalculateParkValue();
-    gCompanyValue = park.CalculateCompanyValue();
-    gHistoricalProfit = gameState.InitialCash - gBankLoan;
+    gameState.CompanyValue = park.CalculateCompanyValue();
+    gameState.HistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
     {
@@ -135,15 +134,15 @@ void ScenarioReset(GameState_t& gameState)
     auto savePath = env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
     gScenarioSavePath = Path::Combine(savePath, park.Name + u8".park");
 
-    gCurrentExpenditure = 0;
-    gCurrentProfit = 0;
+    gameState.CurrentExpenditure = 0;
+    gameState.CurrentProfit = 0;
     gameState.WeeklyProfitAverageDividend = 0;
     gameState.WeeklyProfitAverageDivisor = 0;
     gameState.TotalAdmissions = 0;
     gameState.TotalIncomeFromAdmissions = 0;
 
     gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.ScenarioCompletedBy = "?";
 
     park.ResetHistories();
@@ -157,11 +156,11 @@ void ScenarioReset(GameState_t& gameState)
     Staff::ResetStats();
 
     auto& objManager = GetContext()->GetObjectManager();
-    gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+    if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
     {
         // Fall back to first entrance object
-        gLastEntranceStyle = 0;
+        gameState.LastEntranceStyle = 0;
     }
 
     gMarketingCampaigns.clear();
@@ -202,7 +201,7 @@ void ScenarioFailure(GameState_t& gameState)
  */
 void ScenarioSuccess(GameState_t& gameState)
 {
-    auto companyValue = gCompanyValue;
+    auto companyValue = gameState.CompanyValue;
 
     gameState.ScenarioCompletedCompanyValue = companyValue;
     PeepApplause();
@@ -362,7 +361,7 @@ static void ScenarioUpdateDayNightCycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
     {
-        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(TICKS_PER_MONTH);
+        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -434,8 +433,9 @@ bool ScenarioCreateDucks()
     constexpr int32_t SquareRadiusSize = SquareCentre * 32;
 
     CoordsXY centrePos;
-    centrePos.x = SquareRadiusSize + (ScenarioRandMax(gMapSize.x - SquareCentre) * 32);
-    centrePos.y = SquareRadiusSize + (ScenarioRandMax(gMapSize.y - SquareCentre) * 32);
+    auto& gameState = GetGameState();
+    centrePos.x = SquareRadiusSize + (ScenarioRandMax(gameState.MapSize.x - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (ScenarioRandMax(gameState.MapSize.y - SquareCentre) * 32);
 
     Guard::Assert(MapIsLocationValid(centrePos));
 
@@ -743,7 +743,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
 
 ObjectiveStatus Objective::CheckMonthlyRideIncome() const
 {
-    money64 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
+    money64 lastMonthRideIncome = GetGameState().ExpenditureTable[1][EnumValue(ExpenditureType::ParkRideTickets)];
     if (lastMonthRideIncome >= Currency)
     {
         return ObjectiveStatus::Success;
@@ -819,7 +819,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
     const auto& gameState = GetGameState();
     money64 parkValue = gameState.ParkValue;
-    money64 currentLoan = gBankLoan;
+    money64 currentLoan = gameState.BankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)
     {
@@ -831,11 +831,11 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 
 ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
 {
-    const auto* lastMonthExpenditure = gExpenditureTable[1];
-    auto lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
+    const auto* lastMonthExpenditure = GetGameState().ExpenditureTable[1];
+    auto lastMonthProfit = lastMonthExpenditure[EnumValue(ExpenditureType::ShopSales)]
+        + lastMonthExpenditure[EnumValue(ExpenditureType::ShopStock)]
+        + lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkSales)]
+        + lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkStock)];
 
     if (lastMonthProfit >= Currency)
     {
@@ -881,7 +881,7 @@ static void ScenarioCheckObjective(GameState_t& gameState)
  */
 ObjectiveStatus Objective::Check(GameState_t& gameState) const
 {
-    if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+    if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
     {
         return ObjectiveStatus::Undecided;
     }

@@ -67,6 +67,7 @@
 #include "RideSetStatusAction.h"
 #include "RideSetVehicleAction.h"
 #include "ScenarioSetSettingAction.h"
+#include "ScenerySetRestrictedAction.h"
 #include "SignSetNameAction.h"
 #include "SignSetStyleAction.h"
 #include "SmallSceneryPlaceAction.h"
@@ -208,6 +209,7 @@ namespace GameActions
         REGISTER_ACTION(CheatSetAction);
         REGISTER_ACTION(MapChangeSizeAction);
         REGISTER_ACTION(GameSetSpeedAction);
+        REGISTER_ACTION(ScenerySetRestrictedAction);
 #ifdef ENABLE_SCRIPTING
         REGISTER_ACTION(CustomAction);
 #endif

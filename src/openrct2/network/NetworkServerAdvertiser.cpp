@@ -303,7 +303,7 @@ private:
 
         const auto& gameState = GetGameState();
         const auto& date = GetDate();
-        json_t mapSize = { { "x", gMapSize.x - 2 }, { "y", gMapSize.y - 2 } };
+        json_t mapSize = { { "x", gameState.MapSize.x - 2 }, { "y", gameState.MapSize.y - 2 } };
         json_t gameInfo = {
             { "mapSize", mapSize },
             { "day", date.GetMonthTicks() },

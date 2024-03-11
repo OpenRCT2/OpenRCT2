@@ -10,6 +10,7 @@
 #include "LandBuyRightsAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
@@ -23,6 +24,8 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+
+using namespace OpenRCT2;
 
 LandBuyRightsAction::LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
     : _range(range)
@@ -141,7 +144,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                 ParkUpdateFencesAroundTile(loc);
             }
-            res.Cost = gLandPrice;
+            res.Cost = GetGameState().LandPrice;
             return res;
 
         case LandBuyRightSetting::BuyConstructionRights: // 2
@@ -163,7 +166,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 uint16_t baseZ = surfaceElement->GetBaseZ();
                 MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
-            res.Cost = gConstructionRightsPrice;
+            res.Cost = GetGameState().ConstructionRightsPrice;
             return res;
 
         default:

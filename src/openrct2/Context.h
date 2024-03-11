@@ -176,17 +176,17 @@ namespace OpenRCT2
 namespace
 {
     // The number of logical update / ticks per second.
-    constexpr uint32_t GAME_UPDATE_FPS = 40;
+    constexpr uint32_t kGameUpdateFPS = 40;
     // The maximum amount of updates in case rendering is slower
-    constexpr uint32_t GAME_MAX_UPDATES = 4;
+    constexpr uint32_t kGameMaxUpdates = 4;
     // The game update interval in milliseconds, (1000 / 40fps) = 25ms
-    constexpr float GAME_UPDATE_TIME_MS = 1.0f / GAME_UPDATE_FPS;
+    constexpr float kGameUpdateTimeMS = 1.0f / kGameUpdateFPS;
     // The maximum threshold to advance.
-    constexpr float GAME_UPDATE_MAX_THRESHOLD = GAME_UPDATE_TIME_MS * GAME_MAX_UPDATES;
+    constexpr float kGameUpdateMaxThreshold = kGameUpdateTimeMS * kGameMaxUpdates;
 }; // namespace
 
-constexpr float GAME_MIN_TIME_SCALE = 0.1f;
-constexpr float GAME_MAX_TIME_SCALE = 5.0f;
+constexpr float kGameMinTimeScale = 0.1f;
+constexpr float kGameMaxTimeScale = 5.0f;
 
 void ContextInit();
 void ContextSetCurrentCursor(CursorID cursor);

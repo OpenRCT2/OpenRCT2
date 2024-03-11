@@ -349,6 +349,7 @@ namespace OpenRCT2::Title
                     auto& gameState = GetGameState();
 
                     parkImporter->Import(gameState);
+                    MapAnimationAutoCreate();
                 }
                 PrepareParkForPlayback();
                 success = true;
@@ -388,7 +389,8 @@ namespace OpenRCT2::Title
         void PrepareParkForPlayback()
         {
             auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-            windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
+            auto& gameState = GetGameState();
+            windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
             ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);

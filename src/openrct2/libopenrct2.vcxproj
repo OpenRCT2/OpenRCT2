@@ -138,6 +138,7 @@
     <ClInclude Include="actions\RideSetStatusAction.h" />
     <ClInclude Include="actions\RideSetVehicleAction.h" />
     <ClInclude Include="actions\ScenarioSetSettingAction.h" />
+    <ClInclude Include="actions\ScenerySetRestrictedAction.h" />
     <ClInclude Include="actions\SignSetNameAction.h" />
     <ClInclude Include="actions\SignSetStyleAction.h" />
     <ClInclude Include="actions\SmallSceneryPlaceAction.h" />
@@ -358,7 +359,8 @@
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
-    <ClInclude Include="paint\Supports.h" />
+    <ClInclude Include="paint\support\MetalSupports.h" />
+    <ClInclude Include="paint\support\WoodenSupports.h" />
     <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
@@ -511,6 +513,7 @@
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScVehicle.hpp" />
+    <ClInclude Include="scripting\bindings\game\ScPlugin.hpp" />
     <ClInclude Include="scripting\bindings\game\ScProfiler.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
@@ -661,6 +664,7 @@
     <ClCompile Include="actions\RideSetStatusAction.cpp" />
     <ClCompile Include="actions\RideSetVehicleAction.cpp" />
     <ClCompile Include="actions\ScenarioSetSettingAction.cpp" />
+    <ClCompile Include="actions\ScenerySetRestrictedAction.cpp" />
     <ClCompile Include="actions\SignSetNameAction.cpp" />
     <ClCompile Include="actions\SignSetStyleAction.cpp" />
     <ClCompile Include="actions\SmallSceneryPlaceAction.cpp" />
@@ -853,7 +857,8 @@
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
-    <ClCompile Include="paint\Supports.cpp" />
+    <ClCompile Include="paint\support\MetalSupports.cpp" />
+    <ClCompile Include="paint\support\WoodenSupports.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Banner.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Entrance.cpp" />
     <ClCompile Include="paint\tile_element\Paint.LargeScenery.cpp" />

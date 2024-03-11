@@ -157,7 +157,7 @@ int32_t DrawTextWrapped(
 {
     const void* args = ft.Data();
 
-    StaticLayout layout(FormatStringID(format, args), textPaint, width);
+    StaticLayout layout(FormatStringIDLegacy(format, args), textPaint, width);
 
     if (textPaint.Alignment == TextAlignment::CENTRE)
     {

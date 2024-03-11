@@ -14,6 +14,8 @@
 #include "../drawing/ImageId.hpp"
 #include "../localisation/Formatter.h"
 #include "../ride/RideTypes.h"
+#include "../util/Util.h"
+#include "../windows/TileInspectorGlobals.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
 #include "WindowClasses.h"
@@ -146,16 +148,16 @@ struct Widget
  */
 struct Viewport
 {
-    int32_t width;
-    int32_t height;
-    ScreenCoordsXY pos;
-    ScreenCoordsXY viewPos;
-    int32_t view_width;
-    int32_t view_height;
-    uint32_t flags;
-    ZoomLevel zoom;
-    uint8_t var_11;
-    VisibilityCache visibility;
+    int32_t width{};
+    int32_t height{};
+    ScreenCoordsXY pos{};
+    ScreenCoordsXY viewPos{};
+    int32_t view_width{};
+    int32_t view_height{};
+    uint32_t flags{};
+    ZoomLevel zoom{};
+    uint8_t rotation{};
+    VisibilityCache visibility{};
 
     // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
     // from its x, y, z
@@ -336,65 +338,65 @@ enum WindowDetail
 #define validate_global_widx(wc, widx)                                                                                         \
     static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
 
-#define WC_MAIN_WINDOW__0 0
-#define WC_TOP_TOOLBAR__WIDX_PAUSE 0
-#define WC_TOP_TOOLBAR__WIDX_LAND 8
-#define WC_TOP_TOOLBAR__WIDX_WATER 9
-#define WC_TOP_TOOLBAR__WIDX_SCENERY 10
-#define WC_TOP_TOOLBAR__WIDX_PATH 11
-#define WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY 17
-#define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT 25
-#define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE 30
-#define WC_RIDE_CONSTRUCTION__WIDX_EXIT 31
-#define WC_RIDE_CONSTRUCTION__WIDX_ROTATE 32
-#define WC_MAZE_CONSTRUCTION__WIDX_MAZE_DIRECTION_GROUPBOX WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT
-#define WC_MAZE_CONSTRUCTION__WIDX_MAZE_ENTRANCE WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-#define WC_MAZE_CONSTRUCTION__WIDX_MAZE_EXIT WC_RIDE_CONSTRUCTION__WIDX_EXIT
-#define WC_SCENERY__WIDX_SCENERY_TAB_1 14
-#define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 5
-#define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 10
-#define WC_PEEP__WIDX_PATROL 10
-#define WC_PEEP__WIDX_ACTION_LBL 13
-#define WC_PEEP__WIDX_PICKUP 14
-#define WC_TRACK_DESIGN_LIST__WIDX_ROTATE 8
-#define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE 3
-#define WC_MAP__WIDX_ROTATE_90 24
-#define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 21
-#define WC_STAFF__WIDX_PICKUP 9
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE 13
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_COPY 16
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE 15
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE 10
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP 11
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN 12
-#define WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE 5
-#define WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE 6
-#define WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE 8
-#define WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE 9
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE TileInspectorPage::Surface
-#define WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE 27
-#define WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE 28
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH TileInspectorPage::Path
-#define WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_INCREASE 27
-#define WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_DECREASE 28
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK TileInspectorPage::Track
-#define WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_INCREASE 28
-#define WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_DECREASE 29
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY TileInspectorPage::Scenery
-#define WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE 27
-#define WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE 28
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE TileInspectorPage::Entrance
-#define WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE 27
-#define WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE 28
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL TileInspectorPage::Wall
-#define WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_INCREASE 27
-#define WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_DECREASE 28
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY TileInspectorPage::LargeScenery
-#define WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE 27
-#define WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE 28
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER TileInspectorPage::Banner
-#define WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE 27
-#define WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE 28
+constexpr int32_t WC_MAIN_WINDOW__0 = 0;
+constexpr int32_t WC_TOP_TOOLBAR__WIDX_PAUSE = 0;
+constexpr int32_t WC_TOP_TOOLBAR__WIDX_LAND = 8;
+constexpr int32_t WC_TOP_TOOLBAR__WIDX_WATER = 9;
+constexpr int32_t WC_TOP_TOOLBAR__WIDX_SCENERY = 10;
+constexpr int32_t WC_TOP_TOOLBAR__WIDX_PATH = 11;
+constexpr int32_t WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY = 17;
+constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT = 25;
+constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE = 30;
+constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_EXIT = 31;
+constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ROTATE = 32;
+constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_DIRECTION_GROUPBOX = WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT;
+constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_ENTRANCE = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
+constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_EXIT = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+constexpr int32_t WC_SCENERY__WIDX_SCENERY_TAB_1 = 15;
+constexpr int32_t WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON = 5;
+constexpr int32_t WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON = 10;
+constexpr int32_t WC_PEEP__WIDX_PATROL = 10;
+constexpr int32_t WC_PEEP__WIDX_ACTION_LBL = 13;
+constexpr int32_t WC_PEEP__WIDX_PICKUP = 14;
+constexpr int32_t WC_TRACK_DESIGN_LIST__WIDX_ROTATE = 8;
+constexpr int32_t WC_TRACK_DESIGN_PLACE__WIDX_ROTATE = 3;
+constexpr int32_t WC_MAP__WIDX_ROTATE_90 = 24;
+constexpr int32_t WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 = 22;
+constexpr int32_t WC_STAFF__WIDX_PICKUP = 9;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE = 13;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_COPY = 16;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE = 15;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE = 10;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP = 11;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN = 12;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE = 5;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE = 6;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE = 8;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE = 9;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE = EnumValue(TileInspectorPage::Surface);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE = 27;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE = 28;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH = EnumValue(TileInspectorPage::Path);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_INCREASE = 27;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_DECREASE = 28;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK = EnumValue(TileInspectorPage::Track);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_INCREASE = 28;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_DECREASE = 29;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY = EnumValue(TileInspectorPage::Scenery);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE = 27;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE = 28;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE = EnumValue(TileInspectorPage::Entrance);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE = 27;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE = 28;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL = EnumValue(TileInspectorPage::Wall);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_INCREASE = 27;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_DECREASE = 28;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY = EnumValue(TileInspectorPage::LargeScenery);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE = 27;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE = 28;
+constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER = EnumValue(TileInspectorPage::Banner);
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE = 27;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE = 28;
 
 enum class PromptMode : uint8_t
 {
@@ -480,7 +482,7 @@ using close_callback = void (*)();
 
 extern WindowBase* gWindowAudioExclusive;
 
-extern uint16_t gWindowUpdateTicks;
+extern uint32_t gWindowUpdateTicks;
 namespace MapFlashingFlags
 {
     constexpr uint16_t GuestListOpen = (1 << 0);
@@ -501,6 +503,7 @@ void WindowVisitEach(std::function<void(WindowBase*)> func);
 void WindowDispatchUpdateAll();
 void WindowUpdateAllViewports();
 void WindowUpdateAll();
+void WindowNotifyLanguageChange();
 
 void WindowSetWindowLimit(int32_t value);
 
@@ -576,7 +579,6 @@ void WindowPushOthersBelow(WindowBase& w1);
 WindowBase* WindowGetMain();
 
 void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords);
-void WindowRotateCamera(WindowBase& w, int32_t direction);
 void WindowViewportGetMapCoordsByCursor(
     const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
 void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
@@ -609,36 +611,6 @@ Viewport* WindowGetViewport(WindowBase* window);
 void WindowRelocateWindows(int32_t width, int32_t height);
 void WindowResizeGui(int32_t width, int32_t height);
 void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
-void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords);
-void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords);
-void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords);
-
-void WindowEventCloseCall(WindowBase* w);
-void WindowEventMouseUpCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowEventResizeCall(WindowBase* w);
-void WindowEventMouseDownCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowEventDropdownCall(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-void WindowEventUnknown05Call(WindowBase* w);
-void WindowEventUpdateCall(WindowBase* w);
-void WindowEventPeriodicUpdateCall(WindowBase* w);
-void WindowEventToolUpdateCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolDownCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolDragCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolUpCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolAbortCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowGetScrollSize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-void WindowEventScrollMousedownCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventScrollMousedragCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventScrollMouseoverCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, const char* text);
-void WindowEventViewportRotateCall(WindowBase* w);
-void WindowEventScrollSelectCall(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType);
-OpenRCT2String WindowEventTooltipCall(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);
-CursorID WindowEventCursorCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventMovedCall(WindowBase* w, const ScreenCoordsXY& screenCoords);
-void WindowEventOnPrepareDrawCall(WindowBase* w);
-void WindowEventOnDrawCall(WindowBase* w, DrawPixelInfo& dpi);
-void WindowEventScrollDrawCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
 
 void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
@@ -659,28 +631,6 @@ bool SceneryToolIsActive();
 Viewport* WindowGetPreviousViewport(Viewport* current);
 void WindowResetVisibilities();
 void WindowInitAll();
-
-void WindowRideConstructionKeyboardShortcutTurnLeft();
-void WindowRideConstructionKeyboardShortcutTurnRight();
-void WindowRideConstructionKeyboardShortcutUseTrackDefault();
-void WindowRideConstructionKeyboardShortcutSlopeDown();
-void WindowRideConstructionKeyboardShortcutSlopeUp();
-void WindowRideConstructionKeyboardShortcutChainLiftToggle();
-void WindowRideConstructionKeyboardShortcutBankLeft();
-void WindowRideConstructionKeyboardShortcutBankRight();
-void WindowRideConstructionKeyboardShortcutPreviousTrack();
-void WindowRideConstructionKeyboardShortcutNextTrack();
-void WindowRideConstructionKeyboardShortcutBuildCurrent();
-void WindowRideConstructionKeyboardShortcutDemolishCurrent();
-
-void WindowFootpathKeyboardShortcutTurnLeft();
-void WindowFootpathKeyboardShortcutTurnRight();
-void WindowFootpathKeyboardShortcutSlopeDown();
-void WindowFootpathKeyboardShortcutSlopeUp();
-void WindowFootpathKeyboardShortcutBuildCurrent();
-void WindowFootpathKeyboardShortcutDemolishCurrent();
-
-void WindowTileInspectorKeyboardShortcutToggleInvisibility();
 
 void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);
 void WindowUnfollowSprite(WindowBase& w);

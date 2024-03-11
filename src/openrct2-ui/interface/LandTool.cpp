@@ -22,6 +22,7 @@
 #include <openrct2/world/Surface.h>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Ui::Windows;
 
 // clang-format off
 static uint16_t toolSizeSpriteIndices[] =
@@ -47,7 +48,7 @@ money64 gWaterToolLowerCost;
 
 uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
 {
-    if (size <= MAX_TOOL_SIZE_WITH_SPRITE)
+    if (size <= kLandToolMaximumSizeWithSprite)
     {
         return toolSizeSpriteIndices[size];
     }

@@ -106,7 +106,7 @@ namespace OpenRCT2::Math::Trigonometry
 
     constexpr int32_t ComputeHorizontalMagnitude(int32_t length, uint8_t pitch)
     {
-        return (-PitchToDirectionVectorFromGeometry[static_cast<uint8_t>(pitch)].y * length) / 256;
+        return (-PitchToDirectionVectorFromGeometry[pitch].y * length) / 256;
     }
 
     constexpr CoordsXY ComputeXYVector(int32_t magnitude, uint8_t yaw)

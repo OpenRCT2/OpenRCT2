@@ -15,6 +15,9 @@
 #include <stdexcept>
 #include <vector>
 #ifndef _WIN32
+#    ifndef __FreeBSD__
+#        include <alloca.h>
+#    endif
 #    include <unicode/ucnv.h>
 #    include <unicode/unistr.h>
 #    include <unicode/utypes.h>
@@ -26,7 +29,6 @@
 
 #include "../common.h"
 #include "../localisation/ConversionTables.h"
-#include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
 #include "Memory.hpp"

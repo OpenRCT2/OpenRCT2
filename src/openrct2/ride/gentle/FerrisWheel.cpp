@@ -12,7 +12,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"
@@ -117,7 +117,8 @@ static void PaintFerrisWheel(
     }
 
     auto stationColour = GetStationColourScheme(session, trackElement);
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, stationColour);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
 

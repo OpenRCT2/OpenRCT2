@@ -30,18 +30,9 @@ void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour
     const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
     const auto rightTop = ScreenCoordsXY{ rect.GetRight(), rect.GetTop() };
     const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
-    if (colour & (COLOUR_FLAG_TRANSLUCENT | COLOUR_FLAG_8))
+    if (colour & COLOUR_FLAG_TRANSLUCENT)
     {
-        TranslucentWindowPalette palette;
-        if (colour & COLOUR_FLAG_8)
-        {
-            // TODO: This can't be added up
-            // palette = NOT_TRANSLUCENT(colour);
-            assert(false);
-            return;
-        }
-
-        palette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
+        auto palette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {

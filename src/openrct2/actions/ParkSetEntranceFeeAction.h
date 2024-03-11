@@ -14,7 +14,7 @@
 class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
 {
 private:
-    money64 _fee{ MONEY64_UNDEFINED };
+    money64 _fee{ kMoney64Undefined };
 
 public:
     ParkSetEntranceFeeAction() = default;

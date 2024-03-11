@@ -45,6 +45,4 @@ enum class EditorStep : uint8_t
     Invalid = 255,         // 255
 };
 
-extern EditorStep gEditorStep;
-
 void EditorOpenWindowsForCurrentStep();

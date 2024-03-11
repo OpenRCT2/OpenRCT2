@@ -18,32 +18,35 @@ enum class StaffSpeedCheat
     Fast,
 };
 
-extern bool gCheatsSandboxMode;
-extern bool gCheatsDisableClearanceChecks;
-extern bool gCheatsDisableSupportLimits;
-extern bool gCheatsShowAllOperatingModes;
-extern bool gCheatsShowVehiclesFromOtherTrackTypes;
-extern bool gCheatsUnlockOperatingLimits;
-extern bool gCheatsDisableBrakesFailure;
-extern bool gCheatsDisableAllBreakdowns;
-extern bool gCheatsBuildInPauseMode;
-extern bool gCheatsIgnoreRideIntensity;
-extern bool gCheatsDisableVandalism;
-extern bool gCheatsDisableLittering;
-extern bool gCheatsNeverendingMarketing;
-extern bool gCheatsFreezeWeather;
-extern bool gCheatsDisableTrainLengthLimit;
-extern bool gCheatsDisablePlantAging;
-extern bool gCheatsDisableRideValueAging;
-extern bool gCheatsEnableChainLiftOnAllTrack;
-extern bool gCheatsAllowArbitraryRideTypeChanges;
-extern bool gCheatsIgnoreResearchStatus;
-extern bool gCheatsEnableAllDrawableTrackPieces;
-extern bool gCheatsAllowTrackPlaceInvalidHeights;
-extern bool gCheatsAllowRegularPathAsQueue;
-extern bool gCheatsAllowSpecialColourSchemes;
-extern bool gCheatsMakeAllDestructible;
-extern StaffSpeedCheat gCheatsSelectedStaffSpeed;
+struct CheatsState
+{
+    bool SandboxMode;
+    bool DisableClearanceChecks;
+    bool DisableSupportLimits;
+    bool ShowAllOperatingModes;
+    bool ShowVehiclesFromOtherTrackTypes;
+    bool UnlockOperatingLimits;
+    bool DisableBrakesFailure;
+    bool DisableAllBreakdowns;
+    bool BuildInPauseMode;
+    bool IgnoreRideIntensity;
+    bool DisableVandalism;
+    bool DisableLittering;
+    bool NeverendingMarketing;
+    bool FreezeWeather;
+    bool DisableTrainLengthLimit;
+    bool DisablePlantAging;
+    bool DisableRideValueAging;
+    bool EnableChainLiftOnAllTrack;
+    bool AllowArbitraryRideTypeChanges;
+    bool IgnoreResearchStatus;
+    bool EnableAllDrawableTrackPieces;
+    bool AllowTrackPlaceInvalidHeights;
+    bool AllowRegularPathAsQueue;
+    bool AllowSpecialColourSchemes;
+    bool MakeAllDestructible;
+    StaffSpeedCheat SelectedStaffSpeed;
+};
 
 enum class CheatType : int32_t
 {
@@ -123,12 +126,12 @@ enum
     OBJECT_UMBRELLA
 };
 
-constexpr auto CHEATS_GIVE_GUESTS_MONEY = 1000.00_GBP;
-#define CHEATS_TRAM_INCREMENT 250
-#define CHEATS_DUCK_INCREMENT 20
-#define CHEATS_STAFF_FAST_SPEED 0xFF
-#define CHEATS_STAFF_NORMAL_SPEED 0x60
-#define CHEATS_STAFF_FREEZE_SPEED 0
+constexpr auto kCheatsGiveGuestsMoney = 1000.00_GBP;
+constexpr int kCheatsTramIncrement = 250;
+constexpr int kCheatsDuckIncrement = 20;
+constexpr int kCheatsStaffFastSpeed = 0xFF;
+constexpr int kCheatsStaffNormalSpeed = 0x60;
+constexpr int kCheatsStaffFreezeSpeed = 0;
 
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);

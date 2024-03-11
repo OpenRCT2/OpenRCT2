@@ -460,8 +460,6 @@ enum
     EASTEREGG_PEEP_NAME_DAVID_ELLIS
 };
 
-extern uint8_t gGuestChangeModifier;
-
 void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 
 void IncrementGuestsInPark();

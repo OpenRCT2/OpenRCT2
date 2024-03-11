@@ -111,7 +111,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 }
 
 /**
- * Function will be called every GAME_UPDATE_TIME_MS.
+ * Function will be called every kGameUpdateTimeMS.
  * It has its own loop which might run multiple updates per call such as
  * when operating as a client it may run multiple updates to catch up with the server tick,
  * another influence can be the game speed setting.
@@ -120,7 +120,7 @@ void GameState::Tick()
 {
     PROFILED_FUNCTION();
 
-    // Normal game play will update only once every GAME_UPDATE_TIME_MS
+    // Normal game play will update only once every kGameUpdateTimeMS
     uint32_t numUpdates = 1;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
@@ -369,7 +369,6 @@ void GameState::UpdateLogic()
     NetworkFlush();
 
     gameState.CurrentTicks++;
-    gSavedAge++;
 
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();

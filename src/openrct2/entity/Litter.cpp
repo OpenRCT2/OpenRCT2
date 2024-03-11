@@ -49,7 +49,7 @@ static bool IsLocationLitterable(const CoordsXYZ& mapPos)
  */
 void Litter::Create(const CoordsXYZD& litterPos, Type type)
 {
-    if (gCheatsDisableLittering)
+    if (GetGameState().Cheats.DisableLittering)
         return;
 
     auto offsetLitterPos = litterPos

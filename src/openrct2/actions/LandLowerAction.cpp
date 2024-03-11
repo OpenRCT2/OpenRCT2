@@ -10,6 +10,7 @@
 #include "LandLowerAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
@@ -93,7 +94,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {

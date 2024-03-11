@@ -12,19 +12,22 @@
 #include <stdexcept>
 #include <string>
 
-/**
- * An exception which wraps an SDL error.
- */
-class SDLException : public std::runtime_error
+namespace OpenRCT2::Ui
 {
-public:
-    explicit SDLException(const std::string& message);
-
-    explicit SDLException(const char* message);
-
     /**
-     * Throws an SDL exception with a message containing the given call information
-     * and the message given by SDL_GetError.
+     * An exception which wraps an SDL error.
      */
-    static void Throw(const char* call);
-};
+    class SDLException : public std::runtime_error
+    {
+    public:
+        explicit SDLException(const std::string& message);
+
+        explicit SDLException(const char* message);
+
+        /**
+         * Throws an SDL exception with a message containing the given call information
+         * and the message given by SDL_GetError.
+         */
+        static void Throw(const char* call);
+    };
+} // namespace OpenRCT2::Ui

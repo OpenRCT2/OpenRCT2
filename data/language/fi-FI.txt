@@ -98,6 +98,7 @@ STR_0092    :Laukaisuvuoristorata
 STR_0093    :Hybridivuoristorata
 STR_0094    :Yksikiskoinen vuoristorata
 STR_0095    :Alppivuoristorata
+STR_0096    :Klassinen puinen vuoristorata
 STR_0512    :Kompakti vuoristorata, jossa on spiraalimainen nostomäki, ja sulavat, kaartelevat pudotukset.
 STR_0513    :Silmukoiva vuoristorata, jossa matkustajat ovat seisoma-asennossa
 STR_0514    :Junat riippuvat vuoristoradan alla, ja heilahtavat sivuttain käänteissä
@@ -180,6 +181,7 @@ STR_0602    :Vuoristorata jonka junat laukaistaan asemalta induktiomoottorilla, 
 STR_0603    :Puinen vuoristorata teräskiskoilla, jyrkillä pudotuksilla ja käännöksillä varustettuna
 STR_0604    :Matkustajat kulkevat peräjonossa kapealla yksittäiskiskolla, kiitäen tiukkojen käännösten ja suunnanvaihdoksien läpi
 STR_0605    :Matkustajat laskettelevat kelkalla teräsrataa pitkin alas, säätäen vauhtiansa jarrujen avulla
+STR_0606    :Vanhemman mallinen puinen vuoristorata, joka on suunniteltu hallitsemattoman tuntuiseksi - tarjoten nopeaa ja rajua kyytiä, runsaasti airtimeä, ja jonkin verran sivuttaista G-voimaa.
 STR_0767    :Kävijä {INT32}
 STR_0768    :Yleismies {INT32}
 STR_0769    :Mekaanikko {INT32}
@@ -755,7 +757,7 @@ STR_1363    :Liian korkealla tukirakenteita varten!
 STR_1364    :Ylemmän radan tukirakenteita ei voi pidentää!
 STR_1365    :Suora kierre (vasen)
 STR_1366    :Suora kierre (oikea)
-STR_1367    :Puolisilmukka
+STR_1367    :Pieni puolisilmukka
 STR_1368    :Puolikas korkkiruuvi (vasen)
 STR_1369    :Puolikas korkkiruuvi (oikea)
 STR_1370    :Tynnyrikierre (vasen)
@@ -2101,39 +2103,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Tiedoston lataus ei onnistunut…
 STR_3011    :Tiedosto sisältää virheellistä tietoa
-STR_3012    :Törmäysautobiitin tyylinen
-STR_3013    :Karusellimusiikin tyylinen
-STR_3014    :Roomalaisfanfaarin tyylinen
-STR_3015    :Itämaisen tyylinen
-STR_3016    :Marsilaisen tyylinen
-STR_3017    :Viidakkorumputyylinen
-STR_3018    :Egyptiläisen tyylinen
-STR_3019    :Lelumaatyylinen
-STR_3020    :
-STR_3021    :Avaruustyylinen
-STR_3022    :Kauhutyylinen
-STR_3023    :Teknotyylinen
-STR_3024    :Hempeän tyylinen
-STR_3025    :Kesätyylinen
-STR_3026    :Vesityylinen
-STR_3027    :Villin lännen tyylinen
-STR_3028    :Jurassisen tyylinen
-STR_3029    :Rokkityylinen
-STR_3030    :Ragtime-tyylinen
-STR_3031    :Fantasiatyylinen
-STR_3032    :Rokkityylinen 2
-STR_3033    :Jäätyylinen
-STR_3034    :Lumityylinen
-STR_3035    :Mukautettu musiikki 1
-STR_3036    :Mukautettu musiikki 2
-STR_3037    :Keskiaikaisen tyylinen
-STR_3038    :Kaupunkimaisen tyylinen
-STR_3039    :Urkutyylinen
-STR_3040    :Mekaanisen tyylinen
-STR_3041    :Modernintyylinen
-STR_3042    :Merirosvotyylinen
-STR_3043    :Rokkityylinen 3
-STR_3044    :Karkkityylinen
 STR_3045    :Valitse toistettavan musiikin tyyli
 STR_3047    :Paikallisviranomaiset eivät salli tämän laitteen muuttelua tai romuttamista
 STR_3048    :Paikallisviranomaiset eivät salli markkinointikampanjoita
@@ -2997,7 +2966,7 @@ STR_5832    :Näytä korkeus yleisenä numerona tarkan mittayksikön sijaan
 STR_5833    :Asettaa pelissä käytetyn päivämäärämuodon
 STR_5834    :Valitse mitä äänilaitetta OpenRCT2 käyttää
 STR_5835    :Mykistä peli jos ikkunan kohdistus häviää
-STR_5836    :Valitse päävalikossa soiva musiikki.{NEWLINE}RCT1-teemamusiikin valinta edellyttää, että joko kopioit ‘data/css17.dat’ -tiedoston RCT1-kansiosta ‘data/css50.dat’ -tiedostoksi RCT2-kansioon, tai asetat RCT1-hakemiston Lisäasetukset-välilehdellä.
+STR_5836    :Valitse päävalikossa soiva musiikki.{NEWLINE}RCT1-teemamusiikin valinta edellyttää, että asetat RCT1-hakemiston Lisäasetukset-välilehdellä.
 STR_5837    :Luo ja hallitse mukautettuja käyttöliittymäteemoja
 STR_5838    :Näytä erillinen painike työkalupalkissa Talous-ikkunaa varten
 STR_5839    :Näytä erillinen painike työkalupalkissa Kehitys-ikkunaa varten
@@ -3285,8 +3254,8 @@ STR_6133    :Käytä laitteita ja maisemointeja joita ei ole vielä kehitetty
 STR_6134    :Raivaa maisemointi
 STR_6135    :Asiakasohjelma lähetti epäkelvon pyynnön
 STR_6136    :Palvelin lähetti epäkelvon pyynnön
-STR_6137    :OpenRCT2, ilmainen avoimen lähdekoodin Roller Coaster Tycoon 2 -klooni.
-STR_6138    :OpenRCT2 on monen tekijän yhteistyötä. Täysi lista löytyy tiedostosta “contributors.md”. Lisätietoja osoitteessa http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2: ilmainen, avoimen lähdekoodin Roller Coaster Tycoon 2:n uudelleenluomus ja laajennus.
+STR_6138    :OpenRCT2 on monen eri tekijän yhteistyötä. Lista heidän nimistään löytyy “Osallistujat” -painikkeen takaa. Lisätietoja osoitteessa http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Kaikki tuote- ja yritysnimet kuuluvat kullekin oikeudenomistajalleen. Niiden käyttö ei tarkoita minkäänlaista yhteistyötä tai hyväksyntää.
 STR_6140    :Muutosloki…
 STR_6141    :RCT1:n alapalkkityyli
@@ -3430,7 +3399,7 @@ STR_6318    :Verkkopelin epätahdistus havaittu.{NEWLINE}Lokitiedosto: {STRING}
 STR_6319    :Lohkojarru kiinni
 STR_6320    :Hajoutumaton
 STR_6321    :Lisäosa on hajonnut
-STR_6322    :{WINDOW_COLOUR_2}Spritetunnus: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entiteettitunnus: {BLACK}{INT32}
 STR_6323    :Simuloidaan
 STR_6324    :Simuloi
 STR_6325    :Simuloi laitetta
@@ -3580,8 +3549,8 @@ STR_6470    :Säädä suurempaa partioaluetta
 STR_6471    :Läpinäkyvä kasvitus
 STR_6472    :Läpinäkyvät kulkuneuvot
 STR_6473    :Läpinäkyvät tukirakenteet
-STR_6474    :Läpinäkyvät kävijät
-STR_6475    :Läpinäkyvä henkilöstö
+STR_6474    :Näkymättömät kävijät
+STR_6475    :Näkymätön henkilöstö
 STR_6476    :Näkymätön kasvitus
 STR_6477    :Näkymättömät maisemoinnit
 STR_6478    :Näkymättömät polut
@@ -3592,19 +3561,135 @@ STR_6482    :Läpinäkyvyysasetukset
 STR_6483    :Avaa läpinäkyvyyden asetukset
 STR_6484    :Läpinäkyvä kasvitus -kytkin
 STR_6485    :Läpinäkyvät kulkuneuvot -kytkin
-STR_6486    :Läpinäkyvät kävijät -kytkin
-STR_6487    :Läpinäkyvä henkilöstö -kytkin
+STR_6486    :Näkymättömät kävijät -kytkin
+STR_6487    :Näkymätön henkilöstö -kytkin
 STR_6488    :{RED}Kävijät valittavat pitkistä jonoista puistosi laitteisiin.{NEWLINE}Lyhennä ongelmallisia jonotusalueita, tai korota laitteiden kapasiteettia.
 STR_6489    :Virhe: Yhteensopimaton puistoversio
 STR_6490    :Varoitus: Jokseenkin yhteensopiva puistoversio
-STR_6491    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
+STR_6491    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto on v{INT32} ja vaatii vähintään v{INT32}. Nykyinen versiosi on v{INT32}.
 STR_6492    :Tämä puisto on tallennettu vanhemmalla OpenRCT2-versiolla, eikä sitä voi avata tällä peliversiolla. Puisto on v{INT32}.
-STR_6493    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla, ja jotkin tiedot ovat saattaneet kadota. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
+STR_6493    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla, ja jotkin tiedot ovat saattaneet kadota. Puisto on v{INT32} ja vaatii vähintään v{INT32}. Nykyinen versiosi on v{INT32}.
 STR_6494    :Ryhmitä laitetyypittäin
 STR_6495    :Ryhmitä laitteet laitetyypin perusteella, yksittäisten kulkuneuvojen sijaan.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Klikkaa ruutua nähdäksesi sen elementit.{NEWLINE}Ctrl + klikkaa ruutuelementtiä valitaksesi sen suoraan.
 STR_6498    :Ota käyttöön pitääksesi kartan neliönä.
+STR_6499    :Ratamallin tiedostomuoto ei tue kulkuneuvon tyyppiä
+STR_6500    :Ratamallin tiedostomuoto ei tue rataelementtiä
+STR_6501    :Satunnainen väri
+STR_6502    :Anna arvo väliltä {COMMA16}-{COMMA16}
+STR_6503    :Ainakin yhden asemaesineen tulee olla valittuna
+STR_6504    :Ainakin yhden maastopinnan tulee olla valittuna
+STR_6505    :Ainakin yhden maastoreunan tulee olla valittuna
+STR_6506    :Iso puolikas korkkiruuvi (vasen)
+STR_6507    :Iso puolikas korkkiruuvi (oikea)
+STR_6508    :Keskikokoinen puolisilmukka (vasen)
+STR_6509    :Keskikokoinen puolisilmukka (oikea)
+STR_6510    :Painoton kierre (vasen)
+STR_6511    :Painoton kierre (oikea)
+STR_6512    :Iso painoton kierre (vasen)
+STR_6513    :Iso painoton kierre (oikea)
+STR_6514    :Epäkelpo korkeus!
+STR_6515    :{BLACK}RollerCoaster Tycoon 1:tä ei ole yhdistetty - korvikegrafiikka on käytössä.
+STR_6516    :Yksi tai useampi lisätty esine vaatii RollerCoaster Tycoon 1:n yhdistämisen, jotta ne näkyvät oikein. Korvikegrafiikka on käytössä.
+STR_6517    :Yksi tai useampi puiston esine vaatii RollerCoaster Tycoon 1:n yhdistämisen, jotta ne näkyvät oikein. Korvikegrafiikka on käytössä.
+STR_6518    :{BLACK}Vie osoitin skenaarion päälle lukeaksi sen kuvauksen ja tavoitteen. Klikkaa pelataksesi.
+STR_6519    :Ekstrat
+STR_6520    :Resurssipaketit
+STR_6521    :Matalampi prioriteetti
+STR_6522    :Korkeampi prioriteetti
+STR_6523    :Vähennä valitun resurssipaketin prioriteettia.
+STR_6524    :Lisää valitun resurssipaketin prioriteettia.
+STR_6525    :Päivitä kaikki pelissä olevat resurssit valituista resurssipaketeista.
+STR_6526    :(perusgrafiikat, -musiikki, ja -ääniefektit)
+STR_6527    :Kilpailut
+STR_6528    :Epäkelvot rataparametrit!
+STR_6529    :Epäkelpo väriteemaparametri!
+STR_6530    :User Created Expansion Set
+STR_6531    :Aikakone
+STR_6532    :Ursulan unelmamaailma
+STR_6533    :{WINDOW_COLOUR_2}Huvituskerroin: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Jännityskerroin: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Pahoinvointikerroin: {BLACK}-{COMMA16}%
+STR_6536    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto tallennettiin versiolla v{INT32}, ja nykyinen versiosi on v{INT32}.
+STR_6537    :Salli polkujen käyttö jonoalueina
+STR_6538    :Näyttää tavallisten polkujen tyylivaihtoehdot Polut-ikkunan jonoaluevalikossa.
+STR_6539    :Jarru kiinni
+STR_6540    :{WINDOW_COLOUR_2}Erityiskiitokset seuraaville yhtiölle, jotka suostuivat näköisyyksiensä käyttöön:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Osallistujat
+STR_6543    :Osallistujat…
+STR_6544    :Laina ei voi olla negatiivinen!
+STR_6545    :Käytä RCT1:n korkolaskentaa
+STR_6546    :Käytä RollerCoaster Tycoon 1:n käyttämää lainojen koron laskuyhtälöä, jonka tuloksena on n. 1.33% vakioprosentti.
+STR_6547    :Kaikki maisemoinnit
+STR_6548    :Näytä kaiteet risteyksessä
+STR_6549    :Yhteensopivuusesineitä ei voi valita!
+STR_6550    :Tämä merkintä on sisällytetty yhteensopivuuden takaamiseksi vanhojen tai rikkinäisten esineiden kanssa. Sitä ei voi valita - valinta voidaan vain poistaa.
+
+STR_6551    :Armeijanvihreä
+STR_6552    :Mesikaste
+STR_6553    :Kellanruskea
+STR_6554    :Kastanjanruskea
+STR_6555    :Koralli
+STR_6556    :Merenvihreä
+STR_6557    :Keltavihreä
+STR_6558    :Sammalenvihreä
+STR_6559    :Patinanvihreä
+STR_6560    :Limetinvihreä
+STR_6561    :Seepia
+STR_6562    :Persikka
+STR_6563    :Talvionsininen
+STR_6564    :Smaragdinvihreä
+STR_6565    :Vaahdonvihreä
+STR_6566    :Violetti
+STR_6567    :Laventeli
+STR_6568    :Pastellioranssi
+STR_6569    :Syvänmerensininen
+STR_6570    :Pastellipinkki
+STR_6571    :Umbra
+STR_6572    :Pellava
+STR_6573    :Näkymätön
+STR_6574    :Tyhjiö
+STR_6575    :Salli erikoisvärit
+STR_6576    :Lisää erikoisvärejä värivalikkoon
+STR_6577    :Lohkojarrujen nopeus
+STR_6578    :Aseta lohkojarruille nopeusrajoitus. Lohkojarrutustilassa vierekkäiset hitaamman nopeuden jarrut yhdistyvät lohkojarruihin.
+STR_6579    :Ratamalleissa lohkojarrujen nopeus palautuu oletusasetukseen
+STR_6580    :Palauta
+STR_6581    :Oletko varma, että haluat palauttaa kaikki pikanäppäimesi alkutilaan?
+STR_6582    :Avaa pikanäppäinten asetukset
+STR_6583    :{WINDOW_COLOUR_2}Käänteiset junat
+STR_6584    :Aseta junat kulkemaan takaperin
+STR_6585    :Muutoksia ei voi tehdä…
+STR_6586    :OpenRCT2
+STR_6587    :OpenRCT2:n tunnusmusiikki on Allister Brimblen käsialaa,{NEWLINE}CC BY-SA 4.0 -lisenssin alaisena.
+STR_6588    :Kiitoksemme Herman Ridderingille luvasta nauhoittaa 35er Voigtin musiikkia.
+STR_6589    :Näytä ikkunan painikkeet vasemmalla
+STR_6590    :Näytä ikkunan painikkeet (esim. ikkunan sulkemiseen) otsakerivin vasemmalla reunalla oikean reunan sijaan.
+STR_6591    :Tämä toimihenkilö korjaa parhaillaan laitetta, eikä häntä voi irtisanoa.
+STR_6592    :Tämä toimihenkilö tarkastaa parhaillaan laitetta, eikä häntä voi irtisanoa.
+STR_6593    :Poista puiston aidat
+STR_6594    :Ruututyökalu: Vaihda seinän kaltevuus
+STR_6595    :{WINDOW_COLOUR_2}Tekijä: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Tekijät: {BLACK}{STRING}
+STR_6597    :Epäkelpo parametri
+STR_6598    :Arvo on rajojen ulkopuolella
+STR_6599    :Kuvajaiselementtiä ei löytynyt
+STR_6600    :Ilmapalloa ei löytynyt
+STR_6601    :Henkilöstöä ei löytynyt
+STR_6602    :Laitetta ei löytynyt
+STR_6603    :Laite-esinettä ei löytynyt
+STR_6604    :Pelaajaa ei löytynyt
+STR_6605    :Sisäänkäyntielementtiä ei löytynyt
+STR_6606    :Pintaelementtiä ei löytynyt
+STR_6607    :Ruutuelementtiä ei löytynyt
+STR_6608    :Rataelementtiä ei löytynyt
+STR_6609    :Ratalohkoa ei löytynyt
+STR_6610    :Polkuelementtiä ei löytynyt
+STR_6611    :Seinäelementtiä ei löytynyt
+STR_6612    :Bannerielementtiä ei löytynyt
+STR_6613    :Päivitä esine
 
 #############
 # Scenarios #
@@ -4268,7 +4353,7 @@ STR_DTLS    :Olet menestyksekäs liikemies sapattivapaalla, ja haluat käyttää
 <South America - Inca Lost City>
 STR_SCNR    :Etelä-Amerikka - Inkojen kadonnut kaupunki
 STR_PARK    :Kadonnut kaupunki
-STR_DTLS    :Edistääksesi paikallista turismia, sinun tulee rakentaa puisto, joka on ympäristönsä kaltainen, vaikka korkeusrajoitukset ovatkin voimassa.
+STR_DTLS    :Edistääksesi paikallista turismia, sinun tulee rakentaa puisto, joka on ympäristönsä kaltainen.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Etelä-Amerikka - Sademetsän tasanko
@@ -4360,3 +4445,106 @@ STR_DTLS    :Tämä vanha huvipuisto on nähnyt parempia päiviä. Auta sen omis
 STR_SCNR    :Pandamaailma
 STR_PARK    :Pandamaailma
 STR_DTLS    :Rakenna lisää laitteita ja houkuttele lisää kävijöitä tähän panda-teemaiseen puistoon
+
+<Tycoon Park>
+STR_SCNR    :Pohattapuisto
+STR_PARK    :Pohattapuisto
+STR_DTLS    :
+
+###
+<UCES Halloween>
+STR_SCNR    :Kalmistokallio
+STR_PARK    :Kalmistokallio
+STR_DTLS    :Nyt on halloween, UCES halloween, kurpitsat kirkuvat öisin tääl’! Tämä hautausmaa on pulassa, ja vain sinä voit sen pelastaa - kunhan annat vainajien levätä rauhassa! Pystytkö pitämään kummitukset haudoissaan, ja kävijät värinöissään?{NEWLINE}Tekijä: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :Faroksen majakka
+STR_PARK    :Faroksen majakka
+STR_DTLS    :Aleksanteri rakensi kaupunkinsa; kreikkalaiset, roomalaiset, ja egyptiläiset jättivät jälkensä. Mutta kaupungin suurin kunnia on yksi vanhan maailman seitsemästä ihmeestä - Faroksen majakka. Vieraile ja rakenna puisto!{NEWLINE}Tekijä: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Aivan kuten se oli avajaispäivänään - 18. toukokuuta 1905.{NEWLINE}Tekijä: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Vesuvius
+STR_PARK    :Vesuvius
+STR_DTLS    :Pompejin ja Herculaneumin kaupungit hautautuivat Vesuviuksen purkauduttua vuonna 79. Vieraile kaivauspaikalla, ja rakenna puisto!{NEWLINE}Tekijä: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :Hiekkalaatikko
+STR_PARK    :Hiekkalaatikko
+STR_DTLS    :Se, mitä kaikki aina haluavat - hiekkalaatikko! Tartu siis ämpäriin ja lapioon, ja rakenna puisto!{NEWLINE}Tekijä: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagaran putoukset
+STR_PARK    :Niagaran putoukset
+STR_DTLS    :American Falls, Bridal Falls ja kanadalainen Horseshoe Falls, Niagaran rajaseudulla vuonna 1850.{NEWLINE}Tekijä: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Kalliovuorten kaivos
+STR_PARK    :Kalliovuorten kaivos
+STR_DTLS    :Maavyöry tukki rautatien. Työntekijäsi lähtivät tutkimuksille. Onko vuoristoradoissa sittenkin kultaa?{NEWLINE}Tekijät: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :Aikakone
+STR_PARK    :Aikakone
+STR_DTLS    :Aikakone. Rakenna mennäksesi mihin vain, milloin vain. Ikuisuus odottaa. Kaikki on suhteellista.{NEWLINE}Tekijä: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Baabelin torni
+STR_PARK    :Baabelin torni
+STR_DTLS    :Oho! Mihinkäs aikakone nyt meidät toi? Mihin kaikki häipyivät?{NEWLINE}Tekijä: Fossil
+
+<Transformation>
+STR_SCNR    :Muutos
+STR_PARK    :Muutos
+STR_DTLS    :Olemme odottaneet teitä…{NEWLINE}Tekijä: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis incognitus
+STR_PARK    :Urbis incognitus
+STR_DTLS    :Roomalaiset ovat kyllästyneitä tylsiin gladiaattoritaisteluihin. Näytä heille mitä todellinen huvitus on, muuttamalla roomalaiskaupunki kaikkien aikojen mahtavimmaksi huvipuistoksi!{NEWLINE}Tekijä: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Alla joulupuun
+STR_PARK    :Talven ihmemaa
+STR_DTLS    :Äiti rakensi tämän dioraaman joulukuusen alle. Nyt hän haluaa sinne huvipuiston! Pystytkö auttamaan?{NEWLINE}Tekijä: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Jättikiven jytky
+STR_PARK    :Jättikiven jytky
+STR_DTLS    :Jättikiven Kaivokset Oy:n räjähdysonnettomuuden jälkeen Jättikiven kylän asukkaat ovat rakentaneet huvipuiston kylänsä elinkeinoksi.{NEWLINE}Tekijät: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Matkijalinnun leiri
+STR_PARK    :Matkijalinnun leiri
+STR_DTLS    :Kesäleirille, vain 500€/viikko! Tili tyhjäksi, ja tule pitämään hauskaa puiston rakennuksen ohessa.{NEWLINE}Tekijä: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Tsuku-tsuku-kylä
+STR_PARK    :Tsuku-tsuku-kylä
+STR_DTLS    :Äiti! Isä! Tahdon mennä Tsuku-tsuku-kylään!{NEWLINE}Tekijä: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Lohikäärmesaaret
+STR_PARK    :Lohikäärmesaaret
+STR_DTLS    :Lohikäärmesaaret? En ole varma, haluanko mennä sinne…{NEWLINE}Tekijä: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kakarakarnevaali II
+STR_PARK    :Kakarakarnevaali
+STR_DTLS    :Hei muksut! Pidetään hauskaa!{NEWLINE}Tekijät: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Hiekkadyyni
+STR_PARK    :Hiekkadyyni
+STR_DTLS    :Pienen puiston omistajana ostit valtavan rantatontin kävijöitä houkuttelevaa laajennusta varten. Mutta varo: et saa häiritä ekologisesti herkkiä hiekkadyynejä.{NEWLINE}Tekijä: rbarclay

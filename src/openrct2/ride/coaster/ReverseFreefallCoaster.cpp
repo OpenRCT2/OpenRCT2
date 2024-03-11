@@ -10,7 +10,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
@@ -212,7 +212,8 @@ static void PaintReverseFreefallRCFlat(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1) ? 1 : 0, 0, height, session.SupportColours);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -233,7 +234,8 @@ static void PaintReverseFreefallRCStation(
         imageId = session.TrackColours.WithIndex(reverse_freefall_rc_track_pieces_station[direction]);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-        WoodenASupportsPaintSetup(session, (direction & 1) ? 1 : 0, 0, height, session.SupportColours);
+        WoodenASupportsPaintSetupRotated(
+            session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
@@ -246,7 +248,8 @@ static void PaintReverseFreefallRCStation(
         imageId = session.TrackColours.WithIndex(reverse_freefall_rc_track_pieces_station[direction]);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
-        WoodenASupportsPaintSetup(session, (direction & 1) ? 1 : 0, 0, height, session.SupportColours);
+        WoodenASupportsPaintSetupRotated(
+            session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
@@ -304,12 +307,14 @@ static void PaintReverseFreefallRCSlope(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
 
-            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
             break;
         case 5:
-            if (WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours))
+            if (WoodenASupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours))
             {
                 ImageId floorImageId;
                 if (direction & 1)
@@ -349,7 +354,8 @@ static void PaintReverseFreefallRCSlope(
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
             }
-            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
             break;
@@ -410,7 +416,8 @@ static void PaintReverseFreefallRCOnridePhoto(
     PaintAddImageAsParentRotated(
         session, direction, colour.WithIndex(imageIds[direction]), { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

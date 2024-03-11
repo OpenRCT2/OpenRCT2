@@ -28,6 +28,7 @@
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
+using namespace OpenRCT2::Ui::Windows;
 
 class WindowManager final : public IWindowManager
 {
@@ -587,7 +588,7 @@ public:
             mainWindow->viewport_target_sprite = EntityId::GetNull();
             mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
-            gCurrentRotation = rotation;
+            viewport->rotation = rotation;
 
             if (zoomDifference != ZoomLevel{ 0 })
             {

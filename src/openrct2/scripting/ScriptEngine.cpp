@@ -34,6 +34,7 @@
 #    include "bindings/game/ScConsole.hpp"
 #    include "bindings/game/ScContext.hpp"
 #    include "bindings/game/ScDisposable.hpp"
+#    include "bindings/game/ScPlugin.hpp"
 #    include "bindings/game/ScProfiler.hpp"
 #    include "bindings/network/ScNetwork.hpp"
 #    include "bindings/network/ScPlayer.hpp"
@@ -443,6 +444,7 @@ void ScriptEngine::Initialise()
     ScScenarioObjective::Register(ctx);
     ScPatrolArea::Register(ctx);
     ScStaff::Register(ctx);
+    ScPlugin::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
     dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
@@ -452,6 +454,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
     dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
+    dukglue_register_global(ctx, std::make_shared<ScPlugin>(), "pluginManager");
     dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
     dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
@@ -1183,7 +1186,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
         obj.Set("errorMessage", result.GetErrorMessage());
     }
 
-    if (result.Cost != MONEY64_UNDEFINED)
+    if (result.Cost != kMoney64Undefined)
     {
         obj.Set("cost", result.Cost);
     }

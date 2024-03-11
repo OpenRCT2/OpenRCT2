@@ -10,6 +10,7 @@
 #include "LandSetRightsAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
@@ -82,7 +83,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     res.Position = centre;
     res.Expenditure = ExpenditureType::LandPurchase;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.SandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
     }
@@ -183,18 +184,19 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 }
             }
 
-            res.Cost = gLandPrice;
+            auto& gameState = GetGameState();
+            res.Cost = gameState.LandPrice;
             if (isExecuting)
             {
                 if (_ownership != OWNERSHIP_UNOWNED)
                 {
-                    gPeepSpawns.erase(
+                    gameState.PeepSpawns.erase(
                         std::remove_if(
-                            gPeepSpawns.begin(), gPeepSpawns.end(),
+                            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
                             [x = loc.x, y = loc.y](const auto& spawn) {
                                 return Floor2(spawn.x, 32) == x && Floor2(spawn.y, 32) == y;
                             }),
-                        gPeepSpawns.end());
+                        gameState.PeepSpawns.end());
                 }
                 surfaceElement->SetOwnership(_ownership);
                 ParkUpdateFencesAroundTile(loc);

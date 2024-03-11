@@ -13,41 +13,38 @@
 #include <openrct2/common.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 
-namespace OpenRCT2
+namespace OpenRCT2::Ui
 {
-    namespace Ui
+    struct IUiContext;
+
+    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateSoftwareDrawingEngine(
+        const std::shared_ptr<IUiContext>& uiContext);
+    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateHardwareDisplayDrawingEngine(
+        const std::shared_ptr<IUiContext>& uiContext);
+#ifndef DISABLE_OPENGL
+    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateOpenGLDrawingEngine(
+        const std::shared_ptr<IUiContext>& uiContext);
+#endif
+
+    class DrawingEngineFactory final : public Drawing::IDrawingEngineFactory
     {
-        using namespace OpenRCT2::Drawing;
-
-        struct IUiContext;
-
-        [[nodiscard]] std::unique_ptr<IDrawingEngine> CreateSoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext);
-        [[nodiscard]] std::unique_ptr<IDrawingEngine> CreateHardwareDisplayDrawingEngine(
-            const std::shared_ptr<IUiContext>& uiContext);
-#ifndef DISABLE_OPENGL
-        [[nodiscard]] std::unique_ptr<IDrawingEngine> CreateOpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext);
-#endif
-
-        class DrawingEngineFactory final : public IDrawingEngineFactory
+    public:
+        [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> Create(
+            DrawingEngine type, const std::shared_ptr<IUiContext>& uiContext) override
         {
-        public:
-            [[nodiscard]] std::unique_ptr<IDrawingEngine> Create(
-                DrawingEngine type, const std::shared_ptr<IUiContext>& uiContext) override
+            switch (type)
             {
-                switch (type)
-                {
-                    case DrawingEngine::Software:
-                        return CreateSoftwareDrawingEngine(uiContext);
-                    case DrawingEngine::SoftwareWithHardwareDisplay:
-                        return CreateHardwareDisplayDrawingEngine(uiContext);
+                case DrawingEngine::Software:
+                    return CreateSoftwareDrawingEngine(uiContext);
+                case DrawingEngine::SoftwareWithHardwareDisplay:
+                    return CreateHardwareDisplayDrawingEngine(uiContext);
 #ifndef DISABLE_OPENGL
-                    case DrawingEngine::OpenGL:
-                        return CreateOpenGLDrawingEngine(uiContext);
+                case DrawingEngine::OpenGL:
+                    return CreateOpenGLDrawingEngine(uiContext);
 #endif
-                    default:
-                        return nullptr;
-                }
+                default:
+                    return nullptr;
             }
-        };
-    } // namespace Ui
-} // namespace OpenRCT2
+        }
+    };
+} // namespace OpenRCT2::Ui

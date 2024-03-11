@@ -14,43 +14,45 @@
 #include <memory>
 #include <openrct2/common.h>
 #include <string>
-
-class OpenGLShader final
+namespace OpenRCT2::Ui
 {
-private:
-    static constexpr uint64_t MaxSourceSize = 8 * 1024 * 1024; // 8 MiB
+    class OpenGLShader final
+    {
+    private:
+        static constexpr uint64_t MaxSourceSize = 8 * 1024 * 1024; // 8 MiB
 
-    GLenum _type;
-    GLuint _id = 0;
+        GLenum _type;
+        GLuint _id = 0;
 
-public:
-    OpenGLShader(const char* name, GLenum type);
-    ~OpenGLShader();
+    public:
+        OpenGLShader(const char* name, GLenum type);
+        ~OpenGLShader();
 
-    GLuint GetShaderId();
+        GLuint GetShaderId();
 
-private:
-    std::string GetPath(const std::string& name);
-    static std::string ReadSourceCode(const std::string& path);
-};
+    private:
+        std::string GetPath(const std::string& name);
+        static std::string ReadSourceCode(const std::string& path);
+    };
 
-class OpenGLShaderProgram
-{
-private:
-    GLuint _id = 0;
-    std::unique_ptr<OpenGLShader> _vertexShader;
-    std::unique_ptr<OpenGLShader> _fragmentShader;
+    class OpenGLShaderProgram
+    {
+    private:
+        GLuint _id = 0;
+        std::unique_ptr<OpenGLShader> _vertexShader;
+        std::unique_ptr<OpenGLShader> _fragmentShader;
 
-public:
-    explicit OpenGLShaderProgram(const char* name);
-    explicit OpenGLShaderProgram(const OpenGLShaderProgram&) = delete;
-    explicit OpenGLShaderProgram(OpenGLShaderProgram&&) = default;
-    virtual ~OpenGLShaderProgram();
+    public:
+        explicit OpenGLShaderProgram(const char* name);
+        explicit OpenGLShaderProgram(const OpenGLShaderProgram&) = delete;
+        explicit OpenGLShaderProgram(OpenGLShaderProgram&&) = default;
+        virtual ~OpenGLShaderProgram();
 
-    GLuint GetAttributeLocation(const char* name);
-    GLuint GetUniformLocation(const char* name);
-    void Use();
+        GLuint GetAttributeLocation(const char* name);
+        GLuint GetUniformLocation(const char* name);
+        void Use();
 
-private:
-    bool Link();
-};
+    private:
+        bool Link();
+    };
+} // namespace OpenRCT2::Ui

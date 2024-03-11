@@ -86,23 +86,23 @@ constexpr money64 ToMoney64FromGBP(double money) noexcept
     return money * 10;
 }
 
-#define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
-#define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
-#define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
+constexpr money16 kMoney16Undefined = static_cast<money16>(static_cast<uint16_t>(0xFFFF));
+constexpr money32 kMoney32Undefined = static_cast<money32>(0x80000000);
+constexpr money64 kMoney64Undefined = static_cast<money64>(0x8000000000000000);
 
 constexpr money16 ToMoney16(money64 value)
 {
-    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : value;
+    return value == kMoney64Undefined ? kMoney16Undefined : value;
 }
 
 constexpr money64 ToMoney64(money32 value)
 {
-    return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;
+    return value == kMoney32Undefined ? kMoney64Undefined : value;
 }
 
 constexpr money64 ToMoney64(money16 value)
 {
-    return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
+    return value == kMoney16Undefined ? kMoney64Undefined : value;
 }
 
 // Note: Only valid for 5 decimal places.

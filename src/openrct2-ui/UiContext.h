@@ -20,35 +20,35 @@ namespace OpenRCT2
 {
     struct IContext;
     struct IPlatformEnvironment;
-
-    namespace Ui
-    {
-        struct FileDialogDesc;
-        class InGameConsole;
-        struct IUiContext;
-
-        struct IPlatformUiContext
-        {
-            virtual ~IPlatformUiContext() = default;
-            virtual void SetWindowIcon(SDL_Window* window) abstract;
-            virtual bool IsSteamOverlayAttached() abstract;
-
-            virtual void ShowMessageBox(SDL_Window* window, const std::string& message) abstract;
-            virtual bool HasMenuSupport() abstract;
-            virtual int32_t ShowMenuDialog(
-                const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
-            virtual void OpenFolder(const std::string& path) abstract;
-
-            virtual void OpenURL(const std::string& url) abstract;
-            virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) abstract;
-            virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) abstract;
-
-            virtual bool HasFilePicker() const abstract;
-        };
-
-        [[nodiscard]] std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);
-        [[nodiscard]] std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext();
-
-        [[nodiscard]] InGameConsole& GetInGameConsole();
-    } // namespace Ui
 } // namespace OpenRCT2
+
+namespace OpenRCT2::Ui
+{
+    struct FileDialogDesc;
+    class InGameConsole;
+    struct IUiContext;
+
+    struct IPlatformUiContext
+    {
+        virtual ~IPlatformUiContext() = default;
+        virtual void SetWindowIcon(SDL_Window* window) abstract;
+        virtual bool IsSteamOverlayAttached() abstract;
+
+        virtual void ShowMessageBox(SDL_Window* window, const std::string& message) abstract;
+        virtual bool HasMenuSupport() abstract;
+        virtual int32_t ShowMenuDialog(
+            const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
+        virtual void OpenFolder(const std::string& path) abstract;
+
+        virtual void OpenURL(const std::string& url) abstract;
+        virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) abstract;
+        virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) abstract;
+
+        virtual bool HasFilePicker() const abstract;
+    };
+
+    [[nodiscard]] std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);
+    [[nodiscard]] std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext();
+
+    [[nodiscard]] InGameConsole& GetInGameConsole();
+} // namespace OpenRCT2::Ui

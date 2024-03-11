@@ -327,7 +327,7 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
     if (startVolume != endVolume)
     {
         // Set to max since we are adjusting the volume ourselves
-        mixVolume = MIXER_VOLUME_MAX;
+        mixVolume = kMixerVolumeMax;
 
         // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
         int32_t fadeLength = static_cast<int32_t>(len) / _format.BytesPerSample();
@@ -378,7 +378,7 @@ void AudioMixer::EffectPanU8(const IAudioChannel* channel, uint8_t* data, int32_
 
 void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
-    static_assert(SDL_MIX_MAXVOLUME == MIXER_VOLUME_MAX, "Max volume differs between OpenRCT2 and SDL2");
+    static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");
 
     float startvolume_f = static_cast<float>(startvolume) / SDL_MIX_MAXVOLUME;
     float endvolume_f = static_cast<float>(endvolume) / SDL_MIX_MAXVOLUME;
@@ -391,7 +391,7 @@ void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolum
 
 void AudioMixer::EffectFadeU8(uint8_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
-    static_assert(SDL_MIX_MAXVOLUME == MIXER_VOLUME_MAX, "Max volume differs between OpenRCT2 and SDL2");
+    static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");
 
     float startvolume_f = static_cast<float>(startvolume) / SDL_MIX_MAXVOLUME;
     float endvolume_f = static_cast<float>(endvolume) / SDL_MIX_MAXVOLUME;

@@ -209,9 +209,9 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 else
                 {
                     auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
-                    if (res == MONEY64_UNDEFINED)
+                    if (res == kMoney64Undefined)
                     {
-                        if (!gCheatsAllowArbitraryRideTypeChanges)
+                        if (!GetGameState().Cheats.AllowArbitraryRideTypeChanges)
                         {
                             console.WriteFormatLine(
                                 "That didn't work. Try enabling the 'Allow arbitrary ride type changes' cheat");
@@ -565,7 +565,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteFormatLine("company_value %d", gCompanyValue / 10);
+            console.WriteFormatLine("company_value %d", gameState.CompanyValue / 10);
         }
         else if (argv[0] == "money")
         {
@@ -577,11 +577,11 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "current_loan")
         {
-            console.WriteFormatLine("current_loan %d", gBankLoan / 10);
+            console.WriteFormatLine("current_loan %d", gameState.BankLoan / 10);
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteFormatLine("max_loan %d", gMaxBankLoan / 10);
+            console.WriteFormatLine("max_loan %d", gameState.MaxBankLoan / 10);
         }
         else if (argv[0] == "guest_initial_cash")
         {
@@ -668,18 +668,18 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "land_rights_cost")
         {
-            console.WriteFormatLine("land_rights_cost %d.%d0", gLandPrice / 10, gLandPrice % 10);
+            console.WriteFormatLine("land_rights_cost %d.%d0", gameState.LandPrice / 10, gameState.LandPrice % 10);
         }
         else if (argv[0] == "construction_rights_cost")
         {
             console.WriteFormatLine(
-                "construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
+                "construction_rights_cost %d.%d0", gameState.ConstructionRightsPrice / 10,
+                gameState.ConstructionRightsPrice % 10);
         }
         else if (argv[0] == "climate")
         {
             console.WriteFormatLine(
-                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gameState.Climate)],
-                static_cast<uint8_t>(gameState.Climate));
+                "climate %s  (%d)", ClimateNames[EnumValue(gameState.Climate)], EnumValue(gameState.Climate));
         }
         else if (argv[0] == "game_speed")
         {
@@ -720,15 +720,15 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
-            console.WriteFormatLine("cheat_sandbox_mode %d", gCheatsSandboxMode);
+            console.WriteFormatLine("cheat_sandbox_mode %d", GetGameState().Cheats.SandboxMode);
         }
         else if (argv[0] == "cheat_disable_clearance_checks")
         {
-            console.WriteFormatLine("cheat_disable_clearance_checks %d", gCheatsDisableClearanceChecks);
+            console.WriteFormatLine("cheat_disable_clearance_checks %d", GetGameState().Cheats.DisableClearanceChecks);
         }
         else if (argv[0] == "cheat_disable_support_limits")
         {
-            console.WriteFormatLine("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
+            console.WriteFormatLine("cheat_disable_support_limits %d", GetGameState().Cheats.DisableSupportLimits);
         }
         else if (argv[0] == "current_rotation")
         {
@@ -812,7 +812,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
-                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan);
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.MaxBankLoan);
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, amount);
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
@@ -1110,7 +1110,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_sandbox_mode" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (gCheatsSandboxMode != (int_val[0] != 0))
+            if (GetGameState().Cheats.SandboxMode != (int_val[0] != 0))
             {
                 auto cheatSetAction = CheatSetAction(CheatType::SandboxMode, int_val[0] != 0);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
@@ -1128,7 +1128,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_disable_clearance_checks" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (gCheatsDisableClearanceChecks != (int_val[0] != 0))
+            if (GetGameState().Cheats.DisableClearanceChecks != (int_val[0] != 0))
             {
                 auto cheatSetAction = CheatSetAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
@@ -1146,7 +1146,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_disable_support_limits" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (gCheatsDisableSupportLimits != (int_val[0] != 0))
+            if (GetGameState().Cheats.DisableSupportLimits != (int_val[0] != 0))
             {
                 auto cheatSetAction = CheatSetAction(CheatType::DisableSupportLimits, int_val[0] != 0);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
@@ -1165,15 +1165,14 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_rotation" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             uint8_t currentRotation = GetCurrentRotation();
-            WindowBase* mainWindow = WindowGetMain();
             int32_t newRotation = int_val[0];
             if (newRotation < 0 || newRotation > 3)
             {
                 console.WriteLineError("Invalid argument. Valid rotations are 0-3.");
             }
-            else if (newRotation != currentRotation && mainWindow != nullptr)
+            else if (newRotation != currentRotation)
             {
-                WindowRotateCamera(*mainWindow, newRotation - currentRotation);
+                ViewportRotateAll(newRotation - currentRotation);
             }
             console.Execute("get current_rotation");
         }
@@ -1452,7 +1451,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
 
     // All cases involve providing a year, so grab that first
     year = atoi(argv[0].c_str());
-    if (year < 1 || year > MAX_YEAR)
+    if (year < 1 || year > kMaxYear)
     {
         return -1;
     }

@@ -25,7 +25,7 @@ namespace GameActions
         }
         std::string operator()(const StringId strId) const
         {
-            return FormatStringID(strId, ErrorMessageArgs);
+            return FormatStringIDLegacy(strId, ErrorMessageArgs);
         }
     };
 

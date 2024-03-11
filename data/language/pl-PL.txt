@@ -2095,39 +2095,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Nie można wczytać pliku…
 STR_3011    :Plik zawiera nieprawidłowe dane
-STR_3012    :Styl zderzaków (autodromy)
-STR_3013    :Styl organów wesołego miasteczka
-STR_3014    :Styl rzymskich fanfarów
-STR_3015    :Styl orientalny
-STR_3016    :Styl marsjański
-STR_3017    :Styl bębnów dżungli
-STR_3018    :Styl egipski
-STR_3019    :Styl krainy zabawek
-STR_3020    :
-STR_3021    :Styl kosmiczny
-STR_3022    :Styl horror
-STR_3023    :Styl techno
-STR_3024    :Styl delikatny
-STR_3025    :Styl letni
-STR_3026    :Styl wodny
-STR_3027    :Styl dziki zachód
-STR_3028    :Styl jurajski
-STR_3029    :Styl rockowy
-STR_3030    :Styl ragtime
-STR_3031    :Styl fantasty
-STR_3032    :Styl rockowy 2
-STR_3033    :Styl lodowy
-STR_3034    :Styl śnieżny
-STR_3035    :Muzyka niestandardowa 1
-STR_3036    :Muzyka niestandardowa 2
-STR_3037    :Styl średniowieczny
-STR_3038    :Styl uliczny
-STR_3039    :Styl organowy
-STR_3040    :Styl mechaniczny
-STR_3041    :Styl nowoczesny
-STR_3042    :Styl piracki
-STR_3043    :Styl rockowy 3
-STR_3044    :Styl cukierkowy
 STR_3045    :Wybierz styl muzyczny
 STR_3047    :Władze lokalne zabraniają rozbiórki lub modyfikacji tej atrakcji
 STR_3048    :Kampanie marketingowe zabronione przez władze lokalne

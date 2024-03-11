@@ -9,6 +9,7 @@
 
 #include "LargeScenerySetColourAction.h"
 
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
@@ -127,7 +128,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction), tile->z_offset };
         auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
         {
             if (!MapIsLocationOwned(currentTile))
             {

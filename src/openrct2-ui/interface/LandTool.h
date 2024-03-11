@@ -13,10 +13,10 @@
 #include <openrct2/common.h>
 #include <openrct2/sprites.h>
 
-#define MINIMUM_TOOL_SIZE 1
-#define MAXIMUM_TOOL_SIZE 64
+constexpr uint16_t kLandToolMinimumSize = 1;
+constexpr uint16_t kLandToolMaximumSize = 64;
 // The highest tool size to have a sprite. Bigger tool sizes simply display a number.
-#define MAX_TOOL_SIZE_WITH_SPRITE 7
+constexpr uint16_t kLandToolMaximumSizeWithSprite = 7;
 
 extern uint16_t gLandToolSize;
 extern money64 gLandToolRaiseCost;

@@ -449,7 +449,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot set 'rideType' property, tile element is not a TrackElement.");
+            scriptEngine.LogPluginInfo("Cannot read 'rideType' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -566,7 +566,7 @@ namespace OpenRCT2::Scripting
                     break;
                 }
                 default:
-                    throw DukException() << "Cannot set 'rideType' property, tile element is not a TrackElement, "
+                    throw DukException() << "Cannot set 'sequence' property, tile element is not a TrackElement, "
                                             "LargeSceneryElement, or EntranceElement.";
             }
         }
@@ -716,7 +716,7 @@ namespace OpenRCT2::Scripting
                 }
                 default:
                     throw DukException()
-                        << "Cannot set 'station' property, tile element is not PathElement, TrackElement, or EntranceElement";
+                        << "Cannot read 'station' property, tile element is not PathElement, TrackElement, or EntranceElement";
             }
         }
         catch (const DukException& e)

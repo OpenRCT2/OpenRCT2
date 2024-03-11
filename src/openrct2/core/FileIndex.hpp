@@ -174,7 +174,7 @@ private:
         {
             const auto& filePath = scanResult.Files.at(i);
 
-            if (_log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)])
+            if (_log_levels[EnumValue(DiagnosticLevel::Verbose)])
             {
                 std::lock_guard<std::mutex> lock(printLock);
                 LOG_VERBOSE("FileIndex:Indexing '%s'", filePath.c_str());

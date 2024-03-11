@@ -9,6 +9,7 @@
 
 #include "WallPlaceAction.h"
 
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
@@ -23,6 +24,7 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 WallPlaceAction::WallPlaceAction(
@@ -81,7 +83,8 @@ GameActions::Result WallPlaceAction::Query() const
     }
 
     auto mapSizeMax = GetMapSizeMaxXY();
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN)
+        && !GetGameState().Cheats.SandboxMode)
     {
         if (_loc.z == 0)
         {
@@ -138,14 +141,14 @@ GameActions::Result WallPlaceAction::Query() const
     {
         uint16_t waterHeight = surfaceElement->GetWaterHeight();
 
-        if (targetHeight < waterHeight && !gCheatsDisableClearanceChecks)
+        if (targetHeight < waterHeight && !GetGameState().Cheats.DisableClearanceChecks)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
     }
 
-    if (targetHeight < surfaceElement->GetBaseZ() && !gCheatsDisableClearanceChecks)
+    if (targetHeight < surfaceElement->GetBaseZ() && !GetGameState().Cheats.DisableClearanceChecks)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -217,7 +220,7 @@ GameActions::Result WallPlaceAction::Query() const
         }
     }
 
-    auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_wallType);
+    auto* wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -248,7 +251,7 @@ GameActions::Result WallPlaceAction::Query() const
     clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
-    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gCheatsDisableClearanceChecks)
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !GetGameState().Cheats.DisableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
         if (result.Error != GameActions::Status::Ok)
@@ -307,7 +310,7 @@ GameActions::Result WallPlaceAction::Execute() const
     }
     auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
-    auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_wallType);
+    auto* wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -323,7 +326,7 @@ GameActions::Result WallPlaceAction::Execute() const
     clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
-    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gCheatsDisableClearanceChecks)
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !GetGameState().Cheats.DisableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / COORDS_Z_STEP, clearanceHeight, &wallAcrossTrack);
         if (result.Error != GameActions::Status::Ok)

@@ -650,7 +650,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
         auto token = GetFormatTokenFromRCT12Code(codepoint);
         if (token != FormatToken::Unknown)
         {
-            result += GetFormatTokenStringWithBraces(token);
+            result += FormatTokenToStringWithBraces(token);
         }
         else
         {

@@ -11,32 +11,34 @@
 
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
-
-class ApplyTransparencyShader final : public OpenGLShaderProgram
+namespace OpenRCT2::Ui
 {
-private:
-    GLuint uOpaqueTex;
-    GLuint uOpaqueDepth;
-    GLuint uTransparentTex;
-    GLuint uTransparentDepth;
-    GLuint uPaletteTex;
-    GLuint uBlendPaletteTex;
+    class ApplyTransparencyShader final : public OpenGLShaderProgram
+    {
+    private:
+        GLuint uOpaqueTex;
+        GLuint uOpaqueDepth;
+        GLuint uTransparentTex;
+        GLuint uTransparentDepth;
+        GLuint uPaletteTex;
+        GLuint uBlendPaletteTex;
 
-    GLuint vPosition;
-    GLuint vTextureCoordinate;
+        GLuint vPosition;
+        GLuint vTextureCoordinate;
 
-    GLuint _vbo;
-    GLuint _vao;
+        GLuint _vbo;
+        GLuint _vao;
 
-public:
-    ApplyTransparencyShader();
-    ~ApplyTransparencyShader() override;
+    public:
+        ApplyTransparencyShader();
+        ~ApplyTransparencyShader() override;
 
-    static void SetTextures(
-        GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex,
-        GLuint blendPaletteTex);
-    void Draw();
+        static void SetTextures(
+            GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex,
+            GLuint blendPaletteTex);
+        void Draw();
 
-private:
-    void GetLocations();
-};
+    private:
+        void GetLocations();
+    };
+} // namespace OpenRCT2::Ui

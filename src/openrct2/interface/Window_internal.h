@@ -80,11 +80,6 @@ struct WindowBase
 
     WindowBase& operator=(const WindowBase&) = delete;
 
-    virtual bool IsLegacy()
-    {
-        return true;
-    }
-
     // Events
     virtual void OnOpen()
     {
@@ -167,6 +162,9 @@ struct WindowBase
     {
     }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
+    virtual void OnLanguageChange()
+    {
+    }
 
     void ResizeFrame();
     void ResizeFrameWithPage();

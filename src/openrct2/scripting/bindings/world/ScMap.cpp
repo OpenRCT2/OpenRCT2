@@ -11,6 +11,7 @@
 
 #    include "ScMap.hpp"
 
+#    include "../../../GameState.h"
 #    include "../../../common.h"
 #    include "../../../entity/Balloon.h"
 #    include "../../../entity/Duck.h"
@@ -43,7 +44,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::size_get() const
     {
-        return ToDuk(_context, gMapSize);
+        return ToDuk(_context, GetGameState().MapSize);
     }
 
     int32_t ScMap::numRides_get() const

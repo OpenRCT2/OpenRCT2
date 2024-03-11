@@ -44,13 +44,13 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
-constexpr auto PALETTE_SIZE = 256;
+constexpr auto PALETTE_SIZE = 256U;
 
 struct GamePalette
 {
     PaletteBGRA Colour[PALETTE_SIZE]{};
 
-    PaletteBGRA& operator[](uint16_t idx)
+    PaletteBGRA& operator[](size_t idx)
     {
         assert(idx < PALETTE_SIZE);
         if (idx >= PALETTE_SIZE)
@@ -62,7 +62,7 @@ struct GamePalette
         return Colour[idx];
     }
 
-    const PaletteBGRA operator[](uint16_t idx) const
+    const PaletteBGRA operator[](size_t idx) const
     {
         assert(idx < PALETTE_SIZE);
         if (idx >= PALETTE_SIZE)
@@ -537,7 +537,7 @@ void GfxTransposePalette(int32_t pal, uint8_t product);
 void LoadPalette();
 
 // other
-void GfxClear(DrawPixelInfo* dpi, uint8_t paletteIndex);
+void GfxClear(DrawPixelInfo& dpi, uint8_t paletteIndex);
 void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
 void GfxInvalidatePickedUpPeep();
 void GfxDrawPickedUpPeep(DrawPixelInfo& dpi);
@@ -569,10 +569,10 @@ void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxRleSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId image_id, const ScreenCoordsXY& coords);
-void FASTCALL GfxDrawGlyph(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL GfxDrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
+void FASTCALL GfxDrawGlyph(DrawPixelInfo& dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+void FASTCALL GfxDrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
 void FASTCALL GfxDrawSpriteRawMasked(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
 void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
     DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);

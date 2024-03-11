@@ -51,7 +51,7 @@ void ParkEntrancePlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkEntrancePlaceAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.SandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }

@@ -10,6 +10,7 @@
 #include "RideConstruction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../actions/MazeSetTrackAction.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
@@ -21,7 +22,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
@@ -77,8 +78,6 @@ uint8_t _currentBrakeSpeed2;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;
-
-ObjectEntryIndex gLastEntranceStyle;
 
 uint8_t gRideEntranceExitPlaceType;
 RideId gRideEntranceExitPlaceRideIndex;
@@ -238,7 +237,7 @@ void RideClearForConstruction(Ride& ride)
 
     auto w = WindowFindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w != nullptr)
-        WindowEventResizeCall(w);
+        w->OnResize();
 }
 
 /**
@@ -340,9 +339,10 @@ void Ride::RemovePeeps()
 
 void RideClearBlockedTiles(const Ride& ride)
 {
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
+    auto& gameState = GetGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {
@@ -639,7 +639,7 @@ void RideConstructionSetDefaultNextPiece()
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
-    _currentTrackPrice = MONEY64_UNDEFINED;
+    _currentTrackPrice = kMoney64Undefined;
 
     const TrackElementDescriptor* ted;
     switch (_rideConstructionState)
@@ -695,7 +695,8 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             _currentTrackLiftHill = tileElement->AsTrack()->HasChain()
-                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60) || gCheatsEnableChainLiftOnAllTrack);
+                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
+                    || GetGameState().Cheats.EnableChainLiftOnAllTrack);
             break;
         }
         case RideConstructionState::Back:
@@ -742,7 +743,7 @@ void RideConstructionSetDefaultNextPiece()
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            if (!gCheatsEnableChainLiftOnAllTrack)
+            if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
             {
                 _currentTrackLiftHill = tileElement->AsTrack()->HasChain();
             }
@@ -1202,7 +1203,7 @@ money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
-    return res.Error == GameActions::Status::Ok ? 0 : MONEY64_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
 money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
@@ -1211,7 +1212,7 @@ money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t
     rideSetSetting.SetFlags(flags);
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);
-    return res.Error == GameActions::Status::Ok ? 0 : MONEY64_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
 /**
