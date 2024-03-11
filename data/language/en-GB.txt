@@ -1737,12 +1737,12 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Your objective:
 STR_2385    :{BLACK}None
-STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
+STR_2386    :{BLACK}To have at least {COMMA32} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
 STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
-STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
+STR_2391    :{BLACK}To have at least {COMMA32} guests in your park. You must not let the park rating drop below 700 at any time!
 STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
 STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
@@ -2323,7 +2323,7 @@ STR_3305    :{WINDOW_COLOUR_2}Monthly income:
 STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
 STR_3307    :{WINDOW_COLOUR_2}Minimum length:
 STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:

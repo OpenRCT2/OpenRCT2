@@ -1102,9 +1102,22 @@ static constexpr WindowParkAward _parkAwards[] = {
                 }
                 ft.Add<StringId>(rideTypeString);
             }
+            else if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY)
+            {
+                ft.Add<int32_t>(gameState.ScenarioObjective.NumGuests);
+                ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
+            }
+            else if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            {
+                ft.Add<int32_t>(gameState.ScenarioObjective.NumGuests);
+            }
+            else if (gameState.ScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
+            {
+                ft.Add<int16_t>(gameState.ScenarioObjective.MinimumLength);
+            }
             else
             {
-                ft.Add<uint16_t>(gameState.ScenarioObjective.NumGuests);
+                ft.Add<int16_t>(0); // Unused value by other objective messages
                 ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
                 if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
                     ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumExcitement);
