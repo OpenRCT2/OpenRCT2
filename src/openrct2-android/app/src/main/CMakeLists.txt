@@ -198,7 +198,5 @@ target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
 target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")
 
-# Header-only nlohmann library is installed in CI images at /nlohmann.
-# To be tiny bit more specific, use '/nlohmann/../' instead of just '/'
-target_include_directories(openrct2 PRIVATE "/nlohmann/../")
-target_include_directories(openrct2-ui PRIVATE "/nlohmann/../")
+target_include_directories(openrct2 PRIVATE "/opt/openrct2/include/nlohmann/../")
+target_include_directories(openrct2-ui PRIVATE "/opt/openrct2/include/nlohmann/../")
