@@ -99,19 +99,20 @@ static void PaintHauntedHouse(
     {
         case 1:
             // top
-            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 3:
             // right
-            cornerSegments = kSegmentTopRightSide | kSegmentRightCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
             break;
         case 6:
             // left
-            cornerSegments = kSegmentTopLeftSide | kSegmentLeftCorner | kSegmentBottomLeftSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
             break;
         case 7:
             // bottom
-            cornerSegments = kSegmentBottomLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
             break;
     }
 

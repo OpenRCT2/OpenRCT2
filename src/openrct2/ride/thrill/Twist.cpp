@@ -145,16 +145,17 @@ static void PaintTwist(
     switch (trackSequence)
     {
         case 1:
-            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 3:
-            cornerSegments = kSegmentTopRightSide | kSegmentRightCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
             break;
         case 6:
-            cornerSegments = kSegmentTopLeftSide | kSegmentLeftCorner | kSegmentBottomLeftSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
             break;
         case 7:
-            cornerSegments = kSegmentBottomLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
             break;
     }
 

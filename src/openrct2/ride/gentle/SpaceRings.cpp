@@ -145,28 +145,36 @@ static void PaintSpaceRings(
             cornerSegments = 0;
             break;
         case 1:
-            cornerSegments = kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner, PaintSegment::topRightSide,
+                PaintSegment::rightCorner);
             break;
         case 2:
-            cornerSegments = kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner;
+            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner);
             break;
         case 3:
-            cornerSegments = kSegmentTopCorner | kSegmentTopRightSide | kSegmentRightCorner | kSegmentBottomRightSide | kSegmentBottomCorner;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide,
+                PaintSegment::bottomCorner);
             break;
         case 4:
-            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentLeftCorner;
+            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner);
             break;
         case 5:
-            cornerSegments = kSegmentRightCorner | kSegmentBottomRightSide | kSegmentBottomCorner;
+            cornerSegments = EnumsToFlags(PaintSegment::rightCorner, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
             break;
         case 6:
-            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide,
+                PaintSegment::bottomCorner);
             break;
         case 7:
-            cornerSegments = kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 8:
-            cornerSegments = kSegmentLeftCorner | kSegmentBottomLeftSide | kSegmentBottomCorner;
+            cornerSegments = EnumsToFlags(PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);

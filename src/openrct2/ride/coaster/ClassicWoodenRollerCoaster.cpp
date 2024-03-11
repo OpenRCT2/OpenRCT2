@@ -774,13 +774,19 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
     };
 
     static constexpr int blockedSegments[7] = {
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide,
-        kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide,
-        kSegmentLeftCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
+        kSegmentsAll,
+        EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+        EnumsToFlags(
+            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+        EnumsToFlags(
+            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::centre,
+            PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+        EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+        EnumsToFlags(
+            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+        kSegmentsAll,
     };
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -938,10 +944,12 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
     };
 
     static constexpr int blockedSegments[4] = {
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
+        kSegmentsAll,
         0,
-        kSegmentLeftCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentBottomLeftSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
+        EnumsToFlags(PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomLeftSide),
+        EnumsToFlags(
+            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::centre,
+            PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
     };
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -1145,11 +1153,7 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
     };
 
     static constexpr int blockedSegments[5] = {
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
+        kSegmentsAll, kSegmentsAll, kSegmentsAll, kSegmentsAll, kSegmentsAll,
     };
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
@@ -1348,11 +1352,7 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
     };
 
     static constexpr int blockedSegments[5] = {
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-        kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
+        kSegmentsAll, kSegmentsAll, kSegmentsAll, kSegmentsAll, kSegmentsAll,
     };
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))

@@ -1051,20 +1051,26 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
             blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide;
+            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentBottomRightSide | kSegmentRightCorner | kSegmentBottomCorner | kSegmentTopRightSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::rightCorner,
+                PaintSegment::bottomCorner, PaintSegment::topRightSide);
             break;
         case 3:
-            blockedSegments = kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide
-                | kSegmentBottomRightSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::centre,
+                PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
+                PaintSegment::bottomRightSide);
             break;
         case 4:
-            blockedSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide;
+            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 5:
-            blockedSegments = kSegmentBottomRightSide | kSegmentCentre | kSegmentBottomLeftSide | kSegmentLeftCorner | kSegmentBottomCorner | kSegmentTopLeftSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::leftCorner,
+                PaintSegment::bottomCorner, PaintSegment::topLeftSide);
             break;
         case 6:
             blockedSegments = kSegmentsAll;
@@ -1178,10 +1184,14 @@ static void PaintMiniatureRailwayTrackSBendLeft(
             blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::topCorner);
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 3:
             blockedSegments = kSegmentsAll;
@@ -1286,10 +1296,14 @@ static void PaintMiniatureRailwayTrackSBendRight(
             blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::topCorner);
             break;
         case 3:
             blockedSegments = kSegmentsAll;
@@ -1400,7 +1414,8 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
             blockedSegments = kSegmentsAll;
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentBottomRightSide | kSegmentBottomCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
             break;
         case 3:
             blockedSegments = kSegmentsAll;

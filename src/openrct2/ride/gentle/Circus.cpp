@@ -94,19 +94,20 @@ static void PaintCircus(
     {
         case 1:
             // Top
-            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 3:
             // Right
-            cornerSegments = kSegmentTopRightSide | kSegmentRightCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
             break;
         case 6:
             // Left
-            cornerSegments = kSegmentTopLeftSide | kSegmentLeftCorner | kSegmentBottomLeftSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
             break;
         case 7:
             // Bottom
-            cornerSegments = kSegmentBottomLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
             break;
     }
 

@@ -38,9 +38,6 @@
 static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
 static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
-const int32_t kSegmentsAll = kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide
-    | kSegmentBottomLeftSide | kSegmentBottomRightSide;
-
 /**
  *
  *  rct2: 0x0068B35F
@@ -378,7 +375,9 @@ void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height
 }
 
 const uint16_t segment_offsets[9] = {
-    kSegmentTopCorner, kSegmentLeftCorner, kSegmentRightCorner, kSegmentBottomCorner, kSegmentCentre, kSegmentTopLeftSide, kSegmentTopRightSide, kSegmentBottomLeftSide, kSegmentBottomRightSide,
+    EnumToFlag(PaintSegment::topCorner),    EnumToFlag(PaintSegment::leftCorner),     EnumToFlag(PaintSegment::rightCorner),
+    EnumToFlag(PaintSegment::bottomCorner), EnumToFlag(PaintSegment::centre),         EnumToFlag(PaintSegment::topLeftSide),
+    EnumToFlag(PaintSegment::topRightSide), EnumToFlag(PaintSegment::bottomLeftSide), EnumToFlag(PaintSegment::bottomRightSide),
 };
 
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
@@ -399,7 +398,7 @@ void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, u
 
 uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
 {
-    // Only kSegmentCentre falls beyond 0xFF, so this will be kept in place.
+    // Only the value representing PaintSegment::centre falls beyond 0xFF, so this will be kept in place.
     uint8_t temp = segments & 0xFF;
     temp = Numerics::rol8(temp, rotation * 2);
 

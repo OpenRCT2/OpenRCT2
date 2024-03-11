@@ -152,16 +152,17 @@ static void PaintEnterprise(
     switch (trackSequence)
     {
         case 0:
-            cornerSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 3:
-            cornerSegments = kSegmentTopRightSide | kSegmentRightCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
             break;
         case 12:
-            cornerSegments = kSegmentTopLeftSide | kSegmentLeftCorner | kSegmentBottomLeftSide;
+            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
             break;
         case 15:
-            cornerSegments = kSegmentBottomLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);

@@ -489,7 +489,10 @@ static void PaintMiniGolfTrackFlat(
 
     MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
 
     if (MiniGolfPaintUtilShouldDrawFence(session, trackElement))
     {
@@ -526,7 +529,10 @@ static void PaintMiniGolfTrack25DegUp(
 
     MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(MiniGolfTrackSprites25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 10, height + 2 }, { 32, 1, 15 } });
@@ -565,7 +571,10 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
 
     MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 10, height + 2 }, { 32, 1, 11 } });
@@ -604,7 +613,10 @@ static void PaintMiniGolfTrack25DegUpToFlat(
 
     MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 10, height + 2 }, { 32, 1, 11 } });
@@ -733,7 +745,12 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
     MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentCentre | kSegmentBottomLeftSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(
+                PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomLeftSide),
+            direction),
+        0xFFFF, 0);
 
     const bool shouldDrawFence = MiniGolfPaintUtilShouldDrawFence(session, trackElement);
 

@@ -498,7 +498,13 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
     {
         case 2:
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(kSegmentTopLeftSide | kSegmentCentre | kSegmentBottomLeftSide | kSegmentLeftCorner, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::leftCorner),
+                    direction),
+                0xFFFF, 0);
             break;
         case 0:
         case 3:

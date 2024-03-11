@@ -78,32 +78,38 @@ static void SetSupportHeights(
     {
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
         {
-            PaintUtilSetSegmentSupportHeight(session, kSegmentCentre, height, 0x20);
+            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), height, 0x20);
             if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~kSegmentCentre, height, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), height, 0x20);
             }
         }
         else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide, direction), height, 0x20);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide), direction),
+                height, 0x20);
         }
     }
     else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE))
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentCentre, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~kSegmentCentre, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
         }
     }
     else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
         auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide), direction),
+            0xFFFF, 0);
     }
 }
 

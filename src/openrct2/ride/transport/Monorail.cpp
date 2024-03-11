@@ -415,7 +415,10 @@ static void PaintMonorailTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -509,7 +512,10 @@ static void PaintMonorailTrack25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -552,7 +558,10 @@ static void PaintMonorailTrackFlatTo25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -595,7 +604,10 @@ static void PaintMonorailTrack25DegUpToFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
@@ -665,19 +677,26 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentBottomRightSide | kSegmentRightCorner | kSegmentBottomCorner | kSegmentTopRightSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::rightCorner,
+                PaintSegment::bottomCorner, PaintSegment::topRightSide);
             break;
         case 3:
-            blockedSegments = kSegmentTopCorner | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentCentre;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre);
             break;
         case 5:
-            blockedSegments = kSegmentBottomRightSide | kSegmentCentre | kSegmentBottomLeftSide | kSegmentLeftCorner | kSegmentBottomCorner | kSegmentTopLeftSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::leftCorner,
+                PaintSegment::bottomCorner, PaintSegment::topLeftSide);
             break;
         case 6:
-            blockedSegments = kSegmentBottomRightSide | kSegmentCentre | kSegmentTopLeftSide | kSegmentLeftCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
             break;
     }
 
@@ -775,16 +794,22 @@ static void PaintMonorailTrackSBendLeft(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentTopCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topCorner);
             break;
         case 1:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::topCorner);
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 3:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
@@ -869,16 +894,22 @@ static void PaintMonorailTrackSBendRight(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
             break;
         case 1:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::topCorner);
             break;
         case 3:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
@@ -909,13 +940,16 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
             break;
         case 2:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentBottomRightSide | kSegmentBottomCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
             break;
         case 3:
-            blockedSegments = kSegmentBottomRightSide | kSegmentCentre | kSegmentTopLeftSide | kSegmentLeftCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -986,19 +1020,26 @@ static void PaintMonorailTrackLeftEighthToDiag(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide;
+            blockedSegments = EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide);
             break;
         case 1:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::topCorner);
             break;
         case 2:
-            blockedSegments = kSegmentCentre | kSegmentTopRightSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide,
+                PaintSegment::rightCorner);
             break;
         case 3:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentLeftCorner | kSegmentTopLeftSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide);
             break;
         case 4:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentTopLeftSide | kSegmentBottomCorner | kSegmentBottomRightSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide,
+                PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
             break;
     }
 
@@ -1056,19 +1097,26 @@ static void PaintMonorailTrackRightEighthToDiag(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide;
+            blockedSegments = EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide);
             break;
         case 1:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomCorner | kSegmentBottomRightSide | kSegmentRightCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 2:
-            blockedSegments = kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentTopCorner;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner, PaintSegment::topLeftSide,
+                PaintSegment::topCorner);
             break;
         case 3:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentBottomCorner | kSegmentBottomRightSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
             break;
         case 4:
-            blockedSegments = kSegmentBottomLeftSide | kSegmentCentre | kSegmentTopRightSide | kSegmentLeftCorner | kSegmentTopLeftSide | kSegmentBottomRightSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::bottomRightSide);
             break;
     }
 

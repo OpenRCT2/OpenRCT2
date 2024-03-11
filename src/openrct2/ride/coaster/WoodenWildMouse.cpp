@@ -139,10 +139,17 @@ static void WoodenWildMouseTrackFlat(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(kSegmentTopCorner | kSegmentLeftCorner | kSegmentRightCorner | kSegmentBottomCorner | kSegmentTopLeftSide | kSegmentBottomRightSide, direction), height,
-        0x20);
+        PaintUtilRotateSegments(
+            EnumsToFlags(
+                PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner,
+                PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
+            direction),
+        height, 0x20);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -542,7 +549,8 @@ static void WoodenWildMouseTrackRightQuarterTurn3(
             blockedSegments = kSegmentsAll;
             break;
         case 2:
-            blockedSegments = kSegmentBottomCorner | kSegmentCentre | kSegmentBottomLeftSide | kSegmentBottomRightSide;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide);
             break;
         case 3:
             blockedSegments = kSegmentsAll;

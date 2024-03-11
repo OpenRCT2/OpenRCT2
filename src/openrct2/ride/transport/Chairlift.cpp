@@ -492,7 +492,7 @@ static void ChairliftPaintFlatTo25DegUp(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, kSegmentCentre, height);
+    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -547,7 +547,7 @@ static void ChairliftPaint25DegUpToFlat(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, kSegmentCentre, height);
+    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
@@ -637,7 +637,9 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, PaintUtilRotateSegments(kSegmentTopLeftSide | kSegmentBottomLeftSide, direction), height);
+    ChairliftPaintUtilDrawSupports(
+        session, PaintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::bottomLeftSide), direction),
+        height);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

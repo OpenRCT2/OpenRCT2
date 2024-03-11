@@ -114,10 +114,10 @@ const uint8_t edges_4x4[] = {
 // clang-format on
 
 const int32_t DiagBlockedSegments[] = {
-    kSegmentCentre | kSegmentTopRightSide | kSegmentBottomRightSide | kSegmentRightCorner,
-    kSegmentCentre | kSegmentTopRightSide | kSegmentTopLeftSide | kSegmentTopCorner,
-    kSegmentBottomLeftSide | kSegmentCentre | kSegmentBottomCorner | kSegmentBottomRightSide,
-    kSegmentBottomLeftSide | kSegmentCentre | kSegmentLeftCorner | kSegmentTopLeftSide,
+    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
+    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
+    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
+    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
 };
 
 const MetalSupportPlace DiagSupportPlacement[] = {
@@ -2138,16 +2138,28 @@ void TrackPaintUtilOnridePhotoPaint(
 }
 
 static constexpr uint16_t RightVerticalLoopSegments[] = {
-    kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-    kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-    kSegmentBottomCorner | kSegmentCentre | kSegmentBottomLeftSide | kSegmentBottomRightSide,
-    kSegmentRightCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide | kSegmentBottomRightSide,
+    EnumsToFlags(
+        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+    EnumsToFlags(
+        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+    EnumsToFlags(PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+    EnumsToFlags(
+        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
     0,
     0,
-    kSegmentTopCorner | kSegmentLeftCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide,
-    kSegmentTopCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide,
-    kSegmentTopCorner | kSegmentLeftCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide,
-    kSegmentTopCorner | kSegmentLeftCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide,
+    EnumsToFlags(
+        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+    EnumsToFlags(PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+    EnumsToFlags(
+        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+    EnumsToFlags(
+        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
 };
 
 void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence)
@@ -2168,15 +2180,25 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
     if (direction == 2)
     {
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(kSegmentTopCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide, direction), 0xFFFF,
-            0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(
+                    PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
+                    PaintSegment::bottomLeftSide),
+                direction),
+            0xFFFF, 0);
     }
     MetalASupportsPaintSetup(session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(kSegmentTopCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide, direction), 0xFFFF,
-            0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(
+                    PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
+                    PaintSegment::bottomLeftSide),
+                direction),
+            0xFFFF, 0);
     }
 }
 
