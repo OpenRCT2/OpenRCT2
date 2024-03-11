@@ -1705,7 +1705,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);
         obj.Set("id", Id.ToUnderlying());
-        obj.Set("ride", ride.id.ToUnderlying());
+        obj.Set("rideId", ride.id.ToUnderlying());
         obj.Set("shopItem", OpenRCT2::Scripting::ShopItemMap[shopItem]);
 
         // Call the subscriptions
@@ -3954,7 +3954,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);
         obj.Set("id", Id.ToUnderlying());
-        obj.Set("ride", ride.id.ToUnderlying());
+        obj.Set("rideId", ride.id.ToUnderlying());
 
         // Call the subscriptions
         auto e = obj.Take();
@@ -5128,7 +5128,7 @@ void Guest::UpdateRideLeaveExit()
             // Create event args object
             auto obj = OpenRCT2::Scripting::DukObject(ctx);
             obj.Set("id", Id.ToUnderlying());
-            obj.Set("ride", ride->id.ToUnderlying());
+            obj.Set("rideId", ride->id.ToUnderlying());
 
             // Call the subscriptions
             auto e = obj.Take();

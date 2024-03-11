@@ -1918,7 +1918,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             // Create event args object
             auto obj = OpenRCT2::Scripting::DukObject(ctx);
             obj.Set("id", guest->Id.ToUnderlying());
-            obj.Set("ride", rideIndex.ToUnderlying());
+            obj.Set("rideId", rideIndex.ToUnderlying());
 
             // Call the subscriptions
             auto e = obj.Take();
@@ -2519,7 +2519,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
             // Create event args object
             auto obj = OpenRCT2::Scripting::DukObject(ctx);
             obj.Set("id", guest->Id.ToUnderlying());
-            obj.Set("ride", rideIndex.ToUnderlying());
+            obj.Set("rideId", rideIndex.ToUnderlying());
 
             // Call the subscriptions
             auto e = obj.Take();
