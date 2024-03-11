@@ -13,7 +13,6 @@ STR_0038    :Restroom
 STR_0041    :3D Theater
 STR_0045    :Elevator
 STR_0047    :ATM
-STR_0052    :Tunnel Of Horror
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railroad track
 STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railroad track
 STR_0537    :Guests bump into each other in self-driven electric bumper cars
