@@ -2393,6 +2393,23 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                         }
                     }
 
+#ifdef ENABLE_SCRIPTING
+                    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+                    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE))
+                    {
+                        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+                        // Create event args object
+                        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                        obj.Set("id", guest->Id.ToUnderlying());
+                        obj.Set("rideId", rideIndex.ToUnderlying());
+
+                        // Call the subscriptions
+                        auto e = obj.Take();
+                        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE, e, true);
+                    }
+#endif
+
                     // Force set centre of tile to prevent issues with guests accidentally skipping the queue
                     auto queueTileCentre = CoordsXY{ CoordsXY{ guest->NextLoc } + CoordsDirectionDelta[guest->PeepDirection] }
                                                .ToTileCentre();
