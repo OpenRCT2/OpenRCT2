@@ -188,7 +188,7 @@ enum {
     WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN,
     WIDX_VEHICLE_BODY_COLOUR,
     WIDX_VEHICLE_TRIM_COLOUR,
-    WIDX_VEHICLE_TERNARY_COLOUR,
+    WIDX_VEHICLE_TERTIARY_COLOUR,
     WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
 
     WIDX_PLAY_MUSIC = 14,
@@ -4277,7 +4277,7 @@ static_assert(std::size(RatingNames) == 6);
                     vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
                     WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Trim);
                     break;
-                case WIDX_VEHICLE_TERNARY_COLOUR:
+                case WIDX_VEHICLE_TERTIARY_COLOUR:
                     vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
                     WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Tertiary);
                     break;
@@ -4371,10 +4371,10 @@ static_assert(std::size(RatingNames) == 6);
                     GameActions::Execute(&rideSetAppearanceAction);
                 }
                 break;
-                case WIDX_VEHICLE_TERNARY_COLOUR:
+                case WIDX_VEHICLE_TERTIARY_COLOUR:
                 {
                     auto rideSetAppearanceAction = RideSetAppearanceAction(
-                        rideId, RideSetAppearanceType::VehicleColourTernary, ColourDropDownIndexToColour(dropdownIndex),
+                        rideId, RideSetAppearanceType::VehicleColourTertiary, ColourDropDownIndexToColour(dropdownIndex),
                         _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction);
                 }
@@ -4557,7 +4557,7 @@ static_assert(std::size(RatingNames) == 6);
                 widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
 
                 bool allowChangingTrimColour = false;
-                bool allowChangingTernaryColour = false;
+                bool allowChangingTertiaryColour = false;
 
                 for (int32_t i = 0; i < ride->num_cars_per_train; i++)
                 {
@@ -4567,9 +4567,9 @@ static_assert(std::size(RatingNames) == 6);
                     {
                         allowChangingTrimColour = true;
                     }
-                    if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERNARY_COLOUR)
+                    if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
                     {
-                        allowChangingTernaryColour = true;
+                        allowChangingTertiaryColour = true;
                     }
                 }
 
@@ -4578,20 +4578,20 @@ static_assert(std::size(RatingNames) == 6);
                 {
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::ColourBtn;
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim);
-                    if (allowChangingTernaryColour)
+                    if (allowChangingTertiaryColour)
                     {
-                        widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::ColourBtn;
-                        widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
+                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
                     }
                     else
                     {
-                        widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::Empty;
+                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
                     }
                 }
                 else
                 {
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
-                    widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::Empty;
+                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
                 }
 
                 // Vehicle colour scheme type
@@ -4636,7 +4636,7 @@ static_assert(std::size(RatingNames) == 6);
                 widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WindowWidgetType::Empty;
                 widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::Empty;
                 widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
-                widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::Empty;
+                widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
             }
 
             ft.Rewind();
