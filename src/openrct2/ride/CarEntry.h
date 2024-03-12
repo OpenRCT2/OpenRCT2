@@ -50,7 +50,7 @@ enum : uint32_t
     CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1
         << 7, // When set the vehicle has an additional frame for when in use. Used only by dodgems.
     CAR_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors.
-    CAR_ENTRY_FLAG_ENABLE_TERNARY_COLOUR = 1 << 9,
+    CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR = 1 << 9,
     CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS = 1 << 10, // Only used during loading of the objects.
     CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
         << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.

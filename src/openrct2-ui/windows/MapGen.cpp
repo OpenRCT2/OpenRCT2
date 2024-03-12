@@ -652,12 +652,12 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                 // Draw greyed out (light border bottom right shadow)
                 auto colour = colours[widget.colour];
                 colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-                GfxDrawSpriteSolid(&dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+                GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
 
                 // Draw greyed out (dark)
                 colour = colours[widget.colour];
                 colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-                GfxDrawSpriteSolid(&dpi, image, pos, colour);
+                GfxDrawSpriteSolid(dpi, image, pos, colour);
             }
             else
             {

@@ -92,12 +92,12 @@ void X8WeatherDrawer::Draw(
     }
 }
 
-void X8WeatherDrawer::Restore(DrawPixelInfo* dpi)
+void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
 {
     if (_weatherPixelsCount > 0)
     {
-        uint32_t numPixels = (dpi->width + dpi->pitch) * dpi->height;
-        uint8_t* bits = dpi->bits;
+        uint32_t numPixels = (dpi.width + dpi.pitch) * dpi.height;
+        uint8_t* bits = dpi.bits;
         for (uint32_t i = 0; i < _weatherPixelsCount; i++)
         {
             WeatherPixel weatherPixel = _weatherPixels[i];
@@ -193,7 +193,7 @@ void X8DrawingEngine::BeginDraw()
         {
             Resize(_width, _height);
         }
-        _weatherDrawer.Restore(&_bitsDPI);
+        _weatherDrawer.Restore(_bitsDPI);
     }
 }
 
@@ -460,16 +460,16 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
     _engine = engine;
 }
 
-void X8DrawingContext::Clear(DrawPixelInfo* dpi, uint8_t paletteIndex)
+void X8DrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 {
-    int32_t w = dpi->zoom_level.ApplyInversedTo(dpi->width);
-    int32_t h = dpi->zoom_level.ApplyInversedTo(dpi->height);
-    uint8_t* ptr = dpi->bits;
+    int32_t w = dpi.zoom_level.ApplyInversedTo(dpi.width);
+    int32_t h = dpi.zoom_level.ApplyInversedTo(dpi.height);
+    uint8_t* ptr = dpi.bits;
 
     for (int32_t y = 0; y < h; y++)
     {
         std::fill_n(ptr, w, paletteIndex);
-        ptr += w + dpi->pitch;
+        ptr += w + dpi.pitch;
     }
 }
 
@@ -521,47 +521,47 @@ static constexpr const uint16_t* Patterns[] = {
 };
 // clang-format on
 
-void X8DrawingContext::FillRect(DrawPixelInfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (left > right)
         return;
     if (top > bottom)
         return;
-    if (dpi->x > right)
+    if (dpi.x > right)
         return;
-    if (left >= dpi->x + dpi->width)
+    if (left >= dpi.x + dpi.width)
         return;
-    if (bottom < dpi->y)
+    if (bottom < dpi.y)
         return;
-    if (top >= dpi->y + dpi->height)
+    if (top >= dpi.y + dpi.height)
         return;
 
     uint16_t crossPattern = 0;
 
-    int32_t startX = left - dpi->x;
+    int32_t startX = left - dpi.x;
     if (startX < 0)
     {
         crossPattern ^= startX;
         startX = 0;
     }
 
-    int32_t endX = right - dpi->x + 1;
-    if (endX > dpi->width)
+    int32_t endX = right - dpi.x + 1;
+    if (endX > dpi.width)
     {
-        endX = dpi->width;
+        endX = dpi.width;
     }
 
-    int32_t startY = top - dpi->y;
+    int32_t startY = top - dpi.y;
     if (startY < 0)
     {
         crossPattern ^= startY;
         startY = 0;
     }
 
-    int32_t endY = bottom - dpi->y + 1;
-    if (endY > dpi->height)
+    int32_t endY = bottom - dpi.y + 1;
+    if (endY > dpi.height)
     {
-        endY = dpi->height;
+        endY = dpi.height;
     }
 
     int32_t width = endX - startX;
@@ -570,10 +570,10 @@ void X8DrawingContext::FillRect(DrawPixelInfo* dpi, uint32_t colour, int32_t lef
     if (colour & 0x1000000)
     {
         // Cross hatching
-        uint8_t* dst = (startY * (dpi->width + dpi->pitch)) + startX + dpi->bits;
+        uint8_t* dst = (startY * (dpi.width + dpi.pitch)) + startX + dpi.bits;
         for (int32_t i = 0; i < height; i++)
         {
-            uint8_t* nextdst = dst + dpi->width + dpi->pitch;
+            uint8_t* nextdst = dst + dpi.width + dpi.pitch;
             uint32_t p = Numerics::ror32(crossPattern, 1);
             p = (p & 0xFFFF0000) | width;
 
@@ -597,22 +597,22 @@ void X8DrawingContext::FillRect(DrawPixelInfo* dpi, uint32_t colour, int32_t lef
     }
     else if (colour & 0x4000000)
     {
-        uint8_t* dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
+        uint8_t* dst = startY * (dpi.width + dpi.pitch) + startX + dpi.bits;
 
         // The pattern loops every 15 lines this is which
         // part the pattern is on.
-        int32_t patternY = (startY + dpi->y) % 16;
+        int32_t patternY = (startY + dpi.y) % 16;
 
         // The pattern loops every 15 pixels this is which
         // part the pattern is on.
-        int32_t startPatternX = (startX + dpi->x) % 16;
+        int32_t startPatternX = (startX + dpi.x) % 16;
         int32_t patternX = startPatternX;
 
         const uint16_t* patternsrc = Patterns[colour >> 28]; // or possibly uint8_t)[esi*4] ?
 
         for (int32_t numLines = height; numLines > 0; numLines--)
         {
-            uint8_t* nextdst = dst + dpi->width + dpi->pitch;
+            uint8_t* nextdst = dst + dpi.width + dpi.pitch;
             uint16_t pattern = patternsrc[patternY];
 
             for (int32_t numPixels = width; numPixels > 0; numPixels--)
@@ -631,53 +631,53 @@ void X8DrawingContext::FillRect(DrawPixelInfo* dpi, uint32_t colour, int32_t lef
     }
     else
     {
-        uint8_t* dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
+        uint8_t* dst = startY * (dpi.width + dpi.pitch) + startX + dpi.bits;
         for (int32_t i = 0; i < height; i++)
         {
             std::fill_n(dst, width, colour & 0xFF);
-            dst += dpi->width + dpi->pitch;
+            dst += dpi.width + dpi.pitch;
         }
     }
 }
 
 void X8DrawingContext::FilterRect(
-    DrawPixelInfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (left > right)
         return;
     if (top > bottom)
         return;
-    if (dpi->x > right)
+    if (dpi.x > right)
         return;
-    if (left >= dpi->x + dpi->width)
+    if (left >= dpi.x + dpi.width)
         return;
-    if (bottom < dpi->y)
+    if (bottom < dpi.y)
         return;
-    if (top >= dpi->y + dpi->height)
+    if (top >= dpi.y + dpi.height)
         return;
 
-    int32_t startX = left - dpi->x;
+    int32_t startX = left - dpi.x;
     if (startX < 0)
     {
         startX = 0;
     }
 
-    int32_t endX = right - dpi->x + 1;
-    if (endX > dpi->width)
+    int32_t endX = right - dpi.x + 1;
+    if (endX > dpi.width)
     {
-        endX = dpi->width;
+        endX = dpi.width;
     }
 
-    int32_t startY = top - dpi->y;
+    int32_t startY = top - dpi.y;
     if (startY < 0)
     {
         startY = 0;
     }
 
-    int32_t endY = bottom - dpi->y + 1;
-    if (endY > dpi->height)
+    int32_t endY = bottom - dpi.y + 1;
+    if (endY > dpi.height)
     {
-        endY = dpi->height;
+        endY = dpi.height;
     }
 
     int32_t width = endX - startX;
@@ -686,21 +686,21 @@ void X8DrawingContext::FilterRect(
     // 0x2000000
     // 00678B7E   00678C83
     // Location in screen buffer?
-    uint8_t* dst = dpi->bits
+    uint8_t* dst = dpi.bits
         + static_cast<uint32_t>(
-                       dpi->zoom_level.ApplyInversedTo(startY) * (dpi->zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch)
-                       + dpi->zoom_level.ApplyInversedTo(startX));
+                       dpi.zoom_level.ApplyInversedTo(startY) * (dpi.zoom_level.ApplyInversedTo(dpi.width) + dpi.pitch)
+                       + dpi.zoom_level.ApplyInversedTo(startX));
 
     // Find colour in colour table?
     auto paletteMap = GetPaletteMapForColour(EnumValue(palette));
     if (paletteMap.has_value())
     {
         const auto& paletteEntries = paletteMap.value();
-        const int32_t scaled_width = dpi->zoom_level.ApplyInversedTo(width);
-        const int32_t step = dpi->zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch;
+        const int32_t scaled_width = dpi.zoom_level.ApplyInversedTo(width);
+        const int32_t step = dpi.zoom_level.ApplyInversedTo(dpi.width) + dpi.pitch;
 
         // Fill the rectangle with the colours from the colour table
-        auto c = dpi->zoom_level.ApplyInversedTo(height);
+        auto c = dpi.zoom_level.ApplyInversedTo(height);
         for (int32_t i = 0; i < c; i++)
         {
             uint8_t* nextdst = dst + step * i;
@@ -713,33 +713,33 @@ void X8DrawingContext::FilterRect(
     }
 }
 
-void X8DrawingContext::DrawLine(DrawPixelInfo* dpi, uint32_t colour, const ScreenLine& line)
+void X8DrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
-    GfxDrawLineSoftware(*dpi, line, colour);
+    GfxDrawLineSoftware(dpi, line, colour);
 }
 
-void X8DrawingContext::DrawSprite(DrawPixelInfo* dpi, const ImageId imageId, int32_t x, int32_t y)
+void X8DrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int32_t x, int32_t y)
 {
-    GfxDrawSpriteSoftware(*dpi, imageId, { x, y });
+    GfxDrawSpriteSoftware(dpi, imageId, { x, y });
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(
-    DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
+    DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
-    GfxDrawSpriteRawMaskedSoftware(*dpi, { x, y }, maskImage, colourImage);
+    GfxDrawSpriteRawMaskedSoftware(dpi, { x, y }, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);
     palette[0] = 0;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
-    GfxDrawSpritePaletteSetSoftware(*dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
+    GfxDrawSpritePaletteSetSoftware(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
-void X8DrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
+void X8DrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
-    GfxDrawSpritePaletteSetSoftware(*dpi, image, { x, y }, paletteMap);
+    GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }

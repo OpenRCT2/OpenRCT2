@@ -92,7 +92,6 @@ TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
 std::vector<CoordsXY> gMapSelectionTiles;
-std::vector<PeepSpawn> gPeepSpawns;
 
 bool gLandMountainMode;
 bool gLandPaintMode;
@@ -1553,12 +1552,13 @@ static void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
  */
 static void ClearElementsAt(const CoordsXY& loc)
 {
+    auto& gameState = GetGameState();
     // Remove the spawn point (if there is one in the current tile)
-    gPeepSpawns.erase(
+    gameState.PeepSpawns.erase(
         std::remove_if(
-            gPeepSpawns.begin(), gPeepSpawns.end(),
+            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
             [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
-        gPeepSpawns.end());
+        gameState.PeepSpawns.end());
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)

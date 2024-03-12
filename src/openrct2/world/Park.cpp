@@ -57,9 +57,10 @@ static int32_t _forcedParkRating = -1;
  */
 static PeepSpawn* GetRandomPeepSpawn()
 {
-    if (!gPeepSpawns.empty())
+    auto& gameState = GetGameState();
+    if (!gameState.PeepSpawns.empty())
     {
-        return &gPeepSpawns[ScenarioRand() % gPeepSpawns.size()];
+        return &gameState.PeepSpawns[ScenarioRand() % gameState.PeepSpawns.size()];
     }
 
     return nullptr;
@@ -230,7 +231,7 @@ void Park::Initialise()
 {
     auto& gameState = GetGameState();
 
-    Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
+    Name = LanguageGetString(STR_UNNAMED_PARK);
     PluginStorage = {};
     gameState.StaffHandymanColour = COLOUR_BRIGHT_RED;
     gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
@@ -255,7 +256,7 @@ void Park::Initialise()
 
     gameState.ParkEntranceFee = 10.00_GBP;
 
-    gPeepSpawns.clear();
+    gameState.PeepSpawns.clear();
     ParkEntranceReset();
 
     gameState.ResearchPriorities = EnumsToFlags(

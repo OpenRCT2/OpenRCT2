@@ -184,18 +184,19 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 }
             }
 
-            res.Cost = GetGameState().LandPrice;
+            auto& gameState = GetGameState();
+            res.Cost = gameState.LandPrice;
             if (isExecuting)
             {
                 if (_ownership != OWNERSHIP_UNOWNED)
                 {
-                    gPeepSpawns.erase(
+                    gameState.PeepSpawns.erase(
                         std::remove_if(
-                            gPeepSpawns.begin(), gPeepSpawns.end(),
+                            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
                             [x = loc.x, y = loc.y](const auto& spawn) {
                                 return Floor2(spawn.x, 32) == x && Floor2(spawn.y, 32) == y;
                             }),
-                        gPeepSpawns.end());
+                        gameState.PeepSpawns.end());
                 }
                 surfaceElement->SetOwnership(_ownership);
                 ParkUpdateFencesAroundTile(loc);

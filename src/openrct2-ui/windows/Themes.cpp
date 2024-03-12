@@ -759,7 +759,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             if ((colours[1] & 0x80) == 0)
                 // GfxFillRect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
                 // ColourMapA[colours[1]].mid_light);
-                GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
+                GfxClear(dpi, ColourMapA[colours[1]].mid_light);
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {

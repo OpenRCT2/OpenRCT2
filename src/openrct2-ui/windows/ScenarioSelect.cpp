@@ -401,7 +401,7 @@ static Widget _scenarioSelectWidgets[] = {
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-            GfxClear(&dpi, paletteIndex);
+            GfxClear(dpi, paletteIndex);
 
             StringId highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
             StringId unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;

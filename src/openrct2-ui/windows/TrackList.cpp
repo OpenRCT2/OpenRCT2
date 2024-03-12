@@ -677,7 +677,7 @@ static Widget _trackListWidgets[] = {
         void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             uint8_t paletteIndex = ColourMapA[colours[0]].mid_light;
-            GfxClear(&dpi, paletteIndex);
+            GfxClear(dpi, paletteIndex);
 
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
             size_t listIndex = 0;

@@ -578,7 +578,7 @@ static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFl
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->IsMasked)
         {
-            GfxDrawSpriteRawMasked(&dpi, screenCoords, imageId, attached_ps->ColourImageId);
+            GfxDrawSpriteRawMasked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
         }
         else
         {
