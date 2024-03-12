@@ -14,7 +14,9 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 
-// clang-format off
+namespace OpenRCT2::Ui::Windows
+{
+    // clang-format off
 enum WindowTitleOptionsWidgetIdx {
     WIDX_OPTIONS,
 };
@@ -23,44 +25,46 @@ static Widget _windowTitleOptionsWidgets[] = {
     MakeWidget({0, 0}, {80, 15}, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
     kWidgetsEnd,
 };
-// clang-format on
+    // clang-format on
 
-class TitleOptionsWindow final : public Window
-{
-public:
-    void OnOpen() override
+    class TitleOptionsWindow final : public Window
     {
-        widgets = _windowTitleOptionsWidgets;
-        WindowInitScrollWidgets(*this);
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        switch (widgetIndex)
+    public:
+        void OnOpen() override
         {
-            case WIDX_OPTIONS:
-                ContextOpenWindow(WindowClass::Options);
-                break;
+            widgets = _windowTitleOptionsWidgets;
+            WindowInitScrollWidgets(*this);
         }
-    }
 
-    void OnDraw(DrawPixelInfo& dpi) override
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_OPTIONS:
+                    ContextOpenWindow(WindowClass::Options);
+                    break;
+            }
+        }
+
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            DrawWidgets(dpi);
+        }
+    };
+
+    /**
+     * Creates the window containing the options button on the title screen.
+     */
+    WindowBase* WindowTitleOptionsOpen()
     {
-        DrawWidgets(dpi);
-    }
-};
+        auto* window = WindowBringToFrontByClass(WindowClass::TitleOptions);
+        if (window == nullptr)
+        {
+            window = WindowCreate<TitleOptionsWindow>(
+                WindowClass::TitleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), 80, 15,
+                WF_STICK_TO_BACK | WF_TRANSPARENT);
+        }
 
-/**
- * Creates the window containing the options button on the title screen.
- */
-WindowBase* WindowTitleOptionsOpen()
-{
-    auto* window = WindowBringToFrontByClass(WindowClass::TitleOptions);
-    if (window == nullptr)
-    {
-        window = WindowCreate<TitleOptionsWindow>(
-            WindowClass::TitleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), 80, 15, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        return window;
     }
-
-    return window;
-}
+} // namespace OpenRCT2::Ui::Windows

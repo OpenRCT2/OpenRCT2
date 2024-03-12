@@ -829,12 +829,12 @@ static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widge
         // Draw greyed out (light border bottom right shadow)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        GfxDrawSpriteSolid(&dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
+        GfxDrawSpriteSolid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        GfxDrawSpriteSolid(&dpi, image, screenCoords, colour);
+        GfxDrawSpriteSolid(dpi, image, screenCoords, colour);
     }
     else
     {

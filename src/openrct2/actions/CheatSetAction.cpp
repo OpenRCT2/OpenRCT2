@@ -767,7 +767,7 @@ void CheatSetAction::OwnAllLand() const
     }
 
     // Completely unown peep spawn points
-    for (const auto& spawn : gPeepSpawns)
+    for (const auto& spawn : GetGameState().PeepSpawns)
     {
         auto* surfaceElement = MapGetSurfaceElementAt(spawn);
         if (surfaceElement != nullptr)

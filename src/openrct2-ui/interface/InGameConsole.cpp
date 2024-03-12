@@ -21,6 +21,7 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <openrct2/localisation/StringIds.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -36,10 +37,10 @@ static int32_t InGameConsoleGetLineHeight()
     return FontGetLineHeight(InGameConsoleGetFontStyle());
 }
 
-InGameConsole::InGameConsole()
+void InGameConsole::WriteInitial()
 {
     InteractiveConsole::WriteLine(OPENRCT2_NAME " " OPENRCT2_VERSION);
-    InteractiveConsole::WriteLine("Type 'help' for a list of available commands. Type 'hide' to hide the console.");
+    InteractiveConsole::WriteLine(LanguageGetString(STR_CONSOLE_HELPER_TEXT));
     InteractiveConsole::WriteLine("");
     WritePrompt();
 }
@@ -176,6 +177,12 @@ void InGameConsole::ClearLine()
 
 void InGameConsole::Open()
 {
+    if (!_isInitialised)
+    {
+        WriteInitial();
+        _isInitialised = true;
+    }
+
     _isOpen = true;
     ScrollToEnd();
     RefreshCaret();

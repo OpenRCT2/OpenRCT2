@@ -1586,7 +1586,7 @@ std::string Peep::GetName() const
 {
     Formatter ft;
     FormatNameTo(ft);
-    return ::FormatStringID(STR_STRINGID, ft.Data());
+    return FormatStringIDLegacy(STR_STRINGID, ft.Data());
 }
 
 bool Peep::SetName(std::string_view value)

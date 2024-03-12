@@ -474,11 +474,12 @@ void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
         }
     }
 
-    if (gPeepSpawns.empty())
+    auto& gameState = GetGameState();
+    if (gameState.PeepSpawns.empty())
     {
-        gPeepSpawns.emplace_back();
+        gameState.PeepSpawns.emplace_back();
     }
-    PeepSpawn* peepSpawn = &gPeepSpawns[0];
+    PeepSpawn* peepSpawn = &gameState.PeepSpawns[0];
     peepSpawn->x = _loc.x + (DirectionOffsets[direction].x * 15) + 16;
     peepSpawn->y = _loc.y + (DirectionOffsets[direction].y * 15) + 16;
     peepSpawn->direction = direction;

@@ -1,6 +1,7 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
+- Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
 

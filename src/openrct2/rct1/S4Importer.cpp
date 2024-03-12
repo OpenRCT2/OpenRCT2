@@ -1410,14 +1410,15 @@ namespace RCT1
 
         void ImportPeepSpawns()
         {
-            gPeepSpawns.clear();
+            auto& gameState = GetGameState();
+            gameState.PeepSpawns.clear();
             for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
             {
                 if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
                     PeepSpawn spawn = { _s4.PeepSpawn[i].x, _s4.PeepSpawn[i].y, _s4.PeepSpawn[i].z * 16,
                                         _s4.PeepSpawn[i].direction };
-                    gPeepSpawns.push_back(spawn);
+                    gameState.PeepSpawns.push_back(spawn);
                 }
             }
         }

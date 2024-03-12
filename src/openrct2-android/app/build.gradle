@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdk 34
     buildToolsVersion "34.0.0"
     ndkVersion "26.2.11394342" // Latest r26c (LTS), to be synced with CI container image
     namespace "io.openrct2"
     defaultConfig {
         applicationId 'io.openrct2'
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
 
         versionCode 2

@@ -987,7 +987,7 @@ static void ViewportPaintColumn(PaintSession& session)
         {
             colour = COLOUR_BLACK;
         }
-        GfxClear(&session.DPI, colour);
+        GfxClear(session.DPI, colour);
     }
 
     PaintDrawStructs(session);

@@ -492,7 +492,7 @@ static void TTFDrawCharacterSprite(DrawPixelInfo& dpi, int32_t codepoint, TextDr
         }
 
         PaletteMap paletteMap(info->palette);
-        GfxDrawGlyph(&dpi, sprite, screenCoords, paletteMap);
+        GfxDrawGlyph(dpi, sprite, screenCoords, paletteMap);
     }
 
     info->x += characterWidth;
@@ -548,7 +548,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
         uint8_t hint_thresh = use_hinting ? fontDesc->hinting_threshold : 0;
         drawingEngine->InvalidateImage(imageId);
         drawingContext->DrawTTFBitmap(
-            &dpi, info, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY, hint_thresh);
+            dpi, info, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY, hint_thresh);
 
         _ttfGlId++;
         if (_ttfGlId >= 1023)

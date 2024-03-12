@@ -80,11 +80,6 @@ struct WindowBase
 
     WindowBase& operator=(const WindowBase&) = delete;
 
-    virtual bool IsLegacy()
-    {
-        return true;
-    }
-
     // Events
     virtual void OnOpen()
     {

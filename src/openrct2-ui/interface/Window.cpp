@@ -638,10 +638,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
             {
                 if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
                 {
-                    if (w.IsLegacy())
-                        WidgetDraw(dpi, w, widgetIndex);
-                    else
-                        w.OnDrawWidget(widgetIndex, dpi);
+                    w.OnDrawWidget(widgetIndex, dpi);
                 }
             }
         }
@@ -689,11 +686,6 @@ void InvalidateAllWindowsAfterInput()
         WindowInvalidatePressedImageButton(*w);
         w->OnResize();
     });
-}
-
-bool Window::IsLegacy()
-{
-    return false;
 }
 
 void Window::OnDraw(DrawPixelInfo& dpi)
@@ -807,7 +799,8 @@ void Window::TextInputOpen(
     WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
     uintptr_t existingArgs, int32_t maxLength)
 {
-    WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+    OpenRCT2::Ui::Windows::WindowTextInputOpen(
+        this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }
 
 void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)

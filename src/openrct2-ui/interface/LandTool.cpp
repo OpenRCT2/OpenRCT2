@@ -22,6 +22,7 @@
 #include <openrct2/world/Surface.h>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Ui::Windows;
 
 // clang-format off
 static uint16_t toolSizeSpriteIndices[] =

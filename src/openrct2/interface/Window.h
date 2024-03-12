@@ -611,9 +611,6 @@ Viewport* WindowGetViewport(WindowBase* window);
 void WindowRelocateWindows(int32_t width, int32_t height);
 void WindowResizeGui(int32_t width, int32_t height);
 void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
-void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords);
-void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords);
-void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords);
 
 void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
@@ -634,28 +631,6 @@ bool SceneryToolIsActive();
 Viewport* WindowGetPreviousViewport(Viewport* current);
 void WindowResetVisibilities();
 void WindowInitAll();
-
-void WindowRideConstructionKeyboardShortcutTurnLeft();
-void WindowRideConstructionKeyboardShortcutTurnRight();
-void WindowRideConstructionKeyboardShortcutUseTrackDefault();
-void WindowRideConstructionKeyboardShortcutSlopeDown();
-void WindowRideConstructionKeyboardShortcutSlopeUp();
-void WindowRideConstructionKeyboardShortcutChainLiftToggle();
-void WindowRideConstructionKeyboardShortcutBankLeft();
-void WindowRideConstructionKeyboardShortcutBankRight();
-void WindowRideConstructionKeyboardShortcutPreviousTrack();
-void WindowRideConstructionKeyboardShortcutNextTrack();
-void WindowRideConstructionKeyboardShortcutBuildCurrent();
-void WindowRideConstructionKeyboardShortcutDemolishCurrent();
-
-void WindowFootpathKeyboardShortcutTurnLeft();
-void WindowFootpathKeyboardShortcutTurnRight();
-void WindowFootpathKeyboardShortcutSlopeDown();
-void WindowFootpathKeyboardShortcutSlopeUp();
-void WindowFootpathKeyboardShortcutBuildCurrent();
-void WindowFootpathKeyboardShortcutDemolishCurrent();
-
-void WindowTileInspectorKeyboardShortcutToggleInvisibility();
 
 void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);
 void WindowUnfollowSprite(WindowBase& w);

@@ -71,7 +71,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
             break;
         case RideSetAppearanceType::VehicleColourBody:
         case RideSetAppearanceType::VehicleColourTrim:
-        case RideSetAppearanceType::VehicleColourTernary:
+        case RideSetAppearanceType::VehicleColourTertiary:
             if (_index >= std::size(ride->vehicle_colours))
             {
                 LOG_WARNING("Invalid game command, index %d out of bounds", _index);
@@ -123,7 +123,7 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             ride->vehicle_colours[_index].Trim = _value;
             RideUpdateVehicleColours(*ride);
             break;
-        case RideSetAppearanceType::VehicleColourTernary:
+        case RideSetAppearanceType::VehicleColourTertiary:
             ride->vehicle_colours[_index].Tertiary = _value;
             RideUpdateVehicleColours(*ride);
             break;

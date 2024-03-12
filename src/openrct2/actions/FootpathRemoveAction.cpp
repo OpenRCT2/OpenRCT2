@@ -103,16 +103,17 @@ GameActions::Result FootpathRemoveAction::Execute() const
         TileElementRemove(footpathElement);
         FootpathUpdateQueueChains();
 
+        auto& gameState = GetGameState();
         // Remove the spawn point (if there is one in the current tile)
-        gPeepSpawns.erase(
+        gameState.PeepSpawns.erase(
             std::remove_if(
-                gPeepSpawns.begin(), gPeepSpawns.end(),
+                gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
                 [this](const CoordsXYZ& spawn) {
                     {
                         return spawn.ToTileStart() == _loc.ToTileStart();
                     }
                 }),
-            gPeepSpawns.end());
+            gameState.PeepSpawns.end());
     }
     else
     {

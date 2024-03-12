@@ -1013,8 +1013,6 @@ void RideDelete(RideId id);
 const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
 
-extern const StringId ColourSchemeNames[4];
-
 int32_t RideGetCount();
 void RideInitAll();
 void ResetAllRideBuildDates();
@@ -1084,8 +1082,6 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
 enum class RideSetSetting : uint8_t;
 money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);
 money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
-
-void UpdateGhostTrackAndArrow();
 
 uint32_t RideCustomersPerHour(const Ride& ride);
 uint32_t RideCustomersInLast5Minutes(const Ride& ride);

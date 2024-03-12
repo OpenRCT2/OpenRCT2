@@ -1760,14 +1760,15 @@ namespace RCT2
                 _s6.PeepSpawns[0].z = 7;
             }
 
-            gPeepSpawns.clear();
+            auto& gameState = GetGameState();
+            gameState.PeepSpawns.clear();
             for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
             {
                 if (_s6.PeepSpawns[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
                     PeepSpawn spawn = { _s6.PeepSpawns[i].x, _s6.PeepSpawns[i].y, _s6.PeepSpawns[i].z * 16,
                                         _s6.PeepSpawns[i].direction };
-                    gPeepSpawns.push_back(spawn);
+                    gameState.PeepSpawns.push_back(spawn);
                 }
             }
         }

@@ -34,6 +34,8 @@
 #include <openrct2/world/Scenery.h>
 #include <optional>
 
+using namespace OpenRCT2::Ui::Windows;
+
 struct RCTMouseData
 {
     uint32_t x;
