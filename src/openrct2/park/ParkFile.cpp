@@ -912,7 +912,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.GuestGenerationProbability);
                     cs.ReadWrite(gameState.SuggestedGuestMaximum);
 
-                    cs.ReadWriteArray(gPeepWarningThrottle, [&cs](uint8_t& value) {
+                    cs.ReadWriteArray(gameState.PeepWarningThrottle, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

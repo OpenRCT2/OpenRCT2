@@ -375,7 +375,7 @@ namespace RCT2
             gameState.TotalAdmissions = _s6.TotalAdmissions;
             gameState.TotalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
             gameState.CompanyValue = ToMoney64(_s6.CompanyValue);
-            std::memcpy(gPeepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
+            std::memcpy(gameState.PeepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
 
             // Awards
             auto& awards = GetAwards();
