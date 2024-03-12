@@ -3691,6 +3691,15 @@ STR_6610    :Élément de chemin introuvable
 STR_6611    :Élément de mur introuvable
 STR_6612    :Élément de bannière introuvable
 STR_6613    :Recharger l’objet
+STR_6614    :Impossible de changer le prix d’entrée du parc
+STR_6615    :La voie a besoin d’eau sur cette case
+STR_6616    :Action invalide pour ce type de personnel
+STR_6617    :Impossible de permuter un élément de case avec lui-même
+STR_6618    :Impossible de restreindre ou dé-restreindre l’objet…
+STR_6619    :Ce type d’objet ne peut pas être restreint !
+STR_6620    :Objet introuvable !
+STR_6621    :Restreindre
+STR_6622    :Restreint l’objet à l’éditeur de scénario et au mode bac à sable
 
 #############
 # Scenarios #
