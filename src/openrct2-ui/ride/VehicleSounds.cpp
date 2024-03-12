@@ -3,12 +3,14 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 
+#include <numeric>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/core/FixedVector.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/TrainManager.h>
@@ -27,7 +29,7 @@ namespace OpenRCT2::Audio
             {
                 assert(FirstCar->IsHead());
             }
-            int32_t Mass();
+            int32_t GetMass() const;
 
             friend class TrainIterator<T>;
             using iterator = TrainIterator<T>;
@@ -87,15 +89,9 @@ namespace OpenRCT2::Audio
         };
     } // namespace
 
-    template<typename T> int32_t Train<T>::Mass()
+    template<typename T> int32_t Train<T>::GetMass() const
     {
-        int32_t totalMass = 0;
-        for (const auto& vehicle : *this)
-        {
-            totalMass += vehicle.mass;
-        }
-
-        return totalMass;
+        return std::accumulate(begin(), end(), 0, [](int32_t totalMass, Vehicle& vehicle) { return totalMass + vehicle.mass; });
     }
 
     static bool SoundCanPlay(const Vehicle& vehicle)
@@ -151,7 +147,7 @@ namespace OpenRCT2::Audio
      */
     static uint16_t GetSoundPriority(const Vehicle& vehicle)
     {
-        int32_t result = Train(&vehicle).Mass() + (std::abs(vehicle.velocity) >> 13);
+        int32_t result = Train(&vehicle).GetMass() + (std::abs(vehicle.velocity) >> 13);
 
         for (const auto& vehicleSound : gVehicleSoundList)
         {
@@ -232,7 +228,8 @@ namespace OpenRCT2::Audio
      *
      *  rct2: 0x006BB9FF
      */
-    static void UpdateSoundParams(const Vehicle& vehicle, std::vector<VehicleSoundParams>& vehicleSoundParamsList)
+    static void UpdateSoundParams(
+        const Vehicle& vehicle, FixedVector<VehicleSoundParams, MaxVehicleSounds>& vehicleSoundParamsList)
     {
         if (!SoundCanPlay(vehicle))
             return;
@@ -530,8 +527,7 @@ namespace OpenRCT2::Audio
         if (!IsAvailable())
             return;
 
-        std::vector<VehicleSoundParams> vehicleSoundParamsList;
-        vehicleSoundParamsList.reserve(MaxVehicleSounds);
+        FixedVector<VehicleSoundParams, MaxVehicleSounds> vehicleSoundParamsList;
 
         VehicleSoundsUpdateWindowSetup();
 
