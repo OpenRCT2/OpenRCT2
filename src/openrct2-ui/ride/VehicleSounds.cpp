@@ -33,11 +33,11 @@ namespace OpenRCT2::Audio
 
             friend class TrainIterator<T>;
             using iterator = TrainIterator<T>;
-            iterator begin()
+            iterator begin() const
             {
                 return iterator{ FirstCar };
             }
-            iterator end()
+            iterator end() const
             {
                 return iterator{};
             }
@@ -59,7 +59,7 @@ namespace OpenRCT2::Audio
                 : Current(vehicle)
             {
             }
-            reference operator*()
+            reference operator*() const
             {
                 return *Current;
             }
@@ -78,7 +78,7 @@ namespace OpenRCT2::Audio
                 ++*this;
                 return temp;
             }
-            bool operator!=(const iterator& other)
+            bool operator!=(const iterator& other) const
             {
                 return Current != other.Current;
             }
@@ -91,7 +91,7 @@ namespace OpenRCT2::Audio
 
     template<typename T> int32_t Train<T>::GetMass() const
     {
-        return std::accumulate(begin(), end(), 0, [](int32_t totalMass, Vehicle& vehicle) { return totalMass + vehicle.mass; });
+        return std::accumulate(begin(), end(), 0, [](int32_t totalMass, const Vehicle& vehicle) { return totalMass + vehicle.mass; });
     }
 
     static bool SoundCanPlay(const Vehicle& vehicle)
