@@ -71,22 +71,15 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
                     throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
                 }
 
-                auto buffer = static_cast<uint8_t*>(AllocateLargeTempBuffer());
-                try
+                auto buffer = AllocateLargeTempBuffer();
+                size_t uncompressedLength = DecodeChunk(
+                    buffer.get(), MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
+                if (uncompressedLength == 0)
                 {
-                    size_t uncompressedLength = DecodeChunk(buffer, MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
-                    if (uncompressedLength == 0)
-                    {
-                        throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
-                    }
-                    return std::make_shared<SawyerChunk>(
-                        static_cast<SAWYER_ENCODING>(header.encoding), buffer, uncompressedLength);
+                    throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
                 }
-                catch (const std::exception&)
-                {
-                    FreeLargeTempBuffer(buffer);
-                    throw;
-                }
+                return std::make_shared<SawyerChunk>(
+                    static_cast<SAWYER_ENCODING>(header.encoding), std::move(buffer), uncompressedLength);
             }
             default:
                 throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
@@ -119,22 +112,14 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
             throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
         }
 
-        auto buffer = static_cast<uint8_t*>(AllocateLargeTempBuffer());
-        try
+        auto buffer = AllocateLargeTempBuffer();
+        SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
+        size_t uncompressedLength = DecodeChunk(buffer.get(), MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
+        if (uncompressedLength == 0)
         {
-            SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
-            size_t uncompressedLength = DecodeChunk(buffer, MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
-            if (uncompressedLength == 0)
-            {
-                throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
-            }
-            return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, buffer, uncompressedLength);
+            throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
         }
-        catch (const std::exception&)
-        {
-            FreeLargeTempBuffer(buffer);
-            throw;
-        }
+        return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, std::move(buffer), uncompressedLength);
     }
     catch (const std::exception&)
     {
@@ -163,11 +148,6 @@ void SawyerChunkReader::ReadChunk(void* dst, size_t length)
             std::fill_n(offset, remainingLength, 0x00);
         }
     }
-}
-
-void SawyerChunkReader::FreeChunk(void* data)
-{
-    FreeLargeTempBuffer(data);
 }
 
 size_t SawyerChunkReader::DecodeChunk(void* dst, size_t dstCapacity, const void* src, const SawyerCodingChunkHeader& header)
@@ -200,8 +180,7 @@ size_t SawyerChunkReader::DecodeChunk(void* dst, size_t dstCapacity, const void*
 
 size_t SawyerChunkReader::DecodeChunkRLERepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength)
 {
-    auto immBuffer = std::unique_ptr<uint8_t, decltype(&FreeLargeTempBuffer)>(
-        static_cast<uint8_t*>(AllocateLargeTempBuffer()), &FreeLargeTempBuffer);
+    auto immBuffer = AllocateLargeTempBuffer();
     auto immLength = DecodeChunkRLE(immBuffer.get(), MAX_UNCOMPRESSED_CHUNK_SIZE, src, srcLength);
     auto size = DecodeChunkRepeat(dst, dstCapacity, immBuffer.get(), immLength);
     return size;
@@ -310,25 +289,7 @@ size_t SawyerChunkReader::DecodeChunkRotate(void* dst, size_t dstCapacity, const
     return srcLength;
 }
 
-void* SawyerChunkReader::AllocateLargeTempBuffer()
+std::unique_ptr<uint8_t[]> SawyerChunkReader::AllocateLargeTempBuffer()
 {
-#ifdef __USE_HEAP_ALLOC__
-    auto buffer = HeapAlloc(GetProcessHeap(), 0, MAX_UNCOMPRESSED_CHUNK_SIZE);
-#else
-    auto buffer = std::malloc(MAX_UNCOMPRESSED_CHUNK_SIZE);
-#endif
-    if (buffer == nullptr)
-    {
-        throw std::runtime_error("Unable to allocate large temporary buffer.");
-    }
-    return buffer;
-}
-
-void SawyerChunkReader::FreeLargeTempBuffer(void* buffer)
-{
-#ifdef __USE_HEAP_ALLOC__
-    HeapFree(GetProcessHeap(), 0, buffer);
-#else
-    std::free(buffer);
-#endif
+    return std::make_unique<uint8_t[]>(MAX_UNCOMPRESSED_CHUNK_SIZE);
 }
