@@ -10,6 +10,7 @@
 #include "EntityRegistry.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../core/Algorithm.hpp"
 #include "../core/ChecksumStream.h"
 #include "../core/Crypt.h"
@@ -36,17 +37,8 @@
 #include <numeric>
 #include <vector>
 
-union Entity
-{
-    uint8_t Pad00[0x200];
-    EntityBase base;
-    Entity()
-        : Pad00()
-    {
-    }
-};
+using namespace OpenRCT2;
 
-static Entity _entities[MAX_ENTITIES]{};
 static std::array<std::list<EntityId>, EnumValue(EntityType::Count)> gEntityLists;
 static std::vector<EntityId> _freeIdList;
 
@@ -120,8 +112,9 @@ std::string EntitiesChecksum::ToString() const
 
 EntityBase* TryGetEntity(EntityId entityIndex)
 {
+    auto& gameState = GetGameState();
     const auto idx = entityIndex.ToUnderlying();
-    return idx >= MAX_ENTITIES ? nullptr : &_entities[idx].base;
+    return idx >= MAX_ENTITIES ? nullptr : &gameState.Entities[idx].base;
 }
 
 EntityBase* GetEntity(EntityId entityIndex)
@@ -182,7 +175,8 @@ void ResetAllEntities()
         FreeEntity(*spr);
     }
 
-    std::fill(std::begin(_entities), std::end(_entities), Entity());
+    auto& gameState = GetGameState();
+    std::fill(std::begin(gameState.Entities), std::end(gameState.Entities), Entity_t());
     OpenRCT2::RideUse::GetHistory().Clear();
     OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
@@ -266,8 +260,8 @@ static void EntityReset(EntityBase* entity)
     auto entityIndex = entity->Id;
     _entityFlashingList[entityIndex.ToUnderlying()] = false;
 
-    Entity* spr = reinterpret_cast<Entity*>(entity);
-    *spr = Entity();
+    Entity_t* tempEntity = reinterpret_cast<Entity_t*>(entity);
+    *tempEntity = Entity_t();
 
     entity->Id = entityIndex;
     entity->Type = EntityType::Null;
