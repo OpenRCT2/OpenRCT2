@@ -378,12 +378,12 @@ namespace RCT2
             std::memcpy(gameState.PeepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
 
             // Awards
-            auto& awards = GetAwards();
+            auto& currentAwards = gameState.CurrentAwards;
             for (auto& src : _s6.Awards)
             {
                 if (src.Time != 0)
                 {
-                    awards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
+                    currentAwards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
                 }
             }
 

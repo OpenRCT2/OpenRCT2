@@ -617,7 +617,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     }
 
     // Reward or penalties for park awards
-    for (const auto& award : GetAwards())
+    for (const auto& award : GetGameState().CurrentAwards)
     {
         // +/- 0.25% of the probability
         if (AwardIsPositive(award.Type))

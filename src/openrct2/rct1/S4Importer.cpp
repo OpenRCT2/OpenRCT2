@@ -2162,12 +2162,12 @@ namespace RCT1
             }
 
             // Awards
-            auto& awards = GetAwards();
+            auto& currentAwards = gameState.CurrentAwards;
             for (auto& src : _s4.Awards)
             {
                 if (src.Time != 0)
                 {
-                    awards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
+                    currentAwards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
                 }
             }
 

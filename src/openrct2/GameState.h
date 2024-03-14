@@ -14,6 +14,7 @@
 #include "Editor.h"
 #include "Limits.h"
 #include "interface/ZoomLevel.h"
+#include "management/Award.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
@@ -129,6 +130,8 @@ namespace OpenRCT2
         ZoomLevel SavedViewZoom;
 
         ObjectEntryIndex LastEntranceStyle;
+
+        std::vector<Award> CurrentAwards;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.

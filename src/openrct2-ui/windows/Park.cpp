@@ -1183,7 +1183,9 @@ static constexpr WindowParkAward _parkAwards[] = {
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            for (const auto& award : GetAwards())
+            auto& currentAwards = OpenRCT2::GetGameState().CurrentAwards;
+
+            for (const auto& award : currentAwards)
             {
                 GfxDrawSprite(dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
                 DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
@@ -1191,7 +1193,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 screenCoords.y += 32;
             }
 
-            if (GetAwards().empty())
+            if (currentAwards.empty())
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
         }
 #pragma endregion
