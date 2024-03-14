@@ -66,8 +66,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-uint8_t gPeepWarningThrottle[16];
-
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
 
@@ -1037,10 +1035,12 @@ void Peep::Update()
  */
 void PeepProblemWarningsUpdate()
 {
+    auto& gameState = GetGameState();
+
     Ride* ride;
     uint32_t hungerCounter = 0, lostCounter = 0, noexitCounter = 0, thirstCounter = 0, litterCounter = 0, disgustCounter = 0,
              toiletCounter = 0, vandalismCounter = 0;
-    uint8_t* warningThrottle = gPeepWarningThrottle;
+    uint8_t* warningThrottle = gameState.PeepWarningThrottle;
 
     int32_t inQueueCounter = 0;
     int32_t tooLongQueueCounter = 0;
@@ -1116,7 +1116,6 @@ void PeepProblemWarningsUpdate()
                 break;
         }
     }
-    auto& gameState = GetGameState();
 
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warningThrottle[0])

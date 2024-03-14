@@ -459,8 +459,6 @@ enum
 extern const PeepAnimationEntry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
-extern uint8_t gPeepWarningThrottle[16];
-
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();
 void PeepProblemWarningsUpdate();
