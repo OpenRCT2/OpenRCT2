@@ -127,7 +127,10 @@ static void classicStandUpRCTrackFlatToLeftBank(
     
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -153,7 +156,10 @@ static void classicStandUpRCTrackFlatToRightBank(
     
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -203,7 +209,10 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentBottomRightSide, (direction + 3) % NumOrthogonalDirections),
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomRightSide),
+                    (direction + 3) % NumOrthogonalDirections),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -235,7 +244,11 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(kSegmentLeftCorner | kSegmentBottomCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentBottomLeftSide | kSegmentBottomRightSide, (direction + 3) % NumOrthogonalDirections),
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                    (direction + 3) % NumOrthogonalDirections),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -262,7 +275,13 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
 
             }
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(kSegmentRightCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomRightSide, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    (direction + 3) % NumOrthogonalDirections),
+                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
             
@@ -293,7 +312,11 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(kSegmentTopCorner | kSegmentLeftCorner | kSegmentCentre | kSegmentTopLeftSide | kSegmentTopRightSide | kSegmentBottomLeftSide, (direction + 3) % NumOrthogonalDirections),
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                    (direction + 3) % NumOrthogonalDirections),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -317,7 +340,13 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(kSegmentTopCorner | kSegmentCentre | kSegmentTopRightSide | kSegmentBottomLeftSide, (direction + 3) % NumOrthogonalDirections), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide),
+                    (direction + 3) % NumOrthogonalDirections),
+                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         }
