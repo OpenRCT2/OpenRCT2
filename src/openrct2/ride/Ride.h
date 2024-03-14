@@ -914,7 +914,7 @@ constexpr uint16_t kCurrentTurnCountMask = 0xF800;
 constexpr uint16_t kTurnMask1Element = 0x001F;
 constexpr uint16_t kTurnMask2Elements = 0x00E0;
 constexpr uint16_t kTurnMask3Elements = 0x0700;
-#define TURN_MASK_4_PLUS_ELEMENTS 0xF800
+constexpr uint16_t kTurnMask4Elements = 0xF800;
 
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
