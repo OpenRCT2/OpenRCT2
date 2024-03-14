@@ -4396,11 +4396,11 @@ void IncrementTurnCount1Element(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_1_ELEMENT) + 1;
-    *turn_count &= ~TURN_MASK_1_ELEMENT;
+    uint16_t value = (*turn_count & kTurnMask1Element) + 1;
+    *turn_count &= ~kTurnMask1Element;
 
-    if (value > TURN_MASK_1_ELEMENT)
-        value = TURN_MASK_1_ELEMENT;
+    if (value > kTurnMask1Element)
+        value = kTurnMask1Element;
     *turn_count |= value;
 }
 
@@ -4496,7 +4496,7 @@ int32_t GetTurnCount1Element(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return (*turn_count) & TURN_MASK_1_ELEMENT;
+    return (*turn_count) & kTurnMask1Element;
 }
 
 int32_t GetTurnCount2Elements(const Ride& ride, uint8_t type)
