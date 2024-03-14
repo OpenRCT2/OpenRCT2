@@ -5372,7 +5372,7 @@ static bool CheckForAdjacentStation(const CoordsXYZ& stationCoords, uint8_t dire
     bool found = false;
     int32_t adjX = stationCoords.x;
     int32_t adjY = stationCoords.y;
-    for (uint32_t i = 0; i <= RIDE_ADJACENCY_CHECK_DISTANCE; i++)
+    for (uint32_t i = 0; i <= kRideAdjacencyCheckDistance; i++)
     {
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;

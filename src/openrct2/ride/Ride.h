@@ -40,7 +40,8 @@ struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
 
-#define RIDE_ADJACENCY_CHECK_DISTANCE 5
+constexpr uint8_t kRideAdjacencyCheckDistance = 5;
+
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
