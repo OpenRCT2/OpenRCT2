@@ -181,7 +181,6 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    
     switch (trackSequence)
     {
         case 0:
@@ -210,9 +209,9 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomRightSide),
-                    (direction + 3) % NumOrthogonalDirections),
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::topRightSide),
+                    direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -246,9 +245,9 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                    (direction + 3) % NumOrthogonalDirections),
+                        PaintSegment::bottomCorner, PaintSegment::rightCorner, PaintSegment::centre,
+                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::topRightSide),
+                    direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -278,9 +277,8 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    (direction + 3) % NumOrthogonalDirections),
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -314,9 +312,9 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                    (direction + 3) % NumOrthogonalDirections),
+                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                        PaintSegment::bottomLeftSide, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
+                    direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -343,9 +341,9 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
-                    (direction + 3) % NumOrthogonalDirections),
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
