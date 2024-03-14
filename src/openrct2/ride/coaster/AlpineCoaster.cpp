@@ -88,7 +88,10 @@ namespace AlpineRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -121,7 +124,7 @@ namespace AlpineRC
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -202,7 +205,10 @@ namespace AlpineRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -283,7 +289,10 @@ namespace AlpineRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -364,7 +373,10 @@ namespace AlpineRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -427,7 +439,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -458,7 +476,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -498,7 +522,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -550,7 +580,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -583,7 +619,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -612,7 +651,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -645,7 +690,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -686,7 +734,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -738,7 +792,11 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -768,7 +826,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -797,13 +858,24 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -843,7 +915,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -888,7 +963,11 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -918,7 +997,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -947,13 +1029,24 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -994,7 +1087,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -1048,7 +1144,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -1076,7 +1178,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
@@ -1104,7 +1212,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -1168,7 +1282,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -1205,7 +1325,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -1233,7 +1359,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
@@ -1261,7 +1393,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
@@ -1325,7 +1463,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
@@ -1362,7 +1506,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -1390,7 +1540,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
@@ -1418,7 +1574,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
@@ -1482,7 +1644,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
@@ -1519,7 +1687,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -1547,7 +1721,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
@@ -1575,7 +1755,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
@@ -1639,7 +1825,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
@@ -1676,7 +1868,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -1704,7 +1902,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
@@ -1732,7 +1936,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
@@ -1796,7 +2006,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
@@ -1833,7 +2049,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1860,7 +2082,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1887,7 +2115,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1950,7 +2184,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
         }
 
@@ -1988,7 +2228,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -2016,7 +2262,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
@@ -2044,7 +2296,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
@@ -2108,7 +2366,13 @@ namespace AlpineRC
                     }
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
@@ -2155,7 +2419,10 @@ namespace AlpineRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -2200,7 +2467,10 @@ namespace AlpineRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -2266,7 +2536,10 @@ namespace AlpineRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -2318,7 +2591,10 @@ namespace AlpineRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -2370,7 +2646,10 @@ namespace AlpineRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -2422,7 +2701,10 @@ namespace AlpineRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -2489,7 +2771,10 @@ namespace AlpineRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -2517,7 +2802,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -2535,7 +2826,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
@@ -2549,7 +2846,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -2579,7 +2882,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -2602,7 +2911,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -2616,7 +2931,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
@@ -2634,7 +2955,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -2664,7 +2991,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -2687,7 +3020,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -2705,7 +3044,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
@@ -2719,7 +3064,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -2749,7 +3100,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -2772,7 +3129,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -2786,7 +3149,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
@@ -2804,7 +3173,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -2834,7 +3209,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -2857,7 +3238,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -2875,7 +3262,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
@@ -2889,7 +3282,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
@@ -2919,7 +3318,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
@@ -2942,7 +3347,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -2956,7 +3367,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
@@ -2974,7 +3391,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
@@ -3004,7 +3427,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
@@ -3027,7 +3456,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -3045,7 +3480,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
@@ -3059,7 +3500,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
@@ -3089,7 +3536,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
@@ -3112,7 +3565,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -3126,7 +3585,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
@@ -3144,7 +3609,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
@@ -3174,7 +3645,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
@@ -3197,7 +3674,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3214,7 +3697,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -3227,7 +3716,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
@@ -3256,7 +3751,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
         }
 
@@ -3280,7 +3781,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3293,7 +3800,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -3310,7 +3823,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
@@ -3339,7 +3858,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 break;
         }
 
@@ -3363,7 +3888,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -3381,7 +3912,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
@@ -3395,7 +3932,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
@@ -3425,7 +3968,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
@@ -3448,7 +3997,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -3462,7 +4017,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
@@ -3480,7 +4041,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
@@ -3510,7 +4077,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
@@ -3533,7 +4106,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -3547,7 +4126,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
@@ -3561,7 +4146,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -3591,7 +4182,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -3614,7 +4211,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -3628,7 +4231,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
@@ -3642,7 +4251,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -3672,7 +4287,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -3719,7 +4340,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -3750,7 +4377,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -3793,7 +4426,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -3848,7 +4487,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -3881,7 +4526,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3910,7 +4558,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -3943,7 +4597,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3987,7 +4644,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -4039,7 +4702,11 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -4069,7 +4736,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4098,13 +4768,24 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -4144,7 +4825,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4189,7 +4873,11 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -4219,7 +4907,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4248,13 +4939,24 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -4295,7 +4997,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4356,7 +5061,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -4402,7 +5113,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
@@ -4446,7 +5163,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -4497,7 +5220,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
@@ -4557,7 +5286,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -4590,7 +5325,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -4619,7 +5357,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
@@ -4652,7 +5396,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -4693,7 +5440,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
@@ -4737,7 +5490,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -4770,7 +5529,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -4799,7 +5561,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
@@ -4832,7 +5600,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -4873,7 +5644,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
@@ -4933,7 +5710,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -4968,7 +5751,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5004,7 +5790,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5045,7 +5834,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -5089,7 +5884,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -5125,7 +5926,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5162,7 +5966,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5203,7 +6010,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
@@ -5250,7 +6063,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5282,7 +6100,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -5325,7 +6149,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5369,7 +6198,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5401,7 +6235,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
@@ -5439,7 +6279,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5487,7 +6332,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5519,7 +6369,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
@@ -5562,7 +6418,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5606,7 +6467,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5638,7 +6504,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
@@ -5676,7 +6548,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5750,7 +6627,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5784,7 +6666,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5813,7 +6698,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -5846,7 +6737,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5890,7 +6784,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5934,7 +6833,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5968,7 +6872,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5997,7 +6904,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 11:
@@ -6030,7 +6943,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6069,7 +6985,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6116,7 +7037,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6150,7 +7076,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6179,7 +7108,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
@@ -6212,7 +7147,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6261,7 +7199,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6305,7 +7248,12 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6339,7 +7287,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
+                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6368,7 +7319,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 11:
@@ -6401,7 +7358,10 @@ namespace AlpineRC
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6445,7 +7405,12 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        direction),
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6505,7 +7470,10 @@ namespace AlpineRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+            0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -6550,7 +7518,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
@@ -6596,7 +7570,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
@@ -6643,7 +7623,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
@@ -6689,7 +7675,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
@@ -6733,7 +7725,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
@@ -6782,7 +7780,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
@@ -6826,7 +7830,13 @@ namespace AlpineRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
@@ -6875,7 +7885,13 @@ namespace AlpineRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }

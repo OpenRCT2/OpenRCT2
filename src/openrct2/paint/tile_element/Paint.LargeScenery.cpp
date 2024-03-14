@@ -78,11 +78,11 @@ static void PaintLargeScenerySupports(
     int32_t clearanceHeight = Ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, clearanceHeight, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
     }
     else
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     }
     PaintUtilSetGeneralSupportHeight(session, clearanceHeight, 0x20);
 }

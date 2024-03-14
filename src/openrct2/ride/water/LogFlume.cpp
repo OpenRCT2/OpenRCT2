@@ -179,7 +179,10 @@ static void PaintLogFlumeTrackFlat(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -207,7 +210,7 @@ static void PaintLogFlumeTrackStation(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -243,7 +246,10 @@ static void PaintLogFlumeTrack25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -279,7 +285,10 @@ static void PaintLogFlumeTrackFlatTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -315,7 +324,10 @@ static void PaintLogFlumeTrack25DegUpToFlat(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
@@ -351,7 +363,10 @@ static void PaintLogFlumeTrack25DegDown(
         PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -387,7 +402,10 @@ static void PaintLogFlumeTrackFlatTo25DegDown(
         PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
@@ -423,7 +441,10 @@ static void PaintLogFlumeTrack25DegDownToFlat(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -471,7 +492,13 @@ static void PaintLogFlumeTrackSBendLeft(
             MetalASupportsPaintSetup(
                 session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -486,7 +513,11 @@ static void PaintLogFlumeTrackSBendLeft(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                    direction),
                 0xFFFF, 0);
             break;
         case 2:
@@ -502,7 +533,11 @@ static void PaintLogFlumeTrackSBendLeft(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                    direction),
                 0xFFFF, 0);
             break;
         case 3:
@@ -512,7 +547,13 @@ static void PaintLogFlumeTrackSBendLeft(
             MetalASupportsPaintSetup(
                 session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
             break;
     }
 
@@ -578,7 +619,13 @@ static void PaintLogFlumeTrackSBendRight(
             MetalASupportsPaintSetup(
                 session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -593,7 +640,11 @@ static void PaintLogFlumeTrackSBendRight(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                    direction),
                 0xFFFF, 0);
             break;
         case 2:
@@ -609,7 +660,11 @@ static void PaintLogFlumeTrackSBendRight(
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                    direction),
                 0xFFFF, 0);
             break;
         case 3:
@@ -619,7 +674,13 @@ static void PaintLogFlumeTrackSBendRight(
             MetalASupportsPaintSetup(
                 session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
             break;
     }
 
@@ -705,15 +766,33 @@ static void PaintLogFlumeTrackLeftQuarterTurn3Tiles(
     {
         case 0:
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
             break;
     }
 
@@ -784,15 +863,33 @@ static void PaintLogFlumeTrackRightQuarterTurn3Tiles(
     {
         case 0:
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
             break;
     }
 
@@ -814,7 +911,7 @@ static void PaintLogFlumeTrackOnRidePhoto(
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -839,7 +936,10 @@ static void PaintLogFlumeTrackReverser(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -883,7 +983,10 @@ static void LogFlumeTrack25Down60(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -925,7 +1028,10 @@ static void LogFlumeTrack60Down(
         PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -967,7 +1073,10 @@ static void LogFlumeTrack60Down25(
         }
     }
     PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
