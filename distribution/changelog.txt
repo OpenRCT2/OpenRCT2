@@ -1,6 +1,7 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
+- Improved: [#21599] Currency signs now use non-breaking spaces.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#21434] Number of guests overflows in objective text.
