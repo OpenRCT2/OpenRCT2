@@ -2138,12 +2138,12 @@ static void RideFreeOldMeasurements()
                 numRideMeasurements++;
             }
         }
-        if (numRideMeasurements > MAX_RIDE_MEASUREMENTS && lruRide != nullptr)
+        if (numRideMeasurements > kMaxRideMeasurements && lruRide != nullptr)
         {
             lruRide->measurement = {};
             numRideMeasurements--;
         }
-    } while (numRideMeasurements > MAX_RIDE_MEASUREMENTS);
+    } while (numRideMeasurements > kMaxRideMeasurements);
 }
 
 std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()

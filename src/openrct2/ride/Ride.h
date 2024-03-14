@@ -903,7 +903,7 @@ enum
     TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED = (1 << 7)
 };
 
-#define MAX_RIDE_MEASUREMENTS 8
+constexpr uint8_t kMaxRideMeasurements = 8;
 constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) | 0xFF) // Upper byte is percentage, lower byte is "decimal".
 
