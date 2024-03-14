@@ -1521,12 +1521,12 @@ void Vehicle::UpdateMeasurements()
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
-            // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
+            // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turn_count_default += 0x800;
         }
         else if (testingFlags & RIDE_TESTING_TURN_RIGHT && trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
         {
-            // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
+            // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turn_count_default += 0x800;
         }
         else if (testingFlags & RIDE_TESTING_TURN_RIGHT || testingFlags & RIDE_TESTING_TURN_LEFT)
@@ -1564,7 +1564,7 @@ void Vehicle::UpdateMeasurements()
             if (trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_LEFT;
-                curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
+                curRide->turn_count_default &= ~kCurrentTurnCountMask;
 
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {
@@ -1579,7 +1579,7 @@ void Vehicle::UpdateMeasurements()
             if (trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_RIGHT;
-                curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
+                curRide->turn_count_default &= ~kCurrentTurnCountMask;
 
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {

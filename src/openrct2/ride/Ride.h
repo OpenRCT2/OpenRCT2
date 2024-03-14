@@ -910,7 +910,7 @@ constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
 #define STATION_DEPART_FLAG (1 << 7)
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
 
-#define CURRENT_TURN_COUNT_MASK 0xF800
+constexpr uint16_t kCurrentTurnCountMask = 0xF800;
 #define TURN_MASK_1_ELEMENT 0x001F
 #define TURN_MASK_2_ELEMENTS 0x00E0
 #define TURN_MASK_3_ELEMENTS 0x0700
