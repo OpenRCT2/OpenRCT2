@@ -4446,11 +4446,11 @@ void IncrementTurnCount3Elements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_3_ELEMENTS) + 0x100;
-    *turn_count &= ~TURN_MASK_3_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask3Elements) + 0x100;
+    *turn_count &= ~kTurnMask3Elements;
 
-    if (value > TURN_MASK_3_ELEMENTS)
-        value = TURN_MASK_3_ELEMENTS;
+    if (value > kTurnMask3Elements)
+        value = kTurnMask3Elements;
     *turn_count |= value;
 }
 
@@ -4538,7 +4538,7 @@ int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_3_ELEMENTS) >> 8;
+    return ((*turn_count) & kTurnMask3Elements) >> 8;
 }
 
 int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type)

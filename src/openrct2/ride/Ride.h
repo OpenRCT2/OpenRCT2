@@ -913,7 +913,7 @@ constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
 constexpr uint16_t kCurrentTurnCountMask = 0xF800;
 constexpr uint16_t kTurnMask1Element = 0x001F;
 constexpr uint16_t kTurnMask2Elements = 0x00E0;
-#define TURN_MASK_3_ELEMENTS 0x0700
+constexpr uint16_t kTurnMask3Elements = 0x0700;
 #define TURN_MASK_4_PLUS_ELEMENTS 0xF800
 
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
