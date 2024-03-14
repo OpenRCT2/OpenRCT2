@@ -1,8 +1,10 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21574] [Plugin] Add more guest events to scripting API.
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
+- Fix: [#17512] [Plugin] HookType missing values.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
 
 0.4.9 (2024-03-02)
