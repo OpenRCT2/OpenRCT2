@@ -42,8 +42,6 @@ struct Award
     AwardType Type;
 };
 
-std::vector<Award>& GetAwards();
-
 bool AwardIsPositive(AwardType type);
 void AwardReset();
 void AwardUpdateAll();

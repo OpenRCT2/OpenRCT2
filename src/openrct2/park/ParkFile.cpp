@@ -862,15 +862,16 @@ namespace OpenRCT2
                     });
 
                     // Awards
+                    auto& currentAwards = gameState.CurrentAwards;
                     if (version <= 6)
                     {
                         Award awards[RCT2::Limits::MaxAwards]{};
-                        cs.ReadWriteArray(awards, [&cs](Award& award) {
+                        cs.ReadWriteArray(awards, [&cs, &currentAwards](Award& award) {
                             if (award.Time != 0)
                             {
                                 cs.ReadWrite(award.Time);
                                 cs.ReadWrite(award.Type);
-                                GetAwards().push_back(award);
+                                currentAwards.push_back(award);
                                 return true;
                             }
 
@@ -879,7 +880,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        cs.ReadWriteVector(GetAwards(), [&cs](Award& award) {
+                        cs.ReadWriteVector(currentAwards, [&cs](Award& award) {
                             cs.ReadWrite(award.Time);
                             cs.ReadWrite(award.Type);
                         });
