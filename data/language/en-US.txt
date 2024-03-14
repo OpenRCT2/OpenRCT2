@@ -10,7 +10,6 @@ STR_0015    :Bobsled Coaster
 STR_0027    :Bumper Cars
 STR_0035    :Carousel
 STR_0038    :Restroom
-STR_0041    :3D Theater
 STR_0045    :Elevator
 STR_0047    :ATM
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railroad track
@@ -203,7 +202,7 @@ STR_3102    :Re-paint colored scenery on landscape
 STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA32} guest
 STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA32} guests
 
-STR_3372    :{BLACK}= A.T.M.
+STR_3372    :{BLACK}= ATM
 STR_3373    :{BLACK}= Restroom
 
 # Strings added by OpenRCT2. Only add strings that differ from UK English!
