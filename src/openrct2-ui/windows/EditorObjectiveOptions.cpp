@@ -927,8 +927,8 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                 {
                     case OBJECTIVE_GUESTS_BY:
                     case OBJECTIVE_GUESTS_AND_RATING:
-                        stringId = STR_WINDOW_COLOUR_2_COMMA16;
-                        ft.Add<uint16_t>(gameState.ScenarioObjective.NumGuests);
+                        stringId = STR_WINDOW_COLOUR_2_COMMA32;
+                        ft.Add<int32_t>(gameState.ScenarioObjective.NumGuests);
                         break;
                     case OBJECTIVE_PARK_VALUE_BY:
                     case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
