@@ -4470,11 +4470,11 @@ void IncrementTurnCount4PlusElements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_4_PLUS_ELEMENTS) + 0x800;
-    *turn_count &= ~TURN_MASK_4_PLUS_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask4PlusElements) + 0x800;
+    *turn_count &= ~kTurnMask4PlusElements;
 
-    if (value > TURN_MASK_4_PLUS_ELEMENTS)
-        value = TURN_MASK_4_PLUS_ELEMENTS;
+    if (value > kTurnMask4PlusElements)
+        value = kTurnMask4PlusElements;
     *turn_count |= value;
 }
 
@@ -4556,7 +4556,7 @@ int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_4_PLUS_ELEMENTS) >> 11;
+    return ((*turn_count) & kTurnMask4PlusElements) >> 11;
 }
 
 bool Ride::HasSpinningTunnel() const
