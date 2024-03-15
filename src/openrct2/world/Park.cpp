@@ -47,8 +47,6 @@
 
 using namespace OpenRCT2;
 
-int16_t gParkRatingCasualtyPenalty;
-
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
 static int32_t _forcedParkRating = -1;
 
@@ -458,7 +456,7 @@ int32_t Park::CalculateParkRating() const
         result -= 600 - (4 * (150 - std::min<int32_t>(150, litterCount)));
     }
 
-    result -= gParkRatingCasualtyPenalty;
+    result -= gameState.ParkRatingCasualtyPenalty;
     result = std::clamp(result, 0, 999);
     return result;
 }

@@ -401,7 +401,7 @@ namespace RCT2
             gameState.ScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
             gameState.Cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
-            gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
+            gameState.ParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gameState.MapSize = { _s6.MapSize, _s6.MapSize };
             gameState.SamePriceThroughoutPark = _s6.SamePriceThroughout
                 | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
