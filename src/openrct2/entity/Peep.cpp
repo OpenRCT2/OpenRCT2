@@ -202,18 +202,15 @@ void PeepUpdateAll()
     // Warning this loop can delete peeps
     for (auto peep : EntityList<Guest>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
-        {
-            peep->Update();
-        }
-        else
+        if (static_cast<uint32_t>(i & 0x7F) == (currentTicks & 0x7F))
         {
             peep->Tick128UpdateGuest(i);
-            // 128 tick can delete so double check its not deleted
-            if (peep->Type == EntityType::Guest)
-            {
-                peep->Update();
-            }
+        }
+
+        // 128 tick can delete so double check its not deleted
+        if (peep->Type == EntityType::Guest)
+        {
+            peep->Update();
         }
 
         i++;
@@ -221,18 +218,15 @@ void PeepUpdateAll()
 
     for (auto staff : EntityList<Staff>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
-        {
-            staff->Update();
-        }
-        else
+        if (static_cast<uint32_t>(i & 0x7F) == (currentTicks & 0x7F))
         {
             staff->Tick128UpdateStaff();
-            // 128 tick can delete so double check its not deleted
-            if (staff->Type == EntityType::Staff)
-            {
-                staff->Update();
-            }
+        }
+
+        // 128 tick can delete so double check its not deleted
+        if (staff->Type == EntityType::Staff)
+        {
+            staff->Update();
         }
 
         i++;
