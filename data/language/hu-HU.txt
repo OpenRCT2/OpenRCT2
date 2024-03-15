@@ -1737,12 +1737,12 @@ STR_2382    :Föld
 STR_2383    :Víz
 STR_2384    :{WINDOW_COLOUR_2}A célod:
 STR_2385    :{BLACK}Nincs
-STR_2386    :{BLACK}Legyen legalább {COMMA16} vendég a parkodban {MONTHYEAR}végére, a parkod értékelése pedig legyen legalább 600
+STR_2386    :{BLACK}Legyen legalább {COMMA32} vendég a parkodban {MONTHYEAR}végére, a parkod értékelése pedig legyen legalább 600
 STR_2387    :{BLACK}Legyen legalább {POP16}{POP16}{CURRENCY} a parkod értéke {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}végére
 STR_2388    :{BLACK}Érezd jól magad!
 STR_2389    :{BLACK}A lehető legjobb {STRINGID} építése!
 STR_2390    :{BLACK}Építs 10 különböző, egyenként legalább 6,00 izgalmi értékű hullámvasutat a parkodban
-STR_2391    :{BLACK}Legyen legalább {COMMA16} vendég a parkodban. A park értékelése soha nem eshet 700 alá!
+STR_2391    :{BLACK}Legyen legalább {COMMA32} vendég a parkodban. A park értékelése soha nem eshet 700 alá!
 STR_2392    :{BLACK}A játékok belépési díja utáni havi bevételed legyen legalább {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Működjön 10 különböző, egyenként legalább {LENGTH} hosszú hullámvasút a parkodban, amelyek izgalmi értéke legalább 7,00
 STR_2394    :{BLACK}Fejezd be az 5 félkész hullámvasút építését, úgy, hogy mindegyik izgalmi értéke legalább {POP16}{POP16}{COMMA2DP32} legyen
@@ -2323,7 +2323,7 @@ STR_3305    :{WINDOW_COLOUR_2}Havi bevétel:
 STR_3306    :{WINDOW_COLOUR_2}Havi nyereség:
 STR_3307    :{WINDOW_COLOUR_2}Minimum hosszúság:
 STR_3308    :{WINDOW_COLOUR_2}Izgalmi érték:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Műemlékvédelmi játékok/épületek:

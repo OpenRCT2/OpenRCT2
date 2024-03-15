@@ -1731,12 +1731,12 @@ STR_2382    :Arazi/Zemin
 STR_2383    :Su
 STR_2384    :{WINDOW_COLOUR_2}Hedefiniz:
 STR_2385    :{BLACK}Yok
-STR_2386    :{BLACK}Parkınızda en az {COMMA16} müşteri {MONTHYEAR} sonuna kadar bulunması ve park değerlendirmesinin en az 600 olması gerekli
+STR_2386    :{BLACK}Parkınızda en az {COMMA32} müşteri {MONTHYEAR} sonuna kadar bulunması ve park değerlendirmesinin en az 600 olması gerekli
 STR_2387    :{BLACK}Park değeri en az {POP16}{POP16}{CURRENCY} {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR} kadar olmalı
 STR_2388    :{BLACK}Iyi eğlenceler!
 STR_2389    :{BLACK}Kendinize göre en iyi {STRINGID} inşa ediniz!
 STR_2390    :{BLACK}Parkınızda heyecan oranı en az 6.00 olan, 10 çesitli hız treni inşa edilmeli
-STR_2391    :{BLACK}Parkınızda en az {COMMA16} müşteri bulunması ve park değerlendirmesinin hiç bir zaman 700’den aşağı düşmemesi gerekli
+STR_2391    :{BLACK}Parkınızda en az {COMMA32} müşteri bulunması ve park değerlendirmesinin hiç bir zaman 700’den aşağı düşmemesi gerekli
 STR_2392    :{BLACK}Alet bileti satışlarından aylık en az {POP16}{POP16}{CURRENCY} geliriniz olmalı
 STR_2393    :{BLACK}Parkınızda heyecan oranı en az 7.00 ve uzunluğu en az {LENGTH} olan 10 çeşitli hız treni inşa edilmeli
 STR_2394    :{BLACK}Parkınızda bulunan 5 kısmen inşa edilmiş hız trenlerinin inşasını en az {POP16}{POP16}{COMMA2DP32} heyecan oranı ile tamamlayınız
@@ -2317,7 +2317,7 @@ STR_3305    :{WINDOW_COLOUR_2}Aylık gelir:
 STR_3306    :{WINDOW_COLOUR_2}Aylık kâr:
 STR_3307    :{WINDOW_COLOUR_2}En az uzunluk:
 STR_3308    :{WINDOW_COLOUR_2}Heyecan oranı:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Koruma altına almak istediğiniz aletleri seçiniz

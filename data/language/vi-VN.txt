@@ -1734,12 +1734,12 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Mục tiêu:
 STR_2385    :{BLACK}Không
-STR_2386    :{BLACK}Có ít nhất {COMMA16} khách vào cuối tháng {MONTHYEAR}, với đánh giá công viên từ 600 trở lên
+STR_2386    :{BLACK}Có ít nhất {COMMA32} khách vào cuối tháng {MONTHYEAR}, với đánh giá công viên từ 600 trở lên
 STR_2387    :{BLACK}Đạt giá trị công viên ít nhất {POP16}{POP16}{CURRENCY} vào cuối {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
 STR_2390    :{BLACK}Có 10 loại tàu lượn khác nhau trong công viên, mỗi cái có chỉ số phấn khích ít nhất 6.00
-STR_2391    :{BLACK}Có ít nhất {COMMA16} khách. Không được để đánh giá công viên thấp hơn 700 ở bất kỳ thời điểm nào!
+STR_2391    :{BLACK}Có ít nhất {COMMA32} khách. Không được để đánh giá công viên thấp hơn 700 ở bất kỳ thời điểm nào!
 STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
 STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
@@ -2321,7 +2321,7 @@ STR_3305    :{WINDOW_COLOUR_2}Monthly income:
 STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
 STR_3307    :{WINDOW_COLOUR_2}Minimum length:
 STR_3308    :{WINDOW_COLOUR_2}Độ phấn khích:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:

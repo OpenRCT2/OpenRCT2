@@ -1743,12 +1743,12 @@ STR_2382    :Maa
 STR_2383    :Vesi
 STR_2384    :{WINDOW_COLOUR_2}Tavoitteesi:
 STR_2385    :{BLACK}Ei mitään
-STR_2386    :{BLACK}Puistossasi tulee olla vähintään {COMMA16} kävijää {MONTHYEAR} loppuun mennessä, ja puiston tason tulee olla vähintään 600
+STR_2386    :{BLACK}Puistossasi tulee olla vähintään {COMMA32} kävijää {MONTHYEAR} loppuun mennessä, ja puiston tason tulee olla vähintään 600
 STR_2387    :{BLACK}Saavuta puiston arvoksi vähintään {POP16}{POP16}{CURRENCY} {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR} loppuun mennessä
 STR_2388    :{BLACK}Pidä hauskaa!
 STR_2389    :{BLACK}Rakenna niin hyvä {STRINGID} kuin voit!
 STR_2390    :{BLACK}Puistossasi tulee olla 10 eri tyyppistä toiminnassa olevaa vuoristorataa joiden huvitustaso on vähintään 6.00
-STR_2391    :{BLACK}Puistossasi tulee olla vähintään {COMMA16} kävijää, eikä puiston taso saa pudota hetkeksikään alle 700:n!
+STR_2391    :{BLACK}Puistossasi tulee olla vähintään {COMMA32} kävijää, eikä puiston taso saa pudota hetkeksikään alle 700:n!
 STR_2392    :{BLACK}Sinun tulee ansaita {POP16}{POP16}{CURRENCY} kuukausituloja laitteiden lipputuloista
 STR_2393    :{BLACK}Puistossasi tulee olla 10 eri tyyppistä toiminnassa olevaa vuoristorataa, joiden pitää olla vähintään {LENGTH} pitkiä ja joiden huvitustaso on vähintään 7.00
 STR_2394    :{BLACK}Viimeistele puiston 5 osittain rakennettua vuoristorataa niin, että jokaisen huvitustaso on vähintään {POP16}{POP16}{COMMA2DP32} 
@@ -2329,7 +2329,7 @@ STR_3305    :{WINDOW_COLOUR_2}Kuukausittainen tulo:
 STR_3306    :{WINDOW_COLOUR_2}Kuukausittainen tuotto:
 STR_3307    :{WINDOW_COLOUR_2}Vähimmäispituus:
 STR_3308    :{WINDOW_COLOUR_2}Huvitustaso:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Laitteet suojelumääräyksen alla:
