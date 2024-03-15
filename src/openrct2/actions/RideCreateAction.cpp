@@ -204,7 +204,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->lift_hill_speed = rtd.LiftData.minimum_speed;
 
     ride->measurement = {};
-    ride->excitement = RIDE_RATING_UNDEFINED;
+    ride->excitement = kRideRatingUndefined;
     ride->cur_num_customers = 0;
     ride->num_customers_timeout = 0;
     ride->chairlift_bullwheel_rotation = 0;

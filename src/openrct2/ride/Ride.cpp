@@ -4633,7 +4633,7 @@ bool RideHasAnyTrackElements(const Ride& ride)
 void InvalidateTestResults(Ride& ride)
 {
     ride.measurement = {};
-    ride.excitement = RIDE_RATING_UNDEFINED;
+    ride.excitement = kRideRatingUndefined;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -5434,7 +5434,7 @@ bool RideHasStationShelter(const Ride& ride)
 
 bool RideHasRatings(const Ride& ride)
 {
-    return ride.excitement != RIDE_RATING_UNDEFINED;
+    return ride.excitement != kRideRatingUndefined;
 }
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
