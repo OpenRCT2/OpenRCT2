@@ -907,8 +907,8 @@ constexpr uint8_t kMaxRideMeasurements = 8;
 constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
 constexpr uint16_t kRideInitialReliability = ((100 << 8) | 0xFF); // Upper byte is percentage, lower byte is "decimal".
 
-#define STATION_DEPART_FLAG (1 << 7)
-#define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
+constexpr uint8_t kStationDepartFlag = (1 << 7);
+constexpr uint8_t kStationDepartMask = static_cast<uint8_t>(~kStationDepartFlag);
 
 constexpr uint16_t kCurrentTurnCountMask = 0xF800;
 constexpr uint16_t kTurnMask1Element = 0x001F;
