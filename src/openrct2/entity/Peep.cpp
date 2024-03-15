@@ -198,13 +198,16 @@ void PeepUpdateAll()
 
     const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
 
-    int32_t i = 0;
+    constexpr auto kTicks128Mask = 128U - 1U;
+    const auto currentTicksMasked = currentTicks & kTicks128Mask;
+
+    uint32_t index = 0;
     // Warning this loop can delete peeps
     for (auto peep : EntityList<Guest>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) == (currentTicks & 0x7F))
+        if ((index & kTicks128Mask) == currentTicksMasked)
         {
-            peep->Tick128UpdateGuest(i);
+            peep->Tick128UpdateGuest(index);
         }
 
         // 128 tick can delete so double check its not deleted
@@ -213,12 +216,12 @@ void PeepUpdateAll()
             peep->Update();
         }
 
-        i++;
+        index++;
     }
 
     for (auto staff : EntityList<Staff>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) == (currentTicks & 0x7F))
+        if ((index & kTicks128Mask) == currentTicksMasked)
         {
             staff->Tick128UpdateStaff();
         }
@@ -229,7 +232,7 @@ void PeepUpdateAll()
             staff->Update();
         }
 
-        i++;
+        index++;
     }
 }
 
