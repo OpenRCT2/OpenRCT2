@@ -2671,8 +2671,8 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
      */
 
     int32_t direction = tileElement->GetDirectionWithOffset(1);
-    int32_t maxCheckDistance = kRideAdjacencyCheckDistance;
-    int32_t spaceBetween = maxCheckDistance;
+    constexpr uint8_t maxCheckDistance = kRideAdjacencyCheckDistance;
+    uint8_t spaceBetween = maxCheckDistance;
 
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
