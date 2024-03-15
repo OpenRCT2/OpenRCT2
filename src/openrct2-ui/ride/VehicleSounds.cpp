@@ -91,7 +91,8 @@ namespace OpenRCT2::Audio
 
     template<typename T> int32_t Train<T>::GetMass() const
     {
-        return std::accumulate(begin(), end(), 0, [](int32_t totalMass, const Vehicle& vehicle) { return totalMass + vehicle.mass; });
+        return std::accumulate(
+            begin(), end(), 0, [](int32_t totalMass, const Vehicle& vehicle) { return totalMass + vehicle.mass; });
     }
 
     static bool SoundCanPlay(const Vehicle& vehicle)
