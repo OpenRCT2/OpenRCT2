@@ -3631,7 +3631,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
     for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
-        stations[i].Depart = (stations[i].Depart & STATION_DEPART_FLAG) | 1;
+        stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
     }
 
     //
