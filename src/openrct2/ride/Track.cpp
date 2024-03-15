@@ -197,7 +197,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
         return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
     }
 
-    if (stationLength > MAX_STATION_PLATFORM_LENGTH)
+    if (stationLength > kMaxStationPlatformLength)
     {
         return { false, STR_STATION_PLATFORM_TOO_LONG };
     }
