@@ -1417,7 +1417,7 @@ static void RideBreakdownUpdate(Ride& ride)
 
     if (!ride.CanBreakDown())
     {
-        ride.reliability = RIDE_INITIAL_RELIABILITY;
+        ride.reliability = kRideInitialReliability;
         return;
     }
 
@@ -1433,7 +1433,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
     if ((ride.reliability == 0
-         || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride.reliability)
+         || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + kRideInitialReliability - ride.reliability)
         && !GetGameState().Cheats.DisableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
@@ -5299,7 +5299,7 @@ void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
     build_date = GetDate().GetMonthsElapsed();
-    reliability = RIDE_INITIAL_RELIABILITY;
+    reliability = kRideInitialReliability;
 }
 
 RideClassification Ride::GetClassification() const

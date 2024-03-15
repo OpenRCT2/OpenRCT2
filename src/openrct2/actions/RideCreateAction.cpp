@@ -300,7 +300,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->breakdown_reason = 255;
     ride->upkeep_cost = kMoney64Undefined;
-    ride->reliability = RIDE_INITIAL_RELIABILITY;
+    ride->reliability = kRideInitialReliability;
     ride->unreliability_factor = 1;
     ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
     ride->last_inspection = 0;
