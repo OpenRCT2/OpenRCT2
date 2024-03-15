@@ -5183,7 +5183,7 @@ static_assert(std::size(RatingNames) == 6);
                     GfxFillRect(
                         dpi,
                         { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
-                        windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
+                          windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
                         ColourMapA[colours[1]].darkest);
 
                     // Draw preview image
@@ -5225,7 +5225,7 @@ static_assert(std::size(RatingNames) == 6);
 
         void MusicOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
         {
-            GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
