@@ -2016,7 +2016,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     uint8_t flags;
     if (!TrackDesignPlacePreview(tds, td6, &cost, &ride, &flags))
     {
-        std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
+        std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
         UnstashMap();
         return;
     }
@@ -2085,7 +2085,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         view.rotation = i;
         ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
 
-        dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
+        dpi.bits += kTrackPreviewImageSize;
     }
 
     ride->Delete();
