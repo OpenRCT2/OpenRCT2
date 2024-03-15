@@ -71,7 +71,6 @@ static TileElement* _peepRideEntranceExitElement;
 
 static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
-static void Peep128TickUpdate(Peep* peep, int32_t index);
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
@@ -209,7 +208,7 @@ void PeepUpdateAll()
         }
         else
         {
-            Peep128TickUpdate(peep, i);
+            peep->Tick128UpdateGuest(i);
             // 128 tick can delete so double check its not deleted
             if (peep->Type == EntityType::Guest)
             {
@@ -228,7 +227,7 @@ void PeepUpdateAll()
         }
         else
         {
-            Peep128TickUpdate(staff, i);
+            staff->Tick128UpdateStaff();
             // 128 tick can delete so double check its not deleted
             if (staff->Type == EntityType::Staff)
             {
@@ -237,30 +236,6 @@ void PeepUpdateAll()
         }
 
         i++;
-    }
-}
-
-/**
- *
- *  rct2: 0x0068F41A
- *  Called every 128 ticks
- */
-static void Peep128TickUpdate(Peep* peep, int32_t index)
-{
-    PROFILED_FUNCTION();
-
-    auto* guest = peep->As<Guest>();
-    if (guest != nullptr)
-    {
-        guest->Tick128UpdateGuest(index);
-    }
-    else
-    {
-        auto* staff = peep->As<Staff>();
-        if (staff != nullptr)
-        {
-            staff->Tick128UpdateStaff();
-        }
     }
 }
 
