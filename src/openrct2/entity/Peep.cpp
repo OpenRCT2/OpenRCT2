@@ -745,7 +745,8 @@ void Peep::UpdateFalling()
             News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
 
-        gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
+        auto& gameState = GetGameState();
+        gameState.ParkRatingCasualtyPenalty = std::min(gameState.ParkRatingCasualtyPenalty + 25, 1000);
         Remove();
         return;
     }

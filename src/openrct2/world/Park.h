@@ -92,8 +92,6 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern int16_t gParkRatingCasualtyPenalty;
-
 void ParkSetForcedRating(int32_t rating);
 int32_t ParkGetForcedRating();
 

@@ -43,6 +43,7 @@ namespace OpenRCT2
         money64 ParkEntranceFee;
         std::vector<CoordsXYZD> ParkEntrances;
         uint32_t ParkSize;
+        int16_t ParkRatingCasualtyPenalty;
         money64 ParkValue;
         money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
         money64 CompanyValue;

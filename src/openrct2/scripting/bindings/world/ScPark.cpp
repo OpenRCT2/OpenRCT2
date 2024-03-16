@@ -263,12 +263,12 @@ namespace OpenRCT2::Scripting
 
     int16_t ScPark::casualtyPenalty_get() const
     {
-        return gParkRatingCasualtyPenalty;
+        return GetGameState().ParkRatingCasualtyPenalty;
     }
     void ScPark::casualtyPenalty_set(int16_t value)
     {
         ThrowIfGameStateNotMutable();
-        gParkRatingCasualtyPenalty = value;
+        GetGameState().ParkRatingCasualtyPenalty = value;
     }
 
     uint16_t ScPark::parkSize_get() const
