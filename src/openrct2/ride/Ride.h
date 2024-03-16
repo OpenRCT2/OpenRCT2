@@ -40,7 +40,8 @@ struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
 
-#define RIDE_ADJACENCY_CHECK_DISTANCE 5
+constexpr uint8_t kRideAdjacencyCheckDistance = 5;
+
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
@@ -902,18 +903,18 @@ enum
     TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED = (1 << 7)
 };
 
-#define MAX_RIDE_MEASUREMENTS 8
+constexpr uint8_t kMaxRideMeasurements = 8;
 constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) | 0xFF) // Upper byte is percentage, lower byte is "decimal".
 
 #define STATION_DEPART_FLAG (1 << 7)
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
 
-#define CURRENT_TURN_COUNT_MASK 0xF800
-#define TURN_MASK_1_ELEMENT 0x001F
-#define TURN_MASK_2_ELEMENTS 0x00E0
-#define TURN_MASK_3_ELEMENTS 0x0700
-#define TURN_MASK_4_PLUS_ELEMENTS 0xF800
+constexpr uint16_t kCurrentTurnCountMask = 0xF800;
+constexpr uint16_t kTurnMask1Element = 0x001F;
+constexpr uint16_t kTurnMask2Elements = 0x00E0;
+constexpr uint16_t kTurnMask3Elements = 0x0700;
+constexpr uint16_t kTurnMask4PlusElements = 0xF800;
 
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;

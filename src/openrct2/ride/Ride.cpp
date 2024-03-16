@@ -2138,12 +2138,12 @@ static void RideFreeOldMeasurements()
                 numRideMeasurements++;
             }
         }
-        if (numRideMeasurements > MAX_RIDE_MEASUREMENTS && lruRide != nullptr)
+        if (numRideMeasurements > kMaxRideMeasurements && lruRide != nullptr)
         {
             lruRide->measurement = {};
             numRideMeasurements--;
         }
-    } while (numRideMeasurements > MAX_RIDE_MEASUREMENTS);
+    } while (numRideMeasurements > kMaxRideMeasurements);
 }
 
 std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
@@ -4396,11 +4396,11 @@ void IncrementTurnCount1Element(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_1_ELEMENT) + 1;
-    *turn_count &= ~TURN_MASK_1_ELEMENT;
+    uint16_t value = (*turn_count & kTurnMask1Element) + 1;
+    *turn_count &= ~kTurnMask1Element;
 
-    if (value > TURN_MASK_1_ELEMENT)
-        value = TURN_MASK_1_ELEMENT;
+    if (value > kTurnMask1Element)
+        value = kTurnMask1Element;
     *turn_count |= value;
 }
 
@@ -4421,11 +4421,11 @@ void IncrementTurnCount2Elements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_2_ELEMENTS) + 0x20;
-    *turn_count &= ~TURN_MASK_2_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask2Elements) + 0x20;
+    *turn_count &= ~kTurnMask2Elements;
 
-    if (value > TURN_MASK_2_ELEMENTS)
-        value = TURN_MASK_2_ELEMENTS;
+    if (value > kTurnMask2Elements)
+        value = kTurnMask2Elements;
     *turn_count |= value;
 }
 
@@ -4446,11 +4446,11 @@ void IncrementTurnCount3Elements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_3_ELEMENTS) + 0x100;
-    *turn_count &= ~TURN_MASK_3_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask3Elements) + 0x100;
+    *turn_count &= ~kTurnMask3Elements;
 
-    if (value > TURN_MASK_3_ELEMENTS)
-        value = TURN_MASK_3_ELEMENTS;
+    if (value > kTurnMask3Elements)
+        value = kTurnMask3Elements;
     *turn_count |= value;
 }
 
@@ -4470,11 +4470,11 @@ void IncrementTurnCount4PlusElements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_4_PLUS_ELEMENTS) + 0x800;
-    *turn_count &= ~TURN_MASK_4_PLUS_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask4PlusElements) + 0x800;
+    *turn_count &= ~kTurnMask4PlusElements;
 
-    if (value > TURN_MASK_4_PLUS_ELEMENTS)
-        value = TURN_MASK_4_PLUS_ELEMENTS;
+    if (value > kTurnMask4PlusElements)
+        value = kTurnMask4PlusElements;
     *turn_count |= value;
 }
 
@@ -4496,7 +4496,7 @@ int32_t GetTurnCount1Element(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return (*turn_count) & TURN_MASK_1_ELEMENT;
+    return (*turn_count) & kTurnMask1Element;
 }
 
 int32_t GetTurnCount2Elements(const Ride& ride, uint8_t type)
@@ -4517,7 +4517,7 @@ int32_t GetTurnCount2Elements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_2_ELEMENTS) >> 5;
+    return ((*turn_count) & kTurnMask2Elements) >> 5;
 }
 
 int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type)
@@ -4538,7 +4538,7 @@ int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_3_ELEMENTS) >> 8;
+    return ((*turn_count) & kTurnMask3Elements) >> 8;
 }
 
 int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type)
@@ -4556,7 +4556,7 @@ int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_4_PLUS_ELEMENTS) >> 11;
+    return ((*turn_count) & kTurnMask4PlusElements) >> 11;
 }
 
 bool Ride::HasSpinningTunnel() const
@@ -5372,7 +5372,7 @@ static bool CheckForAdjacentStation(const CoordsXYZ& stationCoords, uint8_t dire
     bool found = false;
     int32_t adjX = stationCoords.x;
     int32_t adjY = stationCoords.y;
-    for (uint32_t i = 0; i <= RIDE_ADJACENCY_CHECK_DISTANCE; i++)
+    for (uint32_t i = 0; i <= kRideAdjacencyCheckDistance; i++)
     {
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;
