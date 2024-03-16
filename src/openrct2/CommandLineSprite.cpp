@@ -579,8 +579,8 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             }
             std::string strPath = Json::GetString(path);
 
-            json_t x_offset = jsonSprite["x_offset"];
-            json_t y_offset = jsonSprite["y_offset"];
+            json_t x_offset = jsonSprite["x"];
+            json_t y_offset = jsonSprite["y"];
 
             auto palette = (Json::GetString(jsonSprite["palette"]) == "keep") ? ImageImporter::Palette::KeepIndices
                                                                               : ImageImporter::Palette::OpenRCT2;
