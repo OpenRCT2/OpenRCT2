@@ -251,8 +251,7 @@ public:
                 return w;
             }
             case WindowClass::ManageTrackDesign:
-                return TrackManageOpen(
-                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                return TrackManageOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WindowClass::NetworkStatus:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
