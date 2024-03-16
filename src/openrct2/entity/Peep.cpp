@@ -71,7 +71,6 @@ static TileElement* _peepRideEntranceExitElement;
 
 static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
-static void Peep128TickUpdate(Peep* peep, int32_t index);
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
@@ -199,68 +198,41 @@ void PeepUpdateAll()
 
     const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
 
-    int32_t i = 0;
+    constexpr auto kTicks128Mask = 128U - 1U;
+    const auto currentTicksMasked = currentTicks & kTicks128Mask;
+
+    uint32_t index = 0;
     // Warning this loop can delete peeps
     for (auto peep : EntityList<Guest>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
+        if ((index & kTicks128Mask) == currentTicksMasked)
+        {
+            peep->Tick128UpdateGuest(index);
+        }
+
+        // 128 tick can delete so double check its not deleted
+        if (peep->Type == EntityType::Guest)
         {
             peep->Update();
         }
-        else
-        {
-            Peep128TickUpdate(peep, i);
-            // 128 tick can delete so double check its not deleted
-            if (peep->Type == EntityType::Guest)
-            {
-                peep->Update();
-            }
-        }
 
-        i++;
+        index++;
     }
 
     for (auto staff : EntityList<Staff>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
-        {
-            staff->Update();
-        }
-        else
-        {
-            Peep128TickUpdate(staff, i);
-            // 128 tick can delete so double check its not deleted
-            if (staff->Type == EntityType::Staff)
-            {
-                staff->Update();
-            }
-        }
-
-        i++;
-    }
-}
-
-/**
- *
- *  rct2: 0x0068F41A
- *  Called every 128 ticks
- */
-static void Peep128TickUpdate(Peep* peep, int32_t index)
-{
-    PROFILED_FUNCTION();
-
-    auto* guest = peep->As<Guest>();
-    if (guest != nullptr)
-    {
-        guest->Tick128UpdateGuest(index);
-    }
-    else
-    {
-        auto* staff = peep->As<Staff>();
-        if (staff != nullptr)
+        if ((index & kTicks128Mask) == currentTicksMasked)
         {
             staff->Tick128UpdateStaff();
         }
+
+        // 128 tick can delete so double check its not deleted
+        if (staff->Type == EntityType::Staff)
+        {
+            staff->Update();
+        }
+
+        index++;
     }
 }
 
