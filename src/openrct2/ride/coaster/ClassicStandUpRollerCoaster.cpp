@@ -355,6 +355,215 @@ static void classicStandUpRCTrackBankedLeftQuarterTurn5(
     return classicStandUpRCTrackBankedRightQuarterTurn5(session, ride, trackSequence, direction, height, trackElement);
 }
 
+static void classicStandUpRCTrackLeftBankTo25DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+        kClassicStandUpRcLeftBankedTo25DegUp0,
+        kClassicStandUpRcLeftBankedTo25DegUp1,
+        kClassicStandUpRcLeftBankedTo25DegUp2,
+        kClassicStandUpRcLeftBankedTo25DegUp3,
+    };
+    
+    
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+    }
+    
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+}
+
+static void classicStandUpRCTrackRightBankTo25DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+        kClassicStandUpRcRightBankedTo25DegUp0,
+        kClassicStandUpRcRightBankedTo25DegUp1,
+        kClassicStandUpRcRightBankedTo25DegUp2,
+        kClassicStandUpRcRightBankedTo25DegUp3,
+    };
+    
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+    
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+    }
+    
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+}
+
+static void classicStandUpRCTrack25DegUpToLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+        kClassicStandUpRc25DegUpToFlatLeftBanked0,
+        kClassicStandUpRc25DegUpToFlatLeftBanked1,
+        kClassicStandUpRc25DegUpToFlatLeftBanked2,
+        kClassicStandUpRc25DegUpToFlatLeftBanked3,
+    };
+    
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+    }
+    
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+}
+
+static void classicStandUpRCTrack25DegUpToRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+        kClassicStandUpRc25DegUpToFlatRightBanked0,
+        kClassicStandUpRc25DegUpToFlatRightBanked1,
+        kClassicStandUpRc25DegUpToFlatRightBanked2,
+        kClassicStandUpRc25DegUpToFlatRightBanked3,
+    };
+    
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+    
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+    }
+    
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+}
+
+static void classicStandUpRCTrackLeftBankTo25DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    classicStandUpRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
+static void classicStandUpRCTrackRightBankTo25DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    classicStandUpRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
+static void classicStandUpRCTrack25DegDownToLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    classicStandUpRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
+static void classicStandUpRCTrack25DegDownToRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    classicStandUpRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
+static void classicStandUpRCTrackLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+        kClassicStandUpRcLeftBanked0,
+        kClassicStandUpRcLeftBanked1,
+        kClassicStandUpRcLeftBanked2,
+        kClassicStandUpRcLeftBanked3,
+    } ;
+    
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
+    
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    }
+        
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
+        0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+static void classicStandUpRCTrackRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    return classicStandUpRCTrackLeftBank(session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
 {
     switch (trackType)
@@ -372,15 +581,25 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
         case TrackElemType::BankedRightQuarterTurn5Tiles:
             return classicStandUpRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
+            return classicStandUpRCTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
+            return classicStandUpRCTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
+            return classicStandUpRCTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
+            return classicStandUpRCTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
+            return classicStandUpRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
+            return classicStandUpRCTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
+            return classicStandUpRCTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
+            return classicStandUpRCTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
+            return classicStandUpRCTrackLeftBank;
         case TrackElemType::RightBank:
+            return classicStandUpRCTrackRightBank;
 
         case TrackElemType::LeftEighthBankToDiag:
         case TrackElemType::RightEighthBankToDiag:
