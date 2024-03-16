@@ -213,11 +213,9 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         }
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
             
         case 2:
@@ -249,7 +247,6 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
             
         case 3:
@@ -280,11 +277,9 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
             
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
             
         case 5:
@@ -316,7 +311,6 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
 
         case 6:
@@ -345,10 +339,11 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         }
     }
+    
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classicStandUpRCTrackBankedLeftQuarterTurn5(
