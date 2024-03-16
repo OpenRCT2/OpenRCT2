@@ -1741,12 +1741,12 @@ STR_2382    :土地
 STR_2383    :水塘
 STR_2384    :{WINDOW_COLOUR_2}你的目標:
 STR_2385    :{BLACK}無
-STR_2386    :{BLACK}在{POP16}{MONTHYEAR}尾之前, 樂園裡至少有{PUSH16}{PUSH16}{COMMA16}個遊客, 而且樂園評價並不低於600
+STR_2386    :{BLACK}在{POP16}{MONTHYEAR}尾之前, 樂園裡至少有{PUSH16}{PUSH16}{COMMA32}個遊客, 而且樂園評價並不低於600
 STR_2387    :{BLACK}在{POP16}{MONTHYEAR}尾之前, 樂園價值必需達到{CURRENCY}
 STR_2388    :{BLACK}盡情玩吧!
 STR_2389    :{BLACK}建造你的最佳{STRINGID}吧!
 STR_2390    :{BLACK}樂園必需建造十種不同種類的雲霄飛車, 而且每座的興奮度不低於6.00
-STR_2391    :{BLACK}樂園裡至少有{COMMA16}個遊客. 任何時間下, 你並不可以令樂園評價跌至700以下!
+STR_2391    :{BLACK}樂園裡至少有{COMMA32}個遊客. 任何時間下, 你並不可以令樂園評價跌至700以下!
 STR_2392    :{BLACK}遊樂設施的門票收入至少要達到每月{POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}樂園必需建造十種不同種類的雲霄飛車, 每座的長度至少需要{LENGTH}, 而且興奮度都不低於7.00
 STR_2394    :{BLACK}建造好五座未完成的雲霄飛車, 將他們每座設計成興奮度至少達到{POP16}{POP16}{COMMA2DP32}
@@ -2327,7 +2327,7 @@ STR_3305    :{WINDOW_COLOUR_2}每月收入:
 STR_3306    :{WINDOW_COLOUR_2}每月利潤:
 STR_3307    :{WINDOW_COLOUR_2}最少長度:
 STR_3308    :{WINDOW_COLOUR_2}興奮度:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}請選取要保留的遊樂設施/店鋪:

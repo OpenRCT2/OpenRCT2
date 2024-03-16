@@ -1738,12 +1738,12 @@ STR_2382    :Land
 STR_2383    :Vatten
 STR_2384    :{WINDOW_COLOUR_2}Ditt uppdrag:
 STR_2385    :{BLACK}Inget
-STR_2386    :{BLACK}Att ha minst {COMMA16} besökare i parken tills {MONTHYEAR}, med ett parkomdöme över 600
+STR_2386    :{BLACK}Att ha minst {COMMA32} besökare i parken tills {MONTHYEAR}, med ett parkomdöme över 600
 STR_2387    :{BLACK}Att uppnå ett parkvärde över {POP16}{POP16}{CURRENCY} tills {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Ha kul!
 STR_2389    :{BLACK}Bygg den bästa {STRINGID} du kan!
 STR_2390    :{BLACK}Att ha tio olika sorters berg- och dalbanor i din park, alla med en glädjenivå över 6.00
-STR_2391    :{BLACK}Att ha minst {COMMA16} besökare i din park. Du får aldrig låta parkomdömet gå under 700!
+STR_2391    :{BLACK}Att ha minst {COMMA32} besökare i din park. Du får aldrig låta parkomdömet gå under 700!
 STR_2392    :{BLACK}Att få en månadsinkomst från åktursbiljetter på minst {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Att ha tio olika sorters berg- och dalbanor i din park, alla ska vara längre än {LENGTH}, och med en glädjenivå över 7.00
 STR_2394    :{BLACK}Att bygga klart alla fem delvis byggda berg- och dalbanor i parken, designade så att de alla får en glädjenivå över {POP16}{POP16}{COMMA2DP32}
@@ -2326,7 +2326,7 @@ STR_3305    :{WINDOW_COLOUR_2}Månadsinkomst:
 STR_3306    :{WINDOW_COLOUR_2}Månadsvinst:
 STR_3307    :{WINDOW_COLOUR_2}Minimilängd:
 STR_3308    :{WINDOW_COLOUR_2}Glädjenivå:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Åkturer och attraktioner som måste bevaras:

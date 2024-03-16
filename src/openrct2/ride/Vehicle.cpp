@@ -5113,9 +5113,10 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
                 ride.id.ToUnderlying(), ft);
         }
 
-        if (gParkRatingCasualtyPenalty < 500)
+        auto& gameState = GetGameState();
+        if (gameState.ParkRatingCasualtyPenalty < 500)
         {
-            gParkRatingCasualtyPenalty += 200;
+            gameState.ParkRatingCasualtyPenalty += 200;
         }
     }
 }

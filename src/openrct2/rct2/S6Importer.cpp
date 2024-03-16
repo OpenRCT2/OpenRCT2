@@ -375,15 +375,15 @@ namespace RCT2
             gameState.TotalAdmissions = _s6.TotalAdmissions;
             gameState.TotalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
             gameState.CompanyValue = ToMoney64(_s6.CompanyValue);
-            std::memcpy(gPeepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
+            std::memcpy(gameState.PeepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
 
             // Awards
-            auto& awards = GetAwards();
+            auto& currentAwards = gameState.CurrentAwards;
             for (auto& src : _s6.Awards)
             {
                 if (src.Time != 0)
                 {
-                    awards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
+                    currentAwards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
                 }
             }
 
@@ -401,7 +401,7 @@ namespace RCT2
             gameState.ScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
             gameState.Cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
-            gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
+            gameState.ParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gameState.MapSize = { _s6.MapSize, _s6.MapSize };
             gameState.SamePriceThroughoutPark = _s6.SamePriceThroughout
                 | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);

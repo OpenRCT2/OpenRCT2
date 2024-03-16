@@ -1735,12 +1735,12 @@ STR_2382    :Teren
 STR_2383    :Woda
 STR_2384    :{WINDOW_COLOUR_2}Twój cel:
 STR_2385    :{BLACK}Brak
-STR_2386    :{BLACK}Miej przynajmniej {COMMA16} gości w parku na koniec roku {MONTHYEAR} przy ocenie parku wynoszącej przynajmniej 600
+STR_2386    :{BLACK}Miej przynajmniej {COMMA32} gości w parku na koniec roku {MONTHYEAR} przy ocenie parku wynoszącej przynajmniej 600
 STR_2387    :{BLACK}Uzyskaj wartość parku nie mniejszą niż {POP16}{POP16}{CURRENCY} na koniec {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Baw się dobrze!
 STR_2389    :{BLACK}Wybuduj tę atrakcję ({STRINGID}) najlepiej jak potrafisz!
 STR_2390    :{BLACK}Zbuduj w parku 10 różnych działających kolejek górskich, każda o współczynniku emocji wynoszącym przynajmniej 6.00
-STR_2391    :{BLACK}Miej przynajmniej {COMMA16} gości w swoim parku. Nie pozwól aby ocena parku spadła poniżej 700 nawet na chwilę!
+STR_2391    :{BLACK}Miej przynajmniej {COMMA32} gości w swoim parku. Nie pozwól aby ocena parku spadła poniżej 700 nawet na chwilę!
 STR_2392    :{BLACK}Uzyskaj miesięczny przychód ze sprzedaży biletów na atrakcje w wysokości przynajmniej {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Zbuduj w parku 10 różnych działających kolejek górskich, każda o współczynniku emocji wynoszącym przynajmniej 7.00 i nie krótsza niż {LENGTH}
 STR_2394    :{BLACK}Dokończ budowę 5 częściowo już wybudowanych kolejek górskich, projektując je tak aby współczynnik emocji każdej z nich nie był mniejszy niż {POP16}{POP16}{COMMA2DP32}
@@ -2321,7 +2321,7 @@ STR_3305    :{WINDOW_COLOUR_2}Miesięczny przychód:
 STR_3306    :{WINDOW_COLOUR_2}Miesięczny zysk:
 STR_3307    :{WINDOW_COLOUR_2}Minimalna długość:
 STR_3308    :{WINDOW_COLOUR_2}Wskaźnik emocji:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Przejażdżki/atrakcje według następującej kolejności:

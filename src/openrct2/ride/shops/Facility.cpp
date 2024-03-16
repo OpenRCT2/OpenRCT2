@@ -66,7 +66,7 @@ static void PaintFacility(
         PaintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { { 2, 28, height }, { 28, 2, 29 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 
     if (direction == 1 || direction == 2)

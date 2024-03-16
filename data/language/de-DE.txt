@@ -1738,12 +1738,12 @@ STR_2382    :Land
 STR_2383    :Wasser
 STR_2384    :{WINDOW_COLOUR_2}Ihr Ziel:
 STR_2385    :{BLACK}Keins
-STR_2386    :{BLACK}Mindestens {COMMA16} Parkbesucher bis {MONTHYEAR} und eine Parkbewertung von mindestens 600 zu haben
+STR_2386    :{BLACK}Mindestens {COMMA32} Parkbesucher bis {MONTHYEAR} und eine Parkbewertung von mindestens 600 zu haben
 STR_2387    :{BLACK}Einen Verkehrswert von mindestens {POP16}{POP16}{CURRENCY} zu erreichen bis {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Viel Spaß!
 STR_2389    :{BLACK}Bauen Sie Ihre(n) beste(n) {STRINGID}!
 STR_2390    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder einen Nervenkitzelwert von mindestens 6,00 aufweisen muss
-STR_2391    :{BLACK}Mindestens {COMMA16} Parkbesucher zu erreichen. Die Parkbewertung darf zu keinem Zeitpunkt unter 700 fallen!
+STR_2391    :{BLACK}Mindestens {COMMA32} Parkbesucher zu erreichen. Die Parkbewertung darf zu keinem Zeitpunkt unter 700 fallen!
 STR_2392    :{BLACK}Monatliche Einkünfte durch Fahrttickets von mindestens {POP16}{POP16}{CURRENCY} zu erreichen
 STR_2393    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder eine Mindestlänge von {LENGTH} und einen Nervenkitzelwert von mindestens 7,00 aufweisen muss
 STR_2394    :{BLACK}Alle 5 bereits teilweise gebauten Achterbahnen fertigzustellen, damit sie jeweils einen Nervenkitzelwert von {POP16}{POP16}{COMMA2DP32} erzielen
@@ -2325,7 +2325,7 @@ STR_3305    :{WINDOW_COLOUR_2}Monatliche Einkünfte:
 STR_3306    :{WINDOW_COLOUR_2}Monatlicher Gewinn:
 STR_3307    :{WINDOW_COLOUR_2}Mindestlänge:
 STR_3308    :{WINDOW_COLOUR_2}Nervenkitzelwert:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Attraktionen unter Beibehaltungsauftrag:

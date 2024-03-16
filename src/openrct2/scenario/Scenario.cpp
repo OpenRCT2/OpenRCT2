@@ -164,7 +164,7 @@ void ScenarioReset(GameState_t& gameState)
     }
 
     gMarketingCampaigns.clear();
-    gParkRatingCasualtyPenalty = 0;
+    gameState.ParkRatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
     if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
@@ -309,8 +309,8 @@ static void ScenarioDayUpdate(GameState_t& gameState)
     }
 
     // Lower the casualty penalty
-    uint16_t casualtyPenaltyModifier = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
-    gParkRatingCasualtyPenalty = std::max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
+    uint16_t casualtyPenaltyModifier = (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+    gameState.ParkRatingCasualtyPenalty = std::max(0, gameState.ParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
     ContextBroadcastIntent(&intent);

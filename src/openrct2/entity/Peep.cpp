@@ -66,14 +66,11 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-uint8_t gPeepWarningThrottle[16];
-
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
 
 static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
-static void Peep128TickUpdate(Peep* peep, int32_t index);
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
@@ -201,68 +198,41 @@ void PeepUpdateAll()
 
     const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
 
-    int32_t i = 0;
+    constexpr auto kTicks128Mask = 128U - 1U;
+    const auto currentTicksMasked = currentTicks & kTicks128Mask;
+
+    uint32_t index = 0;
     // Warning this loop can delete peeps
     for (auto peep : EntityList<Guest>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
+        if ((index & kTicks128Mask) == currentTicksMasked)
+        {
+            peep->Tick128UpdateGuest(index);
+        }
+
+        // 128 tick can delete so double check its not deleted
+        if (peep->Type == EntityType::Guest)
         {
             peep->Update();
         }
-        else
-        {
-            Peep128TickUpdate(peep, i);
-            // 128 tick can delete so double check its not deleted
-            if (peep->Type == EntityType::Guest)
-            {
-                peep->Update();
-            }
-        }
 
-        i++;
+        index++;
     }
 
     for (auto staff : EntityList<Staff>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
-        {
-            staff->Update();
-        }
-        else
-        {
-            Peep128TickUpdate(staff, i);
-            // 128 tick can delete so double check its not deleted
-            if (staff->Type == EntityType::Staff)
-            {
-                staff->Update();
-            }
-        }
-
-        i++;
-    }
-}
-
-/**
- *
- *  rct2: 0x0068F41A
- *  Called every 128 ticks
- */
-static void Peep128TickUpdate(Peep* peep, int32_t index)
-{
-    PROFILED_FUNCTION();
-
-    auto* guest = peep->As<Guest>();
-    if (guest != nullptr)
-    {
-        guest->Tick128UpdateGuest(index);
-    }
-    else
-    {
-        auto* staff = peep->As<Staff>();
-        if (staff != nullptr)
+        if ((index & kTicks128Mask) == currentTicksMasked)
         {
             staff->Tick128UpdateStaff();
         }
+
+        // 128 tick can delete so double check its not deleted
+        if (staff->Type == EntityType::Staff)
+        {
+            staff->Update();
+        }
+
+        index++;
     }
 }
 
@@ -747,7 +717,8 @@ void Peep::UpdateFalling()
             News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
 
-        gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
+        auto& gameState = GetGameState();
+        gameState.ParkRatingCasualtyPenalty = std::min(gameState.ParkRatingCasualtyPenalty + 25, 1000);
         Remove();
         return;
     }
@@ -1037,10 +1008,12 @@ void Peep::Update()
  */
 void PeepProblemWarningsUpdate()
 {
+    auto& gameState = GetGameState();
+
     Ride* ride;
     uint32_t hungerCounter = 0, lostCounter = 0, noexitCounter = 0, thirstCounter = 0, litterCounter = 0, disgustCounter = 0,
              toiletCounter = 0, vandalismCounter = 0;
-    uint8_t* warningThrottle = gPeepWarningThrottle;
+    uint8_t* warningThrottle = gameState.PeepWarningThrottle;
 
     int32_t inQueueCounter = 0;
     int32_t tooLongQueueCounter = 0;
@@ -1116,7 +1089,6 @@ void PeepProblemWarningsUpdate()
                 break;
         }
     }
-    auto& gameState = GetGameState();
 
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warningThrottle[0])

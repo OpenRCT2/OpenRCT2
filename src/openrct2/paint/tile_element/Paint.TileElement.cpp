@@ -38,9 +38,6 @@
 static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
 static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
-const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC
-    | SEGMENT_D0 | SEGMENT_D4;
-
 /**
  *
  *  rct2: 0x0068B35F
@@ -51,7 +48,7 @@ void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, boo
 
     if (!MapIsEdge(mapCoords))
     {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilForceSetGeneralSupportHeight(session, -1, 0);
         session.Flags = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
         session.WaterHeight = 0xFFFF;
@@ -378,7 +375,9 @@ void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height
 }
 
 const uint16_t segment_offsets[9] = {
-    SEGMENT_B4, SEGMENT_B8, SEGMENT_BC, SEGMENT_C0, SEGMENT_C4, SEGMENT_C8, SEGMENT_CC, SEGMENT_D0, SEGMENT_D4,
+    EnumToFlag(PaintSegment::topCorner),    EnumToFlag(PaintSegment::leftCorner),     EnumToFlag(PaintSegment::rightCorner),
+    EnumToFlag(PaintSegment::bottomCorner), EnumToFlag(PaintSegment::centre),         EnumToFlag(PaintSegment::topLeftSide),
+    EnumToFlag(PaintSegment::topRightSide), EnumToFlag(PaintSegment::bottomLeftSide), EnumToFlag(PaintSegment::bottomRightSide),
 };
 
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
@@ -399,6 +398,7 @@ void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, u
 
 uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
 {
+    // Only the value representing PaintSegment::centre falls beyond 0xFF, so this will be kept in place.
     uint8_t temp = segments & 0xFF;
     temp = Numerics::rol8(temp, rotation * 2);
 

@@ -1102,9 +1102,22 @@ static constexpr WindowParkAward _parkAwards[] = {
                 }
                 ft.Add<StringId>(rideTypeString);
             }
+            else if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY)
+            {
+                ft.Add<int32_t>(gameState.ScenarioObjective.NumGuests);
+                ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
+            }
+            else if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            {
+                ft.Add<int32_t>(gameState.ScenarioObjective.NumGuests);
+            }
+            else if (gameState.ScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
+            {
+                ft.Add<int16_t>(gameState.ScenarioObjective.MinimumLength);
+            }
             else
             {
-                ft.Add<uint16_t>(gameState.ScenarioObjective.NumGuests);
+                ft.Add<int16_t>(0); // Unused value by other objective messages
                 ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
                 if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
                     ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumExcitement);
@@ -1170,7 +1183,9 @@ static constexpr WindowParkAward _parkAwards[] = {
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            for (const auto& award : GetAwards())
+            auto& currentAwards = OpenRCT2::GetGameState().CurrentAwards;
+
+            for (const auto& award : currentAwards)
             {
                 GfxDrawSprite(dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
                 DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
@@ -1178,7 +1193,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 screenCoords.y += 32;
             }
 
-            if (GetAwards().empty())
+            if (currentAwards.empty())
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
         }
 #pragma endregion

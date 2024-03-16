@@ -695,7 +695,7 @@ static void PaintMiniatureRailwayTrackFlat(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -720,7 +720,7 @@ static void PaintMiniatureRailwayStation(
     TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
     // covers shouldn't be offset by +2
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 30, 0x20);
 }
 
@@ -753,7 +753,7 @@ static void PaintMiniatureRailwayTrack25DegUp(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegRailway);
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -786,7 +786,7 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::FlatToUp25DegRailway);
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -819,7 +819,7 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToFlatRailway);
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
@@ -1048,26 +1048,32 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 2:
-            blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::rightCorner,
+                PaintSegment::bottomCorner, PaintSegment::topRightSide);
             break;
         case 3:
-            blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0
-                | SEGMENT_D4;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::centre,
+                PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
+                PaintSegment::bottomRightSide);
             break;
         case 4:
-            blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 5:
-            blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::leftCorner,
+                PaintSegment::bottomCorner, PaintSegment::topLeftSide);
             break;
         case 6:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
     }
 
@@ -1175,16 +1181,20 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::topCorner);
             break;
         case 2:
-            blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 3:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
@@ -1283,16 +1293,20 @@ static void PaintMiniatureRailwayTrackSBendRight(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
+                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
             break;
         case 2:
-            blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
+                PaintSegment::topLeftSide, PaintSegment::topCorner);
             break;
         case 3:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
@@ -1397,13 +1411,14 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
         case 2:
-            blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0;
+            blockedSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
             break;
         case 3:
-            blockedSegments = SEGMENTS_ALL;
+            blockedSegments = kSegmentsAll;
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -1586,7 +1601,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -1753,7 +1768,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -1852,7 +1867,7 @@ static void MiniatureRailwayTrackDiagFlat(
             session, session.TrackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -1933,7 +1948,7 @@ static void MiniatureRailwayTrackDiag25DegUp(
             { { -16, -16, height + offsetB[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -1984,7 +1999,7 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
             session, session.TrackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -2063,7 +2078,7 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -2141,7 +2156,7 @@ static void MiniatureRailwayTrackDiag25DegDown(
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -2218,7 +2233,7 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
@@ -2267,7 +2282,7 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
             session, session.TrackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 

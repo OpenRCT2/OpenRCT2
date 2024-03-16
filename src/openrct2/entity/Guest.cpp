@@ -898,11 +898,11 @@ void Guest::Loc68FA89()
     }
 }
 
-void Guest::Tick128UpdateGuest(int32_t index)
+void Guest::Tick128UpdateGuest(uint32_t index)
 {
     const auto currentTicks = GetGameState().CurrentTicks;
 
-    if (static_cast<uint32_t>(index & 0x1FF) == (currentTicks & 0x1FF))
+    if ((index & 0x1FF) == (currentTicks & 0x1FF))
     {
         /* Effect of masking with 0x1FF here vs mask 0x7F,
          * which is the condition for calling this function, is
@@ -1036,7 +1036,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             PickRideToGoOn();
         }
 
-        if (static_cast<uint32_t>(index & 0x3FF) == (currentTicks & 0x3FF))
+        if ((index & 0x3FF) == (currentTicks & 0x3FF))
         {
             /* Effect of masking with 0x3FF here vs mask 0x1FF,
              * which is used in the encompassing conditional, is
