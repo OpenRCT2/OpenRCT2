@@ -274,8 +274,7 @@ public:
                 return ride == nullptr ? nullptr : RideMainOpen(*ride);
             }
             case WindowClass::TrackDesignPlace:
-                return TrackPlaceOpen(
-                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                return TrackPlaceOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WindowClass::TrackDesignList:
             {
                 RideSelection rideItem;
