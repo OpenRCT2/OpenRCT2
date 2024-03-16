@@ -130,7 +130,7 @@ static Widget window_network_status_widgets[] = {
         std::string _password;
     };
 
-    WindowBase* WindowNetworkStatusOpen(const std::string& text, close_callback onClose)
+    WindowBase* NetworkStatusOpen(const std::string& text, close_callback onClose)
     {
         auto window = WindowFocusOrCreate<NetworkStatusWindow>(
             WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
@@ -152,7 +152,7 @@ static Widget window_network_status_widgets[] = {
         networkWindow->Close();
     }
 
-    WindowBase* WindowNetworkStatusOpenPassword()
+    WindowBase* NetworkStatusOpenPassword()
     {
         auto window = WindowFocusOrCreate<NetworkStatusWindow>(
             WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);

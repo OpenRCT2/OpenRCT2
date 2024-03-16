@@ -317,7 +317,7 @@ static Widget window_news_widgets[] = {
         }
     };
 
-    WindowBase* WindowNewsOpen()
+    WindowBase* NewsOpen()
     {
         return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
     }

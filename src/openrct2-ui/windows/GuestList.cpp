@@ -565,7 +565,7 @@ static Widget window_guest_list_widgets[] = {
                             auto guest = GetEntity<Guest>(guestItem.Id);
                             if (guest != nullptr)
                             {
-                                WindowGuestOpen(guest);
+                                GuestOpen(guest);
                             }
                             break;
                         }
@@ -965,7 +965,7 @@ static Widget window_guest_list_widgets[] = {
         }
     };
 
-    WindowBase* WindowGuestListOpen()
+    WindowBase* GuestListOpen()
     {
         auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
         if (window == nullptr)
@@ -978,9 +978,9 @@ static Widget window_guest_list_widgets[] = {
     /**
      * @param index The number of the ride or index of the thought
      */
-    WindowBase* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
+    WindowBase* GuestListOpenWithFilter(GuestListFilterType type, int32_t index)
     {
-        auto* w = static_cast<GuestListWindow*>(WindowGuestListOpen());
+        auto* w = static_cast<GuestListWindow*>(GuestListOpen());
         if (w != nullptr)
         {
             w->SetFilter(type, index);

@@ -403,7 +403,7 @@ static Widget _viewClippingWidgets[] = {
         }
     };
 
-    WindowBase* WindowViewClippingOpen()
+    WindowBase* ViewClippingOpen()
     {
         auto* window = WindowBringToFrontByClass(WindowClass::ViewClipping);
         if (window == nullptr)

@@ -278,7 +278,7 @@ static Widget WindowNewsOptionsWidgets[] = {
         };
     };
 
-    WindowBase* WindowNewsOptionsOpen()
+    WindowBase* NewsOptionsOpen()
     {
         return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
     }

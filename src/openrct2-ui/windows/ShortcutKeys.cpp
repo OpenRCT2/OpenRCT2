@@ -552,7 +552,7 @@ static Widget window_shortcut_change_widgets[] = {
         }
     }
 
-    WindowBase* WindowShortcutKeysOpen()
+    WindowBase* ShortcutKeysOpen()
     {
         auto w = WindowBringToFrontByClass(WindowClass::KeyboardShortcutList);
         if (w == nullptr)

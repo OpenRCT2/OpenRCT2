@@ -1041,7 +1041,7 @@ static Widget window_new_ride_widgets[] = {
      *
      *  rct2: 0x006B3CFF
      */
-    WindowBase* WindowNewRideOpen()
+    WindowBase* NewRideOpen()
     {
         WindowBase* window;
 
@@ -1058,9 +1058,9 @@ static Widget window_new_ride_widgets[] = {
         return window;
     }
 
-    WindowBase* WindowNewRideOpenResearch()
+    WindowBase* NewRideOpenResearch()
     {
-        auto w = static_cast<NewRideWindow*>(WindowNewRideOpen());
+        auto w = static_cast<NewRideWindow*>(NewRideOpen());
         w->SetPage(RESEARCH_TAB);
         return w;
     }

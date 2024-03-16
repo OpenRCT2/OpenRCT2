@@ -60,7 +60,7 @@ static Widget _titleExitWidgets[] = {
      * Creates the window containing the exit button on the title screen.
      *  rct2: 0x0066B624 (part of 0x0066B3E8)
      */
-    WindowBase* WindowTitleExitOpen()
+    WindowBase* TitleExitOpen()
     {
         return WindowCreate<TitleExitWindow>(
             WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), 40, 64,

@@ -410,7 +410,7 @@ static Widget window_land_rights_widgets[] = {
         }
     };
 
-    WindowBase* WindowLandRightsOpen()
+    WindowBase* LandRightsOpen()
     {
         return WindowFocusOrCreate<LandRightsWindow>(
             WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);

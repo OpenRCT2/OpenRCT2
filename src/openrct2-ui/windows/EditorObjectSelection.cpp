@@ -1568,7 +1568,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
      *
      * rct2: 0x006AA64E
      */
-    WindowBase* WindowEditorObjectSelectionOpen()
+    WindowBase* EditorObjectSelectionOpen()
     {
         return WindowFocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);

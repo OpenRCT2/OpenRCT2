@@ -1390,14 +1390,14 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         }
     };
 
-    WindowBase* WindowMapgenOpen()
+    WindowBase* MapgenOpen()
     {
         return WindowFocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
     static void HeightmapLoadsaveCallback(int32_t result, const utf8* path)
     {
-        auto* w = static_cast<MapGenWindow*>(WindowMapgenOpen());
+        auto* w = static_cast<MapGenWindow*>(MapgenOpen());
         w->AfterLoadingHeightMap(result, path);
     }
 } // namespace OpenRCT2::Ui::Windows

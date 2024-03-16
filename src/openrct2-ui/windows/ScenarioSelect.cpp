@@ -762,12 +762,12 @@ static Widget _scenarioSelectWidgets[] = {
         }
     };
 
-    WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback)
+    WindowBase* ScenarioselectOpen(scenarioselect_callback callback)
     {
-        return WindowScenarioselectOpen([callback](std::string_view scenario) { callback(std::string(scenario).c_str()); });
+        return ScenarioselectOpen([callback](std::string_view scenario) { callback(std::string(scenario).c_str()); });
     }
 
-    WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback)
+    WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback)
     {
         auto* window = static_cast<ScenarioSelectWindow*>(WindowBringToFrontByClass(WindowClass::ScenarioSelect));
         if (window != nullptr)

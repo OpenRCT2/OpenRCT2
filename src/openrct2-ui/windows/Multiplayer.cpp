@@ -183,7 +183,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override;
     };
 
-    WindowBase* WindowMultiplayerOpen()
+    WindowBase* MultiplayerOpen()
     {
         // Check if window is already open
         WindowBase* window = WindowBringToFrontByClass(WindowClass::Multiplayer);
@@ -620,7 +620,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 Invalidate();
 
                 int32_t player = (IsServerPlayerInvisible() ? index + 1 : index);
-                WindowPlayerOpen(NetworkGetPlayerID(player));
+                PlayerOpen(NetworkGetPlayerID(player));
                 break;
             }
 

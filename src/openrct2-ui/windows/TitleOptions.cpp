@@ -55,7 +55,7 @@ static Widget _windowTitleOptionsWidgets[] = {
     /**
      * Creates the window containing the options button on the title screen.
      */
-    WindowBase* WindowTitleOptionsOpen()
+    WindowBase* TitleOptionsOpen()
     {
         auto* window = WindowBringToFrontByClass(WindowClass::TitleOptions);
         if (window == nullptr)

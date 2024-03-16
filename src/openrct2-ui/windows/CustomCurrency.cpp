@@ -228,7 +228,7 @@ static Widget window_custom_currency_widgets[] = {
         }
     };
 
-    WindowBase* CustomCurrencyWindowOpen()
+    WindowBase* CustomCurrencyOpen()
     {
         return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
     }

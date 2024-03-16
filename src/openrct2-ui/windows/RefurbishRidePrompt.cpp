@@ -100,7 +100,7 @@ static Widget window_ride_refurbish_widgets[] =
         }
     };
 
-    WindowBase* WindowRideRefurbishPromptOpen(const Ride& ride)
+    WindowBase* RideRefurbishPromptOpen(const Ride& ride)
     {
         WindowBase* w;
         RefurbishRidePromptWindow* newWindow;

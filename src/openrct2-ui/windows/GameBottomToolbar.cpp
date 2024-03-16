@@ -672,7 +672,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
     /**
      * Creates the main game bottom toolbar window.
      */
-    WindowBase* WindowGameBottomToolbarOpen()
+    WindowBase* GameBottomToolbarOpen()
     {
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();

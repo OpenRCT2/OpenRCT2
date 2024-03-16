@@ -2390,7 +2390,7 @@ static uint64_t PageDisabledWidgets[] = {
         }
     };
 
-    WindowBase* WindowTileInspectorOpen()
+    WindowBase* TileInspectorOpen()
     {
         WindowBase* window = WindowBringToFrontByClass(WindowClass::TileInspector);
         if (window == nullptr)

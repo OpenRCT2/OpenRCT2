@@ -339,7 +339,7 @@ static Widget WindowAssetPacksWidgets[] = {
         }
     };
 
-    WindowBase* WindowAssetPacksOpen()
+    WindowBase* AssetPacksOpen()
     {
         auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
         return WindowFocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);

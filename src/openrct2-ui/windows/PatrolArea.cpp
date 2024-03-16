@@ -293,7 +293,7 @@ static Widget PatrolAreaWidgets[] = {
         }
     };
 
-    WindowBase* WindowPatrolAreaOpen(EntityId staffId)
+    WindowBase* PatrolAreaOpen(EntityId staffId)
     {
         auto w = WindowFocusOrCreate<PatrolAreaWindow>(
             WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);

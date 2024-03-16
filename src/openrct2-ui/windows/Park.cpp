@@ -1331,7 +1331,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667C48
      */
-    WindowBase* WindowParkEntranceOpen()
+    WindowBase* ParkEntranceOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_ENTRANCE);
     }
@@ -1340,7 +1340,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667CA4
      */
-    WindowBase* WindowParkRatingOpen()
+    WindowBase* ParkRatingOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_RATING);
     }
@@ -1349,7 +1349,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667D35
      */
-    WindowBase* WindowParkGuestsOpen()
+    WindowBase* ParkGuestsOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_GUESTS);
     }
@@ -1358,7 +1358,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667E57
      */
-    WindowBase* WindowParkObjectiveOpen()
+    WindowBase* ParkObjectiveOpen()
     {
         auto* wnd = ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
         if (wnd != nullptr)
@@ -1375,7 +1375,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667DC6
      */
-    WindowBase* WindowParkAwardsOpen()
+    WindowBase* ParkAwardsOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_AWARDS);
     }

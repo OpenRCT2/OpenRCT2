@@ -267,7 +267,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                         NetworkGetMode() != NETWORK_MODE_CLIENT
                         || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2))
                     {
-                        WindowSceneryScatterOpen();
+                        SceneryScatterOpen();
                     }
                     else
                     {
@@ -1693,7 +1693,7 @@ static Widget WindowSceneryBaseWidgets[] = {
         }
     };
 
-    WindowBase* WindowSceneryOpen()
+    WindowBase* SceneryOpen()
     {
         auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
         if (w == nullptr)

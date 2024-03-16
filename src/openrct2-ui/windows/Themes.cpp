@@ -873,7 +873,7 @@ static WindowClass window_themes_tab_7_classes[] = {
         }
     };
 
-    WindowBase* WindowThemesOpen()
+    WindowBase* ThemesOpen()
     {
         WindowBase* window;
 

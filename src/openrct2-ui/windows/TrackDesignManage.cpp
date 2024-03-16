@@ -106,7 +106,7 @@ static Widget _trackDeletePromptWidgets[] = {
      *
      *  rct2: 0x006D348F
      */
-    WindowBase* WindowTrackManageOpen(TrackDesignFileRef* tdFileRef)
+    WindowBase* TrackManageOpen(TrackDesignFileRef* tdFileRef)
     {
         WindowCloseByClass(WindowClass::ManageTrackDesign);
         auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
