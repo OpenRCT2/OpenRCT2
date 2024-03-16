@@ -112,32 +112,34 @@ static constexpr ImageIndex kClassicStandUpRcLeftBankedOrthogonalToDiag3_1 = SPR
 static constexpr ImageIndex kClassicStandUpRcLeftBankedOrthogonalToDiag3_2 = SPR_CSG_BEGIN + 67391;
 static constexpr ImageIndex kClassicStandUpRcLeftBankedOrthogonalToDiag3_3 = SPR_CSG_BEGIN + 67392;
 
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightDiag0 = SPR_CSG_BEGIN + 67421; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightDiag1 = SPR_CSG_BEGIN + 67422; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightDiag2 = SPR_CSG_BEGIN + 67423; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightDiag3 = SPR_CSG_BEGIN + 67424; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedToFlatStraightDiag0 = SPR_CSG_BEGIN + 67425; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedToFlatStraightDiag1 = SPR_CSG_BEGIN + 67426; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedToFlatStraightDiag2 = SPR_CSG_BEGIN + 67427; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedToFlatStraightDiag3 = SPR_CSG_BEGIN + 67428; 
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightToDownDiag0 = SPR_CSG_BEGIN + 67433;
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightToDownDiag1 = SPR_CSG_BEGIN + 67434;
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightToDownDiag2 = SPR_CSG_BEGIN + 67435;
-static constexpr ImageIndex kClassicStandUpRcRightBankedStraightToDownDiag3 = SPR_CSG_BEGIN + 67436;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightToDownDiag0 = SPR_CSG_BEGIN + 67437;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightToDownDiag1 = SPR_CSG_BEGIN + 67438;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightToDownDiag2 = SPR_CSG_BEGIN + 67439;
-static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightToDownDiag3 = SPR_CSG_BEGIN + 67440;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToRightBankedFlatDiag0 = SPR_CSG_BEGIN + 67441;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToRightBankedFlatDiag1 = SPR_CSG_BEGIN + 67442;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToRightBankedFlatDiag2 = SPR_CSG_BEGIN + 67443;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToRightBankedFlatDiag3 = SPR_CSG_BEGIN + 67444;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToLeftBankedFlatDiag0 = SPR_CSG_BEGIN + 67445;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToLeftBankedFlatDiag1 = SPR_CSG_BEGIN + 67446;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToLeftBankedFlatDiag2 = SPR_CSG_BEGIN + 67447;
-static constexpr ImageIndex kClassicStandUpRcDownStraightToLeftBankedFlatDiag3 = SPR_CSG_BEGIN + 67448;
-
-
+static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightDiag0 = SPR_CSG_BEGIN + 67421;
+static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightDiag1 = SPR_CSG_BEGIN + 67422;
+static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightDiag2 = SPR_CSG_BEGIN + 67423;
+static constexpr ImageIndex kClassicStandUpRcLeftBankedStraightDiag3 = SPR_CSG_BEGIN + 67424;
+static constexpr ImageIndex kClassicStandUpRcFlatToLeftBankDiag0 = SPR_CSG_BEGIN + 67425;
+static constexpr ImageIndex kClassicStandUpRcFlatToLeftBankDiag1 = SPR_CSG_BEGIN + 67426;
+static constexpr ImageIndex kClassicStandUpRcFlatToLeftBankDiag2 = SPR_CSG_BEGIN + 67427;
+static constexpr ImageIndex kClassicStandUpRcFlatToLeftBankDiag3 = SPR_CSG_BEGIN + 67428;
+static constexpr ImageIndex kClassicStandUpRcFlatToRightBankDiag0 = SPR_CSG_BEGIN + 67429;
+static constexpr ImageIndex kClassicStandUpRcFlatToRightBankDiag1 = SPR_CSG_BEGIN + 67430;
+static constexpr ImageIndex kClassicStandUpRcFlatToRightBankDiag2 = SPR_CSG_BEGIN + 67431;
+static constexpr ImageIndex kClassicStandUpRcFlatToRightBankDiag3 = SPR_CSG_BEGIN + 67432;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToLeftBankDiag0 = SPR_CSG_BEGIN + 67433;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToLeftBankDiag1 = SPR_CSG_BEGIN + 67434;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToLeftBankDiag2 = SPR_CSG_BEGIN + 67435;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToLeftBankDiag3 = SPR_CSG_BEGIN + 67436;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToRightBankDiag0 = SPR_CSG_BEGIN + 67437;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToRightBankDiag1 = SPR_CSG_BEGIN + 67438;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToRightBankDiag2 = SPR_CSG_BEGIN + 67439;
+static constexpr ImageIndex kClassicStandUpRc25DegUpToRightBankDiag3 = SPR_CSG_BEGIN + 67440;
+static constexpr ImageIndex kClassicStandUpRcLeftBankTo25DegUpDiag0 = SPR_CSG_BEGIN + 67441;
+static constexpr ImageIndex kClassicStandUpRcLeftBankTo25DegUpDiag1 = SPR_CSG_BEGIN + 67442;
+static constexpr ImageIndex kClassicStandUpRcLeftBankTo25DegUpDiag2 = SPR_CSG_BEGIN + 67443;
+static constexpr ImageIndex kClassicStandUpRcLeftBankTo25DegUpDiag3 = SPR_CSG_BEGIN + 67444;
+static constexpr ImageIndex kClassicStandUpRcRightBankTo25DegUpDiag0 = SPR_CSG_BEGIN + 67445;
+static constexpr ImageIndex kClassicStandUpRcRightBankTo25DegUpDiag1 = SPR_CSG_BEGIN + 67446;
+static constexpr ImageIndex kClassicStandUpRcRightBankTo25DegUpDiag2 = SPR_CSG_BEGIN + 67447;
+static constexpr ImageIndex kClassicStandUpRcRightBankTo25DegUpDiag3 = SPR_CSG_BEGIN + 67448;
 
 #pragma GCC diagnostic pop
 
@@ -1039,6 +1041,160 @@ static void classicStandUpRCTrackLeftBankedQuarterTurn3(
     classicStandUpRCTrackRightBankedQuarterTurn3(session, ride, trackSequence, direction, height, trackElement);
 }
 
+template<ImageIndex img0, ImageIndex img1, ImageIndex img2, ImageIndex img3>
+static inline void classicStandUpRCTrackDiagFlatWithBank(
+    PaintSession& session, uint8_t trackSequence, uint8_t direction, int32_t height)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(img3), { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(img0), { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(img2), { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    MetalASupportsPaintSetup(
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(img1), { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 3 } });
+                    MetalASupportsPaintSetup(
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalASupportsPaintSetup(
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalASupportsPaintSetup(
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                    break;
+            }
+
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            break;
+    }
+}
+
+static void classicStandUpRCTrackDiagFlatToLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    classicStandUpRCTrackDiagFlatWithBank<
+        kClassicStandUpRcFlatToLeftBankDiag0, kClassicStandUpRcFlatToLeftBankDiag1, kClassicStandUpRcFlatToLeftBankDiag2,
+        kClassicStandUpRcFlatToLeftBankDiag3>(session, trackSequence, direction, height);
+}
+
+static void classicStandUpRCTrackDiagFlatToRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    classicStandUpRCTrackDiagFlatWithBank<
+        kClassicStandUpRcFlatToRightBankDiag0, kClassicStandUpRcFlatToRightBankDiag1, kClassicStandUpRcFlatToRightBankDiag2,
+        kClassicStandUpRcFlatToRightBankDiag3>(session, trackSequence, direction, height);
+}
+
+static void classicStandUpRCTrackDiagLeftBankToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    return classicStandUpRCTrackDiagFlatToRightBank(
+        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
+static void classicStandUpRCTrackDiagRightBankToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    return classicStandUpRCTrackDiagFlatToLeftBank(
+        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
+static void classicStandUpRCTrackDiagLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    classicStandUpRCTrackDiagFlatWithBank<
+        kClassicStandUpRcLeftBankedStraightDiag0, kClassicStandUpRcLeftBankedStraightDiag1,
+        kClassicStandUpRcLeftBankedStraightDiag2, kClassicStandUpRcLeftBankedStraightDiag3>(
+        session, trackSequence, direction, height);
+}
+
+static void classicStandUpRCTrackDiagRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    return classicStandUpRCTrackDiagLeftBank(
+        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
 {
     switch (trackType)
@@ -1090,9 +1246,13 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
         case TrackElemType::RightBankedQuarterTurn3Tiles:
             return classicStandUpRCTrackRightBankedQuarterTurn3;
         case TrackElemType::DiagFlatToLeftBank:
+            return classicStandUpRCTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
+            return classicStandUpRCTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
+            return classicStandUpRCTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
+            return classicStandUpRCTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
         case TrackElemType::DiagRightBankToUp25:
         case TrackElemType::DiagUp25ToLeftBank:
@@ -1101,9 +1261,11 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
         case TrackElemType::DiagRightBankToDown25:
         case TrackElemType::DiagDown25ToLeftBank:
         case TrackElemType::DiagDown25ToRightBank:
-        case TrackElemType::DiagLeftBank:
-        case TrackElemType::DiagRightBank:
             return nullptr;
+        case TrackElemType::DiagLeftBank:
+            return classicStandUpRCTrackDiagLeftBank;
+        case TrackElemType::DiagRightBank:
+            return classicStandUpRCTrackDiagRightBank;
     }
 
     return GetTrackPaintFunctionStandUpRC(trackType);
