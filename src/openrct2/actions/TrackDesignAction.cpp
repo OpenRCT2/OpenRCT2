@@ -91,7 +91,8 @@ GameActions::Result TrackDesignAction::Query() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %d", rideIndex);
-        return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     bool placeScenery = true;
@@ -164,7 +165,8 @@ GameActions::Result TrackDesignAction::Execute() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %d", rideIndex);
-        return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     // Query first, this is required again to determine if scenery is available.
