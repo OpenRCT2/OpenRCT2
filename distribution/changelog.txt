@@ -5,6 +5,7 @@
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
+- Fix: [#21627] [Plugin] Banners are properly created or deleted when tile elements are changed by plugins.
 
 0.4.9 (2024-03-02)
 ------------------------------------------------------------------------

@@ -195,7 +195,17 @@ namespace OpenRCT2::Scripting
         auto first = GetFirstElement();
         if (index < GetNumElements(first))
         {
-            TileElementRemove(&first[index]);
+            auto element = first[index];
+            if (element.GetType() == TileElementType::LargeScenery)
+            {
+                if (element.AsLargeScenery()->GetSequenceIndex() == 0)
+                    element.RemoveBannerEntry();
+            }
+            else
+            {
+                element.RemoveBannerEntry();
+            }
+            TileElementRemove(&element);
             MapInvalidateTileFull(_coords);
         }
     }

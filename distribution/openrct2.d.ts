@@ -1590,8 +1590,8 @@ declare global {
         secondaryColour: number;
         tertiaryColour: number;
         sequence: number;
-        /** Writing to bannerIndex is deprecated and may result in uncontrolled behaviour. */
-        readonly bannerIndex: number | null;
+        /** Writing to bannerIndex is deprecated (except if sequence != 0) and may result in uncontrolled behaviour. */
+        bannerIndex: number | null;
         /** If the element is a banner, this is its text. */
         bannerText: string | null;
     }

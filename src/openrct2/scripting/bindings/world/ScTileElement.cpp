@@ -15,6 +15,8 @@
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
 #    include "../../../entity/EntityRegistry.h"
+#    include "../../../object/LargeSceneryEntry.h"
+#    include "../../../object/WallSceneryEntry.h"
 #    include "../../../ride/Ride.h"
 #    include "../../../ride/RideData.h"
 #    include "../../../ride/Track.h"
@@ -63,6 +65,7 @@ namespace OpenRCT2::Scripting
 
     void ScTileElement::type_set(std::string value)
     {
+        RemoveBannerEntry();
         if (value == "surface")
             _element->SetType(TileElementType::Surface);
         else if (value == "footpath")
@@ -85,6 +88,7 @@ namespace OpenRCT2::Scripting
             scriptEngine.LogPluginInfo("Element type not recognised!");
             return;
         }
+        CreateBannerEntry();
 
         Invalidate();
     }
@@ -537,8 +541,10 @@ namespace OpenRCT2::Scripting
             {
                 case TileElementType::LargeScenery:
                 {
+                    RemoveBannerEntry();
                     auto* el = _element->AsLargeScenery();
                     el->SetSequenceIndex(value.as_uint());
+                    CreateBannerEntry();
                     Invalidate();
                     break;
                 }
@@ -1194,15 +1200,19 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::LargeScenery:
             {
+                RemoveBannerEntry();
                 auto* el = _element->AsLargeScenery();
                 el->SetEntryIndex(index);
+                CreateBannerEntry();
                 Invalidate();
                 break;
             }
             case TileElementType::Wall:
             {
+                RemoveBannerEntry();
                 auto* el = _element->AsWall();
                 el->SetEntryIndex(index);
+                CreateBannerEntry();
                 Invalidate();
                 break;
             }
@@ -2151,6 +2161,73 @@ namespace OpenRCT2::Scripting
     void ScTileElement::Invalidate()
     {
         MapInvalidateTileFull(_coords);
+    }
+
+    void ScTileElement::RemoveBannerEntry()
+    {
+        if (_element->GetType() == TileElementType::LargeScenery)
+        {
+            auto largeScenery = _element->AsLargeScenery();
+            if (largeScenery->GetSequenceIndex() != 0)
+                return;
+        }
+        _element->RemoveBannerEntry();
+    }
+
+    void ScTileElement::CreateBannerEntry()
+    {
+        switch (_element->GetType())
+        {
+            case TileElementType::Banner:
+                break;
+            case TileElementType::Wall:
+            {
+                auto wallEntry = _element->AsWall()->GetEntry();
+                if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
+                    return;
+                break;
+            }
+            case TileElementType::LargeScenery:
+            {
+                auto largeScenery = _element->AsLargeScenery();
+                if (largeScenery->GetSequenceIndex() != 0)
+                    return;
+                auto largeSceneryEntry = largeScenery->GetEntry();
+                if (largeSceneryEntry == nullptr || largeSceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
+                    return;
+                break;
+            }
+            default:
+                return;
+        }
+        auto* banner = CreateBanner();
+        if (banner == nullptr)
+            GetContext()->GetScriptEngine().LogPluginInfo("No free banners available.");
+        else
+        {
+            banner->text = {};
+            banner->colour = 0;
+            banner->text_colour = 0;
+            banner->flags = 0;
+            if (_element->GetType() == TileElementType::Wall)
+                banner->flags = BANNER_FLAG_IS_WALL;
+            if (_element->GetType() == TileElementType::LargeScenery)
+                banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
+            banner->type = 0;
+            banner->position = TileCoordsXY(_coords);
+
+            if (_element->GetType() == TileElementType::Wall || _element->GetType() == TileElementType::LargeScenery)
+            {
+                RideId rideIndex = BannerGetClosestRideIndex({ _coords, _element->BaseHeight });
+                if (!rideIndex.IsNull())
+                {
+                    banner->ride_index = rideIndex;
+                    banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+                }
+            }
+
+            _element->SetBannerIndex(banner->id);
+        }
     }
 
     void ScTileElement::Register(duk_context* ctx)

@@ -213,6 +213,9 @@ namespace OpenRCT2::Scripting
 
         void Invalidate();
 
+        void RemoveBannerEntry();
+        void CreateBannerEntry();
+
     public:
         static void Register(duk_context* ctx);
     };
