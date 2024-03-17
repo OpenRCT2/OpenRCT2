@@ -49,7 +49,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner index: index = %u", _bannerIndex);
+        LOG_ERROR("Invalid banner index %u", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -70,7 +70,7 @@ GameActions::Result BannerSetStyleAction::Query() const
         case BannerSetStyleType::PrimaryColour:
             if (_parameter > COLOUR_COUNT)
             {
-                LOG_ERROR("Invalid primary colour: colour = %u", _parameter);
+                LOG_ERROR("Invalid primary colour %u", _parameter);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
             }
             break;
@@ -78,7 +78,7 @@ GameActions::Result BannerSetStyleAction::Query() const
         case BannerSetStyleType::TextColour:
             if (_parameter > 13)
             {
-                LOG_ERROR("Invalid text colour: colour = %u", _parameter);
+                LOG_ERROR("Invalid text colour %u", _parameter);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
             }
             break;
@@ -103,7 +103,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner index: index = %u", _bannerIndex);
+        LOG_ERROR("Invalid banner index %u", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

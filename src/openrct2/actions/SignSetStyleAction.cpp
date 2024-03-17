@@ -50,7 +50,7 @@ GameActions::Result SignSetStyleAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner id. id = %u", _bannerIndex);
+        LOG_ERROR("Invalid banner id %u", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -87,7 +87,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner id. id = %u", _bannerIndex);
+        LOG_ERROR("Invalid banner id %u", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

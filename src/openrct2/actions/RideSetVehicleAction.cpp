@@ -66,7 +66,7 @@ GameActions::Result RideSetVehicleAction::Query() const
 {
     if (_type >= RideSetVehicleType::Count)
     {
-        LOG_ERROR("Invalid type. type = %d", _type);
+        LOG_ERROR("Invalid type %d", _type);
     }
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 
@@ -97,7 +97,7 @@ GameActions::Result RideSetVehicleAction::Query() const
         {
             if (!RideIsVehicleTypeValid(*ride))
             {
-                LOG_ERROR("Invalid vehicle type. type = %d", _value);
+                LOG_ERROR("Invalid vehicle type %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             auto rideEntry = GetRideEntryByIndex(_value);

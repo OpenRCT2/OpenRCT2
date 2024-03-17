@@ -66,7 +66,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
 
     if (_primaryColour > 31)
     {
-        LOG_ERROR("Invalid primary colour: colour = %u", _primaryColour);
+        LOG_ERROR("Invalid primary colour %u", _primaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -87,7 +87,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     auto banner = GetBanner(index);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner index: index = %u", index);
+        LOG_ERROR("Invalid banner index %u", index);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
