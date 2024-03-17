@@ -117,7 +117,7 @@ GameActions::Result RideDemolishAction::Execute() const
             return RefurbishRide(*ride);
         default:
             LOG_ERROR("Unknown ride demolish type %d", _modifyType);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 }
 

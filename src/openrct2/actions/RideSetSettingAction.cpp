@@ -71,7 +71,8 @@ GameActions::Result RideSetSettingAction::Query() const
             if (!RideIsModeValid(*ride) && !GetGameState().Cheats.ShowAllOperatingModes)
             {
                 LOG_ERROR("Invalid ride mode: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::Departure:
@@ -80,14 +81,16 @@ GameActions::Result RideSetSettingAction::Query() const
             if (_value > 250)
             {
                 LOG_ERROR("Invalid minimum waiting time: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::MaxWaitingTime:
             if (_value > 250)
             {
                 LOG_ERROR("Invalid maximum waiting time: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::Operation:
@@ -102,7 +105,8 @@ GameActions::Result RideSetSettingAction::Query() const
             if (_value > RIDE_INSPECTION_NEVER)
             {
                 LOG_ERROR("Invalid inspection interval: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::Music:
@@ -114,7 +118,8 @@ GameActions::Result RideSetSettingAction::Query() const
             if (musicObj == nullptr)
             {
                 LOG_ERROR("Invalid music style: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         }
@@ -122,7 +127,8 @@ GameActions::Result RideSetSettingAction::Query() const
             if (!RideIsValidLiftHillSpeed(*ride))
             {
                 LOG_ERROR("Invalid lift hill speed: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::NumCircuits:
@@ -136,7 +142,8 @@ GameActions::Result RideSetSettingAction::Query() const
             if (!RideIsValidNumCircuits())
             {
                 LOG_ERROR("Invalid number of circuits: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::RideType:
@@ -148,7 +155,8 @@ GameActions::Result RideSetSettingAction::Query() const
             break;
         default:
             LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();

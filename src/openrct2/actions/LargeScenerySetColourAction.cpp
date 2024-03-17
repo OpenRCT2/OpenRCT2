@@ -70,7 +70,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
     if (_loc.x < 0 || _loc.y < 0 || _loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y)
     {
         LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (_primaryColour >= COLOUR_COUNT)

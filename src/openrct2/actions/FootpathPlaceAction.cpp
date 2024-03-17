@@ -101,7 +101,8 @@ GameActions::Result FootpathPlaceAction::Query() const
     if (_direction != INVALID_DIRECTION && !DirectionValid(_direction))
     {
         LOG_ERROR("Direction invalid. direction = %u", _direction);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     FootpathProvisionalRemove();
@@ -323,7 +324,8 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
     auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
@@ -386,7 +388,8 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
     auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;

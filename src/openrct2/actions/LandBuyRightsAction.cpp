@@ -114,14 +114,15 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
     if (_setting >= LandBuyRightSetting::Count)
     {
         LOG_ERROR("Invalid land buying setting %u", _setting);
-        return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
         LOG_ERROR("No surface at x = %d, y = %d", loc.x, loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     auto res = GameActions::Result();
@@ -171,6 +172,6 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
 
         default:
             LOG_ERROR("Invalid land buying setting %u", _setting);
-            return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
     }
 }

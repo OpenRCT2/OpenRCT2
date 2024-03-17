@@ -76,7 +76,8 @@ GameActions::Result WallSetColourAction::Query() const
     {
         LOG_ERROR(
             "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_WALL_ELEMENT_NOT_FOUND);
     }
 
     if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(wallElement->IsGhost()))

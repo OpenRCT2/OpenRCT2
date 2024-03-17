@@ -113,7 +113,8 @@ GameActions::Result TrackRemoveAction::Query() const
         LOG_ERROR(
             "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
             _origin.direction, _sequence);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
     }
 
     if (tileElement->AsTrack()->IsIndestructible())
@@ -137,7 +138,8 @@ GameActions::Result TrackRemoveAction::Query() const
     if (ride->type >= RIDE_TYPE_COUNT)
     {
         LOG_ERROR("Ride type not found. ride type = %d.", ride->type);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
@@ -145,7 +147,8 @@ GameActions::Result TrackRemoveAction::Query() const
     if (trackBlock == nullptr)
     {
         LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_BLOCK_NOT_FOUND);
     }
 
     auto startLoc = _origin;
@@ -208,7 +211,8 @@ GameActions::Result TrackRemoveAction::Query() const
             LOG_ERROR(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                 _origin.direction, trackBlock->index);
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
@@ -226,7 +230,8 @@ GameActions::Result TrackRemoveAction::Query() const
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         int8_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
@@ -315,7 +320,8 @@ GameActions::Result TrackRemoveAction::Execute() const
         LOG_ERROR(
             "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
             _origin.direction, _sequence);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
     }
 
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
@@ -335,7 +341,8 @@ GameActions::Result TrackRemoveAction::Execute() const
     if (trackBlock == nullptr)
     {
         LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_BLOCK_NOT_FOUND);
     }
 
     auto startLoc = _origin;
@@ -393,7 +400,8 @@ GameActions::Result TrackRemoveAction::Execute() const
             LOG_ERROR(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                 _origin.direction, trackBlock->index);
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
@@ -411,7 +419,8 @@ GameActions::Result TrackRemoveAction::Execute() const
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         int8_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;

@@ -78,7 +78,8 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     if (tileElement == nullptr)
     {
         LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
     }
 
     auto pathElement = tileElement->AsPath();
@@ -155,7 +156,8 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     if (pathElement == nullptr)
     {
         LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
     }
 
     // No change

@@ -65,7 +65,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     if (_stationNum.ToUnderlying() >= Limits::MaxStationsPerRide)
     {
         LOG_ERROR("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)

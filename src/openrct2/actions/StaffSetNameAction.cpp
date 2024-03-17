@@ -50,14 +50,16 @@ GameActions::Result StaffSetNameAction::Query() const
     if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
         LOG_ERROR("Invalid sprite index %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
         LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     return GameActions::Result();
@@ -69,7 +71,8 @@ GameActions::Result StaffSetNameAction::Execute() const
     if (staff == nullptr)
     {
         LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     auto curName = staff->GetName();
