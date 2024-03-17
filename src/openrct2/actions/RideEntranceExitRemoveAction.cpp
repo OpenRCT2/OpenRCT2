@@ -69,7 +69,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_ERROR("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
@@ -114,7 +114,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_ERROR("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 

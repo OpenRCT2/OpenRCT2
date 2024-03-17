@@ -49,7 +49,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner index %u", _bannerIndex);
+        LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -61,7 +61,7 @@ GameActions::Result BannerSetStyleAction::Query() const
 
     if (tileElement == nullptr)
     {
-        LOG_ERROR("Could not find banner index = %u", _bannerIndex);
+        LOG_ERROR("Banner tile element not found for bannerIndex %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -103,7 +103,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner index %u", _bannerIndex);
+        LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -115,7 +115,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
 
     if (tileElement == nullptr)
     {
-        LOG_ERROR("Could not find banner index = %u", _bannerIndex);
+        LOG_ERROR("Banner tile element not found for bannerIndex &u", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

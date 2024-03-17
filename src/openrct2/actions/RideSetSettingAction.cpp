@@ -159,8 +159,9 @@ GameActions::Result RideSetSettingAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_ERROR("Invalid ride: #%u.", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     switch (_setting)
