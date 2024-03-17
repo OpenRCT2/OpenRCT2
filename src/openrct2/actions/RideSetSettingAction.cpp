@@ -147,7 +147,7 @@ GameActions::Result RideSetSettingAction::Query() const
             }
             break;
         default:
-            LOG_ERROR("Invalid RideSetSetting: %u", static_cast<uint8_t>(_setting));
+            LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 

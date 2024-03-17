@@ -118,7 +118,7 @@ GameActions::Result RideSetVehicleAction::Query() const
         }
 
         default:
-            LOG_ERROR("Unknown vehicle command. type = %d", _type);
+            LOG_ERROR("Invalid ride vehicle setting %d", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -200,7 +200,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
         }
 
         default:
-            LOG_ERROR("Unknown vehicle command. type = %d", _type);
+            LOG_ERROR("Invalid ride vehicle setting %d", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 

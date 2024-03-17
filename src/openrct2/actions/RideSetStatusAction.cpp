@@ -238,7 +238,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             break;
         }
         default:
-            Guard::Assert(false, "Invalid status passed: %u", _status);
+            Guard::Assert(false, "Invalid ride status %u", _status);
             break;
     }
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
