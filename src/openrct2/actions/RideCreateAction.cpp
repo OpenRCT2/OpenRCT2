@@ -130,7 +130,9 @@ GameActions::Result RideCreateAction::Execute() const
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
-        LOG_ERROR("Invalid request for ride %u", rideIndex);
+        LOG_ERROR(
+            "Ride entry not found for index rideEntryIndex %u (from rideType %u, subType %u)", rideEntryIndex, _rideType,
+            _subType);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 

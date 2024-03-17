@@ -66,7 +66,7 @@ GameActions::Result RideSetVehicleAction::Query() const
 {
     if (_type >= RideSetVehicleType::Count)
     {
-        LOG_ERROR("Invalid type %d", _type);
+        LOG_ERROR("Invalid ride vehicle type %d", _type);
     }
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 

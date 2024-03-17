@@ -129,7 +129,7 @@ GameActions::Result TrackRemoveAction::Query() const
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
-        LOG_ERROR("Ride not found. ride index = %d.", rideIndex);
+        LOG_ERROR("Ride not found for rideIndex %d.", rideIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_RIDE_NOT_FOUND);
     }

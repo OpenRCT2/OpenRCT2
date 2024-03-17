@@ -87,7 +87,9 @@ GameActions::Result WallSetColourAction::Query() const
     auto* wallEntry = wallElement->GetEntry();
     if (wallEntry == nullptr)
     {
-        LOG_ERROR("Could not find wall object");
+        LOG_ERROR(
+            "Wall element does not have wall entry at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
+            _loc.direction);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -139,7 +141,9 @@ GameActions::Result WallSetColourAction::Execute() const
     auto* wallEntry = wallElement->GetEntry();
     if (wallEntry == nullptr)
     {
-        LOG_ERROR("Could not find wall object");
+        LOG_ERROR(
+            "Wall element does not have wall entry at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
+            _loc.direction);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
