@@ -691,7 +691,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                     {
                         // The practical size is 2 lower than the technical size
                         size += 2;
-                        size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+                        size = std::clamp(size, kMinimumMapSizeTechnical, MAXIMUM_MAP_SIZE_TECHNICAL);
 
                         TileCoordsXY newMapSize = GetGameState().MapSize;
                         if (_resizeDirection != ResizeDirection::X)
