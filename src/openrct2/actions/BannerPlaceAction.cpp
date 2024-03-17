@@ -98,7 +98,7 @@ GameActions::Result BannerPlaceAction::Query() const
     auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
     if (bannerEntry == nullptr)
     {
-        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
+        LOG_ERROR("Invalid banner object type. bannerType = %u", _bannerType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -126,7 +126,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
     if (bannerEntry == nullptr)
     {
-        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
+        LOG_ERROR("Invalid banner object type. bannerType = %u", _bannerType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
