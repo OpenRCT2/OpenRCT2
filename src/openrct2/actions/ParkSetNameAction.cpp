@@ -47,6 +47,7 @@ GameActions::Result ParkSetNameAction::Query() const
 {
     if (_name.empty())
     {
+        LOG_ERROR("Can't set park name to empty string");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
     }
     return GameActions::Result();

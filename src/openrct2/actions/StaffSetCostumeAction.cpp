@@ -64,6 +64,7 @@ GameActions::Result StaffSetCostumeAction::Query() const
 {
     if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
+        LOG_ERROR("Invalid sprite index %u", _spriteIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }

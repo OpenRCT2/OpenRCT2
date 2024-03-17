@@ -99,6 +99,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
     if (pathAdditionEntry == nullptr)
     {
+        LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -167,6 +168,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
     if (pathAdditionEntry == nullptr)
     {
+        LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
