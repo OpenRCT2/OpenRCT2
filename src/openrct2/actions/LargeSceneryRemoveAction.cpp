@@ -65,7 +65,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
-        LOG_ERROR("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
+        LOG_ERROR("No large scenery element to remove at x = %d, y = %d", _loc.x, _loc.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
@@ -147,7 +147,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
-        LOG_ERROR("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
+        LOG_ERROR("No large scenery element to remove at %d, y = %d", _loc.x, _loc.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }

@@ -58,7 +58,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_ERROR("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
@@ -143,7 +143,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_ERROR("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
