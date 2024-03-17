@@ -130,7 +130,8 @@ GameActions::Result TrackRemoveAction::Query() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found. ride index = %d.", rideIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (ride->type >= RIDE_TYPE_COUNT)
@@ -325,7 +326,8 @@ GameActions::Result TrackRemoveAction::Execute() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found. ride index = %d.", rideIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_RIDE_NOT_FOUND);
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();

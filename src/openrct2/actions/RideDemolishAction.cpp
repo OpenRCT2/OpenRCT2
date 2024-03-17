@@ -61,7 +61,7 @@ GameActions::Result RideDemolishAction::Query() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -106,7 +106,7 @@ GameActions::Result RideDemolishAction::Execute() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     switch (_modifyType)

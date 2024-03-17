@@ -51,7 +51,8 @@ GameActions::Result RideSetNameAction::Query() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (!_name.empty() && Ride::NameExists(_name, ride->id))
@@ -69,7 +70,8 @@ GameActions::Result RideSetNameAction::Execute() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (_name.empty())

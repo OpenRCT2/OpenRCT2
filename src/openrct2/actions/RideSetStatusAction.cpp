@@ -63,7 +63,7 @@ GameActions::Result RideSetStatusAction::Query() const
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
         return res;
     }
 
@@ -127,7 +127,7 @@ GameActions::Result RideSetStatusAction::Execute() const
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
         return res;
     }
 

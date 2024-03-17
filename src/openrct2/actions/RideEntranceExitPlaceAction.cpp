@@ -59,7 +59,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (_stationNum.ToUnderlying() >= Limits::MaxStationsPerRide)
@@ -144,7 +144,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     if (ride == nullptr)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
