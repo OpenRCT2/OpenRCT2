@@ -702,7 +702,7 @@ enum
 
 constexpr uint8_t kTileElementQuadrantMask{ 0b11000000 };
 constexpr uint8_t kTileElementTypeMask{ 0b00111100 };
-#define TILE_ELEMENT_DIRECTION_MASK 0b00000011
+constexpr uint8_t kTileElementDirectionMask{ 0b00000011 };
 #define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
 
 enum

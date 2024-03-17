@@ -54,7 +54,7 @@ RCT12TileElementType RCT12TileElementBase::GetType() const
 
 uint8_t RCT12TileElementBase::GetDirection() const
 {
-    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & kTileElementDirectionMask;
 }
 
 uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const

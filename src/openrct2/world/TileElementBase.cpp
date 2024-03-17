@@ -23,18 +23,18 @@ void TileElementBase::SetType(TileElementType newType)
 
 Direction TileElementBase::GetDirection() const
 {
-    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & kTileElementDirectionMask;
 }
 
 void TileElementBase::SetDirection(Direction direction)
 {
-    this->Type &= ~TILE_ELEMENT_DIRECTION_MASK;
-    this->Type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
+    this->Type &= ~kTileElementDirectionMask;
+    this->Type |= (direction & kTileElementDirectionMask);
 }
 
 Direction TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 {
-    return ((this->Type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
+    return ((this->Type & kTileElementDirectionMask) + offset) & kTileElementDirectionMask;
 }
 
 bool TileElementBase::IsLastForTile() const
