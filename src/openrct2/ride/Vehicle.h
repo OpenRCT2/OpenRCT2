@@ -517,7 +517,7 @@ enum
 };
 
 constexpr uint8_t kVehicleSeatPairFlag{ 0x80 };
-#define VEHICLE_SEAT_NUM_MASK 0x7F
+constexpr uint8_t kVehicleSeatNumMask{ 0x7F };
 
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
