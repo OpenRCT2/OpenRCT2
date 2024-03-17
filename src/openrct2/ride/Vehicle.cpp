@@ -5115,7 +5115,7 @@ Vehicle* Vehicle::TrainTail() const
 
 int32_t Vehicle::IsUsedInPairs() const
 {
-    return num_seats & VEHICLE_SEAT_PAIR_FLAG;
+    return num_seats & kVehicleSeatPairFlag;
 }
 
 /**
