@@ -98,7 +98,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             if (!RideIsVehicleTypeValid(*ride))
             {
                 LOG_ERROR("Invalid vehicle type %d", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             auto rideEntry = GetRideEntryByIndex(_value);
             if (rideEntry == nullptr)
@@ -119,7 +119,7 @@ GameActions::Result RideSetVehicleAction::Query() const
 
         default:
             LOG_ERROR("Invalid ride vehicle setting %d", _type);
-            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();

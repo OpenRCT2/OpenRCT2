@@ -38,7 +38,7 @@ GameActions::Result ClimateSetAction::Query() const
     if (_climate >= ClimateType::Count)
     {
         LOG_ERROR("Invalid climate type %u", _climate);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();

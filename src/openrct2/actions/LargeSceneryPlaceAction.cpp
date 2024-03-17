@@ -89,7 +89,8 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)
     {
         LOG_ERROR("Invalid sceneryType %u", _sceneryType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);

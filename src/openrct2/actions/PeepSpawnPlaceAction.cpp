@@ -74,7 +74,8 @@ GameActions::Result PeepSpawnPlaceAction::Query() const
     auto surfaceMapElement = MapGetSurfaceElementAt(_location);
     if (surfaceMapElement == nullptr)
     {
-        return GameActions::Result(GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
     {

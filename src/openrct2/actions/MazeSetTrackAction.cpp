@@ -288,7 +288,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     LOG_ERROR("No surface found");
                     res.Error = GameActions::Status::Unknown;
-                    res.ErrorMessage = STR_NONE;
+                    res.ErrorMessage = STR_ERR_SURFACE_ELEMENT_NOT_FOUND;
                     return res;
                 }
 

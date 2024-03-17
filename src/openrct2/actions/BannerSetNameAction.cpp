@@ -48,7 +48,8 @@ GameActions::Result BannerSetNameAction::Query() const
     if (banner == nullptr)
     {
         LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
     return GameActions::Result();
 }
@@ -59,7 +60,8 @@ GameActions::Result BannerSetNameAction::Execute() const
     if (banner == nullptr)
     {
         LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
     banner->text = _name;
