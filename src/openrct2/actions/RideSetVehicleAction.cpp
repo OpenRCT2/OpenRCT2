@@ -66,14 +66,14 @@ GameActions::Result RideSetVehicleAction::Query() const
 {
     if (_type >= RideSetVehicleType::Count)
     {
-        LOG_WARNING("Invalid type. type = %d", _type);
+        LOG_ERROR("Invalid type. type = %d", _type);
     }
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -103,7 +103,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             auto rideEntry = GetRideEntryByIndex(_value);
             if (rideEntry == nullptr)
             {
-                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
@@ -131,7 +131,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -154,7 +154,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             uint8_t clampValue = _value;
@@ -177,7 +177,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
