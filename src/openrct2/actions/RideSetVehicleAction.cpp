@@ -103,7 +103,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             auto rideEntry = GetRideEntryByIndex(_value);
             if (rideEntry == nullptr)
             {
-                LOG_ERROR("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Ride entry not found for _value %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
@@ -154,7 +154,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                LOG_ERROR("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Ride entry not found for index %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             uint8_t clampValue = _value;
@@ -177,7 +177,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                LOG_ERROR("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Ride entry not found for index %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 

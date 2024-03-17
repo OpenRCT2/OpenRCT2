@@ -95,7 +95,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        LOG_ERROR("Scenery entry not found for sceneryType %u", _sceneryType);
+        LOG_ERROR("Large scenery entry not found for sceneryType %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -209,7 +209,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        LOG_ERROR("Scenery entry not found for sceneryType = %u", _sceneryType);
+        LOG_ERROR("Large scenery entry not found for sceneryType = %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
