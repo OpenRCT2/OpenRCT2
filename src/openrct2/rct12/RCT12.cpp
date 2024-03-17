@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 
 RCT12TileElementType RCT12TileElementBase::GetType() const
 {
-    auto elem_type = static_cast<RCT12TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    auto elem_type = static_cast<RCT12TileElementType>((this->Type & kTileElementTypeMask) >> 2);
     switch (elem_type)
     {
         case RCT12TileElementType::Surface:

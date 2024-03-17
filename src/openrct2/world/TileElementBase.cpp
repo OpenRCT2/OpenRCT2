@@ -12,13 +12,13 @@
 
 TileElementType TileElementBase::GetType() const
 {
-    return static_cast<TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    return static_cast<TileElementType>((this->Type & kTileElementTypeMask) >> 2);
 }
 
 void TileElementBase::SetType(TileElementType newType)
 {
-    this->Type &= ~TILE_ELEMENT_TYPE_MASK;
-    this->Type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);
+    this->Type &= ~kTileElementTypeMask;
+    this->Type |= ((EnumValue(newType) << 2) & kTileElementTypeMask);
 }
 
 Direction TileElementBase::GetDirection() const
