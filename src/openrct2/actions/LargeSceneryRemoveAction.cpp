@@ -184,14 +184,14 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
         }
 
         auto* sceneryElement = FindLargeSceneryElement(currentTile, i);
-        if (sceneryElement != nullptr)
+        if (sceneryElement == nullptr)
         {
-            MapInvalidateTileFull(currentTile);
-            TileElementRemove(sceneryElement);
+            LOG_ERROR("Tile not found when trying to remove element!");
         }
         else
         {
-            LOG_ERROR("Tile not found when trying to remove element!");
+            MapInvalidateTileFull(currentTile);
+            TileElementRemove(sceneryElement);
         }
     }
 
