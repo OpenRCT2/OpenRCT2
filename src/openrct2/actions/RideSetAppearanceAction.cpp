@@ -66,7 +66,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
             {
                 LOG_ERROR("Invalid track colour %u", _index);
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                    GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
             }
             break;
         case RideSetAppearanceType::VehicleColourBody:
@@ -76,7 +76,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
             {
                 LOG_ERROR("Invalid vehicle colour %u", _index);
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                    GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
             }
             break;
         case RideSetAppearanceType::VehicleColourScheme:

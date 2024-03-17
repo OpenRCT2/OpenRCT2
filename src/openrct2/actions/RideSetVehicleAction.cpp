@@ -112,7 +112,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             if (_colour >= presetList->count && _colour != 255 && _colour != 0)
             {
                 LOG_ERROR("Unknown vehicle colour preset. colour = %d", _colour);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_INVALID_COLOUR);
             }
             break;
         }

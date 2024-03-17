@@ -73,17 +73,17 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     if (_primaryColour >= COLOUR_COUNT)
     {
         LOG_ERROR("Invalid primary colour %u", _primaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
     }
     if (_secondaryColour >= COLOUR_COUNT)
     {
         LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
     }
     if (_tertiaryColour >= COLOUR_COUNT)
     {
         LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
     }
 
     if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)

@@ -73,7 +73,8 @@ GameActions::Result BannerSetStyleAction::Query() const
             if (_parameter > COLOUR_COUNT)
             {
                 LOG_ERROR("Invalid primary colour %u", _parameter);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
             }
             break;
 
@@ -81,7 +82,8 @@ GameActions::Result BannerSetStyleAction::Query() const
             if (_parameter > 13)
             {
                 LOG_ERROR("Invalid text colour %u", _parameter);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
             }
             break;
         case BannerSetStyleType::NoEntry:
