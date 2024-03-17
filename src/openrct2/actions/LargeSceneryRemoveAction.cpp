@@ -73,7 +73,10 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     // If we have a bugged scenery entry, do not touch the tile element.
     if (sceneryEntry == nullptr)
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_UNKNOWN_OBJECT_TYPE);
+    {
+        LOG_WARNING("Scenery entry at x = %d, y = %d not removed because it is an unknown object type", _loc.x, _loc.y);
+    }
+    return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_UNKNOWN_OBJECT_TYPE);
 
     auto rotatedOffsets = CoordsXYZ{
         CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
@@ -155,7 +158,10 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
     auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     // If we have a bugged scenery entry, do not touch the tile element.
     if (sceneryEntry == nullptr)
+    {
+        LOG_WARNING("Scenery entry at x = %d, y = %d not removed because it is an unknown object type", _loc.x, _loc.y);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
+    }
 
     tileElement->RemoveBannerEntry();
 
