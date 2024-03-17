@@ -2098,7 +2098,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
  */
 static void TrackDesignPreviewClearMap()
 {
-    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
     GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 

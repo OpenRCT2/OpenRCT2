@@ -742,7 +742,7 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 case WIDX_SPINNER_X_INCREASE:
                     windowTileInspectorTile.x = std::min<int32_t>(
-                        windowTileInspectorTile.x + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+                        windowTileInspectorTile.x + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.x = std::min<int32_t>(_toolMap.x + 32, MAXIMUM_TILE_START_XY);
                     LoadTile(nullptr);
                     break;
@@ -755,7 +755,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                 case WIDX_SPINNER_Y_INCREASE:
                     windowTileInspectorTile.y = std::min<int32_t>(
-                        windowTileInspectorTile.y + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+                        windowTileInspectorTile.y + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.y = std::min<int32_t>(_toolMap.y + 32, MAXIMUM_TILE_START_XY);
                     LoadTile(nullptr);
                     break;
@@ -2075,10 +2075,10 @@ static uint64_t PageDisabledWidgets[] = {
             }
             // X and Y spinners
             SetWidgetDisabledAndInvalidate(
-                WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+                WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < kMaximumMapSizeTechnical - 1)));
             SetWidgetDisabledAndInvalidate(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
             SetWidgetDisabledAndInvalidate(
-                WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+                WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < kMaximumMapSizeTechnical - 1)));
             SetWidgetDisabledAndInvalidate(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
 
             // Sort buttons

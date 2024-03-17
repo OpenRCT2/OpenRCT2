@@ -35,7 +35,7 @@ void MapChangeSizeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result MapChangeSizeAction::Query() const
 {
-    if (_targetSize.x > MAXIMUM_MAP_SIZE_TECHNICAL || _targetSize.y > MAXIMUM_MAP_SIZE_TECHNICAL)
+    if (_targetSize.x > kMaximumMapSizeTechnical || _targetSize.y > kMaximumMapSizeTechnical)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
     }
