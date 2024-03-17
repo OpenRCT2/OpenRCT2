@@ -69,14 +69,14 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
     auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
-        LOG_WARNING("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto pathElement = tileElement->AsPath();
     if (pathElement == nullptr)
     {
-        LOG_WARNING("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 

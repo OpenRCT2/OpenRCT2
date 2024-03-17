@@ -59,12 +59,12 @@ GameActions::Result SignSetStyleAction::Query() const
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
         if (tileElement == nullptr)
         {
-            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_ERROR("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
         if (tileElement->GetType() != TileElementType::LargeScenery)
         {
-            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
+            LOG_ERROR("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
@@ -74,7 +74,7 @@ GameActions::Result SignSetStyleAction::Query() const
 
         if (wallElement == nullptr)
         {
-            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_ERROR("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }

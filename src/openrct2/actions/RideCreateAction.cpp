@@ -130,7 +130,7 @@ GameActions::Result RideCreateAction::Execute() const
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
-        LOG_WARNING("Invalid request for ride %u", rideIndex);
+        LOG_ERROR("Invalid request for ride %u", rideIndex);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 

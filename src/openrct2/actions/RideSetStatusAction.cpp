@@ -60,7 +60,7 @@ GameActions::Result RideSetStatusAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
         res.ErrorMessage = STR_NONE;
@@ -69,7 +69,7 @@ GameActions::Result RideSetStatusAction::Query() const
 
     if (_status >= RideStatus::Count)
     {
-        LOG_WARNING("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
         res.ErrorMessage = STR_NONE;
@@ -124,7 +124,7 @@ GameActions::Result RideSetStatusAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
         res.ErrorMessage = STR_NONE;
