@@ -113,7 +113,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
 {
     if (_setting >= LandBuyRightSetting::Count)
     {
-        LOG_ERROR("Tried calling buy land rights with an incorrect setting %u", _setting);
+        LOG_ERROR("Invalid land buying setting %u", _setting);
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 
