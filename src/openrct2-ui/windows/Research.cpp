@@ -311,7 +311,7 @@ static Widget *window_research_page_widgets[] = {
         }
     };
 
-    WindowBase* WindowResearchOpen()
+    WindowBase* ResearchOpen()
     {
         ResearchWindow* window = WindowFocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
         window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);

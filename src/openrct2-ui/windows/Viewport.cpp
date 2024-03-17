@@ -84,7 +84,7 @@ static Widget _viewportWidgets[] =
             if (viewport == nullptr)
             {
                 Close();
-                WindowErrorOpen("Unexpected Error", "Failed to create viewport window.");
+                ErrorOpen("Unexpected Error", "Failed to create viewport window.");
                 return;
             }
 
@@ -226,7 +226,7 @@ static Widget _viewportWidgets[] =
         }
     };
 
-    WindowBase* WindowViewportOpen()
+    WindowBase* ViewportOpen()
     {
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();

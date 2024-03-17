@@ -570,7 +570,7 @@ static Widget window_object_load_error_widgets[] = {
         }
     };
 
-    WindowBase* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+    WindowBase* ObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
     {
         // Check if window is already open
         auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);

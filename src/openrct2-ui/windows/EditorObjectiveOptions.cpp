@@ -1193,7 +1193,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
      *
      *  rct2: 0x0067137D
      */
-    WindowBase* WindowEditorObjectiveOptionsOpen()
+    WindowBase* EditorObjectiveOptionsOpen()
     {
         auto window = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
         if (window != nullptr)

@@ -308,7 +308,7 @@ static Widget window_banner_widgets[] = {
      *
      *  rct2: 0x006BA305
      */
-    WindowBase* WindowBannerOpen(rct_windownumber number)
+    WindowBase* BannerOpen(rct_windownumber number)
     {
         auto w = static_cast<BannerWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 

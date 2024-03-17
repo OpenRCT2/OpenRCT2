@@ -1906,7 +1906,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
      *  rct2: 0x006989E9
      *
      */
-    WindowBase* WindowGuestOpen(Peep* peep)
+    WindowBase* GuestOpen(Peep* peep)
     {
         if (peep == nullptr)
         {
@@ -1914,7 +1914,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
         }
         if (peep->Is<Staff>())
         {
-            return WindowStaffOpen(peep);
+            return StaffOpen(peep);
         }
 
         auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));

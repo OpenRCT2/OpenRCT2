@@ -101,7 +101,7 @@ static Widget window_ride_demolish_widgets[] =
         }
     };
 
-    WindowBase* WindowRideDemolishPromptOpen(const Ride& ride)
+    WindowBase* RideDemolishPromptOpen(const Ride& ride)
     {
         WindowBase* w;
         DemolishRidePromptWindow* newWindow;

@@ -37,92 +37,92 @@ namespace OpenRCT2::Ui::Windows
     extern colour_t gWindowSceneryTertiaryColour;
     extern bool gWindowSceneryEyedropperEnabled;
 
-    WindowBase* WindowAboutOpen();
+    WindowBase* AboutOpen();
     void WindowCampaignRefreshRides();
-    WindowBase* WindowChangelogOpen(int personality);
-    WindowBase* WindowCheatsOpen();
-    WindowBase* WindowClearSceneryOpen();
-    WindowBase* CustomCurrencyWindowOpen();
-    WindowBase* WindowDebugPaintOpen();
-    WindowBase* WindowEditorInventionsListOpen();
-    WindowBase* WindowEditorMainOpen();
-    WindowBase* WindowEditorObjectiveOptionsOpen();
-    WindowBase* WindowEditorScenarioOptionsOpen();
-    WindowBase* WindowFootpathOpen();
+    WindowBase* ChangelogOpen(int personality);
+    WindowBase* CheatsOpen();
+    WindowBase* ClearSceneryOpen();
+    WindowBase* CustomCurrencyOpen();
+    WindowBase* DebugPaintOpen();
+    WindowBase* EditorInventionsListOpen();
+    WindowBase* EditorMainOpen();
+    WindowBase* EditorObjectiveOptionsOpen();
+    WindowBase* EditorScenarioOptionsOpen();
+    WindowBase* FootpathOpen();
     void WindowFootpathResetSelectedPath();
-    WindowBase* WindowGuestOpen(Peep* peep);
-    WindowBase* WindowLandOpen();
-    WindowBase* WindowLandRightsOpen();
-    WindowBase* WindowMainOpen();
-    WindowBase* WindowMapgenOpen();
-    WindowBase* WindowMultiplayerOpen();
-    WindowBase* WindowNewsOpen();
-    WindowBase* WindowNewsOptionsOpen();
-    WindowBase* WindowOptionsOpen();
-    WindowBase* WindowSavePromptOpen();
+    WindowBase* GuestOpen(Peep* peep);
+    WindowBase* LandOpen();
+    WindowBase* LandRightsOpen();
+    WindowBase* MainOpen();
+    WindowBase* MapgenOpen();
+    WindowBase* MultiplayerOpen();
+    WindowBase* NewsOpen();
+    WindowBase* NewsOptionsOpen();
+    WindowBase* OptionsOpen();
+    WindowBase* SavePromptOpen();
 #ifndef DISABLE_NETWORK
-    WindowBase* WindowServerListOpen();
-    WindowBase* WindowServerStartOpen();
+    WindowBase* ServerListOpen();
+    WindowBase* ServerStartOpen();
 #endif
-    WindowBase* WindowShortcutKeysOpen();
-    WindowBase* WindowStaffListOpen();
-    WindowBase* WindowStaffOpen(Peep* peep);
+    WindowBase* ShortcutKeysOpen();
+    WindowBase* StaffListOpen();
+    WindowBase* StaffOpen(Peep* peep);
     void WindowStaffListRefresh();
-    WindowBase* WindowThemesOpen();
-    WindowBase* WindowTitleExitOpen();
-    WindowBase* WindowTitleLogoOpen();
-    WindowBase* WindowTitleMenuOpen();
-    WindowBase* WindowTitleOptionsOpen();
-    WindowBase* WindowViewportOpen();
-    WindowBase* WindowWaterOpen();
-    WindowBase* WindowViewClippingOpen();
-    WindowBase* WindowTransparencyOpen();
-    WindowBase* WindowAssetPacksOpen();
+    WindowBase* ThemesOpen();
+    WindowBase* TitleExitOpen();
+    WindowBase* TitleLogoOpen();
+    WindowBase* TitleMenuOpen();
+    WindowBase* TitleOptionsOpen();
+    WindowBase* ViewportOpen();
+    WindowBase* WaterOpen();
+    WindowBase* ViewClippingOpen();
+    WindowBase* TransparencyOpen();
+    WindowBase* AssetPacksOpen();
 
     // WC_FINANCES
-    WindowBase* WindowFinancesOpen();
-    WindowBase* WindowFinancesResearchOpen();
-    WindowBase* WindowFinancesMarketingOpen();
+    WindowBase* FinancesOpen();
+    WindowBase* FinancesResearchOpen();
+    WindowBase* FinancesMarketingOpen();
 
     // WC_PARK_INFORMATION
-    WindowBase* WindowParkAwardsOpen();
-    WindowBase* WindowParkEntranceOpen();
-    WindowBase* WindowParkGuestsOpen();
-    WindowBase* WindowParkObjectiveOpen();
-    WindowBase* WindowParkRatingOpen();
+    WindowBase* ParkAwardsOpen();
+    WindowBase* ParkEntranceOpen();
+    WindowBase* ParkGuestsOpen();
+    WindowBase* ParkObjectiveOpen();
+    WindowBase* ParkRatingOpen();
 
-    WindowBase* WindowBannerOpen(rct_windownumber number);
-    WindowBase* WindowRideDemolishPromptOpen(const Ride& ride);
-    WindowBase* WindowRideRefurbishPromptOpen(const Ride& ride);
-    WindowBase* WindowSignOpen(rct_windownumber number);
-    WindowBase* WindowSignSmallOpen(rct_windownumber number);
-    WindowBase* WindowPlayerOpen(uint8_t id);
-    WindowBase* WindowNewCampaignOpen(int16_t campaignType);
+    WindowBase* BannerOpen(rct_windownumber number);
+    WindowBase* RideDemolishPromptOpen(const Ride& ride);
+    WindowBase* RideRefurbishPromptOpen(const Ride& ride);
+    WindowBase* SignOpen(rct_windownumber number);
+    WindowBase* SignSmallOpen(rct_windownumber number);
+    WindowBase* PlayerOpen(uint8_t id);
+    WindowBase* NewCampaignOpen(int16_t campaignType);
 
-    WindowBase* WindowInstallTrackOpen(const utf8* path);
+    WindowBase* InstallTrackOpen(const utf8* path);
     void WindowGuestListRefreshList();
-    WindowBase* WindowGuestListOpen();
-    WindowBase* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index);
-    WindowBase* WindowStaffFirePromptOpen(Peep* peep);
-    WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback);
-    WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback);
+    WindowBase* GuestListOpen();
+    WindowBase* GuestListOpenWithFilter(GuestListFilterType type, int32_t index);
+    WindowBase* StaffFirePromptOpen(Peep* peep);
+    WindowBase* ScenarioselectOpen(scenarioselect_callback callback);
+    WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback);
 
-    WindowBase* WindowErrorOpen(StringId title, StringId message, const class Formatter& formatter);
-    WindowBase* WindowErrorOpen(std::string_view title, std::string_view message);
+    WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter);
+    WindowBase* ErrorOpen(std::string_view title, std::string_view message);
 
-    WindowBase* WindowLoadsaveOpen(
+    WindowBase* LoadsaveOpen(
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
         TrackDesign* trackDesign);
-    WindowBase* WindowTrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
-    WindowBase* WindowTrackManageOpen(struct TrackDesignFileRef* tdFileRef);
+    WindowBase* TrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
+    WindowBase* TrackManageOpen(struct TrackDesignFileRef* tdFileRef);
 
     void TrackPlaceClearProvisionalTemporarily();
     void TrackPlaceRestoreProvisional();
 
-    WindowBase* WindowMapOpen();
+    WindowBase* MapOpen();
     void WindowMapReset();
 
-    WindowBase* WindowResearchOpen();
+    WindowBase* ResearchOpen();
     void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
     void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex);
@@ -132,24 +132,24 @@ namespace OpenRCT2::Ui::Windows
     void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi);
 
-    WindowBase* WindowNewRideOpen();
-    WindowBase* WindowNewRideOpenResearch();
+    WindowBase* NewRideOpen();
+    WindowBase* NewRideOpenResearch();
     void WindowNewRideInitVars();
     void WindowNewRideFocus(RideSelection rideItem);
 
-    WindowBase* WindowRideListOpen();
+    WindowBase* RideListOpen();
     void WindowRideListRefreshList(WindowBase* w);
 
-    WindowBase* WindowRideMainOpen(const Ride& ride);
-    WindowBase* WindowRideOpenTrack(TileElement* tileElement);
-    WindowBase* WindowRideOpenVehicle(Vehicle* vehicle);
+    WindowBase* RideMainOpen(const Ride& ride);
+    WindowBase* RideOpenTrack(TileElement* tileElement);
+    WindowBase* RideOpenVehicle(Vehicle* vehicle);
     void WindowRideInvalidateVehicle(const Vehicle& vehicle);
     void WindowRidePaintResetVehicle(RideId rideIndex);
     void WindowRideMeasurementsDesignCancel();
 
     // rct2: 0x00F635EE
     extern RideSelection _window_track_list_item;
-    WindowBase* WindowTrackListOpen(RideSelection item);
+    WindowBase* TrackListOpen(RideSelection item);
     void WindowTrackDesignListReloadTracks();
     void WindowTrackDesignListSetBeingUpdated(bool beingUpdated);
 
@@ -157,11 +157,11 @@ namespace OpenRCT2::Ui::Windows
     const Formatter& GetMapTooltip();
     void WindowMapTooltipUpdateVisibility();
 
-    WindowBase* WindowMazeConstructionOpen();
+    WindowBase* MazeConstructionOpen();
     void WindowMazeConstructionUpdatePressedWidgets();
 
-    WindowBase* WindowNetworkStatusOpen(const std::string& text, close_callback onClose);
-    WindowBase* WindowNetworkStatusOpenPassword();
+    WindowBase* NetworkStatusOpen(const std::string& text, close_callback onClose);
+    WindowBase* NetworkStatusOpenPassword();
     void WindowNetworkStatusClose();
 
     void WindowTextInputKey(WindowBase* w, uint32_t keycode);
@@ -176,18 +176,18 @@ namespace OpenRCT2::Ui::Windows
         std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
         std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
-    WindowBase* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects);
+    WindowBase* ObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects);
 
-    WindowBase* WindowRideConstructionOpen();
+    WindowBase* RideConstructionOpen();
     void WindowRideConstructionUpdateActiveElementsImpl();
     void WindowRideConstructionUpdateEnabledTrackPieces();
 
-    WindowBase* WindowTopToolbarOpen();
+    WindowBase* TopToolbarOpen();
     bool LandToolIsActive();
     bool ClearSceneryToolIsActive();
     bool WaterToolIsActive();
 
-    WindowBase* WindowSceneryOpen();
+    WindowBase* SceneryOpen();
     void WindowScenerySetSelectedItem(
         const ScenerySelection& sceneryconst, std::optional<colour_t> primary, const std::optional<colour_t> secondary,
         const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation);
@@ -198,23 +198,23 @@ namespace OpenRCT2::Ui::Windows
     const ScenerySelection WindowSceneryGetTabSelection();
 
     extern uint8_t gToolbarDirtyFlags;
-    WindowBase* WindowGameBottomToolbarOpen();
+    WindowBase* GameBottomToolbarOpen();
     void WindowGameBottomToolbarInvalidateNewsItem();
 
-    WindowBase* WindowEditorBottomToolbarOpen();
+    WindowBase* EditorBottomToolbarOpen();
 
-    WindowBase* WindowTileInspectorOpen();
+    WindowBase* TileInspectorOpen();
     void WindowTileInspectorClearClipboard();
 
-    WindowBase* WindowEditorObjectSelectionOpen();
+    WindowBase* EditorObjectSelectionOpen();
 
     void WindowTooltipReset(const ScreenCoordsXY& screenCoords);
     void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords);
     void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
     void WindowTooltipClose();
 
-    WindowBase* WindowSceneryScatterOpen();
-    WindowBase* WindowPatrolAreaOpen(EntityId staffId);
+    WindowBase* SceneryScatterOpen();
+    WindowBase* PatrolAreaOpen(EntityId staffId);
     EntityId WindowPatrolAreaGetCurrentStaffId();
 
     // clang-format off

@@ -193,7 +193,7 @@ static Widget _waterWidgets[] = {
         }
     };
 
-    WindowBase* WindowWaterOpen()
+    WindowBase* WaterOpen()
     {
         return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }

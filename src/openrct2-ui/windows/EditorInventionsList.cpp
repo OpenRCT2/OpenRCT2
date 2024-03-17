@@ -588,7 +588,7 @@ static Widget _inventionListDragWidgets[] = {
      *
      *  rct2: 0x00684E04
      */
-    WindowBase* WindowEditorInventionsListOpen()
+    WindowBase* EditorInventionsListOpen()
     {
         return WindowFocusOrCreate<InventionListWindow>(
             WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);

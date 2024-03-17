@@ -1495,7 +1495,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         }
     };
 
-    WindowBase* WindowMapOpen()
+    WindowBase* MapOpen()
     {
         try
         {

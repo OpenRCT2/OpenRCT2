@@ -201,7 +201,7 @@ static Widget _sceneryScatterWidgets[] = {
         }
     };
 
-    WindowBase* WindowSceneryScatterOpen()
+    WindowBase* SceneryScatterOpen()
     {
         // Check if window is already open
         auto* window = WindowFindByClass(WindowClass::SceneryScatter);

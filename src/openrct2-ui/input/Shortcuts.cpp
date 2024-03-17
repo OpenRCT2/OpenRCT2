@@ -390,7 +390,7 @@ static void ShortcutOpenCheatWindow()
 
 static void ShortcutOpenKeyboardShortcutsWindow()
 {
-    WindowShortcutKeysOpen();
+    ShortcutKeysOpen();
 }
 
 static void ShortcutOpenTransparencyWindow()

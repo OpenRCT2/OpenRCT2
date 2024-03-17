@@ -3320,7 +3320,7 @@ static Widget _topToolbarWidgets[] = {
      * Creates the main game top toolbar window.
      *  rct2: 0x0066B485 (part of 0x0066B3E8)
      */
-    WindowBase* WindowTopToolbarOpen()
+    WindowBase* TopToolbarOpen()
     {
         TopToolbar* window = WindowCreate<TopToolbar>(
             WindowClass::TopToolbar, ScreenCoordsXY(0, 0), ContextGetWidth(), TOP_TOOLBAR_HEIGHT + 1,

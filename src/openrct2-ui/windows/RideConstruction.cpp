@@ -2748,7 +2748,7 @@ static Widget _rideConstructionWidgets[] = {
      *
      *  rct2: 0x006CB481
      */
-    WindowBase* WindowRideConstructionOpen()
+    WindowBase* RideConstructionOpen()
     {
         RideId rideIndex = _currentRideIndex;
         CloseRideWindowForConstruction(rideIndex);

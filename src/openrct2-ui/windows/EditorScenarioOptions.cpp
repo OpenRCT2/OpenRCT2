@@ -1282,7 +1282,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
 #pragma endregion
     };
 
-    WindowBase* WindowEditorScenarioOptionsOpen()
+    WindowBase* EditorScenarioOptionsOpen()
     {
         return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
     }

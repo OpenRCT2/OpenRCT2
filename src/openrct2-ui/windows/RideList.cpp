@@ -961,7 +961,7 @@ static Widget _rideListWidgets[] = {
      *
      *  rct2: 0x006B30BC
      */
-    WindowBase* WindowRideListOpen()
+    WindowBase* RideListOpen()
     {
         // Check if window is already open
         auto* window = WindowBringToFrontByClass(WindowClass::RideList);

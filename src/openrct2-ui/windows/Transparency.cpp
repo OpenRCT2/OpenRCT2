@@ -252,7 +252,7 @@ static Widget _transparancyWidgets[] =
         }
     };
 
-    WindowBase* WindowTransparencyOpen()
+    WindowBase* TransparencyOpen()
     {
         auto* window = WindowBringToFrontByClass(WindowClass::Transparency);
         if (window == nullptr)

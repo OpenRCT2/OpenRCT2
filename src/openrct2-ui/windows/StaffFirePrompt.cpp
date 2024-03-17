@@ -92,7 +92,7 @@ static Widget _staffFireWidgets[] = {
         }
     };
 
-    WindowBase* WindowStaffFirePromptOpen(Peep* peep)
+    WindowBase* StaffFirePromptOpen(Peep* peep)
     {
         // Check if the confirm window already exists
         auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(

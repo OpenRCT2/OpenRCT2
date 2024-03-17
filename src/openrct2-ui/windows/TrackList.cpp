@@ -760,7 +760,7 @@ static Widget _trackListWidgets[] = {
         }
     };
 
-    WindowBase* WindowTrackListOpen(const RideSelection item)
+    WindowBase* TrackListOpen(const RideSelection item)
     {
         WindowCloseConstructionWindows();
         ScreenCoordsXY screenPos{};

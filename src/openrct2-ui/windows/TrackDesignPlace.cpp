@@ -615,7 +615,7 @@ static Widget _trackPlaceWidgets[] = {
         }
     };
 
-    WindowBase* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
+    WindowBase* TrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
     {
         std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path.c_str());
 

@@ -331,7 +331,7 @@ static Widget _signWidgets[] = {
      *
      *  rct2: 0x006BA305
      */
-    WindowBase* WindowSignOpen(rct_windownumber number)
+    WindowBase* SignOpen(rct_windownumber number)
     {
         auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
@@ -354,7 +354,7 @@ static Widget _signWidgets[] = {
      *
      *  rct2: 0x6E5F52
      */
-    WindowBase* WindowSignSmallOpen(rct_windownumber number)
+    WindowBase* SignSmallOpen(rct_windownumber number)
     {
         auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 

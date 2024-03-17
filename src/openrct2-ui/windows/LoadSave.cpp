@@ -1014,7 +1014,7 @@ static Widget window_loadsave_widgets[] =
 #pragma endregion
     };
 
-    WindowBase* WindowLoadsaveOpen(
+    WindowBase* LoadsaveOpen(
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
         TrackDesign* trackDesign)
     {

@@ -319,7 +319,7 @@ static Widget _windowChangelogWidgets[] = {
         }
     };
 
-    WindowBase* WindowChangelogOpen(int personality)
+    WindowBase* ChangelogOpen(int personality)
     {
         auto* window = WindowBringToFrontByClass(WindowClass::Changelog);
         if (window == nullptr)

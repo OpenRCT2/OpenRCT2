@@ -406,7 +406,7 @@ static Widget window_install_track_widgets[] = {
         }
     };
 
-    WindowBase* WindowInstallTrackOpen(const utf8* path)
+    WindowBase* InstallTrackOpen(const utf8* path)
     {
         auto trackDesign = TrackDesignImport(path);
         if (trackDesign == nullptr)

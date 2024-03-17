@@ -542,7 +542,7 @@ static Widget _serverListWidgets[] = {
         }
     };
 
-    WindowBase* WindowServerListOpen()
+    WindowBase* ServerListOpen()
     {
         // Check if window is already open
         auto* window = WindowBringToFrontByClass(WindowClass::ServerList);
