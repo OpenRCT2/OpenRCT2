@@ -75,19 +75,19 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
     if (_primaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR("Invalid primary colour: colour = %u", _primaryColour);
+        LOG_ERROR("Invalid primary colour %u", _primaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_secondaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR("Invalid secondary colour: colour = %u", _secondaryColour);
+        LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_tertiaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR("Invalid tertiary colour: colour = %u", _tertiaryColour);
+        LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
