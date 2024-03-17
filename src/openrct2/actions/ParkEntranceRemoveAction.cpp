@@ -57,7 +57,7 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
     }
     if (ParkEntranceGetIndex(_loc) == -1)
     {
-        LOG_ERROR("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("No park entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     return res;
@@ -73,7 +73,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     auto entranceIndex = ParkEntranceGetIndex(_loc);
     if (entranceIndex == -1)
     {
-        LOG_ERROR("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("No park entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 

@@ -76,7 +76,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
@@ -123,7 +123,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
