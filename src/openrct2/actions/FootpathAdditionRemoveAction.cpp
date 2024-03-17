@@ -69,14 +69,14 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
     auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
-        LOG_ERROR("Could not find path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto pathElement = tileElement->AsPath();
     if (pathElement == nullptr)
     {
-        LOG_ERROR("Could not find path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
@@ -101,7 +101,7 @@ GameActions::Result FootpathAdditionRemoveAction::Execute() const
 
     if (pathElement == nullptr)
     {
-        LOG_ERROR("Could not find path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 

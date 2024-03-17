@@ -120,7 +120,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
-        LOG_ERROR("Could not find surface. x = %d, y = %d", loc.x, loc.y);
+        LOG_ERROR("No surface at x = %d, y = %d", loc.x, loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_NONE);
     }
 

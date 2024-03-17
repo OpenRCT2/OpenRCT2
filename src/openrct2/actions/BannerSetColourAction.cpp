@@ -79,7 +79,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
 
     if (bannerElement == nullptr)
     {
-        LOG_ERROR("Could not find banner at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
+        LOG_ERROR("No banner at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
