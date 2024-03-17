@@ -100,7 +100,8 @@ GameActions::Result RideCreateAction::Query() const
     if (_colour1 >= colourPresets.count)
     {
         LOG_ERROR("Can't create ride, invalid colour preset %d", _colour1);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_ERR_INVALID_COLOUR);
     }
 
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);

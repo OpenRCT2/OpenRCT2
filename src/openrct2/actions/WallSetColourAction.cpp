@@ -97,13 +97,13 @@ GameActions::Result WallSetColourAction::Query() const
     if (_primaryColour >= COLOUR_COUNT)
     {
         LOG_ERROR("Primary colour invalid: colour = %d", _primaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
     }
 
     if (_secondaryColour >= COLOUR_COUNT)
     {
         LOG_ERROR("Secondary colour invalid: colour = %d", _secondaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
     }
 
     if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)

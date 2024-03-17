@@ -67,7 +67,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     if (_primaryColour > 31)
     {
         LOG_ERROR("Invalid primary colour %u", _primaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
     }
 
     if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
