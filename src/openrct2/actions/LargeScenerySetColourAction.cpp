@@ -110,7 +110,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
     if (sceneryEntry == nullptr)
     {
-        LOG_ERROR("Could not find scenery object. type = %u", largeElement->GetEntryIndex());
+        LOG_ERROR("Scenery element doesn't have scenery entry");
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     // Work out the base tile coordinates (Tile with index 0)

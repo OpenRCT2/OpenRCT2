@@ -49,6 +49,7 @@ GameActions::Result StaffSetNameAction::Query() const
 {
     if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
+        LOG_ERROR("Invalid sprite index %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
