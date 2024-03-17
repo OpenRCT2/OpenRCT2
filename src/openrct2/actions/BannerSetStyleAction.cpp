@@ -90,7 +90,7 @@ GameActions::Result BannerSetStyleAction::Query() const
             }
             break;
         default:
-            LOG_ERROR("Invalid type: %u", _type);
+            LOG_ERROR("Invalid banner style type %u", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     return res;
@@ -147,7 +147,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
             break;
         }
         default:
-            LOG_ERROR("Invalid type: %u", _type);
+            LOG_ERROR("Invalid banner style type %u", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

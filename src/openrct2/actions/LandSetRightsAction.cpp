@@ -205,7 +205,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
             return res;
         }
         default:
-            LOG_ERROR("Tried calling set land rights with an incorrect setting %u", _setting);
+            LOG_ERROR("Invalid setting %u to set land rights", _setting);
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }

@@ -230,7 +230,7 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             break;
         }
         default:
-            LOG_ERROR("invalid instruction");
+            LOG_ERROR("Invalid tile modification type %u", _setting);
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }

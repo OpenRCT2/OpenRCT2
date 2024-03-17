@@ -259,7 +259,7 @@ GameActions::Result CheatSetAction::Execute() const
             break;
         default:
         {
-            LOG_ERROR("Unabled cheat: %d", _cheatType.id);
+            LOG_ERROR("Invalid cheat type %d", _cheatType.id);
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }

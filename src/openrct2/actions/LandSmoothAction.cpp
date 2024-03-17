@@ -607,7 +607,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             break;
         }
         default:
-            LOG_ERROR("Invalid map selection %u", _selectionType);
+            LOG_ERROR("Invalid map selection type %u", _selectionType);
             return GameActions::Result(GameActions::Status::InvalidParameters, std::get<StringId>(res.ErrorTitle), STR_NONE);
     } // switch selectionType
 
