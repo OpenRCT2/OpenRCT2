@@ -123,7 +123,7 @@ enum
     TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
 };
 
-constexpr uint8_t kMaxStationPlatformLength = 32;
+constexpr int32_t kMaxStationPlatformLength = 32;
 constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 

@@ -19,7 +19,7 @@ using track_type_t = uint16_t;
 // Convenience function for writing ride ratings. The result is a 16 bit signed
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
 #define RIDE_RATING(whole, fraction) FIXED_2DP(whole, fraction)
-constexpr ride_rating kRideRatingUndefined = static_cast<ride_rating>(static_cast<uint16_t>(0xFFFF));
+constexpr ride_rating kRideRatingUndefined = 0xFFFFu;
 
 #pragma pack(push, 1)
 

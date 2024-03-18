@@ -1433,7 +1433,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
     if ((ride.reliability == 0
-         || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + kRideInitialReliability - ride.reliability)
+         || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + kRideInitialReliability - ride.reliability)
         && !GetGameState().Cheats.DisableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
