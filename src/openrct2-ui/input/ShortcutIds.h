@@ -108,6 +108,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view WindowTileInspectorToggleInvisibility = "window.tileinspector.toggle_invisibility";
     constexpr std::string_view WindowTileInspectorCopy = "window.tileinspector.copy";
     constexpr std::string_view WindowTileInspectorPaste = "window.tileinspector.paste";
+    constexpr std::string_view WindowTileInspectorSort = "window.tileinspector.sort";
     constexpr std::string_view WindowTileInspectorRemove = "window.tileinspector.remove";
     constexpr std::string_view WindowTileInspectorMoveUp = "window.tileinspector.move_up";
     constexpr std::string_view WindowTileInspectorMoveDown = "window.tileinspector.move_down";

@@ -1,5 +1,6 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21636] Add shortcut key for sorting tile elements.
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
 - Improved: [#21599] Currency signs now use non-breaking spaces.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
