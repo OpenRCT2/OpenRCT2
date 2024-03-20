@@ -11384,7 +11384,7 @@ static void LayDownRCTrackHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto function = GetTrackPaintFunctionLayDownRC(TrackElemType::FlyerHalfLoopInvertedUp);
+    auto function = GetTrackPaintFunctionLayDownRCInverted(TrackElemType::FlyerHalfLoopInvertedUp);
     function(session, ride, 3 - trackSequence, direction, height, trackElement);
     return;
 }
