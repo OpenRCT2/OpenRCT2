@@ -1441,6 +1441,11 @@ static void classicStandUpRCTrackDiagRightBankTo25DegDown(
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
 {
+    if (!IsCsgLoaded())
+    {
+        return GetTrackPaintFunctionStandUpRC(trackType);
+    }
+
     switch (trackType)
     {
         case TrackElemType::FlatToLeftBank:
