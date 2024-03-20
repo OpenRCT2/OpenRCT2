@@ -643,6 +643,3 @@ money64 PlaceProvisionalTrackPiece(
     const CoordsXYZ& trackPos);
 
 extern RideConstructionState _rideConstructionState2;
-
-WindowBase* WindowGetListening();
-WindowClass WindowGetClassification(const WindowBase& window);
