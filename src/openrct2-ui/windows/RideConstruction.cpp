@@ -181,12 +181,6 @@ static Widget _rideConstructionWidgets[] = {
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type);
 
-    static int32_t RideGetAlternativeType(const Ride& ride)
-    {
-        return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride.GetRideTypeDescriptor().AlternateType
-                                                                             : ride.type;
-    }
-
     /* move to ride.c */
     static void CloseRideWindowForConstruction(RideId rideId)
     {
@@ -312,8 +306,8 @@ static Widget _rideConstructionWidgets[] = {
             {
                 return;
             }
-
-            int32_t rideType = RideGetAlternativeType(*currentRide);
+            const auto& rtd = currentRide->GetRideTypeDescriptor();
+            const auto currentTrackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             uint64_t disabledWidgets = 0;
 
@@ -863,7 +857,7 @@ static Widget _rideConstructionWidgets[] = {
                     disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
                 }
             }
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+            if (currentTrackDrawerDescriptor.HasCoveredPieces())
             {
                 disabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
             }
@@ -1596,10 +1590,12 @@ static Widget _rideConstructionWidgets[] = {
             {
                 return;
             }
-            int32_t rideType = RideGetAlternativeType(*currentRide);
+
+            const auto& rtd = GetRideTypeDescriptor(currentRide->type);
+            auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             hold_down_widgets = 0;
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
                 widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -1677,7 +1673,7 @@ static Widget _rideConstructionWidgets[] = {
             widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
             widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP);
             widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-            if (GetRideTypeDescriptor(rideType).SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+            if (trackDrawerDescriptor.SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
                 widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
@@ -1699,7 +1695,7 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     // Enable helix
                     widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-                    if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+                    if (currentRide->type != RIDE_TYPE_SPLASH_BOATS && currentRide->type != RIDE_TYPE_RIVER_RAFTS)
                         widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
                 }
             }
@@ -1865,7 +1861,6 @@ static Widget _rideConstructionWidgets[] = {
                 || _selectedTrackType > TrackElemType::HighestAlias
                 || _currentTrackCurve > (RideConstructionSpecialPieceSelected | TrackElemType::HighestAlias);
 
-            const auto& rtd = GetRideTypeDescriptor(rideType);
             bool rideHasSeatRotation = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_SEAT_ROTATION);
 
             if (!trackHasSpeedSetting)
@@ -1876,33 +1871,42 @@ static Widget _rideConstructionWidgets[] = {
                     widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
                 }
-                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+                if (trackDrawerDescriptor.HasCoveredPieces())
                 {
-                    if (rideType == RIDE_TYPE_WATER_COASTER)
-                    {
-                        widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_RC_TRACK);
-                        widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_WATER_CHANNEL);
-                        widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP;
-                        widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP;
-                        if ((_currentTrackCurve < EnumValue(TrackCurve::LeftSmall)
-                             || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::SBendLeft)
-                             || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::SBendRight))
-                            && _currentTrackPitchEnd == TrackPitch::None && _currentTrackRollEnd == TrackRoll::None)
-                        {
-                            widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                            widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                            widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
-                        }
-                    }
-                    else
+                    widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
+                    widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
+                    widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+
+                    if (rtd.Category == RIDE_CATEGORY_WATER)
                     {
                         widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK);
                         widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK);
                         widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP;
                         widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP;
-                        widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                        widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                        widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+                    }
+                    else
+                    {
+                        widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_RC_TRACK);
+                        widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_WATER_CHANNEL);
+                        widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP;
+                        widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP;
+                    }
+
+                    // TODO: Read these from the TrackDrawerEntry
+                    if (currentRide->type == RIDE_TYPE_WATER_COASTER)
+                    {
+                        const bool hasCoveredVersion = (_currentTrackCurve < EnumValue(TrackCurve::LeftSmall)
+                                                        || _currentTrackCurve
+                                                            == (RideConstructionSpecialPieceSelected | TrackElemType::SBendLeft)
+                                                        || _currentTrackCurve
+                                                            == (RideConstructionSpecialPieceSelected
+                                                                | TrackElemType::SBendRight))
+                            && _currentTrackPitchEnd == TrackPitch::None && _currentTrackRollEnd == TrackRoll::None;
+                        if (!hasCoveredVersion)
+                        {
+                            widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
+                            widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
+                        }
                     }
                 }
             }
@@ -1986,7 +1990,7 @@ static Widget _rideConstructionWidgets[] = {
             widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
             widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
             {
                 widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
                 widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
@@ -2085,7 +2089,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (!_currentlyShowingBrakeOrBoosterSpeed)
             {
-                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+                if (trackDrawerDescriptor.HasCoveredPieces())
                 {
                     if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
                     {
@@ -3067,8 +3071,8 @@ static Widget _rideConstructionWidgets[] = {
         if (rideEntry == nullptr)
             return;
 
-        int32_t rideType = RideGetAlternativeType(*ride);
-        UpdateEnabledRidePieces(rideType);
+        auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->GetRideTypeDescriptor());
+        UpdateEnabledRidePieces(trackDrawerDescriptor);
     }
 
     /**

@@ -1668,3 +1668,16 @@ ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride)
     }
     return { true };
 }
+
+TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& rtd)
+{
+    const bool isInverted = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+    return getTrackDrawerDescriptor(rtd, isInverted);
+}
+
+TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd)
+{
+    const bool isInverted = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+    const bool isCovered = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+    return getTrackDrawerEntry(rtd, isInverted, isCovered);
+}

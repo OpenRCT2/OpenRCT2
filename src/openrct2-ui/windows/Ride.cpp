@@ -3377,10 +3377,10 @@ static_assert(std::size(RatingNames) == 6);
                 | (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX));
 
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
-            bool hasAlternativeType = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
-            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_LIFT_HILL)
-                || (hasAlternativeType
-                    && GetRideTypeDescriptor(ride->GetRideTypeDescriptor().AlternateType).SupportsTrackPiece(TRACK_LIFT_HILL)))
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            bool hasAlternativeType = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
+            if (rtd.TrackPaintFunctions.Regular.SupportsTrackPiece(TRACK_LIFT_HILL)
+                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.SupportsTrackPiece(TRACK_LIFT_HILL)))
             {
                 widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_LIFT_HILL_SPEED].type = WindowWidgetType::Spinner;
