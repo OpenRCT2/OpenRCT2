@@ -1262,7 +1262,7 @@ static void classicStandUpRCTrackDiagFlatTo25DegUpBanked(
                     break;
             }
             MetalBSupportsPaintSetupRotated(
-                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1385,7 +1385,7 @@ static void classicStandUpRCTrackDiag25DegUpToFlatBanked(
                     break;
             }
             MetalBSupportsPaintSetupRotated(
-                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
+                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, direction, 8, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
