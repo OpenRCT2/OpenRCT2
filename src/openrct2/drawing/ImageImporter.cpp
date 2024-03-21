@@ -10,6 +10,7 @@
 #include "ImageImporter.h"
 
 #include "../core/Imaging.h"
+#include "../core/Json.hpp"
 
 #include <cstring>
 #include <stdexcept>
@@ -20,36 +21,35 @@ using ImportResult = ImageImporter::ImportResult;
 
 constexpr int32_t PALETTE_TRANSPARENT = -1;
 
-ImportResult ImageImporter::Import(
-    const Image& image, int32_t offsetX, int32_t offsetY, Palette palette, ImportFlags flags, ImportMode mode) const
+ImportResult ImageImporter::Import(const Image& image, ImageImportMeta& meta) const
 {
-    return Import(image, 0, 0, image.Width, image.Height, offsetX, offsetY, palette, flags, mode);
-}
+    if (meta.srcSize.width == 0)
+        meta.srcSize.width = image.Width;
 
-ImportResult ImageImporter::Import(
-    const Image& image, int32_t srcX, int32_t srcY, int32_t width, int32_t height, int32_t offsetX, int32_t offsetY,
-    Palette palette, ImportFlags flags, ImportMode mode) const
-{
-    if (width > 256 || height > 256)
+    if (meta.srcSize.height == 0)
+        meta.srcSize.height = image.Height;
+
+    if (meta.srcSize.width > 256 || meta.srcSize.height > 256)
     {
         throw std::invalid_argument("Only images 256x256 or less are supported.");
     }
 
-    if (palette == Palette::KeepIndices && image.Depth != 8)
+    if (meta.palette == Palette::KeepIndices && image.Depth != 8)
     {
         throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
     }
+    const bool isRLE = meta.importFlags & ImportFlags::RLE;
 
-    auto pixels = GetPixels(image.Pixels.data(), image.Stride, srcX, srcY, width, height, palette, flags, mode);
-    auto buffer = flags & ImportFlags::RLE ? EncodeRLE(pixels.data(), width, height) : EncodeRaw(pixels.data(), width, height);
+    auto pixels = GetPixels(image, meta);
+    auto buffer = isRLE ? EncodeRLE(pixels.data(), meta.srcSize) : EncodeRaw(pixels.data(), meta.srcSize);
 
     G1Element outElement;
-    outElement.width = width;
-    outElement.height = height;
-    outElement.flags = (flags & ImportFlags::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_HAS_TRANSPARENCY);
-    outElement.x_offset = offsetX;
-    outElement.y_offset = offsetY;
-    outElement.zoomed_offset = 0;
+    outElement.width = meta.srcSize.width;
+    outElement.height = meta.srcSize.height;
+    outElement.flags = isRLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_HAS_TRANSPARENCY;
+    outElement.x_offset = meta.offset.x;
+    outElement.y_offset = meta.offset.y;
+    outElement.zoomed_offset = meta.zoomedOffset;
 
     ImportResult result;
     result.Element = outElement;
@@ -58,44 +58,43 @@ ImportResult ImageImporter::Import(
     return result;
 }
 
-std::vector<int32_t> ImageImporter::GetPixels(
-    const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, Palette palette,
-    ImportFlags flags, ImportMode mode)
+std::vector<int32_t> ImageImporter::GetPixels(const Image& image, const ImageImportMeta& meta)
 {
+    const uint8_t* pixels = image.Pixels.data();
     std::vector<int32_t> buffer;
-    buffer.reserve(width * height);
+    buffer.reserve(meta.srcSize.width * meta.srcSize.height);
 
     // A larger range is needed for proper dithering
     auto palettedSrc = pixels;
     std::unique_ptr<int16_t[]> rgbaSrcBuffer;
-    if (palette != Palette::KeepIndices)
+    if (meta.palette != Palette::KeepIndices)
     {
-        rgbaSrcBuffer = std::make_unique<int16_t[]>(height * width * 4);
+        rgbaSrcBuffer = std::make_unique<int16_t[]>(meta.srcSize.height * meta.srcSize.width * 4);
     }
 
     auto rgbaSrc = rgbaSrcBuffer.get();
-    if (palette != Palette::KeepIndices)
+    if (meta.palette != Palette::KeepIndices)
     {
-        auto src = pixels + (srcY * pitch) + (srcX * 4);
+        auto src = pixels + (meta.srcOffset.y * image.Stride) + (meta.srcOffset.x * 4);
         auto dst = rgbaSrc;
-        for (uint32_t y = 0; y < height; y++)
+        for (auto y = 0; y < meta.srcSize.height; y++)
         {
-            for (uint32_t x = 0; x < width * 4; x++)
+            for (auto x = 0; x < meta.srcSize.width * 4; x++)
             {
                 *dst = static_cast<int16_t>(*src);
                 src++;
                 dst++;
             }
-            src += (pitch - (width * 4));
+            src += (image.Stride - (meta.srcSize.width * 4));
         }
     }
 
-    if (palette == Palette::KeepIndices)
+    if (meta.palette == Palette::KeepIndices)
     {
-        palettedSrc += srcX + srcY * pitch;
-        for (uint32_t y = 0; y < height; y++)
+        palettedSrc += meta.srcOffset.x + meta.srcOffset.y * image.Stride;
+        for (auto y = 0; y < meta.srcSize.height; y++)
         {
-            for (uint32_t x = 0; x < width; x++)
+            for (auto x = 0; x < meta.srcSize.width; x++)
             {
                 int32_t paletteIndex = *palettedSrc;
                 // The 1st index is always transparent
@@ -106,16 +105,17 @@ std::vector<int32_t> ImageImporter::GetPixels(
                 palettedSrc += 1;
                 buffer.push_back(paletteIndex);
             }
-            palettedSrc += (pitch - width);
+            palettedSrc += (image.Stride - meta.srcSize.width);
         }
     }
     else
     {
-        for (uint32_t y = 0; y < height; y++)
+        for (auto y = 0; y < meta.srcSize.height; y++)
         {
-            for (uint32_t x = 0; x < width; x++)
+            for (auto x = 0; x < meta.srcSize.width; x++)
             {
-                auto paletteIndex = CalculatePaletteIndex(mode, rgbaSrc, x, y, width, height);
+                auto paletteIndex = CalculatePaletteIndex(
+                    meta.importMode, rgbaSrc, x, y, meta.srcSize.width, meta.srcSize.height);
                 rgbaSrc += 4;
                 buffer.push_back(paletteIndex);
             }
@@ -125,11 +125,11 @@ std::vector<int32_t> ImageImporter::GetPixels(
     return buffer;
 }
 
-std::vector<uint8_t> ImageImporter::EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height)
+std::vector<uint8_t> ImageImporter::EncodeRaw(const int32_t* pixels, ScreenSize size)
 {
-    auto bufferLength = width * height;
+    auto bufferLength = size.width * size.height;
     std::vector<uint8_t> buffer(bufferLength);
-    for (size_t i = 0; i < bufferLength; i++)
+    for (auto i = 0; i < bufferLength; i++)
     {
         auto p = pixels[i];
         buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : static_cast<uint8_t>(p));
@@ -137,7 +137,7 @@ std::vector<uint8_t> ImageImporter::EncodeRaw(const int32_t* pixels, uint32_t wi
     return buffer;
 }
 
-std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height)
+std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, ScreenSize size)
 {
     struct RLECode
     {
@@ -146,12 +146,12 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
     };
 
     auto src = pixels;
-    std::vector<uint8_t> buffer((height * 2) + (width * height * 16));
+    std::vector<uint8_t> buffer((size.height * 2) + (size.width * size.height * 16));
 
-    std::fill_n(buffer.data(), (height * 2) + (width * height * 16), 0x00);
+    std::fill_n(buffer.data(), (size.height * 2) + (size.width * size.height * 16), 0x00);
     auto yOffsets = reinterpret_cast<uint16_t*>(buffer.data());
-    auto dst = buffer.data() + (height * 2);
-    for (uint32_t y = 0; y < height; y++)
+    auto dst = buffer.data() + (size.height * 2);
+    for (auto y = 0; y < size.height; y++)
     {
         yOffsets[y] = static_cast<uint16_t>(dst - buffer.data());
 
@@ -162,7 +162,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
         auto startX = 0;
         auto npixels = 0;
         bool pushRun = false;
-        for (uint32_t x = 0; x < width; x++)
+        for (auto x = 0; x < size.width; x++)
         {
             int32_t paletteIndex = *src++;
             if (paletteIndex == PALETTE_TRANSPARENT)
@@ -184,7 +184,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
                 npixels++;
                 *dst++ = static_cast<uint8_t>(paletteIndex);
             }
-            if (npixels == 127 || x == width - 1)
+            if (npixels == 127 || x == size.width - 1)
             {
                 pushRun = true;
             }
@@ -197,7 +197,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
                     currentCode->NumPixels = npixels;
                     currentCode->OffsetX = startX;
 
-                    if (x == width - 1)
+                    if (x == size.width - 1)
                     {
                         currentCode->NumPixels |= 0x80;
                     }
@@ -381,3 +381,26 @@ int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const 
     }
     return bestMatch;
 }
+
+namespace OpenRCT2::Drawing
+{
+    ImageImportMeta createImageImportMetaFromJson(json_t& input)
+    {
+        auto xOffset = Json::GetNumber<int16_t>(input["x"]);
+        auto yOffset = Json::GetNumber<int16_t>(input["y"]);
+        auto keepPalette = Json::GetString(input["palette"]) == "keep";
+        auto palette = keepPalette ? Palette::KeepIndices : Palette::OpenRCT2;
+
+        auto raw = Json::GetString(input["format"]) == "raw";
+        auto flags = raw ? ImportFlags::None : ImportFlags::RLE;
+
+        auto srcX = Json::GetNumber<int16_t>(input["srcX"]);
+        auto srcY = Json::GetNumber<int16_t>(input["srcY"]);
+        auto srcWidth = Json::GetNumber<int16_t>(input["srcWidth"]);
+        auto srcHeight = Json::GetNumber<int16_t>(input["srcHeight"]);
+        auto zoomedOffset = Json::GetNumber<int32_t>(input["zoom"]);
+
+        return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::Default, { srcX, srcY },
+                                { srcWidth, srcHeight }, zoomedOffset };
+    };
+} // namespace OpenRCT2::Drawing
