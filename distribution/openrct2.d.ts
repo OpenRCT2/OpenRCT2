@@ -3612,8 +3612,9 @@ declare global {
 
         /**
          * The amount of funding currently spent on research.
+         * 0: none, 1: minimum, 2: normal, 3: maximum
          */
-        funding: ResearchFundingLevel;
+        funding: number;
 
         /**
          * The categories of research which should be prioritised.
@@ -3663,7 +3664,7 @@ declare global {
          * E.g. gentle rides, thrill rides, shops etc.
          * Note: Any updates to this field are ignored by OpenRCT2, the category will be derived from the ride type.
          */
-        readonly category?: ResearchCategory;
+        readonly category: RideResearchCategory;
 
         /**
          * The ride type. Each vehicle can have a seperate invention for each ride type.
@@ -3677,7 +3678,7 @@ declare global {
     }
 
     interface SceneryResearchItem {
-        readonly category?: "scenery_group";
+        readonly category: "scenery";
         readonly type: "scenery";
 
         /**
@@ -3686,23 +3687,15 @@ declare global {
         readonly object: number;
     }
 
-    type ResearchItemType = "scenery" | "ride";
-
-    type ResearchCategory =
+    type RideResearchCategory =
         "transport" |
         "gentle" |
         "rollercoaster" |
         "thrill" |
         "water" |
-        "shop" |
-        "scenery";
+        "shop";
 
-    enum ResearchFundingLevel {
-        None,
-        Minimum,
-        Normal,
-        Maximum
-    }
+    type ResearchCategory = RideResearchCategory | "scenery";
 
     type ResearchFundingStage =
         "initial_research" |
