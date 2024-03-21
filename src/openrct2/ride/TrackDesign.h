@@ -21,7 +21,7 @@
 struct Ride;
 struct ResultWithMessage;
 
-constexpr uint32_t kTrackPreviewImageSize{ 370 * 217 };
+constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
 
 struct TrackDesignState
 {
