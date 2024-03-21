@@ -80,6 +80,8 @@ public class GameActivity extends SDLActivity {
         return new String[]{
                 "c++_shared",
                 "speexdsp",
+                "bz2",
+                "freetype",
                 "z",
                 "png16",
                 "SDL2",

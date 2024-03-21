@@ -1,6 +1,7 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
+- Improved: [#21561, #21631] Enable more features in Android build (plugins, networking, multiplayer, audio formats).
 - Improved: [#21599] Currency signs now use non-breaking spaces.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
@@ -67,7 +68,7 @@
 - Fix: [#21039] Text rendering bleeds pixels through windows.
 - Fix: [#21054] “No entrance” style is selected by default in the track designer.
 - Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
-- Fix: [#21157] [Plugin] Widgets do not redraw correctly when updating disabled or visibility state. 
+- Fix: [#21157] [Plugin] Widgets do not redraw correctly when updating disabled or visibility state.
 - Fix: [#21158] [Plugin] Potential crash using setInterval/setTimeout within the callback.
 - Fix: [#21171] [Plugin] Crash creating entities with no more entity slots available.
 - Fix: [#21178] Inca Lost City’s scenario description incorrectly states there are height restrictions.

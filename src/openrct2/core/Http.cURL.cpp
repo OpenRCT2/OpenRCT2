@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if !defined(DISABLE_HTTP) && !defined(_WIN32)
+#if !defined(DISABLE_HTTP) && !defined(_WIN32) && !defined(__ANDROID__)
 
 #    include "Http.h"
 
