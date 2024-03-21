@@ -325,7 +325,7 @@ static Widget window_object_load_error_widgets[] = {
         }
     }
 
-    class ObjectLoadErrorWindow final : public WindowBase
+    class ObjectLoadErrorWindow final : public Window
     {
     private:
         std::vector<ObjectEntryDescriptor> _invalidEntries;
