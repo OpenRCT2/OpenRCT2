@@ -314,242 +314,242 @@
     {
         "path": "palette_map/palette_map_dark_olive_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_dark_olive_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_saturated_brown_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_bordeaux_red_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_bordeaux_red_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_grass_green_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_grass_green_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_olive_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_olive_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_saturated_green_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_tan_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_tan_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_dull_purple_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_dull_green_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_dull_green_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_saturated_purple_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_saturated_purple_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_orange_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_aqua_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_magenta_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_dull_brown_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_dull_brown_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_invisible.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_void.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_dark_olive_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_dark_olive_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_saturated_brown_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_bordeaux_red_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_bordeaux_red_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_grass_green_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_grass_green_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_olive_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_olive_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_saturated_green_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_tan_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_tan_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_dull_purple_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_dull_green_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_dull_green_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_saturated_purple_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_saturated_purple_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_orange_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_aqua_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_magenta_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_dull_brown_dark.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_dull_brown_light.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_invisible.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "palette_map/palette_map_glass_void.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "surface/glassy_recolourable.png",
@@ -581,1961 +581,1961 @@
         "path": "font/latin/ae-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/ae-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-stroke-uc-small.png",
         "x": -1,
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-stroke-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1028-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1041-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1043-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1044-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1046-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1047-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1048-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1049-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1051-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1055-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1059-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1060-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1062-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1063-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1064-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1065-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1066-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1067-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1068-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1069-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1070-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1071-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1073-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1074-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1075-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1076-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1078-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1079-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1080-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1081-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1082-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1083-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1084-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1085-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1087-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1090-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1092-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1094-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1095-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1096-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1097-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1099-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1100-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1101-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1102-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1103-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1108-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1168-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1169-small.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/german-openquotes-small.png",
         "y": 6,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/guilder-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-breve-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/i-with-dot-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-cedilla-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-breve-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/i-without-dot-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-cedilla-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/interpunct-small.png",
         "y": 3,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/a-breve-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-comma-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-comma-small.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/ellipsis-small.png",
         "y": 6,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-caron-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-caron-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-acute-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-acute-small.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-double-acute-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-double-acute-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/oe-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/oe-small.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-double-acute-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-double-acute-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/d-caron-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/d-caron-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/e-caron-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/e-caron-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/n-caron-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/n-caron-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/r-caron-uc-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/r-caron-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-caron-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-caron-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-caron-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-caron-small.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-ring-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-ring-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/w-circumflex-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/w-circumflex-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-circumflex-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-circumflex-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/z-caron-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/z-caron-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/rouble-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-small.png",
         "x": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/l-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-circumflex-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-circumflex-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-circumflex-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-circumflex-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/h-circumflex-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/h-circumflex-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-circumflex-uc-small.png",
         "x": -1,
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-circumflex-small.png",
         "x": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-circumflex-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-circumflex-small.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-breve-uc-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-breve-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/left-brace-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/vertical-bar-small.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/right-brace-small.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/tilde-small.png",
         "y": 3,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/eye.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/ae-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/ae-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-stroke-uc-bold.png",
         "x": -1,
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-stroke-bold.png",
         "x": 0,
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1028-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1041-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1043-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1044-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1046-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1047-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1048-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1049-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1051-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1055-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1059-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1060-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1062-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1063-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1064-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1065-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1066-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1067-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1068-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1069-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1070-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1071-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1073-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1074-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1075-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1076-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1078-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1079-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1080-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1081-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1082-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1083-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1084-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1085-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1087-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1090-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1092-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1094-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1095-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1096-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1097-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1099-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1100-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1101-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1102-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1103-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1108-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1168-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1169-bold.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/german-openquotes-bold.png",
         "y": 5,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/guilder-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-breve-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/i-with-dot-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-cedilla-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-breve-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/i-without-dot-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-cedilla-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/interpunct-bold.png",
         "y": 3,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/a-breve-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-comma-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-comma-bold.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/ellipsis-bold.png",
         "y": 6,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-acute-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-acute-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-double-acute-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-double-acute-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/oe-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/oe-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-double-acute-uc-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-double-acute-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/d-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/d-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/e-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/e-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/n-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/n-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/r-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/r-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-ring-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-ring-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/w-circumflex-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/w-circumflex-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-circumflex-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-circumflex-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/z-caron-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/z-caron-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/rouble-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-bold.png",
         "x": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/l-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-circumflex-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-circumflex-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-circumflex-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-circumflex-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/h-circumflex-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/h-circumflex-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-circumflex-uc-bold.png",
         "x": -1,
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-circumflex-bold.png",
         "x": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-circumflex-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-circumflex-bold.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-breve-uc-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-breve-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/left-brace-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/vertical-bar-bold.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/right-brace-bold.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/tilde-bold.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/eye.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/ae-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/ae-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-stroke-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-stroke-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1028-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1041-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1043-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1044-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1046-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1047-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1048-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1049-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1051-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1055-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1059-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1060-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1062-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1063-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1064-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1065-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1066-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1067-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1068-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1069-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1070-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1071-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1073-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1074-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1075-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1076-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1078-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1079-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1080-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1081-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1082-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1083-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1084-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1085-tiny.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1087-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1090-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1092-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1094-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1095-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1096-tiny.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1097-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1099-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1100-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1101-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1102-tiny.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1103-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1108-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1168-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/cyrillic/U1169-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/german-openquotes-tiny.png",
         "y": 4,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/guilder-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-breve-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/i-with-dot-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-cedilla-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-breve-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/i-without-dot-tiny.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-cedilla-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/interpunct-tiny.png",
         "y": 2,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/a-breve-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-comma-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-comma-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/ellipsis-tiny.png",
         "y": 4,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-caron-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-caron-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-acute-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-acute-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-double-acute-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/o-double-acute-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/oe-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/oe-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-double-acute-uc-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-double-acute-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/d-caron-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/d-caron-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/e-caron-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/e-caron-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/n-caron-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/n-caron-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/r-caron-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/r-caron-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-caron-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-caron-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-caron-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/t-caron-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-ring-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-ring-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/w-circumflex-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/w-circumflex-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-circumflex-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/y-circumflex-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/z-caron-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/z-caron-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/rouble-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-tiny.png",
         "x": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/l-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-circumflex-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/c-circumflex-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-circumflex-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/g-circumflex-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/h-circumflex-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/h-circumflex-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-circumflex-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/j-circumflex-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-circumflex-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/s-circumflex-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-breve-uc-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/latin/u-breve-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/left-brace-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/vertical-bar-tiny.png",
         "y": -1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/right-brace-tiny.png",
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/tilde-tiny.png",
         "y": 1,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "font/eye-tiny.png",
         "y": 0,
         "palette": "keep",
-        "forceBmp": true
+        "format": "raw"
     },
     {
         "path": "track/junior/flat_to_steep_1.png"
