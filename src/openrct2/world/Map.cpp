@@ -759,10 +759,10 @@ void MapUpdatePathWideFlags()
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    TileCoordsXY& loopPosition = GetGameState().WidePathTileLoopPosition;
+    CoordsXY& loopPosition = GetGameState().WidePathTileLoopPosition;
     for (int32_t i = 0; i < 128; i++)
     {
-        FootpathUpdatePathWideFlags(loopPosition.ToCoordsXY());
+        FootpathUpdatePathWideFlags(loopPosition);
 
         // Next x, y tile
         loopPosition.x += COORDS_XY_STEP;
