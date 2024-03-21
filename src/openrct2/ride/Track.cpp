@@ -733,6 +733,9 @@ bool TrackTypeIsHelix(track_type_t trackType)
 
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 {
+    if (posEl.element == nullptr)
+        return {};
+
     auto trackEl = posEl.element->AsTrack();
     if (trackEl == nullptr)
         return {};
