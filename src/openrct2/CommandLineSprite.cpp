@@ -225,21 +225,12 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
     }
 }
 
-static std::optional<ImageImporter::ImportResult> SpriteImageImport(
-    const char* path, int16_t x_offset, int16_t y_offset, ImageImporter::Palette palette, bool forceBmp,
-    ImageImporter::ImportMode mode)
+static std::optional<ImageImporter::ImportResult> SpriteImageImport(u8string_view path, ImageImportMeta meta)
 {
     try
     {
         auto format = IMAGE_FORMAT::PNG_32;
-        auto flags = ImageImporter::ImportFlags::None;
-
-        if (!forceBmp)
-        {
-            flags = ImageImporter::ImportFlags::RLE;
-        }
-
-        if (palette == ImageImporter::Palette::KeepIndices)
+        if (meta.palette == Palette::KeepIndices)
         {
             format = IMAGE_FORMAT::PNG;
         }
@@ -247,7 +238,7 @@ static std::optional<ImageImporter::ImportResult> SpriteImageImport(
         ImageImporter importer;
         auto image = Imaging::ReadFromFile(path, format);
 
-        return importer.Import(image, x_offset, y_offset, palette, flags, mode);
+        return importer.Import(image, meta);
     }
     catch (const std::exception& e)
     {
@@ -483,21 +474,21 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
 
         const utf8* spriteFilePath = argv[1];
         const utf8* imagePath = argv[2];
-        int16_t x_offset = 0;
-        int16_t y_offset = 0;
+        int16_t xOffset = 0;
+        int16_t yOffset = 0;
 
         if (argc == 5)
         {
             char* endptr;
 
-            x_offset = strtol(argv[3], &endptr, 0);
+            xOffset = strtol(argv[3], &endptr, 0);
             if (*endptr != 0)
             {
                 fprintf(stderr, "X offset must be an integer\n");
                 return -1;
             }
 
-            y_offset = strtol(argv[4], &endptr, 0);
+            yOffset = strtol(argv[4], &endptr, 0);
             if (*endptr != 0)
             {
                 fprintf(stderr, "Y offset must be an integer\n");
@@ -505,8 +496,8 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             }
         }
 
-        auto importResult = SpriteImageImport(
-            imagePath, x_offset, y_offset, ImageImporter::Palette::OpenRCT2, false, gSpriteMode);
+        ImageImportMeta meta = { { xOffset, yOffset }, Palette::OpenRCT2, ImportFlags::RLE, gSpriteMode };
+        auto importResult = SpriteImageImport(imagePath, meta);
         if (!importResult.has_value())
             return -1;
 
@@ -579,18 +570,12 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             }
             std::string strPath = Json::GetString(path);
 
-            json_t x_offset = jsonSprite["x"];
-            json_t y_offset = jsonSprite["y"];
-
-            auto palette = (Json::GetString(jsonSprite["palette"]) == "keep") ? ImageImporter::Palette::KeepIndices
-                                                                              : ImageImporter::Palette::OpenRCT2;
-            bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetString(jsonSprite["format"]) == "raw";
+            auto meta = createImageImportMetaFromJson(jsonSprite);
+            meta.importMode = gSpriteMode;
 
             auto imagePath = Path::GetAbsolute(Path::Combine(directoryPath, strPath));
 
-            auto importResult = SpriteImageImport(
-                imagePath.c_str(), Json::GetNumber<int16_t>(x_offset), Json::GetNumber<int16_t>(y_offset), palette, forceBmp,
-                gSpriteMode);
+            auto importResult = SpriteImageImport(imagePath, meta);
             if (importResult == std::nullopt)
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath.c_str());
