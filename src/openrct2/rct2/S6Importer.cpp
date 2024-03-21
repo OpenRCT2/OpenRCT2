@@ -448,7 +448,7 @@ namespace RCT2
             ImportRideRatingsCalcData();
             ImportRideMeasurements();
             gameState.NextGuestNumber = _s6.NextGuestIndex;
-            gGrassSceneryTileLoopPosition = _s6.GrassAndSceneryTilepos;
+            gameState.GrassSceneryTileLoopPosition = _s6.GrassAndSceneryTilepos;
             // unk_13CA73E
             // Pad13CA73F
             // unk_13CA740
@@ -496,8 +496,7 @@ namespace RCT2
 
             // Pad13CE730
             // rct1_scenario_flags
-            gWidePathTileLoopPosition.x = _s6.WidePathTileLoopX;
-            gWidePathTileLoopPosition.y = _s6.WidePathTileLoopY;
+            gameState.WidePathTileLoopPosition = { _s6.WidePathTileLoopX, _s6.WidePathTileLoopY };
             // Pad13CE778
 
             // Fix and set dynamic variables
