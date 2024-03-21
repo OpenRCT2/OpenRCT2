@@ -584,7 +584,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
 
             auto palette = (Json::GetString(jsonSprite["palette"]) == "keep") ? ImageImporter::Palette::KeepIndices
                                                                               : ImageImporter::Palette::OpenRCT2;
-            bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetBoolean(jsonSprite["forceBmp"]);
+            bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetString(jsonSprite["format"]) == "raw";
 
             auto imagePath = Path::GetAbsolute(Path::Combine(directoryPath, strPath));
 
