@@ -422,7 +422,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     break;
                 }
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+                    WindowStartTextbox(*this, widgetIndex, _filter_string, sizeof(_filter_string));
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);

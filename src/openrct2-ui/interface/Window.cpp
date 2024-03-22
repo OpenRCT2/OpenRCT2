@@ -25,7 +25,6 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
@@ -867,31 +866,22 @@ namespace OpenRCT2::Ui::Windows
         return window.classification;
     }
 
-    void WindowStartTextbox(
-        WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength)
+    void WindowStartTextbox(const WindowBase& callW, WidgetIndex callWidget, u8string existingText, int32_t maxLength)
     {
         if (_usingWidgetTextBox)
             WindowCancelTextbox();
 
         _usingWidgetTextBox = true;
-        _currentTextBox.window.classification = call_w.classification;
-        _currentTextBox.window.number = call_w.number;
-        _currentTextBox.widget_index = call_widget;
+        _currentTextBox.window.classification = callW.classification;
+        _currentTextBox.window.number = callW.number;
+        _currentTextBox.widget_index = callWidget;
         _textBoxFrameNo = 0;
 
         WindowCloseByClass(WindowClass::Textinput);
 
-        // Clear the text input buffer
-        _textBoxInput.clear();
-
         // Enter in the text input buffer any existing
         // text.
-        if (existing_text != STR_NONE)
-        {
-            char tempBuf[TEXT_INPUT_SIZE]{};
-            size_t len = FormatStringLegacy(tempBuf, TEXT_INPUT_SIZE, existing_text, &existing_args);
-            _textBoxInput.assign(tempBuf, len);
-        }
+        _textBoxInput = existingText;
 
         _textInput = ContextStartTextInput(_textBoxInput, maxLength);
     }

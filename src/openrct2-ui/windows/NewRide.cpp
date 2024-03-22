@@ -370,7 +370,7 @@ static Widget window_new_ride_widgets[] = {
                     SetPage(_currentTab);
                     break;
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter.data(), kTextInputSize);
+                    WindowStartTextbox(*this, widgetIndex, _filter, kTextInputSize);
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _filter.clear();
