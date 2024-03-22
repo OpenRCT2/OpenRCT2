@@ -15,6 +15,8 @@
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
 #    include "../../../entity/EntityRegistry.h"
+#    include "../../../object/LargeSceneryEntry.h"
+#    include "../../../object/WallSceneryEntry.h"
 #    include "../../../ride/Ride.h"
 #    include "../../../ride/RideData.h"
 #    include "../../../ride/Track.h"
@@ -63,6 +65,7 @@ namespace OpenRCT2::Scripting
 
     void ScTileElement::type_set(std::string value)
     {
+        RemoveBannerEntry();
         if (value == "surface")
             _element->SetType(TileElementType::Surface);
         else if (value == "footpath")
@@ -85,6 +88,7 @@ namespace OpenRCT2::Scripting
             scriptEngine.LogPluginInfo("Element type not recognised!");
             return;
         }
+        CreateBannerEntry();
 
         Invalidate();
     }
@@ -537,8 +541,10 @@ namespace OpenRCT2::Scripting
             {
                 case TileElementType::LargeScenery:
                 {
+                    RemoveBannerEntry();
                     auto* el = _element->AsLargeScenery();
                     el->SetSequenceIndex(value.as_uint());
+                    CreateBannerEntry();
                     Invalidate();
                     break;
                 }
@@ -1153,6 +1159,12 @@ namespace OpenRCT2::Scripting
                 duk_push_int(ctx, el->GetEntranceType());
                 break;
             }
+            case TileElementType::Banner:
+            {
+                auto* el = _element->AsBanner();
+                duk_push_int(ctx, el->GetBanner()->type);
+                break;
+            }
             default:
             {
                 duk_push_null(ctx);
@@ -1188,15 +1200,19 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::LargeScenery:
             {
+                RemoveBannerEntry();
                 auto* el = _element->AsLargeScenery();
                 el->SetEntryIndex(index);
+                CreateBannerEntry();
                 Invalidate();
                 break;
             }
             case TileElementType::Wall:
             {
+                RemoveBannerEntry();
                 auto* el = _element->AsWall();
                 el->SetEntryIndex(index);
+                CreateBannerEntry();
                 Invalidate();
                 break;
             }
@@ -1204,6 +1220,13 @@ namespace OpenRCT2::Scripting
             {
                 auto* el = _element->AsEntrance();
                 el->SetEntranceType(index);
+                Invalidate();
+                break;
+            }
+            case TileElementType::Banner:
+            {
+                auto* el = _element->AsBanner();
+                el->GetBanner()->type = index;
                 Invalidate();
                 break;
             }
@@ -1314,6 +1337,12 @@ namespace OpenRCT2::Scripting
                 duk_push_int(ctx, el->GetPrimaryColour());
                 break;
             }
+            case TileElementType::Banner:
+            {
+                auto* el = _element->AsBanner();
+                duk_push_int(ctx, el->GetBanner()->colour);
+                break;
+            }
             default:
             {
                 duk_push_null(ctx);
@@ -1348,6 +1377,13 @@ namespace OpenRCT2::Scripting
                 Invalidate();
                 break;
             }
+            case TileElementType::Banner:
+            {
+                auto* el = _element->AsBanner();
+                el->GetBanner()->colour = value;
+                Invalidate();
+                break;
+            }
             default:
                 break;
         }
@@ -1375,6 +1411,12 @@ namespace OpenRCT2::Scripting
             {
                 auto* el = _element->AsWall();
                 duk_push_int(ctx, el->GetSecondaryColour());
+                break;
+            }
+            case TileElementType::Banner:
+            {
+                auto* el = _element->AsBanner();
+                duk_push_int(ctx, el->GetBanner()->text_colour);
                 break;
             }
             default:
@@ -1408,6 +1450,13 @@ namespace OpenRCT2::Scripting
             {
                 auto* el = _element->AsWall();
                 el->SetSecondaryColour(value);
+                Invalidate();
+                break;
+            }
+            case TileElementType::Banner:
+            {
+                auto* el = _element->AsBanner();
+                el->GetBanner()->text_colour = value;
                 Invalidate();
                 break;
             }
@@ -2040,16 +2089,145 @@ namespace OpenRCT2::Scripting
         duk_push_uint(ctx, _element->GetOwner());
         return DukValue::take_from_stack(ctx);
     }
-
     void ScTileElement::owner_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
         _element->SetOwner(value);
     }
 
+    DukValue ScTileElement::bannerText_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        BannerIndex idx = _element->GetBannerIndex();
+        if (idx == BannerIndex::GetNull())
+            duk_push_null(ctx);
+        else
+            duk_push_string(ctx, GetBanner(idx)->GetText().c_str());
+        return DukValue::take_from_stack(ctx);
+    }
+    void ScTileElement::bannerText_set(std::string value)
+    {
+        ThrowIfGameStateNotMutable();
+        BannerIndex idx = _element->GetBannerIndex();
+        if (idx != BannerIndex::GetNull())
+        {
+            auto banner = GetBanner(idx);
+            banner->text = value;
+            if (_element->GetType() != TileElementType::Banner)
+            {
+                if (value.empty())
+                    banner->ride_index = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
+                else
+                    banner->ride_index = RideId::GetNull();
+
+                if (banner->ride_index.IsNull())
+                    banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                else
+                    banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            }
+        }
+    }
+
+    DukValue ScTileElement::isNoEntry_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto* el = _element->AsBanner();
+        if (el != nullptr)
+            duk_push_boolean(ctx, (el->GetBanner()->flags & BANNER_FLAG_NO_ENTRY) != 0);
+        else
+            duk_push_null(ctx);
+        return DukValue::take_from_stack(ctx);
+    }
+    void ScTileElement::isNoEntry_set(bool value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto* el = _element->AsBanner();
+        if (el != nullptr)
+        {
+            if (value)
+            {
+                el->GetBanner()->flags |= BANNER_FLAG_NO_ENTRY;
+            }
+            else
+            {
+                el->GetBanner()->flags &= ~BANNER_FLAG_NO_ENTRY;
+            }
+            Invalidate();
+        }
+    }
+
     void ScTileElement::Invalidate()
     {
         MapInvalidateTileFull(_coords);
+    }
+
+    void ScTileElement::RemoveBannerEntry()
+    {
+        if (_element->GetType() == TileElementType::LargeScenery)
+        {
+            auto largeScenery = _element->AsLargeScenery();
+            if (largeScenery->GetSequenceIndex() != 0)
+                return;
+        }
+        _element->RemoveBannerEntry();
+    }
+
+    void ScTileElement::CreateBannerEntry()
+    {
+        switch (_element->GetType())
+        {
+            case TileElementType::Banner:
+                break;
+            case TileElementType::Wall:
+            {
+                auto wallEntry = _element->AsWall()->GetEntry();
+                if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
+                    return;
+                break;
+            }
+            case TileElementType::LargeScenery:
+            {
+                auto largeScenery = _element->AsLargeScenery();
+                if (largeScenery->GetSequenceIndex() != 0)
+                    return;
+                auto largeSceneryEntry = largeScenery->GetEntry();
+                if (largeSceneryEntry == nullptr || largeSceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
+                    return;
+                break;
+            }
+            default:
+                return;
+        }
+        auto* banner = CreateBanner();
+        if (banner == nullptr)
+            GetContext()->GetScriptEngine().LogPluginInfo("No free banners available.");
+        else
+        {
+            banner->text = {};
+            banner->colour = 0;
+            banner->text_colour = 0;
+            banner->flags = 0;
+            if (_element->GetType() == TileElementType::Wall)
+                banner->flags = BANNER_FLAG_IS_WALL;
+            if (_element->GetType() == TileElementType::LargeScenery)
+                banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
+            banner->type = 0;
+            banner->position = TileCoordsXY(_coords);
+
+            if (_element->GetType() == TileElementType::Wall || _element->GetType() == TileElementType::LargeScenery)
+            {
+                RideId rideIndex = BannerGetClosestRideIndex({ _coords, _element->BaseHeight });
+                if (!rideIndex.IsNull())
+                {
+                    banner->ride_index = rideIndex;
+                    banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+                }
+            }
+
+            _element->SetBannerIndex(banner->id);
+        }
     }
 
     void ScTileElement::Register(duk_context* ctx)
@@ -2070,17 +2248,20 @@ namespace OpenRCT2::Scripting
         // Track | Small Scenery | Wall | Entrance | Large Scenery | Banner
         dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
 
-        // Path | Small Scenery | Wall | Entrance | Large Scenery
+        // Path | Small Scenery | Wall | Entrance | Large Scenery | Banner
         dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
 
-        // Small Scenery | Wall | Large Scenery
+        // Small Scenery | Wall | Large Scenery | Banner
         dukglue_register_property(ctx, &ScTileElement::primaryColour_get, &ScTileElement::primaryColour_set, "primaryColour");
         dukglue_register_property(
             ctx, &ScTileElement::secondaryColour_get, &ScTileElement::secondaryColour_set, "secondaryColour");
+
+        // Small Scenery | Wall | Large Scenery
         dukglue_register_property(
             ctx, &ScTileElement::tertiaryColour_get, &ScTileElement::tertiaryColour_set, "tertiaryColour");
 
         // Wall | Large Scenery | Banner
+        dukglue_register_property(ctx, &ScTileElement::bannerText_get, &ScTileElement::bannerText_set, "bannerText");
         dukglue_register_property(ctx, &ScTileElement::bannerIndex_get, &ScTileElement::bannerIndex_set, "bannerIndex");
 
         // Path | Track | Entrance
@@ -2152,6 +2333,9 @@ namespace OpenRCT2::Scripting
             ctx, &ScTileElement::footpathObject_get, &ScTileElement::footpathObject_set, "footpathObject");
         dukglue_register_property(
             ctx, &ScTileElement::footpathSurfaceObject_get, &ScTileElement::footpathSurfaceObject_set, "footpathSurfaceObject");
+
+        // Banner only
+        dukglue_register_property(ctx, &ScTileElement::isNoEntry_get, &ScTileElement::isNoEntry_set, "isNoEntry");
     }
 
 } // namespace OpenRCT2::Scripting

@@ -1,5 +1,6 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21590] [Plugin] Plugins can now read and write banner properties of tile elements.
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
 - Improved: [#21561, #21631] Enable more features in Android build (plugins, networking, multiplayer, audio formats).
 - Improved: [#21599] Currency signs now use non-breaking spaces.
@@ -7,6 +8,7 @@
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#21434] Number of guests overflows in objective text.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
+- Fix: [#21627] [Plugin] Banners are properly created or deleted when tile elements are changed by plugins.
 
 0.4.9 (2024-03-02)
 ------------------------------------------------------------------------

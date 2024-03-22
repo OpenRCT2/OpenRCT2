@@ -205,7 +205,16 @@ namespace OpenRCT2::Scripting
         DukValue owner_get() const;
         void owner_set(uint8_t value);
 
+        DukValue bannerText_get() const;
+        void bannerText_set(std::string value);
+
+        DukValue isNoEntry_get() const;
+        void isNoEntry_set(bool value);
+
         void Invalidate();
+
+        void RemoveBannerEntry();
+        void CreateBannerEntry();
 
     public:
         static void Register(duk_context* ctx);
