@@ -53,7 +53,7 @@ static Widget _sceneryScatterWidgets[] = {
 };
     // clang-format on
 
-    class SceneryScatterWindow final : public WindowBase
+    class SceneryScatterWindow final : public Window
     {
     public:
         void OnOpen() override
