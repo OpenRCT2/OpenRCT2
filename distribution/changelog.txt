@@ -1,5 +1,6 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21636] Add shortcut key for sorting tile elements.
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
 - Improved: [#21561, #21631] Enable more features in Android build (plugins, networking, multiplayer, audio formats).
 - Improved: [#21599] Currency signs now use non-breaking spaces.
