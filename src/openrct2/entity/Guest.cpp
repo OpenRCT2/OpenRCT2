@@ -1584,7 +1584,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
                     if (Happiness >= 180)
                         itemValue /= 2;
                 }
-                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)))
+                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(GetGameState().Cheats.IgnorePrice))
                 {
                     // "I'm not paying that much for x"
                     InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
@@ -2175,7 +2175,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
                 // Peeps won't pay more than twice the value of the ride.
                 ridePrice = RideGetPrice(ride);
-                if (ridePrice > (value * 2))
+                if ((ridePrice > (value * 2)) && !(gameState.Cheats.IgnorePrice))
                 {
                     if (peepAtRide)
                     {
@@ -2243,7 +2243,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
 
         // The amount that peeps are willing to pay to use the Toilets scales with their toilet stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-        if (RideGetPrice(ride) * 40 > Toilet)
+        if ((RideGetPrice(ride) * 40 > Toilet) && !GetGameState().Cheats.IgnorePrice)
         {
             if (peepAtShop)
             {
@@ -2650,7 +2650,7 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
     auto value = ride.value;
     if (value != RIDE_VALUE_UNDEFINED)
     {
-        if ((value * 2) < ridePrice)
+        if (((value * 2) < ridePrice) && !(GetGameState().Cheats.IgnorePrice))
         {
             peep->InsertNewThought(PeepThoughtType::BadValue, peep->CurrentRide);
             PeepUpdateRideAtEntranceTryLeave(peep);

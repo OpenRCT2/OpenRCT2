@@ -115,6 +115,7 @@ enum WindowCheatsWidgetIdx
     WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1,
     WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15,
     WIDX_GUEST_IGNORE_RIDE_INTENSITY,
+    WIDX_GUEST_IGNORE_PRICE,
     WIDX_DISABLE_VANDALISM,
     WIDX_DISABLE_LITTERING,
     WIDX_GIVE_ALL_GUESTS_GROUP,
@@ -226,7 +227,7 @@ static Widget window_cheats_money_widgets[] =
 static Widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    MakeWidget({  5,  48}, {238, 279},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
+    MakeWidget({  5,  48}, {238, 290},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
     MakeWidget({183,  69}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // happiness max
     MakeWidget({127,  69}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // happiness min
     MakeWidget({183,  90}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // energy max
@@ -244,8 +245,9 @@ static Widget window_cheats_guests_widgets[] =
     MakeWidget({127, 237}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MORE_THAN_1                                           ), // ride intensity > 1
     MakeWidget({ 11, 237}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
     MakeWidget({ 11, 258}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
-    MakeWidget({ 11, 279}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
-    MakeWidget({ 11, 300}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
+    MakeWidget({ 11, 279}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
+    MakeWidget({ 11, 300}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
+    MakeWidget({ 11, 321}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
     MakeWidget({  5, 342}, {238,  69},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests parameters group frame
     MakeWidget({ 11, 363}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CURRENCY_FORMAT                                             ), // give guests money
     MakeWidget({127, 363}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
@@ -477,6 +479,7 @@ static StringId window_cheats_page_titles[] = {
                     auto ft = Formatter::Common();
                     ft.Add<money64>(1000.00_GBP);
                     SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.Cheats.IgnoreRideIntensity);
+                    SetCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.Cheats.IgnorePrice);
                     SetCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.Cheats.DisableVandalism);
                     SetCheckboxValue(WIDX_DISABLE_LITTERING, gameState.Cheats.DisableLittering);
                     break;
@@ -1048,6 +1051,9 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_GUEST_IGNORE_RIDE_INTENSITY:
                     CheatsSet(CheatType::IgnoreRideIntensity, !gameState.Cheats.IgnoreRideIntensity);
+                    break;
+                case WIDX_GUEST_IGNORE_PRICE:
+                    CheatsSet(CheatType::IgnorePrice, !gameState.Cheats.IgnorePrice);
                     break;
                 case WIDX_DISABLE_VANDALISM:
                     CheatsSet(CheatType::DisableVandalism, !gameState.Cheats.DisableVandalism);

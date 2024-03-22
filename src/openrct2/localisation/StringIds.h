@@ -1689,6 +1689,8 @@ enum : StringId
     STR_LOADING_SAVED_GAME = 6650,
     STR_STRING_M_PERCENT = 6651,
 
+    STR_CHEAT_IGNORE_PRICE = 6659,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
