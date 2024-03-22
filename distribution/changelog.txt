@@ -7,6 +7,7 @@
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#21434] Number of guests overflows in objective text.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
+- Fix: [#21641] Crash when creating track iterator from an invalid tile element.
 
 0.4.9 (2024-03-02)
 ------------------------------------------------------------------------
