@@ -363,6 +363,12 @@ void GameLoadInit()
     auto& gameState = GetGameState();
     windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
+    if (gameState.CurrentlyFollowingEntity != EntityId::GetNull())
+    {
+        auto* mainWindow = WindowGetMain();
+        WindowFollowSprite(*mainWindow, gameState.CurrentlyFollowingEntity);
+    }
+
     if (NetworkGetMode() != NETWORK_MODE_CLIENT)
     {
         GameActions::ClearQueue();

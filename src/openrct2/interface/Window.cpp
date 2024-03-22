@@ -1412,6 +1412,7 @@ void WindowFollowSprite(WindowBase& w, EntityId spriteIndex)
     if (spriteIndex.ToUnderlying() < MAX_ENTITIES || spriteIndex.IsNull())
     {
         w.viewport_smart_follow_sprite = spriteIndex;
+        GetGameState().CurrentlyFollowingEntity = spriteIndex;
     }
 }
 
@@ -1419,6 +1420,7 @@ void WindowUnfollowSprite(WindowBase& w)
 {
     w.viewport_smart_follow_sprite = EntityId::GetNull();
     w.viewport_target_sprite = EntityId::GetNull();
+    GetGameState().CurrentlyFollowingEntity = EntityId::GetNull();
 }
 
 Viewport* WindowGetViewport(WindowBase* w)

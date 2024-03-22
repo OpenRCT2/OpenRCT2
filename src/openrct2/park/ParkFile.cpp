@@ -600,7 +600,7 @@ namespace OpenRCT2
 
         void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [&gameState](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gameState.SavedView.x);
                 cs.ReadWrite(gameState.SavedView.y);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -613,6 +613,12 @@ namespace OpenRCT2
                     cs.Write(static_cast<int8_t>(gameState.SavedViewZoom));
                 }
                 cs.ReadWrite(gameState.SavedViewRotation);
+
+                if (os.GetHeader().TargetVersion >= PARK_FILE_CURRENT_VERSION)
+                    cs.ReadWrite(gameState.CurrentlyFollowingEntity);
+                else
+                    gameState.CurrentlyFollowingEntity = EntityId::GetNull();
+
                 cs.ReadWrite(gameState.LastEntranceStyle);
                 cs.ReadWrite(gameState.EditorStep);
             });
