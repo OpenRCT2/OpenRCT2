@@ -122,8 +122,9 @@ GameActions::Result MazePlaceTrackAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
     {
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
-        res.ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+        res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
         return res;
     }
 
@@ -143,8 +144,9 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
         return res;
     }
 

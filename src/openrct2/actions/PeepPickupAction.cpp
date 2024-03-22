@@ -106,7 +106,7 @@ GameActions::Result PeepPickupAction::Query() const
             }
             break;
         default:
-            LOG_ERROR("Invalid pickup type: %u", _type);
+            LOG_ERROR("Invalid peep pickup type %u", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
     return res;
@@ -175,7 +175,7 @@ GameActions::Result PeepPickupAction::Execute() const
             CancelConcurrentPickups(peep);
             break;
         default:
-            LOG_ERROR("Invalid pickup type: %u", _type);
+            LOG_ERROR("Invalid peep pickup type %u", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
     return res;

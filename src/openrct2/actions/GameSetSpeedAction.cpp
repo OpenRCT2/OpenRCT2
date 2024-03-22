@@ -39,7 +39,7 @@ GameActions::Result GameSetSpeedAction::Query() const
 
     if (!IsValidSpeed(_speed))
     {
-        LOG_WARNING("Invalid game command for speed %u", _speed);
+        LOG_ERROR("Invalid speed %u", _speed);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
@@ -53,7 +53,7 @@ GameActions::Result GameSetSpeedAction::Execute() const
 
     if (!IsValidSpeed(_speed))
     {
-        LOG_WARNING("Invalid game command for speed %u", _speed);
+        LOG_ERROR("Invalid speed %u", _speed);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }

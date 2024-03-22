@@ -66,15 +66,15 @@ GameActions::Result RideSetVehicleAction::Query() const
 {
     if (_type >= RideSetVehicleType::Count)
     {
-        LOG_WARNING("Invalid type. type = %d", _type);
+        LOG_ERROR("Invalid ride vehicle type %d", _type);
     }
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -97,13 +97,13 @@ GameActions::Result RideSetVehicleAction::Query() const
         {
             if (!RideIsVehicleTypeValid(*ride))
             {
-                LOG_ERROR("Invalid vehicle type. type = %d", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                LOG_ERROR("Invalid vehicle type %d", _value);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             auto rideEntry = GetRideEntryByIndex(_value);
             if (rideEntry == nullptr)
             {
-                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Ride entry not found for _value %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
@@ -112,14 +112,14 @@ GameActions::Result RideSetVehicleAction::Query() const
             if (_colour >= presetList->count && _colour != 255 && _colour != 0)
             {
                 LOG_ERROR("Unknown vehicle colour preset. colour = %d", _colour);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_INVALID_COLOUR);
             }
             break;
         }
 
         default:
-            LOG_ERROR("Unknown vehicle command. type = %d", _type);
-            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+            LOG_ERROR("Invalid ride vehicle setting %d", _type);
+            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();
@@ -131,8 +131,8 @@ GameActions::Result RideSetVehicleAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
     switch (_type)
@@ -154,7 +154,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Ride entry not found for index %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             uint8_t clampValue = _value;
@@ -177,7 +177,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_ERROR("Ride entry not found for index %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
@@ -200,7 +200,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
         }
 
         default:
-            LOG_ERROR("Unknown vehicle command. type = %d", _type);
+            LOG_ERROR("Invalid ride vehicle setting %d", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
