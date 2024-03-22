@@ -15,6 +15,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -1092,38 +1093,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Objective
             ft = Formatter();
-            if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-            {
-                StringId rideTypeString = STR_NONE;
-                auto rideTypeId = gameState.ScenarioObjective.RideId;
-                if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
-                {
-                    rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
-                }
-                ft.Add<StringId>(rideTypeString);
-            }
-            else if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY)
-            {
-                ft.Add<int32_t>(gameState.ScenarioObjective.NumGuests);
-                ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
-            }
-            else if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-            {
-                ft.Add<int32_t>(gameState.ScenarioObjective.NumGuests);
-            }
-            else if (gameState.ScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
-            {
-                ft.Add<int16_t>(gameState.ScenarioObjective.MinimumLength);
-            }
-            else
-            {
-                ft.Add<int16_t>(0); // Unused value by other objective messages
-                ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
-                if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                    ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumExcitement);
-                else
-                    ft.Add<money64>(gameState.ScenarioObjective.Currency);
-            }
+            formatObjective(ft, gameState.ScenarioObjective);
 
             screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gameState.ScenarioObjective.Type], ft);
             screenCoords.y += 5;
