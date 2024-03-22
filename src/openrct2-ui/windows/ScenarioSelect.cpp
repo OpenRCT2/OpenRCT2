@@ -9,6 +9,7 @@
 
 #include "../interface/Theme.h"
 
+#include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -244,27 +245,14 @@ static Widget _scenarioSelectWidgets[] = {
             screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
             // Scenario objective
+            Objective objective = { .Type = scenario->ObjectiveType,
+                                    .Year = scenario->ObjectiveArg1,
+                                    .NumGuests = static_cast<uint16_t>(scenario->ObjectiveArg3),
+                                    .Currency = scenario->ObjectiveArg2 };
+
             ft = Formatter();
             ft.Add<StringId>(ObjectiveNames[scenario->ObjectiveType]);
-            if (scenario->ObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-            {
-                StringId rideTypeString = STR_NONE;
-                auto rideTypeId = scenario->ObjectiveArg3;
-                if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
-                {
-                    rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
-                }
-                ft.Add<StringId>(rideTypeString);
-            }
-            else
-            {
-                ft.Add<int16_t>(scenario->ObjectiveArg3);
-                ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, scenario->ObjectiveArg1));
-                if (scenario->ObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                    ft.Add<uint16_t>(scenario->ObjectiveArg2);
-                else
-                    ft.Add<money64>(scenario->ObjectiveArg2);
-            }
+            formatObjective(ft, objective);
             screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
             // Scenario score
