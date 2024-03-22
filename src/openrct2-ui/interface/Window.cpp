@@ -879,8 +879,6 @@ namespace OpenRCT2::Ui::Windows
 
         WindowCloseByClass(WindowClass::Textinput);
 
-        // Enter in the text input buffer any existing
-        // text.
         _textBoxInput = existingText;
 
         _textInput = ContextStartTextInput(_textBoxInput, maxLength);
