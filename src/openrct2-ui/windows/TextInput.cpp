@@ -252,8 +252,7 @@ namespace OpenRCT2::Ui::Windows
                     // Make a view of the string for measuring the width.
                     cursorX = windowPos.x + 13
                         + GfxGetStringWidthNoFormatting(
-                                  u8string_view{ wrapPointer, textInput->SelectionStart - char_count },
-                                  FontStyle::Medium);
+                                  u8string_view{ wrapPointer, textInput->SelectionStart - char_count }, FontStyle::Medium);
                     cursorY = screenCoords.y;
 
                     int32_t textWidth = 6;
