@@ -434,7 +434,7 @@ static Widget _trackListWidgets[] = {
 
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this

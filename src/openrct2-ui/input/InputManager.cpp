@@ -207,7 +207,7 @@ void InputManager::Process(const InputEvent& e)
                 return;
             }
 
-            if (gUsingWidgetTextBox)
+            if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox())
             {
                 return;
             }
@@ -383,7 +383,7 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
 
 bool InputManager::HasTextInputFocus() const
 {
-    if (gUsingWidgetTextBox || gChatOpen)
+    if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;
 
     auto w = WindowFindByClass(WindowClass::Textinput);

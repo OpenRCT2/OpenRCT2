@@ -325,7 +325,7 @@ static Widget window_new_ride_widgets[] = {
 
             WidgetInvalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);

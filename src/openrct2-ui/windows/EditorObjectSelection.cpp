@@ -328,7 +328,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
