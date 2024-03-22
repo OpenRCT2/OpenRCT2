@@ -33,6 +33,7 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackPaint.h>
@@ -523,6 +524,12 @@ static void ShortcutToggleWallSlope()
 
     // Ensure an element is selected and it's a wall
     if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
+    {
+        return;
+    }
+
+    // Ensure a wall can be built on a slope
+    if (tileElement->AsWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
         return;
     }
