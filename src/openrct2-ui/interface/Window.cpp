@@ -835,11 +835,11 @@ ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 
 namespace OpenRCT2::Ui::Windows
 {
-    u8string _textBoxInput;
-    int32_t _textBoxFrameNo = 0;
-    bool _usingWidgetTextBox = false;
-    TextInputSession* _textInput;
-    WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+    static u8string _textBoxInput;
+    static int32_t _textBoxFrameNo = 0;
+    static bool _usingWidgetTextBox = false;
+    static TextInputSession* _textInput;
+    static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
 
     WindowBase* WindowGetListening()
     {
