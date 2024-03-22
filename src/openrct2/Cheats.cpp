@@ -44,6 +44,7 @@ void CheatsReset()
     gameState.Cheats.DisableAllBreakdowns = false;
     gameState.Cheats.BuildInPauseMode = false;
     gameState.Cheats.IgnoreRideIntensity = false;
+    gameState.Cheats.IgnorePrice = false;
     gameState.Cheats.DisableVandalism = false;
     gameState.Cheats.DisableLittering = false;
     gameState.Cheats.NeverendingMarketing = false;
@@ -114,6 +115,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gameState.Cheats.AllowSpecialColourSchemes, count);
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.Cheats.MakeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.Cheats.SelectedStaffSpeed, count);
+        CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -166,6 +168,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::IgnoreRideIntensity:
                     ds << gameState.Cheats.IgnoreRideIntensity;
+                    break;
+                case CheatType::IgnorePrice:
+                    ds << gameState.Cheats.IgnorePrice;
                     break;
                 case CheatType::DisableVandalism:
                     ds << gameState.Cheats.DisableVandalism;
@@ -253,6 +258,8 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_BUILD_IN_PAUSE_MODE);
         case CheatType::IgnoreRideIntensity:
             return LanguageGetString(STR_CHEAT_IGNORE_INTENSITY);
+        case CheatType::IgnorePrice:
+            return LanguageGetString(STR_CHEAT_IGNORE_PRICE);
         case CheatType::DisableVandalism:
             return LanguageGetString(STR_CHEAT_DISABLE_VANDALISM);
         case CheatType::DisableLittering:
