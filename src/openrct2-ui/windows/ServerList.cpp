@@ -131,7 +131,7 @@ static Widget _serverListWidgets[] = {
                     Close();
                     break;
                 case WIDX_PLAYER_NAME_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName.c_str(), MaxPlayerNameLength);
+                    WindowStartTextbox(*this, widgetIndex, _playerName, MaxPlayerNameLength);
                     break;
                 case WIDX_LIST:
                 {

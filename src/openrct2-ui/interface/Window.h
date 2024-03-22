@@ -76,8 +76,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* WindowGetListening();
     WindowClass WindowGetClassification(const WindowBase& window);
 
-    void WindowStartTextbox(
-        WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength);
+    void WindowStartTextbox(const WindowBase& callW, WidgetIndex callWidget, u8string existingText, int32_t maxLength);
     void WindowCancelTextbox();
     void WindowUpdateTextboxCaret();
     void WindowUpdateTextbox();
