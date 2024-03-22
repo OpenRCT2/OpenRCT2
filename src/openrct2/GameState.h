@@ -127,6 +127,7 @@ namespace OpenRCT2
         ScreenCoordsXY SavedView;
         uint8_t SavedViewRotation;
         ZoomLevel SavedViewZoom;
+        EntityId CurrentlyFollowingEntity{ EntityId::GetNull() };
 
         ObjectEntryIndex LastEntranceStyle;
 
