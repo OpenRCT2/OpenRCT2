@@ -25,6 +25,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
@@ -835,6 +836,12 @@ ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 
 namespace OpenRCT2::Ui::Windows
 {
+    u8string _textBoxInput;
+    int32_t _textBoxFrameNo = 0;
+    bool _usingWidgetTextBox = false;
+    TextInputSession* _textInput;
+    WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+
     WindowBase* WindowGetListening()
     {
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -858,5 +865,89 @@ namespace OpenRCT2::Ui::Windows
     WindowClass WindowGetClassification(const WindowBase& window)
     {
         return window.classification;
+    }
+
+    void WindowStartTextbox(
+        WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength)
+    {
+        if (_usingWidgetTextBox)
+            WindowCancelTextbox();
+
+        _usingWidgetTextBox = true;
+        _currentTextBox.window.classification = call_w.classification;
+        _currentTextBox.window.number = call_w.number;
+        _currentTextBox.widget_index = call_widget;
+        _textBoxFrameNo = 0;
+
+        WindowCloseByClass(WindowClass::Textinput);
+
+        // Clear the text input buffer
+        _textBoxInput.clear();
+
+        // Enter in the text input buffer any existing
+        // text.
+        if (existing_text != STR_NONE)
+        {
+            char tempBuf[TEXT_INPUT_SIZE]{};
+            size_t len = FormatStringLegacy(tempBuf, TEXT_INPUT_SIZE, existing_text, &existing_args);
+            _textBoxInput.assign(tempBuf, len);
+        }
+
+        _textInput = ContextStartTextInput(_textBoxInput, maxLength);
+    }
+
+    void WindowCancelTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            _currentTextBox.window.classification = WindowClass::Null;
+            _currentTextBox.window.number = 0;
+            ContextStopTextInput();
+            _usingWidgetTextBox = false;
+            if (w != nullptr)
+            {
+                WidgetInvalidate(*w, _currentTextBox.widget_index);
+            }
+            _currentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
+        }
+    }
+
+    void WindowUpdateTextboxCaret()
+    {
+        _textBoxFrameNo++;
+        if (_textBoxFrameNo > 30)
+            _textBoxFrameNo = 0;
+    }
+
+    void WindowUpdateTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            _textBoxFrameNo = 0;
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
+        }
+    }
+    const TextInputSession* GetTextboxSession()
+    {
+        return _textInput;
+    }
+    void SetTexboxSession(TextInputSession* session)
+    {
+        _textInput = session;
+    }
+    bool IsUsingWidgetTextBox()
+    {
+        return _usingWidgetTextBox;
+    }
+    bool TextBoxCaretIsFlashed()
+    {
+        return _textBoxFrameNo <= 15;
+    }
+    const WidgetIdentifier& GetCurrentTextBox()
+    {
+        return _currentTextBox;
     }
 } // namespace OpenRCT2::Ui::Windows

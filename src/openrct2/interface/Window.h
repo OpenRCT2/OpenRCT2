@@ -31,7 +31,6 @@
 struct DrawPixelInfo;
 struct WindowBase;
 struct TrackDesignFileRef;
-struct TextInputSession;
 struct ScenarioIndexEntry;
 struct WindowCloseModifier;
 
@@ -52,11 +51,6 @@ constexpr uint8_t CloseButtonWidth = 10;
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
 
-extern u8string gTextBoxInput;
-extern int32_t gTextBoxFrameNo;
-extern bool gUsingWidgetTextBox;
-extern struct TextInputSession* gTextInput;
-
 using rct_windownumber = uint16_t;
 using WidgetIndex = int16_t;
 
@@ -72,7 +66,6 @@ struct WidgetIdentifier
     WidgetIndex widget_index;
 };
 
-extern WidgetIdentifier gCurrentTextBox;
 extern WindowCloseModifier gLastCloseModifier;
 
 using WidgetFlags = uint32_t;
@@ -617,12 +610,6 @@ void TextinputCancel();
 
 void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
 int32_t WindowCanResize(const WindowBase& w);
-
-void WindowStartTextbox(
-    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength);
-void WindowCancelTextbox();
-void WindowUpdateTextboxCaret();
-void WindowUpdateTextbox();
 
 bool WindowIsVisible(WindowBase& w);
 
