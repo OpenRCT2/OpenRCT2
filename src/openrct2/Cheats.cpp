@@ -46,6 +46,7 @@ void CheatsReset()
     gameState.Cheats.DisableAllBreakdowns = false;
     gameState.Cheats.BuildInPauseMode = false;
     gameState.Cheats.IgnoreRideIntensity = false;
+    gameState.Cheats.IgnorePrice = false;
     gameState.Cheats.DisableVandalism = false;
     gameState.Cheats.DisableLittering = false;
     gameState.Cheats.NeverendingMarketing = false;
@@ -98,6 +99,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableAllBreakdowns, gameState.Cheats.DisableAllBreakdowns, count);
         CheatEntrySerialise(ds, CheatType::BuildInPauseMode, gameState.Cheats.BuildInPauseMode, count);
         CheatEntrySerialise(ds, CheatType::IgnoreRideIntensity, gameState.Cheats.IgnoreRideIntensity, count);
+        CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
         CheatEntrySerialise(ds, CheatType::DisableVandalism, gameState.Cheats.DisableVandalism, count);
         CheatEntrySerialise(ds, CheatType::DisableLittering, gameState.Cheats.DisableLittering, count);
         CheatEntrySerialise(ds, CheatType::NeverEndingMarketing, gameState.Cheats.NeverendingMarketing, count);
@@ -168,6 +170,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::IgnoreRideIntensity:
                     ds << gameState.Cheats.IgnoreRideIntensity;
+                    break;
+                case CheatType::IgnorePrice:
+                    ds << gameState.Cheats.IgnorePrice;
                     break;
                 case CheatType::DisableVandalism:
                     ds << gameState.Cheats.DisableVandalism;
@@ -255,6 +260,8 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_BUILD_IN_PAUSE_MODE);
         case CheatType::IgnoreRideIntensity:
             return LanguageGetString(STR_CHEAT_IGNORE_INTENSITY);
+        case CheatType::IgnorePrice:
+            return LanguageGetString(STR_CHEAT_IGNORE_PRICE);
         case CheatType::DisableVandalism:
             return LanguageGetString(STR_CHEAT_DISABLE_VANDALISM);
         case CheatType::DisableLittering:
