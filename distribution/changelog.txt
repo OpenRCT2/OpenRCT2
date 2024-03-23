@@ -1,13 +1,17 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21636] Add shortcut key for sorting tile elements.
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
 - Improved: [#21561, #21631] Enable more features in Android build (plugins, networking, multiplayer, audio formats).
 - Improved: [#21599] Currency signs now use non-breaking spaces.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#20338] Cannot select Scenery Picker or Scatter Tool when the scenery recolouring tool is active.
+- Fix: [#21419] Cannot place walls underground beneath sloped tiles with clearance checks disabled.
 - Fix: [#21434] Number of guests overflows in objective text.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
+- Fix: [#21635] Tile inspector hotkey can set wall slope for non-slopeable objects.
+- Fix: [#21641] Crash when creating track iterator from an invalid tile element.
 
 0.4.9 (2024-03-02)
 ------------------------------------------------------------------------

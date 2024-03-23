@@ -3687,6 +3687,11 @@ STR_6614    :Kan ikke endre inngangsavgift til parken
 STR_6615    :Spor på denne ruten trenger vann
 STR_6616    :Handling ugyldig for denne personaltypen
 STR_6617    :Kan ikke bytte ut rute-element med seg selv
+STR_6618    :Kan ikke begrense eller frigjøre objekt...
+STR_6619    :Objekt-type kan ikke bli begrenset!
+STR_6620    :Kunne ikke finne objekt!
+STR_6621    :Begrens
+STR_6622    :Begrens objekt til Scenario-redigerer og Sandkassemodus.
 
 #############
 # Scenarios #

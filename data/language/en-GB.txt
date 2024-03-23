@@ -3693,6 +3693,7 @@ STR_6620    :Object not found!
 STR_6621    :Restrict
 STR_6622    :Restrict object to the Scenario Editor and Sandbox mode.
 STR_6623    :Type ‘help’ for a list of available commands. Type ‘hide’ to hide the console.
+STR_6624    :Tile Inspector: Sort elements
 
 #############
 # Scenarios #
