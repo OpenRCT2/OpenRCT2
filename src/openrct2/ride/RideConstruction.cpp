@@ -198,7 +198,7 @@ void Ride::RemoveVehicles()
         }
 
         for (size_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
-            stations[i].TrainAtStation = RideStation::NO_TRAIN;
+            stations[i].TrainAtStation = RideStation::kNoTrain;
 
         // Also clean up orphaned vehicles for good measure.
         for (auto* vehicle : TrainManager::View())
