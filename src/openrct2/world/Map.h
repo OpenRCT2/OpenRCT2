@@ -25,8 +25,8 @@ constexpr uint8_t kMaximumWaterHeight = 254;
  */
 constexpr uint8_t kMapBaseZ = 7;
 
-constexpr uint8_t kMinimumMapSizeTechnical{ 5 };
-constexpr uint16_t kMaximumMapSizeTechnical{ 1001 };
+constexpr uint8_t kMinimumMapSizeTechnical = 5 ;
+constexpr uint16_t kMaximumMapSizeTechnical = 1001 ;
 #define MINIMUM_MAP_SIZE_PRACTICAL (kMinimumMapSizeTechnical - 2)
 #define MAXIMUM_MAP_SIZE_PRACTICAL (kMaximumMapSizeTechnical - 2)
 constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * kMaximumMapSizeTechnical;
