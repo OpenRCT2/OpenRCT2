@@ -5,6 +5,7 @@
 - Improved: [#21561, #21631] Enable more features in Android build (plugins, networking, multiplayer, audio formats).
 - Improved: [#21599] Currency signs now use non-breaking spaces.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
+- Change: [#21659] Up Hybrid Roller Coaster liftspeed to 11mph/17kmh.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#21419] Cannot place walls underground beneath sloped tiles with clearance checks disabled.
 - Fix: [#21434] Number of guests overflows in objective text.
