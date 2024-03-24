@@ -206,8 +206,6 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
-    if (passengerVehicle->HasFlag(VehicleFlags::TrainIsBroken))
-        return;
 
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
         return;
@@ -325,7 +323,8 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             SetTrackDirection(output.begin_direction);
             SetTrackType(output.begin_element->AsTrack()->GetTrackType());
 
-            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
+            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation
+                || output.begin_element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

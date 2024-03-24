@@ -3494,6 +3494,7 @@ void Vehicle::UpdateTravellingCableLift()
     if (curRide == nullptr)
         return;
 
+    // Should only run when departing station
     if (sub_state == 0)
     {
         if (HasFlag(VehicleFlags::TrainIsBroken))
@@ -5502,6 +5503,35 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     {
         case TrackElemType::BlockBrakes:
         case TrackElemType::DiagBlockBrakes:
+
+            // Do not apply brake if vehicle is already on cable lift
+            if (status == Vehicle::Status::TravellingCableLift)
+                return;
+
+            // Check if this brake is followed by a cable lift
+            if (curRide->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+            {
+                CoordsXYE track;
+                int32_t zUnused;
+                int32_t direction;
+                uint8_t trackDirection = GetTrackDirection();
+                if (TrackBlockGetNextFromZero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false)
+                    && track.element != nullptr && track.element->AsTrack()->HasCableLift())
+                {
+                    if (velocity > kBlockBrakeBaseSpeed)
+                    {
+                        velocity -= velocity >> 3;
+                        acceleration = 0;
+                    }
+                    if (track_progress >= 18)
+                    {
+                        velocity = 0;
+                        if (!curRide->IsBlockSectioned() || !trackElement->AsTrack()->IsBrakeClosed())
+                            SetState(Vehicle::Status::WaitingForCableLift, 2);
+                    }
+                    return;
+                }
+            }
             if (curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
