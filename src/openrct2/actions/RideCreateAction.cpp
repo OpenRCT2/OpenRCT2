@@ -204,7 +204,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->lift_hill_speed = rtd.LiftData.minimum_speed;
 
     ride->measurement = {};
-    ride->excitement = RIDE_RATING_UNDEFINED;
+    ride->excitement = kRideRatingUndefined;
     ride->cur_num_customers = 0;
     ride->num_customers_timeout = 0;
     ride->chairlift_bullwheel_rotation = 0;
@@ -300,7 +300,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->breakdown_reason = 255;
     ride->upkeep_cost = kMoney64Undefined;
-    ride->reliability = RIDE_INITIAL_RELIABILITY;
+    ride->reliability = kRideInitialReliability;
     ride->unreliability_factor = 1;
     ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
     ride->last_inspection = 0;

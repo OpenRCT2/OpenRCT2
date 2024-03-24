@@ -1795,7 +1795,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     if (!skipCheck)
     {
-        if (!(currentStation.Depart & STATION_DEPART_FLAG))
+        if (!(currentStation.Depart & kStationDepartFlag))
             return;
     }
 
@@ -2015,7 +2015,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
 
     /* Station is not ready to depart, so just return;
      * vehicle_id for this station is SPRITE_INDEX_NULL. */
-    if (!(ride->GetStation(stationIndex).Depart & STATION_DEPART_FLAG))
+    if (!(ride->GetStation(stationIndex).Depart & kStationDepartFlag))
     {
         return true;
     }
@@ -2138,7 +2138,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
             {
                 if (sv_ride->IsBlockSectioned())
                 {
-                    if (!(sv_ride->GetStation(sv->stationIndex).Depart & STATION_DEPART_FLAG))
+                    if (!(sv_ride->GetStation(sv->stationIndex).Depart & kStationDepartFlag))
                     {
                         sv = _synchronisedVehicles;
                         RideId rideId = RideId::GetNull();
@@ -2444,7 +2444,7 @@ void Vehicle::UpdateDepartingBoatHire()
         return;
 
     auto& station = curRide->GetStation(current_station);
-    station.Depart &= STATION_DEPART_FLAG;
+    station.Depart &= kStationDepartFlag;
     uint8_t waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
     station.Depart |= waitingTime;
@@ -2717,7 +2717,7 @@ void Vehicle::FinishDeparting()
     if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
     {
         auto& currentStation = curRide->GetStation(current_station);
-        currentStation.Depart &= STATION_DEPART_FLAG;
+        currentStation.Depart &= kStationDepartFlag;
         uint8_t waitingTime = 3;
         if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -3562,7 +3562,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     // This is slightly different to the vanilla function
     auto& currentStation = curRide->GetStation(current_station);
-    currentStation.Depart &= STATION_DEPART_FLAG;
+    currentStation.Depart &= kStationDepartFlag;
     uint8_t waitingTime = 3;
     if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
     {
