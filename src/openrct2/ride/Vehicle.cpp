@@ -5055,6 +5055,8 @@ void Vehicle::SetMapToolbar() const
     if (curRide != nullptr && curRide->type < RIDE_TYPE_COUNT)
     {
         const Vehicle* vehicle = GetHead();
+        if (vehicle == nullptr)
+            return;
 
         size_t vehicleIndex;
         for (vehicleIndex = 0; vehicleIndex < std::size(curRide->vehicles); vehicleIndex++)
