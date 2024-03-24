@@ -24,6 +24,7 @@
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
+#include "world/Park.h"
 
 #include <array>
 #include <chrono>
@@ -52,7 +53,7 @@ namespace OpenRCT2
         money64 ConstructionRightsPrice;
         money64 CurrentExpenditure;
         money64 CurrentProfit;
-        uint8_t ParkRatingHistory[32];
+        uint8_t ParkRatingHistory[ParkRatingHistorySize];
         uint32_t GuestsInParkHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;
