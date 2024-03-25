@@ -1116,7 +1116,6 @@ static Widget window_loadsave_widgets[] =
         void OnOpen() override
         {
             widgets = window_overwrite_prompt_widgets;
-            colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
