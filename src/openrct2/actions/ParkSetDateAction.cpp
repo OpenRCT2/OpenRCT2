@@ -51,13 +51,13 @@ GameActions::Result ParkSetDateAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
-    if (_month < 0 || _month >= MONTH_COUNT)
+    else if (_month < 0 || _month >= MONTH_COUNT)
     {
         LOG_ERROR("Invalid park date month %d", _year);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
-    if (_day < 0 || _day >= 31)
+    else if (_day < 0 || _day >= 31)
     {
         LOG_ERROR("Invalid park date day %d", _year);
         return GameActions::Result(
