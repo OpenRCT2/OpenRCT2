@@ -741,8 +741,7 @@ static uint64_t PageDisabledWidgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_SPINNER_X_INCREASE:
-                    windowTileInspectorTile.x = std::min<int32_t>(
-                        windowTileInspectorTile.x + 1, kMaximumMapSizeTechnical - 1);
+                    windowTileInspectorTile.x = std::min<int32_t>(windowTileInspectorTile.x + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.x = std::min<int32_t>(_toolMap.x + 32, MAXIMUM_TILE_START_XY);
                     LoadTile(nullptr);
                     break;
@@ -754,8 +753,7 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
 
                 case WIDX_SPINNER_Y_INCREASE:
-                    windowTileInspectorTile.y = std::min<int32_t>(
-                        windowTileInspectorTile.y + 1, kMaximumMapSizeTechnical - 1);
+                    windowTileInspectorTile.y = std::min<int32_t>(windowTileInspectorTile.y + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.y = std::min<int32_t>(_toolMap.y + 32, MAXIMUM_TILE_START_XY);
                     LoadTile(nullptr);
                     break;
