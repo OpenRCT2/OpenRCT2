@@ -1347,6 +1347,13 @@ const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
     6, 4, 5, 3, 1, 2, 0,
 };
 
+const uint8_t mapReversedDiagonalStraight[4] = {
+    3,
+    2,
+    1,
+    0,
+};
+
 constexpr CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
     {
         { 0, 6 },
