@@ -1417,7 +1417,7 @@ static void RideBreakdownUpdate(Ride& ride)
 
     if (!ride.CanBreakDown())
     {
-        ride.reliability = RIDE_INITIAL_RELIABILITY;
+        ride.reliability = kRideInitialReliability;
         return;
     }
 
@@ -1433,7 +1433,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
     if ((ride.reliability == 0
-         || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride.reliability)
+         || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
         && !GetGameState().Cheats.DisableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
@@ -3631,7 +3631,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
     for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
-        stations[i].Depart = (stations[i].Depart & STATION_DEPART_FLAG) | 1;
+        stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
     }
 
     //
@@ -4633,7 +4633,7 @@ bool RideHasAnyTrackElements(const Ride& ride)
 void InvalidateTestResults(Ride& ride)
 {
     ride.measurement = {};
-    ride.excitement = RIDE_RATING_UNDEFINED;
+    ride.excitement = kRideRatingUndefined;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -5299,7 +5299,7 @@ void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
     build_date = GetDate().GetMonthsElapsed();
-    reliability = RIDE_INITIAL_RELIABILITY;
+    reliability = kRideInitialReliability;
 }
 
 RideClassification Ride::GetClassification() const
@@ -5434,7 +5434,7 @@ bool RideHasStationShelter(const Ride& ride)
 
 bool RideHasRatings(const Ride& ride)
 {
-    return ride.excitement != RIDE_RATING_UNDEFINED;
+    return ride.excitement != kRideRatingUndefined;
 }
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
