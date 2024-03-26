@@ -22,7 +22,7 @@
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
 - Fix: [#21635] Tile inspector hotkey can set wall slope for non-slopeable objects.
 - Fix: [#21641] Crash when creating track iterator from an invalid tile element.
-- Fix: [#21668] Crash when on null ride in Guest::UpdateRideLeaveExit
+- Fix: [#21668] Crash when on null ride in Guest::UpdateRideLeaveExit.
 - Fix: [objects#290] “Haunted Mansion” cars have a non-functional third remap colour.
 - Fix: [objects#296] Incorrect wall placement around large Kremlin/drab pieces.
 - Fix: [objects#300] Incorrect Colosseum and volcano corner clearances.
