@@ -1408,7 +1408,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                 _resizeDirection = (callingWidget == WIDX_MAP_SIZE_SPINNER_Y) ? ResizeDirection::Y : ResizeDirection::X;
 
             Formatter ft;
-            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int16_t>(kMinimumMapSizePractical);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_NONE, STR_NONE, 4);
         }

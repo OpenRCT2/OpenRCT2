@@ -27,7 +27,7 @@ constexpr uint8_t kMapBaseZ = 7;
 
 constexpr uint8_t kMinimumMapSizeTechnical = 5;
 constexpr uint16_t kMaximumMapSizeTechnical = 1001;
-#define MINIMUM_MAP_SIZE_PRACTICAL (kMinimumMapSizeTechnical - 2)
+constexpr int16_t kMinimumMapSizePractical = (kMinimumMapSizeTechnical - 2);
 #define MAXIMUM_MAP_SIZE_PRACTICAL (kMaximumMapSizeTechnical - 2)
 constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * kMaximumMapSizeTechnical;
 constexpr int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP;
