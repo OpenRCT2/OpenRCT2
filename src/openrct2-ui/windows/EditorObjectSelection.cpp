@@ -1116,7 +1116,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             {
                 if (TabOrder[offset] == objectType)
                 {
-                    SetPage(offset);
+                    SetPage(static_cast<int32_t>(offset));
                     return;
                 }
             }
