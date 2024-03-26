@@ -88,9 +88,6 @@ CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
-TileCoordsXY gWidePathTileLoopPosition;
-uint16_t gGrassSceneryTileLoopPosition;
-
 std::vector<CoordsXY> gMapSelectionTiles;
 
 bool gLandMountainMode;
@@ -155,7 +152,7 @@ void SetTileElements(std::vector<TileElement>&& tileElements)
     auto& gameState = GetGameState();
     gameState.TileElements = std::move(tileElements);
     _tileIndex = TilePointerIndex<TileElement>(
-        MAXIMUM_MAP_SIZE_TECHNICAL, gameState.TileElements.data(), gameState.TileElements.size());
+        kMaximumMapSizeTechnical, gameState.TileElements.data(), gameState.TileElements.size());
     _tileElementsInUse = gameState.TileElements.size();
 }
 
@@ -180,9 +177,9 @@ std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
 {
     std::vector<TileElement> newElements;
     newElements.reserve(std::max(MIN_TILE_ELEMENTS, GetGameState().TileElements.size()));
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
         {
             auto oldSize = newElements.size();
 
@@ -220,9 +217,9 @@ static void ReorganiseTileElements(size_t capacity)
 
     std::vector<TileElement> newElements;
     newElements.reserve(std::max(MIN_TILE_ELEMENTS, capacity));
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
         {
             const auto* element = MapGetFirstElementAt(TileCoordsXY{ x, y });
             if (element == nullptr)
@@ -339,8 +336,8 @@ void TileElementIteratorRestartForTile(TileElementIterator* it)
 
 static bool IsTileLocationValid(const TileCoordsXY& coords)
 {
-    const bool is_x_valid = coords.x < MAXIMUM_MAP_SIZE_TECHNICAL && coords.x >= 0;
-    const bool is_y_valid = coords.y < MAXIMUM_MAP_SIZE_TECHNICAL && coords.y >= 0;
+    const bool is_x_valid = coords.x < kMaximumMapSizeTechnical && coords.x >= 0;
+    const bool is_y_valid = coords.y < kMaximumMapSizeTechnical && coords.y >= 0;
     return is_x_valid && is_y_valid;
 }
 
@@ -457,13 +454,13 @@ BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t positio
  */
 void MapInit(const TileCoordsXY& size)
 {
-    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
     SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     auto& gameState = GetGameState();
 
-    gGrassSceneryTileLoopPosition = 0;
-    gWidePathTileLoopPosition = {};
+    gameState.GrassSceneryTileLoopPosition = 0;
+    gameState.WidePathTileLoopPosition = {};
     gameState.MapSize = size;
     MapRemoveOutOfRangeElements();
     MapAnimationAutoCreate();
@@ -761,26 +758,23 @@ void MapUpdatePathWideFlags()
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    auto x = gWidePathTileLoopPosition.x;
-    auto y = gWidePathTileLoopPosition.y;
+    CoordsXY& loopPosition = GetGameState().WidePathTileLoopPosition;
     for (int32_t i = 0; i < 128; i++)
     {
-        FootpathUpdatePathWideFlags({ x, y });
+        FootpathUpdatePathWideFlags(loopPosition);
 
         // Next x, y tile
-        x += COORDS_XY_STEP;
-        if (x >= MAXIMUM_MAP_SIZE_BIG)
+        loopPosition.x += COORDS_XY_STEP;
+        if (loopPosition.x >= MAXIMUM_MAP_SIZE_BIG)
         {
-            x = 0;
-            y += COORDS_XY_STEP;
-            if (y >= MAXIMUM_MAP_SIZE_BIG)
+            loopPosition.x = 0;
+            loopPosition.y += COORDS_XY_STEP;
+            if (loopPosition.y >= MAXIMUM_MAP_SIZE_BIG)
             {
-                y = 0;
+                loopPosition.y = 0;
             }
         }
     }
-    gWidePathTileLoopPosition.x = x;
-    gWidePathTileLoopPosition.y = y;
 }
 
 /**
@@ -1266,7 +1260,7 @@ void MapUpdateTiles()
         int32_t x = 0;
         int32_t y = 0;
 
-        uint16_t interleaved_xy = gGrassSceneryTileLoopPosition;
+        uint16_t interleaved_xy = gameState.GrassSceneryTileLoopPosition;
         for (int32_t i = 0; i < 8; i++)
         {
             x = (x << 1) | (interleaved_xy & 1);
@@ -1293,7 +1287,7 @@ void MapUpdateTiles()
             }
         }
 
-        gGrassSceneryTileLoopPosition++;
+        gameState.GrassSceneryTileLoopPosition++;
     }
 }
 
@@ -1426,7 +1420,7 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
 void MapExtendBoundarySurfaceY()
 {
     auto y = GetGameState().MapSize.y - 2;
-    for (auto x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+    for (auto x = 0; x < kMaximumMapSizeTechnical; x++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y - 1 });
         auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
@@ -1446,7 +1440,7 @@ void MapExtendBoundarySurfaceY()
 void MapExtendBoundarySurfaceX()
 {
     auto x = GetGameState().MapSize.x - 2;
-    for (auto y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (auto y = 0; y < kMaximumMapSizeTechnical; y++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y });
         auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });

@@ -69,13 +69,6 @@ static constexpr StringId AwardNewsStrings[] = {
     STR_NEWS_ITEM_BEST_GENTLE_RIDES,
 };
 
-static std::vector<Award> _currentAwards;
-
-std::vector<Award>& GetAwards()
-{
-    return _currentAwards;
-}
-
 bool AwardIsPositive(AwardType type)
 {
     return AwardPositiveMap[EnumValue(type)];
@@ -602,7 +595,7 @@ static bool AwardIsDeserved(AwardType awardType, int32_t activeAwardTypes)
 
 void AwardReset()
 {
-    _currentAwards.clear();
+    GetGameState().CurrentAwards.clear();
 }
 
 /**
@@ -613,17 +606,18 @@ void AwardUpdateAll()
 {
     PROFILED_FUNCTION();
 
+    auto& currentAwards = GetGameState().CurrentAwards;
     // Decrease award times
-    for (auto& award : _currentAwards)
+    for (auto& award : currentAwards)
     {
         --award.Time;
     }
     // Remove any 0 time awards
     auto res = std::remove_if(
-        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
-    if (res != std::end(_currentAwards))
+        std::begin(currentAwards), std::end(currentAwards), [](const Award& award) { return award.Time == 0; });
+    if (res != std::end(currentAwards))
     {
-        _currentAwards.erase(res, std::end(_currentAwards));
+        currentAwards.erase(res, std::end(currentAwards));
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
@@ -632,13 +626,13 @@ void AwardUpdateAll()
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;
-        for (auto& award : _currentAwards)
+        for (auto& award : currentAwards)
         {
             activeAwardTypes |= (1 << EnumValue(award.Type));
         }
 
         // Check if there was a free award entry
-        if (_currentAwards.size() < OpenRCT2::Limits::MaxAwards)
+        if (currentAwards.size() < OpenRCT2::Limits::MaxAwards)
         {
             // Get a random award type not already active
             AwardType awardType;
@@ -651,7 +645,7 @@ void AwardUpdateAll()
             if (AwardIsDeserved(awardType, activeAwardTypes))
             {
                 // Add award
-                _currentAwards.push_back(Award{ 5u, awardType });
+                currentAwards.push_back(Award{ 5u, awardType });
                 if (gConfigNotifications.ParkAward)
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});

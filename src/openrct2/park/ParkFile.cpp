@@ -549,8 +549,8 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.LandPrice);
                     cs.ReadWrite(gameState.ConstructionRightsPrice);
                 }
-                cs.ReadWrite(gGrassSceneryTileLoopPosition);
-                cs.ReadWrite(gWidePathTileLoopPosition);
+                cs.ReadWrite(gameState.GrassSceneryTileLoopPosition);
+                cs.ReadWrite(gameState.WidePathTileLoopPosition);
 
                 auto& rideRatings = gameState.RideRatingUpdateStates;
                 if (os.GetHeader().TargetVersion >= 21)
@@ -862,15 +862,16 @@ namespace OpenRCT2
                     });
 
                     // Awards
+                    auto& currentAwards = gameState.CurrentAwards;
                     if (version <= 6)
                     {
                         Award awards[RCT2::Limits::MaxAwards]{};
-                        cs.ReadWriteArray(awards, [&cs](Award& award) {
+                        cs.ReadWriteArray(awards, [&cs, &currentAwards](Award& award) {
                             if (award.Time != 0)
                             {
                                 cs.ReadWrite(award.Time);
                                 cs.ReadWrite(award.Type);
-                                GetAwards().push_back(award);
+                                currentAwards.push_back(award);
                                 return true;
                             }
 
@@ -879,7 +880,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        cs.ReadWriteVector(GetAwards(), [&cs](Award& award) {
+                        cs.ReadWriteVector(currentAwards, [&cs](Award& award) {
                             cs.ReadWrite(award.Time);
                             cs.ReadWrite(award.Type);
                         });
@@ -890,7 +891,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.NumGuestsInPark);
                     cs.ReadWrite(gameState.NumGuestsHeadingForPark);
                     cs.ReadWrite(gameState.ParkRating);
-                    cs.ReadWrite(gParkRatingCasualtyPenalty);
+                    cs.ReadWrite(gameState.ParkRatingCasualtyPenalty);
                     cs.ReadWrite(gameState.CurrentExpenditure);
                     cs.ReadWrite(gameState.CurrentProfit);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
@@ -912,7 +913,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.GuestGenerationProbability);
                     cs.ReadWrite(gameState.SuggestedGuestMaximum);
 
-                    cs.ReadWriteArray(gPeepWarningThrottle, [&cs](uint8_t& value) {
+                    cs.ReadWriteArray(gameState.PeepWarningThrottle, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

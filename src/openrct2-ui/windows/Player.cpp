@@ -640,7 +640,7 @@ static Widget *window_player_page_widgets[] = {
 #pragma endregion
     };
 
-    WindowBase* WindowPlayerOpen(uint8_t id)
+    WindowBase* PlayerOpen(uint8_t id)
     {
         auto* window = static_cast<PlayerWindow*>(WindowBringToFrontByNumber(WindowClass::Player, id));
         if (window == nullptr)

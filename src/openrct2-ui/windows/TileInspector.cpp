@@ -177,6 +177,7 @@ namespace OpenRCT2::Ui::Windows
     static_assert(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE == WIDX_BUTTON_ROTATE);
     static_assert(WC_TILE_INSPECTOR__WIDX_BUTTON_COPY == WIDX_BUTTON_COPY);
     static_assert(WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE == WIDX_BUTTON_PASTE);
+    static_assert(WC_TILE_INSPECTOR__WIDX_BUTTON_SORT == WIDX_BUTTON_SORT);
     static_assert(WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE == WIDX_BUTTON_REMOVE);
     static_assert(WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP == WIDX_BUTTON_MOVE_UP);
     static_assert(WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN == WIDX_BUTTON_MOVE_DOWN);
@@ -740,8 +741,7 @@ static uint64_t PageDisabledWidgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_SPINNER_X_INCREASE:
-                    windowTileInspectorTile.x = std::min<int32_t>(
-                        windowTileInspectorTile.x + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+                    windowTileInspectorTile.x = std::min<int32_t>(windowTileInspectorTile.x + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.x = std::min<int32_t>(_toolMap.x + 32, MAXIMUM_TILE_START_XY);
                     LoadTile(nullptr);
                     break;
@@ -753,8 +753,7 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
 
                 case WIDX_SPINNER_Y_INCREASE:
-                    windowTileInspectorTile.y = std::min<int32_t>(
-                        windowTileInspectorTile.y + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+                    windowTileInspectorTile.y = std::min<int32_t>(windowTileInspectorTile.y + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.y = std::min<int32_t>(_toolMap.y + 32, MAXIMUM_TILE_START_XY);
                     LoadTile(nullptr);
                     break;
@@ -2074,10 +2073,10 @@ static uint64_t PageDisabledWidgets[] = {
             }
             // X and Y spinners
             SetWidgetDisabledAndInvalidate(
-                WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+                WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < kMaximumMapSizeTechnical - 1)));
             SetWidgetDisabledAndInvalidate(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
             SetWidgetDisabledAndInvalidate(
-                WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+                WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < kMaximumMapSizeTechnical - 1)));
             SetWidgetDisabledAndInvalidate(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
 
             // Sort buttons
@@ -2390,7 +2389,7 @@ static uint64_t PageDisabledWidgets[] = {
         }
     };
 
-    WindowBase* WindowTileInspectorOpen()
+    WindowBase* TileInspectorOpen()
     {
         WindowBase* window = WindowBringToFrontByClass(WindowClass::TileInspector);
         if (window == nullptr)

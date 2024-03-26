@@ -2015,7 +2015,7 @@ static Widget *window_options_page_widgets[] = {
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
-                STR_WINDOW_COLOUR_2_COMMA16, ft, { colours[1] });
+                STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
             const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.RCT1Path);
             ft = Formatter();
@@ -2201,7 +2201,7 @@ static Widget *window_options_page_widgets[] = {
      *
      *  rct2: 0x006BAC5B
      */
-    WindowBase* WindowOptionsOpen()
+    WindowBase* OptionsOpen()
     {
         return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
     }

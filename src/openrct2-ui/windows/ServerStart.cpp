@@ -132,7 +132,7 @@ static Widget _windowServerStartWidgets[] = {
                     break;
                 case WIDX_START_SERVER:
                     NetworkSetPassword(_password);
-                    WindowScenarioselectOpen(ScenarioSelectCallback);
+                    ScenarioselectOpen(ScenarioSelectCallback);
                     break;
                 case WIDX_LOAD_SERVER:
                     NetworkSetPassword(_password);
@@ -281,7 +281,7 @@ static Widget _windowServerStartWidgets[] = {
         }
     };
 
-    WindowBase* WindowServerStartOpen()
+    WindowBase* ServerStartOpen()
     {
         return WindowFocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
     }

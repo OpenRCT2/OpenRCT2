@@ -429,7 +429,7 @@ static Widget window_maze_construction_widgets[] = {
         }
     };
 
-    WindowBase* WindowMazeConstructionOpen()
+    WindowBase* MazeConstructionOpen()
     {
         return WindowFocusOrCreate<MazeConstructionWindow>(
             WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);

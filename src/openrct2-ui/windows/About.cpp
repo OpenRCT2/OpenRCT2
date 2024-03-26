@@ -282,7 +282,7 @@ static Widget *_windowAboutPageWidgets[] = {
      *
      *  rct2: 0x0066D2AC
      */
-    WindowBase* WindowAboutOpen()
+    WindowBase* AboutOpen()
     {
         return WindowFocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
     }

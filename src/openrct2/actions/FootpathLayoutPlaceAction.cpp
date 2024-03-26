@@ -135,7 +135,7 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::R
     auto zHigh = zLow + PATH_CLEARANCE;
     if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
-        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
+        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
         zHigh += PATH_HEIGHT_STEP;
     }
 
@@ -205,7 +205,7 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertExecute(GameActions:
     auto zHigh = zLow + PATH_CLEARANCE;
     if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
-        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
+        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
         zHigh += PATH_HEIGHT_STEP;
     }
 

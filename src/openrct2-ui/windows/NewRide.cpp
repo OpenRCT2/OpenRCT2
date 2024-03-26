@@ -80,6 +80,7 @@ namespace OpenRCT2::Ui::Windows
         RIDE_TYPE_MINE_TRAIN_COASTER,
         RIDE_TYPE_LOOPING_ROLLER_COASTER,
         RIDE_TYPE_STAND_UP_ROLLER_COASTER,
+        RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER,
         RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
         RIDE_TYPE_HYPERCOASTER,
         RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER,
@@ -1041,7 +1042,7 @@ static Widget window_new_ride_widgets[] = {
      *
      *  rct2: 0x006B3CFF
      */
-    WindowBase* WindowNewRideOpen()
+    WindowBase* NewRideOpen()
     {
         WindowBase* window;
 
@@ -1058,9 +1059,9 @@ static Widget window_new_ride_widgets[] = {
         return window;
     }
 
-    WindowBase* WindowNewRideOpenResearch()
+    WindowBase* NewRideOpenResearch()
     {
-        auto w = static_cast<NewRideWindow*>(WindowNewRideOpen());
+        auto w = static_cast<NewRideWindow*>(NewRideOpen());
         w->SetPage(RESEARCH_TAB);
         return w;
     }

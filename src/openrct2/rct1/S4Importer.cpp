@@ -1528,9 +1528,9 @@ namespace RCT1
 
             std::vector<TileElement> tileElements;
             const auto maxSize = _s4.MapSize == 0 ? Limits::MaxMapSize : _s4.MapSize;
-            for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
+            for (TileCoordsXY coords = { 0, 0 }; coords.y < kMaximumMapSizeTechnical; coords.y++)
             {
-                for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
+                for (coords.x = 0; coords.x < kMaximumMapSizeTechnical; coords.x++)
                 {
                     auto tileAdded = false;
                     if (coords.x < maxSize && coords.y < maxSize)
@@ -2162,12 +2162,12 @@ namespace RCT1
             }
 
             // Awards
-            auto& awards = GetAwards();
+            auto& currentAwards = gameState.CurrentAwards;
             for (auto& src : _s4.Awards)
             {
                 if (src.Time != 0)
                 {
-                    awards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
+                    currentAwards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
                 }
             }
 

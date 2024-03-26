@@ -194,7 +194,7 @@ static constexpr StringId window_save_prompt_labels[][2] = {
         }
     };
 
-    WindowBase* WindowSavePromptOpen()
+    WindowBase* SavePromptOpen()
     {
         PromptMode prompt_mode = gSavePromptMode;
         if (prompt_mode == PromptMode::Quit)

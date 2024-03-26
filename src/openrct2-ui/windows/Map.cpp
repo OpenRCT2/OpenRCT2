@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui::Windows
         return MapColour2((colour & 0xFF00) >> 8, PALETTE_INDEX_10);
     }
 
-    constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
+    constexpr int32_t MAP_WINDOW_MAP_SIZE = kMaximumMapSizeTechnical * 2;
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
     static constexpr int32_t WH = 259;
@@ -131,10 +131,10 @@ static Widget window_map_widgets[] = {
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
 static constexpr ScreenCoordsXY MiniMapOffsets[] = {
-    {     MAXIMUM_MAP_SIZE_TECHNICAL - 8,                              0 },
-    { 2 * MAXIMUM_MAP_SIZE_TECHNICAL - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
-    {     MAXIMUM_MAP_SIZE_TECHNICAL - 8, 2 * MAXIMUM_MAP_SIZE_TECHNICAL },
-    {                              0 - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
+    {     kMaximumMapSizeTechnical - 8,                              0 },
+    { 2 * kMaximumMapSizeTechnical - 8,     kMaximumMapSizeTechnical },
+    {     kMaximumMapSizeTechnical - 8, 2 * kMaximumMapSizeTechnical },
+    {                              0 - 8,     kMaximumMapSizeTechnical },
 };
     // clang-format on
 
@@ -691,7 +691,8 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                     {
                         // The practical size is 2 lower than the technical size
                         size += 2;
-                        size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+                        size = std::clamp(
+                            size, static_cast<int>(kMinimumMapSizeTechnical), static_cast<int>(kMaximumMapSizeTechnical));
 
                         TileCoordsXY newMapSize = GetGameState().MapSize;
                         if (_resizeDirection != ResizeDirection::X)
@@ -1069,7 +1070,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         {
             int32_t x = 0, y = 0, dx = 0, dy = 0;
 
-            int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+            int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + kMaximumMapSizeTechnical - 1;
             auto destinationPosition = ScreenCoordsXY{ pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE };
             auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
             switch (GetCurrentRotation())
@@ -1100,7 +1101,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                     break;
             }
 
-            for (int32_t i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++)
+            for (int32_t i = 0; i < kMaximumMapSizeTechnical; i++)
             {
                 if (!MapIsEdge({ x, y }))
                 {
@@ -1125,7 +1126,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                 destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
             }
             _currentLine++;
-            if (_currentLine >= MAXIMUM_MAP_SIZE_TECHNICAL)
+            if (_currentLine >= kMaximumMapSizeTechnical)
                 _currentLine = 0;
         }
 
@@ -1414,7 +1415,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
         {
-            screenCoords.x = ((screenCoords.x + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
+            screenCoords.x = ((screenCoords.x + 8) - kMaximumMapSizeTechnical) / 2;
             screenCoords.y = ((screenCoords.y + 8)) / 2;
             auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
@@ -1457,7 +1458,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             x /= 32;
             y /= 32;
 
-            return { -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8 };
+            return { -x + y + kMaximumMapSizeTechnical - 8, x + y - 8 };
         }
 
         void ResizeMap()
@@ -1495,7 +1496,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         }
     };
 
-    WindowBase* WindowMapOpen()
+    WindowBase* MapOpen()
     {
         try
         {

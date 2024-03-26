@@ -477,7 +477,7 @@ static Widget _staffOptionsWidgets[] = {
                         }
                         else
                         {
-                            WindowPatrolAreaOpen(staffId);
+                            PatrolAreaOpen(staffId);
                         }
                     }
                     break;
@@ -1241,7 +1241,7 @@ static Widget _staffOptionsWidgets[] = {
         static constexpr int32_t TabAnimationFrames = 7;
     };
 
-    WindowBase* WindowStaffOpen(Peep* peep)
+    WindowBase* StaffOpen(Peep* peep)
     {
         auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
 

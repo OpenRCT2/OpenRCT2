@@ -14,6 +14,7 @@
 #include "Editor.h"
 #include "Limits.h"
 #include "interface/ZoomLevel.h"
+#include "management/Award.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
@@ -42,6 +43,7 @@ namespace OpenRCT2
         money64 ParkEntranceFee;
         std::vector<CoordsXYZD> ParkEntrances;
         uint32_t ParkSize;
+        int16_t ParkRatingCasualtyPenalty;
         money64 ParkValue;
         money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
         money64 CompanyValue;
@@ -94,6 +96,7 @@ namespace OpenRCT2
         std::string ScenarioCompletedBy;
 
         std::vector<Banner> Banners;
+        Entity_t Entities[MAX_ENTITIES]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
         std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
         ::RideRatingUpdateStates RideRatingUpdateStates;
@@ -102,8 +105,12 @@ namespace OpenRCT2
         std::vector<ScenerySelection> RestrictedScenery;
 
         std::vector<PeepSpawn> PeepSpawns;
+        uint8_t PeepWarningThrottle[16];
 
         News::ItemQueues NewsItems;
+
+        uint16_t GrassSceneryTileLoopPosition;
+        CoordsXY WidePathTileLoopPosition;
 
         colour_t StaffHandymanColour;
         colour_t StaffMechanicColour;
@@ -128,6 +135,8 @@ namespace OpenRCT2
         ZoomLevel SavedViewZoom;
 
         ObjectEntryIndex LastEntranceStyle;
+
+        std::vector<Award> CurrentAwards;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.

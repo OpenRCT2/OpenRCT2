@@ -98,7 +98,7 @@ static void PaintDodgems(
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, height + 36, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, height + 36, 0x20);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 

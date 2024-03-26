@@ -53,7 +53,7 @@ static Widget _sceneryScatterWidgets[] = {
 };
     // clang-format on
 
-    class SceneryScatterWindow final : public WindowBase
+    class SceneryScatterWindow final : public Window
     {
     public:
         void OnOpen() override
@@ -201,7 +201,7 @@ static Widget _sceneryScatterWidgets[] = {
         }
     };
 
-    WindowBase* WindowSceneryScatterOpen()
+    WindowBase* SceneryScatterOpen()
     {
         // Check if window is already open
         auto* window = WindowFindByClass(WindowClass::SceneryScatter);

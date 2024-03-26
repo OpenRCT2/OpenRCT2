@@ -46,7 +46,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "0"
+#define NETWORK_STREAM_VERSION "1"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -2758,7 +2758,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             GameLoadScripts();
             GameNotifyMapChanged();
             _serverState.tick = GetGameState().CurrentTicks;
-            // WindowNetworkStatusOpen("Loaded new map from network");
+            // NetworkStatusOpen("Loaded new map from network");
             _serverState.state = NetworkServerStatus::Ok;
             _clientMapLoaded = true;
             gFirstTimeSaving = true;

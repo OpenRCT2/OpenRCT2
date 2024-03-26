@@ -197,7 +197,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
         return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
     }
 
-    if (stationLength > MAX_STATION_PLATFORM_LENGTH)
+    if (stationLength > kMaxStationPlatformLength)
     {
         return { false, STR_STATION_PLATFORM_TOO_LONG };
     }
@@ -733,6 +733,9 @@ bool TrackTypeIsHelix(track_type_t trackType)
 
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 {
+    if (posEl.element == nullptr)
+        return {};
+
     auto trackEl = posEl.element->AsTrack();
     if (trackEl == nullptr)
         return {};

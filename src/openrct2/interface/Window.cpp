@@ -1841,31 +1841,6 @@ Viewport* WindowGetViewport(WindowBase* w)
     return w->viewport;
 }
 
-WindowBase* WindowGetListening()
-{
-    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-    {
-        auto& w = **it;
-        if (w.flags & WF_DEAD)
-            continue;
-
-        auto viewport = w.viewport;
-        if (viewport != nullptr)
-        {
-            if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-            {
-                return &w;
-            }
-        }
-    }
-    return nullptr;
-}
-
-WindowClass WindowGetClassification(const WindowBase& window)
-{
-    return window.classification;
-}
-
 /**
  *
  *  rct2: 0x006EAF26

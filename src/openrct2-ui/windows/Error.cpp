@@ -111,7 +111,7 @@ static Widget window_error_widgets[] = {
         }
     };
 
-    WindowBase* WindowErrorOpen(std::string_view title, std::string_view message)
+    WindowBase* ErrorOpen(std::string_view title, std::string_view message)
     {
         std::string buffer = "{BLACK}";
         buffer.append(title);
@@ -166,10 +166,10 @@ static Widget window_error_widgets[] = {
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     }
 
-    WindowBase* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
+    WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args)
     {
         auto titlez = FormatStringIDLegacy(title, args.Data());
         auto messagez = FormatStringIDLegacy(message, args.Data());
-        return WindowErrorOpen(titlez, messagez);
+        return ErrorOpen(titlez, messagez);
     }
 } // namespace OpenRCT2::Ui::Windows

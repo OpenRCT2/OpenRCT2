@@ -146,7 +146,7 @@ static Widget window_debug_paint_widgets[] = {
         }
     };
 
-    WindowBase* WindowDebugPaintOpen()
+    WindowBase* DebugPaintOpen()
     {
         auto* window = WindowFocusOrCreate<DebugPaintWindow>(
             WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,

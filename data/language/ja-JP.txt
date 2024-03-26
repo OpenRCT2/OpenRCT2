@@ -1729,12 +1729,12 @@ STR_2382    :地形
 STR_2383    :水
 STR_2384    :{WINDOW_COLOUR_2}あなたの目標:
 STR_2385    :{BLACK}なし
-STR_2386    :{BLACK}{POP16}{MONTHYEAR}の終わりに、 パークの内に{PUSH16}{PUSH16}{COMMA16}以上人の来客し、600以上のパーク評価値を取得する必要があります。
+STR_2386    :{BLACK}{POP16}{MONTHYEAR}の終わりに、 パークの内に{PUSH16}{PUSH16}{COMMA32}以上人の来客し、600以上のパーク評価値を取得する必要があります。
 STR_2387    :{BLACK}{POP16}{MONTHYEAR}の終わりに、 {CURRENCY}以上のパーク評価額を取得する必要があります。
 STR_2388    :{BLACK}楽しんで下さい！
 STR_2389    :{BLACK}最高の{STRINGID}を建設してください！
 STR_2390    :{BLACK}パークで10タイプのジェットコースターを稼働させるには、それぞれ少なくとも6.00以上の興奮度が必要です。
-STR_2391    :{BLACK}パークに少なくとも{COMMA16}ゲストを入れてを取得する必要があります。パークの評価額がいつでも700以下にならないようにしてはいけません！
+STR_2391    :{BLACK}パークに少なくとも{COMMA32}ゲストを入れてを取得する必要があります。パークの評価額がいつでも700以下にならないようにしてはいけません！
 STR_2392    :{BLACK}ライドの月次総収入の{POP16}{POP16}{CURRENCY}を取得する必要があります。
 STR_2393    :{BLACK}パークで10タイプのジェットコースターを操作しますし、それぞれ所定の長さの{LENGTH}し, 7.00以上の興奮度が必要です。
 STR_2394    :{BLACK}パークであるの5ジェットコースターの建設を仕上げますし、 それぞれ{POP16}{POP16}{COMMA2DP32}以上の興奮度が必要です。
@@ -2315,7 +2315,7 @@ STR_3305    :{WINDOW_COLOUR_2}月売上:
 STR_3306    :{WINDOW_COLOUR_2}月利益:
 STR_3307    :{WINDOW_COLOUR_2}最小長:
 STR_3308    :{WINDOW_COLOUR_2}興奮度:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}保全命令のライド:

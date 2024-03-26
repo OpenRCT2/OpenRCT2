@@ -348,7 +348,7 @@ static Widget window_land_widgets[] = {
         }
     };
 
-    WindowBase* WindowLandOpen()
+    WindowBase* LandOpen()
     {
         return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }

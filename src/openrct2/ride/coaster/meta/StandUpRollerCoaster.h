@@ -28,7 +28,7 @@ constexpr RideTypeDescriptor StandUpRollerCoasterRTD =
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle, RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch),
+    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
     .DefaultMode = RideMode::ContinuousCircuit,
     .OperatingSettings = { 7, 27, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_STAND_UP_ROLLER_COASTER, STR_RIDE_DESCRIPTION_STAND_UP_ROLLER_COASTER },

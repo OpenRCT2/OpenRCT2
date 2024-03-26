@@ -68,7 +68,7 @@ static void MazePaintSetup(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NwSe, rotation, height,
         GetShopSupportColourScheme(session, trackElement));
 
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
 
     int32_t baseImageId = 0;
     switch (ride.track_colour[0].supports)
@@ -178,7 +178,7 @@ static void MazePaintSetup(
         imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnCentre);
         PaintAddImageAsParent(session, imageId, { 14, 14, height }, { { 15, 15, height + 2 }, { 2, 2, 8 } });
 
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, height + 12, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), height + 12, 0x20);
     }
 
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

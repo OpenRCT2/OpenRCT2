@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_LOGO:
-                    WindowAboutOpen();
+                    AboutOpen();
                     break;
             }
         }
@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* WindowTitleLogoOpen()
+    WindowBase* TitleLogoOpen()
     {
         auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
         if (window == nullptr)

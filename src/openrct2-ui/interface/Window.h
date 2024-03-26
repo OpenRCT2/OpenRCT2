@@ -70,4 +70,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowTileInspectorKeyboardShortcutToggleInvisibility();
 
     extern const StringId ColourSchemeNames[4];
+
+    WindowBase* WindowGetListening();
+    WindowClass WindowGetClassification(const WindowBase& window);
 } // namespace OpenRCT2::Ui::Windows

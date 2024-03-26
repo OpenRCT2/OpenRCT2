@@ -35,6 +35,8 @@
 #include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Map.h"
@@ -577,596 +579,10 @@ Vehicle* TryGetVehicle(EntityId spriteIndex)
     return TryGetEntity<Vehicle>(spriteIndex);
 }
 
-namespace
-{
-    template<typename T> class TrainIterator;
-    template<typename T> class Train
-    {
-    public:
-        explicit Train(T* vehicle)
-            : FirstCar(vehicle)
-        {
-            assert(FirstCar->IsHead());
-        }
-        int32_t Mass();
-
-        friend class TrainIterator<T>;
-        using iterator = TrainIterator<T>;
-        iterator begin()
-        {
-            return iterator{ FirstCar };
-        }
-        iterator end()
-        {
-            return iterator{};
-        }
-
-    private:
-        T* FirstCar;
-    };
-    template<typename T> class TrainIterator
-    {
-    public:
-        using iterator = TrainIterator;
-        using iterator_category = std::forward_iterator_tag;
-        using value_type = T;
-        using pointer = T*;
-        using reference = T&;
-
-        TrainIterator() = default;
-        explicit TrainIterator(T* vehicle)
-            : Current(vehicle)
-        {
-        }
-        reference operator*()
-        {
-            return *Current;
-        }
-        iterator& operator++()
-        {
-            Current = GetEntity<Vehicle>(NextVehicleId);
-            if (Current != nullptr)
-            {
-                NextVehicleId = Current->next_vehicle_on_train;
-            }
-            return *this;
-        }
-        iterator operator++(int)
-        {
-            iterator temp = *this;
-            ++*this;
-            return temp;
-        }
-        bool operator!=(const iterator& other)
-        {
-            return Current != other.Current;
-        }
-
-    private:
-        T* Current = nullptr;
-        EntityId NextVehicleId = EntityId::GetNull();
-    };
-} // namespace
-
-template<typename T> int32_t Train<T>::Mass()
-{
-    int32_t totalMass = 0;
-    for (const auto& vehicle : *this)
-    {
-        totalMass += vehicle.mass;
-    }
-
-    return totalMass;
-}
-
-bool Vehicle::SoundCanPlay() const
-{
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        return false;
-
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
-        return false;
-
-    if (sound1_id == OpenRCT2::Audio::SoundId::Null && sound2_id == OpenRCT2::Audio::SoundId::Null)
-        return false;
-
-    if (x == LOCATION_NULL)
-        return false;
-
-    if (g_music_tracking_viewport == nullptr)
-        return false;
-
-    const auto quarter_w = g_music_tracking_viewport->view_width / 4;
-    const auto quarter_h = g_music_tracking_viewport->view_height / 4;
-
-    auto left = g_music_tracking_viewport->viewPos.x;
-    auto bottom = g_music_tracking_viewport->viewPos.y;
-
-    if (WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
-    {
-        left -= quarter_w;
-        bottom -= quarter_h;
-    }
-
-    if (left >= SpriteData.SpriteRect.GetRight() || bottom >= SpriteData.SpriteRect.GetBottom())
-        return false;
-
-    auto right = g_music_tracking_viewport->view_width + left;
-    auto top = g_music_tracking_viewport->view_height + bottom;
-
-    if (WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
-    {
-        right += quarter_w + quarter_w;
-        top += quarter_h + quarter_h;
-    }
-
-    if (right < SpriteData.SpriteRect.GetRight() || top < SpriteData.SpriteRect.GetTop())
-        return false;
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006BC2F3
- */
-uint16_t Vehicle::GetSoundPriority() const
-{
-    int32_t result = Train(this).Mass() + (std::abs(velocity) >> 13);
-
-    for (const auto& vehicleSound : OpenRCT2::Audio::gVehicleSoundList)
-    {
-        if (vehicleSound.id == Id.ToUnderlying())
-        {
-            // Vehicle sounds will get higher priority if they are already playing
-            return result + 300;
-        }
-    }
-
-    return result;
-}
-
-OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority) const
-{
-    OpenRCT2::Audio::VehicleSoundParams param;
-    param.priority = priority;
-    int32_t panX = (SpriteData.SpriteRect.GetLeft() / 2) + (SpriteData.SpriteRect.GetRight() / 2)
-        - g_music_tracking_viewport->viewPos.x;
-    panX = g_music_tracking_viewport->zoom.ApplyInversedTo(panX);
-    panX += g_music_tracking_viewport->pos.x;
-
-    uint16_t screenWidth = ContextGetWidth();
-    if (screenWidth < 64)
-    {
-        screenWidth = 64;
-    }
-    param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
-
-    int32_t panY = (SpriteData.SpriteRect.GetTop() / 2) + (SpriteData.SpriteRect.GetBottom() / 2)
-        - g_music_tracking_viewport->viewPos.y;
-    panY = g_music_tracking_viewport->zoom.ApplyInversedTo(panY);
-    panY += g_music_tracking_viewport->pos.y;
-
-    uint16_t screenHeight = ContextGetHeight();
-    if (screenHeight < 64)
-    {
-        screenHeight = 64;
-    }
-    param.pan_y = ((((panY * 65536) / screenHeight) - 0x8000) >> 4);
-
-    int32_t frequency = std::abs(velocity);
-
-    const auto* rideType = GetRideEntry();
-    if (rideType != nullptr)
-    {
-        if (rideType->Cars[vehicle_type].double_sound_frequency & 1)
-        {
-            frequency *= 2;
-        }
-    }
-
-    // * 0.0105133...
-    frequency >>= 5; // /32
-    frequency *= 5512;
-    frequency >>= 14; // /16384
-
-    frequency += 11025;
-    frequency += 16 * sound_vector_factor;
-    param.frequency = static_cast<uint16_t>(frequency);
-    param.id = Id.ToUnderlying();
-    param.volume = 0;
-
-    if (x != LOCATION_NULL)
-    {
-        auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
-
-        // vehicle underground
-        if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > z)
-        {
-            param.volume = 0x30;
-        }
-    }
-    return param;
-}
-
-/**
- *
- *  rct2: 0x006BB9FF
- */
-void Vehicle::UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>& vehicleSoundParamsList) const
-{
-    if (!SoundCanPlay())
-        return;
-
-    uint16_t soundPriority = GetSoundPriority();
-    // Find a sound param of lower priority to use
-    auto soundParamIter = std::find_if(
-        vehicleSoundParamsList.begin(), vehicleSoundParamsList.end(),
-        [soundPriority](const auto& param) { return soundPriority > param.priority; });
-
-    if (soundParamIter == std::end(vehicleSoundParamsList))
-    {
-        if (vehicleSoundParamsList.size() < OpenRCT2::Audio::MaxVehicleSounds)
-        {
-            vehicleSoundParamsList.push_back(CreateSoundParam(soundPriority));
-        }
-    }
-    else
-    {
-        if (vehicleSoundParamsList.size() < OpenRCT2::Audio::MaxVehicleSounds)
-        {
-            // Shift all sound params down one if using a free space
-            vehicleSoundParamsList.insert(soundParamIter, CreateSoundParam(soundPriority));
-        }
-        else
-        {
-            *soundParamIter = CreateSoundParam(soundPriority);
-        }
-    }
-}
-
-static void vehicle_sounds_update_window_setup()
-{
-    g_music_tracking_viewport = nullptr;
-
-    WindowBase* window = WindowGetListening();
-    if (window == nullptr)
-    {
-        return;
-    }
-
-    Viewport* viewport = WindowGetViewport(window);
-    if (viewport == nullptr)
-    {
-        return;
-    }
-
-    g_music_tracking_viewport = viewport;
-    gWindowAudioExclusive = window;
-    if (viewport->zoom <= ZoomLevel{ 0 })
-        OpenRCT2::Audio::gVolumeAdjustZoom = 0;
-    else if (viewport->zoom == ZoomLevel{ 1 })
-        OpenRCT2::Audio::gVolumeAdjustZoom = 35;
-    else
-        OpenRCT2::Audio::gVolumeAdjustZoom = 70;
-}
-
-static uint8_t vehicle_sounds_update_get_pan_volume(OpenRCT2::Audio::VehicleSoundParams* sound_params)
-{
-    uint8_t vol1 = 0xFF;
-    uint8_t vol2 = 0xFF;
-
-    int16_t pan_y = std::abs(sound_params->pan_y);
-    pan_y = std::min(static_cast<int16_t>(0xFFF), pan_y);
-    pan_y -= 0x800;
-    if (pan_y > 0)
-    {
-        pan_y = (0x400 - pan_y) / 4;
-        vol1 = LoByte(pan_y);
-        if (static_cast<int8_t>(HiByte(pan_y)) != 0)
-        {
-            vol1 = 0xFF;
-            if (static_cast<int8_t>(HiByte(pan_y)) < 0)
-            {
-                vol1 = 0;
-            }
-        }
-    }
-
-    int16_t pan_x = std::abs(sound_params->pan_x);
-    pan_x = std::min(static_cast<int16_t>(0xFFF), pan_x);
-    pan_x -= 0x800;
-
-    if (pan_x > 0)
-    {
-        pan_x = (0x400 - pan_x) / 4;
-        vol2 = LoByte(pan_x);
-        if (static_cast<int8_t>(HiByte(pan_x)) != 0)
-        {
-            vol2 = 0xFF;
-            if (static_cast<int8_t>(HiByte(pan_x)) < 0)
-            {
-                vol2 = 0;
-            }
-        }
-    }
-
-    vol1 = std::min(vol1, vol2);
-    return std::max(0, vol1 - OpenRCT2::Audio::gVolumeAdjustZoom);
-}
-
-/*  Returns the vehicle sound for a sound_param.
- *
- *  If already playing returns sound.
- *  If not playing allocates a sound slot to sound_param->id.
- *  If no free slots returns nullptr.
- */
-static OpenRCT2::Audio::VehicleSound* vehicle_sounds_update_get_vehicle_sound(OpenRCT2::Audio::VehicleSoundParams* sound_params)
-{
-    // Search for already playing vehicle sound
-    for (auto& vehicleSound : OpenRCT2::Audio::gVehicleSoundList)
-    {
-        if (vehicleSound.id == sound_params->id)
-            return &vehicleSound;
-    }
-
-    // No sound already playing
-    for (auto& vehicleSound : OpenRCT2::Audio::gVehicleSoundList)
-    {
-        // Use free slot
-        if (vehicleSound.id == OpenRCT2::Audio::SoundIdNull)
-        {
-            vehicleSound.id = sound_params->id;
-            vehicleSound.TrackSound.Id = OpenRCT2::Audio::SoundId::Null;
-            vehicleSound.OtherSound.Id = OpenRCT2::Audio::SoundId::Null;
-            vehicleSound.volume = 0x30;
-            return &vehicleSound;
-        }
-    }
-
-    return nullptr;
-}
-
-static bool IsLoopingSound(SoundId id)
-{
-    switch (id)
-    {
-        case SoundId::LiftClassic:
-        case SoundId::TrackFrictionClassicWood:
-        case SoundId::FrictionClassic:
-        case SoundId::LiftFrictionWheels:
-        case SoundId::GoKartEngine:
-        case SoundId::TrackFrictionTrain:
-        case SoundId::TrackFrictionWater:
-        case SoundId::LiftArrow:
-        case SoundId::LiftWood:
-        case SoundId::TrackFrictionWood:
-        case SoundId::LiftWildMouse:
-        case SoundId::LiftBM:
-        case SoundId::TrackFrictionBM:
-        case SoundId::LiftRMC:
-        case SoundId::TrackFrictionRMC:
-            return true;
-        default:
-            return false;
-    }
-}
-
-static bool IsFixedFrequencySound(SoundId id)
-{
-    switch (id)
-    {
-        case SoundId::Scream1:
-        case SoundId::Scream2:
-        case SoundId::Scream3:
-        case SoundId::Scream4:
-        case SoundId::Scream5:
-        case SoundId::Scream6:
-        case SoundId::Scream7:
-        case SoundId::Scream8:
-        case SoundId::TrainWhistle:
-        case SoundId::TrainDeparting:
-        case SoundId::Tram:
-            return true;
-        default:
-            return false;
-    }
-}
-
-static bool IsSpecialFrequencySound(SoundId id)
-{
-    switch (id)
-    {
-        case SoundId::TrackFrictionBM:
-        case SoundId::TrackFrictionRMC:
-            return true;
-        default:
-            return false;
-    }
-}
-
-enum class SoundType
-{
-    TrackNoises,
-    OtherNoises, // e.g. Screams
-};
-
-template<SoundType type> static uint16_t SoundFrequency(const OpenRCT2::Audio::SoundId id, uint16_t baseFrequency)
-{
-    if constexpr (type == SoundType::TrackNoises)
-    {
-        if (IsSpecialFrequencySound(id))
-        {
-            return (baseFrequency / 2) + 4000;
-        }
-        return baseFrequency;
-    }
-    else
-    {
-        if (IsFixedFrequencySound(id))
-        {
-            return 22050;
-        }
-        return std::min((baseFrequency * 2) - 3248, 25700);
-    }
-}
-
-template<SoundType type> static bool ShouldUpdateChannelRate(const OpenRCT2::Audio::SoundId id)
-{
-    return type == SoundType::TrackNoises || !IsFixedFrequencySound(id);
-}
-
-template<SoundType type>
-static void UpdateSound(
-    const OpenRCT2::Audio::SoundId id, int32_t volume, OpenRCT2::Audio::VehicleSoundParams* sound_params,
-    OpenRCT2::Audio::Sound& sound, uint8_t panVol)
-{
-    volume *= panVol;
-    volume = volume / 8;
-    volume = std::max(volume - 0x1FFF, -10000);
-
-    if (sound.Channel != nullptr && sound.Channel->IsDone())
-    {
-        sound.Id = OpenRCT2::Audio::SoundId::Null;
-        sound.Channel = nullptr;
-    }
-    if (id != sound.Id && sound.Id != OpenRCT2::Audio::SoundId::Null)
-    {
-        sound.Id = OpenRCT2::Audio::SoundId::Null;
-        sound.Channel->Stop();
-    }
-    if (id == OpenRCT2::Audio::SoundId::Null)
-    {
-        return;
-    }
-
-    if (sound.Id == OpenRCT2::Audio::SoundId::Null)
-    {
-        auto frequency = SoundFrequency<type>(id, sound_params->frequency);
-        auto looping = IsLoopingSound(id);
-        auto pan = sound_params->pan_x;
-        auto channel = CreateAudioChannel(
-            id, looping, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), false);
-        if (channel != nullptr)
-        {
-            sound.Id = id;
-            sound.Pan = sound_params->pan_x;
-            sound.Volume = volume;
-            sound.Frequency = sound_params->frequency;
-            sound.Channel = channel;
-        }
-        else
-        {
-            sound.Id = OpenRCT2::Audio::SoundId::Null;
-        }
-        return;
-    }
-    if (volume != sound.Volume)
-    {
-        sound.Volume = volume;
-        sound.Channel->SetVolume(DStoMixerVolume(volume));
-    }
-    if (sound_params->pan_x != sound.Pan)
-    {
-        sound.Pan = sound_params->pan_x;
-        sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
-    }
-    if (!(GetGameState().CurrentTicks & 3) && sound_params->frequency != sound.Frequency)
-    {
-        sound.Frequency = sound_params->frequency;
-        if (ShouldUpdateChannelRate<type>(id))
-        {
-            uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
-            sound.Channel->SetRate(DStoMixerRate(frequency));
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x006BBC6B
- */
 void VehicleSoundsUpdate()
 {
-    PROFILED_FUNCTION();
-
-    if (!OpenRCT2::Audio::IsAvailable())
-        return;
-
-    std::vector<OpenRCT2::Audio::VehicleSoundParams> vehicleSoundParamsList;
-    vehicleSoundParamsList.reserve(OpenRCT2::Audio::MaxVehicleSounds);
-
-    vehicle_sounds_update_window_setup();
-
-    for (auto vehicle : TrainManager::View())
-    {
-        vehicle->UpdateSoundParams(vehicleSoundParamsList);
-    }
-
-    // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
-    for (auto& vehicle_sound : OpenRCT2::Audio::gVehicleSoundList)
-    {
-        if (vehicle_sound.id != OpenRCT2::Audio::SoundIdNull)
-        {
-            bool keepPlaying = false;
-            for (auto vehicleSoundParams : vehicleSoundParamsList)
-            {
-                if (vehicle_sound.id == vehicleSoundParams.id)
-                {
-                    keepPlaying = true;
-                    break;
-                }
-            }
-
-            if (keepPlaying)
-                continue;
-
-            if (vehicle_sound.TrackSound.Id != OpenRCT2::Audio::SoundId::Null)
-            {
-                vehicle_sound.TrackSound.Channel->Stop();
-            }
-            if (vehicle_sound.OtherSound.Id != OpenRCT2::Audio::SoundId::Null)
-            {
-                vehicle_sound.OtherSound.Channel->Stop();
-            }
-            vehicle_sound.id = OpenRCT2::Audio::SoundIdNull;
-        }
-    }
-
-    for (auto& vehicleSoundParams : vehicleSoundParamsList)
-    {
-        uint8_t panVol = vehicle_sounds_update_get_pan_volume(&vehicleSoundParams);
-
-        auto* vehicleSound = vehicle_sounds_update_get_vehicle_sound(&vehicleSoundParams);
-        // No free vehicle sound slots (RCT2 corrupts the pointer here)
-        if (vehicleSound == nullptr)
-            continue;
-
-        // Move the Sound Volume towards the SoundsParam Volume
-        int32_t tempvolume = vehicleSound->volume;
-        if (tempvolume != vehicleSoundParams.volume)
-        {
-            if (tempvolume < vehicleSoundParams.volume)
-            {
-                tempvolume += 4;
-            }
-            else
-            {
-                tempvolume -= 4;
-            }
-        }
-        vehicleSound->volume = tempvolume;
-        panVol = std::max(0, panVol - tempvolume);
-
-        Vehicle* vehicle = GetEntity<Vehicle>(EntityId::FromUnderlying(vehicleSoundParams.id));
-        if (vehicle != nullptr)
-        {
-            UpdateSound<SoundType::TrackNoises>(
-                vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->TrackSound, panVol);
-            UpdateSound<SoundType::OtherNoises>(
-                vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->OtherSound, panVol);
-        }
-    }
+    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_VEHICLE_SOUNDS));
 }
 
 /**
@@ -1521,12 +937,12 @@ void Vehicle::UpdateMeasurements()
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
-            // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
+            // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turn_count_default += 0x800;
         }
         else if (testingFlags & RIDE_TESTING_TURN_RIGHT && trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
         {
-            // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
+            // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turn_count_default += 0x800;
         }
         else if (testingFlags & RIDE_TESTING_TURN_RIGHT || testingFlags & RIDE_TESTING_TURN_LEFT)
@@ -1564,7 +980,7 @@ void Vehicle::UpdateMeasurements()
             if (trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_LEFT;
-                curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
+                curRide->turn_count_default &= ~kCurrentTurnCountMask;
 
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {
@@ -1579,7 +995,7 @@ void Vehicle::UpdateMeasurements()
             if (trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_RIGHT;
-                curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
+                curRide->turn_count_default &= ~kCurrentTurnCountMask;
 
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {
@@ -2379,7 +1795,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     if (!skipCheck)
     {
-        if (!(currentStation.Depart & STATION_DEPART_FLAG))
+        if (!(currentStation.Depart & kStationDepartFlag))
             return;
     }
 
@@ -2599,7 +2015,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
 
     /* Station is not ready to depart, so just return;
      * vehicle_id for this station is SPRITE_INDEX_NULL. */
-    if (!(ride->GetStation(stationIndex).Depart & STATION_DEPART_FLAG))
+    if (!(ride->GetStation(stationIndex).Depart & kStationDepartFlag))
     {
         return true;
     }
@@ -2671,8 +2087,8 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
      */
 
     int32_t direction = tileElement->GetDirectionWithOffset(1);
-    int32_t maxCheckDistance = RIDE_ADJACENCY_CHECK_DISTANCE;
-    int32_t spaceBetween = maxCheckDistance;
+    constexpr uint8_t maxCheckDistance = kRideAdjacencyCheckDistance;
+    uint8_t spaceBetween = maxCheckDistance;
 
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
@@ -2722,7 +2138,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
             {
                 if (sv_ride->IsBlockSectioned())
                 {
-                    if (!(sv_ride->GetStation(sv->stationIndex).Depart & STATION_DEPART_FLAG))
+                    if (!(sv_ride->GetStation(sv->stationIndex).Depart & kStationDepartFlag))
                     {
                         sv = _synchronisedVehicles;
                         RideId rideId = RideId::GetNull();
@@ -3028,7 +2444,7 @@ void Vehicle::UpdateDepartingBoatHire()
         return;
 
     auto& station = curRide->GetStation(current_station);
-    station.Depart &= STATION_DEPART_FLAG;
+    station.Depart &= kStationDepartFlag;
     uint8_t waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
     station.Depart |= waitingTime;
@@ -3301,7 +2717,7 @@ void Vehicle::FinishDeparting()
     if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
     {
         auto& currentStation = curRide->GetStation(current_station);
-        currentStation.Depart &= STATION_DEPART_FLAG;
+        currentStation.Depart &= kStationDepartFlag;
         uint8_t waitingTime = 3;
         if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -4146,7 +3562,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     // This is slightly different to the vanilla function
     auto& currentStation = curRide->GetStation(current_station);
-    currentStation.Depart &= STATION_DEPART_FLAG;
+    currentStation.Depart &= kStationDepartFlag;
     uint8_t waitingTime = 3;
     if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
     {
@@ -5113,9 +4529,10 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
                 ride.id.ToUnderlying(), ft);
         }
 
-        if (gParkRatingCasualtyPenalty < 500)
+        auto& gameState = GetGameState();
+        if (gameState.ParkRatingCasualtyPenalty < 500)
         {
-            gParkRatingCasualtyPenalty += 200;
+            gameState.ParkRatingCasualtyPenalty += 200;
         }
     }
 }
@@ -5638,6 +5055,8 @@ void Vehicle::SetMapToolbar() const
     if (curRide != nullptr && curRide->type < RIDE_TYPE_COUNT)
     {
         const Vehicle* vehicle = GetHead();
+        if (vehicle == nullptr)
+            return;
 
         size_t vehicleIndex;
         for (vehicleIndex = 0; vehicleIndex < std::size(curRide->vehicles); vehicleIndex++)
@@ -5696,7 +5115,7 @@ Vehicle* Vehicle::TrainTail() const
 
 int32_t Vehicle::IsUsedInPairs() const
 {
-    return num_seats & VEHICLE_SEAT_PAIR_FLAG;
+    return num_seats & kVehicleSeatPairFlag;
 }
 
 /**

@@ -1738,12 +1738,12 @@ STR_2382    :Tierra
 STR_2383    :Agua
 STR_2384    :{WINDOW_COLOUR_2}Tu objetivo:
 STR_2385    :{BLACK}Ninguno
-STR_2386    :{BLACK}Tener al menos {COMMA16} visitantes en tu parque a finales de {MONTHYEAR}, con una valoración del parque de al menos 600
+STR_2386    :{BLACK}Tener al menos {COMMA32} visitantes en tu parque a finales de {MONTHYEAR}, con una valoración del parque de al menos 600
 STR_2387    :{BLACK}Conseguir un valor del parque {POP16}{POP16}{CURRENCY} a final de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}¡Diviértete!
 STR_2389    :{BLACK}¡Construye el mejor {STRINGID} que puedas!
 STR_2390    :{BLACK}Tener al menos 10 tipos de montañas rusas distintas operando en el parque, cada una con un valor de emoción de al menos 6.00
-STR_2391    :{BLACK}Tener al menos {COMMA16} visitantes en tu parque. ¡No dejes que la valoración baje de 700 en ningún momento!
+STR_2391    :{BLACK}Tener al menos {COMMA32} visitantes en tu parque. ¡No dejes que la valoración baje de 700 en ningún momento!
 STR_2392    :{BLACK}Conseguir unos ingresos mensuales por venta de entradas a atracciones de al menos {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Tener al menos 10 tipos de montañas rusas distintas operando en el parque, cada una con una longitud mínima de {LENGTH}, y un valor de emoción de al menos 7.00
 STR_2394    :{BLACK}Terminar de construir 5 de las montañas rusas no terminadas en este parque, diseñándolas de modo que tengan un valor de emoción de al menos {POP16}{POP16}{COMMA2DP32} cada una
@@ -2324,7 +2324,7 @@ STR_3305    :{WINDOW_COLOUR_2}Ingreso mensual:
 STR_3306    :{WINDOW_COLOUR_2}Ganancia mensual:
 STR_3307    :{WINDOW_COLOUR_2}Longitud mínima:
 STR_3308    :{WINDOW_COLOUR_2}Rango Satisfacción:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Atracciones/Juegos con orden de preservación:
@@ -3686,6 +3686,15 @@ STR_6610    :Elemento de camino no encontrado
 STR_6611    :Elemento de muro no encontrado
 STR_6612    :Elemento de banner no encontrado
 STR_6613    :Recargar objeto
+STR_6614    :No se puede cambiar el precio de la entrada al parque
+STR_6615    :La vía en esta casilla necesita agua
+STR_6616    :Acción no válida para ese tipo de trabajador
+STR_6617    :No se puede intercambiar el elemento de la casilla consigo mismo
+STR_6618    :No se puede poner ni quitar restricción al objeto…
+STR_6619    :¡Este tipo de objeto no puede ser restringido!
+STR_6620    :¡Objeto no encontrado!
+STR_6621    :Restringir
+STR_6622    :Restringir objeto al Editor de Escenarios y el modo Sandbox.
 
 ##############
 # Escenarios #

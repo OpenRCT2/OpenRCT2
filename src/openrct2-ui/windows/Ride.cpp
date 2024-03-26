@@ -5287,7 +5287,7 @@ static_assert(std::size(RatingNames) == 6);
                 disabled_widgets |= (1uLL << WIDX_SAVE_TRACK_DESIGN);
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
                 {
-                    if (ride->excitement != RIDE_RATING_UNDEFINED)
+                    if (ride->excitement != kRideRatingUndefined)
                     {
                         disabled_widgets &= ~(1uLL << WIDX_SAVE_TRACK_DESIGN);
                         widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
@@ -6667,7 +6667,7 @@ static_assert(std::size(RatingNames) == 6);
      *
      *  rct2: 0x006ACC28
      */
-    WindowBase* WindowRideMainOpen(const Ride& ride)
+    WindowBase* RideMainOpen(const Ride& ride)
     {
         if (ride.type >= RIDE_TYPE_COUNT)
         {
@@ -6712,7 +6712,7 @@ static_assert(std::size(RatingNames) == 6);
             return nullptr;
 
         if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
-            return WindowRideMainOpen(ride);
+            return RideMainOpen(ride);
 
         auto* w = static_cast<RideWindow*>(WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying()));
         if (w == nullptr)
@@ -6740,7 +6740,7 @@ static_assert(std::size(RatingNames) == 6);
         return w;
     }
 
-    WindowBase* WindowRideOpenTrack(TileElement* tileElement)
+    WindowBase* RideOpenTrack(TileElement* tileElement)
     {
         assert(tileElement != nullptr);
         auto rideIndex = tileElement->GetRideIndex();
@@ -6771,7 +6771,7 @@ static_assert(std::size(RatingNames) == 6);
                 }
 
                 // Open ride window in overview mode
-                return WindowRideMainOpen(*ride);
+                return RideMainOpen(*ride);
             }
         }
         return nullptr;
@@ -6781,7 +6781,7 @@ static_assert(std::size(RatingNames) == 6);
      *
      *  rct2: 0x006ACAC2
      */
-    WindowBase* WindowRideOpenVehicle(Vehicle* vehicle)
+    WindowBase* RideOpenVehicle(Vehicle* vehicle)
     {
         if (vehicle == nullptr)
             return nullptr;

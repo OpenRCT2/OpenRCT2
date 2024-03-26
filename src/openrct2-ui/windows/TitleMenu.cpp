@@ -134,7 +134,7 @@ static Widget _titleMenuWidgets[] = {
                     {
                         WindowCloseByClass(WindowClass::Loadsave);
                         WindowCloseByClass(WindowClass::ServerList);
-                        WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
+                        ScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                     }
                     break;
                 case WIDX_CONTINUE_SAVED_GAME:
@@ -283,7 +283,7 @@ static Widget _titleMenuWidgets[] = {
     /**
      * Creates the window containing the menu buttons on the title screen.
      */
-    WindowBase* WindowTitleMenuOpen()
+    WindowBase* TitleMenuOpen()
     {
         const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
         return WindowCreate<TitleMenuWindow>(

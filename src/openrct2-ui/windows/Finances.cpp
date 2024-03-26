@@ -968,17 +968,17 @@ static Widget _windowFinancesResearchWidgets[] =
         return window;
     }
 
-    WindowBase* WindowFinancesOpen()
+    WindowBase* FinancesOpen()
     {
         return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
     }
 
-    WindowBase* WindowFinancesResearchOpen()
+    WindowBase* FinancesResearchOpen()
     {
         return FinancesWindowOpen(WINDOW_FINANCES_PAGE_RESEARCH);
     }
 
-    WindowBase* WindowFinancesMarketingOpen()
+    WindowBase* FinancesMarketingOpen()
     {
         return FinancesWindowOpen(WINDOW_FINANCES_PAGE_MARKETING);
     }

@@ -15,6 +15,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -1092,25 +1093,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Objective
             ft = Formatter();
-            if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-            {
-                StringId rideTypeString = STR_NONE;
-                auto rideTypeId = gameState.ScenarioObjective.RideId;
-                if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
-                {
-                    rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
-                }
-                ft.Add<StringId>(rideTypeString);
-            }
-            else
-            {
-                ft.Add<uint16_t>(gameState.ScenarioObjective.NumGuests);
-                ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
-                if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                    ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumExcitement);
-                else
-                    ft.Add<money64>(gameState.ScenarioObjective.Currency);
-            }
+            formatObjective(ft, gameState.ScenarioObjective);
 
             screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gameState.ScenarioObjective.Type], ft);
             screenCoords.y += 5;
@@ -1170,7 +1153,9 @@ static constexpr WindowParkAward _parkAwards[] = {
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            for (const auto& award : GetAwards())
+            auto& currentAwards = OpenRCT2::GetGameState().CurrentAwards;
+
+            for (const auto& award : currentAwards)
             {
                 GfxDrawSprite(dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
                 DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
@@ -1178,7 +1163,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 screenCoords.y += 32;
             }
 
-            if (GetAwards().empty())
+            if (currentAwards.empty())
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
         }
 #pragma endregion
@@ -1316,7 +1301,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667C48
      */
-    WindowBase* WindowParkEntranceOpen()
+    WindowBase* ParkEntranceOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_ENTRANCE);
     }
@@ -1325,7 +1310,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667CA4
      */
-    WindowBase* WindowParkRatingOpen()
+    WindowBase* ParkRatingOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_RATING);
     }
@@ -1334,7 +1319,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667D35
      */
-    WindowBase* WindowParkGuestsOpen()
+    WindowBase* ParkGuestsOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_GUESTS);
     }
@@ -1343,7 +1328,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667E57
      */
-    WindowBase* WindowParkObjectiveOpen()
+    WindowBase* ParkObjectiveOpen()
     {
         auto* wnd = ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
         if (wnd != nullptr)
@@ -1360,7 +1345,7 @@ static constexpr WindowParkAward _parkAwards[] = {
      *
      *  rct2: 0x00667DC6
      */
-    WindowBase* WindowParkAwardsOpen()
+    WindowBase* ParkAwardsOpen()
     {
         return ParkWindowOpen(WINDOW_PARK_PAGE_AWARDS);
     }

@@ -243,7 +243,7 @@ static Widget _trackListWidgets[] = {
             gTrackDesignSceneryToggle = false;
             WindowPushOthersRight(*this);
             _currentTrackPieceDirection = 2;
-            _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
+            _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
 
             _loadedTrackDesign = nullptr;
             _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
@@ -505,7 +505,7 @@ static Widget _trackListWidgets[] = {
             screenPos = windowPos + ScreenCoordsXY{ tdWidget.midX(), tdWidget.midY() };
 
             G1Element g1temp = {};
-            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
@@ -760,7 +760,7 @@ static Widget _trackListWidgets[] = {
         }
     };
 
-    WindowBase* WindowTrackListOpen(const RideSelection item)
+    WindowBase* TrackListOpen(const RideSelection item)
     {
         WindowCloseConstructionWindows();
         ScreenCoordsXY screenPos{};

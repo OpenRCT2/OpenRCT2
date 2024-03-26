@@ -464,7 +464,7 @@ static Widget _staffListWidgets[] = {
                 if (closestStaffMember != nullptr)
                 {
                     ToolCancel();
-                    auto* staffWindow = WindowStaffOpen(closestStaffMember);
+                    auto* staffWindow = StaffOpen(closestStaffMember);
                     staffWindow->OnDropdown(WC_PEEP__WIDX_PATROL, 0);
                 }
                 else
@@ -750,7 +750,7 @@ static Widget _staffListWidgets[] = {
         }
     };
 
-    WindowBase* WindowStaffListOpen()
+    WindowBase* StaffListOpen()
     {
         return WindowFocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
     }

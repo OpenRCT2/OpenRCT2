@@ -1149,7 +1149,7 @@ static StringId window_cheats_page_titles[] = {
         }
     };
 
-    WindowBase* WindowCheatsOpen()
+    WindowBase* CheatsOpen()
     {
         auto* window = WindowBringToFrontByClass(WindowClass::Cheats);
         if (window == nullptr)

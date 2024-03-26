@@ -1737,12 +1737,12 @@ STR_2382    :Tero
 STR_2383    :Akvo
 STR_2384    :{WINDOW_COLOUR_2}Via celo:
 STR_2385    :{BLACK}Neniu
-STR_2386    :{BLACK}Havi almenaŭ {COMMA16} gastojn en via parko al la fino de {MONTHYEAR}, kun pritakso de parko ne malpli ol 600
+STR_2386    :{BLACK}Havi almenaŭ {COMMA32} gastojn en via parko al la fino de {MONTHYEAR}, kun pritakso de parko ne malpli ol 600
 STR_2387    :{BLACK}Atingi parkvaloron ne malpli ol {POP16}{POP16}{CURRENCY} al la fino de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Amuzi Vin!
 STR_2389    :{BLACK}Konstrui je la plej bona {STRINGID}, kiun vi povas konstrui!
 STR_2390    :{BLACK}Havi 10 malsamajn tipojn de ondaj fervojoj funkciantajn en via parko, kiuj havas po pritakson de eksciteco ne malpli ol 6.00
-STR_2391    :{BLACK}Havi almenaŭ {COMMA16} gastojn en via parko. Ankaŭ, necesas ke la pritakso de la parko neniam falu sub 700!
+STR_2391    :{BLACK}Havi almenaŭ {COMMA32} gastojn en via parko. Ankaŭ, necesas ke la pritakso de la parko neniam falu sub 700!
 STR_2392    :{BLACK}Atingi enspezon monatan ne malpli ol {POP16}{POP16}{CURRENCY}, pro la vendado de biletoj de atrakcioj
 STR_2393    :{BLACK}Havi 10 malsamajn tipojn de ondaj fervojoj funkciantajn en via parko, kiuj havas po mimimuman longecon de {LENGTH} kaj pritakson de eksciteco ne malpli ol 7.00
 STR_2394    :{BLACK}Fini la konstruadon de la tutaj 5 ondaj fervojoj konstruitaj parte. Desegni ilin, por atingi po pritakson de eksciteco ne malpli ol {POP16}{POP16}{COMMA2DP32}
@@ -2323,7 +2323,7 @@ STR_3305    :{WINDOW_COLOUR_2}Enspezo monata:
 STR_3306    :{WINDOW_COLOUR_2}Profito monata:
 STR_3307    :{WINDOW_COLOUR_2}Minimuma longeco:
 STR_3308    :{WINDOW_COLOUR_2}Pritakso de eksciteco:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Atrakcioj, kiujn oni ne eblas ŝanĝi dum la scenaro:

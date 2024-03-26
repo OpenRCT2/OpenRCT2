@@ -206,7 +206,7 @@ private:
 
             size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
 
-            std::atomic<size_t> processed = ATOMIC_VAR_INIT(0);
+            std::atomic<size_t> processed{ 0 };
 
             auto reportProgress = [&]() {
                 const size_t completed = processed;

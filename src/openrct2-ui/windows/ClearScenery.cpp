@@ -208,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* WindowClearSceneryOpen()
+    WindowBase* ClearSceneryOpen()
     {
         auto* w = static_cast<CleanSceneryWindow*>(WindowBringToFrontByClass(WindowClass::ClearScenery));
 

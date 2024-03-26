@@ -1426,7 +1426,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
      *
      *  rct2: 0x006A7C43
      */
-    WindowBase* WindowFootpathOpen()
+    WindowBase* FootpathOpen()
     {
         if (!FootpathSelectDefault())
         {

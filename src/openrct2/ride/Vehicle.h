@@ -222,7 +222,6 @@ struct Vehicle : EntityBase
     Vehicle* GetCar(size_t carIndex) const;
     void SetState(Vehicle::Status vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
-    void UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>& vehicleSoundParamsList) const;
     std::optional<EntityId> DodgemsCarWouldCollideAt(const CoordsXY& coords) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
     int32_t CableLiftUpdateTrackMotion();
@@ -281,11 +280,8 @@ struct Vehicle : EntityBase
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
 
 private:
-    bool SoundCanPlay() const;
-    uint16_t GetSoundPriority() const;
     const VehicleInfo* GetMoveInfo() const;
     uint16_t GetTrackProgress() const;
-    OpenRCT2::Audio::VehicleSoundParams CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
     bool CableLiftUpdateTrackMotionForwards();
     bool CableLiftUpdateTrackMotionBackwards();
@@ -520,8 +516,8 @@ enum
     SOUND_RANGE_NONE = 255
 };
 
-#define VEHICLE_SEAT_PAIR_FLAG 0x80
-#define VEHICLE_SEAT_NUM_MASK 0x7F
+constexpr uint8_t kVehicleSeatPairFlag = 0x80;
+constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();

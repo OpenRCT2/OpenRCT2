@@ -1737,12 +1737,12 @@ STR_2382    :Land
 STR_2383    :Vann
 STR_2384    :{WINDOW_COLOUR_2}Ditt oppdrag:
 STR_2385    :{BLACK}Ingen
-STR_2386    :{BLACK}Å ha minst {COMMA16} gjester i din park ved slutten av {MONTHYEAR}, med en parkvurdering på minst 600
+STR_2386    :{BLACK}Å ha minst {COMMA32} gjester i din park ved slutten av {MONTHYEAR}, med en parkvurdering på minst 600
 STR_2387    :{BLACK}Å oppnå en parkverdi på minst {POP16}{POP16}{CURRENCY} ved slutten av {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Ha det Gøy!
 STR_2389    :{BLACK}Bygg den beste {STRINGID} du kan!
 STR_2390    :{BLACK}Å ha 10 forskjellige typer berg-og-dal-baner i drift i din park, hver med et spenningsnivå på minst 6.00
-STR_2391    :{BLACK}Å ha minst {COMMA16} gjester i din park. Du må ikke la parkvurderingen falle under 700 på noe tidspunkt!
+STR_2391    :{BLACK}Å ha minst {COMMA32} gjester i din park. Du må ikke la parkvurderingen falle under 700 på noe tidspunkt!
 STR_2392    :{BLACK}Å oppnå en månedlig inntekt fra attraksjons-billetter på minst {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Å ha 10 forskjellige typer berg-og-dal-baner i drift i din park, hver med en minimumslengde på {LENGTH}, og med spenningsnivå på minst 7.00
 STR_2394    :{BLACK}Å bygge ferdig alle 5 halvferdige berg-og-dal-baner i denne parken og designe hver av de for å oppnå spenningsnivå på minst {POP16}{POP16}{COMMA2DP32}
@@ -2323,7 +2323,7 @@ STR_3305    :{WINDOW_COLOUR_2}Månedlig inntekt:
 STR_3306    :{WINDOW_COLOUR_2}Månedlig profitt:
 STR_3307    :{WINDOW_COLOUR_2}Minimum lengde:
 STR_3308    :{WINDOW_COLOUR_2}Spenningsnivå:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Attraksjoner som blir bevart:
@@ -3687,6 +3687,11 @@ STR_6614    :Kan ikke endre inngangsavgift til parken
 STR_6615    :Spor på denne ruten trenger vann
 STR_6616    :Handling ugyldig for denne personaltypen
 STR_6617    :Kan ikke bytte ut rute-element med seg selv
+STR_6618    :Kan ikke begrense eller frigjøre objekt...
+STR_6619    :Objekt-type kan ikke bli begrenset!
+STR_6620    :Kunne ikke finne objekt!
+STR_6621    :Begrens
+STR_6622    :Begrens objekt til Scenario-redigerer og Sandkassemodus.
 
 #############
 # Scenarios #

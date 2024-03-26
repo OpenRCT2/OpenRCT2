@@ -898,11 +898,11 @@ void Guest::Loc68FA89()
     }
 }
 
-void Guest::Tick128UpdateGuest(int32_t index)
+void Guest::Tick128UpdateGuest(uint32_t index)
 {
     const auto currentTicks = GetGameState().CurrentTicks;
 
-    if (static_cast<uint32_t>(index & 0x1FF) == (currentTicks & 0x1FF))
+    if ((index & 0x1FF) == (currentTicks & 0x1FF))
     {
         /* Effect of masking with 0x1FF here vs mask 0x7F,
          * which is the condition for calling this function, is
@@ -1036,7 +1036,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             PickRideToGoOn();
         }
 
-        if (static_cast<uint32_t>(index & 0x3FF) == (currentTicks & 0x3FF))
+        if ((index & 0x3FF) == (currentTicks & 0x3FF))
         {
             /* Effect of masking with 0x3FF here vs mask 0x1FF,
              * which is used in the encompassing conditional, is
@@ -2581,7 +2581,7 @@ bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array
                 car_array.push_back(i);
                 return true;
             }
-            num_seats &= VEHICLE_SEAT_NUM_MASK;
+            num_seats &= kVehicleSeatNumMask;
         }
         if (num_seats == vehicle->next_free_seat)
             continue;
@@ -6276,7 +6276,7 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
     }
 
     // This is most likely to have peeps watch new rides
-    if (ride->excitement == RIDE_RATING_UNDEFINED)
+    if (ride->excitement == kRideRatingUndefined)
     {
         return true;
     }
@@ -6320,7 +6320,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
         return false;
 
     *rideToView = ride->id;
-    if (ride->excitement == RIDE_RATING_UNDEFINED)
+    if (ride->excitement == kRideRatingUndefined)
     {
         *rideSeatToView = 1;
         if (ride->status != RideStatus::Open)

@@ -267,7 +267,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                         NetworkGetMode() != NETWORK_MODE_CLIENT
                         || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2))
                     {
-                        WindowSceneryScatterOpen();
+                        SceneryScatterOpen();
                     }
                     else
                     {
@@ -631,24 +631,15 @@ static Widget WindowSceneryBaseWidgets[] = {
                 pressed_widgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
             widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::Empty;
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::Empty;
             widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Empty;
-
-            if (!(gWindowSceneryPaintEnabled & 1))
-            {
-                widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::FlatBtn;
-            }
 
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
             if (!tabSelectedScenery.IsUndefined())
             {
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
                 {
-                    if (!(gWindowSceneryPaintEnabled & 1))
-                    {
-                        widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::FlatBtn;
-                    }
+                    widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::FlatBtn;
 
                     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(
                         tabSelectedScenery.EntryIndex);
@@ -685,7 +676,6 @@ static Widget WindowSceneryBaseWidgets[] = {
                 widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
-                widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
             }
             else if (!tabSelectedScenery.IsUndefined())
             {
@@ -1693,7 +1683,7 @@ static Widget WindowSceneryBaseWidgets[] = {
         }
     };
 
-    WindowBase* WindowSceneryOpen()
+    WindowBase* SceneryOpen()
     {
         auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
         if (w == nullptr)
