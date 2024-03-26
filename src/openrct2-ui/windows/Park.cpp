@@ -731,7 +731,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             // Graph
             screenPos = windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-            Graph::Draw(dpi, GetGameState().ParkRatingHistory, 32, screenPos);
+            Graph::Draw(dpi, GetGameState().ParkRatingHistory, kParkRatingHistorySize, screenPos);
         }
 
 #pragma endregion
