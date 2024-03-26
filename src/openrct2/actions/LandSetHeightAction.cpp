@@ -130,7 +130,7 @@ GameActions::Result LandSetHeightAction::Query() const
         if (_style & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
         {
             zCorner += 2;
-            if (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
+            if (_style & kTileElementSurfaceDiagonalFlag)
             {
                 zCorner += 2;
             }
@@ -202,7 +202,7 @@ StringId LandSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    if (_height == kMaximumLandHeight - 2 && (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
+    if (_height == kMaximumLandHeight - 2 && (_style & kTileElementSurfaceDiagonalFlag))
     {
         return STR_TOO_HIGH;
     }
@@ -305,7 +305,7 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
             if (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK)
             {
                 zCorner += 2;
-                if (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
+                if (_style & kTileElementSurfaceDiagonalFlag)
                 {
                     zCorner += 2;
                 }

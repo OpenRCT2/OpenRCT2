@@ -16,7 +16,7 @@
 #include <vector>
 
 constexpr uint8_t kSceneryWitherAgeThreshold1 = 0x28;
-#define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
+constexpr uint8_t kSceneryWitherAgeThreshold2 = 0x37;
 
 enum
 {

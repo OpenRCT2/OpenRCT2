@@ -106,7 +106,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             uint8_t height = surfaceElement->BaseHeight;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
                 height += 2;
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
+            if (surfaceElement->GetSlope() & kTileElementSurfaceDiagonalFlag)
                 height += 2;
 
             if (height < maxHeight)
