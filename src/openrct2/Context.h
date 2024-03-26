@@ -81,7 +81,6 @@ class NetworkBase;
 namespace OpenRCT2
 {
     class AssetPackManager;
-    class GameState;
 
     struct IPlatformEnvironment;
     struct IReplayManager;
@@ -125,7 +124,6 @@ namespace OpenRCT2
 
         [[nodiscard]] virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
         [[nodiscard]] virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
-        virtual GameState* GetGameState() abstract;
         [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;

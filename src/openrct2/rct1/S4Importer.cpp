@@ -326,8 +326,7 @@ namespace RCT1
             gScenarioFileName = GetRCT1ScenarioName();
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
-            auto context = OpenRCT2::GetContext();
-            context->GetGameState()->InitAll({ mapSize, mapSize });
+            gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.EditorStep = EditorStep::ObjectSelection;
             gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;

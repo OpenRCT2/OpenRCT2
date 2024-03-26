@@ -68,11 +68,11 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     return context;
 }
 
-template<class Fn> static bool updateUntil(GameState& gs, int maxSteps, Fn&& fn)
+template<class Fn> static bool updateUntil(int maxSteps, Fn&& fn)
 {
     while (maxSteps-- && !fn())
     {
-        gs.UpdateLogic();
+        gameStateUpdateLogic();
     }
     return maxSteps > 0;
 }
@@ -96,9 +96,6 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     auto context = localStartGame(initStateFile);
     ASSERT_NE(context.get(), nullptr);
 
-    auto gs = context->GetGameState();
-    ASSERT_NE(gs, nullptr);
-    
     auto& gameState = GetGameState();
 
     // Open park for free but charging for rides
@@ -125,7 +122,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     richGuest->CashInPocket = 3000;
 
     // Wait for rich guest to get in queue
-    bool matched = updateUntil(*gs, 1000, [&]() { return richGuest->State == PeepState::Queuing; });
+    bool matched = updateUntil(1000, [&]() { return richGuest->State == PeepState::Queuing; });
     ASSERT_TRUE(matched);
 
     // Insert poor guest
@@ -133,7 +130,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     poorGuest->CashInPocket = 5;
 
     // Wait for poor guest to get in queue
-    matched = updateUntil(*gs, 1000, [&]() { return poorGuest->State == PeepState::Queuing; });
+    matched = updateUntil(1000, [&]() { return poorGuest->State == PeepState::Queuing; });
     ASSERT_TRUE(matched);
 
     // Raise the price of the ride to a value poor guest can't pay
@@ -142,7 +139,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     // Verify that the poor guest goes back to walking without riding
     // since it doesn't have enough money to pay for it
     bool enteredTheRide = false;
-    matched = updateUntil(*gs, 10000, [&]() {
+    matched = updateUntil(10000, [&]() {
         enteredTheRide |= poorGuest->State == PeepState::OnRide;
         return poorGuest->State == PeepState::Walking || enteredTheRide;
     });
@@ -159,9 +156,6 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     auto context = localStartGame(initStateFile);
     ASSERT_NE(context.get(), nullptr);
 
-    auto gs = context->GetGameState();
-    ASSERT_NE(gs, nullptr);
-    
     auto& gameState = GetGameState();
 
     // Open park for free but charging for rides
@@ -191,7 +185,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
 
     // Wait until one of them is riding
     auto guestIsOnRide = [](auto* g) { return g->State == PeepState::OnRide; };
-    bool matched = updateUntil(*gs, 10000, [&]() { return std::any_of(guests.begin(), guests.end(), guestIsOnRide); });
+    bool matched = updateUntil(10000, [&]() { return std::any_of(guests.begin(), guests.end(), guestIsOnRide); });
     ASSERT_TRUE(matched);
 
     // For the next few ticks at most two guests can be on the ride
@@ -199,6 +193,6 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     {
         int numRiding = std::count_if(guests.begin(), guests.end(), guestIsOnRide);
         ASSERT_LE(numRiding, 2);
-        gs->UpdateLogic();
+        gameStateUpdateLogic();
     }
 }

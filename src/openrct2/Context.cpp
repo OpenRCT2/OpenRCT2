@@ -123,7 +123,6 @@ namespace OpenRCT2
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
-        std::unique_ptr<GameState> _gameState;
 
         DrawingEngine _drawingEngineType = DrawingEngine::Software;
         std::unique_ptr<IDrawingEngine> _drawingEngine;
@@ -220,11 +219,6 @@ namespace OpenRCT2
             return _scriptEngine;
         }
 #endif
-
-        GameState* GetGameState() override
-        {
-            return _gameState.get();
-        }
 
         std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
         {
@@ -477,14 +471,13 @@ namespace OpenRCT2
             InputResetPlaceObjModifier();
             ViewportInitAll();
 
-            _gameState = std::make_unique<GameState>();
-            _gameState->InitAll(DEFAULT_MAP_SIZE);
+            gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
 
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Initialise();
 #endif
 
-            _titleScreen = std::make_unique<TitleScreen>(*_gameState);
+            _titleScreen = std::make_unique<TitleScreen>();
             _uiContext->Initialise();
 
             return true;
@@ -1199,7 +1192,7 @@ namespace OpenRCT2
             }
             else
             {
-                _gameState->Tick();
+                gameStateTick();
             }
 
 #ifdef __ENABLE_DISCORD__
