@@ -13,6 +13,7 @@
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
 - Fix: [#21635] Tile inspector hotkey can set wall slope for non-slopeable objects.
 - Fix: [#21641] Crash when creating track iterator from an invalid tile element.
+- Fix: [#21668] Crash when on null ride in Guest::UpdateRideLeaveExit
 
 0.4.9 (2024-03-02)
 ------------------------------------------------------------------------
