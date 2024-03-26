@@ -59,7 +59,7 @@ uint8_t RCT12TileElementBase::GetDirection() const
 
 uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
 {
-    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & kTileElementOccupiedQuadrantsMask;
 }
 
 bool RCT12TileElementBase::IsLastForTile() const
