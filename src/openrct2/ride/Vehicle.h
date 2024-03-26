@@ -516,8 +516,8 @@ enum
     SOUND_RANGE_NONE = 255
 };
 
-constexpr uint8_t kVehicleSeatPairFlag{ 0x80 };
-constexpr uint8_t kVehicleSeatNumMask{ 0x7F };
+constexpr uint8_t kVehicleSeatPairFlag = 0x80;
+constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
