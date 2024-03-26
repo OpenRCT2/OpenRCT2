@@ -718,7 +718,7 @@ void Peep::UpdateFalling()
         }
 
         auto& gameState = GetGameState();
-        gameState.ParkRatingCasualtyPenalty = std::min(gameState.ParkRatingCasualtyPenalty + 25, 1000);
+        gameState.Park.RatingCasualtyPenalty = std::min(gameState.Park.RatingCasualtyPenalty + 25, 1000);
         Remove();
         return;
     }
@@ -1538,7 +1538,7 @@ void Peep::FormatNameTo(Formatter& ft) const
             ft.Add<StringId>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(PeepId);
         }
-        else if (GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        else if (GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
             ft.Add<StringId>(realNameStringId);
@@ -1805,7 +1805,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             if (!(guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
-                if (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN)
+                if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
                 {
                     PeepReturnToCentreOfTile(guest);
                     return true;
@@ -1838,7 +1838,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        if (!(gameState.ParkFlags & PARK_FLAGS_PARK_OPEN))
+        if (!(gameState.Park.Flags & PARK_FLAGS_PARK_OPEN))
         {
             guest->State = PeepState::LeavingPark;
             guest->Var37 = 1;
@@ -1849,10 +1849,10 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         bool found = false;
-        auto entrance = std::find_if(gameState.ParkEntrances.begin(), gameState.ParkEntrances.end(), [coords](const auto& e) {
+        auto entrance = std::find_if(gameState.Park.Entrances.begin(), gameState.Park.Entrances.end(), [coords](const auto& e) {
             return coords.ToTileStart() == e;
         });
-        if (entrance != gameState.ParkEntrances.end())
+        if (entrance != gameState.Park.Entrances.end())
         {
             int16_t z = entrance->z / 8;
             entranceDirection = entrance->direction;
@@ -1911,7 +1911,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        auto entranceFee = ParkGetEntranceFee();
+        auto entranceFee = Park::GetEntranceFee();
         if (entranceFee != 0)
         {
             if (guest->HasItem(ShopItem::Voucher))
@@ -2287,7 +2287,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         }
 
         auto cost = ride->price[0];
-        if (cost != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (cost != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             ride->total_profit += cost;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -2552,7 +2552,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
 
     if (peep_a->Name == nullptr && peep_b->Name == nullptr)
     {
-        if (GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        if (GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             // Potentially could find a more optional way of sorting dynamic real names
         }
@@ -2585,12 +2585,12 @@ void PeepUpdateNames(bool realNames)
     auto& gameState = GetGameState();
     if (realNames)
     {
-        gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         // Peep names are now dynamic
     }
     else
     {
-        gameState.ParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.Park.Flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         // Peep names are now dynamic
     }
 

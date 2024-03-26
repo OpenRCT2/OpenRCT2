@@ -343,12 +343,12 @@ static Widget window_loadsave_widgets[] =
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
             {
                 SetAndSaveConfigPath(gConfigGeneral.LastSaveScenarioDirectory, pathBuffer);
-                int32_t parkFlagsBackup = gameState.ParkFlags;
-                gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                int32_t parkFlagsBackup = gameState.Park.Flags;
+                gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                 gameState.EditorStep = EditorStep::Invalid;
                 gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
                 int32_t success = ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
-                gameState.ParkFlags = parkFlagsBackup;
+                gameState.Park.Flags = parkFlagsBackup;
 
                 if (success)
                 {

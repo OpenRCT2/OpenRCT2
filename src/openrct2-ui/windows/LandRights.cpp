@@ -230,7 +230,7 @@ static Widget window_land_rights_widgets[] = {
 
             // Draw cost amount
             if (_landRightsCost != kMoney64Undefined && _landRightsCost != 0
-                && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_landRightsCost);

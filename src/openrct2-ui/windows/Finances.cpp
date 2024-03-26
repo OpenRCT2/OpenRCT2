@@ -230,7 +230,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
         void SetDisabledTabs()
         {
-            disabled_widgets = (GetGameState().ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            disabled_widgets = (GetGameState().Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
         }
 
     public:
@@ -569,7 +569,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // Loan and interest rate
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
-            if (!(gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST))
+            if (!(gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gameState.BankLoanInterestRate);
@@ -596,7 +596,7 @@ static Widget _windowFinancesResearchWidgets[] =
             {
                 // Park value and company value
                 ft = Formatter();
-                ft.Add<money64>(gameState.ParkValue);
+                ft.Add<money64>(gameState.Park.Value);
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
                 ft.Add<money64>(gameState.CompanyValue);
@@ -688,7 +688,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // Park value
             auto ft = Formatter();
-            ft.Add<money64>(gameState.ParkValue);
+            ft.Add<money64>(gameState.Park.Value);
             DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
             // Graph
@@ -698,7 +698,7 @@ static Widget _windowFinancesResearchWidgets[] =
             int32_t yAxisScale = 0;
             for (int32_t i = 0; i < 64; i++)
             {
-                auto balance = gameState.ParkValueHistory[i];
+                auto balance = gameState.Park.ValueHistory[i];
                 if (balance == kMoney64Undefined)
                     continue;
 
@@ -730,7 +730,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // X axis labels and values
             coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-            Graph::Draw(dpi, gameState.ParkValueHistory, 64, coords, yAxisScale, 0);
+            Graph::Draw(dpi, gameState.Park.ValueHistory, 64, coords, yAxisScale, 0);
         }
 
 #pragma endregion

@@ -73,7 +73,7 @@ GameActions::Result MapChangeSizeAction::Execute() const
     auto* ctx = OpenRCT2::GetContext();
     auto uiContext = ctx->GetUiContext();
     auto* windowManager = uiContext->GetWindowManager();
-    ParkUpdateSize(gameState);
+    OpenRCT2::Park::UpdateSize(gameState);
 
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
     GfxInvalidateScreen();

@@ -798,16 +798,16 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.BankLoan);
                     cs.ReadWrite(gameState.MaxBankLoan);
                     cs.ReadWrite(gameState.BankLoanInterestRate);
-                    cs.ReadWrite(gameState.ParkFlags);
+                    cs.ReadWrite(gameState.Park.Flags);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
                         cs.ReadWrite(tempParkEntranceFee);
-                        gameState.ParkEntranceFee = ToMoney64(tempParkEntranceFee);
+                        gameState.Park.EntranceFee = ToMoney64(tempParkEntranceFee);
                     }
                     else
                     {
-                        cs.ReadWrite(gameState.ParkEntranceFee);
+                        cs.ReadWrite(gameState.Park.EntranceFee);
                     }
 
                     cs.ReadWrite(gameState.StaffHandymanColour);
@@ -877,13 +877,13 @@ namespace OpenRCT2
                             cs.ReadWrite(award.Type);
                         });
                     }
-                    cs.ReadWrite(gameState.ParkValue);
+                    cs.ReadWrite(gameState.Park.Value);
                     cs.ReadWrite(gameState.CompanyValue);
-                    cs.ReadWrite(gameState.ParkSize);
+                    cs.ReadWrite(gameState.Park.Size);
                     cs.ReadWrite(gameState.NumGuestsInPark);
                     cs.ReadWrite(gameState.NumGuestsHeadingForPark);
-                    cs.ReadWrite(gameState.ParkRating);
-                    cs.ReadWrite(gameState.ParkRatingCasualtyPenalty);
+                    cs.ReadWrite(gameState.Park.Rating);
+                    cs.ReadWrite(gameState.Park.RatingCasualtyPenalty);
                     cs.ReadWrite(gameState.CurrentExpenditure);
                     cs.ReadWrite(gameState.CurrentProfit);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
@@ -910,7 +910,7 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWriteArray(gameState.ParkRatingHistory, [&cs](uint8_t& value) {
+                    cs.ReadWriteArray(gameState.Park.RatingHistory, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
@@ -928,7 +928,7 @@ namespace OpenRCT2
                         cs.ReadWrite(value);
                         return true;
                     });
-                    cs.ReadWriteArray(gameState.ParkValueHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.Park.ValueHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

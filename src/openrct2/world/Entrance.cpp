@@ -70,7 +70,7 @@ void ParkEntranceRemoveGhost()
 int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
-    for (const auto& entrance : GetGameState().ParkEntrances)
+    for (const auto& entrance : GetGameState().Park.Entrances)
     {
         if (entrancePos == entrance)
         {
@@ -83,7 +83,7 @@ int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 
 void ParkEntranceReset()
 {
-    GetGameState().ParkEntrances.clear();
+    GetGameState().Park.Entrances.clear();
 }
 
 void RideEntranceExitPlaceProvisionalGhost()
@@ -214,17 +214,17 @@ void ParkEntranceFixLocations(void)
 {
     auto& gameState = GetGameState();
     // Fix ParkEntrance locations for which the tile_element no longer exists
-    gameState.ParkEntrances.erase(
+    gameState.Park.Entrances.erase(
         std::remove_if(
-            gameState.ParkEntrances.begin(), gameState.ParkEntrances.end(),
+            gameState.Park.Entrances.begin(), gameState.Park.Entrances.end(),
             [](const auto& entrance) { return MapGetParkEntranceElementAt(entrance, false) == nullptr; }),
-        gameState.ParkEntrances.end());
+        gameState.Park.Entrances.end());
 }
 
 void ParkEntranceUpdateLocations()
 {
     auto& gameState = GetGameState();
-    gameState.ParkEntrances.clear();
+    gameState.Park.Entrances.clear();
     TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
@@ -234,7 +234,7 @@ void ParkEntranceUpdateLocations()
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
             auto entrance = TileCoordsXYZD(it.x, it.y, it.element->BaseHeight, it.element->GetDirection()).ToCoordsXYZD();
-            gameState.ParkEntrances.push_back(entrance);
+            gameState.Park.Entrances.push_back(entrance);
         }
     }
 }

@@ -446,10 +446,11 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                 if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
                     continue;
 
-                const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+                const bool objectiveAllowedByMoneyUsage = !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
                     || !ObjectiveNeedsMoney(i);
                 // This objective can only work if the player can ask money for rides.
-                const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
+                const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME)
+                    || Park::RidePricesUnlocked();
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
                     gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
@@ -763,11 +764,11 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             objectiveType = GetGameState().ScenarioObjective.Type;
 
             // Check if objective is allowed by money and pay-per-ride settings.
-            const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            const bool objectiveAllowedByMoneyUsage = !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
                 || !ObjectiveNeedsMoney(objectiveType);
             // This objective can only work if the player can ask money for rides.
             const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
-                || ParkRidePricesUnlocked();
+                || Park::RidePricesUnlocked();
             if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
             {
                 // Reset objective

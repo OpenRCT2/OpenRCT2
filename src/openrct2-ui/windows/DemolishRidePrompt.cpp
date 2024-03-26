@@ -84,8 +84,8 @@ static Widget window_ride_demolish_widgets[] =
             auto currentRide = GetRide(rideId);
             if (currentRide != nullptr)
             {
-                auto stringId = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID
-                                                                                 : STR_DEMOLISH_RIDE_ID_MONEY;
+                auto stringId = (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID
+                                                                                  : STR_DEMOLISH_RIDE_ID_MONEY;
                 auto ft = Formatter();
                 currentRide->FormatNameTo(ft);
                 ft.Add<money64>(_demolishRideCost);

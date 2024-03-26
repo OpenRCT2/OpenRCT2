@@ -309,10 +309,10 @@ private:
             { "day", date.GetMonthTicks() },
             { "month", date.GetMonthsElapsed() },
             { "guests", gameState.NumGuestsInPark },
-            { "parkValue", gameState.ParkValue },
+            { "parkValue", gameState.Park.Value },
         };
 
-        if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             gameInfo["cash"] = gameState.Cash;
         }

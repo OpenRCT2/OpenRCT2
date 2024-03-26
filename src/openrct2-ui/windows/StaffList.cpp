@@ -290,7 +290,7 @@ static Widget _staffListWidgets[] = {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));

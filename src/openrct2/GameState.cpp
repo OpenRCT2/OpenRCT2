@@ -70,7 +70,7 @@ namespace OpenRCT2
         gameState.CurrentTicks = 0;
 
         MapInit(mapSize);
-        ParkInitialise(gameState);
+        Park::Initialise(gameState);
         FinanceInit();
         BannerInit(gameState);
         RideInitAll();
@@ -344,7 +344,7 @@ namespace OpenRCT2
 
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
         {
-            ParkUpdate(gameState, gameState.Date);
+            Park::Update(gameState, gameState.Date);
         }
 
         ResearchUpdate();

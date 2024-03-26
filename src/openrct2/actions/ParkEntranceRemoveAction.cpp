@@ -78,7 +78,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     }
 
     auto& gameState = GetGameState();
-    auto direction = (gameState.ParkEntrances[entranceIndex].direction - 1) & 3;
+    auto direction = (gameState.Park.Entrances[entranceIndex].direction - 1) & 3;
 
     // Centre (sign)
     ParkEntranceRemoveSegment(_loc);
@@ -91,7 +91,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     ParkEntranceRemoveSegment(
         { _loc.x - CoordsDirectionDelta[direction].x, _loc.y - CoordsDirectionDelta[direction].y, _loc.z });
 
-    gameState.ParkEntrances.erase(gameState.ParkEntrances.begin() + entranceIndex);
+    gameState.Park.Entrances.erase(gameState.Park.Entrances.begin() + entranceIndex);
     return res;
 }
 
@@ -105,5 +105,5 @@ void ParkEntranceRemoveAction::ParkEntranceRemoveSegment(const CoordsXYZ& loc) c
 
     MapInvalidateTile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
     entranceElement->Remove();
-    ParkUpdateFences({ loc.x, loc.y });
+    Park::UpdateFences({ loc.x, loc.y });
 }
