@@ -357,7 +357,9 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !EditorObjectSelectionWindowCheck())
+                        return;
+
                     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
                     {
                         FinishObjectSelection();
@@ -1108,6 +1110,18 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             DrawDebugData(dpi);
         }
 
+        void GoToTab(ObjectType objectType)
+        {
+            for (size_t offset = 0; offset < std::size(TabOrder); offset++)
+            {
+                if (TabOrder[offset] == objectType)
+                {
+                    SetPage(offset);
+                    return;
+                }
+            }
+        }
+
     private:
         void InitWidgets()
         {
@@ -1659,5 +1673,26 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
         }
         if (showFallbackWarning)
             ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
+    }
+
+    bool EditorObjectSelectionWindowCheck()
+    {
+        WindowBase* w;
+
+        auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
+        if (missingObjectType == ObjectType::None)
+        {
+            WindowCloseByClass(WindowClass::EditorObjectSelection);
+            return true;
+        }
+
+        ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
+        w = WindowFindByClass(WindowClass::EditorObjectSelection);
+        if (w != nullptr)
+        {
+            // Click tab with missing object
+            static_cast<EditorObjectSelectionWindow*>(w)->GoToTab(missingObjectType);
+        }
+        return false;
     }
 } // namespace OpenRCT2::Ui::Windows
