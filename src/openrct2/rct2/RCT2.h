@@ -890,7 +890,7 @@ namespace RCT2
         uint16_t ParkRating;
 
         // Ignored in scenario
-        uint8_t ParkRatingHistory[ParkRatingHistorySize];
+        uint8_t ParkRatingHistory[kParkRatingHistorySize];
         uint8_t GuestsInParkHistory[32];
 
         // SC6[10]
