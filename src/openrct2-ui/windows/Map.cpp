@@ -1409,7 +1409,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
             Formatter ft;
             ft.Add<int16_t>(kMinimumMapSizePractical);
-            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int16_t>(kMaximumMapSizePractical);
             TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_NONE, STR_NONE, 4);
         }
 
