@@ -48,7 +48,7 @@ TEST(MultiLaunchTest, all)
         auto gs = context->GetGameState();
         ASSERT_NE(gs, nullptr);
 
-        auto& date = gs->GetDate();
+        auto& date = GetGameState().Date;
         // NOTE: This value is saved in the SV6 file, after the import this will be the current state.
         // In case the save file gets replaced this needs to be adjusted.
         ASSERT_EQ(date.GetMonthTicks(), 0x1e98);

@@ -39,6 +39,7 @@ namespace OpenRCT2
     struct GameState_t
     {
         uint32_t CurrentTicks{};
+        ::OpenRCT2::Date Date;
         uint64_t ParkFlags;
         uint16_t ParkRating;
         money64 ParkEntranceFee;
@@ -163,16 +164,11 @@ namespace OpenRCT2
     {
     private:
         std::unique_ptr<Park> _park;
-        Date _date;
 
     public:
         GameState();
         GameState(const GameState&) = delete;
 
-        Date& GetDate()
-        {
-            return _date;
-        }
         Park& GetPark()
         {
             return *_park;
@@ -181,8 +177,6 @@ namespace OpenRCT2
         void InitAll(const TileCoordsXY& mapSize);
         void Tick();
         void UpdateLogic();
-        void SetDate(Date newDate);
-        void ResetDate();
 
     private:
         void CreateStateSnapshot();

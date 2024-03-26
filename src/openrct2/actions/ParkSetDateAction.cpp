@@ -18,6 +18,8 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
+using namespace OpenRCT2;
+
 ParkSetDateAction::ParkSetDateAction(int32_t year, int32_t month, int32_t day)
     : _year(year)
     , _month(month)
@@ -69,6 +71,7 @@ GameActions::Result ParkSetDateAction::Query() const
 
 GameActions::Result ParkSetDateAction::Execute() const
 {
-    OpenRCT2::GetContext()->GetGameState()->SetDate(OpenRCT2::Date::FromYMD(_year, _month, _day));
+    auto& gameState = GetGameState();
+    gameState.Date = OpenRCT2::Date::FromYMD(_year, _month, _day);
     return GameActions::Result();
 }

@@ -2145,7 +2145,7 @@ namespace RCT1
             // Date and srand
             gameState.CurrentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
-            GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
+            gameState.Date = Date(_s4.Month, _s4.Day);
 
             // Park rating
             gameState.ParkRating = _s4.ParkRating;

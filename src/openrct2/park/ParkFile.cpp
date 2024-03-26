@@ -488,8 +488,7 @@ namespace OpenRCT2
                     uint32_t monthsElapsed;
                     cs.ReadWrite(monthTicks);
                     cs.ReadWrite(monthsElapsed);
-                    // TODO: Use the passed gameState instead of the global one.
-                    GetContext()->GetGameState()->SetDate(Date(monthsElapsed, monthTicks));
+                    gameState.Date = Date(monthsElapsed, monthTicks);
                 }
                 else
                 {

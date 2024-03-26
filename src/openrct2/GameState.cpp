@@ -317,15 +317,15 @@ void GameState::UpdateLogic()
         }
     }
 
+    auto& gameState = GetGameState();
 #ifdef ENABLE_SCRIPTING
     // Stash the current day number before updating the date so that we
     // know if the day number changes on this tick.
-    auto day = _date.GetDay();
+    auto day = gameState.Date.GetDay();
 #endif
 
-    _date.Update();
+    gameState.Date.Update();
 
-    auto& gameState = GetGameState();
     ScenarioUpdate(gameState);
     ClimateUpdate();
     MapUpdateTiles();
@@ -340,7 +340,7 @@ void GameState::UpdateLogic()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        _park->Update(_date);
+        _park->Update(gameState.Date);
     }
 
     ResearchUpdate();
@@ -374,7 +374,7 @@ void GameState::UpdateLogic()
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
 
-    if (day != _date.GetDay())
+    if (day != gameState.Date.GetDay())
     {
         hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
     }
@@ -394,17 +394,3 @@ void GameState::CreateStateSnapshot()
     snapshots->LinkSnapshot(snapshot, GetGameState().CurrentTicks, ScenarioRandState().s0);
 }
 
-void GameState::SetDate(Date newDate)
-{
-    _date = newDate;
-}
-
-/**
- *
- *  rct2: 0x006C4494
- */
-void GameState::ResetDate()
-{
-    _date = OpenRCT2::Date();
-    gCurrentRealTimeTicks = 0;
-}
