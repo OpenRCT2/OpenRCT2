@@ -1,6 +1,7 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
 - Feature: [#18171] Add port of the RCT1 Stand-Up Roller Coaster.
+- Feature: [#21590] [Plugin] Plugins can now read and write banner properties of tile elements.
 - Feature: [#21636] Add shortcut key for sorting tile elements.
 - Feature: [objects#294] Add scenery versions of wooden truss supports.
 - Feature: [objects#295] Flipped version of wooden post.
