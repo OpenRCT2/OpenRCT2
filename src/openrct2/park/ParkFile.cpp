@@ -484,7 +484,7 @@ namespace OpenRCT2
                     uint32_t monthsElapsed;
                     cs.ReadWrite(monthTicks);
                     cs.ReadWrite(monthsElapsed);
-                    gameState.Date = Date(monthsElapsed, monthTicks);
+                    gameState.Date = Date{ monthsElapsed, monthTicks };
                 }
                 else
                 {

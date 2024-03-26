@@ -38,22 +38,17 @@ enum
 
 namespace OpenRCT2
 {
+    struct GameState_t;
+
     /**
      * Represents the current day, month and year in OpenRCT2.
      */
-    class Date final
+    struct Date final
     {
-    private:
-        uint16_t _monthTicks = 0;
-        uint32_t _monthsElapsed = 0;
-
-    public:
-        Date() = default;
-        Date(uint32_t monthsElapsed, uint16_t monthTicks);
+        uint32_t monthsElapsed = 0;
+        uint16_t monthTicks = 0;
 
         static Date FromYMD(int32_t year, int32_t month = 0, int32_t day = 0);
-
-        void Update();
 
         uint16_t GetMonthTicks() const;
         uint32_t GetMonthsElapsed() const;
@@ -68,6 +63,8 @@ namespace OpenRCT2
 
         static int32_t GetDaysInMonth(int32_t month);
     };
+
+    void DateUpdate(GameState_t& gameState);
 } // namespace OpenRCT2
 
 struct RealWorldDate

@@ -328,7 +328,7 @@ namespace OpenRCT2
         auto day = gameState.Date.GetDay();
 #endif
 
-        gameState.Date.Update();
+        DateUpdate(gameState);
 
         ScenarioUpdate(gameState);
         ClimateUpdate();
