@@ -100,10 +100,9 @@ void ScenarioReset(GameState_t& gameState)
     ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
-    auto& park = GetGameState().Park;
-    gameState.ParkRating = park.CalculateParkRating();
-    gameState.ParkValue = park.CalculateParkValue();
-    gameState.CompanyValue = park.CalculateCompanyValue();
+    gameState.ParkRating = CalculateParkRating();
+    gameState.ParkValue = CalculateParkValue();
+    gameState.CompanyValue = CalculateCompanyValue();
     gameState.HistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
@@ -120,7 +119,7 @@ void ScenarioReset(GameState_t& gameState)
             }
             if (localisedStringIds[1] != STR_NONE)
             {
-                park.Name = LanguageGetString(localisedStringIds[1]);
+                gameState.Park.Name = LanguageGetString(localisedStringIds[1]);
             }
             if (localisedStringIds[2] != STR_NONE)
             {
@@ -132,7 +131,7 @@ void ScenarioReset(GameState_t& gameState)
     // Set the last saved game path
     auto env = GetContext()->GetPlatformEnvironment();
     auto savePath = env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
-    gScenarioSavePath = Path::Combine(savePath, park.Name + u8".park");
+    gScenarioSavePath = Path::Combine(savePath, gameState.Park.Name + u8".park");
 
     gameState.CurrentExpenditure = 0;
     gameState.CurrentProfit = 0;
@@ -145,13 +144,13 @@ void ScenarioReset(GameState_t& gameState)
     gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.ScenarioCompletedBy = "?";
 
-    park.ResetHistories();
+    ResetParkHistories(gameState);
     FinanceResetHistory();
     AwardReset();
     ResetAllRideBuildDates();
     ResetDate();
     Duck::RemoveAll();
-    ParkCalculateSize();
+    ParkUpdateSize(gameState);
     MapCountRemainingLandRights();
     Staff::ResetStats();
 

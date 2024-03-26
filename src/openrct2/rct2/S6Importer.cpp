@@ -307,8 +307,7 @@ namespace RCT2
 
             gameState.ParkRating = _s6.ParkRating;
 
-            auto& park = OpenRCT2::GetGameState().Park;
-            park.ResetHistories();
+            ResetParkHistories(gameState);
             std::copy(std::begin(_s6.ParkRatingHistory), std::end(_s6.ParkRatingHistory), gameState.ParkRatingHistory);
             for (size_t i = 0; i < std::size(_s6.GuestsInParkHistory); i++)
             {
@@ -504,7 +503,7 @@ namespace RCT2
             ConvertScenarioStringsToUTF8(gameState);
             DetermineRideEntranceAndExitLocations();
 
-            park.Name = GetUserString(_s6.ParkName);
+            gameState.Park.Name = GetUserString(_s6.ParkName);
 
             FixLandOwnership();
             FixWater();

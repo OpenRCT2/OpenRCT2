@@ -402,8 +402,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
         void PrepareWindowTitleText()
         {
-            auto& park = OpenRCT2::GetGameState().Park;
-            auto parkName = park.Name.c_str();
+            auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
             auto ft = Formatter::Common();
             ft.Add<StringId>(STR_STRING);
@@ -456,7 +455,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
-                if (ParkIsOpen())
+                if (GetGameState().Park.IsOpen())
                 {
                     gDropdownDefaultIndex = 0;
                     Dropdown::SetChecked(1, true);
@@ -512,18 +511,18 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Set open / close park button state
             {
-                auto& park = OpenRCT2::GetGameState().Park;
-                auto parkName = park.Name.c_str();
+                auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
                 auto ft = Formatter::Common();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(parkName);
             }
-            widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(ParkIsOpen() ? SPR_OPEN : SPR_CLOSED);
-            const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !ParkIsOpen() * 2
+            const bool parkIsOpen = gameState.Park.IsOpen();
+            widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(parkIsOpen ? SPR_OPEN : SPR_CLOSED);
+            const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !parkIsOpen * 2
                 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
-            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + ParkIsOpen() * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + parkIsOpen * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // Only allow closing of park for guest / rating objective
@@ -605,7 +604,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Draw park closed / open label
             auto ft = Formatter();
-            ft.Add<StringId>(ParkIsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+            ft.Add<StringId>(GetGameState().Park.IsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(

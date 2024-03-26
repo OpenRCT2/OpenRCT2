@@ -499,13 +499,13 @@ namespace Editor
      */
     ResultWithMessage CheckPark()
     {
-        int32_t parkSize = ParkCalculateSize();
+        auto& gameState = GetGameState();
+        int32_t parkSize = ParkUpdateSize(gameState);
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        const auto& gameState = GetGameState();
         if (gameState.ParkEntrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };

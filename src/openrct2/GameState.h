@@ -34,11 +34,12 @@
 
 namespace OpenRCT2
 {
-    class Park;
+    struct Park;
 
     struct GameState_t
     {
         ::OpenRCT2::Park Park{};
+        std::string PluginStorage;
         uint32_t CurrentTicks{};
         ::OpenRCT2::Date Date;
         uint64_t ParkFlags;

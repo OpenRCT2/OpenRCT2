@@ -649,29 +649,29 @@ namespace OpenRCT2
 
         void ReadWritePluginStorageChunk(GameState_t& gameState, OrcaStream& os)
         {
-            auto& park = gameState.Park;
             if (os.GetMode() == OrcaStream::Mode::WRITING)
             {
 #ifdef ENABLE_SCRIPTING
                 // Dump the plugin storage to JSON (stored in park)
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                park.PluginStorage = scriptEngine.GetParkStorageAsJSON();
+                gameState.PluginStorage = scriptEngine.GetParkStorageAsJSON();
 #endif
-                if (park.PluginStorage.empty() || park.PluginStorage == "{}")
+                if (gameState.PluginStorage.empty() || gameState.PluginStorage == "{}")
                 {
                     // Don't write the chunk if there is no plugin storage
                     return;
                 }
             }
 
-            os.ReadWriteChunk(
-                ParkFileChunkType::PLUGIN_STORAGE, [&park](OrcaStream::ChunkStream& cs) { cs.ReadWrite(park.PluginStorage); });
+            os.ReadWriteChunk(ParkFileChunkType::PLUGIN_STORAGE, [&gameState](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(gameState.PluginStorage);
+            });
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
 #ifdef ENABLE_SCRIPTING
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.SetParkStorageFromJSON(park.PluginStorage);
+                scriptEngine.SetParkStorageFromJSON(gameState.PluginStorage);
 #endif
             }
         }
