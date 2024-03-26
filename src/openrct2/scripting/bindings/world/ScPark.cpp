@@ -278,13 +278,13 @@ namespace OpenRCT2::Scripting
 
     std::string ScPark::name_get() const
     {
-        return GetContext()->GetGameState()->GetPark().Name;
+        return GetGameState().Park.Name;
     }
     void ScPark::name_set(std::string value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& park = GetContext()->GetGameState()->GetPark();
+        auto& park = GetGameState().Park;
         if (park.Name != value)
         {
             park.Name = std::move(value);

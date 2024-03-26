@@ -402,7 +402,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
         void PrepareWindowTitleText()
         {
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            auto& park = OpenRCT2::GetGameState().Park;
             auto parkName = park.Name.c_str();
 
             auto ft = Formatter::Common();
@@ -423,7 +423,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                     break;
                 case WIDX_RENAME:
                 {
-                    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                    auto& park = OpenRCT2::GetGameState().Park;
                     WindowTextInputRawOpen(
                         this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), USER_STRING_MAX_LENGTH);
                     break;
@@ -512,7 +512,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Set open / close park button state
             {
-                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                auto& park = OpenRCT2::GetGameState().Park;
                 auto parkName = park.Name.c_str();
 
                 auto ft = Formatter::Common();

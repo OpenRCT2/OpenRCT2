@@ -152,7 +152,7 @@ void ParkUpdateFencesAroundTile(const CoordsXY& coords)
 void ParkSetForcedRating(int32_t rating)
 {
     _forcedParkRating = rating;
-    auto& park = GetContext()->GetGameState()->GetPark();
+    auto& park = GetGameState().Park;
     GetGameState().ParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     ContextBroadcastIntent(&intent);
@@ -776,13 +776,13 @@ void Park::UpdateHistories()
 
 int32_t ParkIsOpen()
 {
-    return GetContext()->GetGameState()->GetPark().IsOpen();
+    return GetGameState().Park.IsOpen();
 }
 
 uint32_t ParkCalculateSize()
 {
     auto& gameState = GetGameState();
-    auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
+    auto tiles = GetGameState().Park.CalculateParkSize();
     if (tiles != gameState.ParkSize)
     {
         gameState.ParkSize = tiles;

@@ -275,7 +275,7 @@ namespace RCT1
                 {
                     // Use the ratio between the old and new park value to calcute the ratio to
                     // use for the park value history and the goal.
-                    auto& park = GetContext()->GetGameState()->GetPark();
+                    auto& park = GetGameState().Park;
                     _parkValueConversionFactor = (park.CalculateParkValue() * 10) / _s4.ParkValue;
                 }
                 else
@@ -2136,7 +2136,7 @@ namespace RCT1
                 }
             }
 
-            auto& park = GetContext()->GetGameState()->GetPark();
+            auto& park = GetGameState().Park;
             park.Name = std::move(parkName);
         }
 
@@ -2150,7 +2150,7 @@ namespace RCT1
             // Park rating
             gameState.ParkRating = _s4.ParkRating;
 
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            auto& park = OpenRCT2::GetGameState().Park;
             park.ResetHistories();
             std::copy(std::begin(_s4.ParkRatingHistory), std::end(_s4.ParkRatingHistory), gameState.ParkRatingHistory);
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
@@ -2351,7 +2351,7 @@ namespace RCT1
             gameState.ScenarioDetails = std::move(details);
             if (_isScenario && !parkName.empty())
             {
-                auto& park = GetContext()->GetGameState()->GetPark();
+                auto& park = GetGameState().Park;
                 park.Name = std::move(parkName);
             }
         }

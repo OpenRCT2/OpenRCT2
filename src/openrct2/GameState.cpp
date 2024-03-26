@@ -62,7 +62,6 @@ namespace OpenRCT2
 
 GameState::GameState()
 {
-    _park = std::make_unique<Park>();
 }
 
 /**
@@ -77,7 +76,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     gameState.CurrentTicks = 0;
 
     MapInit(mapSize);
-    _park->Initialise();
+    gameState.Park.Initialise();
     FinanceInit();
     BannerInit(gameState);
     RideInitAll();
@@ -340,7 +339,7 @@ void GameState::UpdateLogic()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        _park->Update(gameState.Date);
+        gameState.Park.Update(gameState.Date);
     }
 
     ResearchUpdate();
