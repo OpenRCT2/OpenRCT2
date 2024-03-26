@@ -870,7 +870,7 @@ static Widget _windowFinancesResearchWidgets[] =
                         break;
                     default:
                     {
-                        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                        auto& park = OpenRCT2::GetGameState().Park;
                         auto parkName = park.Name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);

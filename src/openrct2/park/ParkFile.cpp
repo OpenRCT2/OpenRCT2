@@ -420,11 +420,7 @@ namespace OpenRCT2
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gameState.ScenarioCategory);
                 ReadWriteStringTable(cs, gameState.ScenarioName, "en-GB");
-
-                // TODO: Use the passed gameState instead of the global one.
-                auto& park = GetContext()->GetGameState()->GetPark();
-                ReadWriteStringTable(cs, park.Name, "en-GB");
-
+                ReadWriteStringTable(cs, gameState.Park.Name, "en-GB");
                 ReadWriteStringTable(cs, gameState.ScenarioDetails, "en-GB");
 
                 cs.ReadWrite(gameState.ScenarioObjective.Type);
@@ -653,8 +649,7 @@ namespace OpenRCT2
 
         void ReadWritePluginStorageChunk(GameState_t& gameState, OrcaStream& os)
         {
-            // TODO: Use the passed gameState instead of the global one.
-            auto& park = GetContext()->GetGameState()->GetPark();
+            auto& park = gameState.Park;
             if (os.GetMode() == OrcaStream::Mode::WRITING)
             {
 #ifdef ENABLE_SCRIPTING
@@ -798,9 +793,7 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(
                 ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion, &gameState](OrcaStream::ChunkStream& cs) {
-                    // TODO: Use the passed gameState instead of the global one.
-                    auto& park = GetContext()->GetGameState()->GetPark();
-                    cs.ReadWrite(park.Name);
+                    cs.ReadWrite(gameState.Park.Name);
                     cs.ReadWrite(gameState.Cash);
                     cs.ReadWrite(gameState.BankLoan);
                     cs.ReadWrite(gameState.MaxBankLoan);

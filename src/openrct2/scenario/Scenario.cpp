@@ -100,7 +100,7 @@ void ScenarioReset(GameState_t& gameState)
     ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
-    auto& park = GetContext()->GetGameState()->GetPark();
+    auto& park = GetGameState().Park;
     gameState.ParkRating = park.CalculateParkRating();
     gameState.ParkValue = park.CalculateParkValue();
     gameState.CompanyValue = park.CalculateCompanyValue();

@@ -105,7 +105,7 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return GetContext()->GetGameState()->GetPark().Name;
+    return GetGameState().Park.Name;
 }
 
 static std::string ScreenshotGetDirectory()

@@ -98,11 +98,13 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     auto gs = context->GetGameState();
     ASSERT_NE(gs, nullptr);
+    
+    auto& gameState = GetGameState();
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    GetGameState().ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
     auto rideManager = GetRideManager();
@@ -116,10 +118,10 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
-    GetGameState().Cheats.IgnoreRideIntensity = true;
+    gameState.Cheats.IgnoreRideIntensity = true;
 
     // Insert a rich guest
-    auto richGuest = gs->GetPark().GenerateGuest();
+    auto richGuest = gameState.Park.GenerateGuest();
     richGuest->CashInPocket = 3000;
 
     // Wait for rich guest to get in queue
@@ -127,7 +129,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     ASSERT_TRUE(matched);
 
     // Insert poor guest
-    auto poorGuest = gs->GetPark().GenerateGuest();
+    auto poorGuest = gameState.Park.GenerateGuest();
     poorGuest->CashInPocket = 5;
 
     // Wait for poor guest to get in queue
@@ -159,11 +161,13 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
 
     auto gs = context->GetGameState();
     ASSERT_NE(gs, nullptr);
+    
+    auto& gameState = GetGameState();
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    GetGameState().ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
     auto rideManager = GetRideManager();
@@ -176,13 +180,13 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     execute<RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride
-    GetGameState().Cheats.IgnoreRideIntensity = true;
+    gameState.Cheats.IgnoreRideIntensity = true;
 
     // Create some guests
     std::vector<Peep*> guests;
     for (int i = 0; i < 25; i++)
     {
-        guests.push_back(gs->GetPark().GenerateGuest());
+        guests.push_back(gameState.Park.GenerateGuest());
     }
 
     // Wait until one of them is riding

@@ -134,7 +134,7 @@ static InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& scre
             break;
         case ViewportInteractionItem::ParkEntrance:
         {
-            auto& park = GetContext()->GetGameState()->GetPark();
+            auto& park = GetGameState().Park;
             auto parkName = park.Name.c_str();
 
             auto ft = Formatter();

@@ -607,7 +607,7 @@ void CheatSetAction::ClearLoan() const
 
 void CheatSetAction::GenerateGuests(int32_t count) const
 {
-    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    auto& park = OpenRCT2::GetGameState().Park;
     for (int32_t i = 0; i < count; i++)
     {
         park.GenerateGuest();
