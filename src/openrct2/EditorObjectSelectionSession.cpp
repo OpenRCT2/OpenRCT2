@@ -710,24 +710,3 @@ int32_t EditorRemoveUnusedObjects()
 
     return numUnselectedObjects;
 }
-
-bool CheckObjectSelection()
-{
-    WindowBase* w;
-
-    auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
-    if (missingObjectType == ObjectType::None)
-    {
-        WindowCloseByClass(WindowClass::EditorObjectSelection);
-        return true;
-    }
-
-    ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-    w = WindowFindByClass(WindowClass::EditorObjectSelection);
-    if (w != nullptr)
-    {
-        // Click tab with missing object
-        WindowEventMouseUpCall(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
-    }
-    return false;
-}

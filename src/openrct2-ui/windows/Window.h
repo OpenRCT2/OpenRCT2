@@ -207,6 +207,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowTileInspectorClearClipboard();
 
     WindowBase* EditorObjectSelectionOpen();
+    bool EditorObjectSelectionWindowCheck();
 
     void WindowTooltipReset(const ScreenCoordsXY& screenCoords);
     void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords);

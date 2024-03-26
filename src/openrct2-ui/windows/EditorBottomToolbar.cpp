@@ -188,7 +188,7 @@ static Widget _editorBottomToolbarWidgets[] = {
 
         void JumpForwardFromObjectSelection() const
         {
-            if (!CheckObjectSelection())
+            if (!EditorObjectSelectionWindowCheck())
                 return;
 
             FinishObjectSelection();
