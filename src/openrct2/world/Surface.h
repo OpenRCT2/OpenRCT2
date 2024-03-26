@@ -117,4 +117,4 @@ constexpr uint8_t kTileElementSurfaceSlopeMask =                                
     (kTileElementSurfaceDiagonalFlag | kTileElementSurfaceRaisedCornersMask); // in TileElement.properties.surface.slope
 
 constexpr uint8_t kTileElementSurfaceOwnershipMask = 0xF0;
-#define TILE_ELEMENT_SURFACE_PARK_FENCE_MASK 0x0F
+constexpr uint8_t kTileElementSurfaceParkFenceMask = 0x0F;

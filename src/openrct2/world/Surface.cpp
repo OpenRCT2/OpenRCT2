@@ -203,13 +203,13 @@ void SurfaceElement::SetOwnership(uint8_t newOwnership)
 
 uint8_t SurfaceElement::GetParkFences() const
 {
-    return (Ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    return (Ownership & kTileElementSurfaceParkFenceMask);
 }
 
 void SurfaceElement::SetParkFences(uint8_t newParkFences)
 {
-    Ownership &= ~TILE_ELEMENT_SURFACE_PARK_FENCE_MASK;
-    Ownership |= (newParkFences & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    Ownership &= ~kTileElementSurfaceParkFenceMask;
+    Ownership |= (newParkFences & kTileElementSurfaceParkFenceMask);
 }
 
 uint8_t SurfaceElement::GetSlope() const

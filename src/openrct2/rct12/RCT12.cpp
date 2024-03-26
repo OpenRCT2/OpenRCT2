@@ -109,7 +109,7 @@ uint32_t RCT12SurfaceElement::GetWaterHeight() const
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
 {
-    return (Ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    return (Ownership & kTileElementSurfaceParkFenceMask);
 }
 
 bool RCT12SurfaceElement::HasTrackThatNeedsWater() const
