@@ -1,9 +1,18 @@
 0.4.10 (in development)
 ------------------------------------------------------------------------
+- Feature: [#18171] Add port of the RCT1 Stand-Up Roller Coaster.
 - Feature: [#21636] Add shortcut key for sorting tile elements.
+- Feature: [objects#294] Add scenery versions of wooden truss supports.
+- Feature: [objects#295] Flipped version of wooden post.
 - Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
 - Improved: [#21561, #21631] Enable more features in Android build (plugins, networking, multiplayer, audio formats).
 - Improved: [#21599] Currency signs now use non-breaking spaces.
+- Improved: [objects#157] Added sloped images for many walls.
+- Improved: [objects#288] Better map colours and more sensible prices for RCT1 land surfaces.
+- Improved: [objects#292] Vehicle colour cleanups for WW/TT vehicles.
+- Improved: [objects#299] More accurate ratings modifiers for RCT1 vehicles.
+- Improved: [objects#309] Updated names for dodgems and flying saucers vehicles.
+- Improved: [objects#313] buildMenuPriority for dodgems and flying saucers vehicles.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#18413] Crash when mouse over a hacked train.
@@ -14,6 +23,11 @@
 - Fix: [#21635] Tile inspector hotkey can set wall slope for non-slopeable objects.
 - Fix: [#21641] Crash when creating track iterator from an invalid tile element.
 - Fix: [#21668] Crash when on null ride in Guest::UpdateRideLeaveExit
+- Fix: [objects#290] “Haunted Mansion” cars have a non-functional third remap colour.
+- Fix: [objects#296] Incorrect wall placement around large Kremlin/drab pieces.
+- Fix: [objects#300] Incorrect Colosseum and volcano corner clearances.
+- Fix: [objects#319] Incorrect diagonal slope images used for RCT1 corkscrew.
+- Fix: [objects#320] Incorrect Mandarin Duck boats capacity.
 
 0.4.9 (2024-03-02)
 ------------------------------------------------------------------------

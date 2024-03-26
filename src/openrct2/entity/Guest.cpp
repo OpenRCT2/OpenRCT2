@@ -2581,7 +2581,7 @@ bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array
                 car_array.push_back(i);
                 return true;
             }
-            num_seats &= VEHICLE_SEAT_NUM_MASK;
+            num_seats &= kVehicleSeatNumMask;
         }
         if (num_seats == vehicle->next_free_seat)
             continue;

@@ -412,7 +412,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     using namespace OpenRCT2::TrackMetaData;
     const auto& ted = GetTrackElementDescriptor(trackType);
     int32_t sequence = trackElement->GetSequenceIndex();
-    int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
+    int32_t direction = (_edge - trackElement->GetDirection()) & kTileElementDirectionMask;
     auto ride = GetRide(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
@@ -484,7 +484,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    direction = (trackElement->GetDirection() + ted.Coordinates.rotation_end) & TILE_ELEMENT_DIRECTION_MASK;
+    direction = (trackElement->GetDirection() + ted.Coordinates.rotation_end) & kTileElementDirectionMask;
     if (direction != _edge)
     {
         return false;
@@ -561,7 +561,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 auto sequence = largeSceneryElement->GetSequenceIndex();
                 const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
-                int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
+                int32_t direction = ((_edge - tileElement->GetDirection()) & kTileElementDirectionMask) + 8;
                 if (!(tile.flags & (1 << direction)))
                 {
                     MapGetObstructionErrorText(tileElement, res);
