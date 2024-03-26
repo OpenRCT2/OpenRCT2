@@ -643,14 +643,14 @@ void ViewportUpdatePosition(WindowBase* window)
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
-    if (mapCoord.x < MAP_MINIMUM_X_Y)
+    if (mapCoord.x < kMapMinimumXY)
     {
-        mapCoord.x = MAP_MINIMUM_X_Y;
+        mapCoord.x = kMapMinimumXY;
         at_map_edge = 1;
     }
-    if (mapCoord.y < MAP_MINIMUM_X_Y)
+    if (mapCoord.y < kMapMinimumXY)
     {
-        mapCoord.y = MAP_MINIMUM_X_Y;
+        mapCoord.y = kMapMinimumXY;
         at_map_edge = 1;
     }
 

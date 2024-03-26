@@ -40,7 +40,7 @@ constexpr uint8_t ConstructionRightsClearanceSmall = 3;
 // Same as previous, but in big coords.
 constexpr const uint8_t ConstructionRightsClearanceBig = 3 * COORDS_Z_STEP;
 
-#define MAP_MINIMUM_X_Y (-kMaximumMapSizeTechnical)
+constexpr int16_t kMapMinimumXY = (-kMaximumMapSizeTechnical);
 
 constexpr uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x1000000;
 constexpr uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
