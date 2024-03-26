@@ -86,6 +86,8 @@ struct RealWorldTime
 };
 
 OpenRCT2::Date& GetDate();
+void ResetDate();
+
 extern RealWorldTime gRealTimeOfDay;
 
 int32_t DateGetMonth(int32_t months);

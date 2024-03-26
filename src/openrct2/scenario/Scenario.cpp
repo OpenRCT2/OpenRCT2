@@ -149,7 +149,7 @@ void ScenarioReset(GameState_t& gameState)
     FinanceResetHistory();
     AwardReset();
     ResetAllRideBuildDates();
-    GetContext()->GetGameState()->ResetDate();
+    ResetDate();
     Duck::RemoveAll();
     ParkCalculateSize();
     MapCountRemainingLandRights();

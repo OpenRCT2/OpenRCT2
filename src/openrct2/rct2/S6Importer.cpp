@@ -251,7 +251,7 @@ namespace RCT2
                 gameState.ScenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
             }
 
-            OpenRCT2::GetContext()->GetGameState()->SetDate(OpenRCT2::Date(_s6.ElapsedMonths, _s6.CurrentDay));
+            gameState.Date = OpenRCT2::Date(_s6.ElapsedMonths, _s6.CurrentDay);
             gameState.CurrentTicks = _s6.GameTicks1;
 
             ScenarioRandSeed(_s6.ScenarioSrand0, _s6.ScenarioSrand1);

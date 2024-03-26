@@ -157,5 +157,16 @@ void DateUpdateRealTimeOfDay()
 
 Date& GetDate()
 {
-    return OpenRCT2::GetContext()->GetGameState()->GetDate();
+    return GetGameState().Date;
+}
+
+/**
+ *
+ *  rct2: 0x006C4494
+ */
+void ResetDate()
+{
+    auto& gameState = GetGameState();
+    gameState.Date = OpenRCT2::Date();
+    gCurrentRealTimeTicks = 0;
 }
