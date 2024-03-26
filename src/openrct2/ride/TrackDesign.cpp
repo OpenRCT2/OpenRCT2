@@ -307,7 +307,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
             Direction entranceDirection = tileElement->GetDirection();
             entranceDirection -= _saveDirection;
-            entranceDirection &= TILE_ELEMENT_DIRECTION_MASK;
+            entranceDirection &= kTileElementDirectionMask;
 
             mapLocation -= tds.Origin;
             // Rotate entrance coordinates backwards to the correct direction
@@ -973,7 +973,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     }
 
     int32_t z = scenery.loc.z + originZ;
-    uint8_t sceneryRotation = (rotation + scenery.flags) & TILE_ELEMENT_DIRECTION_MASK;
+    uint8_t sceneryRotation = (rotation + scenery.flags) & kTileElementDirectionMask;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
@@ -2098,7 +2098,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
  */
 static void TrackDesignPreviewClearMap()
 {
-    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
     GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 

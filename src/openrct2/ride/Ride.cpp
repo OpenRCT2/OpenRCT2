@@ -618,7 +618,7 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
     OriginZ -= trackBlock->z;
     OriginZ += trackCoordinate.z_end;
 
-    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & kTileElementDirectionMask)
         | (trackCoordinate.rotation_end & TRACK_BLOCK_2);
 
     return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
@@ -757,7 +757,7 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
     z -= trackBlock->z;
     z += trackCoordinate.z_begin;
 
-    rotation = ((trackCoordinate.rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+    rotation = ((trackCoordinate.rotation_begin + rotation) & kTileElementDirectionMask)
         | (trackCoordinate.rotation_begin & TRACK_BLOCK_2);
 
     return TrackBlockGetPreviousFromZero({ coords, z }, *ride, rotation, outTrackBeginEnd);
