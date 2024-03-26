@@ -815,7 +815,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                         auto surfaceElement = info.Element->AsSurface();
                         if (surfaceElement != nullptr)
                         {
-                            slope = DefaultPathSlope[surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+                            slope = DefaultPathSlope[surfaceElement->GetSlope() & kTileElementSurfaceRaisedCornersMask];
                         }
                         break;
                     }
@@ -920,7 +920,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             switch (info.SpriteType)
             {
                 case ViewportInteractionItem::Terrain:
-                    slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+                    slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & kTileElementSurfaceRaisedCornersMask];
                     break;
                 case ViewportInteractionItem::Footpath:
                     slope = info.Element->AsPath()->GetSlopeDirection();

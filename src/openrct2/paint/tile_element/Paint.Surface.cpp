@@ -933,7 +933,7 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
             }
             else
             {
-                localSurfaceShape = Numerics::ror4(surfaceShape ^ TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK, 2);
+                localSurfaceShape = Numerics::ror4(surfaceShape ^ static_cast<int8_t>(kTileElementSurfaceRaisedCornersMask), 2);
             }
         }
     }

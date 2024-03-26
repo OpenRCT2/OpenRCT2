@@ -127,7 +127,7 @@ GameActions::Result LandSetHeightAction::Query() const
     if (!GetGameState().Cheats.DisableClearanceChecks)
     {
         uint8_t zCorner = _height;
-        if (_style & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
+        if (_style & kTileElementSurfaceRaisedCornersMask)
         {
             zCorner += 2;
             if (_style & kTileElementSurfaceDiagonalFlag)
