@@ -197,7 +197,7 @@ StringId LandSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    if (_height > kMaximumLandHeight - 2 && (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
+    if (_height > kMaximumLandHeight - 2 && (_style & kTileElementSurfaceSlopeMask) != 0)
     {
         return STR_TOO_HIGH;
     }
@@ -302,7 +302,7 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
         uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
         if (waterHeight != 0)
         {
-            if (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK)
+            if (_style & kTileElementSurfaceSlopeMask)
             {
                 zCorner += 2;
                 if (_style & kTileElementSurfaceDiagonalFlag)
@@ -325,7 +325,7 @@ money64 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     for (Direction i : ALL_DIRECTIONS)
     {
         int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
-        cornerHeight -= MapGetCornerHeight(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
+        cornerHeight -= MapGetCornerHeight(_height, _style & kTileElementSurfaceSlopeMask, i);
         cost += 2.50_GBP * abs(cornerHeight);
     }
     return cost;

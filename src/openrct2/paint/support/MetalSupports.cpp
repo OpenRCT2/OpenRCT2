@@ -287,7 +287,7 @@ bool MetalASupportsPaintSetup(
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
         uint32_t imageIndex = _97B15C[supportType].base_id;
-        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
+        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, supportSegments[segment].height }, { 0, 0, 5 });
@@ -493,7 +493,7 @@ bool MetalBSupportsPaintSetup(
     }
     else
     {
-        uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
+        uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
         uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
 
         PaintAddImageAsParent(
@@ -679,7 +679,7 @@ bool PathPoleSupportsPaintSetup(
     }
     else
     {
-        uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
+        uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
         baseHeight = supportSegments[segment].height;
 
         PaintAddImageAsParent(

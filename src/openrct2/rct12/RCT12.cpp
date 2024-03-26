@@ -74,7 +74,7 @@ bool RCT12TileElementBase::IsGhost() const
 
 uint8_t RCT12SurfaceElement::GetSlope() const
 {
-    return (Slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    return (Slope & kTileElementSurfaceSlopeMask);
 }
 
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const

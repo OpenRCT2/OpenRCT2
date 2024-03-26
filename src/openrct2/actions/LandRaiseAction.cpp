@@ -122,7 +122,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
                     height += 2;
                 }
             }
-            newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            newSlope &= kTileElementSurfaceSlopeMask;
 
             auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
             landSetHeightAction.SetFlags(GetFlags());

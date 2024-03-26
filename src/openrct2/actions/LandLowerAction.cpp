@@ -118,7 +118,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
                 height -= 2;
 
-            newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            newSlope &= kTileElementSurfaceSlopeMask;
 
             auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
             landSetHeightAction.SetFlags(GetFlags());
