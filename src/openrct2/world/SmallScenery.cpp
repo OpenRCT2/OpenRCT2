@@ -67,7 +67,7 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
         uint8_t newAge = age++;
 
         // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
-        if (newAge == kSceneryWitherAgeThreshold1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
+        if (newAge == kSceneryWitherAgeThreshold1 || newAge == kSceneryWitherAgeThreshold2)
         {
             auto* sceneryEntry = GetEntry();
 

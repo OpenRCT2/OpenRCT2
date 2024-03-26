@@ -184,7 +184,7 @@ static void PaintSmallSceneryBody(
         {
             baseImageIndex += 4;
         }
-        if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_2)
+        if (sceneryElement.GetAge() >= kSceneryWitherAgeThreshold2)
         {
             baseImageIndex += 4;
         }
