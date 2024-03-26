@@ -418,7 +418,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         {
             Formatter ft;
             ft.Add<int16_t>(kMinimumMapSizePractical);
-            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int16_t>(kMaximumMapSizePractical);
 
             // Practical map size is 2 lower than the technical map size
             currentValue -= 2;
