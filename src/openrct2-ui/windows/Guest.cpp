@@ -468,7 +468,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                     Invalidate();
             }
-            if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }

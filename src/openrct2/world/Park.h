@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../management/Finance.h"
 #include "Map.h"
 
 constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
@@ -52,39 +53,51 @@ namespace OpenRCT2
 {
     struct Date;
 
-    struct Park final
+    namespace Park
     {
-        std::string Name;
+        struct ParkData final
+        {
+            std::string Name;
+            uint64_t Flags;
+            uint16_t Rating;
+            uint8_t RatingHistory[kParkRatingHistorySize];
+            int16_t RatingCasualtyPenalty;
+            money64 EntranceFee;
+            std::vector<CoordsXYZD> Entrances;
+            uint32_t Size;
+            money64 Value;
+            money64 ValueHistory[FINANCE_GRAPH_SIZE];
 
-        bool IsOpen() const;
-    };
+            bool IsOpen() const;
+        };
+
+        void Initialise(OpenRCT2::GameState_t& gameState);
+        void Update(OpenRCT2::GameState_t& gameState, const OpenRCT2::Date& date);
+
+        uint32_t CalculateParkSize();
+        int32_t CalculateParkRating();
+        money64 CalculateParkValue();
+        money64 CalculateCompanyValue();
+
+        Guest* GenerateGuest();
+
+        void ResetHistories(OpenRCT2::GameState_t& gameState);
+        void UpdateHistories(OpenRCT2::GameState_t& gameState);
+        void SetForcedRating(int32_t rating);
+        int32_t GetForcedRating();
+
+        uint32_t UpdateSize(OpenRCT2::GameState_t& gameState);
+
+        void UpdateFences(const CoordsXY& coords);
+        void UpdateFencesAroundTile(const CoordsXY& coords);
+
+        uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
+
+        void SetOpen(bool open);
+        money64 GetEntranceFee();
+
+        bool RidePricesUnlocked();
+        bool EntranceFeeUnlocked();
+    } // namespace Park
+
 } // namespace OpenRCT2
-
-void ParkInitialise(OpenRCT2::GameState_t& gameState);
-void ParkUpdate(OpenRCT2::GameState_t& gameState, const OpenRCT2::Date& date);
-
-uint32_t CalculateParkSize();
-int32_t CalculateParkRating();
-money64 CalculateParkValue();
-money64 CalculateCompanyValue();
-
-Guest* GenerateGuest();
-
-void ResetParkHistories(OpenRCT2::GameState_t& gameState);
-void UpdateParkHistories(OpenRCT2::GameState_t& gameState);
-void ParkSetForcedRating(int32_t rating);
-int32_t ParkGetForcedRating();
-
-uint32_t ParkUpdateSize(OpenRCT2::GameState_t& gameState);
-
-void ParkUpdateFences(const CoordsXY& coords);
-void ParkUpdateFencesAroundTile(const CoordsXY& coords);
-
-uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
-
-void ParkSetOpen(bool open);
-int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos);
-money64 ParkGetEntranceFee();
-
-bool ParkRidePricesUnlocked();
-bool ParkEntranceFeeUnlocked();

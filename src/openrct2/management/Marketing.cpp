@@ -53,11 +53,11 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            if (ParkGetEntranceFee() < 4.00_GBP)
+            if (Park::GetEntranceFee() < 4.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (ParkGetEntranceFee() < 6.00_GBP)
+            if (Park::GetEntranceFee() < 6.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
@@ -177,12 +177,12 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (!ParkEntranceFeeUnlocked())
+            if (!Park::EntranceFeeUnlocked())
                 return false;
             return true;
 
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            if (!ParkRidePricesUnlocked())
+            if (!Park::RidePricesUnlocked())
                 return false;
 
             // fall-through

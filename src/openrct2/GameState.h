@@ -34,29 +34,18 @@
 
 namespace OpenRCT2
 {
-    struct Park;
-
     struct GameState_t
     {
-        ::OpenRCT2::Park Park{};
+        ::OpenRCT2::Park::ParkData Park{};
         std::string PluginStorage;
         uint32_t CurrentTicks{};
         ::OpenRCT2::Date Date;
-        uint64_t ParkFlags;
-        uint16_t ParkRating;
-        money64 ParkEntranceFee;
-        std::vector<CoordsXYZD> ParkEntrances;
-        uint32_t ParkSize;
-        int16_t ParkRatingCasualtyPenalty;
-        money64 ParkValue;
-        money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
         money64 CompanyValue;
         // The total profit for the entire scenario that precedes the current financial table.
         money64 HistoricalProfit;
         money64 ConstructionRightsPrice;
         money64 CurrentExpenditure;
         money64 CurrentProfit;
-        uint8_t ParkRatingHistory[kParkRatingHistorySize];
         uint32_t GuestsInParkHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;

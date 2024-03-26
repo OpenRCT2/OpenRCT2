@@ -101,7 +101,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
     auto rideManager = GetRideManager();
@@ -118,7 +118,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     gameState.Cheats.IgnoreRideIntensity = true;
 
     // Insert a rich guest
-    auto richGuest = gameState.Park.GenerateGuest();
+    auto richGuest = Park::GenerateGuest();
     richGuest->CashInPocket = 3000;
 
     // Wait for rich guest to get in queue
@@ -126,7 +126,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     ASSERT_TRUE(matched);
 
     // Insert poor guest
-    auto poorGuest = gameState.Park.GenerateGuest();
+    auto poorGuest = Park::GenerateGuest();
     poorGuest->CashInPocket = 5;
 
     // Wait for poor guest to get in queue
@@ -161,7 +161,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
     auto rideManager = GetRideManager();
@@ -180,7 +180,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     std::vector<Peep*> guests;
     for (int i = 0; i < 25; i++)
     {
-        guests.push_back(gameState.Park.GenerateGuest());
+        guests.push_back(Park::GenerateGuest());
     }
 
     // Wait until one of them is riding

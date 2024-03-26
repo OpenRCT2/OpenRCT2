@@ -960,8 +960,8 @@ static Widget window_guest_list_widgets[] = {
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
-                                                                               : CompareGuestItem<false>;
+            return GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
+                                                                                : CompareGuestItem<false>;
         }
     };
 

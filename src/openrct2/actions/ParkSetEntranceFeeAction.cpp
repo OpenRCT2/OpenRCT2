@@ -42,8 +42,8 @@ void ParkSetEntranceFeeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkSetEntranceFeeAction::Query() const
 {
-    bool noMoney = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) != 0;
-    bool forceFreeEntry = !ParkEntranceFeeUnlocked();
+    bool noMoney = (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0;
+    bool forceFreeEntry = !Park::EntranceFeeUnlocked();
     if (noMoney || forceFreeEntry)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, STR_NONE);
@@ -58,7 +58,7 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
 
 GameActions::Result ParkSetEntranceFeeAction::Execute() const
 {
-    GetGameState().ParkEntranceFee = _fee;
+    GetGameState().Park.EntranceFee = _fee;
     WindowInvalidateByClass(WindowClass::ParkInformation);
     return GameActions::Result();
 }

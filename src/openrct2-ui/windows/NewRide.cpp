@@ -846,7 +846,7 @@ static Widget window_new_ride_widgets[] = {
                 widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-                if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
                     widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
                 newWidth = 300;
@@ -954,7 +954,7 @@ static Widget window_new_ride_widgets[] = {
             DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
             // Price
-            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Get price of ride
                 int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
