@@ -539,20 +539,18 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 {
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_GENERATION))
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP))
     {
         auto& gameState = GetGameState();
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto originalSuggestedGuestMaximum = gameState.SuggestedGuestMaximum;
-
         auto obj = DukObject(ctx);
-        obj.Set("suggestedGuestMaximum", originalSuggestedGuestMaximum);
-
+        obj.Set("cap", gameState.SuggestedGuestMaximum);
+        
         auto e = obj.Take();
-        hookEngine.Call(HOOK_TYPE::GUEST_GENERATION, e, true);
+        hookEngine.Call(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP, e, true);
 
         auto suggestedMaxGuests = AsOrDefault(
-            e["suggestedGuestMaximum"], static_cast<int32_t>(gameState.SuggestedGuestMaximum));
+            e["cap"], static_cast<int32_t>(gameState.SuggestedGuestMaximum));
         return suggestedMaxGuests;
     }
 #endif
