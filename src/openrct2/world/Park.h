@@ -47,57 +47,35 @@ enum : uint32_t
 };
 
 struct Guest;
-struct rct_ride;
 
 namespace OpenRCT2
 {
     struct Date;
 
-    class Park final
+    struct Park final
     {
-    public:
         std::string Name;
-        std::string PluginStorage;
-
-        Park() = default;
-        Park(const Park&) = delete;
 
         bool IsOpen() const;
-
-        uint16_t GetParkRating() const;
-        money64 GetParkValue() const;
-        money64 GetCompanyValue() const;
-
-        void Initialise();
-        void Update(const Date& date);
-
-        uint32_t CalculateParkSize() const;
-        int32_t CalculateParkRating() const;
-        money64 CalculateParkValue() const;
-        money64 CalculateCompanyValue() const;
-        static uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
-
-        Guest* GenerateGuest();
-
-        void ResetHistories();
-        void UpdateHistories();
-
-    private:
-        money64 CalculateRideValue(const Ride& ride) const;
-        money64 CalculateTotalRideValueForMoney() const;
-        uint32_t CalculateSuggestedMaxGuests() const;
-        uint32_t CalculateGuestGenerationProbability() const;
-
-        void GenerateGuests();
-        Guest* GenerateGuestFromCampaign(int32_t campaign);
     };
 } // namespace OpenRCT2
 
+void ParkInitialise(OpenRCT2::GameState_t& gameState);
+void ParkUpdate(OpenRCT2::GameState_t& gameState, const OpenRCT2::Date& date);
+
+uint32_t CalculateParkSize();
+int32_t CalculateParkRating();
+money64 CalculateParkValue();
+money64 CalculateCompanyValue();
+
+Guest* GenerateGuest();
+
+void ResetParkHistories(OpenRCT2::GameState_t& gameState);
+void UpdateParkHistories(OpenRCT2::GameState_t& gameState);
 void ParkSetForcedRating(int32_t rating);
 int32_t ParkGetForcedRating();
 
-int32_t ParkIsOpen();
-uint32_t ParkCalculateSize();
+uint32_t ParkUpdateSize(OpenRCT2::GameState_t& gameState);
 
 void ParkUpdateFences(const CoordsXY& coords);
 void ParkUpdateFencesAroundTile(const CoordsXY& coords);

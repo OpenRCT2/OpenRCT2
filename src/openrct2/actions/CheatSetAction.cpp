@@ -222,7 +222,7 @@ GameActions::Result CheatSetAction::Execute() const
             GetGameState().Cheats.NeverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!ParkIsOpen());
+            ParkSetOpen(!GetGameState().Park.IsOpen());
             break;
         case CheatType::HaveFun:
             gameState.ScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
@@ -607,10 +607,9 @@ void CheatSetAction::ClearLoan() const
 
 void CheatSetAction::GenerateGuests(int32_t count) const
 {
-    auto& park = OpenRCT2::GetGameState().Park;
     for (int32_t i = 0; i < count; i++)
     {
-        park.GenerateGuest();
+        GenerateGuest();
     }
     WindowInvalidateByClass(WindowClass::BottomToolbar);
 }

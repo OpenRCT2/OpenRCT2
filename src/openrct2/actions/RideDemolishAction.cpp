@@ -156,7 +156,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     }
 
     ride.Delete();
-    GetGameState().ParkValue = GetGameState().Park.CalculateParkValue();
+    GetGameState().ParkValue = CalculateParkValue();
 
     // Close windows related to the demolished ride
     WindowCloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());

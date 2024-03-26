@@ -50,6 +50,14 @@ using namespace OpenRCT2;
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
 static int32_t _forcedParkRating = -1;
 
+static money64 calculateRideValue(const Ride& ride);
+static money64 calculateTotalRideValueForMoney();
+static uint32_t calculateSuggestedMaxGuests();
+static uint32_t calculateGuestGenerationProbability();
+
+static void generateGuests(GameState_t& gameState);
+static Guest* generateGuestFromCampaign(int32_t campaign);
+
 /**
  * Choose a random peep spawn and iterates through until defined spawn is found.
  */
@@ -152,8 +160,7 @@ void ParkUpdateFencesAroundTile(const CoordsXY& coords)
 void ParkSetForcedRating(int32_t rating)
 {
     _forcedParkRating = rating;
-    auto& park = GetGameState().Park;
-    GetGameState().ParkRating = park.CalculateParkRating();
+    GetGameState().ParkRating = CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     ContextBroadcastIntent(&intent);
 }
@@ -210,27 +217,10 @@ bool Park::IsOpen() const
     return (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
 }
 
-uint16_t Park::GetParkRating() const
+void ParkInitialise(GameState_t& gameState)
 {
-    return GetGameState().ParkRating;
-}
-
-money64 Park::GetParkValue() const
-{
-    return GetGameState().ParkValue;
-}
-
-money64 Park::GetCompanyValue() const
-{
-    return GetGameState().CompanyValue;
-}
-
-void Park::Initialise()
-{
-    auto& gameState = GetGameState();
-
-    Name = LanguageGetString(STR_UNNAMED_PARK);
-    PluginStorage = {};
+    gameState.Park.Name = LanguageGetString(STR_UNNAMED_PARK);
+    gameState.PluginStorage = {};
     gameState.StaffHandymanColour = COLOUR_BRIGHT_RED;
     gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
     gameState.StaffSecurityColour = COLOUR_YELLOW;
@@ -272,7 +262,7 @@ void Park::Initialise()
     gameState.LandPrice = 90.00_GBP;
     gameState.ConstructionRightsPrice = 40.00_GBP;
     gameState.ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-    ResetHistories();
+    ResetParkHistories(gameState);
     FinanceResetHistory();
     AwardReset();
 
@@ -280,17 +270,16 @@ void Park::Initialise()
     gameState.ScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
 }
 
-void Park::Update(const Date& date)
+void ParkUpdate(GameState_t& gameState, const Date& date)
 {
     PROFILED_FUNCTION();
 
     // Every new week
     if (date.IsWeekStart())
     {
-        UpdateHistories();
+        UpdateParkHistories(gameState);
     }
 
-    auto& gameState = GetGameState();
     const auto currentTicks = gameState.CurrentTicks;
 
     // Every ~13 seconds
@@ -299,9 +288,9 @@ void Park::Update(const Date& date)
         gameState.ParkRating = CalculateParkRating();
         gameState.ParkValue = CalculateParkValue();
         gameState.CompanyValue = CalculateCompanyValue();
-        gameState.TotalRideValueForMoney = CalculateTotalRideValueForMoney();
-        gameState.SuggestedGuestMaximum = CalculateSuggestedMaxGuests();
-        gameState.GuestGenerationProbability = CalculateGuestGenerationProbability();
+        gameState.TotalRideValueForMoney = calculateTotalRideValueForMoney();
+        gameState.SuggestedGuestMaximum = calculateSuggestedMaxGuests();
+        gameState.GuestGenerationProbability = calculateGuestGenerationProbability();
 
         WindowInvalidateByClass(WindowClass::Finances);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -315,10 +304,10 @@ void Park::Update(const Date& date)
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
-    GenerateGuests();
+    generateGuests(gameState);
 }
 
-uint32_t Park::CalculateParkSize() const
+uint32_t CalculateParkSize()
 {
     uint32_t tiles = 0;
     TileElementIterator it;
@@ -344,7 +333,7 @@ uint32_t Park::CalculateParkSize() const
     return tiles;
 }
 
-int32_t Park::CalculateParkRating() const
+int32_t CalculateParkRating()
 {
     if (_forcedParkRating >= 0)
     {
@@ -461,13 +450,13 @@ int32_t Park::CalculateParkRating() const
     return result;
 }
 
-money64 Park::CalculateParkValue() const
+money64 CalculateParkValue()
 {
     // Sum ride values
     money64 result = 0;
     for (const auto& ride : GetRideManager())
     {
-        result += CalculateRideValue(ride);
+        result += calculateRideValue(ride);
     }
 
     // +7.00 per guest
@@ -476,7 +465,7 @@ money64 Park::CalculateParkValue() const
     return result;
 }
 
-money64 Park::CalculateRideValue(const Ride& ride) const
+static money64 calculateRideValue(const Ride& ride)
 {
     money64 result = 0;
     if (ride.value != RIDE_VALUE_UNDEFINED)
@@ -487,7 +476,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
     return result;
 }
 
-money64 Park::CalculateCompanyValue() const
+money64 CalculateCompanyValue()
 {
     const auto& gameState = GetGameState();
 
@@ -499,7 +488,7 @@ money64 Park::CalculateCompanyValue() const
     return result;
 }
 
-money64 Park::CalculateTotalRideValueForMoney() const
+static money64 calculateTotalRideValueForMoney()
 {
     money64 totalRideValue = 0;
     bool ridePricesUnlocked = ParkRidePricesUnlocked() && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY);
@@ -529,7 +518,7 @@ money64 Park::CalculateTotalRideValueForMoney() const
     return totalRideValue;
 }
 
-uint32_t Park::CalculateSuggestedMaxGuests() const
+static uint32_t calculateSuggestedMaxGuests()
 {
     uint32_t suggestedMaxGuests = 0;
     uint32_t difficultGenerationBonus = 0;
@@ -577,7 +566,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     return suggestedMaxGuests;
 }
 
-uint32_t Park::CalculateGuestGenerationProbability() const
+static uint32_t calculateGuestGenerationProbability()
 {
     auto& gameState = GetGameState();
 
@@ -631,7 +620,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     return probability;
 }
 
-uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
+uint8_t CalculateGuestInitialHappiness(uint8_t percentage)
 {
     percentage = std::clamp<uint8_t>(percentage, 15, 98);
 
@@ -653,10 +642,8 @@ uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
     return 40;
 }
 
-void Park::GenerateGuests()
+static void generateGuests(GameState_t& gameState)
 {
-    auto& gameState = GetGameState();
-
     // Generate a new guest for some probability
     if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.GuestGenerationProbability)
     {
@@ -675,12 +662,12 @@ void Park::GenerateGuests()
         auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
         if (random < probability)
         {
-            GenerateGuestFromCampaign(campaign.Type);
+            generateGuestFromCampaign(campaign.Type);
         }
     }
 }
 
-Guest* Park::GenerateGuestFromCampaign(int32_t campaign)
+static Guest* generateGuestFromCampaign(int32_t campaign)
 {
     auto peep = GenerateGuest();
     if (peep != nullptr)
@@ -690,7 +677,7 @@ Guest* Park::GenerateGuestFromCampaign(int32_t campaign)
     return peep;
 }
 
-Guest* Park::GenerateGuest()
+Guest* GenerateGuest()
 {
     Guest* peep = nullptr;
     const auto spawn = GetRandomPeepSpawn();
@@ -721,16 +708,14 @@ template<typename T, size_t TSize> static void HistoryPushRecord(T history[TSize
     history[0] = newItem;
 }
 
-void Park::ResetHistories()
+void ResetParkHistories(GameState_t& gameState)
 {
-    auto& gameState = GetGameState();
     std::fill(std::begin(gameState.ParkRatingHistory), std::end(gameState.ParkRatingHistory), ParkRatingHistoryUndefined);
     std::fill(std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory), GuestsInParkHistoryUndefined);
 }
 
-void Park::UpdateHistories()
+void UpdateParkHistories(GameState_t& gameState)
 {
-    auto& gameState = GetGameState();
     uint8_t guestChangeModifier = 1;
     int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.NumGuestsInPark)
         - static_cast<int32_t>(gameState.NumGuestsInParkLastWeek);
@@ -774,24 +759,13 @@ void Park::UpdateHistories()
     WindowInvalidateByClass(WindowClass::Finances);
 }
 
-int32_t ParkIsOpen()
+uint32_t ParkUpdateSize(GameState_t& gameState)
 {
-    return GetGameState().Park.IsOpen();
-}
-
-uint32_t ParkCalculateSize()
-{
-    auto& gameState = GetGameState();
-    auto tiles = GetGameState().Park.CalculateParkSize();
+    auto tiles = CalculateParkSize();
     if (tiles != gameState.ParkSize)
     {
         gameState.ParkSize = tiles;
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
     return tiles;
-}
-
-uint8_t CalculateGuestInitialHappiness(uint8_t percentage)
-{
-    return Park::CalculateGuestInitialHappiness(percentage);
 }

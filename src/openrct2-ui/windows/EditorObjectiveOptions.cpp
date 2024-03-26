@@ -662,9 +662,9 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             {
                 case WIDX_PARK_NAME:
                 {
-                    auto& park = OpenRCT2::GetGameState().Park;
                     WindowTextInputRawOpen(
-                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), ParkNameMaxLength);
+                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, gameState.Park.Name.c_str(),
+                        ParkNameMaxLength);
                     break;
                 }
                 case WIDX_SCENARIO_NAME:
@@ -794,8 +794,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
                     if (gameState.ScenarioName.empty())
                     {
-                        auto& park = OpenRCT2::GetGameState().Park;
-                        gameState.ScenarioName = park.Name;
+                        gameState.ScenarioName = gameState.Park.Name;
                     }
                     break;
                 }
@@ -972,8 +971,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             widthToSet = widgets[WIDX_PARK_NAME].left - 16;
 
             {
-                auto& park = OpenRCT2::GetGameState().Park;
-                auto parkName = park.Name.c_str();
+                auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
                 ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
