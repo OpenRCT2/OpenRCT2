@@ -714,9 +714,7 @@ public:
     {
         if (_titleSequencePlayer == nullptr)
         {
-            auto context = GetContext();
-            auto gameState = context->GetGameState();
-            _titleSequencePlayer = OpenRCT2::Title::CreateTitleSequencePlayer(*gameState);
+            _titleSequencePlayer = OpenRCT2::Title::CreateTitleSequencePlayer();
         }
         return _titleSequencePlayer.get();
     }

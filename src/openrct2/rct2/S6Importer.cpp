@@ -229,7 +229,7 @@ namespace RCT2
 
         void Import(GameState_t& gameState) override
         {
-            Initialise();
+            Initialise(gameState);
 
             gameState.EditorStep = _s6.Info.EditorStep;
             gameState.ScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.Info.Category);
@@ -1719,9 +1719,9 @@ namespace RCT2
             dst->position.y = src->y;
         }
 
-        void Initialise()
+        void Initialise(GameState_t& gameState)
         {
-            OpenRCT2::GetContext()->GetGameState()->InitAll({ _s6.MapSize, _s6.MapSize });
+            gameStateInitAll(gameState, { _s6.MapSize, _s6.MapSize });
         }
 
         /**

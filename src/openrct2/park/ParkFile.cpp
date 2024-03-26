@@ -1063,8 +1063,7 @@ namespace OpenRCT2
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
-                        // TODO: Use the passed gameState instead of the global one.
-                        OpenRCT2::GetContext()->GetGameState()->InitAll(gameState.MapSize);
+                        gameStateInitAll(gameState, gameState.MapSize);
 
                         auto numElements = cs.Read<uint32_t>();
 

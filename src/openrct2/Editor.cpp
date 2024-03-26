@@ -105,7 +105,7 @@ namespace Editor
         auto& gameState = GetGameState();
         Audio::StopAll();
         ObjectListLoad();
-        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        gameStateInitAll(gameState, DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gameState.EditorStep = EditorStep::ObjectSelection;
         gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -167,7 +167,7 @@ namespace Editor
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -188,7 +188,7 @@ namespace Editor
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();

@@ -158,20 +158,8 @@ namespace OpenRCT2
 
     GameState_t& GetGameState();
 
-    /**
-     * Class to update the state of the map and park.
-     */
-    class GameState final
-    {
-    public:
-        GameState();
-        GameState(const GameState&) = delete;
+    void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize);
+    void gameStateTick();
+    void gameStateUpdateLogic();
 
-        void InitAll(const TileCoordsXY& mapSize);
-        void Tick();
-        void UpdateLogic();
-
-    private:
-        void CreateStateSnapshot();
-    };
 } // namespace OpenRCT2
