@@ -44,33 +44,12 @@ enum class ObjectType : uint8_t
     None = 255
 };
 
-constexpr std::array ObjectTypes = {
-    ObjectType::Ride,
-    ObjectType::SmallScenery,
-    ObjectType::LargeScenery,
-    ObjectType::Walls,
-    ObjectType::Banners,
-    ObjectType::Paths,
-    ObjectType::PathAdditions,
-    ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance,
-    ObjectType::Water,
-    ObjectType::ScenarioText,
-    ObjectType::TerrainSurface,
-    ObjectType::TerrainEdge,
-    ObjectType::Station,
-    ObjectType::Music,
-    ObjectType::FootpathSurface,
-    ObjectType::FootpathRailings,
-    ObjectType::Audio,
-};
-// Not using EnumValue to reduce header includes
-static_assert(ObjectTypes.size() == static_cast<uint8_t>(ObjectType::Count));
-
 static constexpr size_t kNumTransientObjectTypes = 16;
 static constexpr size_t kNumIntransientObjectTypes = 2;
 
 bool ObjectTypeIsTransient(ObjectType type);
 bool ObjectTypeIsIntransient(ObjectType type);
+
+std::span<const ObjectType> getAllObjectTypes();
 std::span<const ObjectType> getTransientObjectTypes();
 std::span<const ObjectType> getIntransientObjectTypes();

@@ -143,7 +143,7 @@ public:
     ObjectList GetLoadedObjects() override
     {
         ObjectList objectList;
-        for (auto objectType : ObjectTypes)
+        for (auto objectType : getAllObjectTypes())
         {
             auto maxObjectsOfType = static_cast<ObjectEntryIndex>(getObjectEntryGroupCount(objectType));
             for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
@@ -312,7 +312,7 @@ private:
 
     void UnloadAll(bool onlyTransient)
     {
-        for (auto type : ObjectTypes)
+        for (auto type : getAllObjectTypes())
         {
             if (!onlyTransient || !IsIntransientObjectType(type))
             {
@@ -443,7 +443,7 @@ private:
         // Unload objects that are not in the hash set
         size_t totalObjectsLoaded = 0;
         size_t numObjectsUnloaded = 0;
-        for (auto type : ObjectTypes)
+        for (auto type : getAllObjectTypes())
         {
             if (!IsIntransientObjectType(type))
             {
@@ -522,7 +522,7 @@ private:
         std::vector<ObjectToLoad> requiredObjects;
         std::vector<ObjectEntryDescriptor> missingObjects;
 
-        for (auto objectType : ObjectTypes)
+        for (auto objectType : getAllObjectTypes())
         {
             auto& descriptors = objectList.GetList(objectType);
             auto maxSize = static_cast<size_t>(getObjectEntryGroupCount(objectType));
@@ -673,7 +673,7 @@ private:
         }
 
         // Set the new object lists
-        for (auto type : ObjectTypes)
+        for (auto type : getAllObjectTypes())
         {
             if (!IsIntransientObjectType(type))
             {

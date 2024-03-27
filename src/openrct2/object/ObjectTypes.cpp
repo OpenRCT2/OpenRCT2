@@ -14,6 +14,29 @@
 
 #include <algorithm>
 
+constexpr std::array kAllObjectTypes = {
+    ObjectType::Ride,
+    ObjectType::SmallScenery,
+    ObjectType::LargeScenery,
+    ObjectType::Walls,
+    ObjectType::Banners,
+    ObjectType::Paths,
+    ObjectType::PathAdditions,
+    ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance,
+    ObjectType::Water,
+    ObjectType::ScenarioText,
+    ObjectType::TerrainSurface,
+    ObjectType::TerrainEdge,
+    ObjectType::Station,
+    ObjectType::Music,
+    ObjectType::FootpathSurface,
+    ObjectType::FootpathRailings,
+    ObjectType::Audio,
+};
+
+static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::Count));
+
 // Object types that can be saved in a park file.
 static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransientObjectTypes = {
     ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
@@ -38,6 +61,11 @@ bool ObjectTypeIsTransient(ObjectType type)
 bool ObjectTypeIsIntransient(ObjectType type)
 {
     return std::find(kIntransientObjectTypes.begin(), kIntransientObjectTypes.end(), type) != std::end(kIntransientObjectTypes);
+}
+
+std::span<const ObjectType> getAllObjectTypes()
+{
+    return kAllObjectTypes;
 }
 
 std::span<const ObjectType> getTransientObjectTypes()

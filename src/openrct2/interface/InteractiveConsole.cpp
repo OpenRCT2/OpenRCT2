@@ -1311,7 +1311,7 @@ static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
 
 static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    for (auto objectType : ObjectTypes)
+    for (auto objectType : getAllObjectTypes())
     {
         uint32_t entryGroupIndex = 0;
         for (; entryGroupIndex < getObjectEntryGroupCount(objectType); entryGroupIndex++)
