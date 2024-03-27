@@ -1558,10 +1558,14 @@ declare global {
         direction: Direction;
         object: number;
         primaryColour: number;
+        /** If the element is a banner, this is the text colour. */
         secondaryColour: number;
         tertiaryColour: number;
-        bannerIndex: number | null;
         slope: Direction;
+        /** Writing to bannerIndex is deprecated and may result in uncontrolled behaviour. */
+        readonly bannerIndex: number | null;
+        /** If the element is a banner, this is its text. */
+        bannerText: string | null;
     }
 
     interface EntranceElement extends BaseTileElement {
@@ -1582,16 +1586,28 @@ declare global {
         direction: Direction;
         object: number;
         primaryColour: number;
+        /** If the element is a banner, this is the text colour. */
         secondaryColour: number;
         tertiaryColour: number;
-        bannerIndex: number | null;
         sequence: number;
+        /** Writing to bannerIndex is deprecated and may result in uncontrolled behaviour. */
+        readonly bannerIndex: number | null;
+        /** If the element is a banner, this is its text. */
+        bannerText: string | null;
     }
 
     interface BannerElement extends BaseTileElement {
         type: "banner";
+
         direction: Direction;
-        bannerIndex: number;
+        object: number;
+        primaryColour: number;
+        /** This is the text colour. */
+        secondaryColour: number;
+        /** Writing to bannerIndex is deprecated and may result in uncontrolled behaviour. */
+        readonly bannerIndex: number;
+        bannerText: string;
+        isNoEntry: boolean;
     }
 
     /**

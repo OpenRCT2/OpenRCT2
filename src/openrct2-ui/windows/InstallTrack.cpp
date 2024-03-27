@@ -74,7 +74,7 @@ static Widget window_install_track_widgets[] = {
             _trackDesign = std::move(trackDesign);
             _trackPath = path;
             _trackName = GetNameFromTrackPath(path);
-            _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
+            _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
 
             UpdatePreview();
             Invalidate();
@@ -157,7 +157,7 @@ static Widget window_install_track_widgets[] = {
             GfxFillRect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};
-            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;

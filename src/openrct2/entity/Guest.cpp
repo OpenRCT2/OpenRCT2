@@ -2581,7 +2581,7 @@ bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array
                 car_array.push_back(i);
                 return true;
             }
-            num_seats &= VEHICLE_SEAT_NUM_MASK;
+            num_seats &= kVehicleSeatNumMask;
         }
         if (num_seats == vehicle->next_free_seat)
             continue;
@@ -5025,17 +5025,20 @@ void Guest::UpdateRideLeaveExit()
         return;
     }
 
-    OnExitRide(*ride);
-
-    if (ride != nullptr && (PeepFlags & PEEP_FLAGS_TRACKING))
+    if (ride != nullptr)
     {
-        auto ft = Formatter();
-        FormatNameTo(ft);
-        ride->FormatNameTo(ft);
+        OnExitRide(*ride);
 
-        if (gConfigNotifications.GuestLeftRide)
+        if (PeepFlags & PEEP_FLAGS_TRACKING)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
+            auto ft = Formatter();
+            FormatNameTo(ft);
+            ride->FormatNameTo(ft);
+
+            if (gConfigNotifications.GuestLeftRide)
+            {
+                News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
+            }
         }
     }
 
@@ -6276,7 +6279,7 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
     }
 
     // This is most likely to have peeps watch new rides
-    if (ride->excitement == RIDE_RATING_UNDEFINED)
+    if (ride->excitement == kRideRatingUndefined)
     {
         return true;
     }
@@ -6320,7 +6323,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
         return false;
 
     *rideToView = ride->id;
-    if (ride->excitement == RIDE_RATING_UNDEFINED)
+    if (ride->excitement == kRideRatingUndefined)
     {
         *rideSeatToView = 1;
         if (ride->status != RideStatus::Open)

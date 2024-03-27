@@ -178,6 +178,26 @@ static constexpr uint8_t metal_supports_slope_image_map[] = {
 };
 // clang-format on
 
+static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][NumOrthogonalDirections] = {
+    { MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner,
+      MetalSupportPlace::LeftCorner },
+    { MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner,
+      MetalSupportPlace::BottomCorner },
+    { MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner,
+      MetalSupportPlace::TopCorner },
+    { MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner,
+      MetalSupportPlace::RightCorner },
+    { MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre },
+    { MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide,
+      MetalSupportPlace::BottomLeftSide },
+    { MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide,
+      MetalSupportPlace::TopLeftSide },
+    { MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide,
+      MetalSupportPlace::BottomRightSide },
+    { MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide,
+      MetalSupportPlace::TopRightSide },
+};
+
 /**
  * Metal pole supports
  * @param supportType (edi)
@@ -374,6 +394,14 @@ bool MetalASupportsPaintSetup(
     return true;
 }
 
+bool MetalASupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    int32_t special, int32_t height, ImageId imageTemplate)
+{
+    placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
+    return MetalASupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
+}
+
 /**
  * Metal pole supports
  *  rct2: 0x00663584
@@ -557,6 +585,14 @@ bool MetalBSupportsPaintSetup(
     }
 
     return false; // AND
+}
+
+bool MetalBSupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    int32_t special, int32_t height, ImageId imageTemplate)
+{
+    placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
+    return MetalBSupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
 }
 
 constexpr uint8_t MetalSupportTypeCount = 13;
