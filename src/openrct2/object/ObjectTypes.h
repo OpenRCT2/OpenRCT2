@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <span>
 
 using ObjectEntryIndex = uint16_t;
 constexpr ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
@@ -68,9 +69,8 @@ static_assert(ObjectTypes.size() == static_cast<uint8_t>(ObjectType::Count));
 
 static constexpr size_t kNumTransientObjectTypes = 16;
 static constexpr size_t kNumIntransientObjectTypes = 2;
-static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_cast<size_t>(ObjectType::Count));
 
 bool ObjectTypeIsTransient(ObjectType type);
 bool ObjectTypeIsIntransient(ObjectType type);
-const std::array<ObjectType, kNumTransientObjectTypes>& getTransientObjectTypes();
-const std::array<ObjectType, kNumIntransientObjectTypes>& getIntransientObjectTypes();
+std::span<const ObjectType> getTransientObjectTypes();
+std::span<const ObjectType> getIntransientObjectTypes();

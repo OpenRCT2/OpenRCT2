@@ -15,7 +15,7 @@
 #include <algorithm>
 
 // Object types that can be saved in a park file.
-static constexpr std::array<ObjectType, kNumTransientObjectTypes> kTransientObjectTypes = {
+static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransientObjectTypes = {
     ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
     ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::SceneryGroup,
     ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
@@ -23,10 +23,12 @@ static constexpr std::array<ObjectType, kNumTransientObjectTypes> kTransientObje
 };
 
 // Object types that cannot be saved in a park file.
-static constexpr std::array<ObjectType, kNumIntransientObjectTypes> kIntransientObjectTypes = {
+static constexpr std::array<const ObjectType, kNumIntransientObjectTypes> kIntransientObjectTypes = {
     ObjectType::ScenarioText,
     ObjectType::Audio,
 };
+
+static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_cast<size_t>(ObjectType::Count));
 
 bool ObjectTypeIsTransient(ObjectType type)
 {
@@ -38,12 +40,12 @@ bool ObjectTypeIsIntransient(ObjectType type)
     return std::find(kIntransientObjectTypes.begin(), kIntransientObjectTypes.end(), type) != std::end(kIntransientObjectTypes);
 }
 
-const std::array<ObjectType, kNumTransientObjectTypes>& getTransientObjectTypes()
+std::span<const ObjectType> getTransientObjectTypes()
 {
     return kTransientObjectTypes;
 }
 
-const std::array<ObjectType, kNumIntransientObjectTypes>& getIntransientObjectTypes()
+std::span<const ObjectType> getIntransientObjectTypes()
 {
     return kIntransientObjectTypes;
 }
