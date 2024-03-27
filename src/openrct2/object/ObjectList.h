@@ -10,7 +10,6 @@
 #pragma once
 
 #include "Object.h"
-#include "ObjectLimits.h"
 
 #include <vector>
 
@@ -51,3 +50,6 @@ public:
 };
 
 void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex);
+
+size_t getObjectEntryGroupCount(ObjectType objectType);
+size_t getObjectTypeLimit(ObjectType type);

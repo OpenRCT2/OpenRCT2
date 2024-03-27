@@ -382,8 +382,8 @@ namespace OpenRCT2
                     auto objectList = objManager.GetLoadedObjects();
 
                     // Write number of object sub lists
-                    cs.Write(static_cast<uint16_t>(TransientObjectTypes.size()));
-                    for (auto objectType : TransientObjectTypes)
+                    cs.Write(static_cast<uint16_t>(getTransientObjectTypes().size()));
+                    for (auto objectType : getTransientObjectTypes())
                     {
                         // Write sub list
                         const auto& list = objectList.GetList(objectType);

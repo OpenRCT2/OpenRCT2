@@ -1311,10 +1311,10 @@ static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
 
 static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    for (auto objectType : ObjectTypes)
+    for (auto objectType : getAllObjectTypes())
     {
-        int32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < object_entry_group_counts[EnumValue(objectType)]; entryGroupIndex++)
+        uint32_t entryGroupIndex = 0;
+        for (; entryGroupIndex < getObjectEntryGroupCount(objectType); entryGroupIndex++)
         {
             if (ObjectEntryGetObject(objectType, entryGroupIndex) == nullptr)
             {
@@ -1322,8 +1322,7 @@ static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_u
             }
         }
         console.WriteFormatLine(
-            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex,
-            object_entry_group_counts[EnumValue(objectType)]);
+            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex, getObjectEntryGroupCount(objectType));
     }
 
     return 0;

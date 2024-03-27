@@ -18,8 +18,8 @@
 #include "../core/String.hpp"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainEdgeObject.h"
@@ -311,7 +311,7 @@ static void MapGenPlaceTrees()
     std::vector<int32_t> desertTreeIds;
     std::vector<int32_t> snowTreeIds;
 
-    for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
+    for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::SmallScenery); i++)
     {
         auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
         auto entry = ObjectEntryGetObject(ObjectType::SmallScenery, i);
