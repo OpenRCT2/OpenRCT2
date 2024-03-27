@@ -99,7 +99,6 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableAllBreakdowns, gameState.Cheats.DisableAllBreakdowns, count);
         CheatEntrySerialise(ds, CheatType::BuildInPauseMode, gameState.Cheats.BuildInPauseMode, count);
         CheatEntrySerialise(ds, CheatType::IgnoreRideIntensity, gameState.Cheats.IgnoreRideIntensity, count);
-        CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
         CheatEntrySerialise(ds, CheatType::DisableVandalism, gameState.Cheats.DisableVandalism, count);
         CheatEntrySerialise(ds, CheatType::DisableLittering, gameState.Cheats.DisableLittering, count);
         CheatEntrySerialise(ds, CheatType::NeverEndingMarketing, gameState.Cheats.NeverendingMarketing, count);
@@ -118,6 +117,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gameState.Cheats.AllowSpecialColourSchemes, count);
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.Cheats.MakeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.Cheats.SelectedStaffSpeed, count);
+        CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();

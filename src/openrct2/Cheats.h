@@ -30,7 +30,6 @@ struct CheatsState
     bool DisableAllBreakdowns;
     bool BuildInPauseMode;
     bool IgnoreRideIntensity;
-    bool IgnorePrice;
     bool DisableVandalism;
     bool DisableLittering;
     bool NeverendingMarketing;
@@ -47,6 +46,7 @@ struct CheatsState
     bool AllowSpecialColourSchemes;
     bool MakeAllDestructible;
     StaffSpeedCheat SelectedStaffSpeed;
+    bool IgnorePrice;
 };
 
 enum class CheatType : int32_t
