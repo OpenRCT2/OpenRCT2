@@ -43,9 +43,6 @@ enum
     S6_TYPE_SCENARIO
 };
 
-#define S6_RCT2_VERSION 120001
-#define S6_MAGIC_NUMBER 0x00031144
-
 enum SCENARIO_CATEGORY
 {
     // RCT2 categories (keep order)
