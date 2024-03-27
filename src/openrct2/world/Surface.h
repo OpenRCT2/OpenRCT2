@@ -111,10 +111,10 @@ enum
 };
 
 // Surface
-constexpr uint8_t kTileElementSurfaceDiagonalFlag = 0x10;       // in TileElement.properties.surface.slope
+constexpr uint8_t kTileElementSurfaceDiagonalFlag = 0x10;      // in TileElement.properties.surface.slope
 constexpr uint8_t kTileElementSurfaceRaisedCornersMask = 0x0F; // in TileElement.properties.surface.slope
-constexpr uint8_t kTileElementSurfaceSlopeMask =                                                                                        \
-    (kTileElementSurfaceDiagonalFlag | kTileElementSurfaceRaisedCornersMask); // in TileElement.properties.surface.slope
+constexpr uint8_t kTileElementSurfaceSlopeMask
+    = (kTileElementSurfaceDiagonalFlag | kTileElementSurfaceRaisedCornersMask); // in TileElement.properties.surface.slope
 
 constexpr uint8_t kTileElementSurfaceOwnershipMask = 0xF0;
 constexpr uint8_t kTileElementSurfaceParkFenceMask = 0x0F;
