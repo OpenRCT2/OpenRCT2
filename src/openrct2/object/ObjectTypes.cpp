@@ -38,14 +38,6 @@ bool ObjectTypeIsIntransient(ObjectType type)
     return std::find(kIntransientObjectTypes.begin(), kIntransientObjectTypes.end(), type) != std::end(kIntransientObjectTypes);
 }
 
-size_t GetObjectTypeLimit(ObjectType type)
-{
-    auto index = EnumValue(type);
-    if (index >= EnumValue(ObjectType::Count))
-        return 0;
-    return static_cast<size_t>(object_entry_group_counts[index]);
-}
-
 const std::array<ObjectType, kNumTransientObjectTypes>& getTransientObjectTypes()
 {
     return kTransientObjectTypes;

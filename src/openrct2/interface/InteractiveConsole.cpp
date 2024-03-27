@@ -1313,8 +1313,8 @@ static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_u
 {
     for (auto objectType : ObjectTypes)
     {
-        int32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < object_entry_group_counts[EnumValue(objectType)]; entryGroupIndex++)
+        uint32_t entryGroupIndex = 0;
+        for (; entryGroupIndex < getObjectEntryGroupCount(objectType); entryGroupIndex++)
         {
             if (ObjectEntryGetObject(objectType, entryGroupIndex) == nullptr)
             {
@@ -1322,8 +1322,7 @@ static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_u
             }
         }
         console.WriteFormatLine(
-            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex,
-            object_entry_group_counts[EnumValue(objectType)]);
+            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex, getObjectEntryGroupCount(objectType));
     }
 
     return 0;

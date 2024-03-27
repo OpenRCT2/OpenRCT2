@@ -251,7 +251,7 @@ const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 
 std::string_view GetRideEntryName(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[EnumValue(ObjectType::Ride)])
+    if (index >= getObjectEntryGroupCount(ObjectType::Ride))
     {
         LOG_ERROR("invalid index %d for ride type", index);
         return {};

@@ -72,6 +72,5 @@ static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_ca
 
 bool ObjectTypeIsTransient(ObjectType type);
 bool ObjectTypeIsIntransient(ObjectType type);
-size_t GetObjectTypeLimit(ObjectType type);
 const std::array<ObjectType, kNumTransientObjectTypes>& getTransientObjectTypes();
 const std::array<ObjectType, kNumIntransientObjectTypes>& getIntransientObjectTypes();
