@@ -44,23 +44,6 @@ int32_t object_entry_group_counts[] = {
 };
 static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
-// 98DA2C
-// clang-format off
-int32_t object_entry_group_encoding[] = {
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_ROTATE,
-};
-// clang-format on
-
 ObjectList::const_iterator::const_iterator(const ObjectList* parent, bool end)
 {
     _parent = parent;
