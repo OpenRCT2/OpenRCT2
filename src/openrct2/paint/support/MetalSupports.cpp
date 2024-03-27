@@ -192,10 +192,10 @@ static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][NumOrthogonal
       MetalSupportPlace::BottomLeftSide },
     { MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide,
       MetalSupportPlace::TopLeftSide },
-    { MetalSupportPlace::BottomLeftSide, MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide,
-      MetalSupportPlace::TopRightSide },
-    { MetalSupportPlace::BottomRightSide, MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide,
+    { MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide,
       MetalSupportPlace::BottomRightSide },
+    { MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide,
+      MetalSupportPlace::TopRightSide },
 };
 
 /**

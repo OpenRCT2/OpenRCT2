@@ -374,7 +374,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 1 || direction == 0)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction ^ 1, height, TUNNEL_0);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1028,7 +1028,7 @@ static void classicStandUpRCTrackRightBankedQuarterTurn3(
                 session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 1)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction ^ 1, height, TUNNEL_0);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
