@@ -9,7 +9,6 @@
 
 #ifndef NO_TTF
 
-#    include <atomic>
 #    include <mutex>
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wdocumentation"
@@ -21,7 +20,6 @@
 #    include "../config/Config.h"
 #    include "../core/Numerics.hpp"
 #    include "../core/String.hpp"
-#    include "../localisation/Localisation.h"
 #    include "../localisation/LocalisationService.h"
 #    include "../platform/Platform.h"
 #    include "TTF.h"
@@ -372,13 +370,6 @@ void TTFFreeSurface(TTFSurface* surface)
 {
     free(const_cast<void*>(surface->pixels));
     free(surface);
-}
-
-uint8_t GetPixel(const TTFSurface& surface, int32_t x, int32_t y)
-{
-    if (x < 0 || y < 0 || x >= surface.w || y >= surface.h)
-        return 0;
-    return static_cast<const uint8_t*>(surface.pixels)[y * surface.pitch + x];
 }
 
 #else
