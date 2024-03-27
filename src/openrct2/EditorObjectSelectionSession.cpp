@@ -125,7 +125,7 @@ void SetupInUseSelectionFlags()
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    for (auto objectType : TransientObjectTypes)
+    for (auto objectType : getTransientObjectTypes())
     {
         for (int32_t i = 0; i < object_entry_group_counts[EnumValue(objectType)]; i++)
         {

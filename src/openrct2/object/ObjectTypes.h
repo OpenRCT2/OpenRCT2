@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <span>
 
 using ObjectEntryIndex = uint16_t;
 constexpr ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
@@ -66,17 +67,10 @@ constexpr std::array ObjectTypes = {
 // Not using EnumValue to reduce header includes
 static_assert(ObjectTypes.size() == static_cast<uint8_t>(ObjectType::Count));
 
-// Object types that can be saved in a park file.
-constexpr std::array<ObjectType, 16> TransientObjectTypes = {
-    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
-    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
-    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
-};
-
-// Object types that cannot be saved in a park file.
-constexpr std::array<ObjectType, 2> IntransientObjectTypes = { ObjectType::ScenarioText, ObjectType::Audio };
+static constexpr size_t kNumTransientObjectTypes = 16;
+static constexpr size_t kNumIntransientObjectTypes = 2;
 
 bool ObjectTypeIsTransient(ObjectType type);
 bool ObjectTypeIsIntransient(ObjectType type);
-size_t GetObjectTypeLimit(ObjectType type);
+std::span<const ObjectType> getTransientObjectTypes();
+std::span<const ObjectType> getIntransientObjectTypes();
