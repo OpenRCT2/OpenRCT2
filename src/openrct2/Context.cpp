@@ -808,7 +808,7 @@ namespace OpenRCT2
         {
             for (auto objectType : ObjectTypes)
             {
-                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(getObjectEntryGroupCount(objectType));
                 for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
                 {
                     auto obj = _objectManager->GetLoadedObject(objectType, i);
