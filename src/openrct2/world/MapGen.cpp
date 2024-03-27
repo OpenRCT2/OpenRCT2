@@ -311,7 +311,7 @@ static void MapGenPlaceTrees()
     std::vector<int32_t> desertTreeIds;
     std::vector<int32_t> snowTreeIds;
 
-    for (auto i = 0U; i < getObjectEntryGroupCount(ObjectType::SmallScenery); i++)
+    for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::SmallScenery); i++)
     {
         auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
         auto entry = ObjectEntryGetObject(ObjectType::SmallScenery, i);

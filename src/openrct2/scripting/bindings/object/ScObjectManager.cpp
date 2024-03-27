@@ -215,7 +215,7 @@ std::vector<DukValue> ScObjectManager::getAllObjects(const std::string& typez) c
     if (type)
     {
         auto count = getObjectEntryGroupCount(*type);
-        for (auto i = 0U; i < count; i++)
+        for (auto i = 0u; i < count; i++)
         {
             auto obj = objManager.GetLoadedObject(*type, i);
             if (obj != nullptr)

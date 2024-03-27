@@ -127,7 +127,7 @@ void SetupInUseSelectionFlags()
 
     for (auto objectType : getTransientObjectTypes())
     {
-        for (auto i = 0U; i < getObjectEntryGroupCount(objectType); i++)
+        for (auto i = 0u; i < getObjectEntryGroupCount(objectType); i++)
         {
             Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::AllFlags);
 
