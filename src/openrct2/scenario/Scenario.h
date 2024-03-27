@@ -148,7 +148,7 @@ enum
     AUTOSAVE_NEVER
 };
 
-#define AUTOSAVE_PAUSE 0
+constexpr uint8_t kAutosavePause = 0;
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
 static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;

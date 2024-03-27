@@ -256,7 +256,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
 
 void ScenarioAutosaveCheck()
 {
-    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+    if (gLastAutoSaveUpdate == kAutosavePause)
         return;
 
     // Milliseconds since last save
@@ -284,7 +284,7 @@ void ScenarioAutosaveCheck()
 
     if (shouldSave)
     {
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        gLastAutoSaveUpdate = kAutosavePause;
         GameAutosave();
     }
 }

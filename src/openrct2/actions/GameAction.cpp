@@ -422,7 +422,7 @@ namespace GameActions
             }
 
             // Allow autosave to commence
-            if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+            if (gLastAutoSaveUpdate == kAutosavePause)
             {
                 gLastAutoSaveUpdate = Platform::GetTicks();
             }

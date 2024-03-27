@@ -2805,7 +2805,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         EntityTweener::Get().Reset();
         MapAnimationAutoCreate();
 
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        gLastAutoSaveUpdate = kAutosavePause;
         result = true;
     }
     catch (const std::exception& e)
