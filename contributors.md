@@ -119,6 +119,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Tiago Reul (reul) - Misc.
 * Fredrik Tegnell (fredriktegnell) - Misc.
 * Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
+* Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
