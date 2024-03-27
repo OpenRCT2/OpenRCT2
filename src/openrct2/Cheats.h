@@ -30,6 +30,7 @@ struct CheatsState
     bool DisableAllBreakdowns;
     bool BuildInPauseMode;
     bool IgnoreRideIntensity;
+    bool IgnorePrice;
     bool DisableVandalism;
     bool DisableLittering;
     bool NeverendingMarketing;
@@ -46,7 +47,6 @@ struct CheatsState
     bool AllowSpecialColourSchemes;
     bool MakeAllDestructible;
     StaffSpeedCheat SelectedStaffSpeed;
-    bool IgnorePrice;
 };
 
 enum class CheatType : int32_t
@@ -64,7 +64,6 @@ enum class CheatType : int32_t
     UnlockAllPrices,
     BuildInPauseMode,
     IgnoreRideIntensity,
-    IgnorePrice,
     DisableVandalism,
     DisableLittering,
     NoMoney,
@@ -105,6 +104,7 @@ enum class CheatType : int32_t
     AllowRegularPathAsQueue,
     AllowSpecialColourSchemes,
     RemoveParkFences,
+    IgnorePrice,
     Count,
 };
 
