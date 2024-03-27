@@ -186,30 +186,9 @@ static Widget _editorBottomToolbarWidgets[] = {
             GfxInvalidateScreen();
         }
 
-        bool CheckObjectSelection() const
-        {
-            WindowBase* w;
-
-            auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
-            if (missingObjectType == ObjectType::None)
-            {
-                WindowCloseByClass(WindowClass::EditorObjectSelection);
-                return true;
-            }
-
-            ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-            w = WindowFindByClass(WindowClass::EditorObjectSelection);
-            if (w != nullptr)
-            {
-                // Click tab with missing object
-                w->OnMouseUp(WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
-            }
-            return false;
-        }
-
         void JumpForwardFromObjectSelection() const
         {
-            if (!CheckObjectSelection())
+            if (!EditorObjectSelectionWindowCheck())
                 return;
 
             FinishObjectSelection();

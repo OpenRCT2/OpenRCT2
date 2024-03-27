@@ -5287,7 +5287,7 @@ static_assert(std::size(RatingNames) == 6);
                 disabled_widgets |= (1uLL << WIDX_SAVE_TRACK_DESIGN);
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
                 {
-                    if (ride->excitement != RIDE_RATING_UNDEFINED)
+                    if (ride->excitement != kRideRatingUndefined)
                     {
                         disabled_widgets &= ~(1uLL << WIDX_SAVE_TRACK_DESIGN);
                         widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;

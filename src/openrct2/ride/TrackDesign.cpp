@@ -307,7 +307,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
             Direction entranceDirection = tileElement->GetDirection();
             entranceDirection -= _saveDirection;
-            entranceDirection &= TILE_ELEMENT_DIRECTION_MASK;
+            entranceDirection &= kTileElementDirectionMask;
 
             mapLocation -= tds.Origin;
             // Rotate entrance coordinates backwards to the correct direction
@@ -973,7 +973,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     }
 
     int32_t z = scenery.loc.z + originZ;
-    uint8_t sceneryRotation = (rotation + scenery.flags) & TILE_ELEMENT_DIRECTION_MASK;
+    uint8_t sceneryRotation = (rotation + scenery.flags) & kTileElementDirectionMask;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
@@ -2016,7 +2016,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     uint8_t flags;
     if (!TrackDesignPlacePreview(tds, td6, &cost, &ride, &flags))
     {
-        std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
+        std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
         UnstashMap();
         return;
     }
@@ -2085,7 +2085,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         view.rotation = i;
         ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
 
-        dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
+        dpi.bits += kTrackPreviewImageSize;
     }
 
     ride->Delete();
@@ -2098,7 +2098,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
  */
 static void TrackDesignPreviewClearMap()
 {
-    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
     GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 

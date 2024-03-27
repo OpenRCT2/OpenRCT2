@@ -466,7 +466,6 @@ static void ShortcutOpenSceneryPicker()
 
     window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
-        && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WindowWidgetType::Empty
         && !gWindowSceneryEyedropperEnabled)
     {
         window_scenery->OnMouseUp(WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);

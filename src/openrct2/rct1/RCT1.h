@@ -11,6 +11,7 @@
 
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
+#include "../world/Park.h"
 #include "Limits.h"
 
 namespace RCT1
@@ -772,7 +773,7 @@ namespace RCT1
         uint16_t AvailableBanners;
         uint8_t Unk1990AA[94];
         uint16_t ParkRating;
-        uint8_t ParkRatingHistory[32];
+        uint8_t ParkRatingHistory[kParkRatingHistorySize];
         uint8_t GuestsInParkHistory[32];
         uint8_t ResearchPriority;
         uint8_t ResearchProgressStage;

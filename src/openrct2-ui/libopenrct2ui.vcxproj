@@ -69,6 +69,7 @@
     <ClInclude Include="interface\Graph.h" />
     <ClInclude Include="interface\InGameConsole.h" />
     <ClInclude Include="interface\LandTool.h" />
+    <ClInclude Include="interface\Objective.h" />
     <ClInclude Include="interface\Theme.h" />
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="interface\Graph.cpp" />
     <ClCompile Include="interface\InGameConsole.cpp" />
     <ClCompile Include="interface\LandTool.cpp" />
+    <ClCompile Include="interface\Objective.cpp" />
     <ClCompile Include="interface\Theme.cpp" />
     <ClCompile Include="interface\ViewportInteraction.cpp" />
     <ClCompile Include="interface\Widget.cpp" />

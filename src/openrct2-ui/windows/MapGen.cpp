@@ -405,9 +405,13 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                 _resizeDirection = ResizeDirection::Both;
 
             if (_resizeDirection != ResizeDirection::X)
-                _mapSize.y = std::clamp(_mapSize.y + sizeOffset, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+                _mapSize.y = std::clamp(
+                    _mapSize.y + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
+                    static_cast<int>(kMaximumMapSizeTechnical));
             if (_resizeDirection != ResizeDirection::Y)
-                _mapSize.x = std::clamp(_mapSize.x + sizeOffset, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+                _mapSize.x = std::clamp(
+                    _mapSize.x + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
+                    static_cast<int>(kMaximumMapSizeTechnical));
         }
 
         void InputMapSize(WidgetIndex callingWidget, int32_t currentValue)

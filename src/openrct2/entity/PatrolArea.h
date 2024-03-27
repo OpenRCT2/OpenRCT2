@@ -17,7 +17,7 @@
 // The number of elements in the GameState_t.StaffPatrolAreas array per staff member. Every bit in the array represents a 4x4
 // square. Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a
 // 256x256 map.
-constexpr size_t STAFF_PATROL_AREA_BLOCKS_PER_LINE = MAXIMUM_MAP_SIZE_TECHNICAL / 4;
+constexpr size_t STAFF_PATROL_AREA_BLOCKS_PER_LINE = kMaximumMapSizeTechnical / 4;
 constexpr size_t STAFF_PATROL_AREA_SIZE = (STAFF_PATROL_AREA_BLOCKS_PER_LINE * STAFF_PATROL_AREA_BLOCKS_PER_LINE) / 32;
 
 class PatrolArea
@@ -32,8 +32,8 @@ private:
         std::vector<TileCoordsXY> SortedTiles;
     };
 
-    static constexpr auto CellColumns = (MAXIMUM_MAP_SIZE_TECHNICAL + (Cell::Width - 1)) / Cell::Width;
-    static constexpr auto CellRows = (MAXIMUM_MAP_SIZE_TECHNICAL + (Cell::Height - 1)) / Cell::Height;
+    static constexpr auto CellColumns = (kMaximumMapSizeTechnical + (Cell::Width - 1)) / Cell::Width;
+    static constexpr auto CellRows = (kMaximumMapSizeTechnical + (Cell::Height - 1)) / Cell::Height;
     static constexpr auto NumCells = CellColumns * CellRows;
 
     std::array<Cell, NumCells> Areas;

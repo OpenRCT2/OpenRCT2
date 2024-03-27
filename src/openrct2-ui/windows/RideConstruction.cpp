@@ -2628,7 +2628,7 @@ static Widget _rideConstructionWidgets[] = {
             auto& gameState = OpenRCT2::GetGameState();
             auto preserveMapSize = gameState.MapSize;
 
-            gameState.MapSize = { MAXIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL };
+            gameState.MapSize = { kMaximumMapSizeTechnical, kMaximumMapSizeTechnical };
 
             // Setup non changing parts of the temporary track tile element
             tempTrackTileElement.SetType(TileElementType::Track);

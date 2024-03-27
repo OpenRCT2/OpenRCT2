@@ -396,6 +396,7 @@
     <ClInclude Include="ride\coaster\meta\AlpineCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
     <ClInclude Include="ride\coaster\meta\ClassicMiniRollerCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\ClassicStandUpRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\ClassicWoodenRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CompactInvertedCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CorkscrewRollerCoaster.h" />
@@ -901,6 +902,7 @@
     <ClCompile Include="ride\coaster\AirPoweredVerticalCoaster.cpp" />
     <ClCompile Include="ride\coaster\AlpineCoaster.cpp" />
     <ClCompile Include="ride\coaster\BobsleighCoaster.cpp" />
+    <ClCompile Include="ride\coaster\ClassicStandUpRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\ClassicWoodenRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />

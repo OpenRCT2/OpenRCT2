@@ -3678,6 +3678,16 @@ STR_6609    :Streckenblock konnte nicht gefunden werden
 STR_6610    :Wegelement konnte nicht gefunden werden
 STR_6611    :Wandelement konnte nicht gefunden werden
 STR_6612    :Bannerelement konnte nicht gefunden werden
+STR_6613    :Objekt neu laden
+STR_6614    :Parkeintrittsgeld kann nicht geändert werden
+STR_6615    :Streckenabschnitt auf dieser Kachel benötigt Wasser
+STR_6616    :Aktion ungültig für diesen Personaltyp
+STR_6617    :Kachelelement kann nicht mit sich selbst vertauscht werden
+STR_6618    :Objekt kann weder eingeschränkt werden noch kann die Einschränkung zurückgenommen werden …
+STR_6619    :Objekttyp kann nicht eingeschränkt werden!
+STR_6620    :Objekt nicht gefunden!
+STR_6621    :Einschränken
+STR_6622    :Objekt auf den Szenario-Editor und dem Sandkastenmodus einschränken
 
 #############
 # Scenarios #

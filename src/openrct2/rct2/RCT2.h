@@ -13,6 +13,7 @@
 #include "../core/FileSystem.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
+#include "../world/Park.h"
 #include "Limits.h"
 
 #include <tuple>
@@ -889,7 +890,7 @@ namespace RCT2
         uint16_t ParkRating;
 
         // Ignored in scenario
-        uint8_t ParkRatingHistory[32];
+        uint8_t ParkRatingHistory[kParkRatingHistorySize];
         uint8_t GuestsInParkHistory[32];
 
         // SC6[10]

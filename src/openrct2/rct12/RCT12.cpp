@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 
 RCT12TileElementType RCT12TileElementBase::GetType() const
 {
-    auto elem_type = static_cast<RCT12TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    auto elem_type = static_cast<RCT12TileElementType>((this->Type & kTileElementTypeMask) >> 2);
     switch (elem_type)
     {
         case RCT12TileElementType::Surface:
@@ -54,7 +54,7 @@ RCT12TileElementType RCT12TileElementBase::GetType() const
 
 uint8_t RCT12TileElementBase::GetDirection() const
 {
-    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & kTileElementDirectionMask;
 }
 
 uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
@@ -308,7 +308,7 @@ uint8_t RCT12SmallSceneryElement::GetAge() const
 
 uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & kTileElementQuadrantMask) >> 6;
 }
 
 colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
@@ -358,7 +358,7 @@ uint8_t RCT12WallElement::GetEntryIndex() const
 
 uint8_t RCT12WallElement::GetSlope() const
 {
-    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & kTileElementQuadrantMask) >> 6;
 }
 
 colour_t RCT12WallElement::GetPrimaryColour() const

@@ -887,7 +887,7 @@ static void Loc6A6D7E(
                         {
                             return;
                         }
-                        uint16_t dx = DirectionReverse((direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
+                        uint16_t dx = DirectionReverse((direction - tileElement->GetDirection()) & kTileElementDirectionMask);
 
                         if (!(ted.SequenceProperties[trackSequence] & (1 << dx)))
                         {
@@ -973,7 +973,7 @@ static void Loc6A6C85(
         {
             return;
         }
-        uint16_t dx = (direction - tileElementPos.element->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
+        uint16_t dx = (direction - tileElementPos.element->GetDirection()) & kTileElementDirectionMask;
         if (!(ted.SequenceProperties[trackSequence] & (1 << dx)))
         {
             return;
@@ -2215,7 +2215,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                     const auto& ted = GetTrackElementDescriptor(trackType);
                     if (ted.SequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
-                        uint16_t dx = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
+                        uint16_t dx = ((coords.direction - tileElement->GetDirection()) & kTileElementDirectionMask);
                         if (ted.SequenceProperties[trackSequence] & (1 << dx))
                         {
                             // Track element has the flags required for the given direction

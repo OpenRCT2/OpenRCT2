@@ -95,9 +95,15 @@ struct PaintSession;
 bool MetalASupportsPaintSetup(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
+bool MetalASupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    int32_t special, int32_t height, ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
+bool MetalBSupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    int32_t special, int32_t height, ImageId imageTemplate);
 void DrawSupportsSideBySide(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
 bool PathPoleSupportsPaintSetup(

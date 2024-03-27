@@ -450,9 +450,9 @@ static void FixInvalidSurfaces()
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
 
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
