@@ -501,43 +501,41 @@ std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen)
     return output;
 }
 
-// Type-independent code left as macro to reduce duplicate code.
-#define ADD_CLAMP_BODY(value, value_to_add, min_cap, max_cap)                                                                  \
-    if ((value_to_add > 0) && (value > (max_cap - (value_to_add))))                                                            \
-    {                                                                                                                          \
-        value = max_cap;                                                                                                       \
-    }                                                                                                                          \
-    else if ((value_to_add < 0) && (value < (min_cap - (value_to_add))))                                                       \
-    {                                                                                                                          \
-        value = min_cap;                                                                                                       \
-    }                                                                                                                          \
-    else                                                                                                                       \
-    {                                                                                                                          \
-        value += value_to_add;                                                                                                 \
+template<typename T>
+constexpr T kAddClampBody(T value, T value_to_add, T min_cap, T max_cap)
+{
+    if ((value_to_add > 0) && (value > (max_cap - (value_to_add))))
+    {
+        return max_cap;
     }
+    else if ((value_to_add < 0) && (value < (min_cap - (value_to_add))))
+    {
+        return min_cap;
+    }
+    else
+    {
+        return value + value_to_add;
+    }
+}
 
 int8_t AddClamp_int8_t(int8_t value, int8_t value_to_add)
 {
-    ADD_CLAMP_BODY(value, value_to_add, INT8_MIN, INT8_MAX);
-    return value;
+    return kAddClampBody<int8_t>(value, value_to_add, INT8_MIN, INT8_MAX);
 }
 
 int16_t AddClamp_int16_t(int16_t value, int16_t value_to_add)
 {
-    ADD_CLAMP_BODY(value, value_to_add, INT16_MIN, INT16_MAX);
-    return value;
+    return kAddClampBody<int16_t>(value, value_to_add, INT16_MIN, INT16_MAX);
 }
 
 int32_t AddClamp_int32_t(int32_t value, int32_t value_to_add)
 {
-    ADD_CLAMP_BODY(value, value_to_add, INT32_MIN, INT32_MAX);
-    return value;
+    return kAddClampBody<int32_t>(value, value_to_add, INT32_MIN, INT32_MAX);
 }
 
 int64_t AddClamp_int64_t(int64_t value, int64_t value_to_add)
 {
-    ADD_CLAMP_BODY(value, value_to_add, INT64_MIN, INT64_MAX);
-    return value;
+    return kAddClampBody<int64_t>(value, value_to_add, INT64_MIN, INT64_MAX);
 }
 
 money64 AddClamp_money64(money64 value, money64 value_to_add)
