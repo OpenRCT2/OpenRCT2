@@ -9,11 +9,6 @@
 
 #pragma once
 
-#define NETWORK_DEFAULT_PORT 11753
-#define NETWORK_LAN_BROADCAST_PORT 11754
-#define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
-#define MAX_SERVER_DESCRIPTION_LENGTH 256
-
 #include "../Game.h"
 #include "../common.h"
 #include "../core/JsonFwd.hpp"
@@ -24,6 +19,11 @@
 #include <string>
 #include <string_view>
 #include <vector>
+
+constexpr int32_t kNetworkDefaultPort = 11753;
+#define NETWORK_LAN_BROADCAST_PORT 11754
+#define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
+#define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 class GameAction;
 struct Peep;
