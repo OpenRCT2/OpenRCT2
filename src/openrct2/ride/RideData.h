@@ -487,6 +487,7 @@ constexpr std::string_view MUSIC_OBJECT_PIRATE = "rct2.music.pirate";
 constexpr std::string_view MUSIC_OBJECT_ROCK_1 = "rct2.music.rock1";
 constexpr std::string_view MUSIC_OBJECT_ROCK_2 = "rct2.music.rock2";
 constexpr std::string_view MUSIC_OBJECT_ROCK_3 = "rct2.music.rock3";
+constexpr std::string_view MUSIC_OBJECT_ROCK_4 = "openrct2.music.rock4";
 constexpr std::string_view MUSIC_OBJECT_SUMMER = "rct2.music.summer";
 constexpr std::string_view MUSIC_OBJECT_TECHNO = "rct2.music.techno";
 constexpr std::string_view MUSIC_OBJECT_WATER = "rct2.music.water";
