@@ -1577,12 +1577,11 @@ static void ScrollingTextSetBitmapForTTF(
         return;
     }
 
-    int32_t pitch = surface->pitch;
     int32_t width = surface->w;
     auto src = static_cast<const uint8_t*>(surface->pixels);
 
     // Pitch offset
-    src += 2 * pitch;
+    src += 2 * width;
 
     // Line height offset
     int32_t min_vpos = -fontDesc->offset_y;
@@ -1608,7 +1607,7 @@ static void ScrollingTextSetBitmapForTTF(
 
                 for (int32_t y = min_vpos; y < max_vpos; y++)
                 {
-                    uint8_t src_pixel = src[y * pitch + x];
+                    uint8_t src_pixel = src[y * width + x];
                     if ((!use_hinting && src_pixel != 0) || src_pixel > 140)
                     {
                         // Centre of the glyph: use full colour.

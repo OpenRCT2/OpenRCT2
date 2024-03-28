@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "Drawing.h"
+#include "TTF.h"
 
 namespace OpenRCT2::Drawing
 {
@@ -33,8 +34,8 @@ namespace OpenRCT2::Drawing
         virtual void DrawGlyph(
             DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
         virtual void DrawTTFBitmap(
-            DrawPixelInfo& dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height,
-            int32_t x, int32_t y, uint8_t hinting_threshold) abstract;
+            DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
+            uint8_t hintingThreshold) abstract;
     };
 
 } // namespace OpenRCT2::Drawing
