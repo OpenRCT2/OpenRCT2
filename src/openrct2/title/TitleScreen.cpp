@@ -181,9 +181,6 @@ void TitleScreen::Tick()
 
     InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
-    ContextUpdateMapTooltip();
-    WindowDispatchUpdateAll();
-
     ContextHandleInput();
 
     gInUpdateCode = false;
