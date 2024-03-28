@@ -18,6 +18,8 @@
 
 using namespace OpenRCT2;
 
+using DIRBASE_VALUES = u8string[DIRBASE_COUNT];
+
 static constexpr const char* DirectoryNamesRCT2[] = {
     "Data",        // DATA
     "Landscapes",  // LANDSCAPE
@@ -203,7 +205,7 @@ private:
     }
 };
 
-std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
+static std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
 {
     return std::make_unique<PlatformEnvironment>(basePaths);
 }
@@ -254,7 +256,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
         basePaths[EnumValue(DIRBASE::DOCUMENTATION)] = basePaths[EnumValue(DIRBASE::OPENRCT2)];
     }
 
-    auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
+    auto env = ::CreatePlatformEnvironment(basePaths);
 
     // Now load the config so we can get the RCT1 and RCT2 paths
     auto configPath = env->GetFilePath(PATHID::CONFIG);
