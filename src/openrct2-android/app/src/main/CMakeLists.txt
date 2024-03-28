@@ -212,7 +212,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++20 ${COMMON_COMPILE_OPTIONS} -Wnon-virtual-dtor")
 get_filename_component(ORCT2_ROOT "${CMAKE_SOURCE_DIR}/../../../../../" REALPATH)
 
-# Enable char8_t<->char conversion :(
+# Enable char8_t<->char conversion
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-char8_t -Wno-deprecated-declarations")
 
 list(APPEND CMAKE_MODULE_PATH "${ORCT2_ROOT}/cmake")
