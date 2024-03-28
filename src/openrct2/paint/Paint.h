@@ -125,7 +125,7 @@ struct TunnelEntry
 // the quadrant index is based on the x and y components combined.
 static constexpr int32_t MaxPaintQuadrants = kMaximumMapSizeTechnical * 2;
 
-#define TUNNEL_MAX_COUNT 65
+constexpr uint8_t kTunnelMaxCount = 65;
 
 /**
  * A pool of PaintEntry instances that can be rented out.
@@ -202,8 +202,8 @@ struct PaintSessionCore
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
-    TunnelEntry LeftTunnels[TUNNEL_MAX_COUNT];
-    TunnelEntry RightTunnels[TUNNEL_MAX_COUNT];
+    TunnelEntry LeftTunnels[kTunnelMaxCount];
+    TunnelEntry RightTunnels[kTunnelMaxCount];
     uint8_t LeftTunnelCount;
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
