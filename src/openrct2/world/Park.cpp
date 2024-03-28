@@ -35,6 +35,7 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/ScriptEngine.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
@@ -46,6 +47,7 @@
 #include <type_traits>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
 static int32_t _forcedParkRating = -1;
@@ -531,6 +533,23 @@ money64 Park::CalculateTotalRideValueForMoney() const
 
 uint32_t Park::CalculateSuggestedMaxGuests() const
 {
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP))
+    {
+        auto& gameState = GetGameState();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto obj = DukObject(ctx);
+        obj.Set("cap", gameState.SuggestedGuestMaximum);
+        
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP, e, true);
+
+        auto suggestedMaxGuests = AsOrDefault(
+            e["cap"], static_cast<int32_t>(gameState.SuggestedGuestMaximum));
+        return suggestedMaxGuests;
+    }
+#endif
     uint32_t suggestedMaxGuests = 0;
     uint32_t difficultGenerationBonus = 0;
 

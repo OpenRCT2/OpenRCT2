@@ -145,6 +145,17 @@ namespace OpenRCT2::Scripting
         return GetGameState().SuggestedGuestMaximum;
     }
 
+    void ScPark::suggestedGuestMaximum_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto& gameState = GetGameState();
+
+        if (gameState.SuggestedGuestMaximum != value)
+        {
+            gameState.SuggestedGuestMaximum = value;
+        }
+    }
+
     int32_t ScPark::guestGenerationProbability_get() const
     {
         return GetGameState().GuestGenerationProbability;
@@ -411,7 +422,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
         dukglue_register_property(ctx, &ScPark::entranceFee_get, &ScPark::entranceFee_set, "entranceFee");
         dukglue_register_property(ctx, &ScPark::guests_get, nullptr, "guests");
-        dukglue_register_property(ctx, &ScPark::suggestedGuestMaximum_get, nullptr, "suggestedGuestMaximum");
+        dukglue_register_property(
+            ctx, &ScPark::suggestedGuestMaximum_get, &ScPark::suggestedGuestMaximum_set, "suggestedGuestMaximum");
         dukglue_register_property(ctx, &ScPark::guestGenerationProbability_get, nullptr, "guestGenerationProbability");
         dukglue_register_property(ctx, &ScPark::guestInitialCash_get, nullptr, "guestInitialCash");
         dukglue_register_property(ctx, &ScPark::guestInitialHappiness_get, nullptr, "guestInitialHappiness");
