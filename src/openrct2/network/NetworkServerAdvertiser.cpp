@@ -107,7 +107,7 @@ private:
         {
             if (_lanListener->GetStatus() != SocketStatus::Listening)
             {
-                _lanListener->Listen(NETWORK_LAN_BROADCAST_PORT);
+                _lanListener->Listen(kNetworkLanBroadcastPort);
             }
             else
             {

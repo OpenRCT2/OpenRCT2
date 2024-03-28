@@ -21,7 +21,7 @@
 #include <vector>
 
 constexpr int32_t kNetworkDefaultPort = 11753;
-#define NETWORK_LAN_BROADCAST_PORT 11754
+constexpr uint16_t kNetworkLanBroadcastPort = 11754;
 #define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
