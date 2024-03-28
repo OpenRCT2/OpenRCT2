@@ -16,7 +16,7 @@
 #define SZ_CLOSEST "closest"
 #define SZ_DITHERING "dithering"
 
-using ImportMode = OpenRCT2::Drawing::ImageImporter::ImportMode;
+using ImportMode = OpenRCT2::Drawing::ImportMode;
 
 ImportMode gSpriteMode = ImportMode::Default;
 

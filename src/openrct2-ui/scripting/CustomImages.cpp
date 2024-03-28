@@ -275,6 +275,21 @@ namespace OpenRCT2::Scripting
         return unpadded;
     }
 
+    static ImportMode getImportModeFromPalette(const PixelDataPaletteKind& palette)
+    {
+        switch (palette)
+        {
+            case PixelDataPaletteKind::Closest:
+                return ImportMode::Closest;
+            case PixelDataPaletteKind::Dither:
+                return ImportMode::Dithering;
+            case PixelDataPaletteKind::None:
+            case PixelDataPaletteKind::Keep:
+            default:
+                return ImportMode::Default;
+        }
+    }
+
     static std::vector<uint8_t> GetBufferFromPixelData(duk_context* ctx, PixelData& pixelData)
     {
         std::vector<uint8_t> imageData;
@@ -303,18 +318,14 @@ namespace OpenRCT2::Scripting
             case PixelDataKind::Png:
             {
                 auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
-                auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageImporter::Palette::KeepIndices
-                                                                               : ImageImporter::Palette::OpenRCT2;
-                auto importMode = ImageImporter::ImportMode::Default;
-                if (pixelData.Palette == PixelDataPaletteKind::Closest)
-                    importMode = ImageImporter::ImportMode::Closest;
-                else if (pixelData.Palette == PixelDataPaletteKind::Dither)
-                    importMode = ImageImporter::ImportMode::Dithering;
+                auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? Palette::KeepIndices : Palette::OpenRCT2;
+                auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = DukGetDataFromBufferLikeObject(pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
+                ImageImportMeta meta = { { 0, 0 }, palette, ImportFlags::RLE, importMode };
 
                 ImageImporter importer;
-                auto importResult = importer.Import(image, 0, 0, palette, ImageImporter::ImportFlags::RLE, importMode);
+                auto importResult = importer.Import(image, meta);
 
                 pixelData.Type = PixelDataKind::Rle;
                 pixelData.Width = importResult.Element.width;
