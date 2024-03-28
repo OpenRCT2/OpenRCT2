@@ -606,7 +606,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
         uint16_t SummaryMaxAvailableMonth()
         {
-            return std::min<uint16_t>(GetDate().GetMonthsElapsed(), EXPENDITURE_TABLE_MONTH_COUNT - 1);
+            return std::min<uint16_t>(GetDate().GetMonthsElapsed(), kExpenditureTableMonthCount - 1);
         }
 
 #pragma endregion
