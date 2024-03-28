@@ -13,6 +13,7 @@
 #include "Date.h"
 #include "Editor.h"
 #include "Limits.h"
+#include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
 #include "management/Award.h"
 #include "management/Finance.h"
@@ -134,6 +135,7 @@ namespace OpenRCT2
         ScreenCoordsXY SavedView;
         uint8_t SavedViewRotation;
         ZoomLevel SavedViewZoom;
+        EntityId CurrentlyFollowingEntity{ EntityId::GetNull() };
 
         ObjectEntryIndex LastEntranceStyle;
 
