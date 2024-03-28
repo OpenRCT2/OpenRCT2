@@ -55,7 +55,7 @@ GameActions::Result ParkMarketingAction::Query() const
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_NONE);
     }
-    if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+    if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,

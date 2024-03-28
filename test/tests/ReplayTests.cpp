@@ -81,9 +81,6 @@ TEST_P(ReplayTests, RunReplay)
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
 
-    auto gs = context->GetGameState();
-    ASSERT_NE(gs, nullptr);
-
     IReplayManager* replayManager = context->GetReplayManager();
     ASSERT_NE(replayManager, nullptr);
 
@@ -92,7 +89,7 @@ TEST_P(ReplayTests, RunReplay)
 
     while (replayManager->IsReplaying())
     {
-        gs->UpdateLogic();
+        gameStateUpdateLogic();
         if (replayManager->IsPlaybackStateMismatching())
             break;
     }

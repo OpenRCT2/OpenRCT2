@@ -86,7 +86,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode
-        && (GetGameState().ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+        && (GetGameState().Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);

@@ -1366,7 +1366,7 @@ void MapRemoveOutOfRangeElements()
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-                    ParkUpdateFencesAroundTile({ x, y });
+                    Park::UpdateFencesAroundTile({ x, y });
                 }
                 ClearElementsAt({ x, y });
             }
@@ -1430,7 +1430,7 @@ void MapExtendBoundarySurfaceY()
             MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement);
         }
 
-        ParkUpdateFences({ x << 5, y << 5 });
+        Park::UpdateFences({ x << 5, y << 5 });
     }
 }
 
@@ -1448,7 +1448,7 @@ void MapExtendBoundarySurfaceX()
         {
             MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement);
         }
-        ParkUpdateFences({ x << 5, y << 5 });
+        Park::UpdateFences({ x << 5, y << 5 });
     }
 }
 
@@ -2229,7 +2229,7 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
                 continue;
 
             surfaceElement->SetOwnership(ownership);
-            ParkUpdateFencesAroundTile({ (*tile).x * 32, (*tile).y * 32 });
+            Park::UpdateFencesAroundTile({ (*tile).x * 32, (*tile).y * 32 });
         }
     }
 }

@@ -500,7 +500,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                                   window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
-                if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);

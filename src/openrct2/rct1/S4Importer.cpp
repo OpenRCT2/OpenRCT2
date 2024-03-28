@@ -275,8 +275,7 @@ namespace RCT1
                 {
                     // Use the ratio between the old and new park value to calcute the ratio to
                     // use for the park value history and the goal.
-                    auto& park = GetContext()->GetGameState()->GetPark();
-                    _parkValueConversionFactor = (park.CalculateParkValue() * 10) / _s4.ParkValue;
+                    _parkValueConversionFactor = (Park::CalculateParkValue() * 10) / _s4.ParkValue;
                 }
                 else
                 {
@@ -326,10 +325,9 @@ namespace RCT1
             gScenarioFileName = GetRCT1ScenarioName();
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
-            auto context = OpenRCT2::GetContext();
-            context->GetGameState()->InitAll({ mapSize, mapSize });
+            gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.EditorStep = EditorStep::ObjectSelection;
-            gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         }
 
@@ -1425,7 +1423,7 @@ namespace RCT1
 
         void ImportFinance(GameState_t& gameState)
         {
-            gameState.ParkEntranceFee = _s4.ParkEntranceFee;
+            gameState.Park.EntranceFee = _s4.ParkEntranceFee;
             gameState.LandPrice = ToMoney64(_s4.LandPrice);
             gameState.ConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
@@ -1437,13 +1435,13 @@ namespace RCT1
             gameState.InitialCash = ToMoney64(_s4.Cash);
 
             gameState.CompanyValue = ToMoney64(_s4.CompanyValue);
-            gameState.ParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
+            gameState.Park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.CurrentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
-                gameState.ParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
+                gameState.Park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
@@ -2136,7 +2134,7 @@ namespace RCT1
                 }
             }
 
-            auto& park = GetContext()->GetGameState()->GetPark();
+            auto& park = GetGameState().Park;
             park.Name = std::move(parkName);
         }
 
@@ -2145,14 +2143,13 @@ namespace RCT1
             // Date and srand
             gameState.CurrentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
-            GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
+            gameState.Date = Date{ _s4.Month, _s4.Day };
 
             // Park rating
-            gameState.ParkRating = _s4.ParkRating;
+            gameState.Park.Rating = _s4.ParkRating;
 
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            park.ResetHistories();
-            std::copy(std::begin(_s4.ParkRatingHistory), std::end(_s4.ParkRatingHistory), gameState.ParkRatingHistory);
+            Park::ResetHistories(gameState);
+            std::copy(std::begin(_s4.ParkRatingHistory), std::end(_s4.ParkRatingHistory), gameState.Park.RatingHistory);
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
@@ -2225,17 +2222,17 @@ namespace RCT1
             gameState.StaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            gameState.ParkFlags = _s4.ParkFlags;
-            gameState.ParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            gameState.ParkFlags |= PARK_FLAGS_RCT1_INTEREST;
+            gameState.Park.Flags = _s4.ParkFlags;
+            gameState.Park.Flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gameState.Park.Flags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
-                gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            gameState.ParkSize = _s4.ParkSize;
+            gameState.Park.Size = _s4.ParkSize;
             gameState.TotalRideValueForMoney = _s4.TotalRideValueForMoney;
             gameState.SamePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2351,7 +2348,7 @@ namespace RCT1
             gameState.ScenarioDetails = std::move(details);
             if (_isScenario && !parkName.empty())
             {
-                auto& park = GetContext()->GetGameState()->GetPark();
+                auto& park = GetGameState().Park;
                 park.Name = std::move(parkName);
             }
         }
@@ -2447,10 +2444,10 @@ namespace RCT1
         void FixEntrancePositions()
         {
             auto& gameState = GetGameState();
-            gameState.ParkEntrances.clear();
+            gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.ParkEntrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2462,7 +2459,7 @@ namespace RCT1
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
-                gameState.ParkEntrances.push_back(entrance);
+                gameState.Park.Entrances.push_back(entrance);
             }
         }
 

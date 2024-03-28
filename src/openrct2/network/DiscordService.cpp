@@ -63,12 +63,8 @@ DiscordService::~DiscordService()
 
 static std::string GetParkName()
 {
-    auto gameState = OpenRCT2::GetContext()->GetGameState();
-    if (gameState != nullptr)
-    {
-        return gameState->GetPark().Name;
-    }
-    return {};
+    auto& gameState = OpenRCT2::GetGameState();
+    return gameState.Park.Name;
 }
 
 void DiscordService::Tick()

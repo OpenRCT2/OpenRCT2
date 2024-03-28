@@ -385,7 +385,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                     break;
                 case WIDX_NO_MONEY:
                 {
-                    auto newMoneySetting = (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
+                    auto newMoneySetting = (gameState.Park.Flags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
                     auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
@@ -395,7 +395,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ForbidMarketingCampaigns,
-                        gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
+                        gameState.Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -403,7 +403,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 case WIDX_RCT1_INTEREST:
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::UseRCT1Interest, gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
+                        ScenarioSetSetting::UseRCT1Interest, gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -570,7 +570,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
             SetPressedTab();
 
             auto& gameState = GetGameState();
-            if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 SetWidgetPressed(WIDX_NO_MONEY, true);
                 for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_RCT1_INTEREST; i++)
@@ -590,7 +590,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
 
-                if (gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST)
+                if (gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST)
                 {
                     widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
                     widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
@@ -607,7 +607,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 }
             }
 
-            SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
+            SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
 
             widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                      : WindowWidgetType::CloseBox;
@@ -696,7 +696,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::GuestsPreferLessIntenseRides,
-                        gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1);
+                        gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -705,7 +705,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::GuestsPreferMoreIntenseRides,
-                        gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1);
+                        gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -850,7 +850,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
             SetPressedTab();
 
             auto& gameState = GetGameState();
-            if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Empty;
                 widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Empty;
@@ -863,8 +863,8 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Button;
             }
 
-            SetWidgetPressed(WIDX_GUEST_PREFER_LESS_INTENSE_RIDES, gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES);
-            SetWidgetPressed(WIDX_GUEST_PREFER_MORE_INTENSE_RIDES, gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES);
+            SetWidgetPressed(WIDX_GUEST_PREFER_LESS_INTENSE_RIDES, gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES);
+            SetWidgetPressed(WIDX_GUEST_PREFER_MORE_INTENSE_RIDES, gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES);
 
             widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                      : WindowWidgetType::CloseBox;
@@ -948,7 +948,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 case WIDX_FORBID_TREE_REMOVAL:
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ForbidTreeRemoval, gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
+                        ScenarioSetSetting::ForbidTreeRemoval, gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -957,7 +957,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ForbidLandscapeChanges,
-                        gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
+                        gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -966,7 +966,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ForbidHighConstruction,
-                        gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
+                        gameState.Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -975,7 +975,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
-                        gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
+                        gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -984,7 +984,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
-                        gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
+                        gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -1058,10 +1058,10 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                     Invalidate();
                     break;
                 case WIDX_ENTRY_PRICE_INCREASE:
-                    if (gameState.ParkEntranceFee < MAX_ENTRANCE_FEE)
+                    if (gameState.Park.EntranceFee < MAX_ENTRANCE_FEE)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee + 1.00_GBP);
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.Park.EntranceFee + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1071,10 +1071,10 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                     Invalidate();
                     break;
                 case WIDX_ENTRY_PRICE_DECREASE:
-                    if (gameState.ParkEntranceFee > 0.00_GBP)
+                    if (gameState.Park.EntranceFee > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee - 1.00_GBP);
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.Park.EntranceFee - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1097,9 +1097,9 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
 
-                    if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                    if (gameState.Park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
                         Dropdown::SetChecked(2, true);
-                    else if (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+                    else if (gameState.Park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
                         Dropdown::SetChecked(0, true);
                     else
                         Dropdown::SetChecked(1, true);
@@ -1156,7 +1156,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
             SetPressedTab();
 
             auto& gameState = GetGameState();
-            if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
                     widgets[i].type = WindowWidgetType::Empty;
@@ -1172,7 +1172,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
 
-                if (!ParkEntranceFeeUnlocked())
+                if (!Park::EntranceFeeUnlocked())
                 {
                     widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
                     widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
@@ -1186,11 +1186,11 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 }
             }
 
-            SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL);
-            SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
-            SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
-            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING);
-            SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
+            SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL);
+            SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
+            SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
+            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
+            SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
 
             widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                      : WindowWidgetType::CloseBox;
@@ -1243,9 +1243,9 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
 
                 auto ft = Formatter();
                 // Pay for park and/or rides value
-                if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                if (gameState.Park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
                     ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
-                else if (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+                else if (gameState.Park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
                     ft.Add<StringId>(STR_FREE_PARK_ENTER);
                 else
                     ft.Add<StringId>(STR_PAY_PARK_ENTER);
@@ -1263,7 +1263,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
                 // Entry price value
                 screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.ParkEntranceFee);
+                ft.Add<money64>(gameState.Park.EntranceFee);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 

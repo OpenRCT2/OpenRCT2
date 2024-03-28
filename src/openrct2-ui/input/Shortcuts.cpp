@@ -278,7 +278,7 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::Finances);
 }
 

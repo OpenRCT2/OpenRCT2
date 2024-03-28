@@ -1281,7 +1281,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
-                || (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) != 0)
+                || (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
                 disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
@@ -6070,7 +6070,7 @@ static_assert(std::size(RatingNames) == 6);
 
             auto rideEntry = ride->GetRideEntry();
             const auto& rtd = ride->GetRideTypeDescriptor();
-            return ParkRidePricesUnlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
+            return Park::RidePricesUnlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
         }
 
@@ -6245,7 +6245,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!ParkRidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
+            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
                 && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
             {
                 disabled_widgets |= (1uLL << WIDX_PRIMARY_PRICE);

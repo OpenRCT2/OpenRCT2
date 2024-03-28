@@ -59,7 +59,7 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         Console::WriteLine("Running %d ticks...", ticks);
         for (uint32_t i = 0; i < ticks; i++)
         {
-            context->GetGameState()->UpdateLogic();
+            gameStateUpdateLogic();
         }
         Console::WriteLine("Completed: %s", GetAllEntitiesChecksum().ToString().c_str());
     }

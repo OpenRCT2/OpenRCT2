@@ -176,13 +176,13 @@ static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
-    if ((gameState.ParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
+    if ((gameState.Park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
         return false;
 
     if (gameState.TotalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (ParkGetEntranceFee() + 0.10_GBP >= gameState.TotalRideValueForMoney / 2)
+    if (Park::GetEntranceFee() + 0.10_GBP >= gameState.TotalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -228,10 +228,10 @@ static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
 
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
         return false;
 
-    const auto parkEntranceFee = ParkGetEntranceFee();
+    const auto parkEntranceFee = Park::GetEntranceFee();
     if (parkEntranceFee == 0.00_GBP)
         return false;
     if (parkEntranceFee <= gameState.TotalRideValueForMoney)
@@ -407,7 +407,7 @@ static bool AwardIsDeservedMostDisappointing(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (GetGameState().ParkRating > 650)
+    if (GetGameState().Park.Rating > 650)
         return false;
 
     // Count the number of disappointing rides
@@ -622,7 +622,7 @@ void AwardUpdateAll()
     }
 
     // Only add new awards if park is open
-    if (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN)
+    if (GetGameState().Park.Flags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;

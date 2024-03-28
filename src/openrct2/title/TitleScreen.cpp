@@ -39,8 +39,7 @@ using namespace OpenRCT2;
 bool gPreviewingTitleSequenceInGame;
 static TitleScreen* _singleton = nullptr;
 
-TitleScreen::TitleScreen(GameState& gameState)
-    : _gameState(gameState)
+TitleScreen::TitleScreen()
 {
     _singleton = this;
 }
@@ -129,7 +128,7 @@ void TitleScreen::Load()
     GetContext()->GetNetwork().Close();
 #endif
     OpenRCT2::Audio::StopAll();
-    GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+    gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
@@ -173,7 +172,7 @@ void TitleScreen::Tick()
         }
         for (int32_t i = 0; i < numUpdates; i++)
         {
-            _gameState.UpdateLogic();
+            gameStateUpdateLogic();
         }
         UpdatePaletteEffects();
         // update_weather_animation();
@@ -336,7 +335,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+            gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
             GameNotifyMapChanged();
         }
         return false;

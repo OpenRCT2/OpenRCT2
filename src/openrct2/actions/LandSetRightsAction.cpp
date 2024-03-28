@@ -129,7 +129,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
             {
                 surfaceElement->SetOwnership(
                     surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
-                ParkUpdateFencesAroundTile(loc);
+                Park::UpdateFencesAroundTile(loc);
             }
             return res;
         case LandSetRightSetting::UnownConstructionRights:
@@ -199,7 +199,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                         gameState.PeepSpawns.end());
                 }
                 surfaceElement->SetOwnership(_ownership);
-                ParkUpdateFencesAroundTile(loc);
+                Park::UpdateFencesAroundTile(loc);
                 gMapLandRightsUpdateSuccess = true;
             }
             return res;

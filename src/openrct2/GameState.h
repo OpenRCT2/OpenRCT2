@@ -34,26 +34,18 @@
 
 namespace OpenRCT2
 {
-    class Park;
-
     struct GameState_t
     {
+        ::OpenRCT2::Park::ParkData Park{};
+        std::string PluginStorage;
         uint32_t CurrentTicks{};
-        uint64_t ParkFlags;
-        uint16_t ParkRating;
-        money64 ParkEntranceFee;
-        std::vector<CoordsXYZD> ParkEntrances;
-        uint32_t ParkSize;
-        int16_t ParkRatingCasualtyPenalty;
-        money64 ParkValue;
-        money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
+        ::OpenRCT2::Date Date;
         money64 CompanyValue;
         // The total profit for the entire scenario that precedes the current financial table.
         money64 HistoricalProfit;
         money64 ConstructionRightsPrice;
         money64 CurrentExpenditure;
         money64 CurrentProfit;
-        uint8_t ParkRatingHistory[kParkRatingHistorySize];
         uint32_t GuestsInParkHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;
@@ -156,35 +148,8 @@ namespace OpenRCT2
 
     GameState_t& GetGameState();
 
-    /**
-     * Class to update the state of the map and park.
-     */
-    class GameState final
-    {
-    private:
-        std::unique_ptr<Park> _park;
-        Date _date;
+    void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize);
+    void gameStateTick();
+    void gameStateUpdateLogic();
 
-    public:
-        GameState();
-        GameState(const GameState&) = delete;
-
-        Date& GetDate()
-        {
-            return _date;
-        }
-        Park& GetPark()
-        {
-            return *_park;
-        }
-
-        void InitAll(const TileCoordsXY& mapSize);
-        void Tick();
-        void UpdateLogic();
-        void SetDate(Date newDate);
-        void ResetDate();
-
-    private:
-        void CreateStateSnapshot();
-    };
 } // namespace OpenRCT2

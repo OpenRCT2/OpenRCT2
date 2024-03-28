@@ -503,7 +503,7 @@ namespace OpenRCT2::TileInspector
             if (!showFences)
                 surfaceelement->SetParkFences(0);
             else
-                ParkUpdateFences(loc);
+                Park::UpdateFences(loc);
         }
 
         return GameActions::Result();

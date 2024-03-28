@@ -1942,8 +1942,8 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gameState.ParkFlags;
-    gameState.ParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    uint32_t backup_park_flags = gameState.Park.Flags;
+    gameState.Park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
     auto mapSize = TileCoordsXY{ gameState.MapSize.x * 16, gameState.MapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
@@ -1967,7 +1967,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     auto res = TrackDesignPlaceVirtual(
         tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gameState.ParkFlags = backup_park_flags;
+    gameState.Park.Flags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
     {

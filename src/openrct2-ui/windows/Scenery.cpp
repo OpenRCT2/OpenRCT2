@@ -803,7 +803,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
