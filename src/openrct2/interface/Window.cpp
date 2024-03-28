@@ -53,7 +53,6 @@ bool gUsingWidgetTextBox = false;
 TextInputSession* gTextInput;
 
 uint32_t gWindowUpdateTicks;
-uint16_t gWindowMapFlashingFlags;
 colour_t gCurrentWindowColours[4];
 
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
