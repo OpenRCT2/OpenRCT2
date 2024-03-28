@@ -40,8 +40,6 @@ namespace ObjectSelectionFlags
     constexpr uint8_t AllFlags = 0xFF;
 }; // namespace ObjectSelectionFlags
 
-#define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
-
 enum class ObjectSourceGame : uint8_t
 {
     Custom,
