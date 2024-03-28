@@ -20,10 +20,10 @@
 #include <string_view>
 #include <vector>
 
-constexpr int32_t kNetworkDefaultPort = 11753;
+constexpr uint16_t kNetworkDefaultPort = 11753;
 constexpr uint16_t kNetworkLanBroadcastPort = 11754;
 constexpr std::string_view kNetworkLanBroadcastMsg = "openrct2.server.query";
-#define MAX_SERVER_DESCRIPTION_LENGTH 256
+constexpr uint16_t kMaxServerDescriptionLength = 256;
 
 class GameAction;
 struct Peep;
