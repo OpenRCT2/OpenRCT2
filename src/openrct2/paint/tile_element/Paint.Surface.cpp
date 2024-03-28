@@ -650,7 +650,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     neighbourCornerHeight1 = cornerHeight2;
 
-    for (uint32_t tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT;)
+    for (uint8_t tunnelIndex = 0; tunnelIndex < kTunnelMaxCount;)
     {
         if (curHeight >= cornerHeight1 || curHeight >= cornerHeight2)
         {

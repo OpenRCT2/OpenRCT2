@@ -336,7 +336,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.LeftTunnels[session.LeftTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
-    if (session.LeftTunnelCount < TUNNEL_MAX_COUNT - 1)
+    if (session.LeftTunnelCount < kTunnelMaxCount - 1)
     {
         session.LeftTunnels[session.LeftTunnelCount + 1] = { 0xFF, 0xFF };
         session.LeftTunnelCount++;
@@ -346,7 +346,7 @@ void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t typ
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.RightTunnels[session.RightTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
-    if (session.RightTunnelCount < TUNNEL_MAX_COUNT - 1)
+    if (session.RightTunnelCount < kTunnelMaxCount - 1)
     {
         session.RightTunnels[session.RightTunnelCount + 1] = { 0xFF, 0xFF };
         session.RightTunnelCount++;
