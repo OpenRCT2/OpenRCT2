@@ -186,7 +186,7 @@ void FinancePayRideUpkeep()
 void FinanceResetHistory()
 {
     auto& gameState = GetGameState();
-    for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
+    for (uint8_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
         gameState.CashHistory[i] = kMoney64Undefined;
         gameState.WeeklyProfitHistory[i] = kMoney64Undefined;
