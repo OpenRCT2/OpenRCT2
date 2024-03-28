@@ -297,8 +297,7 @@ static Widget _trackListWidgets[] = {
                     }
                     break;
                 case WIDX_FILTER_STRING:
-                    WindowStartTextbox(
-                        *this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
+                    WindowStartTextbox(*this, widgetIndex, _filterString, sizeof(_filterString));
                     break;
                 case WIDX_FILTER_CLEAR:
                     // Keep the highlighted item selected
@@ -434,7 +433,7 @@ static Widget _trackListWidgets[] = {
 
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this

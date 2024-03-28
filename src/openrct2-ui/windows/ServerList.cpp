@@ -131,7 +131,7 @@ static Widget _serverListWidgets[] = {
                     Close();
                     break;
                 case WIDX_PLAYER_NAME_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName.c_str(), MaxPlayerNameLength);
+                    WindowStartTextbox(*this, widgetIndex, _playerName, MaxPlayerNameLength);
                     break;
                 case WIDX_LIST:
                 {
@@ -205,7 +205,7 @@ static Widget _serverListWidgets[] = {
 
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
