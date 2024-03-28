@@ -59,7 +59,7 @@ uint8_t RCT12TileElementBase::GetDirection() const
 
 uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
 {
-    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & kTileElementOccupiedQuadrantsMask;
 }
 
 bool RCT12TileElementBase::IsLastForTile() const
@@ -74,7 +74,7 @@ bool RCT12TileElementBase::IsGhost() const
 
 uint8_t RCT12SurfaceElement::GetSlope() const
 {
-    return (Slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    return (Slope & kTileElementSurfaceSlopeMask);
 }
 
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
@@ -99,7 +99,7 @@ uint8_t RCT12SurfaceElement::GetGrassLength() const
 
 uint8_t RCT12SurfaceElement::GetOwnership() const
 {
-    return (Ownership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+    return (Ownership & kTileElementSurfaceOwnershipMask);
 }
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
@@ -109,7 +109,7 @@ uint32_t RCT12SurfaceElement::GetWaterHeight() const
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
 {
-    return (Ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    return (Ownership & kTileElementSurfaceParkFenceMask);
 }
 
 bool RCT12SurfaceElement::HasTrackThatNeedsWater() const

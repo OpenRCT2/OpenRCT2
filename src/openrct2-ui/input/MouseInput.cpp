@@ -1697,11 +1697,11 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
         // Clamp to the map minimum value
         int32_t at_map_edge = 0;
         int32_t at_map_edge_dy = 0;
-        if (mapCoord.x < MAP_MINIMUM_X_Y || mapCoord.y < MAP_MINIMUM_X_Y)
+        if (mapCoord.x < kMapMinimumXY || mapCoord.y < kMapMinimumXY)
         {
             at_map_edge = 1;
         }
-        if (mapCoord_dy.x < MAP_MINIMUM_X_Y || mapCoord_dy.y < MAP_MINIMUM_X_Y)
+        if (mapCoord_dy.x < kMapMinimumXY || mapCoord_dy.y < kMapMinimumXY)
         {
             at_map_edge_dy = 1;
         }

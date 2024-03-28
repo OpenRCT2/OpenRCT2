@@ -27,8 +27,8 @@ constexpr uint8_t kMapBaseZ = 7;
 
 constexpr uint8_t kMinimumMapSizeTechnical = 5;
 constexpr uint16_t kMaximumMapSizeTechnical = 1001;
-#define MINIMUM_MAP_SIZE_PRACTICAL (kMinimumMapSizeTechnical - 2)
-#define MAXIMUM_MAP_SIZE_PRACTICAL (kMaximumMapSizeTechnical - 2)
+constexpr int16_t kMinimumMapSizePractical = (kMinimumMapSizeTechnical - 2);
+constexpr int16_t kMaximumMapSizePractical = (kMaximumMapSizeTechnical - 2);
 constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * kMaximumMapSizeTechnical;
 constexpr int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP;
 constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
@@ -40,13 +40,10 @@ constexpr uint8_t ConstructionRightsClearanceSmall = 3;
 // Same as previous, but in big coords.
 constexpr const uint8_t ConstructionRightsClearanceBig = 3 * COORDS_Z_STEP;
 
-#define MAP_MINIMUM_X_Y (-kMaximumMapSizeTechnical)
+constexpr int16_t kMapMinimumXY = (-kMaximumMapSizeTechnical);
 
 constexpr uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x1000000;
 constexpr uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
-#define MAX_TILE_TILE_ELEMENT_POINTERS (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical)
-
-#define TILE_UNDEFINED_TILE_ELEMENT NULL
 
 using PeepSpawn = CoordsXYZD;
 

@@ -358,7 +358,7 @@ void GameState::UpdateLogic()
     // WindowDispatchUpdateAll();
 
     // Start autosave timer after update
-    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+    if (gLastAutoSaveUpdate == kAutosavePause)
     {
         gLastAutoSaveUpdate = Platform::GetTicks();
     }
