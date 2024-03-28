@@ -15,6 +15,7 @@
 #include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../Version.h"
 #include "../actions/LoadOrQuitAction.h"
 #include "../actions/NetworkModifyGroupAction.h"
 #include "../actions/PeepPickupAction.h"
@@ -46,9 +47,13 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
+<<<<<<< HEAD
 #define NETWORK_STREAM_VERSION "3"
+=======
+constexpr std::string_view kNetworkStreamVersion = "1";
+>>>>>>> 0bfffae80 (Part of #21421: refactor NETWORK_STREAM_VERSION and _ID)
 
-#define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
+const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::string(kNetworkStreamVersion);
 
 static Peep* _pickup_peep = nullptr;
 static int32_t _pickup_peep_old_x = LOCATION_NULL;
@@ -4003,7 +4008,7 @@ u8string NetworkGetServerProviderWebsite()
 
 std::string NetworkGetVersion()
 {
-    return NETWORK_STREAM_ID;
+    return kNetworkStreamID;
 }
 
 NetworkStats NetworkGetStats()
