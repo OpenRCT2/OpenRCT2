@@ -76,7 +76,7 @@ namespace OpenRCT2
         money64 BankLoan;
         uint8_t BankLoanInterestRate;
         money64 MaxBankLoan;
-        money64 ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][EnumValue(ExpenditureType::Count)];
+        money64 ExpenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
         random_engine_t ScenarioRand;
         TileCoordsXY MapSize;
         money64 LandPrice;

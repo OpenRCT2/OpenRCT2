@@ -193,7 +193,7 @@ void FinanceResetHistory()
         gameState.Park.ValueHistory[i] = kMoney64Undefined;
     }
 
-    for (uint32_t i = 0; i < EXPENDITURE_TABLE_MONTH_COUNT; ++i)
+    for (uint32_t i = 0; i < kExpenditureTableMonthCount; ++i)
     {
         for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); ++j)
         {
@@ -318,18 +318,18 @@ money64 FinanceGetCurrentCash()
 void FinanceShiftExpenditureTable()
 {
     auto& gameState = GetGameState();
-    // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
-    if (GetDate().GetMonthsElapsed() >= EXPENDITURE_TABLE_MONTH_COUNT)
+    // If kExpenditureTableMonthCount months have passed then is full, sum the oldest month
+    if (GetDate().GetMonthsElapsed() >= kExpenditureTableMonthCount)
     {
         const money64 sum = std::accumulate(
-            std::cbegin(gameState.ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]),
-            std::cend(gameState.ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]), money64{});
+            std::cbegin(gameState.ExpenditureTable[kExpenditureTableMonthCount - 1]),
+            std::cend(gameState.ExpenditureTable[kExpenditureTableMonthCount - 1]), money64{});
 
         GetGameState().HistoricalProfit += sum;
     }
 
     // Shift the table
-    for (size_t i = EXPENDITURE_TABLE_MONTH_COUNT - 1; i >= 1; i--)
+    for (size_t i = kExpenditureTableMonthCount - 1; i >= 1; i--)
     {
         for (size_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
         {

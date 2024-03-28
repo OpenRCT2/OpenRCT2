@@ -818,7 +818,7 @@ namespace OpenRCT2
                     // Finances
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
-                        auto numMonths = std::min<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT, cs.Read<uint32_t>());
+                        auto numMonths = std::min<uint32_t>(kExpenditureTableMonthCount, cs.Read<uint32_t>());
                         auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::Count), cs.Read<uint32_t>());
                         for (uint32_t i = 0; i < numMonths; i++)
                         {
@@ -830,7 +830,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        auto numMonths = static_cast<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT);
+                        auto numMonths = static_cast<uint32_t>(kExpenditureTableMonthCount);
                         auto numTypes = static_cast<uint32_t>(ExpenditureType::Count);
 
                         cs.Write(numMonths);
