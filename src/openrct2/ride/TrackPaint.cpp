@@ -2309,21 +2309,12 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        auto paintFunctions = rtd.TrackPaintFunctions;
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter;
-        if (TrackElementIsCovered(trackType))
+        const auto trackDrawerEntry = getTrackDrawerEntry(rtd, trackElement.IsInverted(), TrackElementIsCovered(trackType));
+
+        if (trackDrawerEntry.Drawer != nullptr)
         {
             trackType = UncoverTrackElement(trackType);
-            paintFunctionGetter = paintFunctions.Covered;
-        }
-        else
-        {
-            paintFunctionGetter = paintFunctions.Regular;
-        }
-
-        if (paintFunctionGetter != nullptr)
-        {
-            TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
+            TRACK_PAINT_FUNCTION paintFunction = trackDrawerEntry.Drawer(trackType);
             if (paintFunction != nullptr)
             {
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement);
