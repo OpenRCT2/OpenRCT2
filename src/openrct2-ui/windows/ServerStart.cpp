@@ -101,7 +101,11 @@ static Widget _windowServerStartWidgets[] = {
                     WindowStartTextbox(*this, widgetIndex, _name, 64);
                     break;
                 case WIDX_DESCRIPTION_INPUT:
+<<<<<<< HEAD
                     WindowStartTextbox(*this, widgetIndex, _description, kMaxServerDescriptionLength);
+=======
+                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _description, kMaxServerDescriptionLength);
+>>>>>>> 79cae5d70 (Part of #21421: refactor MAX_SERVER_DESCRIPTION_LENGTH)
                     break;
                 case WIDX_GREETING_INPUT:
                     WindowStartTextbox(*this, widgetIndex, _greeting, kChatInputSize);
