@@ -12,14 +12,9 @@
 #include "../core/Memory.hpp"
 #include "SawyerChunkReader.h"
 
-SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, void* data, size_t length)
+SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, std::unique_ptr<uint8_t[]> data, size_t length)
 {
     _encoding = encoding;
-    _data = data;
+    _data = std::move(data);
     _length = length;
-}
-
-SawyerChunk::~SawyerChunk()
-{
-    SawyerChunkReader::FreeChunk(_data);
 }
