@@ -26,6 +26,8 @@ public:
 
     uint16_t GetActionFlags() const override final;
 
+    int32_t NormaliseTrackType(int32_t trackType) const;
+
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;
