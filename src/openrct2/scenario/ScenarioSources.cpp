@@ -235,23 +235,23 @@ namespace ScenarioSources
     // RCT2: Wacky Worlds
     static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT2WW[] =
     {
-        { SC_UNIDENTIFIED,              "Africa - Victoria Falls",                          SCENARIO_CATEGORY_BEGINNER      },
-        { SC_UNIDENTIFIED,              "Asia - Great Wall of China Tourism Enhancement",   SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "North America - Grand Canyon",                     SCENARIO_CATEGORY_BEGINNER      },
-        { SC_UNIDENTIFIED,              "South America - Rio Carnival",                     SCENARIO_CATEGORY_BEGINNER      },
-        { SC_UNIDENTIFIED,              "Africa - African Diamond Mine",                    SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Asia - Great Wall of China Tourism Enhancement",   SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Africa - African Diamond Mine",                    SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Australasia - Ayers Rock",                         SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "North America - Rollercoaster Heaven",             SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Africa - Oasis",                                   SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "South America - Rio Carnival",                     SCENARIO_CATEGORY_CHALLENGING   },
         { SC_UNIDENTIFIED,              "Asia - Maharaja Palace",                           SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Australasia - Ayers Rock",                         SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Europe - European Cultural Festival",              SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "North America - Rollercoaster Heaven",             SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "South America - Inca Lost City",                   SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Africa - Oasis",                                   SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Africa - Victoria Falls",                          SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "N. America - Extreme Hawaiian Island",             SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "South America - Rain Forest Plateau",              SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Europe - Renovation",                              SCENARIO_CATEGORY_CHALLENGING   },
         { SC_UNIDENTIFIED,              "Antarctic - Ecological Salvage",                   SCENARIO_CATEGORY_EXPERT        },
-        { SC_UNIDENTIFIED,              "Asia - Japanese Coastal Reclaim",                  SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Europe - European Cultural Festival",              SCENARIO_CATEGORY_EXPERT        },
         { SC_UNIDENTIFIED,              "Australasia - Fun at the Beach",                   SCENARIO_CATEGORY_EXPERT        },
-        { SC_UNIDENTIFIED,              "Europe - Renovation",                              SCENARIO_CATEGORY_EXPERT        },
-        { SC_UNIDENTIFIED,              "N. America - Extreme Hawaiian Island",             SCENARIO_CATEGORY_EXPERT        },
-        { SC_UNIDENTIFIED,              "South America - Rain Forest Plateau",              SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "South America - Inca Lost City",                   SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Asia - Japanese Coastal Reclaim",                  SCENARIO_CATEGORY_EXPERT        },
     };
 
     // RCT2: Time Twister
