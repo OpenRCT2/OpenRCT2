@@ -4041,6 +4041,9 @@ enum : uint16_t
 
     STR_SHORTCUT_SORT_ELEMENTS = 6624,
 
+    STR_CHEAT_IGNORE_PRICE = 6625,
+    STR_CHEAT_IGNORE_PRICE_TIP = 6626,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

@@ -137,6 +137,9 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::IgnoreRideIntensity:
             GetGameState().Cheats.IgnoreRideIntensity = _param1 != 0;
             break;
+        case CheatType::IgnorePrice:
+            GetGameState().Cheats.IgnorePrice = _param1 != 0;
+            break;
         case CheatType::DisableVandalism:
             GetGameState().Cheats.DisableVandalism = _param1 != 0;
             break;
@@ -301,6 +304,8 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
         case CheatType::BuildInPauseMode:
             [[fallthrough]];
         case CheatType::IgnoreRideIntensity:
+            [[fallthrough]];
+        case CheatType::IgnorePrice:
             [[fallthrough]];
         case CheatType::DisableVandalism:
             [[fallthrough]];
