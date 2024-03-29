@@ -360,7 +360,7 @@ static StringId window_cheats_page_titles[] = {
     class CheatsWindow final : public Window
     {
     private:
-        char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
+        char _moneySpinnerText[kMoneyStringMaxlength]{};
         money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
         int32_t _parkRatingSpinnerValue{};
         int32_t _yearSpinnerValue = 1;
@@ -791,10 +791,10 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::NoMoney, GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
-                    MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
+                    MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
                         this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
-                        MONEY_STRING_MAXLENGTH);
+                        kMoneyStringMaxlength);
                     break;
                 case WIDX_SET_MONEY:
                     CheatsSet(CheatType::SetMoney, _moneySpinnerValue);

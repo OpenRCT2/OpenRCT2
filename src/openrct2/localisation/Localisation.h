@@ -35,7 +35,7 @@ utf8* GetStringEnd(const utf8* text);
 size_t GetStringSize(const utf8* text);
 
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
-#define MONEY_STRING_MAXLENGTH 14
+constexpr size_t kMoneyStringMaxlength = 14;
 money64 StringToMoney(const char* string_to_monetise);
 void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
 
