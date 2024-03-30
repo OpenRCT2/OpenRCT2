@@ -2243,17 +2243,18 @@ void ShiftMap(const TileCoordsXY& amount)
         return;
 
     auto amountToMove = amount.ToCoordsXY();
+    auto& gameState = GetGameState();
 
     // Tile elements
     auto newElements = std::vector<TileElement>();
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
         {
             auto srcX = x - amount.x;
             auto srcY = y - amount.y;
-            if (x > 0 && y > 0 && x < gMapSize.x - 1 && y < gMapSize.y - 1 && srcX > 0 && srcY > 0 && srcX < gMapSize.x - 1
-                && srcY < gMapSize.y - 1)
+            if (x > 0 && y > 0 && x < gameState.MapSize.x - 1 && y < gameState.MapSize.y - 1 && srcX > 0 && srcY > 0
+                && srcX < gameState.MapSize.x - 1 && srcY < gameState.MapSize.y - 1)
             {
                 auto srcTile = _tileIndex.GetFirstElementAt(TileCoordsXY(srcX, srcY));
                 do
@@ -2261,19 +2262,19 @@ void ShiftMap(const TileCoordsXY& amount)
                     newElements.push_back(*srcTile);
                 } while (!(srcTile++)->IsLastForTile());
             }
-            else if (x == 0 || y == 0 || x == gMapSize.x - 1 || y == gMapSize.y - 1)
+            else if (x == 0 || y == 0 || x == gameState.MapSize.x - 1 || y == gameState.MapSize.y - 1)
             {
                 auto surface = GetDefaultSurfaceElement();
-                surface.SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
-                surface.SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
+                surface.SetBaseZ(kMinimumLandZ);
+                surface.SetClearanceZ(kMinimumLandZ);
                 surface.AsSurface()->SetSlope(0);
                 surface.AsSurface()->SetWaterHeight(0);
                 newElements.push_back(surface);
             }
             else
             {
-                auto copyX = std::clamp(srcX, 1, gMapSize.x - 2);
-                auto copyY = std::clamp(srcY, 1, gMapSize.y - 2);
+                auto copyX = std::clamp(srcX, 1, gameState.MapSize.x - 2);
+                auto copyY = std::clamp(srcY, 1, gameState.MapSize.y - 2);
                 auto srcTile = MapGetSurfaceElementAt(TileCoordsXY(copyX, copyY));
                 if (srcTile != nullptr)
                 {
@@ -2293,10 +2294,10 @@ void ShiftMap(const TileCoordsXY& amount)
     SetTileElements(std::move(newElements));
     MapRemoveOutOfRangeElements();
 
-    for (auto& spawn : gPeepSpawns)
+    for (auto& spawn : gameState.PeepSpawns)
         spawn += amountToMove;
 
-    for (auto& entrance : gParkEntrances)
+    for (auto& entrance : gameState.ParkEntrances)
         entrance += amountToMove;
 
     // Entities
