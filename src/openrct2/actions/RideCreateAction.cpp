@@ -83,6 +83,7 @@ GameActions::Result RideCreateAction::Query() const
 
     if (_rideType >= RIDE_TYPE_COUNT)
     {
+        LOG_ERROR("Invalid ride type %d", _rideType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
     }
@@ -90,6 +91,7 @@ GameActions::Result RideCreateAction::Query() const
     int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
     if (rideEntryIndex >= MAX_RIDE_OBJECTS)
     {
+        LOG_ERROR("Ride entry not found for rideType %d, subType %d", _rideType, _subType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
     }
@@ -97,12 +99,15 @@ GameActions::Result RideCreateAction::Query() const
     const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
     if (_colour1 >= colourPresets.count)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        LOG_ERROR("Can't create ride, invalid colour preset %d", _colour1);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_ERR_INVALID_COLOUR);
     }
 
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
+        LOG_ERROR("Ride entry not found for rideEntryIndex %d", rideEntryIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -130,7 +135,9 @@ GameActions::Result RideCreateAction::Execute() const
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
-        LOG_WARNING("Invalid request for ride %u", rideIndex);
+        LOG_ERROR(
+            "Ride entry not found for index rideEntryIndex %u (from rideType %u, subType %u)", rideEntryIndex, _rideType,
+            _subType);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 

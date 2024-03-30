@@ -70,24 +70,32 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     money64 supportsCost = 0;
 
-    if (_primaryColour >= COLOUR_COUNT || _secondaryColour >= COLOUR_COUNT || _tertiaryColour >= COLOUR_COUNT)
+    if (_primaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR(
-            "Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour,
-            _secondaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        LOG_ERROR("Invalid primary colour %u", _primaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
     }
-
-    if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)
+    else if (_secondaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+    }
+    else if (_tertiaryColour >= COLOUR_COUNT)
+    {
+        LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+    }
+    else if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)
+    {
+        LOG_ERROR("Invalid sceneryType %u", _sceneryType);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
+        LOG_ERROR("Large scenery entry not found for sceneryType %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -201,7 +209,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
+        LOG_ERROR("Large scenery entry not found for sceneryType = %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }

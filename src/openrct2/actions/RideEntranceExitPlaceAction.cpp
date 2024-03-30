@@ -58,14 +58,14 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (_stationNum.ToUnderlying() >= Limits::MaxStationsPerRide)
     {
-        LOG_WARNING("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        LOG_ERROR("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
@@ -143,8 +143,8 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))

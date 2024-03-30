@@ -118,7 +118,8 @@ GameActions::Result WallPlaceAction::Query() const
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         targetHeight = surfaceElement->GetBaseZ();
 
@@ -135,7 +136,8 @@ GameActions::Result WallPlaceAction::Query() const
     if (surfaceElement == nullptr)
     {
         LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     if (surfaceElement->GetWaterHeight() > 0)
@@ -299,7 +301,8 @@ GameActions::Result WallPlaceAction::Execute() const
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         targetHeight = surfaceElement->GetBaseZ();
 

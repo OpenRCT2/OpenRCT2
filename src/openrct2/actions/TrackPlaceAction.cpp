@@ -72,23 +72,23 @@ GameActions::Result TrackPlaceAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Ride not found for rideIndex %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
     }
     const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
-        LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     if (!DirectionValid(_origin.direction))
     {
-        LOG_WARNING("Invalid direction for track placement, direction = %d", _origin.direction);
+        LOG_ERROR("Invalid direction for track placement, direction = %d", _origin.direction);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (_rideType != ride->type && !GetGameState().Cheats.AllowArbitraryRideTypeChanges)
@@ -99,9 +99,9 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (_rideType > RIDE_TYPE_COUNT)
     {
-        LOG_WARNING("Invalid ride type for track placement, rideType = %d", _rideType);
+        LOG_ERROR("Invalid ride type for track placement, rideType = %d", _rideType);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto res = GameActions::Result();
@@ -189,7 +189,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (!CheckMapCapacity(numElements))
     {
-        LOG_WARNING("Not enough free map elements to place track.");
+        LOG_ERROR("Not enough free map elements to place track.");
         return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
             STR_TILE_ELEMENT_LIMIT_REACHED);
@@ -312,7 +312,8 @@ GameActions::Result TrackPlaceAction::Query() const
             if (surfaceElement == nullptr)
             {
                 return GameActions::Result(
-                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
 
             auto waterHeight = surfaceElement->GetWaterHeight();
@@ -359,7 +360,9 @@ GameActions::Result TrackPlaceAction::Query() const
         auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         if (!GetGameState().Cheats.DisableSupportLimits)
@@ -413,15 +416,15 @@ GameActions::Result TrackPlaceAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
-        LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -530,7 +533,9 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
@@ -558,7 +563,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
         if (trackElement == nullptr)
         {
-            LOG_WARNING("Cannot create track element for ride = %d", _rideIndex.ToUnderlying());
+            LOG_ERROR("Cannot create track element for ride = %d", _rideIndex.ToUnderlying());
             return GameActions::Result(
                 GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                 STR_TILE_ELEMENT_LIMIT_REACHED);

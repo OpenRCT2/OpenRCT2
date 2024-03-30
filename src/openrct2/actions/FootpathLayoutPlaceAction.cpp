@@ -177,7 +177,8 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::R
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+            STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
@@ -241,7 +242,8 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertExecute(GameActions:
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+            STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;

@@ -48,8 +48,9 @@ GameActions::Result RideSetSettingAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid ride: #%u.", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u.", _rideIndex.ToUnderlying());
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     switch (_setting)
@@ -69,8 +70,9 @@ GameActions::Result RideSetSettingAction::Query() const
 
             if (!RideIsModeValid(*ride) && !GetGameState().Cheats.ShowAllOperatingModes)
             {
-                LOG_WARNING("Invalid ride mode: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                LOG_ERROR("Invalid ride mode: %u", _value);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::Departure:
@@ -78,21 +80,23 @@ GameActions::Result RideSetSettingAction::Query() const
         case RideSetSetting::MinWaitingTime:
             if (_value > 250)
             {
-                LOG_WARNING("Invalid minimum waiting time: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                LOG_ERROR("Invalid minimum waiting time: %u", _value);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::MaxWaitingTime:
             if (_value > 250)
             {
-                LOG_WARNING("Invalid maximum waiting time: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                LOG_ERROR("Invalid maximum waiting time: %u", _value);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::Operation:
             if (!RideIsValidOperationOption(*ride))
             {
-                LOG_WARNING("Invalid operation option value: %u", _value);
+                LOG_ERROR("Invalid operation option value: %u", _value);
                 return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, GetOperationErrorMessage(*ride));
             }
@@ -100,8 +104,9 @@ GameActions::Result RideSetSettingAction::Query() const
         case RideSetSetting::InspectionInterval:
             if (_value > RIDE_INSPECTION_NEVER)
             {
-                LOG_WARNING("Invalid inspection interval: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                LOG_ERROR("Invalid inspection interval: %u", _value);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::Music:
@@ -112,16 +117,18 @@ GameActions::Result RideSetSettingAction::Query() const
             auto musicObj = objManager.GetLoadedObject(ObjectType::Music, _value);
             if (musicObj == nullptr)
             {
-                LOG_WARNING("Invalid music style: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                LOG_ERROR("Invalid music style: %u", _value);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         }
         case RideSetSetting::LiftHillSpeed:
             if (!RideIsValidLiftHillSpeed(*ride))
             {
-                LOG_WARNING("Invalid lift hill speed: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                LOG_ERROR("Invalid lift hill speed: %u", _value);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::NumCircuits:
@@ -134,20 +141,22 @@ GameActions::Result RideSetSettingAction::Query() const
 
             if (!RideIsValidNumCircuits())
             {
-                LOG_WARNING("Invalid number of circuits: %u", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                LOG_ERROR("Invalid number of circuits: %u", _value);
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
             }
             break;
         case RideSetSetting::RideType:
             if (!GetGameState().Cheats.AllowArbitraryRideTypeChanges)
             {
-                LOG_WARNING("Arbitrary ride type changes not allowed.");
+                LOG_ERROR("Arbitrary ride type changes not allowed.");
                 return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         default:
-            LOG_WARNING("Invalid RideSetSetting: %u", static_cast<uint8_t>(_setting));
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+            LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();
@@ -158,8 +167,9 @@ GameActions::Result RideSetSettingAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid ride: #%u.", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     switch (_setting)

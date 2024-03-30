@@ -60,8 +60,8 @@ GameActions::Result RideDemolishAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -105,8 +105,8 @@ GameActions::Result RideDemolishAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     switch (_modifyType)
@@ -115,9 +115,10 @@ GameActions::Result RideDemolishAction::Execute() const
             return DemolishRide(*ride);
         case RIDE_MODIFY_RENEW:
             return RefurbishRide(*ride);
+        default:
+            LOG_ERROR("Unknown ride demolish type %d", _modifyType);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
     }
-
-    return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
 }
 
 GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
