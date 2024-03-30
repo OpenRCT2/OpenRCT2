@@ -127,17 +127,17 @@ struct Ride
     uint16_t default_name_number{};
     CoordsXY overall_view;
     EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]{}; // Points to the first car in the train
-    uint8_t depart_flags;
-    uint8_t num_stations;
-    uint8_t NumTrains;
-    uint8_t num_cars_per_train;
-    uint8_t ProposedNumTrains;
-    uint8_t proposed_num_cars_per_train;
-    uint8_t max_trains;
-    uint8_t MinCarsPerTrain;
-    uint8_t MaxCarsPerTrain;
-    uint8_t min_waiting_time;
-    uint8_t max_waiting_time;
+    uint8_t depart_flags{};
+    uint8_t num_stations{};
+    uint8_t NumTrains{};
+    uint8_t num_cars_per_train{};
+    uint8_t ProposedNumTrains{};
+    uint8_t proposed_num_cars_per_train{};
+    uint8_t max_trains{};
+    uint8_t MinCarsPerTrain{};
+    uint8_t MaxCarsPerTrain{};
+    uint8_t min_waiting_time{};
+    uint8_t max_waiting_time{};
     union
     {
         uint8_t operation_option;
