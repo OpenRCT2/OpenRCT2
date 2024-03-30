@@ -23,6 +23,7 @@
 #include "../core/Guard.hpp"
 #include "../entity/Duck.h"
 #include "../entity/EntityTweener.h"
+#include "../entity/Fountain.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
@@ -2354,6 +2355,15 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
+                case EntityType::JumpingFountain:
+                {
+                    auto fountain = entity->As<JumpingFountain>();
+                    if (fountain != nullptr)
+                    {
+                        fountain->TargetX += amountToMove.x;
+                        fountain->TargetY += amountToMove.y;
+                    }
+                }
                 default:
                     break;
             }
@@ -2409,4 +2419,6 @@ void ShiftMap(const TileCoordsXY& amount)
         }
         id = BannerIndex::FromUnderlying(id.ToUnderlying() + 1);
     }
+
+    ShiftAllMapAnimations(amountToMove);
 }
