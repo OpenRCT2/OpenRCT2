@@ -2533,7 +2533,7 @@ void Guest::GoToRideEntrance(const Ride& ride)
 
 bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array)
 {
-    uint8_t chosen_train = RideStation::NO_TRAIN;
+    uint8_t chosen_train = RideStation::kNoTrain;
 
     if (ride.mode == RideMode::Dodgems || ride.mode == RideMode::Race)
     {

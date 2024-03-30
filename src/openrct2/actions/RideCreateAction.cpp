@@ -141,7 +141,6 @@ GameActions::Result RideCreateAction::Execute() const
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 
-    ride->id = rideIndex;
     ride->type = _rideType;
     ride->subtype = rideEntryIndex;
     ride->SetColourPreset(_colour1);
@@ -153,7 +152,7 @@ GameActions::Result RideCreateAction::Execute() const
         station.Start.SetNull();
         station.Entrance.SetNull();
         station.Exit.SetNull();
-        station.TrainAtStation = RideStation::NO_TRAIN;
+        station.TrainAtStation = RideStation::kNoTrain;
         station.QueueTime = 0;
         station.SegmentLength = 0;
         station.QueueLength = 0;
@@ -161,12 +160,7 @@ GameActions::Result RideCreateAction::Execute() const
         station.Height = 0;
     }
 
-    std::fill(std::begin(ride->vehicles), std::end(ride->vehicles), EntityId::GetNull());
-
     ride->status = RideStatus::Closed;
-    ride->lifecycle_flags = 0;
-    ride->vehicle_change_timeout = 0;
-    ride->num_stations = 0;
     ride->NumTrains = 1;
     if (GetGameState().Cheats.DisableTrainLengthLimit)
     {
@@ -210,16 +204,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->lift_hill_speed = rtd.LiftData.minimum_speed;
 
-    ride->measurement = {};
     ride->excitement = kRideRatingUndefined;
-    ride->cur_num_customers = 0;
-    ride->num_customers_timeout = 0;
-    ride->chairlift_bullwheel_rotation = 0;
-
-    for (auto& price : ride->price)
-    {
-        price = 0;
-    }
 
     auto& gameState = GetGameState();
     if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
@@ -288,20 +273,9 @@ GameActions::Result RideCreateAction::Execute() const
         }
     }
 
-    std::fill(std::begin(ride->num_customers), std::end(ride->num_customers), 0);
     ride->value = RIDE_VALUE_UNDEFINED;
     ride->satisfaction = 255;
-    ride->satisfaction_time_out = 0;
-    ride->satisfaction_next = 0;
     ride->popularity = 255;
-    ride->popularity_time_out = 0;
-    ride->popularity_next = 0;
-    ride->window_invalidate_flags = 0;
-    ride->total_customers = 0;
-    ride->total_profit = 0;
-    ride->num_riders = 0;
-    ride->slide_in_use = 0;
-    ride->maze_tiles = 0;
     ride->build_date = GetDate().GetMonthsElapsed();
     ride->music_tune_id = TUNE_ID_NULL;
 
@@ -310,25 +284,15 @@ GameActions::Result RideCreateAction::Execute() const
     ride->reliability = kRideInitialReliability;
     ride->unreliability_factor = 1;
     ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
-    ride->last_inspection = 0;
-    ride->downtime = 0;
-    std::fill_n(ride->downtime_history, sizeof(ride->downtime_history), 0x00);
-    ride->no_primary_items_sold = 0;
-    ride->no_secondary_items_sold = 0;
     ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
     ride->income_per_hour = kMoney64Undefined;
     ride->profit = kMoney64Undefined;
-    ride->connected_message_throttle = 0;
-    ride->drops = 0;
 
     ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
         ride->entrance_style = _entranceObjectIndex;
     }
-
-    ride->num_block_brakes = 0;
-    ride->guests_favourite = 0;
 
     ride->num_circuits = 1;
     ride->mode = ride->GetDefaultMode();

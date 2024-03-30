@@ -176,6 +176,12 @@ Ride* RideAllocateAtIndex(RideId index)
     auto result = &GetGameState().Rides[idx];
     assert(result->id == RideId::GetNull());
 
+    // Initialize the ride to all the defaults.
+    *result = Ride{};
+
+    // Because it is default initialized to zero rather than the magic constant for Null, fill the array.
+    std::fill(std::begin(result->vehicles), std::end(result->vehicles), EntityId::GetNull());
+
     result->id = index;
     return result;
 }
