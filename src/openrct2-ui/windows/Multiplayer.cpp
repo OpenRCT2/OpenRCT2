@@ -569,7 +569,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     Invalidate();
                 }
 
-                screenSize = { 0, NetworkGetNumPlayers() * SCROLLABLE_ROW_HEIGHT };
+                screenSize = { 0, NetworkGetNumPlayers() * kScrollableRowHeight };
                 int32_t i = screenSize.height - window_multiplayer_players_widgets[WIDX_LIST].bottom
                     + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
@@ -590,7 +590,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     Invalidate();
                 }
 
-                screenSize = { 0, NetworkGetNumActions() * SCROLLABLE_ROW_HEIGHT };
+                screenSize = { 0, NetworkGetNumActions() * kScrollableRowHeight };
                 int32_t i = screenSize.height - window_multiplayer_groups_widgets[WIDX_LIST].bottom
                     + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
@@ -612,7 +612,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
         {
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
-                int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+                int32_t index = screenCoords.y / kScrollableRowHeight;
                 if (index >= no_list_items)
                     return;
 
@@ -626,7 +626,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+                int32_t index = screenCoords.y / kScrollableRowHeight;
                 if (index >= no_list_items)
                     return;
 
@@ -648,7 +648,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+                int32_t index = screenCoords.y / kScrollableRowHeight;
                 if (index >= no_list_items)
                     return;
 
@@ -751,7 +751,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 break;
             }
 
-            if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi.y)
+            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.y)
             {
                 thread_local std::string _buffer;
                 _buffer.reserve(512);
@@ -762,7 +762,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 if (listPosition == selected_list_item)
                 {
                     GfxFilterRect(
-                        dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
+                        dpi, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                         FilterPaletteID::PaletteDarken1);
                     _buffer += NetworkGetPlayerName(player);
                     colour = colours[2];
@@ -831,7 +831,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 screenCoords.x = 356;
                 GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
             }
-            screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+            screenCoords.y += kScrollableRowHeight;
             listPosition++;
         }
     }
@@ -893,7 +893,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
             if (i == selected_list_item)
             {
                 GfxFilterRect(
-                    dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
+                    dpi, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                     FilterPaletteID::PaletteDarken1);
             }
             if (screenCoords.y > dpi.y + dpi.height)
@@ -901,7 +901,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 break;
             }
 
-            if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi.y)
+            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.y)
             {
                 int32_t groupindex = NetworkGetGroupIndex(_selectedGroup);
                 if (groupindex != -1)
@@ -918,7 +918,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 ft.Add<uint16_t>(NetworkGetActionNameStringID(i));
                 DrawTextBasic(dpi, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
             }
-            screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+            screenCoords.y += kScrollableRowHeight;
         }
     }
 

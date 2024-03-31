@@ -263,7 +263,7 @@ static Widget window_shortcut_change_widgets[] = {
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            auto h = static_cast<int32_t>(_list.size() * SCROLLABLE_ROW_HEIGHT);
+            auto h = static_cast<int32_t>(_list.size() * kScrollableRowHeight);
             auto bottom = std::max(0, h - widgets[WIDX_SCROLL].bottom + widgets[WIDX_SCROLL].top + 21);
             if (bottom < scrolls[0].v_top)
             {
@@ -275,7 +275,7 @@ static Widget window_shortcut_change_widgets[] = {
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto index = static_cast<int_fast16_t>((screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT);
+            auto index = static_cast<int_fast16_t>((screenCoords.y - 1) / kScrollableRowHeight);
             if (static_cast<size_t>(index) < _list.size())
             {
                 _highlightedItem = index;
@@ -289,7 +289,7 @@ static Widget window_shortcut_change_widgets[] = {
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto selectedItem = static_cast<size_t>((screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT);
+            auto selectedItem = static_cast<size_t>((screenCoords.y - 1) / kScrollableRowHeight);
             if (selectedItem < _list.size())
             {
                 // Is this a separator?
@@ -314,13 +314,13 @@ static Widget window_shortcut_change_widgets[] = {
 
             for (size_t i = 0; i < _list.size(); ++i)
             {
-                auto y = static_cast<int32_t>(1 + i * SCROLLABLE_ROW_HEIGHT);
+                auto y = static_cast<int32_t>(1 + i * kScrollableRowHeight);
                 if (y > dpi.y + dpi.height)
                 {
                     break;
                 }
 
-                if (y + SCROLLABLE_ROW_HEIGHT < dpi.y)
+                if (y + kScrollableRowHeight < dpi.y)
                 {
                     continue;
                 }
@@ -504,7 +504,7 @@ static Widget window_shortcut_change_widgets[] = {
 
         void DrawSeparator(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth)
         {
-            const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
+            const int32_t top = y + (kScrollableRowHeight / 2) - 1;
             GfxFillRect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
             GfxFillRect(dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
         }
@@ -516,7 +516,7 @@ static Widget window_shortcut_change_widgets[] = {
             if (isHighlighted)
             {
                 format = STR_WINDOW_COLOUR_2_STRINGID;
-                GfxFilterRect(dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(dpi, { 0, y - 1, scrollWidth, y + (kScrollableRowHeight - 2) }, FilterPaletteID::PaletteDarken1);
             }
 
             auto bindingOffset = (scrollWidth * 2) / 3;

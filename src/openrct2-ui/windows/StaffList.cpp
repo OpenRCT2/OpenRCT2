@@ -323,7 +323,7 @@ static Widget _staffListWidgets[] = {
                 Invalidate();
             }
 
-            auto scrollHeight = static_cast<int32_t>(_staffList.size()) * SCROLLABLE_ROW_HEIGHT;
+            auto scrollHeight = static_cast<int32_t>(_staffList.size()) * kScrollableRowHeight;
             auto i = scrollHeight - widgets[WIDX_STAFF_LIST_LIST].bottom + widgets[WIDX_STAFF_LIST_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -339,7 +339,7 @@ static Widget _staffListWidgets[] = {
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto i = static_cast<size_t>(screenCoords.y / SCROLLABLE_ROW_HEIGHT);
+            auto i = static_cast<size_t>(screenCoords.y / kScrollableRowHeight);
             if (i != _highlightedIndex)
             {
                 _highlightedIndex = static_cast<size_t>(i);
@@ -349,7 +349,7 @@ static Widget _staffListWidgets[] = {
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            int32_t i = screenCoords.y / kScrollableRowHeight;
             for (const auto& entry : _staffList)
             {
                 if (i == 0)
@@ -409,7 +409,7 @@ static Widget _staffListWidgets[] = {
 
                     if (i == _highlightedIndex)
                     {
-                        GfxFilterRect(dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(dpi, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::PaletteDarken1);
                         format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                     }
 
@@ -451,7 +451,7 @@ static Widget _staffListWidgets[] = {
                     }
                 }
 
-                y += SCROLLABLE_ROW_HEIGHT;
+                y += kScrollableRowHeight;
                 i++;
             }
         }
