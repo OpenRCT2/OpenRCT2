@@ -46,7 +46,7 @@ enum class CurrencyAffix
 };
 
 constexpr size_t kCurrencySymbolMaxSize = 8;
-#define CURRENCY_RATE_MAX_NUM_DIGITS 9
+constexpr size_t kCurrencyRateMaxNumDigits = 9;
 
 // Currency format specification - inspired by OpenTTD
 struct CurrencyDescriptor

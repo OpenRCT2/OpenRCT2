@@ -122,7 +122,7 @@ static Widget window_custom_currency_widgets[] = {
                     WindowTextInputOpen(
                         this, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, {}, STR_FORMAT_INTEGER,
                         static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate),
-                        CURRENCY_RATE_MAX_NUM_DIGITS);
+                        kCurrencyRateMaxNumDigits);
                     break;
             }
         }
