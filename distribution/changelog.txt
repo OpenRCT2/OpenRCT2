@@ -16,6 +16,7 @@
 - Improved: [objects#313] buildMenuPriority for dodgems and flying saucers vehicles.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Change: [#21545] Reorder Wacky Worlds scenarios and adjust their difficulty classification.
+- Change: [#21698] Update macOS minimum version to 10.15 (Catalina).
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#18413] Crash when mouse over a hacked train.
 - Fix: [#20338] Cannot select Scenery Picker or Scatter Tool when the scenery recolouring tool is active.
