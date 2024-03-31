@@ -2512,7 +2512,7 @@ namespace RCT1
         {
             const auto originalString = _s4.StringTable[stringId % 1024];
             auto originalStringView = std::string_view(
-                originalString, RCT12::GetRCTStringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT12::GetRCTStringBufferLen(originalString, kUserStringMaxLength));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();

@@ -75,7 +75,7 @@ static Widget _trackListWidgets[] = {
     {
     private:
         std::vector<TrackDesignFileRef> _trackDesigns;
-        utf8 _filterString[USER_STRING_MAX_LENGTH]{};
+        utf8 _filterString[kUserStringMaxLength]{};
         std::vector<uint16_t> _filteredTrackIds;
         uint16_t _loadedTrackDesignIndex;
         std::unique_ptr<TrackDesign> _loadedTrackDesign;

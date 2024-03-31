@@ -25,7 +25,7 @@ namespace OpenRCT2::Title
         struct
         {
             EntityId SpriteIndex{ EntityId::GetNull() };
-            utf8 SpriteName[USER_STRING_MAX_LENGTH]{};
+            utf8 SpriteName[kUserStringMaxLength]{};
         } Follow;
 
         int16_t operator()(int16_t timer);

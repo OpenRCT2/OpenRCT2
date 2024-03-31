@@ -425,7 +425,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 {
                     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
                     WindowTextInputRawOpen(
-                        this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), USER_STRING_MAX_LENGTH);
+                        this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), kUserStringMaxLength);
                     break;
                 }
                 case WIDX_CLOSE_LIGHT:
