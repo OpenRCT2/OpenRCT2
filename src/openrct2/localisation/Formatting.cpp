@@ -624,7 +624,7 @@ namespace OpenRCT2
 
     bool IsRealNameStringId(StringId id)
     {
-        return id >= kRealNameStart && id <= REAL_NAME_END;
+        return id >= kRealNameStart && id <= kRealNameEnd;
     }
 
     FmtString GetFmtStringById(StringId id)
