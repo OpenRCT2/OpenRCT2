@@ -185,7 +185,7 @@ private:
     {
         if (String::IEquals(Path::GetExtension(path), ".sea"))
         {
-            auto data = DecryptSea(fs::u8path(path));
+            auto data = DecryptSea(std::filesystem::u8path(path));
             auto ms = std::make_unique<MemoryStream>();
             // Need to copy the data into MemoryStream as the overload will borrow instead of copy.
             ms->Write(data.data(), data.size());

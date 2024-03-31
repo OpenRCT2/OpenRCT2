@@ -12,9 +12,9 @@
 #include "InputManager.h"
 
 #include <cstdint>
+#include <filesystem>
 #include <functional>
 #include <memory>
-#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/localisation/StringIds.h>
 #include <optional>
 #include <string>
@@ -116,9 +116,9 @@ namespace OpenRCT2::Ui
         std::string _pendingShortcutChange;
 
         static std::optional<ShortcutInput> ConvertLegacyBinding(uint16_t binding);
-        void LoadLegacyBindings(const fs::path& path);
-        void LoadUserBindings(const fs::path& path);
-        void SaveUserBindings(const fs::path& path);
+        void LoadLegacyBindings(const std::filesystem::path& path);
+        void LoadUserBindings(const std::filesystem::path& path);
+        void SaveUserBindings(const std::filesystem::path& path);
 
         // We store the IDs separately so that we can safely use them for string_view in the map
         std::vector<std::unique_ptr<std::string>> _ids;

@@ -23,7 +23,7 @@ using namespace OpenRCT2;
 
 constexpr std::string_view ManifestFileName = "manifest.json";
 
-AssetPack::AssetPack(const fs::path& path)
+AssetPack::AssetPack(const std::filesystem::path& path)
     : Path(path)
 {
 }

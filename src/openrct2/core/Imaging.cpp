@@ -13,13 +13,13 @@
 
 #include "../Version.h"
 #include "../drawing/Drawing.h"
-#include "FileSystem.hpp"
 #include "Guard.hpp"
 #include "IStream.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <png.h>
 #include <stdexcept>
@@ -312,7 +312,7 @@ namespace Imaging
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
-                std::ifstream fs(fs::u8path(path), std::ios::binary);
+                std::ifstream fs(std::filesystem::u8path(path), std::ios::binary);
                 return ReadFromStream(fs, format);
             }
         }
@@ -333,7 +333,7 @@ namespace Imaging
                 break;
             case IMAGE_FORMAT::PNG:
             {
-                std::ofstream fs(fs::u8path(path), std::ios::binary);
+                std::ofstream fs(std::filesystem::u8path(path), std::ios::binary);
                 WritePng(fs, image);
                 break;
             }

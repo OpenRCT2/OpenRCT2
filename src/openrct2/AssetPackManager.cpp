@@ -14,12 +14,12 @@
 #include "PlatformEnvironment.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
-#include "core/FileSystem.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "object/AudioSampleTable.h"
 
 #include <cstdio>
+#include <filesystem>
 
 using namespace OpenRCT2;
 
@@ -68,19 +68,19 @@ void AssetPackManager::Scan()
     auto context = GetContext();
     auto env = context->GetPlatformEnvironment();
 
-    auto openrct2Dir = fs::u8path(env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::ASSET_PACK));
+    auto openrct2Dir = std::filesystem::u8path(env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::ASSET_PACK));
     Scan(openrct2Dir);
 
-    auto userDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
+    auto userDirectory = std::filesystem::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
     Path::CreateDirectory(userDirectory.u8string());
     Scan(userDirectory);
 }
 
-void AssetPackManager::Scan(const fs::path& directory)
+void AssetPackManager::Scan(const std::filesystem::path& directory)
 {
     // Recursively scan for .parkap files
     std::error_code ec;
-    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(directory, ec))
+    for (const std::filesystem::directory_entry& entry : std::filesystem::recursive_directory_iterator(directory, ec))
     {
         if (!entry.is_directory())
         {
@@ -124,7 +124,7 @@ void AssetPackManager::ClearAssetPacks()
     _assetPacks.clear();
 }
 
-void AssetPackManager::AddAssetPack(const fs::path& path)
+void AssetPackManager::AddAssetPack(const std::filesystem::path& path)
 {
     auto szPath = path.u8string();
     LOG_VERBOSE("Scanning asset pack: %s", szPath.c_str());

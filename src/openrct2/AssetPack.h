@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include "core/FileSystem.hpp"
 #include "core/JsonFwd.hpp"
 #include "object/AudioSampleTable.h"
 
+#include <filesystem>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -34,13 +34,13 @@ namespace OpenRCT2
         bool _enabled{};
 
     public:
-        fs::path Path;
+        std::filesystem::path Path;
         std::string Id;
         std::string Version;
         std::string Name;
         std::string Description;
 
-        AssetPack(const fs::path& path);
+        AssetPack(const std::filesystem::path& path);
         AssetPack(const AssetPack&) = delete;
         ~AssetPack();
 

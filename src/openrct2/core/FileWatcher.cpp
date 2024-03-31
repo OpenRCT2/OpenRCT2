@@ -26,8 +26,9 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "FileSystem.hpp"
 #include "FileWatcher.h"
+
+#include <filesystem>
 
 #if defined(__linux__)
 FileWatcher::FileDescriptor::~FileDescriptor()
@@ -122,7 +123,7 @@ void FileWatcher::FSEventsCallback(
 FileWatcher::FileWatcher(u8string_view directoryPath)
 {
 #ifdef _WIN32
-    _path = fs::u8path(directoryPath);
+    _path = std::filesystem::u8path(directoryPath);
     _directoryHandle = CreateFileW(
         String::ToWideChar(directoryPath).c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
         nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
@@ -133,9 +134,9 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
 #elif defined(__linux__)
     _fileDesc.Initialise();
     _watchDescs.emplace_back(_fileDesc.Fd, u8string(directoryPath));
-    for (auto& p : fs::recursive_directory_iterator(directoryPath))
+    for (auto& p : std::filesystem::recursive_directory_iterator(directoryPath))
     {
-        if (p.status().type() == fs::file_type::directory)
+        if (p.status().type() == std::filesystem::file_type::directory)
         {
             _watchDescs.emplace_back(_fileDesc.Fd, p.path().string());
         }
@@ -206,7 +207,7 @@ void FileWatcher::WatchDirectory()
                 offset += notifyInfo->NextEntryOffset;
 
                 std::wstring_view fileNameW(notifyInfo->FileName, notifyInfo->FileNameLength / sizeof(wchar_t));
-                auto path = _path / fs::path(fileNameW);
+                auto path = _path / std::filesystem::path(fileNameW);
                 OnFileChanged(path.u8string());
             } while (notifyInfo->NextEntryOffset != 0);
         }

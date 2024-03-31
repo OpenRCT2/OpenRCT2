@@ -17,7 +17,7 @@
 #include <vector>
 
 #ifdef _WIN32
-#    include "FileSystem.hpp"
+#    include <filesystem>
 
 typedef void* HANDLE;
 #elif defined(__APPLE__)
@@ -32,7 +32,7 @@ class FileWatcher
 private:
     std::thread _watchThread;
 #if defined(_WIN32)
-    fs::path _path;
+    std::filesystem::path _path;
     HANDLE _directoryHandle{};
 #elif defined(__linux__)
     struct FileDescriptor

@@ -586,7 +586,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
     return exitCode;
 }
 
-static bool IsPathChildOf(fs::path x, const fs::path& parent)
+static bool IsPathChildOf(std::filesystem::path x, const std::filesystem::path& parent)
 {
     auto xp = x.parent_path();
     while (xp != x)
@@ -601,7 +601,7 @@ static bool IsPathChildOf(fs::path x, const fs::path& parent)
     return false;
 }
 
-static std::string ResolveFilenameForCapture(const fs::path& filename)
+static std::string ResolveFilenameForCapture(const std::filesystem::path& filename)
 {
     if (filename.empty())
     {
@@ -614,8 +614,8 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         return *path;
     }
 
-    auto screenshotDirectory = fs::u8path(ScreenshotGetDirectory());
-    auto screenshotPath = fs::absolute(screenshotDirectory / filename);
+    auto screenshotDirectory = std::filesystem::u8path(ScreenshotGetDirectory());
+    auto screenshotPath = std::filesystem::absolute(screenshotDirectory / filename);
 
     // Check the filename isn't attempting to leave the screenshot directory for security
     if (!IsPathChildOf(screenshotPath, screenshotDirectory))
@@ -624,9 +624,9 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
     }
 
     auto directory = screenshotPath.parent_path();
-    if (!fs::is_directory(directory))
+    if (!std::filesystem::is_directory(directory))
     {
-        if (!fs::create_directory(directory, screenshotDirectory))
+        if (!std::filesystem::create_directory(directory, screenshotDirectory))
         {
             throw std::runtime_error("Unable to create directory.");
         }

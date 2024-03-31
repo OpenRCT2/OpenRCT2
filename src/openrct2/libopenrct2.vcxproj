@@ -196,7 +196,6 @@
     <ClInclude Include="core\FileIndex.hpp" />
     <ClInclude Include="core\FileScanner.h" />
     <ClInclude Include="core\FileStream.h" />
-    <ClInclude Include="core\FileSystem.hpp" />
     <ClInclude Include="core\FileWatcher.h" />
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />

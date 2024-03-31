@@ -10,12 +10,12 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/FileSystem.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../world/Park.h"
 #include "Limits.h"
 
+#include <filesystem>
 #include <tuple>
 #include <vector>
 
@@ -1093,4 +1093,4 @@ namespace RCT2
     };
 } // namespace RCT2
 
-std::vector<uint8_t> DecryptSea(const fs::path& path);
+std::vector<uint8_t> DecryptSea(const std::filesystem::path& path);

@@ -25,10 +25,10 @@ namespace File
 {
     bool Exists(u8string_view path)
     {
-        fs::path file = fs::u8path(path);
+        std::filesystem::path file = std::filesystem::u8path(path);
         LOG_VERBOSE("Checking if file exists: %s", u8string(path).c_str());
         std::error_code ec;
-        const auto result = fs::exists(file, ec);
+        const auto result = std::filesystem::exists(file, ec);
         return result && ec.value() == 0;
     }
 
@@ -41,27 +41,27 @@ namespace File
         }
 
         std::error_code ec;
-        const auto result = fs::copy_file(fs::u8path(srcPath), fs::u8path(dstPath), ec);
+        const auto result = std::filesystem::copy_file(std::filesystem::u8path(srcPath), std::filesystem::u8path(dstPath), ec);
         return result && ec.value() == 0;
     }
 
     bool Delete(u8string_view path)
     {
         std::error_code ec;
-        const auto result = fs::remove(fs::u8path(path), ec);
+        const auto result = std::filesystem::remove(std::filesystem::u8path(path), ec);
         return result && ec.value() == 0;
     }
 
     bool Move(u8string_view srcPath, u8string_view dstPath)
     {
         std::error_code ec;
-        fs::rename(fs::u8path(srcPath), fs::u8path(dstPath), ec);
+        std::filesystem::rename(std::filesystem::u8path(srcPath), std::filesystem::u8path(dstPath), ec);
         return ec.value() == 0;
     }
 
     std::vector<uint8_t> ReadAllBytes(u8string_view path)
     {
-        std::ifstream fs(fs::u8path(u8string(path)), std::ios::in | std::ios::binary);
+        std::ifstream fs(std::filesystem::u8path(u8string(path)), std::ios::in | std::ios::binary);
         if (!fs.is_open())
         {
             throw IOException("Unable to open " + u8string(path));

@@ -82,7 +82,7 @@ static void Decrypt(std::vector<uint8_t>& data, const EncryptionKey& key)
     }
 }
 
-std::vector<uint8_t> DecryptSea(const fs::path& path)
+std::vector<uint8_t> DecryptSea(const std::filesystem::path& path)
 {
     auto key = GetEncryptionKey(path.filename().u8string());
     auto data = File::ReadAllBytes(path.u8string());

@@ -12,12 +12,12 @@
 #include "ShortcutIds.h"
 
 #include <SDL.h>
+#include <filesystem>
 #include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/DataSerialiser.h>
 #include <openrct2/core/FileStream.h>
-#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/interface/Window.h>
@@ -195,8 +195,8 @@ void ShortcutManager::LoadUserBindings()
 {
     try
     {
-        auto path = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
-        if (fs::exists(path))
+        auto path = std::filesystem::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
+        if (std::filesystem::exists(path))
         {
             LoadUserBindings(path);
         }
@@ -205,8 +205,8 @@ void ShortcutManager::LoadUserBindings()
             try
             {
                 Console::WriteLine("Importing legacy shortcuts...");
-                auto legacyPath = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS_LEGACY));
-                if (fs::exists(legacyPath))
+                auto legacyPath = std::filesystem::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS_LEGACY));
+                if (std::filesystem::exists(legacyPath))
                 {
                     LoadLegacyBindings(legacyPath);
                     SaveUserBindings();
@@ -252,7 +252,7 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
     return result;
 }
 
-void ShortcutManager::LoadLegacyBindings(const fs::path& path)
+void ShortcutManager::LoadLegacyBindings(const std::filesystem::path& path)
 {
     constexpr int32_t SUPPORTED_FILE_VERSION = 1;
     constexpr int32_t MAX_LEGACY_SHORTCUTS = 85;
@@ -282,7 +282,7 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
     }
 }
 
-void ShortcutManager::LoadUserBindings(const fs::path& path)
+void ShortcutManager::LoadUserBindings(const std::filesystem::path& path)
 {
     auto root = Json::ReadFromFile(path.u8string());
     if (root.is_object())
@@ -316,7 +316,7 @@ void ShortcutManager::SaveUserBindings()
 {
     try
     {
-        auto path = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
+        auto path = std::filesystem::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
         SaveUserBindings(path);
     }
     catch (const std::exception& e)
@@ -325,10 +325,10 @@ void ShortcutManager::SaveUserBindings()
     }
 }
 
-void ShortcutManager::SaveUserBindings(const fs::path& path)
+void ShortcutManager::SaveUserBindings(const std::filesystem::path& path)
 {
     json_t root;
-    if (fs::exists(path))
+    if (std::filesystem::exists(path))
     {
         root = Json::ReadFromFile(path.u8string());
     }

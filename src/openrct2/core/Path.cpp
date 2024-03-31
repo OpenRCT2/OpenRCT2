@@ -13,11 +13,11 @@
 #include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "File.h"
-#include "FileSystem.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 
 #include <algorithm>
+#include <filesystem>
 #include <iterator>
 
 namespace Path
@@ -50,13 +50,13 @@ namespace Path
 
     u8string GetDirectory(u8string_view path)
     {
-        return fs::u8path(path).parent_path().u8string();
+        return std::filesystem::u8path(path).parent_path().u8string();
     }
 
     bool CreateDirectory(u8string_view path)
     {
         std::error_code ec;
-        fs::create_directories(fs::u8path(path), ec);
+        std::filesystem::create_directories(std::filesystem::u8path(path), ec);
         // create_directories returns false if the directory already exists, but the error code is zero.
         return ec.value() == 0;
     }
@@ -64,35 +64,35 @@ namespace Path
     bool DirectoryExists(u8string_view path)
     {
         std::error_code ec;
-        const auto result = fs::is_directory(fs::u8path(path), ec);
+        const auto result = std::filesystem::is_directory(std::filesystem::u8path(path), ec);
         return result && ec.value() == 0;
     }
 
     u8string GetFileName(u8string_view path)
     {
-        return fs::u8path(path).filename().u8string();
+        return std::filesystem::u8path(path).filename().u8string();
     }
 
     u8string GetFileNameWithoutExtension(u8string_view path)
     {
-        return fs::u8path(path).stem().u8string();
+        return std::filesystem::u8path(path).stem().u8string();
     }
 
     u8string GetExtension(u8string_view path)
     {
-        return fs::u8path(path).extension().u8string();
+        return std::filesystem::u8path(path).extension().u8string();
     }
 
     u8string WithExtension(u8string_view path, u8string_view newExtension)
     {
-        auto p = fs::u8path(path);
+        auto p = std::filesystem::u8path(path);
 
-        fs::path extensionWithDot;
+        std::filesystem::path extensionWithDot;
         if (!newExtension.empty() && newExtension.front() != '.')
         {
             extensionWithDot += ".";
         }
-        extensionWithDot += fs::u8path(newExtension);
+        extensionWithDot += std::filesystem::u8path(newExtension);
 
         if (p.extension() != extensionWithDot)
         {
@@ -104,20 +104,20 @@ namespace Path
 
     bool IsAbsolute(u8string_view path)
     {
-        auto p = fs::u8path(path);
+        auto p = std::filesystem::u8path(path);
         return p.is_absolute();
     }
 
     u8string GetAbsolute(u8string_view relative)
     {
         std::error_code ec;
-        return fs::absolute(fs::u8path(relative), ec).u8string();
+        return std::filesystem::absolute(std::filesystem::u8path(relative), ec).u8string();
     }
 
     u8string GetRelative(u8string_view path, u8string_view base)
     {
         std::error_code ec;
-        return fs::relative(fs::u8path(path), fs::u8path(base), ec).u8string();
+        return std::filesystem::relative(std::filesystem::u8path(path), std::filesystem::u8path(base), ec).u8string();
     }
 
     bool Equals(u8string_view a, u8string_view b)
@@ -133,7 +133,7 @@ namespace Path
     bool DeleteDirectory(u8string_view path)
     {
         std::error_code ec;
-        const auto result = fs::remove_all(fs::u8path(path), ec);
+        const auto result = std::filesystem::remove_all(std::filesystem::u8path(path), ec);
         return (result > 0) && ec.value() == 0;
     }
 } // namespace Path

@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "core/FileSystem.hpp"
 #include "drawing/ImageId.hpp"
 
+#include <filesystem>
 #include <memory>
 #include <vector>
 
@@ -36,7 +36,7 @@ namespace OpenRCT2
         size_t GetAssetPackIndex(std::string_view id);
 
         void Scan();
-        void Scan(const fs::path& directory);
+        void Scan(const std::filesystem::path& directory);
         void Reload();
         void Swap(size_t index, size_t otherIndex);
 
@@ -47,7 +47,7 @@ namespace OpenRCT2
 
     private:
         void ClearAssetPacks();
-        void AddAssetPack(const fs::path& path);
+        void AddAssetPack(const std::filesystem::path& path);
     };
 
 } // namespace OpenRCT2

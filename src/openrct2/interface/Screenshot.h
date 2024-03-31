@@ -10,11 +10,11 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/FileSystem.hpp"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "ZoomLevel.h"
 
+#include <filesystem>
 #include <optional>
 #include <string>
 
@@ -45,7 +45,7 @@ struct CaptureView
 
 struct CaptureOptions
 {
-    fs::path Filename;
+    std::filesystem::path Filename;
     std::optional<CaptureView> View;
     ZoomLevel Zoom;
     uint8_t Rotation{};

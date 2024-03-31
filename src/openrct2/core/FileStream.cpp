@@ -28,7 +28,7 @@
 
 namespace OpenRCT2
 {
-    FileStream::FileStream(const fs::path& path, int32_t fileMode)
+    FileStream::FileStream(const std::filesystem::path& path, int32_t fileMode)
         : FileStream(path.u8string(), fileMode)
     {
     }
@@ -105,7 +105,7 @@ namespace OpenRCT2
         _fileSize = _filelengthi64(_fileno(_file));
 #else
         std::error_code ec;
-        _fileSize = fs::file_size(fs::u8path(path), ec);
+        _fileSize = std::filesystem::file_size(std::filesystem::u8path(path), ec);
 #endif
 
         _ownsFilePtr = true;

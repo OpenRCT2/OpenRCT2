@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -15,7 +16,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/Version.h>
-#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatting.h>
@@ -68,7 +68,7 @@ static Widget _windowChangelogWidgets[] = {
         {
             auto env = GetContext()->GetPlatformEnvironment();
             auto path = env->GetFilePath(pathId);
-            auto fs = std::ifstream(fs::u8path(path), std::ios::in);
+            auto fs = std::ifstream(std::filesystem::u8path(path), std::ios::in);
             if (!fs.is_open())
             {
                 throw std::runtime_error("Unable to open " + path);
