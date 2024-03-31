@@ -68,8 +68,6 @@ enum class RCT2LanguageId
     End = 255
 };
 
-#define FONT_OPENRCT2_SPRITE NULL
-
 #include "../interface/FontFamilies.h"
 
 struct LanguageDescriptor
