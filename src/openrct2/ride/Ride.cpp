@@ -2858,7 +2858,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
 
     while (TrackCircuitIteratorNext(&it))
     {
-        auto trackType = output->element->AsTrack()->GetTrackType();
+        auto trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
         if (ted.Flags & TRACK_ELEM_FLAG_BANKED)
         {
