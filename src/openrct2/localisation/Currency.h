@@ -45,7 +45,7 @@ enum class CurrencyAffix
     Suffix
 };
 
-#define CURRENCY_SYMBOL_MAX_SIZE 8
+constexpr size_t kCurrencySymbolMaxSize = 8;
 #define CURRENCY_RATE_MAX_NUM_DIGITS 9
 
 // Currency format specification - inspired by OpenTTD
@@ -55,9 +55,9 @@ struct CurrencyDescriptor
     // Rate is relative to 0.10 GBP
     int32_t rate;
     CurrencyAffix affix_unicode;
-    utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
+    utf8 symbol_unicode[kCurrencySymbolMaxSize];
     CurrencyAffix affix_ascii;
-    char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
+    char symbol_ascii[kCurrencySymbolMaxSize];
     StringId stringId;
 };
 
