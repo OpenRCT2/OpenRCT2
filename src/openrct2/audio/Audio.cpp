@@ -101,27 +101,10 @@ namespace OpenRCT2::Audio
     {
         auto& objManager = GetContext()->GetObjectManager();
 
-        Object* baseAudio{};
-
-        // We have a different audio object for RCT Classic
-        auto env = GetContext()->GetPlatformEnvironment();
-        if (env->IsUsingClassic())
+        Object* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCT2);
+        if (baseAudio != nullptr)
         {
-            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCTCBase);
-            if (baseAudio != nullptr)
-            {
-                _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
-            }
-        }
-
-        if (baseAudio == nullptr)
-        {
-            // Fallback to vanilla RCT2 audio object
-            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCT2Base);
-            if (baseAudio != nullptr)
-            {
-                _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
-            }
+            _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
         }
 
         objManager.LoadObject(AudioObjectIdentifiers::OpenRCT2Additional);
