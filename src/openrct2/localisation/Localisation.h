@@ -39,7 +39,6 @@ constexpr size_t kMoneyStringMaxlength = 14;
 money64 StringToMoney(const char* string_to_monetise);
 void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
 
-#define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 
 #define USER_STRING_END 0x8FFF
