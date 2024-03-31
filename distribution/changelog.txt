@@ -27,6 +27,8 @@
 - Fix: [#21635] Tile inspector hotkey can set wall slope for non-slopeable objects.
 - Fix: [#21641] Crash when creating track iterator from an invalid tile element.
 - Fix: [#21652] Dialog window to confirm overwriting files does not apply the theme colours correctly.
+- Fix: [#21654] No sound effects when using RCT Classic as an asset base.
+- Fix: [#21654] Extraneous reports of an object conflict between `rct2.audio.base` and `rct2.audio.base.rctc`.
 - Fix: [#21668] Crash when on null ride in Guest::UpdateRideLeaveExit.
 - Fix: [objects#290] “Haunted Mansion” cars have a non-functional third remap colour.
 - Fix: [objects#296] Incorrect wall placement around large Kremlin/drab pieces.
