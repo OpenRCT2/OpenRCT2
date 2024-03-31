@@ -41,7 +41,7 @@ void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_l
 
 constexpr size_t kUserStringMaxLength = 32;
 
-#define REAL_NAME_START 0xA000
+constexpr uint16_t kRealNameStart = 0xA000;
 #define REAL_NAME_END 0xDFFF
 
 constexpr size_t CommonTextBufferSize = 512;

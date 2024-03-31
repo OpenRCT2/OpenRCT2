@@ -2531,7 +2531,7 @@ StringId GetRealNameStringIDFromPeepID(uint32_t id)
         dx += 0x1000;
     }
     dx /= 4;
-    dx += REAL_NAME_START;
+    dx += kRealNameStart;
     return dx;
 }
 
