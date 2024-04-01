@@ -502,8 +502,7 @@ std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen)
     return output;
 }
 
-template<typename T>
-constexpr T kAddClampBody(T value, T value_to_add, T min_cap, T max_cap)
+template<typename T> constexpr T kAddClampBody(T value, T value_to_add, T min_cap, T max_cap)
 {
     if ((value_to_add > 0) && (value > (max_cap - (value_to_add))))
     {
