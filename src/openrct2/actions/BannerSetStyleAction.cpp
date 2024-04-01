@@ -163,5 +163,8 @@ GameActions::Result BannerSetStyleAction::Execute() const
     intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
     ContextBroadcastIntent(&intent);
 
+    ScrollingTextInvalidate();
+    GfxInvalidateScreen();
+
     return res;
 }

@@ -520,13 +520,14 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
         return;
     }
 
+    uint8_t colour = info->palette[1];
     if (info->flags & TEXT_DRAW_FLAG_NO_DRAW)
     {
-        info->x += TTFGetWidthCacheGetOrAdd(fontDesc->font, text);
+        info->x += TTFGetWidthCacheGetOrAdd(fontDesc->font, text, colour);
         return;
     }
 
-    TTFSurface* surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, text);
+    TTFSurface* surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, text, colour);
     if (surface == nullptr)
         return;
 

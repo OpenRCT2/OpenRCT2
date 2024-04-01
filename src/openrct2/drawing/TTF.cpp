@@ -35,6 +35,7 @@ struct ttf_cache_entry
     TTF_Font* font;
     u8string text;
     uint32_t lastUseTick;
+    colour_t colour;
 };
 
 struct ttf_getwidth_cache_entry
@@ -43,6 +44,7 @@ struct ttf_getwidth_cache_entry
     TTF_Font* font;
     u8string text;
     uint32_t lastUseTick;
+    colour_t colour;
 };
 
 static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = {};
@@ -180,13 +182,14 @@ static void TTFCloseFont(TTF_Font* font)
     TTF_CloseFont(font);
 }
 
-static uint32_t TTFSurfaceCacheHash(TTF_Font* font, std::string_view text)
+static uint32_t TTFSurfaceCacheHash(TTF_Font* font, std::string_view text, colour_t colour)
 {
     uint32_t hash = static_cast<uint32_t>(((reinterpret_cast<uintptr_t>(font) * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
     for (auto c : text)
     {
         hash = Numerics::ror32(hash, 3) ^ (c * 13);
     }
+    hash = Numerics::ror32(hash, 3) ^ (colour * 13);
     return hash;
 }
 
@@ -216,11 +219,11 @@ void TTFToggleHinting()
     TTFToggleHinting(true);
 }
 
-TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
+TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text, colour_t colour)
 {
     ttf_cache_entry* entry;
 
-    uint32_t hash = TTFSurfaceCacheHash(font, text);
+    uint32_t hash = TTFSurfaceCacheHash(font, text, colour);
     int32_t index = hash % TTF_SURFACE_CACHE_SIZE;
 
     FontLockHelper<std::mutex> lock(_mutex);
@@ -232,7 +235,7 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
         // Check if entry is a hit
         if (entry->surface == nullptr)
             break;
-        if (entry->font == font && String::Equals(entry->text, text))
+        if (entry->font == font && entry->colour == colour && String::Equals(entry->text, text))
         {
             _ttfSurfaceCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;
@@ -267,6 +270,7 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
     entry->surface = surface;
     entry->font = font;
     entry->text = text;
+    entry->colour = colour;
     entry->lastUseTick = gCurrentDrawCount;
     return entry->surface;
 }
@@ -290,11 +294,11 @@ static void TTFGetWidthCacheDisposeAll()
     }
 }
 
-uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
+uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text, colour_t colour)
 {
     ttf_getwidth_cache_entry* entry;
 
-    uint32_t hash = TTFSurfaceCacheHash(font, text);
+    uint32_t hash = TTFSurfaceCacheHash(font, text, colour);
     int32_t index = hash % TTF_GETWIDTH_CACHE_SIZE;
 
     FontLockHelper<std::mutex> lock(_mutex);
@@ -306,7 +310,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
         // Check if entry is a hit
         if (entry->text.empty())
             break;
-        if (entry->font == font && String::Equals(entry->text, text))
+        if (entry->font == font && entry->colour == colour && String::Equals(entry->text, text))
         {
             _ttfGetWidthCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;
@@ -337,6 +341,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
     entry->width = width;
     entry->font = font;
     entry->text = text;
+    entry->colour = colour;
     entry->lastUseTick = gCurrentDrawCount;
     return entry->width;
 }

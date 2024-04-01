@@ -28,8 +28,8 @@ struct TTFSurface
 
 TTFFontDescriptor* TTFGetFontFromSpriteBase(FontStyle fontStyle);
 void TTFToggleHinting();
-TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text);
-uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text);
+TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text, colour_t colour);
+uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text, colour_t colour);
 bool TTFProvidesGlyph(const TTF_Font* font, codepoint_t codepoint);
 void TTFFreeSurface(TTFSurface* surface);
 
