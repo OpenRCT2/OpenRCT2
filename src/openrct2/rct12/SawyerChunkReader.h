@@ -91,6 +91,4 @@ private:
     static size_t DecodeChunkRLE(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
     static size_t DecodeChunkRepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
     static size_t DecodeChunkRotate(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
-
-    static std::unique_ptr<uint8_t[]> AllocateLargeTempBuffer();
 };
