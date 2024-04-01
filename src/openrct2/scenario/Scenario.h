@@ -43,9 +43,6 @@ enum
     S6_TYPE_SCENARIO
 };
 
-#define S6_RCT2_VERSION 120001
-#define S6_MAGIC_NUMBER 0x00031144
-
 enum SCENARIO_CATEGORY
 {
     // RCT2 categories (keep order)
@@ -151,8 +148,8 @@ enum
     AUTOSAVE_NEVER
 };
 
-#define AUTOSAVE_PAUSE 0
-#define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
+constexpr uint8_t kAutosavePause = 0;
+constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
 
 static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
 

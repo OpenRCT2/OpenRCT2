@@ -180,11 +180,11 @@ static void PaintSmallSceneryBody(
     ImageIndex baseImageIndex = sceneryEntry->image + direction;
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
     {
-        if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_1)
+        if (sceneryElement.GetAge() >= kSceneryWitherAgeThreshold1)
         {
             baseImageIndex += 4;
         }
-        if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_2)
+        if (sceneryElement.GetAge() >= kSceneryWitherAgeThreshold2)
         {
             baseImageIndex += 4;
         }

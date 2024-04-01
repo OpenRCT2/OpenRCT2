@@ -1549,14 +1549,14 @@ bool Staff::UpdatePatrollingFindWatering()
                 continue;
             }
 
-            if (tile_element->AsSmallScenery()->GetAge() < SCENERY_WITHER_AGE_THRESHOLD_2)
+            if (tile_element->AsSmallScenery()->GetAge() < kSceneryWitherAgeThreshold2)
             {
                 if (chosen_position >= 4)
                 {
                     continue;
                 }
 
-                if (tile_element->AsSmallScenery()->GetAge() < SCENERY_WITHER_AGE_THRESHOLD_1)
+                if (tile_element->AsSmallScenery()->GetAge() < kSceneryWitherAgeThreshold1)
                 {
                     continue;
                 }

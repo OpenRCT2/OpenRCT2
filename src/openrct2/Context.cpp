@@ -659,7 +659,7 @@ namespace OpenRCT2
                 MapAnimationAutoCreate();
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
-                gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+                gLastAutoSaveUpdate = kAutosavePause;
 
 #ifndef DISABLE_NETWORK
                 bool sendMap = false;

@@ -87,13 +87,13 @@ void TileElementBase::Remove()
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const
 {
-    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & kTileElementOccupiedQuadrantsMask;
 }
 
 void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 {
-    Flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
-    Flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
+    Flags &= ~kTileElementOccupiedQuadrantsMask;
+    Flags |= (quadrants & kTileElementOccupiedQuadrantsMask);
 }
 
 int32_t TileElementBase::GetBaseZ() const

@@ -447,7 +447,7 @@ bool WoodenASupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
 
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             PaintAddImageAsParent(
@@ -475,7 +475,7 @@ bool WoodenASupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             hasSupports = true;
         }
@@ -579,7 +579,7 @@ bool WoodenBSupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
 
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             PaintAddImageAsParent(
@@ -607,7 +607,7 @@ bool WoodenBSupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 3 } });
             hasSupports = true;
         }
@@ -704,7 +704,7 @@ bool PathBoxSupportsPaintSetup(
             return false;
         }
 
-        uint32_t imageId = supportOrientationOffset + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
+        uint32_t imageId = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileElementSurfaceSlopeMask]
             + pathPaintInfo.BridgeImageId;
 
         PaintAddImageAsParent(
@@ -725,7 +725,7 @@ bool PathBoxSupportsPaintSetup(
             return false;
         }
 
-        uint32_t ebx = supportOrientationOffset + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
+        uint32_t ebx = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileElementSurfaceSlopeMask]
             + pathPaintInfo.BridgeImageId;
 
         PaintAddImageAsParent(

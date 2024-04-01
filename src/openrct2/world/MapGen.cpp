@@ -693,8 +693,8 @@ bool MapGenLoadHeightmap(const utf8* path)
     try
     {
         auto image = Imaging::ReadFromFile(path, format);
-        auto width = std::min<uint32_t>(image.Width, MAXIMUM_MAP_SIZE_PRACTICAL);
-        auto height = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
+        auto width = std::min<uint32_t>(image.Width, kMaximumMapSizePractical);
+        auto height = std::min<uint32_t>(image.Height, kMaximumMapSizePractical);
         if (width != image.Width || height != image.Height)
         {
             ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
