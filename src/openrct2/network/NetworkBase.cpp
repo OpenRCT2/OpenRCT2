@@ -47,11 +47,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-<<<<<<< HEAD
-#define NETWORK_STREAM_VERSION "3"
-=======
-constexpr std::string_view kNetworkStreamVersion = "1";
->>>>>>> 0bfffae80 (Part of #21421: refactor NETWORK_STREAM_VERSION and _ID)
+constexpr std::string_view kNetworkStreamVersion = "3";
 
 const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::string(kNetworkStreamVersion);
 
