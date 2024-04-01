@@ -85,18 +85,10 @@ public:
         return result;
     }
 
-    /**
-     * Frees the chunk data, to be used when destructing SawyerChunks
-     */
-    static void FreeChunk(void* data);
-
 private:
     static size_t DecodeChunk(void* dst, size_t dstCapacity, const void* src, const SawyerCodingChunkHeader& header);
     static size_t DecodeChunkRLERepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
     static size_t DecodeChunkRLE(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
     static size_t DecodeChunkRepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
     static size_t DecodeChunkRotate(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
-
-    static void* AllocateLargeTempBuffer();
-    static void FreeLargeTempBuffer(void* buffer);
 };
