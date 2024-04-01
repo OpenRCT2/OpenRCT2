@@ -117,10 +117,11 @@ static void LoadSpriteFont(LocalisationService& localisationService)
 #ifndef NO_TTF
 static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescriptor* font)
 {
+    TTFDispose();
     localisationService.UseTrueTypeFont(true);
+
     gCurrentTTFFontSet = font;
 
-    TTFDispose();
     bool fontInitialised = TTFInitialise();
     return fontInitialised;
 }
