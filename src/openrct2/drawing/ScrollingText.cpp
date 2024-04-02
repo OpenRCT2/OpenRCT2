@@ -1571,7 +1571,7 @@ static void ScrollingTextSetBitmapForTTF(
         }
     }
 
-    auto surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, ttfBuffer.c_str(), colour);
+    auto surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, ttfBuffer.c_str());
     if (surface == nullptr)
     {
         return;
