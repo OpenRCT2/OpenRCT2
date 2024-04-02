@@ -178,6 +178,26 @@ static constexpr uint8_t metal_supports_slope_image_map[] = {
 };
 // clang-format on
 
+static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][NumOrthogonalDirections] = {
+    { MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner,
+      MetalSupportPlace::LeftCorner },
+    { MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner,
+      MetalSupportPlace::BottomCorner },
+    { MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner,
+      MetalSupportPlace::TopCorner },
+    { MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner,
+      MetalSupportPlace::RightCorner },
+    { MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre },
+    { MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide,
+      MetalSupportPlace::BottomLeftSide },
+    { MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide,
+      MetalSupportPlace::TopLeftSide },
+    { MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide,
+      MetalSupportPlace::BottomRightSide },
+    { MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide,
+      MetalSupportPlace::TopRightSide },
+};
+
 /**
  * Metal pole supports
  * @param supportType (edi)
@@ -267,7 +287,7 @@ bool MetalASupportsPaintSetup(
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
         uint32_t imageIndex = _97B15C[supportType].base_id;
-        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
+        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, supportSegments[segment].height }, { 0, 0, 5 });
@@ -374,6 +394,14 @@ bool MetalASupportsPaintSetup(
     return true;
 }
 
+bool MetalASupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    int32_t special, int32_t height, ImageId imageTemplate)
+{
+    placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
+    return MetalASupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
+}
+
 /**
  * Metal pole supports
  *  rct2: 0x00663584
@@ -465,7 +493,7 @@ bool MetalBSupportsPaintSetup(
     }
     else
     {
-        uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
+        uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
         uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
 
         PaintAddImageAsParent(
@@ -559,6 +587,14 @@ bool MetalBSupportsPaintSetup(
     return false; // AND
 }
 
+bool MetalBSupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    int32_t special, int32_t height, ImageId imageTemplate)
+{
+    placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
+    return MetalBSupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
+}
+
 constexpr uint8_t MetalSupportTypeCount = 13;
 constexpr MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
     { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
@@ -643,7 +679,7 @@ bool PathPoleSupportsPaintSetup(
     }
     else
     {
-        uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
+        uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
         baseHeight = supportSegments[segment].height;
 
         PaintAddImageAsParent(

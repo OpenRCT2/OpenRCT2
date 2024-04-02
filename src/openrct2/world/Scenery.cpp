@@ -180,7 +180,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (gCheatsDisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+    if (OpenRCT2::GetGameState().Cheats.DisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
     {
         return;
     }
@@ -315,7 +315,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         return true;
     }
 
-    if (!gCheatsIgnoreResearchStatus)
+    if (!OpenRCT2::GetGameState().Cheats.IgnoreResearchStatus)
     {
         if (!SceneryIsInvented(item))
         {
@@ -323,7 +323,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!gCheatsSandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!OpenRCT2::GetGameState().Cheats.SandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         if (IsSceneryItemRestricted(item))
         {

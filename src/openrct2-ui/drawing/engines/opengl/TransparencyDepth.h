@@ -13,9 +13,12 @@
 
 #include <openrct2/common.h>
 
-/*
- * Determines an approximation of the number of depth peeling iterations needed
- * to render the command batch. It will never underestimate the number of
- * iterations, but it can overestimate, usually by no more than +2.
- */
-int32_t MaxTransparencyDepth(const RectCommandBatch& transparent);
+namespace OpenRCT2::Ui
+{
+    /*
+     * Determines an approximation of the number of depth peeling iterations needed
+     * to render the command batch. It will never underestimate the number of
+     * iterations, but it can overestimate, usually by no more than +2.
+     */
+    int32_t MaxTransparencyDepth(const RectCommandBatch& transparent);
+} // namespace OpenRCT2::Ui

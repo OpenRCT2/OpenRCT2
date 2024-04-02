@@ -15,7 +15,9 @@
 #include <stdexcept>
 #include <vector>
 #ifndef _WIN32
-#    include <alloca.h>
+#    ifndef __FreeBSD__
+#        include <alloca.h>
+#    endif
 #    include <unicode/ucnv.h>
 #    include <unicode/unistr.h>
 #    include <unicode/utypes.h>

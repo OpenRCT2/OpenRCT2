@@ -19,6 +19,8 @@
 #    include <stdexcept>
 #    include <vector>
 
+using namespace OpenRCT2::Ui;
+
 constexpr uint32_t UNUSED_INDEX = 0xFFFFFFFF;
 
 TextureCache::TextureCache()

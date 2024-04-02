@@ -48,7 +48,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode
         && GetGameState().ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
@@ -65,7 +65,7 @@ GameActions::Result WaterSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
@@ -76,7 +76,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
@@ -117,13 +117,13 @@ GameActions::Result WaterSetHeightAction::Execute() const
 
     int32_t surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
-    if (!gCheatsDisableClearanceChecks)
+    if (!GetGameState().Cheats.DisableClearanceChecks)
         WallRemoveAtZ({ _coords, surfaceHeight });
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }

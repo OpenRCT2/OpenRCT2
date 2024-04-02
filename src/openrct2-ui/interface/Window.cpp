@@ -10,6 +10,8 @@
 #include "Window.h"
 
 #include "Theme.h"
+#include "Widget.h"
+#include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
 #include <algorithm>
@@ -503,7 +505,7 @@ static bool WindowOtherWheelInput(WindowBase& w, WidgetIndex widgetIndex, int32_
         return false;
     }
 
-    WindowEventMouseDownCall(&w, buttonWidgetIndex);
+    w.OnMouseDown(buttonWidgetIndex);
     return true;
 }
 
@@ -580,7 +582,6 @@ void WindowInitScrollWidgets(WindowBase& w)
 {
     Widget* widget;
     int32_t widget_index, scroll_index;
-    int32_t width, height;
 
     widget_index = 0;
     scroll_index = 0;
@@ -594,13 +595,11 @@ void WindowInitScrollWidgets(WindowBase& w)
 
         auto& scroll = w.scrolls[scroll_index];
         scroll.flags = 0;
-        width = 0;
-        height = 0;
-        WindowGetScrollSize(&w, scroll_index, &width, &height);
+        ScreenSize scrollSize = w.OnScrollGetSize(scroll_index);
         scroll.h_left = 0;
-        scroll.h_right = width + 1;
+        scroll.h_right = scrollSize.width + 1;
         scroll.v_top = 0;
-        scroll.v_bottom = height + 1;
+        scroll.v_bottom = scrollSize.height + 1;
 
         if (widget->content & SCROLL_HORIZONTAL)
             scroll.flags |= HSCROLLBAR_VISIBLE;
@@ -639,10 +638,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
             {
                 if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
                 {
-                    if (w.IsLegacy())
-                        WidgetDraw(dpi, w, widgetIndex);
-                    else
-                        w.OnDrawWidget(widgetIndex, dpi);
+                    w.OnDrawWidget(widgetIndex, dpi);
                 }
             }
         }
@@ -688,13 +684,8 @@ void InvalidateAllWindowsAfterInput()
     WindowVisitEach([](WindowBase* w) {
         WindowUpdateScrollWidgets(*w);
         WindowInvalidatePressedImageButton(*w);
-        WindowEventResizeCall(w);
+        w->OnResize();
     });
-}
-
-bool Window::IsLegacy()
-{
-    return false;
 }
 
 void Window::OnDraw(DrawPixelInfo& dpi)
@@ -808,7 +799,8 @@ void Window::TextInputOpen(
     WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
     uintptr_t existingArgs, int32_t maxLength)
 {
-    WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+    OpenRCT2::Ui::Windows::WindowTextInputOpen(
+        this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }
 
 void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
@@ -840,3 +832,31 @@ ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     const uint8_t buttonOffset = (gConfigInterface.WindowButtonsOnTheLeft) ? CloseButtonWidth + 2 : 0;
     return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
 }
+
+namespace OpenRCT2::Ui::Windows
+{
+    WindowBase* WindowGetListening()
+    {
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        {
+            auto& w = **it;
+            if (w.flags & WF_DEAD)
+                continue;
+
+            auto viewport = w.viewport;
+            if (viewport != nullptr)
+            {
+                if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+                {
+                    return &w;
+                }
+            }
+        }
+        return nullptr;
+    }
+
+    WindowClass WindowGetClassification(const WindowBase& window)
+    {
+        return window.classification;
+    }
+} // namespace OpenRCT2::Ui::Windows

@@ -10,6 +10,7 @@
 #include "SmallSceneryPlaceAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
 #include "../core/MemoryStream.h"
@@ -29,6 +30,8 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 #include "SmallSceneryRemoveAction.h"
+
+using namespace OpenRCT2;
 
 SmallSceneryPlaceAction::SmallSceneryPlaceAction(
     const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
@@ -112,12 +115,14 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     auto maxSizeMax = GetMapSizeMaxXY();
     if (!_trackDesignDrawingPreview && (_loc.x > maxSizeMax.x || _loc.y > maxSizeMax.y))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
+        LOG_ERROR("Small scenery object entry not found for sceneryType %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -163,7 +168,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         targetHeight = surfaceHeight;
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode
         && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -171,7 +176,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
 
     auto* surfaceElement = MapGetSurfaceElementAt(_loc);
 
-    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
+    if (surfaceElement != nullptr && !GetGameState().Cheats.DisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
     {
         int32_t water_height = surfaceElement->GetWaterHeight() - 1;
         if (water_height > targetHeight)
@@ -181,7 +186,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         }
     }
 
-    if (!gCheatsDisableClearanceChecks && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)))
+    if (!GetGameState().Cheats.DisableClearanceChecks && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)))
     {
         if (isOnWater)
         {
@@ -199,13 +204,15 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         }
     }
 
-    if (!gCheatsDisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE)) && !supportsRequired
-        && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
+    if (!GetGameState().Cheats.DisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
+        && !supportsRequired && !isOnWater && surfaceElement != nullptr
+        && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
     }
 
-    if (!gCheatsDisableSupportLimits && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)) && supportsRequired)
+    if (!GetGameState().Cheats.DisableSupportLimits && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE))
+        && supportsRequired)
     {
         if (!isOnWater)
         {
@@ -308,9 +315,10 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         res.Position.z = surfaceHeight;
     }
 
-    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
+        LOG_ERROR("Small scenery object entry not found for sceneryType %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -357,7 +365,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathRemoveLitter({ _loc, targetHeight });
-        if (!gCheatsDisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
+        if (!GetGameState().Cheats.DisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
         {
             WallRemoveAt({ _loc, targetHeight, targetHeight + sceneryEntry->height });
         }

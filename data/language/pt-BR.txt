@@ -1737,12 +1737,12 @@ STR_2382    :Terreno
 STR_2383    :Água
 STR_2384    :{WINDOW_COLOUR_2}Seu objetivo:
 STR_2385    :{BLACK}Nenhum
-STR_2386    :{BLACK}Ter pelo menos {COMMA16} visitantes em seu parque até o fim de {MONTHYEAR}, com classificação de parque de pelo menos 600
+STR_2386    :{BLACK}Ter pelo menos {COMMA32} visitantes em seu parque até o fim de {MONTHYEAR}, com classificação de parque de pelo menos 600
 STR_2387    :{BLACK}Alcançar um valor do parque de pelo menos {POP16}{POP16}{CURRENCY} até o fim de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Divirta-se!
 STR_2389    :{BLACK}Construir o melhor {STRINGID} que puder!
 STR_2390    :{BLACK}Ter 10 tipos de montanha-russa diferentes operando em seu parque, cada uma com um valor de emoção de pelo menos 6.00
-STR_2391    :{BLACK}Ter pelo menos {COMMA16} visitantes em seu parque. Você não pode deixar a classificação de parque abaixo de 700 em momento algum!
+STR_2391    :{BLACK}Ter pelo menos {COMMA32} visitantes em seu parque. Você não pode deixar a classificação de parque abaixo de 700 em momento algum!
 STR_2392    :{BLACK}Alcançar uma receita mensal de ingressos de atrações de pelo menos {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Ter 10 tipos de montanha-russa diferentes operando em seu parque, cada uma com um comprimento mínimo de {LENGTH}, e um valor de emoção de no mínimo 7.00
 STR_2394    :{BLACK}Terminar de construir todas as 5 montanhas-russas parcialmente construídas neste parque, projetando-as para alcançar um valor de emoção de pelo menos {POP16}{POP16}{COMMA2DP32} cada
@@ -2323,7 +2323,7 @@ STR_3305    :{WINDOW_COLOUR_2}Receita Mensal:
 STR_3306    :{WINDOW_COLOUR_2}Lucro Mensal:
 STR_3307    :{WINDOW_COLOUR_2}Comprimento Mínimo:
 STR_3308    :{WINDOW_COLOUR_2}Classificação de emoção:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Atrações em ordem de preservação:
@@ -3686,6 +3686,11 @@ STR_6614    :Não é possível mudar o preço de entrada do parque
 STR_6615    :A pista nesse azulejo precisa de água
 STR_6616    :Ação inválida para esse tipo de funcionário
 STR_6617    :Não é possível trocar o elemento do azulejo com ele mesmo
+STR_6618    :Não é possível restringir ou liberar o objeto…
+STR_6619    :Tipo de objeto não pode ser restringido!
+STR_6620    :Objeto não encontrado!
+STR_6621    :Restringir
+STR_6622    :Restringir objeto ao Editor de Cenário e ao modo sandbox.
 
 #############
 # Scenarios #

@@ -22,7 +22,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
@@ -78,8 +78,6 @@ uint8_t _currentBrakeSpeed2;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;
-
-ObjectEntryIndex gLastEntranceStyle;
 
 uint8_t gRideEntranceExitPlaceType;
 RideId gRideEntranceExitPlaceRideIndex;
@@ -200,7 +198,7 @@ void Ride::RemoveVehicles()
         }
 
         for (size_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
-            stations[i].TrainAtStation = RideStation::NO_TRAIN;
+            stations[i].TrainAtStation = RideStation::kNoTrain;
 
         // Also clean up orphaned vehicles for good measure.
         for (auto* vehicle : TrainManager::View())
@@ -239,7 +237,7 @@ void RideClearForConstruction(Ride& ride)
 
     auto w = WindowFindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w != nullptr)
-        WindowEventResizeCall(w);
+        w->OnResize();
 }
 
 /**
@@ -697,7 +695,8 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             _currentTrackLiftHill = tileElement->AsTrack()->HasChain()
-                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60) || gCheatsEnableChainLiftOnAllTrack);
+                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
+                    || GetGameState().Cheats.EnableChainLiftOnAllTrack);
             break;
         }
         case RideConstructionState::Back:
@@ -744,7 +743,7 @@ void RideConstructionSetDefaultNextPiece()
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            if (!gCheatsEnableChainLiftOnAllTrack)
+            if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
             {
                 _currentTrackLiftHill = tileElement->AsTrack()->HasChain();
             }

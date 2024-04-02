@@ -156,7 +156,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:13-mingw
+    container: openrct2/openrct2-build:14-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -293,7 +293,7 @@ jobs:
             echo 'Not going to push build'
           fi
   linux-portable:
-    name: Linux (${{ matrix.platform }}, ${{ matrix.distro }}, portable)
+    name: ${{ matrix.distro }} Linux (${{ matrix.release }}, ${{ matrix.platform }}, portable)
     runs-on: ubuntu-latest
     needs: check-code-formatting
     container: ${{ matrix.image }}
@@ -302,23 +302,21 @@ jobs:
       matrix:
         include:
           # Use `-fno-var-tracking-assignments` to reduce amount of produced debug information. This is necessary due to 100MiB limit of GitHub / openrct2.org API.
-          # For focal the debug information still takes too much space, so reduce amount of debug info to minimum using `-g1` (`-g` means `-g2`), which is enough for backtraces only.
           - platform: x86_64
-            distro: focal
-            image: openrct2/openrct2-build:13-focal
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz" -DWITH_TESTS=off
-          - platform: x86_64
-            distro: jammy
-            image: openrct2/openrct2-build:13-jammy
+            distro: Ubuntu
+            release: jammy
+            image: openrct2/openrct2-build:14-jammy
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
-            distro: bullseye
-            image: openrct2/openrct2-build:13-bullseye
+            distro: Debian
+            release: bullseye
+            image: openrct2/openrct2-build:14-bullseye
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
           - platform: i686
-            distro: focal
-            image: openrct2/openrct2-build:13-focal32
-            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g1 -gz" -DWITH_TESTS=off
+            distro: Ubuntu
+            release: jammy
+            image: openrct2/openrct2-build:14-jammy32
+            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz" -DWITH_TESTS=off
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -353,10 +351,10 @@ jobs:
             echo 'Not going to push build'
           fi
   linux-appimage:
-    name: Linux (x86_64, AppImage)
+    name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:13-focal
+    container: openrct2/openrct2-build:14-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -386,7 +384,7 @@ jobs:
             echo 'Not going to push build'
           fi
   linux-docker:
-    name: Linux (docker)
+    name: Ubuntu Linux (Docker)
     needs: check-code-formatting
     if: github.repository == 'OpenRCT2/OpenRCT2'
     runs-on: ubuntu-latest
@@ -411,10 +409,10 @@ jobs:
             echo 'Image not pushed'
           fi
   linux-clang:
-    name: Linux (Debug, [http, network, flac, vorbis OpenGL] disabled) using clang
+    name: Ubuntu Linux (jammy, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:13-jammy
+    container: openrct2/openrct2-build:14-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -427,10 +425,10 @@ jobs:
       - name: Build OpenRCT2
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON -DDISABLE_OPENGL=ON
   linux-clang-tests:
-    name: Linux (Debug) using clang, coverage enabled
+    name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:13-jammy
+    container: openrct2/openrct2-build:14-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -471,7 +469,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:13-android
+    container: openrct2/openrct2-build:14-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4

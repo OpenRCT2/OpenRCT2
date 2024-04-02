@@ -146,7 +146,7 @@ namespace Config
             auto model = &gConfigGeneral;
             model->AlwaysShowGridlines = reader->GetBoolean("always_show_gridlines", false);
             model->AutosaveFrequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
-            model->AutosaveAmount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
+            model->AutosaveAmount = reader->GetInt32("autosave_amount", kDefaultNumAutosavesToKeep);
             model->ConfirmationPrompt = reader->GetBoolean("confirmation_prompt", false);
             model->CurrencyFormat = reader->GetEnum<CurrencyType>(
                 "currency_format", Platform::GetLocaleCurrency(), Enum_Currency);
@@ -841,7 +841,7 @@ bool ConfigFindOrBrowseInstallDirectory()
         auto uiContext = GetContext()->GetUiContext();
         if (!uiContext->HasFilePicker())
         {
-            uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
+            uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES_MANUAL));
             return false;
         }
 
@@ -850,7 +850,7 @@ bool ConfigFindOrBrowseInstallDirectory()
             const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
-                uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES, nullptr));
+                uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
                 std::string gog = LanguageGetString(STR_OWN_ON_GOG);
                 std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
@@ -889,7 +889,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     std::string dummy;
                     if (!Platform::FindApp("innoextract", &dummy))
                     {
-                        uiContext->ShowMessageBox(FormatStringID(STR_INSTALL_INNOEXTRACT, nullptr));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
                         return false;
                     }
 
@@ -927,7 +927,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     return true;
                 }
 
-                uiContext->ShowMessageBox(FormatStringID(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
+                uiContext->ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
             }
         }
         catch (const std::exception& ex)

@@ -82,12 +82,12 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
 
 uint8_t WallElement::GetSlope() const
 {
-    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & kTileElementQuadrantMask) >> 6;
 }
 
 void WallElement::SetSlope(uint8_t newSlope)
 {
-    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type &= ~kTileElementQuadrantMask;
     Type |= (newSlope << 6);
 }
 

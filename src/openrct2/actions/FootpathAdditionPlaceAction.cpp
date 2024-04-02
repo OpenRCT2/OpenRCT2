@@ -10,6 +10,7 @@
 #include "FootpathAdditionPlaceAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
@@ -57,7 +58,8 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode)
+        && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -75,8 +77,9 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
-        LOG_ERROR("Could not find path element.");
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
     }
 
     auto pathElement = tileElement->AsPath();
@@ -97,6 +100,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
     if (pathAdditionEntry == nullptr)
     {
+        LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -151,8 +155,9 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 
     if (pathElement == nullptr)
     {
-        LOG_ERROR("Could not find path element.");
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
     }
 
     // No change
@@ -165,6 +170,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
     if (pathAdditionEntry == nullptr)
     {
+        LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }

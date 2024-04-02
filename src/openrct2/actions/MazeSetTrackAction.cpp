@@ -10,6 +10,7 @@
 #include "MazeSetTrackAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -94,7 +95,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
-    if (!MapIsLocationOwned(_loc) && !gCheatsSandboxMode)
+    if (!MapIsLocationOwned(_loc) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -119,7 +120,7 @@ GameActions::Result MazeSetTrackAction::Query() const
     auto clearanceHeight = _loc.z + 32;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
-    if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
+    if (heightDifference >= 0 && !OpenRCT2::GetGameState().Cheats.DisableSupportLimits)
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
@@ -167,8 +168,9 @@ GameActions::Result MazeSetTrackAction::Query() const
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
         {
+            LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
             res.Error = GameActions::Status::NoClearance;
-            res.ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+            res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
             return res;
         }
 
@@ -191,8 +193,9 @@ GameActions::Result MazeSetTrackAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
         return res;
     }
 
@@ -285,7 +288,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     LOG_ERROR("No surface found");
                     res.Error = GameActions::Status::Unknown;
-                    res.ErrorMessage = STR_NONE;
+                    res.ErrorMessage = STR_ERR_SURFACE_ELEMENT_NOT_FOUND;
                     return res;
                 }
 

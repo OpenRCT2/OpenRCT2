@@ -10,6 +10,7 @@
 #include "WindowManager.h"
 
 #include "interface/Theme.h"
+#include "ride/VehicleSounds.h"
 #include "windows/Window.h"
 
 #include <openrct2-ui/input/InputManager.h>
@@ -28,6 +29,7 @@
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
+using namespace OpenRCT2::Ui::Windows;
 
 class WindowManager final : public IWindowManager
 {
@@ -43,101 +45,101 @@ public:
         switch (wc)
         {
             case WindowClass::About:
-                return WindowAboutOpen();
+                return AboutOpen();
             case WindowClass::BottomToolbar:
-                return WindowGameBottomToolbarOpen();
+                return GameBottomToolbarOpen();
             case WindowClass::Changelog:
                 return OpenView(WV_CHANGELOG);
             case WindowClass::Cheats:
-                return WindowCheatsOpen();
+                return CheatsOpen();
             case WindowClass::ClearScenery:
-                return WindowClearSceneryOpen();
+                return ClearSceneryOpen();
             case WindowClass::CustomCurrencyConfig:
-                return CustomCurrencyWindowOpen();
+                return CustomCurrencyOpen();
             case WindowClass::DebugPaint:
-                return WindowDebugPaintOpen();
+                return DebugPaintOpen();
             case WindowClass::EditorInventionList:
-                return WindowEditorInventionsListOpen();
+                return EditorInventionsListOpen();
             case WindowClass::EditorObjectSelection:
-                return WindowEditorObjectSelectionOpen();
+                return EditorObjectSelectionOpen();
             case WindowClass::EditorObjectiveOptions:
-                return WindowEditorObjectiveOptionsOpen();
+                return EditorObjectiveOptionsOpen();
             case WindowClass::EditorScenarioOptions:
-                return WindowEditorScenarioOptionsOpen();
+                return EditorScenarioOptionsOpen();
             case WindowClass::Finances:
-                return WindowFinancesOpen();
+                return FinancesOpen();
             case WindowClass::Footpath:
-                return WindowFootpathOpen();
+                return FootpathOpen();
             case WindowClass::GuestList:
-                return WindowGuestListOpen();
+                return GuestListOpen();
             case WindowClass::Land:
-                return WindowLandOpen();
+                return LandOpen();
             case WindowClass::LandRights:
-                return WindowLandRightsOpen();
+                return LandRightsOpen();
             case WindowClass::MainWindow:
-                return WindowMainOpen();
+                return MainOpen();
             case WindowClass::Map:
-                return WindowMapOpen();
+                return MapOpen();
             case WindowClass::Mapgen:
-                return WindowMapgenOpen();
+                return MapgenOpen();
             case WindowClass::Multiplayer:
-                return WindowMultiplayerOpen();
+                return MultiplayerOpen();
             case WindowClass::ConstructRide:
-                return WindowNewRideOpen();
+                return NewRideOpen();
             case WindowClass::ParkInformation:
-                return WindowParkEntranceOpen();
+                return ParkEntranceOpen();
             case WindowClass::RecentNews:
-                return WindowNewsOpen();
+                return NewsOpen();
             case WindowClass::RideConstruction:
-                return WindowRideConstructionOpen();
+                return RideConstructionOpen();
             case WindowClass::Research:
-                return WindowResearchOpen();
+                return ResearchOpen();
             case WindowClass::RideList:
-                return WindowRideListOpen();
+                return RideListOpen();
             case WindowClass::NotificationOptions:
-                return WindowNewsOptionsOpen();
+                return NewsOptionsOpen();
             case WindowClass::Options:
-                return WindowOptionsOpen();
+                return OptionsOpen();
             case WindowClass::SavePrompt:
-                return WindowSavePromptOpen();
+                return SavePromptOpen();
             case WindowClass::Scenery:
-                return WindowSceneryOpen();
+                return SceneryOpen();
             case WindowClass::SceneryScatter:
-                return WindowSceneryScatterOpen();
+                return SceneryScatterOpen();
 #ifndef DISABLE_NETWORK
             case WindowClass::ServerList:
-                return WindowServerListOpen();
+                return ServerListOpen();
             case WindowClass::ServerStart:
-                return WindowServerStartOpen();
+                return ServerStartOpen();
 #endif
             case WindowClass::KeyboardShortcutList:
-                return WindowShortcutKeysOpen();
+                return ShortcutKeysOpen();
             case WindowClass::StaffList:
-                return WindowStaffListOpen();
+                return StaffListOpen();
             case WindowClass::Themes:
-                return WindowThemesOpen();
+                return ThemesOpen();
             case WindowClass::TileInspector:
-                return WindowTileInspectorOpen();
+                return TileInspectorOpen();
             case WindowClass::TitleExit:
-                return WindowTitleExitOpen();
+                return TitleExitOpen();
             case WindowClass::TitleLogo:
-                return WindowTitleLogoOpen();
+                return TitleLogoOpen();
             case WindowClass::TitleMenu:
-                return WindowTitleMenuOpen();
+                return TitleMenuOpen();
             case WindowClass::TitleOptions:
-                return WindowTitleOptionsOpen();
+                return TitleOptionsOpen();
             case WindowClass::TopToolbar:
-                return WindowTopToolbarOpen();
+                return TopToolbarOpen();
             case WindowClass::ViewClipping:
-                return WindowViewClippingOpen();
+                return ViewClippingOpen();
             case WindowClass::Viewport:
-                return WindowViewportOpen();
+                return ViewportOpen();
             case WindowClass::Water:
-                return WindowWaterOpen();
+                return WaterOpen();
             case WindowClass::Transparency:
-                return WindowTransparencyOpen();
+                return TransparencyOpen();
             case WindowClass::AssetPacks:
-                return WindowAssetPacksOpen();
+                return AssetPacksOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -149,35 +151,35 @@ public:
         switch (view)
         {
             case WV_PARK_AWARDS:
-                return WindowParkAwardsOpen();
+                return ParkAwardsOpen();
             case WV_PARK_RATING:
-                return WindowParkRatingOpen();
+                return ParkRatingOpen();
             case WV_PARK_OBJECTIVE:
-                return WindowParkObjectiveOpen();
+                return ParkObjectiveOpen();
             case WV_PARK_GUESTS:
-                return WindowParkGuestsOpen();
+                return ParkGuestsOpen();
             case WV_FINANCES_RESEARCH:
-                return WindowFinancesResearchOpen();
+                return FinancesResearchOpen();
             case WV_RIDE_RESEARCH:
                 if (gConfigInterface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::Research);
                 }
-                return WindowNewRideOpenResearch();
+                return NewRideOpenResearch();
             case WV_MAZE_CONSTRUCTION:
-                return WindowMazeConstructionOpen();
+                return MazeConstructionOpen();
             case WV_NETWORK_PASSWORD:
-                return WindowNetworkStatusOpenPassword();
+                return NetworkStatusOpenPassword();
             case WV_EDITOR_BOTTOM_TOOLBAR:
-                return WindowEditorBottomToolbarOpen();
+                return EditorBottomToolbarOpen();
             case WV_CHANGELOG:
-                return WindowChangelogOpen(WV_CHANGELOG);
+                return ChangelogOpen(WV_CHANGELOG);
             case WV_NEW_VERSION_INFO:
-                return WindowChangelogOpen(WV_NEW_VERSION_INFO);
+                return ChangelogOpen(WV_NEW_VERSION_INFO);
             case WV_CONTRIBUTORS:
-                return WindowChangelogOpen(WV_CONTRIBUTORS);
+                return ChangelogOpen(WV_CONTRIBUTORS);
             case WV_FINANCE_MARKETING:
-                return WindowFinancesMarketingOpen();
+                return FinancesMarketingOpen();
             default:
                 return nullptr;
         }
@@ -188,19 +190,19 @@ public:
         switch (type)
         {
             case WD_BANNER:
-                return WindowBannerOpen(id);
+                return BannerOpen(id);
             case WD_NEW_CAMPAIGN:
-                return WindowNewCampaignOpen(id);
+                return NewCampaignOpen(id);
             case WD_DEMOLISH_RIDE:
-                return WindowRideDemolishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
+                return RideDemolishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:
-                return WindowRideRefurbishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
+                return RideRefurbishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
             case WD_SIGN:
-                return WindowSignOpen(id);
+                return SignOpen(id);
             case WD_SIGN_SMALL:
-                return WindowSignSmallOpen(id);
+                return SignSmallOpen(id);
             case WD_PLAYER:
-                return WindowPlayerOpen(id);
+                return PlayerOpen(id);
 
             default:
                 return nullptr;
@@ -209,12 +211,12 @@ public:
 
     WindowBase* ShowError(StringId title, StringId message, const Formatter& args) override
     {
-        return WindowErrorOpen(title, message, args);
+        return ErrorOpen(title, message, args);
     }
 
     WindowBase* ShowError(std::string_view title, std::string_view message) override
     {
-        return WindowErrorOpen(title, message);
+        return ErrorOpen(title, message);
     }
 
     WindowBase* OpenIntent(Intent* intent) override
@@ -222,13 +224,13 @@ public:
         switch (intent->GetWindowClass())
         {
             case WindowClass::Peep:
-                return WindowGuestOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
+                return GuestOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
             case WindowClass::FirePrompt:
-                return WindowStaffFirePromptOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
+                return StaffFirePromptOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
             case WindowClass::InstallTrack:
-                return WindowInstallTrackOpen(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
+                return InstallTrackOpen(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
             case WindowClass::GuestList:
-                return WindowGuestListOpenWithFilter(
+                return GuestListOpenWithFilter(
                     static_cast<GuestListFilterType>(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER)),
                     intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
             case WindowClass::Loadsave:
@@ -238,7 +240,7 @@ public:
                 loadsave_callback callback = reinterpret_cast<loadsave_callback>(
                     intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
-                auto* w = WindowLoadsaveOpen(
+                auto* w = LoadsaveOpen(
                     type, defaultName,
                     [callback](int32_t result, std::string_view path) {
                         if (callback != nullptr)
@@ -250,20 +252,19 @@ public:
                 return w;
             }
             case WindowClass::ManageTrackDesign:
-                return WindowTrackManageOpen(
-                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                return TrackManageOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WindowClass::NetworkStatus:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
                 close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
-                return WindowNetworkStatusOpen(message, callback);
+                return NetworkStatusOpen(message, callback);
             }
             case WindowClass::ObjectLoadError:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
                 size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
-                WindowObjectLoadErrorOpen(const_cast<utf8*>(path.c_str()), count, objects);
+                ObjectLoadErrorOpen(const_cast<utf8*>(path.c_str()), count, objects);
 
                 return nullptr;
             }
@@ -271,20 +272,19 @@ public:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
                 auto ride = GetRide(rideId);
-                return ride == nullptr ? nullptr : WindowRideMainOpen(*ride);
+                return ride == nullptr ? nullptr : RideMainOpen(*ride);
             }
             case WindowClass::TrackDesignPlace:
-                return WindowTrackPlaceOpen(
-                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                return TrackPlaceOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WindowClass::TrackDesignList:
             {
                 RideSelection rideItem;
                 rideItem.Type = intent->GetUIntExtra(INTENT_EXTRA_RIDE_TYPE);
                 rideItem.EntryIndex = intent->GetUIntExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX);
-                return WindowTrackListOpen(rideItem);
+                return TrackListOpen(rideItem);
             }
             case WindowClass::ScenarioSelect:
-                return WindowScenarioselectOpen(
+                return ScenarioselectOpen(
                     reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)));
 
             case WindowClass::Null:
@@ -301,7 +301,7 @@ public:
             case INTENT_ACTION_NEW_RIDE_OF_TYPE:
             {
                 // Open ride list window
-                auto w = WindowNewRideOpen();
+                auto w = NewRideOpen();
 
                 // Switch to right tab and scroll to ride location
                 RideSelection rideItem;
@@ -324,7 +324,7 @@ public:
                         if (!ToolSet(*tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
                         {
                             InputSetFlag(INPUT_FLAG_6, true);
-                            window = WindowSceneryOpen();
+                            window = SceneryOpen();
                         }
                     }
                 }
@@ -346,9 +346,9 @@ public:
         switch (intent->GetWindowDetail())
         {
             case WD_VEHICLE:
-                return WindowRideOpenVehicle(static_cast<Vehicle*>(intent->GetPointerExtra(INTENT_EXTRA_VEHICLE)));
+                return RideOpenVehicle(static_cast<Vehicle*>(intent->GetPointerExtra(INTENT_EXTRA_VEHICLE)));
             case WD_TRACK:
-                return WindowRideOpenTrack(static_cast<TileElement*>(intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT)));
+                return RideOpenTrack(static_cast<TileElement*>(intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT)));
 
             case WD_NULL:
                 // Intent does not hold an window detail
@@ -511,6 +511,10 @@ public:
                 WindowInvalidateByClass(WindowClass::Research);
                 break;
 
+            case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
+                OpenRCT2::Audio::UpdateVehicleSounds();
+                break;
+
             case INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL:
                 TrackPlaceClearProvisionalTemporarily();
                 break;
@@ -587,7 +591,7 @@ public:
             mainWindow->viewport_target_sprite = EntityId::GetNull();
             mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
-            gCurrentRotation = rotation;
+            viewport->rotation = rotation;
 
             if (zoomDifference != ZoomLevel{ 0 })
             {

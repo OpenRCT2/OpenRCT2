@@ -111,7 +111,12 @@ namespace OpenRCT2::Scripting
 
         int32_t rotation_get() const
         {
-            return GetCurrentRotation();
+            auto viewport = GetViewport();
+            if (viewport != nullptr)
+            {
+                return viewport->rotation;
+            }
+            return 0;
         }
         void rotation_set(int32_t value)
         {
@@ -120,9 +125,9 @@ namespace OpenRCT2::Scripting
                 auto w = GetWindow();
                 if (w != nullptr)
                 {
-                    while (GetCurrentRotation() != value)
+                    while (w->viewport->rotation != value)
                     {
-                        WindowRotateCamera(*w, 1);
+                        ViewportRotateSingle(w, 1);
                     }
                 }
             }
@@ -179,7 +184,7 @@ namespace OpenRCT2::Scripting
             if (viewport != nullptr)
             {
                 auto centre = viewport->viewPos + ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 };
-                auto coords = ViewportPosToMapPos(centre, 24);
+                auto coords = ViewportPosToMapPos(centre, 24, viewport->rotation);
 
                 auto ctx = GetContext()->GetScriptEngine().GetContext();
                 auto obj = duk_push_object(ctx);
@@ -203,7 +208,7 @@ namespace OpenRCT2::Scripting
                     auto coords = GetCoordsFromObject(position);
                     if (coords)
                     {
-                        auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), *coords);
+                        auto screenCoords = Translate3DTo2DWithZ(viewport->rotation, *coords);
                         auto left = screenCoords.x - (viewport->view_width / 2);
                         auto top = screenCoords.y - (viewport->view_height / 2);
                         SetViewLeftTop(left, top);

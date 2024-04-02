@@ -1740,12 +1740,12 @@ STR_2382    :Terreno
 STR_2383    :Acqua
 STR_2384    :{WINDOW_COLOUR_2}Il tuo obiettivo:
 STR_2385    :{BLACK}Nessuno
-STR_2386    :{BLACK}Avere almeno {COMMA16} visitatori nel parco entro la fine di {MONTHYEAR}, con una valutazione del parco di almeno 600
+STR_2386    :{BLACK}Avere almeno {COMMA32} visitatori nel parco entro la fine di {MONTHYEAR}, con una valutazione del parco di almeno 600
 STR_2387    :{BLACK}Far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY} entro la fine di  {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Divertirsi!
 STR_2389    :{BLACK}Costruire il migliore {STRINGID} si possa!
 STR_2390    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno con un livello di divertimento di almeno 6.00
-STR_2391    :{BLACK}Avere almeno {COMMA16} visitatori nel parco. E non devi mai avere una valutazione del parco inferiore a 700!
+STR_2391    :{BLACK}Avere almeno {COMMA32} visitatori nel parco. E non devi mai avere una valutazione del parco inferiore a 700!
 STR_2392    :{BLACK}Incassare mensilmente tramite i biglietti delle attrazioni almeno {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno della lunghezza minima di {LENGTH} e un livello di divertimento di almeno 7.00
 STR_2394    :{BLACK}Finire di costruire tutti e cinque gli ottovolanti parzialmente costruiti in questo parco, facendo loro raggiungere un livello di divertimento di almeno {POP16}{POP16}{COMMA2DP32} ciascuno
@@ -2325,7 +2325,7 @@ STR_3305    :{WINDOW_COLOUR_2}Entrate mensili:
 STR_3306    :{WINDOW_COLOUR_2}Profitto mensile:
 STR_3307    :{WINDOW_COLOUR_2}Lunghezza minima:
 STR_3308    :{WINDOW_COLOUR_2}Liv. divertimento:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Attrazioni sotto ordine di protezione:

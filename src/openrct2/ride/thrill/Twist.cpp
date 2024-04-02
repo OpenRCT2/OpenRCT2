@@ -145,21 +145,22 @@ static void PaintTwist(
     switch (trackSequence)
     {
         case 1:
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
             break;
         case 3:
-            cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
+            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
             break;
         case 6:
-            cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
+            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
             break;
         case 7:
-            cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
+            cornerSegments = EnumsToFlags(
+                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 

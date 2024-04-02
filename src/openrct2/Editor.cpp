@@ -321,7 +321,7 @@ namespace Editor
         gameState.NumGuestsInPark = 0;
         gameState.NumGuestsHeadingForPark = 0;
         gameState.NumGuestsInParkLastWeek = 0;
-        gGuestChangeModifier = 0;
+        gameState.GuestChangeModifier = 0;
         if (fromSave)
         {
             gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
@@ -529,7 +529,7 @@ namespace Editor
             }
         }
 
-        if (gPeepSpawns.empty())
+        if (gameState.PeepSpawns.empty())
         {
             return { false, STR_PEEP_SPAWNS_NOT_SET };
         }

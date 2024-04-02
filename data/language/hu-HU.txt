@@ -14,7 +14,7 @@ STR_0009    :Mini felfüggesztett hullámvasút
 STR_0010    :Csónakkölcsönző
 STR_0011    :Fa vadegér
 STR_0012    :Akadályverseny
-STR_0013    :Autós utazás
+STR_0013    :Autós játék
 STR_0014    :Kilövéses szabadesés
 STR_0015    :Bobpálya hullámvasút
 STR_0016    :Megfigyelőtorony 
@@ -27,7 +27,7 @@ STR_0022    :Útvesztő
 STR_0023    :Spirál csúszda
 STR_0024    :Gokart
 STR_0025    :Faúsztató
-STR_0026    :Vadvízi utazás
+STR_0026    :Vadvízi játék
 STR_0027    :Dodzsem
 STR_0028    :Hajóhinta
 STR_0029    :Fejreálló hajóhinta 
@@ -81,7 +81,7 @@ STR_0076    :Vízi hullámvasút
 STR_0077    :Léghajtású függőleges hullámvasút
 STR_0078    :Fordított hajtű hullámvasút
 STR_0079    :Varázsszőnyeg
-STR_0080    :Tengeralattjáró-utazás
+STR_0080    :Tengeralattjáró-játék
 STR_0081    :Folyami tutajok
 STR_0082    :Ismeretlen játék (50)
 STR_0083    :Enterprise
@@ -326,7 +326,7 @@ STR_0934    :A játék bejárata útban van
 STR_0935    :A játék kijárata útban van
 STR_0936    :A park bejárata útban van
 STR_0937    :Nézet beállítások
-STR_0938    :A föld magasságának és lejtésének módosítása
+STR_0938    :A talaj magasságának és lejtésének módosítása
 STR_0939    :Földalatti/belső nézet
 STR_0940    :Alaptalaj elrejtése
 STR_0941    :Függőleges felületek elrejtése
@@ -543,7 +543,7 @@ STR_1150    :Háromnegyed terhelés
 STR_1151    :Teljes terhelés
 STR_1152    :Bármekkora terhelés
 STR_1153    :Magasságjelzők a játékpályákon
-STR_1154    :Magasságjelzők a terepen
+STR_1154    :Magasságjelzők a talajon
 STR_1155    :Magasságjelzők az utakon
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
@@ -1256,12 +1256,12 @@ STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Játékok ellenőrzése
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Játékok javítása
 STR_1878    :{WINDOW_COLOUR_2}Ellenőrzés:
-STR_1879    :Minden 10. percben
-STR_1880    :Minden 20. percben
-STR_1881    :Minden 30. percben
-STR_1882    :Minden 45. percben
-STR_1883    :Minden órában
-STR_1884    :Minden második órában
+STR_1879    :10 percenként
+STR_1880    :20 percenként
+STR_1881    :30 percenként
+STR_1882    :45 percenként
+STR_1883    :Óránként
+STR_1884    :Kétóránként
 STR_1885    :Soha
 STR_1886    :Ezt ellenőrzi: {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Legutóbbi ellenőrzés óta eltelt idő: {BLACK}{COMMA16} perc
@@ -1279,9 +1279,9 @@ STR_1900    :{WINDOW_COLOUR_2}Tereprendezés
 STR_1901    :{WINDOW_COLOUR_2}Park belépőjegyek
 STR_1902    :{WINDOW_COLOUR_2}Játék jegyek
 STR_1903    :{WINDOW_COLOUR_2}Bolti eladások
-STR_1904    :{WINDOW_COLOUR_2}Bolti készletek
+STR_1904    :{WINDOW_COLOUR_2}Bolti árufeltöltés
 STR_1905    :{WINDOW_COLOUR_2}Étel/ital eladások
-STR_1906    :{WINDOW_COLOUR_2}Étel/ital készletek
+STR_1906    :{WINDOW_COLOUR_2}Étel/ital árufeltöltés
 STR_1907    :{WINDOW_COLOUR_2}Alkalmazottak bére
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Kutatás
@@ -1652,7 +1652,7 @@ STR_2291    :Válassz pályát az új játékhoz
 STR_2292    :{WINDOW_COLOUR_2}Az alábbi játékokon volt:
 STR_2293    :{BLACK} Semmi
 STR_2294    :A talajtípus megváltoztatása
-STR_2295    :A föld függőleges széleinek megváltoztatása
+STR_2295    :A talaj függőleges széleinek megváltoztatása
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} kiadás {BLACK}park belépőre
 STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} kiadás {BLACK}{COMMA16} játékra
 STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} kiadás {BLACK}{COMMA16} játékra
@@ -1737,19 +1737,19 @@ STR_2382    :Föld
 STR_2383    :Víz
 STR_2384    :{WINDOW_COLOUR_2}A célod:
 STR_2385    :{BLACK}Nincs
-STR_2386    :{BLACK}Legyen legalább {COMMA16} vendég a parkodban {MONTHYEAR}végére, a parkod értékelése pedig legyen legalább 600
+STR_2386    :{BLACK}Legyen legalább {COMMA32} vendég a parkodban {MONTHYEAR}végére, a parkod értékelése pedig legyen legalább 600
 STR_2387    :{BLACK}Legyen legalább {POP16}{POP16}{CURRENCY} a parkod értéke {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}végére
 STR_2388    :{BLACK}Érezd jól magad!
 STR_2389    :{BLACK}A lehető legjobb {STRINGID} építése!
 STR_2390    :{BLACK}Építs 10 különböző, egyenként legalább 6,00 izgalmi értékű hullámvasutat a parkodban
-STR_2391    :{BLACK}Legyen legalább {COMMA16} vendég a parkodban. A park értékelése soha nem eshet 700 alá!
+STR_2391    :{BLACK}Legyen legalább {COMMA32} vendég a parkodban. A park értékelése soha nem eshet 700 alá!
 STR_2392    :{BLACK}A játékok belépési díja utáni havi bevételed legyen legalább {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Működjön 10 különböző, egyenként legalább {LENGTH} hosszú hullámvasút a parkodban, amelyek izgalmi értéke legalább 7,00
 STR_2394    :{BLACK}Fejezd be az 5 félkész hullámvasút építését, úgy, hogy mindegyik izgalmi értéke legalább {POP16}{POP16}{COMMA2DP32} legyen
 STR_2395    :{BLACK}Fizesd vissza a kölcsönödet és a park értéke legyen legalább {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}Az ételek, italok és szuvenírek utáni havi bevételed legyen legalább {POP16}{POP16}{CURRENCY}
 STR_2397    :Nincs
-STR_2398    :A vendégek száma 
+STR_2398    :Vendégek száma 
 STR_2399    :A park értéke egy meghatározott időpontban
 STR_2400    :Érezd jól magad
 STR_2401    :Építsd meg a lehető legjobb játékot
@@ -1850,7 +1850,7 @@ STR_2507    :Láthatatlan emberek be/ki
 STR_2508    :Magasságjelek a talajon be/ki
 STR_2509    :Magasságjelek a játékok pályáin be/ki
 STR_2510    :Magasságjelek az utakon be/ki
-STR_2511    :Föld módosítása
+STR_2511    :Talaj módosítása
 STR_2512    :Víz módosítása
 STR_2513    :Díszlet építése
 STR_2514    :Utak építése
@@ -1921,11 +1921,11 @@ STR_2694    :Generálás
 STR_2695    :Véletlenszerű táj
 STR_2696    :Rakjon le fákat
 STR_2700    :Automatikus mentés:
-STR_2701    :Minden percben
-STR_2702    :Minden 5. percben
-STR_2703    :Minden 15. percben
-STR_2704    :Minden 30. percben
-STR_2705    :Minden órában
+STR_2701    :Percenként
+STR_2702    :5 percenként
+STR_2703    :15 percenként
+STR_2704    :30 percenként
+STR_2705    :Óránként
 STR_2706    :Soha
 STR_2707    :Rendszer fájlkezelőjének használata
 STR_2708    :{WINDOW_COLOUR_1}Biztos, hogy felül akarod írni ezt: {STRINGID}?
@@ -1947,7 +1947,7 @@ STR_2730    :{UINT16} óra {UINT16} perc
 STR_2731    :{UINT16} óra {UINT16} perc
 STR_2732    :{COMMA32} láb
 STR_2733    :{COMMA32} m
-STR_2734    :{COMMA16} mph
+STR_2734    :{COMMA16} mi/h
 STR_2735    :{COMMA16} km/h
 STR_2736    :{POP16}{COMMA16}. év {PUSH16}{PUSH16}{MONTH} 
 STR_2737    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
@@ -1988,9 +1988,9 @@ STR_2786    :Kattints a parancs leírására új gyorsbillentyű megadásához
 STR_2787    :{WINDOW_COLOUR_2}A park értéke: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Gratulálunk !{NEWLINE}{BLACK}Sikeresen teljesítetted a kitűzött célt egy {CURRENCY} értékű vállalattal !
 STR_2789    :{WINDOW_COLOUR_2}Nem sikerült teljesítened a kitűzött célt !
-STR_2790    :Írd be a neved az eredménytáblába
-STR_2791    :Írd be a neved
-STR_2792    :Kérlek írd be a neved az eredménytáblába:
+STR_2790    :Név beírása az eredménytáblába
+STR_2791    :Név beírása
+STR_2792    :Írd be a neved az eredménytáblába:
 STR_2793    :(Teljesítette: {STRINGID})
 STR_2794    :{BLACK}{STRINGID} {WINDOW_COLOUR_2}teljesítette{NEWLINE}{WINDOW_COLOUR_2}egy {BLACK}{CURRENCY} {WINDOW_COLOUR_2}értékű vállalattal
 STR_2795    :Rendezés
@@ -2169,7 +2169,7 @@ STR_3130    :Mentés
 STR_3131    :Mégse
 STR_3132    :{BLACK}Klikkelj azokra a díszletelemekre, amelyeket a játéktervvel együtt el akarsz menteni…
 STR_3133    :Nem építhető lejtőre
-STR_3134    :{RED}(A terv el nem érhető díszletet tartalmaz)
+STR_3134    :{RED}(A terv olyan díszletet tartalmaz, amely nem elérhető)
 STR_3135    :{RED}(A járműterv nem elérhető - Befolyásolhatja a játék teljesítményét)
 STR_3136    :Figyelmeztetés: A terv alternatív járműtípussal lesz megépítve és lehet, hogy nem az elvártnak megfelelően fog teljesíteni
 STR_3137    :Közeli díszletek kiválasztása
@@ -2196,7 +2196,7 @@ STR_3176    :Az objektum nem választható ki
 STR_3177    :Az objektum kiválasztása nem vonható vissza
 STR_3179    :Legalább egy játék járművet/játékot ki kell választani
 STR_3180    :Érvénytelen objektumkijelölés
-STR_3181    :Objektum kiválasztás - {STRINGID}
+STR_3181    :Objektumok kiválasztása - {STRINGID}
 STR_3182    :A parkbejárat típusát ki kell választani
 STR_3183    :A víz típusát ki kell választani
 STR_3184    :Játékok és járműveik
@@ -2253,7 +2253,7 @@ STR_3235    :Pénzügyi beállítások
 STR_3236    :A vendégek beállításai
 STR_3237    :A park beállításai
 STR_3238    :Nem kell pénz
-STR_3239    :Legyen ez a park egy pénzügyi korlátok nélküli, ’nem kell pénz’ park
+STR_3239    :Legyen ez a park egy „pénz nélküli” park, pénzügyi korlátozások nélkül
 STR_3240    :{WINDOW_COLOUR_2}Kezdőtőke:
 STR_3241    :{WINDOW_COLOUR_2}Kezdeti kölcsön:
 STR_3242    :{WINDOW_COLOUR_2}Maximális kölcsönösszeg:
@@ -2308,7 +2308,7 @@ STR_3290    :Hűvös és nedves
 STR_3291    :Meleg
 STR_3292    :Forró és száraz
 STR_3293    :Hideg
-STR_3294    :Változtatás…
+STR_3294    :Változtat…
 STR_3295    :A park nevének megváltoztatása
 STR_3296    :A pálya nevének megváltoztatása
 STR_3297    :A park / pálya részletes leírásának megváltoztatása
@@ -2323,7 +2323,7 @@ STR_3305    :{WINDOW_COLOUR_2}Havi bevétel:
 STR_3306    :{WINDOW_COLOUR_2}Havi nyereség:
 STR_3307    :{WINDOW_COLOUR_2}Minimum hosszúság:
 STR_3308    :{WINDOW_COLOUR_2}Izgalmi érték:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Műemlékvédelmi játékok/épületek:
@@ -2392,7 +2392,7 @@ STR_3380    :A játékterv nem telepíthető…
 STR_3381    :A fájl nem kompatibilis, vagy érvénytelen adatokat tartalmaz
 STR_3382    :A fájl másolása meghiúsult
 STR_3383    :Válassz egy új nevet a játékterv számára
-STR_3384    :Már létezik egy játékterv ezen a néven  - Kérlek válassz egy új nevet a terv számára:
+STR_3384    :Már létezik egy játékterv ezen a néven  - Válassz egy új nevet a terv számára:
 STR_3389    :Nem választható ki több díszletelem…
 STR_3390    :Túl sok elem van kiválasztva
 STR_3437    :Nagy földterületek megtisztítása a díszletektől
@@ -2408,7 +2408,7 @@ STR_5122    :A játékok pályatípus szerinti kiválasztása (mint az RCT1-ben)
 STR_5123    :Játékok felújítása
 STR_5125    :Minden rombolható
 STR_5126    :Véletlenszerű főcímzene
-STR_5127    :Húzás közben tájképfestés a magasságváltoztatás helyett
+STR_5127    :Húzás közben a táj festése, magasságváltoztatás helyett
 STR_5128    :Kiválasztás mérete
 STR_5129    :Add meg a kiválasztás méretét {COMMA16} és {COMMA16} között
 STR_5130    :Térkép mérete
@@ -2460,7 +2460,7 @@ STR_5189    :Kutatás
 STR_5190    :Térkép
 STR_5191    :Látkép
 STR_5192    :Friss hírek
-STR_5193    :Föld
+STR_5193    :Talaj
 STR_5194    :Víz
 STR_5195    :Díszlet törlése
 STR_5196    :Földjogok
@@ -2477,7 +2477,7 @@ STR_5206    :Vendéglista
 STR_5207    :Személyzet
 STR_5208    :Személyzeti lista
 STR_5209    :Hirdetőtábla 
-STR_5210    :Objektum választás
+STR_5210    :Objektumok kiválasztása
 STR_5211    :Találmányok listája
 STR_5212    :Pályabeállítások
 STR_5213    :Cél beállítások
@@ -2609,7 +2609,7 @@ STR_5365    :{BLACK}Dolgozók sebessége:
 STR_5366    :Normál
 STR_5367    :Gyors
 STR_5368    :Ütközés törlése
-STR_5371    :Objektum választás
+STR_5371    :Objektumok kiválasztása
 STR_5372    :Jobb egérgombos húzás invertálása
 STR_5373    :Név {STRINGID}
 STR_5374    :Dátum {STRINGID}
@@ -2717,7 +2717,7 @@ STR_5547    :Világos rózsaszín
 STR_5548    :Minden működési mód megjelenítése
 STR_5549    :Év/hónap/nap
 STR_5550    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
-STR_5551    :év/nap/hónap
+STR_5551    :Év/nap/hónap
 STR_5552    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Játék megállítása, ha a Steam Átfedés nyitva van
 STR_5554    :A hegy-eszköz bekapcsolása
@@ -2726,7 +2726,7 @@ STR_5556    :Játékos kirúgása
 STR_5557    :Kapcsolat fenntartása hiba esetén (többjátékos mód)
 STR_5558    :A beállítás érvénybe lépéséhez az OpenRCT2 újraindítása szükséges
 STR_5559    :10 perces ellenőrzés
-STR_5560    :Az ellenőrzési időt „minden 10. percben”-re állítja az összes játékon
+STR_5560    :Az ellenőrzési időt „10 percenként”-re állítja az összes játékon
 STR_5561    :A nyelv betöltése sikertelen
 STR_5562    :FIGYELMEZTETÉS!
 STR_5563    :Ez a funkció jelenleg instabil, legyél rendkívül elővigyázatos.
@@ -2800,7 +2800,7 @@ STR_5633    :CMD +
 STR_5634    :OPTION +
 STR_5635    :{WINDOW_COLOUR_2}Elköltött pénz: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Futtatott parancsok: {BLACK}{COMMA16}
-STR_5637    :Ezt nem csinálhatod…
+STR_5637    :Nem lehet megtenni…
 STR_5638    :Engedély megtagadva
 STR_5639    :Játékosok listája
 STR_5640    :Csoportok kezelése
@@ -3053,7 +3053,7 @@ STR_5930    :Nagy díszlet részletei
 STR_5931    :Hirdetőtábla részletei
 STR_5932    :Sérült elem részletei
 STR_5933    :Tulajdonságok
-STR_5934    :Terep textúrája: {BLACK}{STRINGID}
+STR_5934    :Talaj textúrája: {BLACK}{STRINGID}
 STR_5935    :Terepszegély: {BLACK}{STRINGID}
 STR_5936    :Földtulajdon: {BLACK}{STRINGID}
 STR_5937    :Nincs tulajdonban és nem eladó
@@ -3154,7 +3154,7 @@ STR_6031    :Szerver leírása:
 STR_6032    :Szerver üdvözlés:
 STR_6033    :Az RCT1 telepítési útvonala:
 STR_6034    :{BLACK}{STRING}
-STR_6035    :Kérlek válaszd ki az RCT1 mappádat
+STR_6035    :Válaszd ki az RCT1 mappádat
 STR_6036    :Törlés
 STR_6037    :A kiválasztott könyvtár nem tartalmaz érvényes RollerCoaster Tycoon 1 telepítést.
 STR_6038    :Ha az RCT1 telepítve van, itt add meg a mappája helyét, hogy betölthesd a pályákat, zenét stb.
@@ -3162,7 +3162,7 @@ STR_6039    :Játék/épület gyors lerombolása
 STR_6040    :Pályabeállítások módosítása
 STR_6041    :{BLACK}Nem vettél fel gépészt!
 STR_6042    :Magasságtérkép betöltése
-STR_6043    :Magasságtérkép kiválasztása
+STR_6043    :Magasságtérkép választása
 STR_6044    :Magasságtérkép simítása
 STR_6045    :Erősség
 STR_6046    :Magasságtérkép normalizálása
@@ -3243,7 +3243,7 @@ STR_6129    :Másolás
 STR_6130    :Összes másolása
 STR_6131    :Objektum forrása
 STR_6132    :Kutatási állapot figyelmen kívül hagyása
-STR_6133    :Hozzáférés a még fel nem fedezett játékokhoz és díszletekhez
+STR_6133    :Hozzáférés a még felfedezetlen játékokhoz és díszletekhez
 STR_6134    :Díszlet törlése
 STR_6135    :A kliens érvénytelen kérést küldött
 STR_6136    :A szerver érvénytelen kérést küldött
@@ -3265,7 +3265,7 @@ STR_6151    :A főszerver nem tudja listázni a szervereket
 STR_6152    :Érvénytelen válasz a főszervertől (nincs JSON-tömb)
 STR_6153    :Fizetős parkbelépő / Fizetős játékok
 STR_6154    :Biztonsági okokból nem javasolt az OpenRCT2 emelt jogosultságokkal történő futtatása.
-STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Kérlek telepítsd valamelyiket, vagy konfiguráld a parancssorból.
+STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Telepítsd valamelyiket, vagy konfiguráld a parancssorból.
 STR_6156    :A név le van foglalva
 STR_6157    :Konzol
 STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
@@ -3281,7 +3281,7 @@ STR_6169    :Pályaválasztás
 STR_6170    :Felület finomhangolása
 STR_6171    :Keresés
 STR_6172    :Keresés
-STR_6173    :Kérlek add meg a keresendő nevet:
+STR_6173    :Add meg a keresendő nevet:
 STR_6188    :Hányás
 STR_6189    :Kacsa
 STR_6191    :Felület
@@ -3349,7 +3349,7 @@ STR_6266    :Egyedi tartalmak mappájának megnyitása
 STR_6267    :Mezővizsgáló megnyitása
 STR_6268    :Megállított játék léptetése
 STR_6269    :Érvénytelen éghajlati ID
-STR_6270    :Terepfelületek
+STR_6270    :Talajfelületek
 STR_6271    :Terepszegélyek
 STR_6272    :Állomások
 STR_6273    :Zene
@@ -3419,7 +3419,7 @@ STR_6346    :Mezővizsgáló: Elem magasságának csökkentése
 STR_6347    :Úti extrák nem helyezhetőek útátjárókra!
 STR_6348    :Előbb távolítsd el az útátjárót!
 STR_6349    :Véletlenszerű főcím
-STR_6350    :Szórás
+STR_6350    :Szétszórás
 STR_6351    :Díszletszóró eszköz
 STR_6352    :Sűrűség
 STR_6353    :Alacsony sűrűség
@@ -3459,25 +3459,25 @@ STR_6386    :Hóvihar
 STR_6387    :Nem süllyeszthető itt le az elem…
 STR_6388    :Nem emelhető itt meg az elem…
 STR_6389    :Érvénytelen űrszelvény
-STR_6390    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Kérlek add meg a mappát, ahova telepítetted a RollerCoaster Tycoon 2-t.
-STR_6391    :Kérlek válaszd ki az RCT2 mappádat
+STR_6390    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Add meg a mappát, ahova telepítetted a RollerCoaster Tycoon 2-t.
+STR_6391    :Válaszd ki az RCT2 mappádat
 STR_6392    :A(z) {STRING} nem található ezen az útvonalon.
 STR_6393    :Cél kiválasztása
 STR_6394    :Cél
 STR_6395    :Karbantartás
 STR_6396    :Képernyővédő és a monitor energiagazdálkodása ki
 STR_6397    :Ha ki van választva, szüneteltetve lesz a képernyővédő és a monitor egyéb energiagazdálkodási funkciói, amíg az OpenRCT2 fut.
-STR_6398    :A fájl nem támogatott játék-típusokat tartalmaz. Kérlek frissíts egy újabb OpenRCT2 verzióra.
-STR_6399    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Kérlek állítsd be a „game_path” változót a config.ini-ben arra a mappára, amelybe telepítetted a RollerCoaster Tycoon 2-t, majd indítsd újra az OpenRCT2-t.
+STR_6398    :A fájl nem támogatott játék-típusokat tartalmaz. Frissíts egy újabb OpenRCT2 verzióra.
+STR_6399    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Állítsd be a „game_path” változót a config.ini-ben arra a mappára, amelybe telepítetted a RollerCoaster Tycoon 2-t, majd indítsd újra az OpenRCT2-t.
 STR_6400    :Letöltöttem a GOG RollerCoaster Tycoon 2 offline telepítőjét, de nincs telepítve
 STR_6401    :Már telepítettem a RollerCoaster Tycoon 2-t
 STR_6402    :OpenRCT2 adatok megadása
 STR_6403    :Válaszd ki a számodra legmegfelelőbbet
-STR_6404    :Kérlek válaszd ki a GOG RollerCoaster Tycoon 2 telepítőjét.
+STR_6404    :Válaszd ki a GOG RollerCoaster Tycoon 2 telepítőjét.
 STR_6405    :GOG telepítő kiválasztása
 STR_6406    :GOG RollerCoaster Tycoon 2 telepítő
 STR_6407    :Ez eltarthat pár percig.
-STR_6408    :Kérlek rakd fel az “innoextract”-ot a GOG telepítő kitömörítéséhez, majd indítsd újra az OpenRCT2-t.
+STR_6408    :Rakd fel az „innoextract”-ot a GOG telepítő kitömörítéséhez, majd indítsd újra az OpenRCT2-t.
 STR_6409    :A kiválasztott fájl nem a GOG RollerCoaster Tycoon 2 offline telepítője. Lehet, hogy a GOG Galaxy letöltő stub-ját töltötted le, vagy rossz fájlt választottál.
 STR_6410    :Kicsinyítés/nagyítás
 STR_6411    :A kicsinyítés és nagyítás gombjainak megjelenítése az eszköztáron
@@ -3521,7 +3521,7 @@ STR_6448    :Nem támogatott objektumformátum
 STR_6449    :{WINDOW_COLOUR_2}Számok:
 STR_6450    :{BLACK}„{STRING}”
 STR_6451    :{BLACK}„{STRING}” - {STRING}
-STR_6452    :{WINDOW_COLOUR_2}Árul: {BLACK}{STRING}
+STR_6452    :{WINDOW_COLOUR_2}Ezeket árulja: {BLACK}{STRING}
 STR_6453    :Verzió infó másolása
 STR_6454    :A hirdetőtábla nem nevezhető át…
 STR_6455    :A felirat nem nevezhető át…
@@ -3572,7 +3572,7 @@ STR_6500    :A játékterv formátum által nem támogatott pályaelemek
 STR_6501    :Véletlenszerű szín
 STR_6502    :Írj be egy értéket {COMMA16} és {COMMA16} között
 STR_6503    :Legalább egy állomásobjektumot ki kell választani
-STR_6504    :Legalább egy terepfelületet ki kell választani
+STR_6504    :Legalább egy talajfelületet ki kell választani
 STR_6505    :Legalább egy terepszegélyt ki kell választani
 STR_6506    :Nagy fél dugóhúzó (balra)
 STR_6507    :Nagy fél dugóhúzó (jobbra)
@@ -3686,6 +3686,11 @@ STR_6614    :Nem változtatható meg a park belépési díja
 STR_6615    :A pályának ezen a mezőn vízre van szüksége
 STR_6616    :Az adott személyzettípus számára érvénytelen akció
 STR_6617    :Nem lehet önmagával cserélni mezőelemet
+STR_6618    :Nem lehet korlátozni vagy feloldani az objektumot...
+STR_6619    :Az objektumtípus nem korlátozható!
+STR_6620    :Az objektum nem található!
+STR_6621    :Korlátozás
+STR_6622    :Objektum korlátozása a pályaszerkesztőre és a homokozó módra.
 
 #############
 # Scenarios #
@@ -3713,9 +3718,9 @@ STR_PARK    :Gyémánt-fennsík
 STR_DTLS    :Gyémánt-fennsík már egy sikeres vidámpark, remek játékokkal - fejleszd, hogy megduplázd az értékét
 
 <Evergreen Gardens>
-STR_SCNR    :Örökzöld Kertek
-STR_PARK    :Örökzöld Kertek
-STR_DTLS    :Alakítsd át a csodaszép Örökzöld Kerteket egy virágzó vidámparkká
+STR_SCNR    :Örökzöld Kert
+STR_PARK    :Örökzöld Kert
+STR_DTLS    :Alakítsd át a csodaszép Örökzöld Kertet egy virágzó vidámparkká
 
 <Bumbly Beach>
 STR_SCNR    :Suta Strand
@@ -3949,8 +3954,8 @@ STR_PARK    :Városi Park
 STR_DTLS    :Egy apró park egyezséget kötött a közeli várossal, amelynek értelmében magán a városon keresztül terjeszkedhet
 
 <Geoffrey Gardens>
-STR_SCNR    :Geoffrey Kertek
-STR_PARK    :Geoffrey Kertek
+STR_SCNR    :Geoffrey Kert
+STR_PARK    :Geoffrey Kert
 STR_DTLS    :Egy nagy kertnek arra van szüksége, hogy sikeres vidámpark legyen belőle
 
 
@@ -4218,9 +4223,9 @@ STR_PARK    :Szellemváros
 STR_DTLS    :Egy nagy vidámparklánc felbérelt, hogy építs nekik óriási hullámvasútparkot egy elhagyatott bányászváros köré
 
 <Gravity Gardens>
-STR_SCNR    :Gravitációs Kertek
-STR_PARK    :Gravitációs Kertek
-STR_DTLS    :A kihívásod az, hogy építs egy hullámvasútparkot a gyönyörű Gravitációs Kertekben. Semmi más játékot, csak hullámvasutakat!
+STR_SCNR    :Gravitációs Kert
+STR_PARK    :Gravitációs Kert
+STR_DTLS    :A kihívásod az, hogy építs egy hullámvasútparkot a gyönyörű Gravitációs Kertben. Semmi más játékot, csak hullámvasutakat!
 
 <Infernal Views>
 STR_SCNR    :Pokoli Kilátások

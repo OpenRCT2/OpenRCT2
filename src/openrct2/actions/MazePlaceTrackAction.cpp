@@ -8,6 +8,7 @@
  *****************************************************************************/
 #include "MazePlaceTrackAction.h"
 
+#include "../GameState.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
@@ -56,7 +57,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
-    if (!MapIsLocationOwned(_loc) && !gCheatsSandboxMode)
+    if (!MapIsLocationOwned(_loc) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -81,7 +82,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
-    if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
+    if (heightDifference >= 0 && !OpenRCT2::GetGameState().Cheats.DisableSupportLimits)
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
@@ -121,8 +122,9 @@ GameActions::Result MazePlaceTrackAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
     {
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
-        res.ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+        res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
         return res;
     }
 
@@ -142,8 +144,9 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
         return res;
     }
 

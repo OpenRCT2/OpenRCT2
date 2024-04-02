@@ -121,9 +121,9 @@ struct TunnelEntry
     uint8_t type;
 };
 
-// The maximum size must be MAXIMUM_MAP_SIZE_TECHNICAL multiplied by 2 because
+// The maximum size must be kMaximumMapSizeTechnical multiplied by 2 because
 // the quadrant index is based on the x and y components combined.
-static constexpr int32_t MaxPaintQuadrants = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
+static constexpr int32_t MaxPaintQuadrants = kMaximumMapSizeTechnical * 2;
 
 #define TUNNEL_MAX_COUNT 65
 
@@ -338,7 +338,7 @@ void PaintFloatingMoneyEffect(
     PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
-PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags);
+PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags, uint8_t rotation);
 void PaintSessionFree(PaintSession* session);
 void PaintSessionGenerate(PaintSession& session);
 void PaintSessionArrange(PaintSessionCore& session);

@@ -508,11 +508,11 @@ namespace OpenRCT2::Ui::Windows
                     if (listView.GetScrollbars() == ScrollbarType::Horizontal
                         || listView.GetScrollbars() == ScrollbarType::Both)
                     {
-                        wheight -= SCROLLBAR_WIDTH + 1;
+                        wheight -= kScrollBarWidth + 1;
                     }
                     if (listView.GetScrollbars() == ScrollbarType::Vertical || listView.GetScrollbars() == ScrollbarType::Both)
                     {
-                        wwidth -= SCROLLBAR_WIDTH + 1;
+                        wwidth -= kScrollBarWidth + 1;
                     }
                     listView.Resize({ wwidth, wheight });
                     scrollIndex++;
@@ -745,8 +745,8 @@ namespace OpenRCT2::Ui::Windows
             RefreshWidgets();
 
             Invalidate();
-            WindowEventResizeCall(this);
-            WindowEventOnPrepareDrawCall(this);
+            OnResize();
+            OnPrepareDraw();
             WindowInitScrollWidgets(*this);
             Invalidate();
 
@@ -931,7 +931,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            widgetList.push_back(WIDGETS_END);
+            widgetList.push_back(kWidgetsEnd);
             widgets = widgetList.data();
 
             WindowInitScrollWidgets(*this);

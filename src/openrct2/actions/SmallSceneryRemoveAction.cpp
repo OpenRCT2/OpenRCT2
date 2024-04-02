@@ -66,6 +66,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (entry == nullptr)
     {
+        LOG_ERROR("Invalid small scenery type %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
@@ -74,7 +75,8 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        && !GetGameState().Cheats.SandboxMode)
     {
         // Check if allowed to remove item
         if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
@@ -101,6 +103,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     TileElement* tileElement = FindSceneryElement();
     if (tileElement == nullptr)
     {
+        LOG_ERROR("Small scenery of type %u not found at x = %d, y = %d, z = &d", _sceneryType, _loc.x, _loc.y, _loc.z);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
@@ -115,6 +118,7 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
     auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (entry == nullptr)
     {
+        LOG_ERROR("Invalid small scenery type %u", _sceneryType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }

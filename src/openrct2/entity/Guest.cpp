@@ -898,11 +898,11 @@ void Guest::Loc68FA89()
     }
 }
 
-void Guest::Tick128UpdateGuest(int32_t index)
+void Guest::Tick128UpdateGuest(uint32_t index)
 {
     const auto currentTicks = GetGameState().CurrentTicks;
 
-    if (static_cast<uint32_t>(index & 0x1FF) == (currentTicks & 0x1FF))
+    if ((index & 0x1FF) == (currentTicks & 0x1FF))
     {
         /* Effect of masking with 0x1FF here vs mask 0x7F,
          * which is the condition for calling this function, is
@@ -1036,7 +1036,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             PickRideToGoOn();
         }
 
-        if (static_cast<uint32_t>(index & 0x3FF) == (currentTicks & 0x3FF))
+        if ((index & 0x3FF) == (currentTicks & 0x3FF))
         {
             /* Effect of masking with 0x3FF here vs mask 0x1FF,
              * which is used in the encompassing conditional, is
@@ -1433,7 +1433,7 @@ void Guest::CheckCantFindRide()
 
     if (w != nullptr)
     {
-        WindowEventOnPrepareDrawCall(w);
+        w->OnPrepareDraw();
     }
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
@@ -2048,7 +2048,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+                    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
                     {
                         PeepRideIsTooIntense(this, ride, peepAtRide);
                         return false;
@@ -2074,7 +2074,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     // ride intensity check and get me on a sheltered ride!
                     if (!ClimateIsRaining() || !ShouldRideWhileRaining(ride))
                     {
-                        if (!gCheatsIgnoreRideIntensity)
+                        if (!GetGameState().Cheats.IgnoreRideIntensity)
                         {
                             // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                             // at 10.0 (before happiness calculations). A full happiness bar will increase the max
@@ -2140,7 +2140,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     return false;
                 }
 
-                if (!gCheatsIgnoreRideIntensity)
+                if (!GetGameState().Cheats.IgnoreRideIntensity)
                 {
                     if (ride.max_positive_vertical_g > FIXED_2DP(5, 00) || ride.max_negative_vertical_g < FIXED_2DP(-4, 00)
                         || ride.max_lateral_g > FIXED_2DP(4, 00))
@@ -2533,7 +2533,7 @@ void Guest::GoToRideEntrance(const Ride& ride)
 
 bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array)
 {
-    uint8_t chosen_train = RideStation::NO_TRAIN;
+    uint8_t chosen_train = RideStation::kNoTrain;
 
     if (ride.mode == RideMode::Dodgems || ride.mode == RideMode::Race)
     {
@@ -2581,7 +2581,7 @@ bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array
                 car_array.push_back(i);
                 return true;
             }
-            num_seats &= VEHICLE_SEAT_NUM_MASK;
+            num_seats &= kVehicleSeatNumMask;
         }
         if (num_seats == vehicle->next_free_seat)
             continue;
@@ -2854,7 +2854,7 @@ static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     if (peep->Happiness < 180)
         return false;
@@ -2899,7 +2899,7 @@ static bool PeepReallyLikedRide(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
+    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     return true;
 }
@@ -3018,7 +3018,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     if (nearby_music == 1 && num_rubbish < 20)
         return PeepThoughtType::Music;
 
-    if (num_rubbish < 2 && !gCheatsDisableLittering)
+    if (num_rubbish < 2 && !GetGameState().Cheats.DisableLittering)
         // if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
         return PeepThoughtType::VeryClean;
 
@@ -3119,7 +3119,7 @@ static void PeepLeavePark(Guest* peep)
 
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
-        WindowEventOnPrepareDrawCall(w);
+        w->OnPrepareDraw();
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 
@@ -5025,17 +5025,20 @@ void Guest::UpdateRideLeaveExit()
         return;
     }
 
-    OnExitRide(*ride);
-
-    if (ride != nullptr && (PeepFlags & PEEP_FLAGS_TRACKING))
+    if (ride != nullptr)
     {
-        auto ft = Formatter();
-        FormatNameTo(ft);
-        ride->FormatNameTo(ft);
+        OnExitRide(*ride);
 
-        if (gConfigNotifications.GuestLeftRide)
+        if (PeepFlags & PEEP_FLAGS_TRACKING)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
+            auto ft = Formatter();
+            FormatNameTo(ft);
+            ride->FormatNameTo(ft);
+
+            if (gConfigNotifications.GuestLeftRide)
+            {
+                News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
+            }
         }
     }
 
@@ -6188,7 +6191,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
  */
 static void PeepUpdateWalkingBreakScenery(Guest* peep)
 {
-    if (gCheatsDisableVandalism)
+    if (GetGameState().Cheats.DisableVandalism)
         return;
 
     if (!(peep->PeepFlags & PEEP_FLAGS_ANGRY))
@@ -6276,7 +6279,7 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
     }
 
     // This is most likely to have peeps watch new rides
-    if (ride->excitement == RIDE_RATING_UNDEFINED)
+    if (ride->excitement == kRideRatingUndefined)
     {
         return true;
     }
@@ -6320,7 +6323,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
         return false;
 
     *rideToView = ride->id;
-    if (ride->excitement == RIDE_RATING_UNDEFINED)
+    if (ride->excitement == kRideRatingUndefined)
     {
         *rideSeatToView = 1;
         if (ride->status != RideStatus::Open)

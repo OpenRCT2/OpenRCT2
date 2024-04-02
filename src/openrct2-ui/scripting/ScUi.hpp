@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
 
         void showError(const std::string& title, const std::string& message)
         {
-            WindowErrorOpen(title, message);
+            ErrorOpen(title, message);
         }
 
         void showTextInput(const DukValue& desc)
@@ -282,7 +282,7 @@ namespace OpenRCT2::Scripting
                 else
                     throw DukException();
 
-                WindowLoadsaveOpen(
+                LoadsaveOpen(
                     loadSaveType, defaultPath,
                     [this, plugin, callback](int32_t result, std::string_view path) {
                         if (result == MODAL_RESULT_OK)
@@ -304,7 +304,7 @@ namespace OpenRCT2::Scripting
             auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
             auto callback = desc["callback"];
 
-            WindowScenarioselectOpen([this, plugin, callback](std::string_view path) {
+            ScenarioselectOpen([this, plugin, callback](std::string_view path) {
                 auto dukValue = GetScenarioFile(path);
                 _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
             });

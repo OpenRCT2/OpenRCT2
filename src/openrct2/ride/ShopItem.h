@@ -128,8 +128,6 @@ enum
     SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
-extern uint64_t gSamePriceThroughoutPark;
-
 money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
 bool ShopItemHasCommonPrice(const ShopItem shopItem);
 

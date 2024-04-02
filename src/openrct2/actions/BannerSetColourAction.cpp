@@ -66,8 +66,8 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
 
     if (_primaryColour > 31)
     {
-        LOG_ERROR("Invalid primary colour: colour = %u", _primaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        LOG_ERROR("Invalid primary colour %u", _primaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
     }
 
     if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
@@ -79,15 +79,15 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
 
     if (bannerElement == nullptr)
     {
-        LOG_ERROR("Could not find banner at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+        LOG_ERROR("No banner at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
     auto index = bannerElement->GetIndex();
     auto banner = GetBanner(index);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner index: index = %u", index);
+        LOG_ERROR("Invalid banner index %u", index);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

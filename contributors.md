@@ -121,6 +121,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
 
 ## Bug fixes & Refactors
+* Claudio Tiecher (janclod)
 * (KirilAngelov)
 * (halfbro)
 * (Myrtle)
@@ -234,6 +235,8 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Michael Bernardi (mrmbernardi)
 * Aram Kazorian (aramk-hub)
 * Harry Hopkinson (Harry-Hopkinson)
+* Jan Kelemen (jan-kelemen)
+* Cory Ye (CoryfY)
 
 ## Toolchain
 * (Balletie) - macOS

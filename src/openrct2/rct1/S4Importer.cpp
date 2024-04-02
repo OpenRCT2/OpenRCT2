@@ -916,7 +916,7 @@ namespace RCT1
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 dstStation.Start.SetNull();
-                dstStation.TrainAtStation = RideStation::NO_TRAIN;
+                dstStation.TrainAtStation = RideStation::kNoTrain;
                 dstStation.Entrance.SetNull();
                 dstStation.Exit.SetNull();
                 dstStation.LastPeepInQueue = EntityId::GetNull();
@@ -1410,14 +1410,15 @@ namespace RCT1
 
         void ImportPeepSpawns()
         {
-            gPeepSpawns.clear();
+            auto& gameState = GetGameState();
+            gameState.PeepSpawns.clear();
             for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
             {
                 if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
                     PeepSpawn spawn = { _s4.PeepSpawn[i].x, _s4.PeepSpawn[i].y, _s4.PeepSpawn[i].z * 16,
                                         _s4.PeepSpawn[i].direction };
-                    gPeepSpawns.push_back(spawn);
+                    gameState.PeepSpawns.push_back(spawn);
                 }
             }
         }
@@ -1425,7 +1426,7 @@ namespace RCT1
         void ImportFinance(GameState_t& gameState)
         {
             gameState.ParkEntranceFee = _s4.ParkEntranceFee;
-            gLandPrice = ToMoney64(_s4.LandPrice);
+            gameState.LandPrice = ToMoney64(_s4.LandPrice);
             gameState.ConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.Cash = ToMoney64(_s4.Cash);
@@ -1441,7 +1442,7 @@ namespace RCT1
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
-                gCashHistory[i] = ToMoney64(_s4.CashHistory[i]);
+                gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.ParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
@@ -1450,7 +1451,7 @@ namespace RCT1
             {
                 for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
                 {
-                    gExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
+                    gameState.ExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
             }
             gameState.CurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
@@ -1527,9 +1528,9 @@ namespace RCT1
 
             std::vector<TileElement> tileElements;
             const auto maxSize = _s4.MapSize == 0 ? Limits::MaxMapSize : _s4.MapSize;
-            for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
+            for (TileCoordsXY coords = { 0, 0 }; coords.y < kMaximumMapSizeTechnical; coords.y++)
             {
-                for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
+                for (coords.x = 0; coords.x < kMaximumMapSizeTechnical; coords.x++)
                 {
                     auto tileAdded = false;
                     if (coords.x < maxSize && coords.y < maxSize)
@@ -2156,27 +2157,29 @@ namespace RCT1
             {
                 if (_s4.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
                 {
-                    gGuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
+                    gameState.GuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
                 }
             }
 
             // Awards
-            auto& awards = GetAwards();
+            auto& currentAwards = gameState.CurrentAwards;
             for (auto& src : _s4.Awards)
             {
                 if (src.Time != 0)
                 {
-                    awards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
+                    currentAwards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
                 }
             }
 
             // Number of guests history
-            std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
+            std::fill(
+                std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory),
+                std::numeric_limits<uint32_t>::max());
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != std::numeric_limits<uint8_t>::max())
                 {
-                    gGuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
+                    gameState.GuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
                 }
             }
 
@@ -2234,10 +2237,10 @@ namespace RCT1
 
             gameState.ParkSize = _s4.ParkSize;
             gameState.TotalRideValueForMoney = _s4.TotalRideValueForMoney;
-            gSamePriceThroughoutPark = 0;
+            gameState.SamePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
             {
-                gSamePriceThroughoutPark = _s4.SamePriceThroughout;
+                gameState.SamePriceThroughoutPark = _s4.SamePriceThroughout;
             }
         }
 

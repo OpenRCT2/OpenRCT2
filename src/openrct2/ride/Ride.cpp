@@ -31,7 +31,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
@@ -175,6 +175,12 @@ Ride* RideAllocateAtIndex(RideId index)
 
     auto result = &GetGameState().Rides[idx];
     assert(result->id == RideId::GetNull());
+
+    // Initialize the ride to all the defaults.
+    *result = Ride{};
+
+    // Because it is default initialized to zero rather than the magic constant for Null, fill the array.
+    std::fill(std::begin(result->vehicles), std::end(result->vehicles), EntityId::GetNull());
 
     result->id = index;
     return result;
@@ -618,7 +624,7 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
     OriginZ -= trackBlock->z;
     OriginZ += trackCoordinate.z_end;
 
-    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & kTileElementDirectionMask)
         | (trackCoordinate.rotation_end & TRACK_BLOCK_2);
 
     return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
@@ -757,7 +763,7 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
     z -= trackBlock->z;
     z += trackCoordinate.z_begin;
 
-    rotation = ((trackCoordinate.rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+    rotation = ((trackCoordinate.rotation_begin + rotation) & kTileElementDirectionMask)
         | (trackCoordinate.rotation_begin & TRACK_BLOCK_2);
 
     return TrackBlockGetPreviousFromZero({ coords, z }, *ride, rotation, outTrackBeginEnd);
@@ -1417,7 +1423,7 @@ static void RideBreakdownUpdate(Ride& ride)
 
     if (!ride.CanBreakDown())
     {
-        ride.reliability = RIDE_INITIAL_RELIABILITY;
+        ride.reliability = kRideInitialReliability;
         return;
     }
 
@@ -1433,8 +1439,8 @@ static void RideBreakdownUpdate(Ride& ride)
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
     if ((ride.reliability == 0
-         || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride.reliability)
-        && !gCheatsDisableAllBreakdowns)
+         || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
+        && !GetGameState().Cheats.DisableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
         if (breakdownReason != -1)
@@ -1493,7 +1499,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
             return -1;
 
     // If brakes failure is disabled, also take it out of the equation (see above comment why)
-    if (gCheatsDisableBrakesFailure)
+    if (GetGameState().Cheats.DisableBrakesFailure)
         return -1;
 
     auto monthsOld = ride.GetAge();
@@ -2138,12 +2144,12 @@ static void RideFreeOldMeasurements()
                 numRideMeasurements++;
             }
         }
-        if (numRideMeasurements > MAX_RIDE_MEASUREMENTS && lruRide != nullptr)
+        if (numRideMeasurements > kMaxRideMeasurements && lruRide != nullptr)
         {
             lruRide->measurement = {};
             numRideMeasurements--;
         }
-    } while (numRideMeasurements > MAX_RIDE_MEASUREMENTS);
+    } while (numRideMeasurements > kMaxRideMeasurements);
 }
 
 std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
@@ -2852,7 +2858,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
 
     while (TrackCircuitIteratorNext(&it))
     {
-        auto trackType = output->element->AsTrack()->GetTrackType();
+        auto trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
         if (ted.Flags & TRACK_ELEM_FLAG_BANKED)
         {
@@ -3631,7 +3637,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
     for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
-        stations[i].Depart = (stations[i].Depart & STATION_DEPART_FLAG) | 1;
+        stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
     }
 
     //
@@ -3968,7 +3974,7 @@ void Ride::ConstructMissingEntranceOrExit() const
 
         w = WindowFindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
-            WindowEventMouseUpCall(w, entranceOrExit);
+            w->OnMouseUp(entranceOrExit);
     }
 }
 
@@ -4396,11 +4402,11 @@ void IncrementTurnCount1Element(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_1_ELEMENT) + 1;
-    *turn_count &= ~TURN_MASK_1_ELEMENT;
+    uint16_t value = (*turn_count & kTurnMask1Element) + 1;
+    *turn_count &= ~kTurnMask1Element;
 
-    if (value > TURN_MASK_1_ELEMENT)
-        value = TURN_MASK_1_ELEMENT;
+    if (value > kTurnMask1Element)
+        value = kTurnMask1Element;
     *turn_count |= value;
 }
 
@@ -4421,11 +4427,11 @@ void IncrementTurnCount2Elements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_2_ELEMENTS) + 0x20;
-    *turn_count &= ~TURN_MASK_2_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask2Elements) + 0x20;
+    *turn_count &= ~kTurnMask2Elements;
 
-    if (value > TURN_MASK_2_ELEMENTS)
-        value = TURN_MASK_2_ELEMENTS;
+    if (value > kTurnMask2Elements)
+        value = kTurnMask2Elements;
     *turn_count |= value;
 }
 
@@ -4446,11 +4452,11 @@ void IncrementTurnCount3Elements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_3_ELEMENTS) + 0x100;
-    *turn_count &= ~TURN_MASK_3_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask3Elements) + 0x100;
+    *turn_count &= ~kTurnMask3Elements;
 
-    if (value > TURN_MASK_3_ELEMENTS)
-        value = TURN_MASK_3_ELEMENTS;
+    if (value > kTurnMask3Elements)
+        value = kTurnMask3Elements;
     *turn_count |= value;
 }
 
@@ -4470,11 +4476,11 @@ void IncrementTurnCount4PlusElements(Ride& ride, uint8_t type)
         default:
             return;
     }
-    uint16_t value = (*turn_count & TURN_MASK_4_PLUS_ELEMENTS) + 0x800;
-    *turn_count &= ~TURN_MASK_4_PLUS_ELEMENTS;
+    uint16_t value = (*turn_count & kTurnMask4PlusElements) + 0x800;
+    *turn_count &= ~kTurnMask4PlusElements;
 
-    if (value > TURN_MASK_4_PLUS_ELEMENTS)
-        value = TURN_MASK_4_PLUS_ELEMENTS;
+    if (value > kTurnMask4PlusElements)
+        value = kTurnMask4PlusElements;
     *turn_count |= value;
 }
 
@@ -4496,7 +4502,7 @@ int32_t GetTurnCount1Element(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return (*turn_count) & TURN_MASK_1_ELEMENT;
+    return (*turn_count) & kTurnMask1Element;
 }
 
 int32_t GetTurnCount2Elements(const Ride& ride, uint8_t type)
@@ -4517,7 +4523,7 @@ int32_t GetTurnCount2Elements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_2_ELEMENTS) >> 5;
+    return ((*turn_count) & kTurnMask2Elements) >> 5;
 }
 
 int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type)
@@ -4538,7 +4544,7 @@ int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_3_ELEMENTS) >> 8;
+    return ((*turn_count) & kTurnMask3Elements) >> 8;
 }
 
 int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type)
@@ -4556,7 +4562,7 @@ int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type)
             return 0;
     }
 
-    return ((*turn_count) & TURN_MASK_4_PLUS_ELEMENTS) >> 11;
+    return ((*turn_count) & kTurnMask4PlusElements) >> 11;
 }
 
 bool Ride::HasSpinningTunnel() const
@@ -4633,7 +4639,7 @@ bool RideHasAnyTrackElements(const Ride& ride)
 void InvalidateTestResults(Ride& ride)
 {
     ride.measurement = {};
-    ride.excitement = RIDE_RATING_UNDEFINED;
+    ride.excitement = kRideRatingUndefined;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -4923,7 +4929,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         {
             for (auto& group : trackPieceRequiredSprites[i])
             {
-                auto precision = defaultVehicle->SpriteGroups[static_cast<uint8_t>(group.VehicleSpriteGroup)].spritePrecision;
+                auto precision = defaultVehicle->SpriteGroups[EnumValue(group.VehicleSpriteGroup)].spritePrecision;
                 if (precision < group.MinPrecision)
                     supportedPieces.set(i, false);
             }
@@ -5077,7 +5083,7 @@ void Ride::UpdateMaxVehicles()
         }
         int32_t newCarsPerTrain = std::max(proposed_num_cars_per_train, rideEntry->min_cars_in_train);
         maxCarsPerTrain = std::max(maxCarsPerTrain, static_cast<int32_t>(rideEntry->min_cars_in_train));
-        if (!gCheatsDisableTrainLengthLimit)
+        if (!GetGameState().Cheats.DisableTrainLengthLimit)
         {
             newCarsPerTrain = std::min(maxCarsPerTrain, newCarsPerTrain);
         }
@@ -5166,7 +5172,7 @@ void Ride::UpdateMaxVehicles()
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
 
-    if (gCheatsDisableTrainLengthLimit)
+    if (GetGameState().Cheats.DisableTrainLengthLimit)
     {
         maxNumTrains = OpenRCT2::Limits::MaxTrainsPerRide;
     }
@@ -5299,7 +5305,7 @@ void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
     build_date = GetDate().GetMonthsElapsed();
-    reliability = RIDE_INITIAL_RELIABILITY;
+    reliability = kRideInitialReliability;
 }
 
 RideClassification Ride::GetClassification() const
@@ -5372,7 +5378,7 @@ static bool CheckForAdjacentStation(const CoordsXYZ& stationCoords, uint8_t dire
     bool found = false;
     int32_t adjX = stationCoords.x;
     int32_t adjY = stationCoords.y;
-    for (uint32_t i = 0; i <= RIDE_ADJACENCY_CHECK_DISTANCE; i++)
+    for (uint32_t i = 0; i <= kRideAdjacencyCheckDistance; i++)
     {
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;
@@ -5434,7 +5440,7 @@ bool RideHasStationShelter(const Ride& ride)
 
 bool RideHasRatings(const Ride& ride)
 {
-    return ride.excitement != RIDE_RATING_UNDEFINED;
+    return ride.excitement != kRideRatingUndefined;
 }
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
@@ -5512,7 +5518,7 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
                 }
 
                 // Can happen in select-by-track-type mode
-                if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
                 {
                     continue;
                 }
@@ -5712,7 +5718,7 @@ std::string Ride::GetName() const
 {
     Formatter ft;
     FormatNameTo(ft);
-    return FormatStringID(STR_STRINGID, reinterpret_cast<const void*>(ft.Data()));
+    return FormatStringIDLegacy(STR_STRINGID, reinterpret_cast<const void*>(ft.Data()));
 }
 
 void Ride::FormatNameTo(Formatter& ft) const
@@ -5741,7 +5747,7 @@ void Ride::FormatNameTo(Formatter& ft) const
 
 uint64_t Ride::GetAvailableModes() const
 {
-    if (gCheatsShowAllOperatingModes)
+    if (GetGameState().Cheats.ShowAllOperatingModes)
         return AllRideModesAvailable;
 
     return GetRideTypeDescriptor().RideModes;
@@ -5923,7 +5929,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
         }
     }
 
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
+    if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
     {
         const auto* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)

@@ -173,7 +173,7 @@ namespace RCT1
         static uint8_t map[] =
         {
             RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER,// RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
-            RIDE_TYPE_STAND_UP_ROLLER_COASTER,      // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
+            RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER,      // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
             RIDE_TYPE_SUSPENDED_SWINGING_COASTER,   // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
             RIDE_TYPE_INVERTED_ROLLER_COASTER,      // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
             RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,  // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
@@ -275,7 +275,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 },    // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN, // Not in RCT2
             { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 },    // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_LADYBIRD_CARS,
-            { COPY_COLOUR_1, COPY_COLOUR_1, COPY_COLOUR_2 },    // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 },    // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_SPINNING_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS,
@@ -705,7 +705,7 @@ namespace RCT1
         static constexpr const char * map[] =
         {
             "rct1.ride.wooden_rc_trains",            // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
-            "rct2.ride.togst",                       // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
+            "rct1.ride.stand_up_trains",             // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
             "rct1.ride.suspended_swinging_cars",     // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
             "rct1ll.ride.4_across_inverted_trains",  // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
             "rct1.ride.ladybird_trains",             // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
@@ -807,7 +807,7 @@ namespace RCT1
             "rct1.ride.inverted_trains",                   //  VehicleType::InvertedCoasterTrain//NotinRCT2
             "rct1.ride.suspended_swinging_cars",           //  VehicleType::SuspendedSwingingCars
             "rct1.ride.ladybird_trains",                   //  VehicleType::LadybirdCars
-            "rct2.ride.togst",                             //  VehicleType::StandupRollerCoasterCars
+            "rct1.ride.stand_up_trains",                   //  VehicleType::StandupRollerCoasterCars
             "rct2.ride.wmspin",                            //  VehicleType::SpinningCars
             "rct1.ride.single_person_swinging_cars",       //  VehicleType::SinglePersonSwingingChairs
             "rct2.ride.swans",                             //  VehicleType::SwansPedalBoats

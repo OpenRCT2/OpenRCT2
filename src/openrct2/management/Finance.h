@@ -38,15 +38,6 @@ constexpr uint8_t MaxBankLoanInterestRate = 255;
 
 extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 
-/**
- * The total profit for the entire scenario that precedes
- * the current financial table.
- */
-extern money64 gHistoricalProfit;
-
-extern money64 gCashHistory[FINANCE_GRAPH_SIZE];
-extern money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
-
 bool FinanceCheckMoneyRequired(uint32_t flags);
 bool FinanceCheckAffordability(money64 cost, uint32_t flags);
 void FinancePayment(money64 amount, ExpenditureType type);

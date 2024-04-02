@@ -33,6 +33,7 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackPaint.h>
@@ -47,6 +48,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
+using namespace OpenRCT2::Ui::Windows;
 
 #pragma region Shortcut Commands
 
@@ -62,11 +64,7 @@ static void RotateCamera(int32_t direction)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        auto window = WindowGetMain();
-        if (window != nullptr)
-        {
-            WindowRotateCamera(*window, direction);
-        }
+        ViewportRotateAll(direction);
     }
 }
 
@@ -93,7 +91,7 @@ static void ShortcutRotateConstructionObject()
     if (w != nullptr && !WidgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
         && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseUpCall(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
+        w->OnMouseUp(WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
         return;
     }
 
@@ -105,7 +103,7 @@ static void ShortcutRotateConstructionObject()
         // Check if building a maze...
         if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
         {
-            WindowEventMouseUpCall(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE);
+            w->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ROTATE);
             return;
         }
     }
@@ -115,7 +113,7 @@ static void ShortcutRotateConstructionObject()
     if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseUpCall(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
+        w->OnMouseUp(WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
         return;
     }
 
@@ -124,7 +122,7 @@ static void ShortcutRotateConstructionObject()
     if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseUpCall(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
+        w->OnMouseUp(WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
         return;
     }
 
@@ -133,7 +131,7 @@ static void ShortcutRotateConstructionObject()
     if (w != nullptr && !WidgetIsDisabled(*w, WC_MAP__WIDX_ROTATE_90)
         && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseUpCall(w, WC_MAP__WIDX_ROTATE_90);
+        w->OnMouseUp(WC_MAP__WIDX_ROTATE_90);
         return;
     }
 
@@ -142,7 +140,7 @@ static void ShortcutRotateConstructionObject()
     if (w != nullptr && !WidgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseUpCall(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
+        w->OnMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
         return;
     }
 }
@@ -202,7 +200,7 @@ static void ShortcutAdjustLand()
             if (window != nullptr)
             {
                 window->Invalidate();
-                WindowEventMouseUpCall(window, WC_TOP_TOOLBAR__WIDX_LAND);
+                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_LAND);
             }
         }
     }
@@ -221,7 +219,7 @@ static void ShortcutAdjustWater()
             if (window != nullptr)
             {
                 window->Invalidate();
-                WindowEventMouseUpCall(window, WC_TOP_TOOLBAR__WIDX_WATER);
+                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_WATER);
             }
         }
     }
@@ -240,7 +238,7 @@ static void ShortcutBuildScenery()
             if (window != nullptr)
             {
                 window->Invalidate();
-                WindowEventMouseUpCall(window, WC_TOP_TOOLBAR__WIDX_SCENERY);
+                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_SCENERY);
             }
         }
     }
@@ -393,7 +391,7 @@ static void ShortcutOpenCheatWindow()
 
 static void ShortcutOpenKeyboardShortcutsWindow()
 {
-    WindowShortcutKeysOpen();
+    ShortcutKeysOpen();
 }
 
 static void ShortcutOpenTransparencyWindow()
@@ -417,7 +415,7 @@ static void ShortcutClearScenery()
             if (window != nullptr)
             {
                 window->Invalidate();
-                WindowEventMouseUpCall(window, WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY);
+                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY);
             }
         }
     }
@@ -462,16 +460,15 @@ static void ShortcutOpenSceneryPicker()
         if (window_toolbar != nullptr)
         {
             window_toolbar->Invalidate();
-            WindowEventMouseUpCall(window_toolbar, WC_TOP_TOOLBAR__WIDX_SCENERY);
+            window_toolbar->OnMouseUp(WC_TOP_TOOLBAR__WIDX_SCENERY);
         }
     }
 
     window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
-        && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WindowWidgetType::Empty
         && !gWindowSceneryEyedropperEnabled)
     {
-        WindowEventMouseUpCall(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
+        window_scenery->OnMouseUp(WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
         return;
     }
 }
@@ -501,7 +498,7 @@ static void TileInspectorMouseUp(WidgetIndex widgetIndex)
     auto w = WindowFindByClass(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseUpCall(w, widgetIndex);
+        w->OnMouseUp(widgetIndex);
     }
 }
 
@@ -510,7 +507,7 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
     auto w = WindowFindByClass(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
-        WindowEventMouseDownCall(w, widgetIndex);
+        w->OnMouseDown(widgetIndex);
     }
 }
 
@@ -526,6 +523,12 @@ static void ShortcutToggleWallSlope()
 
     // Ensure an element is selected and it's a wall
     if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
+    {
+        return;
+    }
+
+    // Ensure a wall can be built on a slope
+    if (tileElement->AsWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
         return;
     }
@@ -573,7 +576,7 @@ static void ShortcutIncreaseElementHeight()
                 break;
         }
         if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
-            WindowEventMouseDownCall(w, action);
+            w->OnMouseDown(action);
         return;
     }
 }
@@ -612,14 +615,15 @@ static void ShortcutDecreaseElementHeight()
                 break;
         }
         if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
-            WindowEventMouseDownCall(w, action);
+            w->OnMouseDown(action);
         return;
     }
 }
 
 static void ShortcutToggleClearanceChecks()
 {
-    auto cheatSetAction = CheatSetAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks ? 0 : 1);
+    auto cheatSetAction = CheatSetAction(
+        CheatType::DisableClearanceChecks, GetGameState().Cheats.DisableClearanceChecks ? 0 : 1);
     GameActions::Execute(&cheatSetAction);
 }
 
@@ -878,6 +882,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
     RegisterShortcut(ShortcutId::WindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
     RegisterShortcut(ShortcutId::WindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
+    RegisterShortcut(ShortcutId::WindowTileInspectorSort, STR_SHORTCUT_SORT_ELEMENTS, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_SORT));
     RegisterShortcut(ShortcutId::WindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE));
     RegisterShortcut(ShortcutId::WindowTileInspectorMoveUp, STR_SHORTCUT_MOVE_ELEMENT_UP, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP));
     RegisterShortcut(ShortcutId::WindowTileInspectorMoveDown, STR_SHORTCUT_MOVE_ELEMENT_DOWN, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN));

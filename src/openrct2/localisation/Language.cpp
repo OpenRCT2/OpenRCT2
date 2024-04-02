@@ -12,6 +12,7 @@
 #include "../core/String.hpp"
 #include "../interface/FontFamilies.h"
 #include "../interface/Fonts.h"
+#include "../interface/Window.h"
 #include "../object/ObjectManager.h"
 #include "../platform/Platform.h"
 #include "LanguagePack.h"
@@ -85,6 +86,7 @@ bool LanguageOpen(int32_t id)
         // Objects and their localised strings need to be refreshed
         objectManager.ResetObjects();
         ScrollingTextInvalidate();
+        WindowNotifyLanguageChange();
         return true;
     }
     catch (const std::exception&)

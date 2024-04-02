@@ -321,7 +321,7 @@ public:
     uint64_t ItemFlags;
 
     void UpdateGuest();
-    void Tick128UpdateGuest(int32_t index);
+    void Tick128UpdateGuest(uint32_t index);
     int64_t GetFoodOrDrinkFlags() const;
     int64_t GetEmptyContainerFlags() const;
     bool HasDrink() const;
@@ -459,8 +459,6 @@ enum
     EASTEREGG_PEEP_NAME_NANCY_STILLWAGON,
     EASTEREGG_PEEP_NAME_DAVID_ELLIS
 };
-
-extern uint8_t gGuestChangeModifier;
 
 void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 

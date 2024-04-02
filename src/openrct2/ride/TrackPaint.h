@@ -247,6 +247,8 @@ extern const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[
 extern const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4];
 
 extern const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[];
+extern const Direction mapReversedDiagonalStraight[];
+
 extern const CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5];
 extern const CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5];
 extern const CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5];
@@ -494,3 +496,4 @@ namespace AlpineRC
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
 }
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType);

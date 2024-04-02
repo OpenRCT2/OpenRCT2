@@ -39,7 +39,7 @@ GameActions::Result ScenarioSetSettingAction::Query() const
 {
     if (_setting >= ScenarioSetSetting::Count)
     {
-        LOG_ERROR("Invalid setting: %u", _setting);
+        LOG_ERROR("Invalid scenario setting: %u", _setting);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
@@ -146,7 +146,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
-            gLandPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.LandPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::CostToBuyConstructionRights:
             gameState.ConstructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
@@ -264,7 +264,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             break;
         }
         default:
-            LOG_ERROR("Invalid setting: %u", _setting);
+            LOG_ERROR("Invalid scenario setting %u", _setting);
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }

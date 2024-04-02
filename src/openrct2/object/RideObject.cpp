@@ -714,7 +714,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     car.num_seats = Json::GetNumber<uint8_t>(jCar["numSeats"]);
     if (Json::GetBoolean(jCar["seatsInPairs"], true) && car.num_seats > 1)
     {
-        car.num_seats |= VEHICLE_SEAT_PAIR_FLAG;
+        car.num_seats |= kVehicleSeatPairFlag;
     }
 
     car.sprite_width = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);
@@ -818,7 +818,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             { "isReverserPassengerCar", CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
             { "hasInvertedSpriteSet", CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
             { "hasDodgemInUseLights", CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
-            { "hasAdditionalColour2", CAR_ENTRY_FLAG_ENABLE_TERNARY_COLOUR },
+            { "hasAdditionalColour2", CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR },
             { "recalculateSpriteBounds", CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
             { "overrideNumberOfVerticalFrames", CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
             { "spriteBoundsIncludeInvertedSet", CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },

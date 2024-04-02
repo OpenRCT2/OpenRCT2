@@ -184,7 +184,7 @@ namespace GameActions
     {
         if (gGamePaused == 0)
             return true;
-        if (gCheatsBuildInPauseMode)
+        if (GetGameState().Cheats.BuildInPauseMode)
             return true;
         if (actionFlags & GameActions::Flags::AllowWhilePaused)
             return true;
@@ -422,7 +422,7 @@ namespace GameActions
             }
 
             // Allow autosave to commence
-            if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+            if (gLastAutoSaveUpdate == kAutosavePause)
             {
                 gLastAutoSaveUpdate = Platform::GetTicks();
             }

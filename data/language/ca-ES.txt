@@ -1740,12 +1740,12 @@ STR_2382    :Terra
 STR_2383    :Aigua
 STR_2384    :{WINDOW_COLOUR_2}El vostre objectiu:
 STR_2385    :{BLACK}Cap
-STR_2386    :{BLACK}Tenir almenys {COMMA16} visitants al parc al final de {MONTHYEAR}, amb una valoració del parc d’almenys 600.
+STR_2386    :{BLACK}Tenir almenys {COMMA32} visitants al parc al final de {MONTHYEAR}, amb una valoració del parc d’almenys 600.
 STR_2387    :{BLACK}Aconseguir una valoració del parc d’almenys {POP16}{POP16}{CURRENCY} al final de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}.
 STR_2388    :{BLACK}Divertiu-vos!
 STR_2389    :{BLACK}Construïu el millor {STRINGID} que pugueu!
 STR_2390    :{BLACK}Tenir 10 tipus diferents de muntanyes russes operant al parc, cadascuna d’elles amb un valor d’emoció d’almenys 6,00.
-STR_2391    :{BLACK}Tenir almenys {COMMA16} visitants al parc. No podeu deixar que la valoració del parc caigui per sota de 700 en cap moment!
+STR_2391    :{BLACK}Tenir almenys {COMMA32} visitants al parc. No podeu deixar que la valoració del parc caigui per sota de 700 en cap moment!
 STR_2392    :{BLACK}Aconseguir uns ingressos mensuals amb les entrades d’atraccions d’almenys {POP16}{POP16}{CURRENCY}.
 STR_2393    :{BLACK}Tenir 10 tipus diferents de muntanyes russes operant al parc, cadascuna amb una longitud mínima de {LENGTH} i un valor d’emoció d’almenys 7,00.
 STR_2394    :{BLACK}Acabar de construir les cinc muntanyes russes que s’havien començat a construir al parc, dissenyant-les per a aconseguir un nivell d’emoció d’almenys {POP16}{POP16}{COMMA2DP32} per cada una d’elles.
@@ -2326,7 +2326,7 @@ STR_3305    :{WINDOW_COLOUR_2}Ingressos mensuals:
 STR_3306    :{WINDOW_COLOUR_2}Beneficis mensuals:
 STR_3307    :{WINDOW_COLOUR_2}Longitud mínima:
 STR_3308    :{WINDOW_COLOUR_2}Nivell d’emoció:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Atraccions protegides:
@@ -3687,6 +3687,10 @@ STR_6610    :L’element de camí no s’ha trobat
 STR_6611    :L’element de mur no s’ha trobat
 STR_6612    :L’element de text de cartell no s’ha trobat
 STR_6613    :Recarrega l’objecte
+STR_6614    :El preu de l’entrada al parc no es pot canviar
+STR_6615    :La via d'aquesta casella necessita aigua
+STR_6616    :L’acció no és vàlida per a aquest tipus d’empleat
+STR_6617    :No es pot intercanviar l’element de la casella amb si mateix
 
 #############
 # Scenarios #

@@ -9,12 +9,15 @@
 
 #include "RideEntranceExitPlaceAction.h"
 
+#include "../GameState.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
+
+using namespace OpenRCT2;
 
 RideEntranceExitPlaceAction::RideEntranceExitPlaceAction(
     const CoordsXY& loc, Direction direction, RideId rideIndex, StationIndex stationNum, bool isExit)
@@ -55,14 +58,14 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (_stationNum.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
+    if (_stationNum.ToUnderlying() >= Limits::MaxStationsPerRide)
     {
-        LOG_WARNING("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        LOG_ERROR("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
@@ -96,7 +99,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
     }
-    if (!gCheatsSandboxMode && !MapIsLocationOwned({ _loc, z }))
+    if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned({ _loc, z }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -140,8 +143,8 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
+        LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -167,7 +170,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     auto z = station.GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        && !gCheatsDisableClearanceChecks)
+        && !GetGameState().Cheats.DisableClearanceChecks)
     {
         FootpathRemoveLitter({ _loc, z });
         WallRemoveAtZ({ _loc, z });
@@ -230,7 +233,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                    : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-    if (!gCheatsSandboxMode && !MapIsLocationOwned(loc))
+    if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned(loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }

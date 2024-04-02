@@ -148,16 +148,16 @@ struct Widget
  */
 struct Viewport
 {
-    int32_t width;
-    int32_t height;
-    ScreenCoordsXY pos;
-    ScreenCoordsXY viewPos;
-    int32_t view_width;
-    int32_t view_height;
-    uint32_t flags;
-    ZoomLevel zoom;
-    uint8_t var_11;
-    VisibilityCache visibility;
+    int32_t width{};
+    int32_t height{};
+    ScreenCoordsXY pos{};
+    ScreenCoordsXY viewPos{};
+    int32_t view_width{};
+    int32_t view_height{};
+    uint32_t flags{};
+    ZoomLevel zoom{};
+    uint8_t rotation{};
+    VisibilityCache visibility{};
 
     // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
     // from its x, y, z
@@ -366,6 +366,7 @@ constexpr int32_t WC_STAFF__WIDX_PICKUP = 9;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE = 13;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_COPY = 16;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE = 15;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_SORT = 14;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE = 10;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP = 11;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN = 12;
@@ -503,6 +504,7 @@ void WindowVisitEach(std::function<void(WindowBase*)> func);
 void WindowDispatchUpdateAll();
 void WindowUpdateAllViewports();
 void WindowUpdateAll();
+void WindowNotifyLanguageChange();
 
 void WindowSetWindowLimit(int32_t value);
 
@@ -578,7 +580,6 @@ void WindowPushOthersBelow(WindowBase& w1);
 WindowBase* WindowGetMain();
 
 void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords);
-void WindowRotateCamera(WindowBase& w, int32_t direction);
 void WindowViewportGetMapCoordsByCursor(
     const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
 void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
@@ -611,36 +612,6 @@ Viewport* WindowGetViewport(WindowBase* window);
 void WindowRelocateWindows(int32_t width, int32_t height);
 void WindowResizeGui(int32_t width, int32_t height);
 void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
-void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords);
-void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords);
-void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords);
-
-void WindowEventCloseCall(WindowBase* w);
-void WindowEventMouseUpCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowEventResizeCall(WindowBase* w);
-void WindowEventMouseDownCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowEventDropdownCall(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-void WindowEventUnknown05Call(WindowBase* w);
-void WindowEventUpdateCall(WindowBase* w);
-void WindowEventPeriodicUpdateCall(WindowBase* w);
-void WindowEventToolUpdateCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolDownCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolDragCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolUpCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventToolAbortCall(WindowBase* w, WidgetIndex widgetIndex);
-void WindowGetScrollSize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-void WindowEventScrollMousedownCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventScrollMousedragCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventScrollMouseoverCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, const char* text);
-void WindowEventViewportRotateCall(WindowBase* w);
-void WindowEventScrollSelectCall(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType);
-OpenRCT2String WindowEventTooltipCall(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);
-CursorID WindowEventCursorCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventMovedCall(WindowBase* w, const ScreenCoordsXY& screenCoords);
-void WindowEventOnPrepareDrawCall(WindowBase* w);
-void WindowEventOnDrawCall(WindowBase* w, DrawPixelInfo& dpi);
-void WindowEventScrollDrawCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
 
 void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
@@ -662,28 +633,6 @@ Viewport* WindowGetPreviousViewport(Viewport* current);
 void WindowResetVisibilities();
 void WindowInitAll();
 
-void WindowRideConstructionKeyboardShortcutTurnLeft();
-void WindowRideConstructionKeyboardShortcutTurnRight();
-void WindowRideConstructionKeyboardShortcutUseTrackDefault();
-void WindowRideConstructionKeyboardShortcutSlopeDown();
-void WindowRideConstructionKeyboardShortcutSlopeUp();
-void WindowRideConstructionKeyboardShortcutChainLiftToggle();
-void WindowRideConstructionKeyboardShortcutBankLeft();
-void WindowRideConstructionKeyboardShortcutBankRight();
-void WindowRideConstructionKeyboardShortcutPreviousTrack();
-void WindowRideConstructionKeyboardShortcutNextTrack();
-void WindowRideConstructionKeyboardShortcutBuildCurrent();
-void WindowRideConstructionKeyboardShortcutDemolishCurrent();
-
-void WindowFootpathKeyboardShortcutTurnLeft();
-void WindowFootpathKeyboardShortcutTurnRight();
-void WindowFootpathKeyboardShortcutSlopeDown();
-void WindowFootpathKeyboardShortcutSlopeUp();
-void WindowFootpathKeyboardShortcutBuildCurrent();
-void WindowFootpathKeyboardShortcutDemolishCurrent();
-
-void WindowTileInspectorKeyboardShortcutToggleInvisibility();
-
 void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);
 void WindowUnfollowSprite(WindowBase& w);
 
@@ -695,6 +644,3 @@ money64 PlaceProvisionalTrackPiece(
     const CoordsXYZ& trackPos);
 
 extern RideConstructionState _rideConstructionState2;
-
-WindowBase* WindowGetListening();
-WindowClass WindowGetClassification(const WindowBase& window);

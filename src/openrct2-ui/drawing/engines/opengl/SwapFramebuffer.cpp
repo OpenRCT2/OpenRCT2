@@ -13,6 +13,8 @@
 
 #    include "OpenGLFramebuffer.h"
 
+using namespace OpenRCT2::Ui;
+
 constexpr GLfloat depthValue[1] = { 1.0f };
 constexpr GLfloat depthValueTransparent[1] = { 0.0f };
 constexpr GLuint indexValue[4] = { 0, 0, 0, 0 };

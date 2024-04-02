@@ -1737,12 +1737,12 @@ STR_2382    :Land
 STR_2383    :Vand
 STR_2384    :{WINDOW_COLOUR_2}Dit mål:
 STR_2385    :{BLACK}Ingen
-STR_2386    :{BLACK}At have mindst {COMMA16} gæster i parken, ved udgangen af {MONTHYEAR}, og med en park vurdering på mindst 600
+STR_2386    :{BLACK}At have mindst {COMMA32} gæster i parken, ved udgangen af {MONTHYEAR}, og med en park vurdering på mindst 600
 STR_2387    :{BLACK}At opnå en Parkværdi på mindst {POP16}{POP16}{CURRENCY} ved udgangen af {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Hav det sjovt!
 STR_2389    :{BLACK}Byg den bedste {STRINGID} du kan!
 STR_2390    :{BLACK}At have 10 forskellige typer rutschebaner i gang i parken på samme tid, Hver med en spændings vurdering over 6.00
-STR_2391    :{BLACK}At have mindst {COMMA16} gæster i parken. Du må ikke lade park vurderingen flade under 700 på noget tidspunkt!
+STR_2391    :{BLACK}At have mindst {COMMA32} gæster i parken. Du må ikke lade park vurderingen flade under 700 på noget tidspunkt!
 STR_2392    :{BLACK}At opnå en månedlig indkomst fra forlystelser på mindst {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}At have 10 forskellige typer rutschebaner i gang i parken på samme tid, hver med en minimums længde på {LENGTH}, og en spændings vurdering på mindst 7.00
 STR_2394    :{BLACK}At færdiggøre alle 5 af de delvist færdige byggede rutschebaner i denne park, design dem til at have at opnå en spændings vurdering på mindst {POP16}{POP16}{COMMA2DP32} hver
@@ -2323,7 +2323,7 @@ STR_3305    :{WINDOW_COLOUR_2}Månedsinkomst:
 STR_3306    :{WINDOW_COLOUR_2}Månedsprofit:
 STR_3307    :{WINDOW_COLOUR_2}Minimum længde:
 STR_3308    :{WINDOW_COLOUR_2}Spændings vurdering:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}forlystelser/attraktioner under bevaringsordre:

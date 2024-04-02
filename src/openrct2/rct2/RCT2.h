@@ -13,6 +13,7 @@
 #include "../core/FileSystem.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
+#include "../world/Park.h"
 #include "Limits.h"
 
 #include <tuple>
@@ -845,8 +846,8 @@ namespace RCT2
         // SC6[6]
         uint32_t NextFreeTileElementPointerIndex;
         Entity Entities[Limits::MaxEntitiesRCTCExtended];
-        uint16_t EntityListsHead[static_cast<uint8_t>(EntityListId::Count)];
-        uint16_t EntityListsCount[static_cast<uint8_t>(EntityListId::Count)];
+        uint16_t EntityListsHead[EnumValue(EntityListId::Count)];
+        uint16_t EntityListsCount[EnumValue(EntityListId::Count)];
         StringId ParkName;
         uint8_t Pad013573D6[2];
         uint32_t ParkNameArgs;
@@ -889,7 +890,7 @@ namespace RCT2
         uint16_t ParkRating;
 
         // Ignored in scenario
-        uint8_t ParkRatingHistory[32];
+        uint8_t ParkRatingHistory[kParkRatingHistorySize];
         uint8_t GuestsInParkHistory[32];
 
         // SC6[10]

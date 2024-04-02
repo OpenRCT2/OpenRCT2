@@ -14,49 +14,51 @@
 #include "OpenGLShaderProgram.h"
 
 #include <SDL_pixels.h>
-
-class DrawRectShader final : public OpenGLShaderProgram
+namespace OpenRCT2::Ui
 {
-private:
-    GLuint uScreenSize;
-    GLuint uTexture;
-    GLuint uPaletteTex;
+    class DrawRectShader final : public OpenGLShaderProgram
+    {
+    private:
+        GLuint uScreenSize;
+        GLuint uTexture;
+        GLuint uPaletteTex;
 
-    GLuint uPeelingTex;
-    GLuint uPeeling;
+        GLuint uPeelingTex;
+        GLuint uPeeling;
 
-    GLuint vVertMat;
-    GLuint vVertVec;
+        GLuint vVertMat;
+        GLuint vVertVec;
 
-    GLuint vClip;
-    GLuint vTexColourAtlas;
-    GLuint vTexColourBounds;
-    GLuint vTexMaskAtlas;
-    GLuint vTexMaskBounds;
-    GLuint vPalettes;
-    GLuint vFlags;
-    GLuint vColour;
-    GLuint vBounds;
-    GLuint vDepth;
+        GLuint vClip;
+        GLuint vTexColourAtlas;
+        GLuint vTexColourBounds;
+        GLuint vTexMaskAtlas;
+        GLuint vTexMaskBounds;
+        GLuint vPalettes;
+        GLuint vFlags;
+        GLuint vColour;
+        GLuint vBounds;
+        GLuint vDepth;
 
-    GLuint _vbo;
-    GLuint _vboInstances;
-    GLuint _vao;
+        GLuint _vbo;
+        GLuint _vboInstances;
+        GLuint _vao;
 
-    GLsizei _instanceCount = 0;
-    size_t _maxInstancesBufferSize;
+        GLsizei _instanceCount = 0;
+        size_t _maxInstancesBufferSize;
 
-public:
-    DrawRectShader();
-    ~DrawRectShader() override;
+    public:
+        DrawRectShader();
+        ~DrawRectShader() override;
 
-    void SetScreenSize(int32_t width, int32_t height);
-    void EnablePeeling(GLuint peelingTex);
-    void DisablePeeling();
+        void SetScreenSize(int32_t width, int32_t height);
+        void EnablePeeling(GLuint peelingTex);
+        void DisablePeeling();
 
-    void SetInstances(const RectCommandBatch& instances);
-    void DrawInstances();
+        void SetInstances(const RectCommandBatch& instances);
+        void DrawInstances();
 
-private:
-    void GetLocations();
-};
+    private:
+        void GetLocations();
+    };
+} // namespace OpenRCT2::Ui

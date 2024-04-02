@@ -175,7 +175,7 @@ namespace OpenRCT2::Scripting
 
         void clear()
         {
-            GfxClear(&_dpi, _fill);
+            GfxClear(_dpi, _fill);
         }
 
         void clip(int32_t x, int32_t y, int32_t width, int32_t height)

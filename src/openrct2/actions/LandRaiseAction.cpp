@@ -11,6 +11,7 @@
 #include "LandRaiseAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
@@ -94,7 +95,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
@@ -121,7 +122,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
                     height += 2;
                 }
             }
-            newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            newSlope &= kTileElementSurfaceSlopeMask;
 
             auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
             landSetHeightAction.SetFlags(GetFlags());

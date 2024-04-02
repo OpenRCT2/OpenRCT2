@@ -114,7 +114,7 @@ void WindowVisitEach(std::function<void(WindowBase*)> func)
 void WindowDispatchUpdateAll()
 {
     // gTooltipNotShownTicks++;
-    WindowVisitEach([&](WindowBase* w) { WindowEventUpdateCall(w); });
+    WindowVisitEach([&](WindowBase* w) { w->OnUpdate(); });
 }
 
 void WindowUpdateAllViewports()
@@ -140,7 +140,7 @@ void WindowUpdateAll()
     {
         gWindowUpdateTicks = gCurrentRealTimeTicks + kGameUpdateFPS;
 
-        WindowVisitEach([](WindowBase* w) { WindowEventPeriodicUpdateCall(w); });
+        WindowVisitEach([](WindowBase* w) { w->OnPeriodicUpdate(); });
     }
 
     // Border flash invalidation
@@ -157,6 +157,11 @@ void WindowUpdateAll()
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->UpdateMouseWheel();
+}
+
+void WindowNotifyLanguageChange()
+{
+    WindowVisitEach([&](WindowBase* w) { w->OnLanguageChange(); });
 }
 
 static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
@@ -213,7 +218,7 @@ void WindowSetWindowLimit(int32_t value)
  */
 void WindowClose(WindowBase& w)
 {
-    WindowEventCloseCall(&w);
+    w.OnClose();
 
     // Remove viewport
     w.RemoveViewport();
@@ -422,7 +427,7 @@ WindowBase* WindowFindFromPoint(const ScreenCoordsXY& screenCoords)
 WidgetIndex WindowFindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords)
 {
     // Invalidate the window
-    WindowEventOnPrepareDrawCall(&w);
+    w.OnPrepareDraw();
 
     // Find the widget at point x, y
     WidgetIndex widget_index = -1;
@@ -584,9 +589,10 @@ void WindowUpdateScrollWidgets(WindowBase& w)
             continue;
 
         auto& scroll = w.scrolls[scrollIndex];
-        width = 0;
-        height = 0;
-        WindowGetScrollSize(&w, scrollIndex, &width, &height);
+        ScreenSize scrollSize = w.OnScrollGetSize(scrollIndex);
+        width = scrollSize.width;
+        height = scrollSize.height;
+
         if (height == 0)
         {
             scroll.v_top = 0;
@@ -830,7 +836,7 @@ void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), coords);
+        auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -883,66 +889,6 @@ void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords)
     }
 }
 
-/**
- *
- *  rct2: 0x00688956
- */
-static void call_event_viewport_rotate_on_all_windows()
-{
-    WindowVisitEach([](WindowBase* w) { WindowEventViewportRotateCall(w); });
-}
-
-/**
- *
- *  rct2: 0x0068881A
- * direction can be used to alter the camera rotation:
- *      1: clockwise
- *      -1: anti-clockwise
- */
-void WindowRotateCamera(WindowBase& w, int32_t direction)
-{
-    Viewport* viewport = w.viewport;
-    if (viewport == nullptr)
-        return;
-
-    auto windowPos = ScreenCoordsXY{ (viewport->width >> 1), (viewport->height >> 1) } + viewport->pos;
-
-    // has something to do with checking if middle of the viewport is obstructed
-    Viewport* other;
-    auto mapXYCoords = ScreenGetMapXY(windowPos, &other);
-    CoordsXYZ coords{};
-
-    // other != viewport probably triggers on viewports in ride or guest window?
-    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
-    if (!mapXYCoords.has_value() || other != viewport)
-    {
-        auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
-
-        coords = ViewportAdjustForMapHeight(viewPos);
-    }
-    else
-    {
-        coords.x = mapXYCoords->x;
-        coords.y = mapXYCoords->y;
-        coords.z = TileElementHeight(coords);
-    }
-
-    gCurrentRotation = (GetCurrentRotation() + direction) & 3;
-
-    auto centreLoc = centre_2d_coordinates(coords, viewport);
-
-    if (centreLoc.has_value())
-    {
-        w.savedViewPos = centreLoc.value();
-        viewport->viewPos = *centreLoc;
-    }
-
-    w.Invalidate();
-
-    call_event_viewport_rotate_on_all_windows();
-    ResetAllSpriteQuadrantPlacements();
-}
-
 void WindowViewportGetMapCoordsByCursor(
     const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
@@ -951,8 +897,8 @@ void WindowViewportGetMapCoordsByCursor(
 
     // Compute map coordinate by mouse position.
     auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
-    auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos);
-    auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z);
+    auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos, w.viewport->rotation);
+    auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z, w.viewport->rotation);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 
@@ -1236,7 +1182,7 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
 
     // Invalidate modifies the window colours so first get the correct
     // colour before setting the global variables for the string painting
-    WindowEventOnPrepareDrawCall(&w);
+    w.OnPrepareDraw();
 
     // Text colouring
     gCurrentWindowColours[0] = NOT_TRANSLUCENT(w.colours[0]);
@@ -1244,7 +1190,7 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
     gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
     gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
 
-    WindowEventOnDrawCall(&w, copy);
+    w.OnDraw(copy);
 }
 
 /**
@@ -1295,8 +1241,8 @@ void WindowResize(WindowBase& w, int32_t dw, int32_t dh)
     w.width = std::clamp<int32_t>(w.width + dw, w.min_width, w.max_width);
     w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
 
-    WindowEventResizeCall(&w);
-    WindowEventOnPrepareDrawCall(&w);
+    w.OnResize();
+    w.OnPrepareDraw();
 
     // Update scroll widgets
     for (auto& scroll : w.scrolls)
@@ -1388,141 +1334,9 @@ void ToolCancel()
             // Abort tool event
             WindowBase* w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
             if (w != nullptr)
-                WindowEventToolAbortCall(w, gCurrentToolWidget.widget_index);
+                w->OnToolAbort(gCurrentToolWidget.widget_index);
         }
     }
-}
-
-void WindowEventCloseCall(WindowBase* w)
-{
-    w->OnClose();
-}
-
-void WindowEventMouseUpCall(WindowBase* w, WidgetIndex widgetIndex)
-{
-    w->OnMouseUp(widgetIndex);
-}
-
-void WindowEventResizeCall(WindowBase* w)
-{
-    w->OnResize();
-}
-
-void WindowEventMouseDownCall(WindowBase* w, WidgetIndex widgetIndex)
-{
-    w->OnMouseDown(widgetIndex);
-}
-
-void WindowEventDropdownCall(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
-{
-    w->OnDropdown(widgetIndex, dropdownIndex);
-}
-
-void WindowEventUpdateCall(WindowBase* w)
-{
-    w->OnUpdate();
-}
-
-void WindowEventPeriodicUpdateCall(WindowBase* w)
-{
-    w->OnPeriodicUpdate();
-}
-
-void WindowEventToolUpdateCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    w->OnToolUpdate(widgetIndex, screenCoords);
-}
-
-void WindowEventToolDownCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    w->OnToolDown(widgetIndex, screenCoords);
-}
-
-void WindowEventToolDragCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    w->OnToolDrag(widgetIndex, screenCoords);
-}
-
-void WindowEventToolUpCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    w->OnToolUp(widgetIndex, screenCoords);
-}
-
-void WindowEventToolAbortCall(WindowBase* w, WidgetIndex widgetIndex)
-{
-    w->OnToolAbort(widgetIndex);
-}
-
-void WindowGetScrollSize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
-{
-    auto size = w->OnScrollGetSize(scrollIndex);
-    if (width != nullptr)
-        *width = size.width;
-    if (height != nullptr)
-        *height = size.height;
-}
-
-void WindowEventScrollMousedownCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
-{
-    w->OnScrollMouseDown(scrollIndex, screenCoords);
-}
-
-void WindowEventScrollMousedragCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
-{
-    w->OnScrollMouseDrag(scrollIndex, screenCoords);
-}
-
-void WindowEventScrollMouseoverCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
-{
-    w->OnScrollMouseOver(scrollIndex, screenCoords);
-}
-
-void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, const char* text)
-{
-    if (text != nullptr)
-    {
-        w->OnTextInput(widgetIndex, text);
-    }
-}
-
-void WindowEventViewportRotateCall(WindowBase* w)
-{
-    w->OnViewportRotate();
-}
-
-void WindowEventScrollSelectCall(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType)
-{
-    w->OnScrollSelect(scrollIndex, scrollAreaType);
-}
-
-OpenRCT2String WindowEventTooltipCall(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback)
-{
-    return w->OnTooltip(widgetIndex, fallback);
-}
-
-CursorID WindowEventCursorCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    return w->OnCursor(widgetIndex, screenCoords, CursorID::Arrow);
-}
-
-void WindowEventMovedCall(WindowBase* w, const ScreenCoordsXY& screenCoords)
-{
-    w->OnMoved(screenCoords);
-}
-
-void WindowEventOnPrepareDrawCall(WindowBase* w)
-{
-    w->OnPrepareDraw();
-}
-
-void WindowEventOnDrawCall(WindowBase* w, DrawPixelInfo& dpi)
-{
-    w->OnDraw(dpi);
-}
-
-void WindowEventScrollDrawCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
-{
-    w->OnScrollDraw(scrollIndex, dpi);
 }
 
 /**
@@ -1869,10 +1683,6 @@ void WindowCancelTextbox()
     if (gUsingWidgetTextBox)
     {
         WindowBase* w = WindowFindByNumber(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        if (w != nullptr)
-        {
-            WindowEventTextinputCall(w, gCurrentTextBox.widget_index, nullptr);
-        }
         gCurrentTextBox.window.classification = WindowClass::Null;
         gCurrentTextBox.window.number = 0;
         ContextStopTextInput();
@@ -1899,7 +1709,7 @@ void WindowUpdateTextbox()
         gTextBoxFrameNo = 0;
         WindowBase* w = WindowFindByNumber(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
         WidgetInvalidate(*w, gCurrentTextBox.widget_index);
-        WindowEventTextinputCall(w, gCurrentTextBox.widget_index, gTextBoxInput.c_str());
+        w->OnTextInput(gCurrentTextBox.widget_index, gTextBoxInput);
     }
 }
 
@@ -2029,31 +1839,6 @@ Viewport* WindowGetViewport(WindowBase* w)
     }
 
     return w->viewport;
-}
-
-WindowBase* WindowGetListening()
-{
-    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-    {
-        auto& w = **it;
-        if (w.flags & WF_DEAD)
-            continue;
-
-        auto viewport = w.viewport;
-        if (viewport != nullptr)
-        {
-            if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-            {
-                return &w;
-            }
-        }
-    }
-    return nullptr;
-}
-
-WindowClass WindowGetClassification(const WindowBase& window)
-{
-    return window.classification;
 }
 
 /**

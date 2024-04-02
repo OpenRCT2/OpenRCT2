@@ -18,7 +18,7 @@
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>
 
-using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 OpenGLShader::OpenGLShader(const char* name, GLenum type)
     : _type(type)

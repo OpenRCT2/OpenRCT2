@@ -98,9 +98,9 @@ GameActions::Result BannerPlaceAction::Query() const
     auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
     if (bannerEntry == nullptr)
     {
-        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
+        LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
     res.Cost = bannerEntry->price;
 
@@ -126,9 +126,9 @@ GameActions::Result BannerPlaceAction::Execute() const
     auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
     if (bannerEntry == nullptr)
     {
-        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
+        LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
     auto banner = CreateBanner();

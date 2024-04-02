@@ -307,7 +307,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
             Direction entranceDirection = tileElement->GetDirection();
             entranceDirection -= _saveDirection;
-            entranceDirection &= TILE_ELEMENT_DIRECTION_MASK;
+            entranceDirection &= kTileElementDirectionMask;
 
             mapLocation -= tds.Origin;
             // Rotate entrance coordinates backwards to the correct direction
@@ -743,7 +743,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
         {
             result.Type = obj->GetObjectType();
             result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
-            if (!gCheatsIgnoreResearchStatus)
+            if (!GetGameState().Cheats.IgnoreResearchStatus)
             {
                 objectUnavailable = !ResearchIsInvented(result.Type, result.Index);
             }
@@ -973,7 +973,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     }
 
     int32_t z = scenery.loc.z + originZ;
-    uint8_t sceneryRotation = (rotation + scenery.flags) & TILE_ELEMENT_DIRECTION_MASK;
+    uint8_t sceneryRotation = (rotation + scenery.flags) & kTileElementDirectionMask;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
@@ -1873,7 +1873,7 @@ int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride& ride, const CoordsXYZD&
 static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = RideCreateAction(type, subType, 0, 0, gLastEntranceStyle);
+    auto gameAction = RideCreateAction(type, subType, 0, 0, GetGameState().LastEntranceStyle);
     gameAction.SetFlags(flags);
 
     auto res = GameActions::ExecuteNested(&gameAction);
@@ -1900,6 +1900,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     *outRide = nullptr;
     *flags = 0;
 
+    auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
 
@@ -1919,7 +1920,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td6->StationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
-        ride->entrance_style = gLastEntranceStyle;
+        ride->entrance_style = gameState.LastEntranceStyle;
     }
 
     for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
@@ -1939,7 +1940,6 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         }
     }
 
-    auto& gameState = GetGameState();
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
     uint32_t backup_park_flags = gameState.ParkFlags;
@@ -1975,7 +1975,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
-        else if (!RideEntryIsInvented(entry_index) && !gCheatsIgnoreResearchStatus)
+        else if (!RideEntryIsInvented(entry_index) && !GetGameState().Cheats.IgnoreResearchStatus)
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
@@ -2016,7 +2016,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     uint8_t flags;
     if (!TrackDesignPlacePreview(tds, td6, &cost, &ride, &flags))
     {
-        std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
+        std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
         UnstashMap();
         return;
     }
@@ -2081,12 +2081,11 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
     for (uint8_t i = 0; i < 4; i++)
     {
-        gCurrentRotation = i;
-
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
-        ViewportPaint(&view, dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
+        view.rotation = i;
+        ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
 
-        dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
+        dpi.bits += kTrackPreviewImageSize;
     }
 
     ride->Delete();
@@ -2099,7 +2098,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
  */
 static void TrackDesignPreviewClearMap()
 {
-    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
     GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 

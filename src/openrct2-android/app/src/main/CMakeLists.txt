@@ -20,7 +20,7 @@ endif()
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v10/${ANDROID_ABI}-android-dynamic.tar.zst
+    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v11/${ANDROID_ABI}-android-dynamic.tar.zst
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
@@ -29,6 +29,14 @@ ExternalProject_Add(libs
     INSTALL_COMMAND ""
 
     BUILD_BYPRODUCTS
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}crypto${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}vorbis${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}vorbisfile${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}FLAC${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}brotlidec${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}brotlicommon${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}ogg${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}bz2${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX}
@@ -53,6 +61,14 @@ ExternalProject_Add(libs
 add_custom_command(TARGET libs POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 #    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libcrypto.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libvorbis.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libvorbisfile.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libFLAC.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libbrotlidec.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libbrotlicommon.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libogg.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libbz2.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libicudata.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libicuuc.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libicui18n.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
@@ -124,13 +140,64 @@ set_target_properties(ssl PROPERTIES IMPORTED_LOCATION
 )
 add_dependencies(ssl libs)
 
+add_library(crypto SHARED IMPORTED)
+set_target_properties(crypto PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}crypto${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(crypto libs)
+
+add_library(vorbis SHARED IMPORTED)
+set_target_properties(vorbis PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}vorbis${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(vorbis libs)
+
+add_library(vorbisfile SHARED IMPORTED)
+set_target_properties(vorbisfile PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}vorbisfile${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(vorbisfile libs)
+
+add_library(FLAC SHARED IMPORTED)
+set_target_properties(FLAC PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}FLAC${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(FLAC libs)
+
+add_library(brotlidec SHARED IMPORTED)
+set_target_properties(brotlidec PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}brotlidec${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(brotlidec libs)
+
+add_library(brotlicommon SHARED IMPORTED)
+set_target_properties(brotlicommon PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}brotlicommon${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(brotlicommon libs)
+
+add_library(ogg SHARED IMPORTED)
+set_target_properties(ogg PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}ogg${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(ogg libs)
+
+add_library(bz2 SHARED IMPORTED)
+set_target_properties(bz2 PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}bz2${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(bz2 libs)
+
 
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype2")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
 # now build app's shared lib
-add_definitions(-DDISABLE_HTTP -DDISABLE_DISCORD_RPC -DDISABLE_HTTP -DDISABLE_NETWORK -DDISABLE_FLAC -DDISABLE_VORBIS -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
+add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
+
+# Enable scripting
+add_definitions(-DENABLE_SCRIPTING)
 
 # Fix SpeexDSP compilation
 add_definitions(-DHAVE_STDINT_H)
@@ -142,8 +209,11 @@ set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
 
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--undefined=Java_org_libsdl_app_SDLActivity_nativeInit")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++1z ${COMMON_COMPILE_OPTIONS} -Wnon-virtual-dtor")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++20 ${COMMON_COMPILE_OPTIONS} -Wnon-virtual-dtor")
 get_filename_component(ORCT2_ROOT "${CMAKE_SOURCE_DIR}/../../../../../" REALPATH)
+
+# Enable char8_t<->char conversion
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-char8_t -Wno-deprecated-declarations")
 
 list(APPEND CMAKE_MODULE_PATH "${ORCT2_ROOT}/cmake")
 
@@ -159,6 +229,7 @@ if (CCache_FOUND)
 endif (CCache_FOUND)
 
 file(GLOB_RECURSE LIBOPENRCT2_SOURCES
+    "${ORCT2_ROOT}/src/thirdparty/duktape/duktape.cpp"
     "${ORCT2_ROOT}/src/openrct2/*.cpp"
     "${ORCT2_ROOT}/src/openrct2/*.h"
     "${ORCT2_ROOT}/src/openrct2/*.hpp")
@@ -179,20 +250,20 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2 android stdc++ log dl SDL2 png z icu icuuc icudata)
+target_link_libraries(openrct2 android stdc++ log dl SDL2 png z icu icuuc icudata crypto ssl)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
-target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp)
+target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp brotlicommon brotlidec bz2 freetype ogg vorbis vorbisfile FLAC)
 
 add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
 target_link_libraries(openrct2-cli openrct2 android stdc++ GLESv1_CM GLESv2)
 
+target_include_directories(openrct2 PRIVATE "${ORCT2_ROOT}/src/thirdparty/duktape/")
 target_include_directories(openrct2 SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
+target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src/thirdparty/duktape/")
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
 target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")
 
-# Header-only nlohmann library is installed in CI images at /nlohmann.
-# To be tiny bit more specific, use '/nlohmann/../' instead of just '/'
-target_include_directories(openrct2 PRIVATE "/nlohmann/../")
-target_include_directories(openrct2-ui PRIVATE "/nlohmann/../")
+target_include_directories(openrct2 PRIVATE "/opt/openrct2/include/nlohmann/../")
+target_include_directories(openrct2-ui PRIVATE "/opt/openrct2/include/nlohmann/../")

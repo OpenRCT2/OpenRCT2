@@ -14,7 +14,6 @@
 
 struct Window : WindowBase
 {
-    virtual bool IsLegacy() override;
     virtual void OnDraw(DrawPixelInfo& dpi) override;
     virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override;
 
@@ -41,3 +40,37 @@ void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();
 void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);
 ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w);
+
+namespace OpenRCT2::Ui::Windows
+{
+    void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords);
+    void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords);
+    void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords);
+    void UpdateGhostTrackAndArrow();
+    void WindowRideConstructionKeyboardShortcutTurnLeft();
+    void WindowRideConstructionKeyboardShortcutTurnRight();
+    void WindowRideConstructionKeyboardShortcutUseTrackDefault();
+    void WindowRideConstructionKeyboardShortcutSlopeDown();
+    void WindowRideConstructionKeyboardShortcutSlopeUp();
+    void WindowRideConstructionKeyboardShortcutChainLiftToggle();
+    void WindowRideConstructionKeyboardShortcutBankLeft();
+    void WindowRideConstructionKeyboardShortcutBankRight();
+    void WindowRideConstructionKeyboardShortcutPreviousTrack();
+    void WindowRideConstructionKeyboardShortcutNextTrack();
+    void WindowRideConstructionKeyboardShortcutBuildCurrent();
+    void WindowRideConstructionKeyboardShortcutDemolishCurrent();
+
+    void WindowFootpathKeyboardShortcutTurnLeft();
+    void WindowFootpathKeyboardShortcutTurnRight();
+    void WindowFootpathKeyboardShortcutSlopeDown();
+    void WindowFootpathKeyboardShortcutSlopeUp();
+    void WindowFootpathKeyboardShortcutBuildCurrent();
+    void WindowFootpathKeyboardShortcutDemolishCurrent();
+
+    void WindowTileInspectorKeyboardShortcutToggleInvisibility();
+
+    extern const StringId ColourSchemeNames[4];
+
+    WindowBase* WindowGetListening();
+    WindowClass WindowGetClassification(const WindowBase& window);
+} // namespace OpenRCT2::Ui::Windows

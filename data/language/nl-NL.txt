@@ -1738,12 +1738,12 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Je doelstelling:
 STR_2385    :{BLACK}Geen
-STR_2386    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben aan het einde van {MONTHYEAR}, met een parkwaardering van ten minste 600
+STR_2386    :{BLACK}Om ten minste {COMMA32} bezoekers in je park te hebben aan het einde van {MONTHYEAR}, met een parkwaardering van ten minste 600
 STR_2387    :{BLACK}Om een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te hebben aan het einde van {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Om plezier te hebben!
 STR_2389    :{BLACK}Om de beste {STRINGID} te bouwen!
 STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een plezierwaarde van ten minste 6,00
-STR_2391    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben. Je parkwaardering mag geen moment onder de 700 komen!
+STR_2391    :{BLACK}Om ten minste {COMMA32} bezoekers in je park te hebben. Je parkwaardering mag geen moment onder de 700 komen!
 STR_2392    :{BLACK}Om in één maand ten minste {POP16}{POP16}{CURRENCY} aan attractiekaartjes te verdienen
 STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van ten minste {LENGTH} en een plezierwaarde van ten minste 7,00
 STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, elk met een plezierwaarde van ten minste {POP16}{POP16}{COMMA2DP32}
@@ -2322,7 +2322,7 @@ STR_3305    :{WINDOW_COLOUR_2}Maandelijkse inkomsten:
 STR_3306    :{WINDOW_COLOUR_2}Maandelijkse winst:
 STR_3307    :{WINDOW_COLOUR_2}Minimumlengte:
 STR_3308    :{WINDOW_COLOUR_2}Plezierwaarde:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Attracties met een monumentenstatus:
@@ -3685,6 +3685,11 @@ STR_6614    :Kan de toegangsprijs niet aanpassen
 STR_6615    :Dit baantype vereist water
 STR_6616    :Ongeldige actie voor dit type werknemer
 STR_6617    :Kan een kaartelement niet met zichzelf verwisselen
+STR_6618    :Kan de beperkingen van dit object niet aanpassen…
+STR_6619    :Dit objecttype kan niet worden beperkt!
+STR_6620    :Object niet gevonden!
+STR_6621    :Beperken
+STR_6622    :Maakt het object enkel beschikbaar in de scenariobewerker en zandbakmodus.
 
 #############
 # Scenarios #

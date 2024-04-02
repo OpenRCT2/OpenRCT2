@@ -14,64 +14,67 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-static constexpr int32_t WW = 232;
-static constexpr int32_t WH = 136;
-
-enum
+namespace OpenRCT2::Ui::Windows
 {
-    WIDX_LOGO
-};
+    static constexpr int32_t WW = 232;
+    static constexpr int32_t WH = 136;
 
-static Widget _titleLogoWidgets[] = {
-    MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    WIDGETS_END,
-};
-
-class TitleLogoWindow final : public Window
-{
-public:
-    /**
-     * Creates the window containing the logo and the expansion packs on the title screen.
-     *  rct2: 0x0066B679 (part of 0x0066B3E8)
-     */
-    void OnOpen() override
+    enum
     {
-        widgets = _titleLogoWidgets;
-        WindowInitScrollWidgets(*this);
-        colours[0] = TRANSLUCENT(COLOUR_GREY);
-        colours[1] = TRANSLUCENT(COLOUR_GREY);
-        colours[2] = TRANSLUCENT(COLOUR_GREY);
-    }
+        WIDX_LOGO
+    };
 
-    void OnMouseUp(WidgetIndex widgetIndex) override
+    static Widget _titleLogoWidgets[] = {
+        MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
+        kWidgetsEnd,
+    };
+
+    class TitleLogoWindow final : public Window
     {
-        switch (widgetIndex)
+    public:
+        /**
+         * Creates the window containing the logo and the expansion packs on the title screen.
+         *  rct2: 0x0066B679 (part of 0x0066B3E8)
+         */
+        void OnOpen() override
         {
-            case WIDX_LOGO:
-                WindowAboutOpen();
-                break;
+            widgets = _titleLogoWidgets;
+            WindowInitScrollWidgets(*this);
+            colours[0] = TRANSLUCENT(COLOUR_GREY);
+            colours[1] = TRANSLUCENT(COLOUR_GREY);
+            colours[2] = TRANSLUCENT(COLOUR_GREY);
         }
-    }
 
-    /**
-     *
-     *  rct2: 0x0066B872
-     */
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
-        GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
-        GfxDrawSprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
-    }
-};
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_LOGO:
+                    AboutOpen();
+                    break;
+            }
+        }
 
-WindowBase* WindowTitleLogoOpen()
-{
-    auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
-    if (window == nullptr)
+        /**
+         *
+         *  rct2: 0x0066B872
+         */
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
+            GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
+            GfxDrawSprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+        }
+    };
+
+    WindowBase* TitleLogoOpen()
     {
-        window = WindowCreate<TitleLogoWindow>(
-            WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
+        if (window == nullptr)
+        {
+            window = WindowCreate<TitleLogoWindow>(
+                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        }
+        return window;
     }
-    return window;
-}
+} // namespace OpenRCT2::Ui::Windows

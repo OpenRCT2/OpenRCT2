@@ -58,7 +58,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
         if (surfaceObj == nullptr)
         {
-            LOG_ERROR("Invalid surface style.");
+            LOG_ERROR("Invalid surface style %u", _surfaceStyle);
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
         }
@@ -70,7 +70,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
         if (edgeObj == nullptr)
         {
-            LOG_ERROR("Invalid edge style.");
+            LOG_ERROR("Invalid edge style %u", _edgeStyle);
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
         }
@@ -85,7 +85,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     res.Position.z = heightMid;
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode
         && (GetGameState().ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
         return GameActions::Result(
@@ -102,7 +102,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
             if (!LocationValid(coords))
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;
@@ -170,7 +170,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
             if (!LocationValid(coords))
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;

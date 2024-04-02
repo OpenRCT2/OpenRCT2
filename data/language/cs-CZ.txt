@@ -1742,12 +1742,12 @@ STR_2382    :Země
 STR_2383    :Vodní plochy
 STR_2384    :{WINDOW_COLOUR_2}Cíl scénáře:
 STR_2385    :{BLACK}žádný
-STR_2386    :{BLACK}Mít v parku alespoň {COMMA16} návštěvníků na konci {MONTHYEAR}, s hodnocením parku alespoň 600
+STR_2386    :{BLACK}Mít v parku alespoň {COMMA32} návštěvníků na konci {MONTHYEAR}, s hodnocením parku alespoň 600
 STR_2387    :{BLACK}Dosáhnout hodnoty parku alespoň {POP16}{POP16}{CURRENCY} na konci {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Příjemnou zábavu!
 STR_2389    :{BLACK}Postav ten nejlepší {STRINGID}!
 STR_2390    :{BLACK}Mít v parku 10 druhů kolotočů v provozu, každý s hodnotou zábavnosti alespoň 6.00
-STR_2391    :{BLACK}Mít v parku alespoň {COMMA16} návštěvníků a zároveň nikdy nenechat hodnocení parku spadnout pod 700!
+STR_2391    :{BLACK}Mít v parku alespoň {COMMA32} návštěvníků a zároveň nikdy nenechat hodnocení parku spadnout pod 700!
 STR_2392    :{BLACK}Dosáhnout měsíčního příjmu z lístků na atrakce alespoň {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}{BLACK}Mít v parku 10 druhů kolotočů v provozu, každý s hodnotou zábavnosti alespoň 7.00 a délkou alespoň {LENGHT}
 STR_2394    :{BLACK}Dokončit všech 5 rozestavěných horských drah tak, aby každá dosahovala hodnocení vzrušení alespoň {POP16}{POP16}{COMMA2DP32}
@@ -2328,7 +2328,7 @@ STR_3305    :{WINDOW_COLOUR_2}Měsíční příjem:
 STR_3306    :{WINDOW_COLOUR_2}Měsíční zisk:
 STR_3307    :{WINDOW_COLOUR_2}Minimální délka:
 STR_3308    :{WINDOW_COLOUR_2}Nadšení:
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Atrakce, které je nutno zachovat:

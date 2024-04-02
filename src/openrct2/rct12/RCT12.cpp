@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 
 RCT12TileElementType RCT12TileElementBase::GetType() const
 {
-    auto elem_type = static_cast<RCT12TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    auto elem_type = static_cast<RCT12TileElementType>((this->Type & kTileElementTypeMask) >> 2);
     switch (elem_type)
     {
         case RCT12TileElementType::Surface:
@@ -54,12 +54,12 @@ RCT12TileElementType RCT12TileElementBase::GetType() const
 
 uint8_t RCT12TileElementBase::GetDirection() const
 {
-    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & kTileElementDirectionMask;
 }
 
 uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
 {
-    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & kTileElementOccupiedQuadrantsMask;
 }
 
 bool RCT12TileElementBase::IsLastForTile() const
@@ -74,7 +74,7 @@ bool RCT12TileElementBase::IsGhost() const
 
 uint8_t RCT12SurfaceElement::GetSlope() const
 {
-    return (Slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    return (Slope & kTileElementSurfaceSlopeMask);
 }
 
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
@@ -99,7 +99,7 @@ uint8_t RCT12SurfaceElement::GetGrassLength() const
 
 uint8_t RCT12SurfaceElement::GetOwnership() const
 {
-    return (Ownership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+    return (Ownership & kTileElementSurfaceOwnershipMask);
 }
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
@@ -109,7 +109,7 @@ uint32_t RCT12SurfaceElement::GetWaterHeight() const
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
 {
-    return (Ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    return (Ownership & kTileElementSurfaceParkFenceMask);
 }
 
 bool RCT12SurfaceElement::HasTrackThatNeedsWater() const
@@ -308,7 +308,7 @@ uint8_t RCT12SmallSceneryElement::GetAge() const
 
 uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & kTileElementQuadrantMask) >> 6;
 }
 
 colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
@@ -358,7 +358,7 @@ uint8_t RCT12WallElement::GetEntryIndex() const
 
 uint8_t RCT12WallElement::GetSlope() const
 {
-    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & kTileElementQuadrantMask) >> 6;
 }
 
 colour_t RCT12WallElement::GetPrimaryColour() const

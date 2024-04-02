@@ -18,155 +18,158 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
-// clang-format off
+namespace OpenRCT2::Ui::Windows
+{
+    // clang-format off
 enum {
     WIDX_BACKGROUND
 };
 
 static Widget window_error_widgets[] = {
     MakeWidget({0, 0}, {200, 42}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
-// clang-format on
+    // clang-format on
 
-class ErrorWindow final : public Window
-{
-private:
-    std::string _text;
-    uint16_t _numLines;
-    uint8_t _staleCount;
-
-public:
-    ErrorWindow(std::string text, uint16_t numLines)
-        : _text(std::move(text))
-        , _numLines(numLines)
+    class ErrorWindow final : public Window
     {
-    }
+    private:
+        std::string _text;
+        uint16_t _numLines;
+        uint8_t _staleCount;
 
-    void OnOpen() override
-    {
-        window_error_widgets[WIDX_BACKGROUND].right = width;
-        window_error_widgets[WIDX_BACKGROUND].bottom = height;
-
-        widgets = window_error_widgets;
-        _staleCount = 0;
-        if (!gDisableErrorWindowSound)
+    public:
+        ErrorWindow(std::string text, uint16_t numLines)
+            : _text(std::move(text))
+            , _numLines(numLines)
         {
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, windowPos.x + (width / 2));
         }
-    }
 
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        ScreenCoordsXY leftTop{ windowPos };
-        ScreenCoordsXY rightBottom{ windowPos + ScreenCoordsXY{ width - 1, height - 1 } };
-        ScreenCoordsXY leftBottom{ leftTop.x, rightBottom.y };
-        ScreenCoordsXY rightTop{ rightBottom.x, leftTop.y };
-
-        GfxFilterRect(
-            dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
-            FilterPaletteID::Palette45);
-        GfxFilterRect(dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
-
-        GfxFilterRect(
-            dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 0, 2 }, leftBottom - ScreenCoordsXY{ 0, 2 } },
-            FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(
-            dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 0, 2 }, rightBottom - ScreenCoordsXY{ 0, 2 } },
-            FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(
-            dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 2, 0 }, rightBottom - ScreenCoordsXY{ 2, 0 } },
-            FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(
-            dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 2, 0 }, rightTop - ScreenCoordsXY{ 2, 0 } },
-            FilterPaletteID::PaletteDarken3);
-
-        GfxFilterRect(
-            dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 1, 1 }, rightTop + ScreenCoordsXY{ 1, 1 } },
-            FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(
-            dpi, ScreenRect{ rightTop + ScreenCoordsXY{ -1, 1 }, rightTop + ScreenCoordsXY{ -1, 1 } },
-            FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(
-            dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 1, -1 }, leftBottom + ScreenCoordsXY{ 1, -1 } },
-            FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(
-            dpi, ScreenRect{ rightBottom - ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
-            FilterPaletteID::PaletteDarken3);
-
-        DrawStringCentredRaw(
-            dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
-    }
-
-    void OnPeriodicUpdate() override
-    {
-        // Close the window after 8 seconds of showing
-        _staleCount++;
-        if (_staleCount >= 8)
+        void OnOpen() override
         {
-            Close();
+            window_error_widgets[WIDX_BACKGROUND].right = width;
+            window_error_widgets[WIDX_BACKGROUND].bottom = height;
+
+            widgets = window_error_widgets;
+            _staleCount = 0;
+            if (!gDisableErrorWindowSound)
+            {
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, windowPos.x + (width / 2));
+            }
         }
-    }
-};
 
-WindowBase* WindowErrorOpen(std::string_view title, std::string_view message)
-{
-    std::string buffer = "{BLACK}";
-    buffer.append(title);
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            ScreenCoordsXY leftTop{ windowPos };
+            ScreenCoordsXY rightBottom{ windowPos + ScreenCoordsXY{ width - 1, height - 1 } };
+            ScreenCoordsXY leftBottom{ leftTop.x, rightBottom.y };
+            ScreenCoordsXY rightTop{ rightBottom.x, leftTop.y };
 
-    // Format the message
-    if (!message.empty())
+            GfxFilterRect(
+                dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
+                FilterPaletteID::Palette45);
+            GfxFilterRect(dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
+
+            GfxFilterRect(
+                dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 0, 2 }, leftBottom - ScreenCoordsXY{ 0, 2 } },
+                FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(
+                dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 0, 2 }, rightBottom - ScreenCoordsXY{ 0, 2 } },
+                FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(
+                dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 2, 0 }, rightBottom - ScreenCoordsXY{ 2, 0 } },
+                FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(
+                dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 2, 0 }, rightTop - ScreenCoordsXY{ 2, 0 } },
+                FilterPaletteID::PaletteDarken3);
+
+            GfxFilterRect(
+                dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 1, 1 }, rightTop + ScreenCoordsXY{ 1, 1 } },
+                FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(
+                dpi, ScreenRect{ rightTop + ScreenCoordsXY{ -1, 1 }, rightTop + ScreenCoordsXY{ -1, 1 } },
+                FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(
+                dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 1, -1 }, leftBottom + ScreenCoordsXY{ 1, -1 } },
+                FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(
+                dpi, ScreenRect{ rightBottom - ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
+                FilterPaletteID::PaletteDarken3);
+
+            DrawStringCentredRaw(
+                dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
+        }
+
+        void OnPeriodicUpdate() override
+        {
+            // Close the window after 8 seconds of showing
+            _staleCount++;
+            if (_staleCount >= 8)
+            {
+                Close();
+            }
+        }
+    };
+
+    WindowBase* ErrorOpen(std::string_view title, std::string_view message)
     {
-        buffer.push_back('\n');
-        buffer.append(message);
+        std::string buffer = "{BLACK}";
+        buffer.append(title);
+
+        // Format the message
+        if (!message.empty())
+        {
+            buffer.push_back('\n');
+            buffer.append(message);
+        }
+
+        LOG_VERBOSE("show error, %s", buffer.c_str() + 1);
+
+        // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
+        if (gOpenRCT2Headless)
+        {
+            return nullptr;
+        }
+
+        // Check if there is any text to display
+        if (buffer.size() <= 1)
+        {
+            return nullptr;
+        }
+
+        // Close any existing error windows if they exist.
+        WindowCloseByClass(WindowClass::Error);
+
+        int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
+        width = std::clamp(width, 64, 196);
+
+        int32_t numLines{};
+        GfxWrapString(buffer, width + 1, FontStyle::Medium, &buffer, &numLines);
+
+        width = width + 3;
+        int32_t height = (numLines + 1) * FontGetLineHeight(FontStyle::Medium) + 4;
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
+        const CursorState* state = ContextGetCursorState();
+        ScreenCoordsXY windowPosition = state->position - ScreenCoordsXY(width / 2, -26);
+        windowPosition.x = std::clamp(windowPosition.x, 0, screenWidth);
+        windowPosition.y = std::max(22, windowPosition.y);
+        int32_t maxY = screenHeight - height;
+        if (windowPosition.y > maxY)
+        {
+            windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
+        }
+
+        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines);
+        return WindowCreate(
+            std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     }
 
-    LOG_VERBOSE("show error, %s", buffer.c_str() + 1);
-
-    // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
-    if (gOpenRCT2Headless)
+    WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args)
     {
-        return nullptr;
+        auto titlez = FormatStringIDLegacy(title, args.Data());
+        auto messagez = FormatStringIDLegacy(message, args.Data());
+        return ErrorOpen(titlez, messagez);
     }
-
-    // Check if there is any text to display
-    if (buffer.size() <= 1)
-    {
-        return nullptr;
-    }
-
-    // Close any existing error windows if they exist.
-    WindowCloseByClass(WindowClass::Error);
-
-    int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
-    width = std::clamp(width, 64, 196);
-
-    int32_t numLines{};
-    GfxWrapString(buffer, width + 1, FontStyle::Medium, &buffer, &numLines);
-
-    width = width + 3;
-    int32_t height = (numLines + 1) * FontGetLineHeight(FontStyle::Medium) + 4;
-    int32_t screenWidth = ContextGetWidth();
-    int32_t screenHeight = ContextGetHeight();
-    const CursorState* state = ContextGetCursorState();
-    ScreenCoordsXY windowPosition = state->position - ScreenCoordsXY(width / 2, -26);
-    windowPosition.x = std::clamp(windowPosition.x, 0, screenWidth);
-    windowPosition.y = std::max(22, windowPosition.y);
-    int32_t maxY = screenHeight - height;
-    if (windowPosition.y > maxY)
-    {
-        windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
-    }
-
-    auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines);
-    return WindowCreate(
-        std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
-}
-
-WindowBase* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
-{
-    auto titlez = FormatStringID(title, args.Data());
-    auto messagez = FormatStringID(message, args.Data());
-    return WindowErrorOpen(titlez, messagez);
-}
+} // namespace OpenRCT2::Ui::Windows

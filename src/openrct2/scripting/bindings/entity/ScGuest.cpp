@@ -830,7 +830,7 @@ namespace OpenRCT2::Scripting
         // format string with arguments
         auto ft = Formatter();
         PeepThoughtSetFormatArgs(&_backing, ft);
-        return FormatStringID(STR_STRINGID, ft.Data());
+        return FormatStringIDLegacy(STR_STRINGID, ft.Data());
     }
 
 } // namespace OpenRCT2::Scripting

@@ -9,6 +9,7 @@
 
 #include "WaterRaiseAction.h"
 
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../ride/RideConstruction.h"
@@ -76,7 +77,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
@@ -148,7 +149,7 @@ uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
     {
         for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
         {
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {

@@ -44,6 +44,7 @@ GameActions::Result ParkSetParameterAction::Query() const
 {
     if (_parameter >= ParkParameter::Count)
     {
+        LOG_ERROR("Invalid park parameter %d", _parameter);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
@@ -73,10 +74,11 @@ GameActions::Result ParkSetParameterAction::Execute() const
             }
             break;
         case ParkParameter::SamePriceInPark:
-            gSamePriceThroughoutPark = _value;
+            gameState.SamePriceThroughoutPark = _value;
             WindowInvalidateByClass(WindowClass::Ride);
             break;
         default:
+            LOG_ERROR("Invalid park parameter %d", _parameter);
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }

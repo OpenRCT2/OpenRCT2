@@ -1744,12 +1744,12 @@ STR_2382    :Terrain
 STR_2383    :Eau
 STR_2384    :{WINDOW_COLOUR_2}Votre objectif :
 STR_2385    :{BLACK}Aucun
-STR_2386    :{BLACK}Avoir au moins {COMMA16} visiteurs dans votre parc à la fin {MONTHYEAR}, avec une évaluation de parc d’au moins 600
+STR_2386    :{BLACK}Avoir au moins {COMMA32} visiteurs dans votre parc à la fin {MONTHYEAR}, avec une évaluation de parc d’au moins 600
 STR_2387    :{BLACK}Atteindre une valeur de parc d’au moins {POP16}{POP16}{CURRENCY} à la fin {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Amusez-vous !
 STR_2389    :{BLACK}Construisez la meilleure attraction {STRINGID} possible !
 STR_2390    :{BLACK}Avoir construit au moins 10 montagnes russes différentes dans votre parc, chacune d’entre elles atteignant un indice d’engouement d’au moins 6.00
-STR_2391    :{BLACK}Avoir reçu au moins {COMMA16} visiteurs dans votre parc. L’évaluation du parc ne doit jamais descendre en dessous des 700 !
+STR_2391    :{BLACK}Avoir reçu au moins {COMMA32} visiteurs dans votre parc. L’évaluation du parc ne doit jamais descendre en dessous des 700 !
 STR_2392    :{BLACK}Obtenir un revenu mensuel avec les tickets d’attraction d’au moins {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Avoir construit au moins 10 montagnes russes différentes dans votre parc, chacune d’entre elles atteignant une longueur d’au moins {LENGTH}, avec un indice d’engouement d’au moins 7.00
 STR_2394    :{BLACK}Terminer la construction des 5 montagnes russes entamées dans ce parc, avec une conception leur permettant d’atteindre un indice d’engouement d’au moins {POP16}{POP16}{COMMA2DP32} chacune
@@ -2330,7 +2330,7 @@ STR_3305    :{WINDOW_COLOUR_2}Revenu mensuel :
 STR_3306    :{WINDOW_COLOUR_2}Bénéfice mensuel :
 STR_3307    :{WINDOW_COLOUR_2}Longueur minimum :
 STR_3308    :{WINDOW_COLOUR_2}Indice d’engouement :
-STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Attractions protégées :
@@ -3691,6 +3691,15 @@ STR_6610    :Élément de chemin introuvable
 STR_6611    :Élément de mur introuvable
 STR_6612    :Élément de bannière introuvable
 STR_6613    :Recharger l’objet
+STR_6614    :Impossible de changer le prix d’entrée du parc
+STR_6615    :La voie a besoin d’eau sur cette case
+STR_6616    :Action invalide pour ce type de personnel
+STR_6617    :Impossible de permuter un élément de case avec lui-même
+STR_6618    :Impossible de restreindre ou dé-restreindre l’objet…
+STR_6619    :Ce type d’objet ne peut pas être restreint !
+STR_6620    :Objet introuvable !
+STR_6621    :Restreindre
+STR_6622    :Restreint l’objet à l’éditeur de scénario et au mode bac à sable
 
 #############
 # Scenarios #

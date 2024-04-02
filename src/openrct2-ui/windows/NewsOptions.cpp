@@ -14,11 +14,13 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/sprites.h>
 
-static constexpr StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
-static constexpr int32_t WH = 300;
-static constexpr int32_t WW = 400;
+namespace OpenRCT2::Ui::Windows
+{
+    static constexpr StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
+    static constexpr int32_t WH = 300;
+    static constexpr int32_t WW = 400;
 
-// clang-format off
+    // clang-format off
 enum
 {
     NOTIFICATION_CATEGORY_PARK,
@@ -83,200 +85,201 @@ static Widget WindowNewsOptionsWidgets[] = {
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
-// clang-format on
+    // clang-format on
 
-class NewsOptionsWindow final : public Window
-{
-public:
-    void OnOpen() override
+    class NewsOptionsWindow final : public Window
     {
-        widgets = WindowNewsOptionsWidgets;
-        InitScrollWidgets();
-        colours[0] = COLOUR_GREY;
-        colours[1] = COLOUR_LIGHT_BLUE;
-        colours[2] = COLOUR_LIGHT_BLUE;
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        switch (widgetIndex)
+    public:
+        void OnOpen() override
         {
-            case WIDX_CLOSE:
-                Close();
-                break;
-            case WIDX_TAB_PARK:
-            case WIDX_TAB_RIDE:
-            case WIDX_TAB_GUEST:
-                SetPage(widgetIndex - WIDX_FIRST_TAB);
-                break;
-            default:
+            widgets = WindowNewsOptionsWidgets;
+            InitScrollWidgets();
+            colours[0] = COLOUR_GREY;
+            colours[1] = COLOUR_LIGHT_BLUE;
+            colours[2] = COLOUR_LIGHT_BLUE;
+        }
+
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
             {
-                int32_t checkBoxIndex = widgetIndex - WIDX_CHECKBOX_0;
-                if (checkBoxIndex >= 0)
+                case WIDX_CLOSE:
+                    Close();
+                    break;
+                case WIDX_TAB_PARK:
+                case WIDX_TAB_RIDE:
+                case WIDX_TAB_GUEST:
+                    SetPage(widgetIndex - WIDX_FIRST_TAB);
+                    break;
+                default:
                 {
-                    int32_t matchIndex = 0;
-                    for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
+                    int32_t checkBoxIndex = widgetIndex - WIDX_CHECKBOX_0;
+                    if (checkBoxIndex >= 0)
                     {
-                        const NotificationDef* ndef = &NewsItemOptionDefinitions[i];
-                        if (ndef->category != page)
-                            continue;
-
-                        if (matchIndex == checkBoxIndex)
+                        int32_t matchIndex = 0;
+                        for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
                         {
-                            // Toggle value
-                            bool* configValue = GetNotificationValuePtr(ndef);
-                            *configValue = !(*configValue);
+                            const NotificationDef* ndef = &NewsItemOptionDefinitions[i];
+                            if (ndef->category != page)
+                                continue;
 
-                            ConfigSaveDefault();
+                            if (matchIndex == checkBoxIndex)
+                            {
+                                // Toggle value
+                                bool* configValue = GetNotificationValuePtr(ndef);
+                                *configValue = !(*configValue);
 
-                            InvalidateWidget(widgetIndex);
-                            break;
+                                ConfigSaveDefault();
+
+                                InvalidateWidget(widgetIndex);
+                                break;
+                            }
+                            matchIndex++;
                         }
-                        matchIndex++;
+                    }
+                    break;
+                }
+            }
+        }
+
+        void OnUpdate() override
+        {
+            // Tab animation
+            frame_no++;
+            InvalidateWidget(WIDX_FIRST_TAB + page);
+        }
+
+        void OnPrepareDraw() override
+        {
+            SetPressedTab();
+
+            // Set checkboxes
+            const auto& baseCheckBox = widgets[WIDX_CHECKBOX_0];
+            int32_t y = baseCheckBox.top;
+
+            int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
+            Widget* checkboxWidget = &widgets[checkboxWidgetIndex];
+            for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
+            {
+                const NotificationDef* ndef = &NewsItemOptionDefinitions[i];
+                if (ndef->category != page)
+                    continue;
+
+                checkboxWidget->type = WindowWidgetType::Checkbox;
+                checkboxWidget->left = baseCheckBox.left;
+                checkboxWidget->right = baseCheckBox.right;
+                checkboxWidget->top = y;
+                checkboxWidget->bottom = checkboxWidget->top + LIST_ROW_HEIGHT + 3;
+                checkboxWidget->text = ndef->caption;
+
+                const bool* configValue = GetNotificationValuePtr(ndef);
+                SetCheckboxValue(checkboxWidgetIndex, *configValue);
+
+                checkboxWidgetIndex++;
+                checkboxWidget++;
+                y += LIST_ROW_HEIGHT + 3;
+            }
+
+            // Remove unused checkboxes
+            while (checkboxWidget->type != WindowWidgetType::Last)
+            {
+                checkboxWidget->type = WindowWidgetType::Empty;
+                checkboxWidgetIndex++;
+                checkboxWidget++;
+            }
+
+            // Resize window to fit checkboxes exactly
+            y += 3;
+
+            if (height != y)
+            {
+                Invalidate();
+                height = y;
+                widgets[WIDX_BACKGROUND].bottom = y - 1;
+                widgets[WIDX_TAB_CONTENT_PANEL].bottom = y - 1;
+                Invalidate();
+            }
+        }
+
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            DrawWidgets(dpi);
+            DrawTabImages(dpi);
+        }
+
+    private:
+        void SetPage(int32_t p)
+        {
+            if (page != p)
+            {
+                page = p;
+                frame_no = 0;
+                Invalidate();
+            }
+        }
+
+        void DrawTabImages(DrawPixelInfo& dpi)
+        {
+            DrawTabImage(dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
+            DrawTabImage(dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
+            DrawTabImage(dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
+        }
+
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t spriteIndex)
+        {
+            WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
+
+            if (!WidgetIsDisabled(*this, widgetIndex))
+            {
+                if (page == p)
+                {
+                    int32_t numFrames = TabAnimationFrames[page];
+                    if (numFrames > 1)
+                    {
+                        int32_t frame = frame_no / TabAnimationDivisor[page];
+                        spriteIndex += (frame % numFrames);
                     }
                 }
-                break;
+
+                const auto& widget = widgets[widgetIndex];
+                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
-    }
 
-    void OnUpdate() override
-    {
-        // Tab animation
-        frame_no++;
-        InvalidateWidget(WIDX_FIRST_TAB + page);
-    }
-
-    void OnPrepareDraw() override
-    {
-        SetPressedTab();
-
-        // Set checkboxes
-        const auto& baseCheckBox = widgets[WIDX_CHECKBOX_0];
-        int32_t y = baseCheckBox.top;
-
-        int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
-        Widget* checkboxWidget = &widgets[checkboxWidgetIndex];
-        for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
+        void SetPressedTab()
         {
-            const NotificationDef* ndef = &NewsItemOptionDefinitions[i];
-            if (ndef->category != page)
-                continue;
-
-            checkboxWidget->type = WindowWidgetType::Checkbox;
-            checkboxWidget->left = baseCheckBox.left;
-            checkboxWidget->right = baseCheckBox.right;
-            checkboxWidget->top = y;
-            checkboxWidget->bottom = checkboxWidget->top + LIST_ROW_HEIGHT + 3;
-            checkboxWidget->text = ndef->caption;
-
-            const bool* configValue = GetNotificationValuePtr(ndef);
-            SetCheckboxValue(checkboxWidgetIndex, *configValue);
-
-            checkboxWidgetIndex++;
-            checkboxWidget++;
-            y += LIST_ROW_HEIGHT + 3;
+            for (int32_t i = 0; i < NOTIFICATION_CATEGORY_COUNT; i++)
+                pressed_widgets &= ~(1 << (WIDX_FIRST_TAB + i));
+            pressed_widgets |= 1LL << (WIDX_FIRST_TAB + page);
         }
 
-        // Remove unused checkboxes
-        while (checkboxWidget->type != WindowWidgetType::Last)
+        bool* GetNotificationValuePtr(const NotificationDef* ndef)
         {
-            checkboxWidget->type = WindowWidgetType::Empty;
-            checkboxWidgetIndex++;
-            checkboxWidget++;
+            bool* configValue = reinterpret_cast<bool*>(reinterpret_cast<size_t>(&gConfigNotifications) + ndef->config_offset);
+            return configValue;
         }
 
-        // Resize window to fit checkboxes exactly
-        y += 3;
-
-        if (height != y)
+        void OnResize() override
         {
-            Invalidate();
-            height = y;
-            widgets[WIDX_BACKGROUND].bottom = y - 1;
-            widgets[WIDX_TAB_CONTENT_PANEL].bottom = y - 1;
-            Invalidate();
+            ResizeFrameWithPage();
         }
-    }
 
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        DrawWidgets(dpi);
-        DrawTabImages(dpi);
-    }
-
-private:
-    void SetPage(int32_t p)
-    {
-        if (page != p)
-        {
-            page = p;
-            frame_no = 0;
-            Invalidate();
-        }
-    }
-
-    void DrawTabImages(DrawPixelInfo& dpi)
-    {
-        DrawTabImage(dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
-        DrawTabImage(dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
-        DrawTabImage(dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
-    }
-
-    void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t spriteIndex)
-    {
-        WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
-
-        if (!WidgetIsDisabled(*this, widgetIndex))
-        {
-            if (page == p)
-            {
-                int32_t numFrames = TabAnimationFrames[page];
-                if (numFrames > 1)
-                {
-                    int32_t frame = frame_no / TabAnimationDivisor[page];
-                    spriteIndex += (frame % numFrames);
-                }
-            }
-
-            const auto& widget = widgets[widgetIndex];
-            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
-        }
-    }
-
-    void SetPressedTab()
-    {
-        for (int32_t i = 0; i < NOTIFICATION_CATEGORY_COUNT; i++)
-            pressed_widgets &= ~(1 << (WIDX_FIRST_TAB + i));
-        pressed_widgets |= 1LL << (WIDX_FIRST_TAB + page);
-    }
-
-    bool* GetNotificationValuePtr(const NotificationDef* ndef)
-    {
-        bool* configValue = reinterpret_cast<bool*>(reinterpret_cast<size_t>(&gConfigNotifications) + ndef->config_offset);
-        return configValue;
-    }
-
-    void OnResize() override
-    {
-        ResizeFrameWithPage();
-    }
-
-    static constexpr int32_t TabAnimationDivisor[3] = {
-        1, // Park
-        4, // Ride
-        4, // Guest
+        static constexpr int32_t TabAnimationDivisor[3] = {
+            1, // Park
+            4, // Ride
+            4, // Guest
+        };
+        static constexpr int32_t TabAnimationFrames[3] = {
+            1,  // Park
+            16, // Ride
+            8,  // Guest
+        };
     };
-    static constexpr int32_t TabAnimationFrames[3] = {
-        1,  // Park
-        16, // Ride
-        8,  // Guest
-    };
-};
 
-WindowBase* WindowNewsOptionsOpen()
-{
-    return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
-}
+    WindowBase* NewsOptionsOpen()
+    {
+        return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
+    }
+} // namespace OpenRCT2::Ui::Windows

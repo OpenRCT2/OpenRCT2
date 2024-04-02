@@ -1503,12 +1503,12 @@ declare global {
 
         edges: number;
         corners: number;
-        slopeDirection: number | null;
+        slopeDirection: Direction | null;
         isBlockedByVehicle: boolean;
         isWide: boolean;
 
         isQueue: boolean;
-        queueBannerDirection: number | null;
+        queueBannerDirection: Direction | null;
         ride: number | null;
         station: number | null;
 
@@ -1558,10 +1558,14 @@ declare global {
         direction: Direction;
         object: number;
         primaryColour: number;
+        /** If the element is a banner, this is the text colour. */
         secondaryColour: number;
         tertiaryColour: number;
-        bannerIndex: number | null;
         slope: Direction;
+        /** Writing to bannerIndex is deprecated and may result in uncontrolled behaviour. */
+        readonly bannerIndex: number | null;
+        /** If the element is a banner, this is its text. */
+        bannerText: string | null;
     }
 
     interface EntranceElement extends BaseTileElement {
@@ -1582,16 +1586,28 @@ declare global {
         direction: Direction;
         object: number;
         primaryColour: number;
+        /** If the element is a banner, this is the text colour. */
         secondaryColour: number;
         tertiaryColour: number;
-        bannerIndex: number | null;
         sequence: number;
+        /** Writing to bannerIndex is deprecated and may result in uncontrolled behaviour. */
+        readonly bannerIndex: number | null;
+        /** If the element is a banner, this is its text. */
+        bannerText: string | null;
     }
 
     interface BannerElement extends BaseTileElement {
         type: "banner";
+
         direction: Direction;
-        bannerIndex: number;
+        object: number;
+        primaryColour: number;
+        /** This is the text colour. */
+        secondaryColour: number;
+        /** Writing to bannerIndex is deprecated and may result in uncontrolled behaviour. */
+        readonly bannerIndex: number;
+        bannerText: string;
+        isNoEntry: boolean;
     }
 
     /**
@@ -3612,8 +3628,9 @@ declare global {
 
         /**
          * The amount of funding currently spent on research.
+         * 0: none, 1: minimum, 2: normal, 3: maximum
          */
-        funding: ResearchFundingLevel;
+        funding: number;
 
         /**
          * The categories of research which should be prioritised.
@@ -3663,7 +3680,7 @@ declare global {
          * E.g. gentle rides, thrill rides, shops etc.
          * Note: Any updates to this field are ignored by OpenRCT2, the category will be derived from the ride type.
          */
-        readonly category?: ResearchCategory;
+        readonly category: RideResearchCategory;
 
         /**
          * The ride type. Each vehicle can have a seperate invention for each ride type.
@@ -3677,7 +3694,7 @@ declare global {
     }
 
     interface SceneryResearchItem {
-        readonly category?: "scenery_group";
+        readonly category: "scenery";
         readonly type: "scenery";
 
         /**
@@ -3686,23 +3703,15 @@ declare global {
         readonly object: number;
     }
 
-    type ResearchItemType = "scenery" | "ride";
-
-    type ResearchCategory =
+    type RideResearchCategory =
         "transport" |
         "gentle" |
         "rollercoaster" |
         "thrill" |
         "water" |
-        "shop" |
-        "scenery";
+        "shop";
 
-    enum ResearchFundingLevel {
-        None,
-        Minimum,
-        Normal,
-        Maximum
-    }
+    type ResearchCategory = RideResearchCategory | "scenery";
 
     type ResearchFundingStage =
         "initial_research" |

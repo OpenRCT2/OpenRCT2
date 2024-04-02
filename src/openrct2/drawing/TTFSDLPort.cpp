@@ -216,7 +216,7 @@ static void TTF_initLineMectrics(const TTF_Font* font, const TTFSurface* textbuf
     dst = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels));
     if (row > 0)
     {
-        dst += row * textbuf->pitch;
+        dst += row * textbuf->w;
     }
 
     height = font->underline_height;
@@ -236,7 +236,7 @@ outline into account.
 static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, const int row)
 {
     int line;
-    uint8_t* dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->pitch * textbuf->h;
+    uint8_t* dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->w * textbuf->h;
     uint8_t* dst;
     int height;
 
@@ -247,7 +247,7 @@ static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, 
     {
         /* 1 because 0 is the bg color */
         std::fill_n(dst, textbuf->w, 0x01);
-        dst += textbuf->pitch;
+        dst += textbuf->w;
     }
 }
 
@@ -258,7 +258,7 @@ static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, 
 static void TTF_drawLine_Shaded(const TTF_Font* font, const TTFSurface* textbuf, const int row)
 {
     int line;
-    uint8_t* dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->pitch * textbuf->h;
+    uint8_t* dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->w * textbuf->h;
     uint8_t* dst;
     int height;
 
@@ -268,7 +268,7 @@ static void TTF_drawLine_Shaded(const TTF_Font* font, const TTFSurface* textbuf,
     for (line = height; line > 0 && dst < dst_check; --line)
     {
         std::fill_n(dst, textbuf->w, NUM_GRAYS - 1);
-        dst += textbuf->pitch;
+        dst += textbuf->w;
     }
 }
 
@@ -1299,12 +1299,11 @@ TTFSurface* TTF_RenderUTF8(TTF_Font* font, const char* text, bool shaded)
     }
     textbuf->w = width;
     textbuf->h = height;
-    textbuf->pitch = width;
     textbuf->pixels = calloc(1, width * height);
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
     that may occur. */
-    dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->pitch * textbuf->h;
+    dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->w * textbuf->h;
 
     /* check kerning */
     use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
@@ -1363,7 +1362,7 @@ TTFSurface* TTF_RenderUTF8(TTF_Font* font, const char* text, bool shaded)
             {
                 continue;
             }
-            dst = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + (row + glyph->yoffset) * textbuf->pitch
+            dst = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + (row + glyph->yoffset) * textbuf->w
                 + xstart + glyph->minx;
             src = current->buffer + row * current->pitch;
 

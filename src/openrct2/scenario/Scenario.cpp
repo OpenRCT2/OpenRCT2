@@ -104,7 +104,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.ParkRating = park.CalculateParkRating();
     gameState.ParkValue = park.CalculateParkValue();
     gameState.CompanyValue = park.CalculateCompanyValue();
-    gHistoricalProfit = gameState.InitialCash - gameState.BankLoan;
+    gameState.HistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
     {
@@ -156,15 +156,15 @@ void ScenarioReset(GameState_t& gameState)
     Staff::ResetStats();
 
     auto& objManager = GetContext()->GetObjectManager();
-    gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+    if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
     {
         // Fall back to first entrance object
-        gLastEntranceStyle = 0;
+        gameState.LastEntranceStyle = 0;
     }
 
     gMarketingCampaigns.clear();
-    gParkRatingCasualtyPenalty = 0;
+    gameState.ParkRatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
     if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
@@ -256,7 +256,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
 
 void ScenarioAutosaveCheck()
 {
-    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+    if (gLastAutoSaveUpdate == kAutosavePause)
         return;
 
     // Milliseconds since last save
@@ -284,7 +284,7 @@ void ScenarioAutosaveCheck()
 
     if (shouldSave)
     {
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        gLastAutoSaveUpdate = kAutosavePause;
         GameAutosave();
     }
 }
@@ -309,8 +309,8 @@ static void ScenarioDayUpdate(GameState_t& gameState)
     }
 
     // Lower the casualty penalty
-    uint16_t casualtyPenaltyModifier = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
-    gParkRatingCasualtyPenalty = std::max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
+    uint16_t casualtyPenaltyModifier = (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+    gameState.ParkRatingCasualtyPenalty = std::max(0, gameState.ParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
     ContextBroadcastIntent(&intent);
@@ -743,7 +743,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
 
 ObjectiveStatus Objective::CheckMonthlyRideIncome() const
 {
-    money64 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
+    money64 lastMonthRideIncome = GetGameState().ExpenditureTable[1][EnumValue(ExpenditureType::ParkRideTickets)];
     if (lastMonthRideIncome >= Currency)
     {
         return ObjectiveStatus::Success;
@@ -831,11 +831,11 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 
 ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
 {
-    const auto* lastMonthExpenditure = gExpenditureTable[1];
-    auto lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
+    const auto* lastMonthExpenditure = GetGameState().ExpenditureTable[1];
+    auto lastMonthProfit = lastMonthExpenditure[EnumValue(ExpenditureType::ShopSales)]
+        + lastMonthExpenditure[EnumValue(ExpenditureType::ShopStock)]
+        + lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkSales)]
+        + lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkStock)];
 
     if (lastMonthProfit >= Currency)
     {

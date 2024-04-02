@@ -30,20 +30,20 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
-using namespace OpenRCT2;
+namespace OpenRCT2::Ui::Windows
+{
+    static constexpr int32_t WW_FINANCIAL = 280;
+    static constexpr int32_t WH_FINANCIAL = 149;
 
-static constexpr int32_t WW_FINANCIAL = 280;
-static constexpr int32_t WH_FINANCIAL = 149;
+    static constexpr int32_t WW_GUESTS = 380;
+    static constexpr int32_t WH_GUESTS = 149;
 
-static constexpr int32_t WW_GUESTS = 380;
-static constexpr int32_t WH_GUESTS = 149;
-
-static constexpr int32_t WW_PARK = 400;
-static constexpr int32_t WH_PARK = 200;
+    static constexpr int32_t WW_PARK = 400;
+    static constexpr int32_t WH_PARK = 200;
 
 #pragma region Widgets
 
-// clang-format off
+    // clang-format off
 enum {
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL,
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
@@ -135,7 +135,7 @@ static Widget window_editor_scenario_options_financial_widgets[] = {
     MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget window_editor_scenario_options_guests_widgets[] = {
@@ -150,7 +150,7 @@ static Widget window_editor_scenario_options_guests_widgets[] = {
     MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
     MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
     MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget window_editor_scenario_options_park_widgets[] = {
@@ -171,7 +171,7 @@ static Widget window_editor_scenario_options_park_widgets[] = {
     MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
     MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
     MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
-    WIDGETS_END,
+    kWidgetsEnd,
 };
 
 static Widget *window_editor_scenario_options_widgets[] = {
@@ -208,1080 +208,1082 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
         (1uLL << WIDX_ENTRY_PRICE_INCREASE) |
         (1uLL << WIDX_ENTRY_PRICE_DECREASE),
 };
-// clang-format on
+    // clang-format on
 
 #pragma endregion
 
-class EditorScenarioOptionsWindow final : public Window
-{
-public:
-    void OnOpen() override
+    class EditorScenarioOptionsWindow final : public Window
     {
-        widgets = window_editor_scenario_options_widgets[WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
-        hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets
-            [WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
-        WindowInitScrollWidgets(*this);
-        page = 0;
-    }
-
-    void OnMouseUp(WidgetIndex widgetIndex) override
-    {
-        switch (page)
+    public:
+        void OnOpen() override
         {
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
-                return FinancialMouseUp(widgetIndex);
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                return GuestsMouseUp(widgetIndex);
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                return ParkMouseUp(widgetIndex);
+            widgets = window_editor_scenario_options_widgets[WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
+            hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets
+                [WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
+            WindowInitScrollWidgets(*this);
+            page = 0;
         }
-    }
 
-    void OnResize() override
-    {
-        switch (page)
+        void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
-                return FinancialResize();
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                return GuestsResize();
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                return ParkResize();
+            switch (page)
+            {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
+                    return FinancialMouseUp(widgetIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
+                    return GuestsMouseUp(widgetIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
+                    return ParkMouseUp(widgetIndex);
+            }
         }
-    }
 
-    void OnMouseDown(WidgetIndex widgetIndex) override
-    {
-        switch (page)
+        void OnResize() override
         {
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
-                return FinancialMouseDown(widgetIndex);
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                return GuestsMouseDown(widgetIndex);
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                return ParkMouseDown(widgetIndex);
+            switch (page)
+            {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
+                    return FinancialResize();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
+                    return GuestsResize();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
+                    return ParkResize();
+            }
         }
-    }
 
-    void OnUpdate() override
-    {
-        switch (page)
+        void OnMouseDown(WidgetIndex widgetIndex) override
         {
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
-                return FinancialUpdate();
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                return GuestsUpdate();
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                return ParkUpdate();
+            switch (page)
+            {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
+                    return FinancialMouseDown(widgetIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
+                    return GuestsMouseDown(widgetIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
+                    return ParkMouseDown(widgetIndex);
+            }
         }
-    }
 
-    void OnPrepareDraw() override
-    {
-        switch (page)
+        void OnUpdate() override
         {
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
-                return FinancialPrepareDraw();
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                return GuestsPrepareDraw();
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                return ParkPrepareDraw();
+            switch (page)
+            {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
+                    return FinancialUpdate();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
+                    return GuestsUpdate();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
+                    return ParkUpdate();
+            }
         }
-    }
 
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        switch (page)
+        void OnPrepareDraw() override
         {
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
-                return FinancialDraw(dpi);
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                return GuestsDraw(dpi);
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                return ParkDraw(dpi);
+            switch (page)
+            {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
+                    return FinancialPrepareDraw();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
+                    return GuestsPrepareDraw();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
+                    return ParkPrepareDraw();
+            }
         }
-    }
 
-    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
-    {
-        switch (page)
+        void OnDraw(DrawPixelInfo& dpi) override
         {
-            case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                return ParkDropdown(widgetIndex, selectedIndex);
+            switch (page)
+            {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
+                    return FinancialDraw(dpi);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
+                    return GuestsDraw(dpi);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
+                    return ParkDraw(dpi);
+            }
         }
-    }
 
-private:
-    void SetPressedTab()
-    {
-        int32_t i;
-        for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
-            SetWidgetPressed(WIDX_TAB_1 + i, false);
-        SetWidgetPressed(WIDX_TAB_1 + page, true);
-    }
+        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        {
+            switch (page)
+            {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
+                    return ParkDropdown(widgetIndex, selectedIndex);
+            }
+        }
 
-    void AnchorBorderWidgets()
-    {
-        ResizeFrameWithPage();
-    }
+    private:
+        void SetPressedTab()
+        {
+            int32_t i;
+            for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
+                SetWidgetPressed(WIDX_TAB_1 + i, false);
+            SetWidgetPressed(WIDX_TAB_1 + page, true);
+        }
 
-    void DrawTabImages(DrawPixelInfo& dpi)
-    {
-        Widget* widget;
-        int32_t spriteIndex;
+        void AnchorBorderWidgets()
+        {
+            ResizeFrameWithPage();
+        }
 
-        // Tab 1
-        widget = &widgets[WIDX_TAB_1];
-        spriteIndex = SPR_TAB_FINANCES_SUMMARY_0;
-        if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
-            spriteIndex += (frame_no / 2) % 8;
+        void DrawTabImages(DrawPixelInfo& dpi)
+        {
+            Widget* widget;
+            int32_t spriteIndex;
 
-        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            // Tab 1
+            widget = &widgets[WIDX_TAB_1];
+            spriteIndex = SPR_TAB_FINANCES_SUMMARY_0;
+            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
+                spriteIndex += (frame_no / 2) % 8;
 
-        // Tab 2
-        widget = &widgets[WIDX_TAB_2];
-        spriteIndex = SPR_TAB_GUESTS_0;
-        if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
-            spriteIndex += (frame_no / 4) % 8;
+            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
-        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            // Tab 2
+            widget = &widgets[WIDX_TAB_2];
+            spriteIndex = SPR_TAB_GUESTS_0;
+            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
+                spriteIndex += (frame_no / 4) % 8;
 
-        // Tab 3
-        widget = &widgets[WIDX_TAB_3];
-        spriteIndex = SPR_TAB_PARK;
-        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
-    }
+            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
-    void SetPage(int32_t newPage)
-    {
-        if (page == newPage)
-            return;
+            // Tab 3
+            widget = &widgets[WIDX_TAB_3];
+            spriteIndex = SPR_TAB_PARK;
+            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        }
 
-        page = newPage;
-        frame_no = 0;
-        hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
-        widgets = window_editor_scenario_options_widgets[page];
-        Invalidate();
-        OnResize();
-        OnPrepareDraw();
-        WindowInitScrollWidgets(*this);
-        Invalidate();
-    }
+        void SetPage(int32_t newPage)
+        {
+            if (page == newPage)
+                return;
+
+            page = newPage;
+            frame_no = 0;
+            hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
+            widgets = window_editor_scenario_options_widgets[page];
+            Invalidate();
+            OnResize();
+            OnPrepareDraw();
+            WindowInitScrollWidgets(*this);
+            Invalidate();
+        }
 
 #pragma region Financial
 
-    void FinancialMouseUp(WidgetIndex widgetIndex)
-    {
-        auto& gameState = GetGameState();
-        switch (widgetIndex)
+        void FinancialMouseUp(WidgetIndex widgetIndex)
         {
-            case WIDX_CLOSE:
-                WindowClose(*this);
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-            case WIDX_TAB_3:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
-            case WIDX_NO_MONEY:
+            auto& gameState = GetGameState();
+            switch (widgetIndex)
             {
-                auto newMoneySetting = (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
-                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
+                case WIDX_CLOSE:
+                    WindowClose(*this);
+                    break;
+                case WIDX_TAB_1:
+                case WIDX_TAB_2:
+                case WIDX_TAB_3:
+                    SetPage(widgetIndex - WIDX_TAB_1);
+                    break;
+                case WIDX_NO_MONEY:
+                {
+                    auto newMoneySetting = (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
+                    auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_FORBID_MARKETING:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::ForbidMarketingCampaigns,
+                        gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_RCT1_INTEREST:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::UseRCT1Interest, gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
             }
-            case WIDX_FORBID_MARKETING:
+        }
+
+        void FinancialResize()
+        {
+            WindowSetResize(*this, 280, 149, 280, 149);
+        }
+
+        void ShowClimateDropdown()
+        {
+            int32_t i;
+
+            const auto& dropdownWidget = widgets[WIDX_CLIMATE];
+
+            for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ForbidMarketingCampaigns,
-                    gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = ClimateNames[i];
             }
-            case WIDX_RCT1_INTEREST:
+            WindowDropdownShowTextCustomWidth(
+                { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1,
+                colours[1], 0, Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget.width() - 3);
+            Dropdown::SetChecked(static_cast<uint8_t>(GetGameState().Climate), true);
+        }
+
+        void FinancialMouseDown(WidgetIndex widgetIndex)
+        {
+            auto& gameState = GetGameState();
+            switch (widgetIndex)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::UseRCT1Interest, gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
+                case WIDX_INITIAL_CASH_INCREASE:
+                    if (gameState.InitialCash < 1000000.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::InitialCash, gameState.InitialCash + 500.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_CASH, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_INITIAL_CASH_DECREASE:
+                    if (gameState.InitialCash > 0.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::InitialCash, gameState.InitialCash - 500.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_CASH, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_INITIAL_LOAN_INCREASE:
+                    if (gameState.BankLoan < 5000000.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::InitialLoan, gameState.BankLoan + 1000.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_INITIAL_LOAN_DECREASE:
+                    if (gameState.BankLoan > 0.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::InitialLoan, gameState.BankLoan - 1000.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_MAXIMUM_LOAN_INCREASE:
+                    if (gameState.MaxBankLoan < 5000000.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan + 1000.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_MAXIMUM_LOAN_DECREASE:
+                    if (gameState.MaxBankLoan > 0.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan - 1000.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_INTEREST_RATE_INCREASE:
+                    if (gameState.BankLoanInterestRate < MaxBankLoanInterestRate)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::AnnualInterestRate, gameState.BankLoanInterestRate + 1);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_INTEREST_RATE_DECREASE:
+                    if (gameState.BankLoanInterestRate > 0)
+                    {
+                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.BankLoanInterestRate - 1);
+                        auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+            }
+
+            if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+            {
+                WindowInvalidateByClass(WindowClass::Finances);
+                WindowInvalidateByClass(WindowClass::BottomToolbar);
             }
         }
-    }
 
-    void FinancialResize()
-    {
-        WindowSetResize(*this, 280, 149, 280, 149);
-    }
-
-    void ShowClimateDropdown()
-    {
-        int32_t i;
-
-        const auto& dropdownWidget = widgets[WIDX_CLIMATE];
-
-        for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
+        void FinancialUpdate()
         {
-            gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItems[i].Args = ClimateNames[i];
-        }
-        WindowDropdownShowTextCustomWidth(
-            { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1, colours[1], 0,
-            Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget.width() - 3);
-        Dropdown::SetChecked(static_cast<uint8_t>(GetGameState().Climate), true);
-    }
-
-    void FinancialMouseDown(WidgetIndex widgetIndex)
-    {
-        auto& gameState = GetGameState();
-        switch (widgetIndex)
-        {
-            case WIDX_INITIAL_CASH_INCREASE:
-                if (gameState.InitialCash < 1000000.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialCash, gameState.InitialCash + 500.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_CASH, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_INITIAL_CASH_DECREASE:
-                if (gameState.InitialCash > 0.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialCash, gameState.InitialCash - 500.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_CASH, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_INITIAL_LOAN_INCREASE:
-                if (gameState.BankLoan < 5000000.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialLoan, gameState.BankLoan + 1000.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_INITIAL_LOAN_DECREASE:
-                if (gameState.BankLoan > 0.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialLoan, gameState.BankLoan - 1000.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_MAXIMUM_LOAN_INCREASE:
-                if (gameState.MaxBankLoan < 5000000.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan + 1000.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_MAXIMUM_LOAN_DECREASE:
-                if (gameState.MaxBankLoan > 0.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan - 1000.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_INTEREST_RATE_INCREASE:
-                if (gameState.BankLoanInterestRate < MaxBankLoanInterestRate)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::AnnualInterestRate, gameState.BankLoanInterestRate + 1);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_INTEREST_RATE_DECREASE:
-                if (gameState.BankLoanInterestRate > 0)
-                {
-                    auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.BankLoanInterestRate - 1);
-                    auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
-                }
-                Invalidate();
-                break;
+            frame_no++;
+            FinancialPrepareDraw();
+            WidgetInvalidate(*this, WIDX_TAB_1);
         }
 
-        if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+        void FinancialPrepareDraw()
         {
-            WindowInvalidateByClass(WindowClass::Finances);
-            WindowInvalidateByClass(WindowClass::BottomToolbar);
-        }
-    }
-
-    void FinancialUpdate()
-    {
-        frame_no++;
-        FinancialPrepareDraw();
-        WidgetInvalidate(*this, WIDX_TAB_1);
-    }
-
-    void FinancialPrepareDraw()
-    {
-        Widget* newWidgets = window_editor_scenario_options_widgets[page];
-        if (widgets != newWidgets)
-        {
-            widgets = newWidgets;
-            WindowInitScrollWidgets(*this);
-        }
-
-        SetPressedTab();
-
-        auto& gameState = GetGameState();
-        if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
-        {
-            SetWidgetPressed(WIDX_NO_MONEY, true);
-            for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_RCT1_INTEREST; i++)
-                widgets[i].type = WindowWidgetType::Empty;
-        }
-        else
-        {
-            SetWidgetPressed(WIDX_NO_MONEY, false);
-            widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
-            widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_INITIAL_LOAN].type = WindowWidgetType::Spinner;
-            widgets[WIDX_INITIAL_LOAN_INCREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_INITIAL_LOAN_DECREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
-            widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
-
-            if (gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST)
+            Widget* newWidgets = window_editor_scenario_options_widgets[page];
+            if (widgets != newWidgets)
             {
-                widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
-                widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
-                widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Empty;
-                widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
-                SetWidgetPressed(WIDX_RCT1_INTEREST, true);
+                widgets = newWidgets;
+                WindowInitScrollWidgets(*this);
+            }
+
+            SetPressedTab();
+
+            auto& gameState = GetGameState();
+            if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+            {
+                SetWidgetPressed(WIDX_NO_MONEY, true);
+                for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_RCT1_INTEREST; i++)
+                    widgets[i].type = WindowWidgetType::Empty;
             }
             else
             {
-                widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
-                widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Empty;
+                SetWidgetPressed(WIDX_NO_MONEY, false);
+                widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
+                widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_INITIAL_LOAN].type = WindowWidgetType::Spinner;
+                widgets[WIDX_INITIAL_LOAN_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_INITIAL_LOAN_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
+                widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
+
+                if (gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST)
+                {
+                    widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
+                    SetWidgetPressed(WIDX_RCT1_INTEREST, true);
+                }
+                else
+                {
+                    widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
+                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Empty;
+                }
+            }
+
+            SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
+
+            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                     : WindowWidgetType::CloseBox;
+
+            AnchorBorderWidgets();
+        }
+
+        void FinancialDraw(DrawPixelInfo& dpi)
+        {
+            ScreenCoordsXY screenCoords{};
+
+            WindowDrawWidgets(*this, dpi);
+            DrawTabImages(dpi);
+
+            auto& gameState = GetGameState();
+
+            const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
+            if (initialCashWidget.type != WindowWidgetType::Empty)
+            {
+                screenCoords = windowPos + ScreenCoordsXY{ 8, initialCashWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
+
+                screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(GetGameState().InitialCash);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            }
+
+            const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
+            if (initialLoanWidget.type != WindowWidgetType::Empty)
+            {
+                screenCoords = windowPos + ScreenCoordsXY{ 8, initialLoanWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
+
+                screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(gameState.BankLoan);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            }
+
+            const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
+            if (maximumLoanWidget.type != WindowWidgetType::Empty)
+            {
+                screenCoords = windowPos + ScreenCoordsXY{ 8, maximumLoanWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
+
+                screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(GetGameState().MaxBankLoan);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            }
+
+            const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
+            if (interestRateWidget.type != WindowWidgetType::Empty)
+            {
+                screenCoords = windowPos + ScreenCoordsXY{ 8, interestRateWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
+
+                screenCoords = windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top };
+
+                auto ft = Formatter();
+                ft.Add<int16_t>(
+                    std::clamp<int16_t>(static_cast<int16_t>(gameState.BankLoanInterestRate), INT16_MIN, INT16_MAX));
+                DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
             }
         }
-
-        SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
-
-        widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                 : WindowWidgetType::CloseBox;
-
-        AnchorBorderWidgets();
-    }
-
-    void FinancialDraw(DrawPixelInfo& dpi)
-    {
-        ScreenCoordsXY screenCoords{};
-
-        WindowDrawWidgets(*this, dpi);
-        DrawTabImages(dpi);
-
-        auto& gameState = GetGameState();
-
-        const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
-        if (initialCashWidget.type != WindowWidgetType::Empty)
-        {
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialCashWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
-
-            screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
-            auto ft = Formatter();
-            ft.Add<money64>(GetGameState().InitialCash);
-            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
-        }
-
-        const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
-        if (initialLoanWidget.type != WindowWidgetType::Empty)
-        {
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialLoanWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
-
-            screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
-            auto ft = Formatter();
-            ft.Add<money64>(gameState.BankLoan);
-            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
-        }
-
-        const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
-        if (maximumLoanWidget.type != WindowWidgetType::Empty)
-        {
-            screenCoords = windowPos + ScreenCoordsXY{ 8, maximumLoanWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
-
-            screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
-            auto ft = Formatter();
-            ft.Add<money64>(GetGameState().MaxBankLoan);
-            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
-        }
-
-        const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
-        if (interestRateWidget.type != WindowWidgetType::Empty)
-        {
-            screenCoords = windowPos + ScreenCoordsXY{ 8, interestRateWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
-
-            screenCoords = windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top };
-
-            auto ft = Formatter();
-            ft.Add<int16_t>(std::clamp<int16_t>(static_cast<int16_t>(gameState.BankLoanInterestRate), INT16_MIN, INT16_MAX));
-            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
-        }
-    }
 
 #pragma endregion
 
 #pragma region Guests
 
-    void GuestsMouseUp(WidgetIndex widgetIndex)
-    {
-        auto& gameState = GetGameState();
-        switch (widgetIndex)
+        void GuestsMouseUp(WidgetIndex widgetIndex)
         {
-            case WIDX_CLOSE:
-                WindowClose(*this);
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-            case WIDX_TAB_3:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
-            case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
+            auto& gameState = GetGameState();
+            switch (widgetIndex)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::GuestsPreferLessIntenseRides,
-                    gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
+                case WIDX_CLOSE:
+                    WindowClose(*this);
+                    break;
+                case WIDX_TAB_1:
+                case WIDX_TAB_2:
+                case WIDX_TAB_3:
+                    SetPage(widgetIndex - WIDX_TAB_1);
+                    break;
+                case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::GuestsPreferLessIntenseRides,
+                        gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::GuestsPreferMoreIntenseRides,
+                        gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
             }
-            case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
+        }
+
+        void GuestsResize()
+        {
+            WindowSetResize(*this, 380, 149, 380, 149);
+        }
+
+        void GuestsMouseDown(WidgetIndex widgetIndex)
+        {
+            auto& gameState = GetGameState();
+
+            switch (widgetIndex)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::GuestsPreferMoreIntenseRides,
-                    gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
+                case WIDX_CASH_PER_GUEST_INCREASE:
+                    if (gameState.GuestInitialCash < 1000.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash + 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_CASH_PER_GUEST_DECREASE:
+                    if (gameState.GuestInitialCash > 0.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash - 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
+                    if (gameState.GuestInitialHappiness < 250)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness + 4);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
+                    if (gameState.GuestInitialHappiness > 40)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness - 4);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
+                    if (gameState.GuestInitialHunger > 40)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger - 4);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
+                    if (gameState.GuestInitialHunger < 250)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger + 4);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_GUEST_INITIAL_THIRST_INCREASE:
+                    if (gameState.GuestInitialThirst > 40)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst - 4);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_GUEST_INITIAL_THIRST_DECREASE:
+                    if (gameState.GuestInitialThirst < 250)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst + 4);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
             }
         }
-    }
 
-    void GuestsResize()
-    {
-        WindowSetResize(*this, 380, 149, 380, 149);
-    }
-
-    void GuestsMouseDown(WidgetIndex widgetIndex)
-    {
-        auto& gameState = GetGameState();
-
-        switch (widgetIndex)
+        void GuestsUpdate()
         {
-            case WIDX_CASH_PER_GUEST_INCREASE:
-                if (gameState.GuestInitialCash < 1000.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash + 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_CASH_PER_GUEST_DECREASE:
-                if (gameState.GuestInitialCash > 0.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash - 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
-                if (gameState.GuestInitialHappiness < 250)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness + 4);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
-                if (gameState.GuestInitialHappiness > 40)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness - 4);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-                if (gameState.GuestInitialHunger > 40)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger - 4);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-                if (gameState.GuestInitialHunger < 250)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger + 4);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_GUEST_INITIAL_THIRST_INCREASE:
-                if (gameState.GuestInitialThirst > 40)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst - 4);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_GUEST_INITIAL_THIRST_DECREASE:
-                if (gameState.GuestInitialThirst < 250)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst + 4);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-        }
-    }
-
-    void GuestsUpdate()
-    {
-        frame_no++;
-        GuestsPrepareDraw();
-        WidgetInvalidate(*this, WIDX_TAB_2);
-    }
-
-    void GuestsPrepareDraw()
-    {
-        Widget* newWidgets = window_editor_scenario_options_widgets[page];
-        if (widgets != newWidgets)
-        {
-            widgets = newWidgets;
-            WindowInitScrollWidgets(*this);
+            frame_no++;
+            GuestsPrepareDraw();
+            WidgetInvalidate(*this, WIDX_TAB_2);
         }
 
-        SetPressedTab();
-
-        auto& gameState = GetGameState();
-        if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+        void GuestsPrepareDraw()
         {
-            widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Empty;
-            widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Empty;
-            widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Empty;
+            Widget* newWidgets = window_editor_scenario_options_widgets[page];
+            if (widgets != newWidgets)
+            {
+                widgets = newWidgets;
+                WindowInitScrollWidgets(*this);
+            }
+
+            SetPressedTab();
+
+            auto& gameState = GetGameState();
+            if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+            {
+                widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Empty;
+                widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Empty;
+                widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Empty;
+            }
+            else
+            {
+                widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Spinner;
+                widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Button;
+            }
+
+            SetWidgetPressed(WIDX_GUEST_PREFER_LESS_INTENSE_RIDES, gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES);
+            SetWidgetPressed(WIDX_GUEST_PREFER_MORE_INTENSE_RIDES, gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES);
+
+            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                     : WindowWidgetType::CloseBox;
+
+            AnchorBorderWidgets();
         }
-        else
+
+        void GuestsDraw(DrawPixelInfo& dpi)
         {
-            widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Spinner;
-            widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Button;
-        }
+            ScreenCoordsXY screenCoords{};
 
-        SetWidgetPressed(WIDX_GUEST_PREFER_LESS_INTENSE_RIDES, gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES);
-        SetWidgetPressed(WIDX_GUEST_PREFER_MORE_INTENSE_RIDES, gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES);
+            WindowDrawWidgets(*this, dpi);
+            DrawTabImages(dpi);
+            auto& gameState = GetGameState();
 
-        widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                 : WindowWidgetType::CloseBox;
+            const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
+            if (cashPerGuestWidget.type != WindowWidgetType::Empty)
+            {
+                // Cash per guest label
+                screenCoords = windowPos + ScreenCoordsXY{ 8, cashPerGuestWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
 
-        AnchorBorderWidgets();
-    }
+                // Cash per guest value
+                screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(gameState.GuestInitialCash);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            }
 
-    void GuestsDraw(DrawPixelInfo& dpi)
-    {
-        ScreenCoordsXY screenCoords{};
+            // Guest initial happiness label
+            const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
+            screenCoords = windowPos + ScreenCoordsXY{ 8, initialHappinessWidget.top };
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
 
-        WindowDrawWidgets(*this, dpi);
-        DrawTabImages(dpi);
-        auto& gameState = GetGameState();
-
-        const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
-        if (cashPerGuestWidget.type != WindowWidgetType::Empty)
-        {
-            // Cash per guest label
-            screenCoords = windowPos + ScreenCoordsXY{ 8, cashPerGuestWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
-
-            // Cash per guest value
-            screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
+            // Guest initial happiness value
+            screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gameState.GuestInitialCash);
-            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            ft.Add<uint16_t>((gameState.GuestInitialHappiness * 100) / 255);
+            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+
+            // Guest initial hunger label
+            const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
+            screenCoords = windowPos + ScreenCoordsXY{ 8, initialHungerWidget.top };
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
+
+            // Guest initial hunger value
+            screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
+            ft = Formatter();
+            ft.Add<uint16_t>(((255 - gameState.GuestInitialHunger) * 100) / 255);
+            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+
+            // Guest initial thirst label
+            const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
+            screenCoords = windowPos + ScreenCoordsXY{ 8, initialThirstWidget.top };
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
+
+            // Guest initial thirst value
+            screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
+            ft = Formatter();
+            ft.Add<uint16_t>(((255 - gameState.GuestInitialThirst) * 100) / 255);
+            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
         }
-
-        // Guest initial happiness label
-        const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
-        screenCoords = windowPos + ScreenCoordsXY{ 8, initialHappinessWidget.top };
-        DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
-
-        // Guest initial happiness value
-        screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
-        auto ft = Formatter();
-        ft.Add<uint16_t>((gameState.GuestInitialHappiness * 100) / 255);
-        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
-
-        // Guest initial hunger label
-        const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
-        screenCoords = windowPos + ScreenCoordsXY{ 8, initialHungerWidget.top };
-        DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
-
-        // Guest initial hunger value
-        screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
-        ft = Formatter();
-        ft.Add<uint16_t>(((255 - gameState.GuestInitialHunger) * 100) / 255);
-        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
-
-        // Guest initial thirst label
-        const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
-        screenCoords = windowPos + ScreenCoordsXY{ 8, initialThirstWidget.top };
-        DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
-
-        // Guest initial thirst value
-        screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
-        ft = Formatter();
-        ft.Add<uint16_t>(((255 - gameState.GuestInitialThirst) * 100) / 255);
-        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
-    }
 
 #pragma endregion
 
 #pragma region Park
 
-    void ParkMouseUp(WidgetIndex widgetIndex)
-    {
-        auto& gameState = GetGameState();
-        switch (widgetIndex)
+        void ParkMouseUp(WidgetIndex widgetIndex)
         {
-            case WIDX_CLOSE:
-                WindowClose(*this);
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-            case WIDX_TAB_3:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
-            case WIDX_FORBID_TREE_REMOVAL:
+            auto& gameState = GetGameState();
+            switch (widgetIndex)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ForbidTreeRemoval, gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
-            }
-            case WIDX_FORBID_LANDSCAPE_CHANGES:
-            {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ForbidLandscapeChanges,
-                    gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
-            }
-            case WIDX_FORBID_HIGH_CONSTRUCTION:
-            {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ForbidHighConstruction,
-                    gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
-            }
-            case WIDX_HARD_PARK_RATING:
-            {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
-                    gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
-            }
-            case WIDX_HARD_GUEST_GENERATION:
-            {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
-                    gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
+                case WIDX_CLOSE:
+                    WindowClose(*this);
+                    break;
+                case WIDX_TAB_1:
+                case WIDX_TAB_2:
+                case WIDX_TAB_3:
+                    SetPage(widgetIndex - WIDX_TAB_1);
+                    break;
+                case WIDX_FORBID_TREE_REMOVAL:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::ForbidTreeRemoval, gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_FORBID_LANDSCAPE_CHANGES:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::ForbidLandscapeChanges,
+                        gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_FORBID_HIGH_CONSTRUCTION:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::ForbidHighConstruction,
+                        gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_HARD_PARK_RATING:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
+                        gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_HARD_GUEST_GENERATION:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
+                        gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
             }
         }
-    }
 
-    void ParkResize()
-    {
-        WindowSetResize(*this, 400, 200, 400, 200);
-    }
-
-    void ParkMouseDown(WidgetIndex widgetIndex)
-    {
-        Widget* dropdownWidget;
-        Widget* widget = &widgets[widgetIndex];
-
-        auto& gameState = GetGameState();
-        switch (widgetIndex)
+        void ParkResize()
         {
-            case WIDX_LAND_COST_INCREASE:
-                if (gLandPrice < 200.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyLand, gLandPrice + 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_LAND_COST_DECREASE:
-                if (gLandPrice > 5.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyLand, gLandPrice - 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-                if (gameState.ConstructionRightsPrice < 200.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice + 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-                if (gameState.ConstructionRightsPrice > 5.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice - 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_ENTRY_PRICE_INCREASE:
-                if (gameState.ParkEntranceFee < MAX_ENTRANCE_FEE)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee + 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_ENTRY_PRICE_DECREASE:
-                if (gameState.ParkEntranceFee > 0.00_GBP)
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee - 1.00_GBP);
-                    GameActions::Execute(&scenarioSetSetting);
-                }
-                else
-                {
-                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-                }
-                Invalidate();
-                break;
-            case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
-                dropdownWidget = widget - 1;
+            WindowSetResize(*this, 400, 200, 400, 200);
+        }
 
-                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[0].Args = STR_FREE_PARK_ENTER;
-                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[1].Args = STR_PAY_PARK_ENTER;
-                gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[2].Args = STR_PAID_ENTRY_PAID_RIDES;
+        void ParkMouseDown(WidgetIndex widgetIndex)
+        {
+            Widget* dropdownWidget;
+            Widget* widget = &widgets[widgetIndex];
 
-                WindowDropdownShowTextCustomWidth(
-                    { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
-                    colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
+            auto& gameState = GetGameState();
+            switch (widgetIndex)
+            {
+                case WIDX_LAND_COST_INCREASE:
+                    if (gameState.LandPrice < 200.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::CostToBuyLand, gameState.LandPrice + 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_LAND_COST_DECREASE:
+                    if (gameState.LandPrice > 5.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::CostToBuyLand, gameState.LandPrice - 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
+                    if (gameState.ConstructionRightsPrice < 200.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice + 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
+                    if (gameState.ConstructionRightsPrice > 5.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice - 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_ENTRY_PRICE_INCREASE:
+                    if (gameState.ParkEntranceFee < MAX_ENTRANCE_FEE)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee + 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_ENTRY_PRICE_DECREASE:
+                    if (gameState.ParkEntranceFee > 0.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee - 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
+                    dropdownWidget = widget - 1;
 
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_FREE_PARK_ENTER;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Args = STR_PAY_PARK_ENTER;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Args = STR_PAID_ENTRY_PAID_RIDES;
+
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
+                        colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
+
+                    if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                        Dropdown::SetChecked(2, true);
+                    else if (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+                        Dropdown::SetChecked(0, true);
+                    else
+                        Dropdown::SetChecked(1, true);
+
+                    break;
+                case WIDX_CLIMATE_DROPDOWN:
+                    ShowClimateDropdown();
+                    break;
+            }
+        }
+
+        void ParkDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            if (dropdownIndex == -1)
+            {
+                return;
+            }
+
+            switch (widgetIndex)
+            {
+                case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ParkChargeMethod, dropdownIndex);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+                case WIDX_CLIMATE_DROPDOWN:
+                    if (static_cast<uint8_t>(GetGameState().Climate) != static_cast<uint8_t>(dropdownIndex))
+                    {
+                        auto gameAction = ClimateSetAction(ClimateType{ static_cast<uint8_t>(dropdownIndex) });
+                        GameActions::Execute(&gameAction);
+                    }
+                    break;
+            }
+        }
+
+        void ParkUpdate()
+        {
+            frame_no++;
+            ParkPrepareDraw();
+            WidgetInvalidate(*this, WIDX_TAB_3);
+        }
+
+        void ParkPrepareDraw()
+        {
+            Widget* newWidgets = window_editor_scenario_options_widgets[page];
+            if (widgets != newWidgets)
+            {
+                widgets = newWidgets;
+                WindowInitScrollWidgets(*this);
+            }
+
+            SetPressedTab();
+
+            auto& gameState = GetGameState();
+            if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+            {
+                for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
+                    widgets[i].type = WindowWidgetType::Empty;
+            }
+            else
+            {
+                widgets[WIDX_LAND_COST].type = WindowWidgetType::Spinner;
+                widgets[WIDX_LAND_COST_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_LAND_COST_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WindowWidgetType::Spinner;
+                widgets[WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
+
+                if (!ParkEntranceFeeUnlocked())
+                {
+                    widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
+                }
+                else
+                {
+                    widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
+                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
+                }
+            }
+
+            SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL);
+            SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
+            SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
+            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING);
+            SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
+
+            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                     : WindowWidgetType::CloseBox;
+
+            AnchorBorderWidgets();
+        }
+
+        void ParkDraw(DrawPixelInfo& dpi)
+        {
+            ScreenCoordsXY screenCoords{};
+
+            WindowDrawWidgets(*this, dpi);
+            DrawTabImages(dpi);
+
+            const auto& gameState = GetGameState();
+            const auto& landCostWidget = widgets[WIDX_LAND_COST];
+            if (landCostWidget.type != WindowWidgetType::Empty)
+            {
+                // Cost to buy land label
+                screenCoords = windowPos + ScreenCoordsXY{ 8, landCostWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
+
+                // Cost to buy land value
+                screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(gameState.LandPrice);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            }
+
+            const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
+            if (constructionRightsCostWidget.type != WindowWidgetType::Empty)
+            {
+                // Cost to buy construction rights label
+                screenCoords = windowPos + ScreenCoordsXY{ 8, constructionRightsCostWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
+
+                // Cost to buy construction rights value
+                screenCoords = windowPos
+                    + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(gameState.ConstructionRightsPrice);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            }
+
+            const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
+            if (payForParkOrRidesWidget.type != WindowWidgetType::Empty)
+            {
+                // Pay for park or rides label
+                screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.left + 1, payForParkOrRidesWidget.top };
+
+                auto ft = Formatter();
+                // Pay for park and/or rides value
                 if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                    Dropdown::SetChecked(2, true);
+                    ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
                 else if (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-                    Dropdown::SetChecked(0, true);
+                    ft.Add<StringId>(STR_FREE_PARK_ENTER);
                 else
-                    Dropdown::SetChecked(1, true);
+                    ft.Add<StringId>(STR_PAY_PARK_ENTER);
 
-                break;
-            case WIDX_CLIMATE_DROPDOWN:
-                ShowClimateDropdown();
-                break;
-        }
-    }
-
-    void ParkDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
-    {
-        if (dropdownIndex == -1)
-        {
-            return;
-        }
-
-        switch (widgetIndex)
-        {
-            case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
-            {
-                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ParkChargeMethod, dropdownIndex);
-                GameActions::Execute(&scenarioSetSetting);
-                Invalidate();
-                break;
+                DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
             }
-            case WIDX_CLIMATE_DROPDOWN:
-                if (static_cast<uint8_t>(GetGameState().Climate) != static_cast<uint8_t>(dropdownIndex))
-                {
-                    auto gameAction = ClimateSetAction(ClimateType{ static_cast<uint8_t>(dropdownIndex) });
-                    GameActions::Execute(&gameAction);
-                }
-                break;
-        }
-    }
 
-    void ParkUpdate()
-    {
-        frame_no++;
-        ParkPrepareDraw();
-        WidgetInvalidate(*this, WIDX_TAB_3);
-    }
-
-    void ParkPrepareDraw()
-    {
-        Widget* newWidgets = window_editor_scenario_options_widgets[page];
-        if (widgets != newWidgets)
-        {
-            widgets = newWidgets;
-            WindowInitScrollWidgets(*this);
-        }
-
-        SetPressedTab();
-
-        auto& gameState = GetGameState();
-        if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
-        {
-            for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
-                widgets[i].type = WindowWidgetType::Empty;
-        }
-        else
-        {
-            widgets[WIDX_LAND_COST].type = WindowWidgetType::Spinner;
-            widgets[WIDX_LAND_COST_INCREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_LAND_COST_DECREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WindowWidgetType::Spinner;
-            widgets[WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
-            widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
-
-            if (!ParkEntranceFeeUnlocked())
+            const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
+            if (entryPriceWidget.type != WindowWidgetType::Empty)
             {
-                widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
-                widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
-                widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
+                // Entry price label
+                screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.right + 8, entryPriceWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
+
+                // Entry price value
+                screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(gameState.ParkEntranceFee);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
-            else
-            {
-                widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
-                widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
-            }
-        }
 
-        SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL);
-        SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
-        SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
-        SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING);
-        SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
+            // Climate label
+            const auto& climateWidget = widgets[WIDX_CLIMATE];
+            screenCoords = windowPos + ScreenCoordsXY{ 8, climateWidget.top };
+            DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
 
-        widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                 : WindowWidgetType::CloseBox;
-
-        AnchorBorderWidgets();
-    }
-
-    void ParkDraw(DrawPixelInfo& dpi)
-    {
-        ScreenCoordsXY screenCoords{};
-
-        WindowDrawWidgets(*this, dpi);
-        DrawTabImages(dpi);
-
-        const auto& gameState = GetGameState();
-        const auto& landCostWidget = widgets[WIDX_LAND_COST];
-        if (landCostWidget.type != WindowWidgetType::Empty)
-        {
-            // Cost to buy land label
-            screenCoords = windowPos + ScreenCoordsXY{ 8, landCostWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
-
-            // Cost to buy land value
-            screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
+            // Climate value
+            screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gLandPrice);
-            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
-        }
-
-        const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
-        if (constructionRightsCostWidget.type != WindowWidgetType::Empty)
-        {
-            // Cost to buy construction rights label
-            screenCoords = windowPos + ScreenCoordsXY{ 8, constructionRightsCostWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
-
-            // Cost to buy construction rights value
-            screenCoords = windowPos
-                + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
-            auto ft = Formatter();
-            ft.Add<money64>(gameState.ConstructionRightsPrice);
-            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
-        }
-
-        const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
-        if (payForParkOrRidesWidget.type != WindowWidgetType::Empty)
-        {
-            // Pay for park or rides label
-            screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.left + 1, payForParkOrRidesWidget.top };
-
-            auto ft = Formatter();
-            // Pay for park and/or rides value
-            if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
-            else if (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-                ft.Add<StringId>(STR_FREE_PARK_ENTER);
-            else
-                ft.Add<StringId>(STR_PAY_PARK_ENTER);
-
+            ft.Add<StringId>(ClimateNames[EnumValue(gameState.Climate)]);
             DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
-        const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
-        if (entryPriceWidget.type != WindowWidgetType::Empty)
-        {
-            // Entry price label
-            screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.right + 8, entryPriceWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
-
-            // Entry price value
-            screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
-            auto ft = Formatter();
-            ft.Add<money64>(gameState.ParkEntranceFee);
-            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
-        }
-
-        // Climate label
-        const auto& climateWidget = widgets[WIDX_CLIMATE];
-        screenCoords = windowPos + ScreenCoordsXY{ 8, climateWidget.top };
-        DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
-
-        // Climate value
-        screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
-        auto ft = Formatter();
-        ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(gameState.Climate)]);
-        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
-    }
-
 #pragma endregion
-};
+    };
 
-WindowBase* WindowEditorScenarioOptionsOpen()
-{
-    return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
-}
+    WindowBase* EditorScenarioOptionsOpen()
+    {
+        return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
+    }
+} // namespace OpenRCT2::Ui::Windows

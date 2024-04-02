@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/String.hpp"
+#include "../util/Util.h"
 
 // List of currencies
 enum class CurrencyType : uint8_t
@@ -61,7 +62,7 @@ struct CurrencyDescriptor
 };
 
 // List of currency formats
-extern CurrencyDescriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::Count)];
+extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)];
 
 /**
  * Loads custom currency saved parameters into {@link CurrencyDescriptors}'

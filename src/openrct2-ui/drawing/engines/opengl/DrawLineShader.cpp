@@ -13,6 +13,8 @@
 
 #    include "OpenGLFramebuffer.h"
 
+using namespace OpenRCT2::Ui;
+
 namespace
 {
     struct VDStruct

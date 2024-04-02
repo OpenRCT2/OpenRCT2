@@ -155,7 +155,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScVehicle::numSeats_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->num_seats & VEHICLE_SEAT_NUM_MASK : 0;
+        return vehicle != nullptr ? vehicle->num_seats & kVehicleSeatNumMask : 0;
     }
     void ScVehicle::numSeats_set(uint8_t value)
     {
@@ -163,8 +163,8 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->num_seats &= ~VEHICLE_SEAT_NUM_MASK;
-            vehicle->num_seats |= value & VEHICLE_SEAT_NUM_MASK;
+            vehicle->num_seats &= ~kVehicleSeatNumMask;
+            vehicle->num_seats |= value & kVehicleSeatNumMask;
         }
     }
 
