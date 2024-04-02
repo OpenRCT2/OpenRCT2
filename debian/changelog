@@ -1,3 +1,44 @@
+openrct2 (0.4.10-develop-1) unstable; urgency=medium
+
+ * Feature: [#18171] Add port of the RCT1 Stand-Up Roller Coaster.
+ * Feature: [#21590] [Plugin] Plugins can now read and write banner properties of tile elements.
+ * Feature: [#21636] Add shortcut key for sorting tile elements.
+ * Feature: [objects#294] Add scenery versions of wooden truss supports.
+ * Feature: [objects#295] Flipped version of wooden post.
+ * Improved: [#21424] Extra viewports can now rotate independently from the main viewport.
+ * Improved: [#21561, #21631] Enable more features in Android build (plugins, networking, multiplayer, audio formats).
+ * Improved: [#21599] Currency signs now use non-breaking spaces.
+ * Improved: [objects#157] Added sloped images for many walls.
+ * Improved: [objects#288] Better map colours and more sensible prices for RCT1 land surfaces.
+ * Improved: [objects#292] Vehicle colour cleanups for WW/TT vehicles.
+ * Improved: [objects#299] More accurate ratings modifiers for RCT1 vehicles.
+ * Improved: [objects#309] Updated names for dodgems and flying saucers vehicles.
+ * Improved: [objects#313] buildMenuPriority for dodgems and flying saucers vehicles.
+ * Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
+ * Change: [#21545] Reorder Wacky Worlds scenarios and adjust their difficulty classification.
+ * Fix: [#910] Extra viewport does not preserve the location when rotating.
+ * Fix: [#18413] Crash when mouse over a hacked train.
+ * Fix: [#20338] Cannot select Scenery Picker or Scatter Tool when the scenery recolouring tool is active.
+ * Fix: [#21317] Track designer allows proceeding without an object selected.
+ * Fix: [#21360] If the object selection is missing certain types, the Object Selection window will switch to an incorrect tab.
+ * Fix: [#21419] Cannot place walls underground beneath sloped tiles with clearance checks disabled.
+ * Fix: [#21434] Number of guests overflows in objective text.
+ * Fix: [#21522] Supports for 3×3 turns and 45 degree turns on the Hybrid Coaster and Wooden Roller Coaster not drawn correctly.
+ * Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
+ * Fix: [#21635] Tile inspector hotkey can set wall slope for non-slopeable objects.
+ * Fix: [#21641] Crash when creating track iterator from an invalid tile element.
+ * Fix: [#21652] Dialog window to confirm overwriting files does not apply the theme colours correctly.
+ * Fix: [#21654] No sound effects when using RCT Classic as an asset base.
+ * Fix: [#21654] Extraneous reports of an object conflict between `rct2.audio.base` and `rct2.audio.base.rctc`.
+ * Fix: [#21664] Crash when switching between languages that use TTF.
+ * Fix: [#21668] Crash when on null ride in Guest::UpdateRideLeaveExit.
+ * Fix: [#21691] Crash when validating rides which can't contain banked track.
+ * Fix: [objects#290] “Haunted Mansion” cars have a non-functional third remap colour.
+ * Fix: [objects#296] Incorrect wall placement around large Kremlin/drab pieces.
+ * Fix: [objects#300] Incorrect Colosseum and volcano corner clearances.
+ * Fix: [objects#319] Incorrect diagonal slope images used for RCT1 corkscrew.
+ * Fix: [objects#320] Incorrect Mandarin Duck boats capacity.
+
 openrct2 (0.4.9-develop-1) unstable; urgency=medium
 
  * Feature: [#20376] Add Ukrainian language.
