@@ -18,12 +18,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kChairliftRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_TRANSPORT,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionChairlift),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kChairliftRTD =
     .OperatingSettings = { 1, 4, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_CHAIRLIFT),
+    .kEnumName = nameof(RIDE_TYPE_CHAIRLIFT),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 40, 32, 28, 2, },
     .MaxMass = 18,
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor kChairliftRTD =
     .UpkeepCosts = { 60, 20, 0, 4, 3, 10 },
     .BuildCosts = { 32.50_GBP, 0.50_GBP, 30, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(

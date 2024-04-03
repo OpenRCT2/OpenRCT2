@@ -799,7 +799,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type
 
 void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const track_type_t trackType)
 {
-    if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
+    if (trackType >= TrackElemType::kFlatCovered && trackType <= TrackElemType::kRightQuarterTurn3TilesCovered)
     {
         ride.special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
     }
@@ -893,7 +893,7 @@ void Vehicle::UpdateMeasurements()
             return;
 
         auto trackElemType = GetTrackType();
-        if (trackElemType == TrackElemType::PoweredLift || HasFlag(VehicleFlags::OnLiftHill))
+        if (trackElemType == TrackElemType::kPoweredLift || HasFlag(VehicleFlags::OnLiftHill))
         {
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
@@ -914,18 +914,18 @@ void Vehicle::UpdateMeasurements()
 
         switch (trackElemType)
         {
-            case TrackElemType::Rapids:
-            case TrackElemType::SpinningTunnel:
+            case TrackElemType::kRapids:
+            case TrackElemType::kSpinningTunnel:
                 curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
                 break;
-            case TrackElemType::Waterfall:
-            case TrackElemType::LogFlumeReverser:
+            case TrackElemType::kWaterfall:
+            case TrackElemType::kLogFlumeReverser:
                 curRide->special_track_elements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
                 break;
-            case TrackElemType::Whirlpool:
+            case TrackElemType::kWhirlpool:
                 curRide->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
                 break;
-            case TrackElemType::Watersplash:
+            case TrackElemType::kWatersplash:
                 if (velocity >= 11.0_mph)
                 {
                     curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
@@ -1199,7 +1199,7 @@ static SoundIdVolume Sub6D7AC0(
 void Vehicle::GetLiftHillSound(const Ride& curRide, SoundIdVolume& curSound)
 {
     scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    if (curRide.type < std::size(RideTypeDescriptors))
+    if (curRide.type < std::size(kRideTypeDescriptors))
     {
         // Get lift hill sound
         curSound.id = GetRideTypeDescriptor(curRide.type).LiftData.sound_id;
@@ -2398,7 +2398,7 @@ bool Vehicle::CurrentTowerElementIsTop()
         if (trackElement->GetRideIndex() != ride)
             continue;
 
-        if (trackElement->GetTrackType() != TrackElemType::TowerSection)
+        if (trackElement->GetTrackType() != TrackElemType::kTowerSection)
             continue;
 
         return false;
@@ -4433,7 +4433,7 @@ void Vehicle::UpdateShowingFilm()
     if (_vehicleBreakdown == 0)
         return;
 
-    totalTime = RideFilmLength[sub_state];
+    totalTime = kRideFilmLength[sub_state];
     currentTime = current_time + 1;
     if (currentTime <= totalTime)
     {
@@ -5502,27 +5502,27 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 
     switch (trackType)
     {
-        case TrackElemType::BlockBrakes:
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kBlockBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             if (curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
                 ApplyNonStopBlockBrake();
 
             break;
-        case TrackElemType::EndStation:
+        case TrackElemType::kEndStation:
             if (trackElement->AsTrack()->IsBrakeClosed())
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
 
             break;
-        case TrackElemType::Up25ToFlat:
-        case TrackElemType::Up60ToFlat:
-        case TrackElemType::CableLiftHill:
-        case TrackElemType::DiagUp25ToFlat:
-        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::kUp25ToFlat:
+        case TrackElemType::kUp60ToFlat:
+        case TrackElemType::kCableLiftHill:
+        case TrackElemType::kDiagUp25ToFlat:
+        case TrackElemType::kDiagUp60ToFlat:
             if (curRide->IsBlockSectioned())
             {
-                if (trackType == TrackElemType::CableLiftHill || trackElement->AsTrack()->HasChain())
+                if (trackType == TrackElemType::kCableLiftHill || trackElement->AsTrack()->HasChain())
                 {
                     if (trackElement->AsTrack()->IsBrakeClosed())
                     {
@@ -5618,7 +5618,7 @@ static void block_brakes_open_previous_section(
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
-    if (trackType == TrackElemType::EndStation)
+    if (trackType == TrackElemType::kEndStation)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
     }
@@ -5634,40 +5634,40 @@ int32_t Vehicle::GetSwingAmount() const
     auto trackType = GetTrackType();
     switch (trackType)
     {
-        case TrackElemType::LeftQuarterTurn5Tiles:
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
-        case TrackElemType::LeftQuarterTurn5TilesCovered:
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
-        case TrackElemType::LeftQuarterBankedHelixLargeUp:
-        case TrackElemType::LeftQuarterBankedHelixLargeDown:
-        case TrackElemType::LeftQuarterHelixLargeUp:
-        case TrackElemType::LeftQuarterHelixLargeDown:
-        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5TilesUp25:
+        case TrackElemType::kLeftQuarterTurn5TilesDown25:
+        case TrackElemType::kLeftQuarterTurn5TilesCovered:
+        case TrackElemType::kLeftHalfBankedHelixUpLarge:
+        case TrackElemType::kLeftHalfBankedHelixDownLarge:
+        case TrackElemType::kLeftQuarterBankedHelixLargeUp:
+        case TrackElemType::kLeftQuarterBankedHelixLargeDown:
+        case TrackElemType::kLeftQuarterHelixLargeUp:
+        case TrackElemType::kLeftQuarterHelixLargeDown:
+        case TrackElemType::kLeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn5TileDown25:
             // Loc6D67E1
             return 14;
 
-        case TrackElemType::RightQuarterTurn5Tiles:
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
-        case TrackElemType::RightQuarterTurn5TilesUp25:
-        case TrackElemType::RightQuarterTurn5TilesDown25:
-        case TrackElemType::RightQuarterTurn5TilesCovered:
-        case TrackElemType::RightHalfBankedHelixUpLarge:
-        case TrackElemType::RightHalfBankedHelixDownLarge:
-        case TrackElemType::RightQuarterBankedHelixLargeUp:
-        case TrackElemType::RightQuarterBankedHelixLargeDown:
-        case TrackElemType::RightQuarterHelixLargeUp:
-        case TrackElemType::RightQuarterHelixLargeDown:
-        case TrackElemType::RightBankedQuarterTurn5TileUp25:
-        case TrackElemType::RightBankedQuarterTurn5TileDown25:
+        case TrackElemType::kRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5TilesUp25:
+        case TrackElemType::kRightQuarterTurn5TilesDown25:
+        case TrackElemType::kRightQuarterTurn5TilesCovered:
+        case TrackElemType::kRightHalfBankedHelixUpLarge:
+        case TrackElemType::kRightHalfBankedHelixDownLarge:
+        case TrackElemType::kRightQuarterBankedHelixLargeUp:
+        case TrackElemType::kRightQuarterBankedHelixLargeDown:
+        case TrackElemType::kRightQuarterHelixLargeUp:
+        case TrackElemType::kRightQuarterHelixLargeDown:
+        case TrackElemType::kRightBankedQuarterTurn5TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn5TileDown25:
             // Loc6D6804
             return -14;
 
-        case TrackElemType::SBendLeft:
-        case TrackElemType::SBendLeftCovered:
+        case TrackElemType::kSBendLeft:
+        case TrackElemType::kSBendLeftCovered:
             // Loc6D67EF
             if (track_progress < 48)
             {
@@ -5675,8 +5675,8 @@ int32_t Vehicle::GetSwingAmount() const
             }
             return -15;
 
-        case TrackElemType::SBendRight:
-        case TrackElemType::SBendRightCovered:
+        case TrackElemType::kSBendRight:
+        case TrackElemType::kSBendRightCovered:
             // Loc6D67CC
             if (track_progress < 48)
             {
@@ -5684,59 +5684,59 @@ int32_t Vehicle::GetSwingAmount() const
             }
             return 15;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
-        case TrackElemType::LeftQuarterTurn3TilesCovered:
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-        case TrackElemType::LeftCurvedLiftHill:
-        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftQuarterTurn3TilesCovered:
+        case TrackElemType::kLeftHalfBankedHelixUpSmall:
+        case TrackElemType::kLeftHalfBankedHelixDownSmall:
+        case TrackElemType::kLeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::kLeftCurvedLiftHill:
+        case TrackElemType::kLeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn3TileDown25:
             // Loc6D67BE
             return 13;
 
-        case TrackElemType::RightQuarterTurn3Tiles:
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
-        case TrackElemType::RightQuarterTurn3TilesUp25:
-        case TrackElemType::RightQuarterTurn3TilesDown25:
-        case TrackElemType::RightQuarterTurn3TilesCovered:
-        case TrackElemType::RightHalfBankedHelixUpSmall:
-        case TrackElemType::RightHalfBankedHelixDownSmall:
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-        case TrackElemType::RightCurvedLiftHill:
-        case TrackElemType::RightBankedQuarterTurn3TileUp25:
-        case TrackElemType::RightBankedQuarterTurn3TileDown25:
+        case TrackElemType::kRightQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesCovered:
+        case TrackElemType::kRightHalfBankedHelixUpSmall:
+        case TrackElemType::kRightHalfBankedHelixDownSmall:
+        case TrackElemType::kRightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::kRightCurvedLiftHill:
+        case TrackElemType::kRightBankedQuarterTurn3TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn3TileDown25:
             // Loc6D67B0
             return -13;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
-        case TrackElemType::LeftQuarterTurn1TileUp60:
-        case TrackElemType::LeftQuarterTurn1TileDown60:
+        case TrackElemType::kLeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1TileUp60:
+        case TrackElemType::kLeftQuarterTurn1TileDown60:
             // Loc6D67A2
             return 12;
 
-        case TrackElemType::RightQuarterTurn1Tile:
-        case TrackElemType::RightQuarterTurn1TileUp60:
-        case TrackElemType::RightQuarterTurn1TileDown60:
+        case TrackElemType::kRightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1TileUp60:
+        case TrackElemType::kRightQuarterTurn1TileDown60:
             // Loc6D6794
             return -12;
 
-        case TrackElemType::LeftEighthToDiag:
-        case TrackElemType::LeftEighthToOrthogonal:
-        case TrackElemType::LeftEighthBankToDiag:
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::kLeftEighthToDiag:
+        case TrackElemType::kLeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthBankToDiag:
+        case TrackElemType::kLeftEighthBankToOrthogonal:
             // Loc6D67D3
             return 15;
 
-        case TrackElemType::RightEighthToDiag:
-        case TrackElemType::RightEighthToOrthogonal:
-        case TrackElemType::RightEighthBankToDiag:
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::kRightEighthToDiag:
+        case TrackElemType::kRightEighthToOrthogonal:
+        case TrackElemType::kRightEighthBankToDiag:
+        case TrackElemType::kRightEighthBankToOrthogonal:
             // Loc6D67F6
             return -15;
     }
@@ -5824,15 +5824,15 @@ void Vehicle::UpdateSwingingCar()
         auto trackType = GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            case TrackElemType::LeftBank:
-            case TrackElemType::LeftBankedQuarterTurn3Tiles:
+            case TrackElemType::kBankedLeftQuarterTurn5Tiles:
+            case TrackElemType::kLeftBank:
+            case TrackElemType::kLeftBankedQuarterTurn3Tiles:
                 dx = 10831;
                 cx = -819;
                 break;
-            case TrackElemType::BankedRightQuarterTurn5Tiles:
-            case TrackElemType::RightBank:
-            case TrackElemType::RightBankedQuarterTurn3Tiles:
+            case TrackElemType::kBankedRightQuarterTurn5Tiles:
+            case TrackElemType::kRightBank:
+            case TrackElemType::kRightBankedQuarterTurn3Tiles:
                 dx = 819;
                 cx = -10831;
                 break;
@@ -6041,7 +6041,7 @@ static uint8_t GetTargetFrame(const CarEntry& carEntry, uint32_t animationState)
 static constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
 {
     uint8_t trueYaw = OpenRCT2::Entity::Yaw::YawTo64(yaw);
-    auto offsets = kPitchToDirectionVectorFromGeometry[pitch];
+    auto offsets = PitchToDirectionVectorFromGeometry[pitch];
     int32_t projectedRun = (offsets.x * length - offsets.y * height) / 256;
     int32_t projectedHeight = (offsets.x * height + offsets.y * length) / 256;
     return { ComputeXYVector(projectedRun, trueYaw), projectedHeight };
@@ -6466,7 +6466,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     else
     {
-        if (trackType == TrackElemType::Down25ToFlat)
+        if (trackType == TrackElemType::kDown25ToFlat)
         {
             if (track_progress == 12)
             {
@@ -6476,7 +6476,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     if (IsHead())
     {
-        if (trackType == TrackElemType::Watersplash)
+        if (trackType == TrackElemType::kWatersplash)
         {
             if (track_progress == 48)
             {
@@ -6761,7 +6761,7 @@ void Vehicle::Sub6DBF3E()
         _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
 
-    if (trackType == TrackElemType::TowerBase && this == gCurrentVehicle)
+    if (trackType == TrackElemType::kTowerBase && this == gCurrentVehicle)
     {
         if (track_progress > 3 && !HasFlag(VehicleFlags::PoweredCarInReverse))
         {
@@ -6781,7 +6781,7 @@ void Vehicle::Sub6DBF3E()
         }
     }
 
-    if (trackType != TrackElemType::EndStation || this != gCurrentVehicle)
+    if (trackType != TrackElemType::kEndStation || this != gCurrentVehicle)
     {
         return;
     }
@@ -6886,7 +6886,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
         return false;
     }
 
-    if (trackType == TrackElemType::CableLiftHill && this == gCurrentVehicle)
+    if (trackType == TrackElemType::kCableLiftHill && this == gCurrentVehicle)
     {
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
     }
@@ -6896,7 +6896,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
         if (next_vehicle_on_train.IsNull())
         {
             SetBrakeClosedMultiTile(*tileElement->AsTrack(), TrackLocation, true);
-            if (TrackTypeIsBlockBrakes(trackType) || trackType == TrackElemType::EndStation)
+            if (TrackTypeIsBlockBrakes(trackType) || trackType == TrackElemType::kEndStation)
             {
                 if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
                 {
@@ -6962,8 +6962,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
             tileElement = xyElement.element;
             location = { xyElement, curZ, static_cast<Direction>(direction) };
         }
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftReverser
-            || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightReverser)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::kLeftReverser
+            || tileElement->AsTrack()->GetTrackType() == TrackElemType::kRightReverser)
         {
             if (IsHead() && velocity <= 3.0_mph)
             {
@@ -7001,7 +7001,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     if ((carEntry->flags & CAR_ENTRY_FLAG_GO_KART) && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TrackElemType::Flat
+        if (trackType == TrackElemType::kFlat
             || ((curRide.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
@@ -7032,18 +7032,18 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TrackElemType::Brakes)
+    if (trackType != TrackElemType::kBrakes)
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
     SetTrackDirection(location.direction);
     SetTrackType(trackType);
     PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
-    if (trackType == TrackElemType::OnRidePhoto)
+    if (trackType == TrackElemType::kOnRidePhoto)
     {
         trigger_on_ride_photo(TrackLocation, tileElement);
     }
-    if (trackType == TrackElemType::RotationControlToggle)
+    if (trackType == TrackElemType::kRotationControlToggle)
     {
         Flags ^= VehicleFlags::SpinningIsLocked;
     }
@@ -7063,7 +7063,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
     EntityId otherVehicleIndex = EntityId::GetNull();
 Loc6DAEB9:
     auto trackType = GetTrackType();
-    if (trackType == TrackElemType::HeartLineTransferUp || trackType == TrackElemType::HeartLineTransferDown)
+    if (trackType == TrackElemType::kHeartLineTransferUp || trackType == TrackElemType::kHeartLineTransferDown)
     {
         if (track_progress == 80)
         {
@@ -7115,12 +7115,12 @@ Loc6DAEB9:
         acceleration += CalculateRiderBraking();
     }
 
-    if ((trackType == TrackElemType::Flat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
-        || (trackType == TrackElemType::PoweredLift))
+    if ((trackType == TrackElemType::kFlat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+        || (trackType == TrackElemType::kPoweredLift))
     {
         acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.PoweredLiftAcceleration << 16;
     }
-    if (trackType == TrackElemType::BrakeForDrop)
+    if (trackType == TrackElemType::kBrakeForDrop)
     {
         if (IsHead())
         {
@@ -7138,7 +7138,7 @@ Loc6DAEB9:
             }
         }
     }
-    if (trackType == TrackElemType::LogFlumeReverser)
+    if (trackType == TrackElemType::kLogFlumeReverser)
     {
         if (track_progress != 16 || velocity < 4.0_mph)
         {
@@ -7198,14 +7198,14 @@ Loc6DAEB9:
         }
 
         if (TrackSubposition == VehicleTrackSubposition::ReverserRCFrontBogie
-            && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser) && track_progress >= 30
+            && (trackType == TrackElemType::kLeftReverser || trackType == TrackElemType::kRightReverser) && track_progress >= 30
             && track_progress <= 66)
         {
             remainingDistanceFlags |= 8;
         }
 
         if (TrackSubposition == VehicleTrackSubposition::ReverserRCRearBogie
-            && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser) && track_progress == 96)
+            && (trackType == TrackElemType::kLeftReverser || trackType == TrackElemType::kRightReverser) && track_progress == 96)
         {
             ReverseReverserCar();
 
@@ -7346,7 +7346,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
         tileElement = trackBeginEnd.begin_element;
 
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser)
+        if (trackType == TrackElemType::kLeftReverser || trackType == TrackElemType::kRightReverser)
         {
             return false;
         }
@@ -7437,7 +7437,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TrackElemType::Brakes)
+    if (trackType != TrackElemType::kBrakes)
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
@@ -7463,7 +7463,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::Flat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+        if (trackType == TrackElemType::kFlat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
         {
             int32_t unkVelocity = _vehicleVelocityF64E08;
             if (unkVelocity < -524288)
@@ -7483,7 +7483,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             }
         }
 
-        if (trackType == TrackElemType::Booster)
+        if (trackType == TrackElemType::kBooster)
         {
             auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
             if (boosterSpeed < _vehicleVelocityF64E08)
@@ -8200,7 +8200,7 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
         return;
     }
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
-    if (trackType != TrackElemType::EndStation)
+    if (trackType != TrackElemType::kEndStation)
     {
         return;
     }
@@ -8399,11 +8399,11 @@ static uint8_t modified_speed(uint16_t trackType, VehicleTrackSubposition trackS
 
     uint8_t speedModifier = FULL_SPEED;
 
-    if (trackType == TrackElemType::LeftQuarterTurn1Tile)
+    if (trackType == TrackElemType::kLeftQuarterTurn1Tile)
     {
         speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsLeftLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
-    else if (trackType == TrackElemType::RightQuarterTurn1Tile)
+    else if (trackType == TrackElemType::kRightQuarterTurn1Tile)
     {
         speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsRightLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
@@ -8686,7 +8686,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if (vehicle->GetTrackType() == TrackElemType::Watersplash)
+    if (vehicle->GetTrackType() == TrackElemType::kWatersplash)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {

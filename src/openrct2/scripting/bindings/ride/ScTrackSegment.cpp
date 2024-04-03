@@ -200,8 +200,8 @@ DukValue ScTrackSegment::nextCurveElement_get() const
     const auto& ted = GetTrackElementDescriptor(_type);
 
     int32_t curve = ted.CurveChain.next;
-    if (curve & RideConstructionSpecialPieceSelected)
-        return ToDuk<int32_t>(ctx, curve & (~RideConstructionSpecialPieceSelected));
+    if (curve & kRideConstructionSpecialPieceSelected)
+        return ToDuk<int32_t>(ctx, curve & (~kRideConstructionSpecialPieceSelected));
     switch (curve)
     {
         case 1:
@@ -219,8 +219,8 @@ DukValue ScTrackSegment::previousCurveElement_get() const
     const auto& ted = GetTrackElementDescriptor(_type);
 
     int32_t curve = ted.CurveChain.previous;
-    if (curve & RideConstructionSpecialPieceSelected)
-        return ToDuk<int32_t>(ctx, curve & (~RideConstructionSpecialPieceSelected));
+    if (curve & kRideConstructionSpecialPieceSelected)
+        return ToDuk<int32_t>(ctx, curve & (~kRideConstructionSpecialPieceSelected));
     switch (curve)
     {
         case 1:
@@ -236,7 +236,7 @@ DukValue ScTrackSegment::getMirrorElement() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.MirrorElement == TrackElemType::None)
+    if (ted.MirrorElement == TrackElemType::kNone)
         return ToDuk(ctx, nullptr);
     return ToDuk<int32_t>(ctx, ted.MirrorElement);
 }
@@ -245,7 +245,7 @@ DukValue ScTrackSegment::getAlternativeElement() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.AlternativeType == TrackElemType::None)
+    if (ted.AlternativeType == TrackElemType::kNone)
         return ToDuk(ctx, nullptr);
     return ToDuk<int32_t>(ctx, ted.AlternativeType);
 }

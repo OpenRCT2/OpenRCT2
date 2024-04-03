@@ -16,12 +16,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kShopRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_SHOP,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack1x1A,
+    .StartTrackPiece = TrackElemType::kFlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionShop),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
                      RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
@@ -32,16 +32,16 @@ constexpr RideTypeDescriptor kShopRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_SHOP, STR_RIDE_DESCRIPTION_SHOP },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_SHOP),
+    .kEnumName = nameof(RIDE_TYPE_SHOP),
     .AvailableBreakdowns = 0,
-    .Heights = { 12, DefaultShopHeight, 0, 0, },
+    .Heights = { 12, kDefaultShopHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 200.00_GBP, 0.00_GBP, 1, },
     .DefaultPrices = { 0, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 15,
     .ColourPresets = DEFAULT_STALL_COLOUR_PRESET,

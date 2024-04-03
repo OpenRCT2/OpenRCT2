@@ -865,7 +865,7 @@ namespace OpenRCT2
                     auto& currentAwards = gameState.CurrentAwards;
                     if (version <= 6)
                     {
-                        Award awards[RCT2::Limits::kMaxAwards]{};
+                        Award awards[RCT2::Limits::MaxAwards]{};
                         cs.ReadWriteArray(awards, [&cs, &currentAwards](Award& award) {
                             if (award.Time != 0)
                             {
@@ -1113,9 +1113,9 @@ namespace OpenRCT2
                                     }
                                     if (os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
                                     {
-                                        if (trackType == TrackElemType::Brakes)
+                                        if (trackType == TrackElemType::kBrakes)
                                             trackElement->SetBrakeClosed(true);
-                                        if (trackType == TrackElemType::BlockBrakes)
+                                        if (trackType == TrackElemType::kBlockBrakes)
                                             trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                                     }
                                 }
@@ -1614,7 +1614,7 @@ namespace OpenRCT2
         static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)
         {
             std::vector<ObjectEntryIndex> ridesTypesBeenOn;
-            for (ObjectEntryIndex i = 0; i < RCT2::Limits::kMaxRideObjects; i++)
+            for (ObjectEntryIndex i = 0; i < RCT2::Limits::MaxRideObjects; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {
@@ -1626,7 +1626,7 @@ namespace OpenRCT2
         static std::vector<RideId> LegacyGetRidesBeenOn(const std::array<uint8_t, 32>& srcArray)
         {
             std::vector<RideId> ridesBeenOn;
-            for (uint16_t i = 0; i < RCT2::Limits::kMaxRidesInPark; i++)
+            for (uint16_t i = 0; i < RCT2::Limits::MaxRidesInPark; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {
@@ -2113,7 +2113,7 @@ namespace OpenRCT2
         {
             uint8_t brakeSpeed;
             cs.ReadWrite(brakeSpeed);
-            if (entity.GetTrackType() == TrackElemType::BlockBrakes)
+            if (entity.GetTrackType() == TrackElemType::kBlockBrakes)
                 brakeSpeed = kRCT2DefaultBlockBrakeSpeed;
             entity.brake_speed = brakeSpeed;
         }

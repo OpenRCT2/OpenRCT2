@@ -318,7 +318,7 @@ struct RideTypeDescriptor
     UpkeepCostsDescriptor UpkeepCosts;
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts;
-    money64 DefaultPrices[RCT2::ObjectLimits::kMaxShopItemsPerRideEntry];
+    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     std::string_view DefaultMusic;
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem;
@@ -517,12 +517,12 @@ extern const StringId kRideModeNames[EnumValue(RideMode::Count)];
 // clang-format off
 constexpr RideTypeDescriptor kDummyRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_NONE,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(nullptr),
     .Flags = 0,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),

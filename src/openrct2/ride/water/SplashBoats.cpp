@@ -1328,49 +1328,49 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintSplashBoatsTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return PaintSplashBoatsTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintSplashBoatsTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return PaintSplashBoatsTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return PaintSplashBoatsTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintSplashBoatsTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintSplashBoatsTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return PaintSplashBoatsTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintSplashBoatsTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return PaintSplashBoatsTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return PaintSplashBoatsTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintSplashBoatsTrack25DegDownToFlat;
 
         // Originally taken from River Rafts
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintSplashBoatsTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintSplashBoatsStation;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return PaintSplashBoatsTrackLeftQuarterTurn5Tiles;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return PaintSplashBoatsTrackRightQuarterTurn5Tiles;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return PaintSplashBoatsTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return PaintSplashBoatsTrackSBendRight;
 
         // Added by OpenRCT2
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return PaintSplashBoatsTrackOnRidePhoto;
     }
 

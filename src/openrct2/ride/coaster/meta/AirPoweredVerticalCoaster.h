@@ -17,20 +17,20 @@
 // clang-format off
 constexpr RideTypeDescriptor kAirPoweredVerticalCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL_STEEP, TRACK_LIFT_HILL_CURVE, TRACK_FLAT_ROLL_BANKING, TRACK_CURVE, TRACK_BRAKES, TRACK_REVERSE_FREEFALL, TRACK_SLOPE_TO_FLAT, TRACK_ON_RIDE_PHOTO},
     .ExtraTrackPieces = {TRACK_BOOSTER},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionAirPoweredVerticalRC),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES,
+    .Flags = kRideTypeFagsTrackHas3Colours | kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES,
     .RideModes = EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch),
     .DefaultMode = RideMode::PoweredLaunchPasstrough,
     .OperatingSettings = { 30, 50, 30, 40, 40, 0, 13 },
     .Naming = { STR_RIDE_NAME_AIR_POWERED_VERTICAL_COASTER, STR_RIDE_DESCRIPTION_AIR_POWERED_VERTICAL_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER),
+    .kEnumName = nameof(RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 4, 7, },
     .MaxMass = 255,
@@ -39,7 +39,7 @@ constexpr RideTypeDescriptor kAirPoweredVerticalCoasterRTD =
     .UpkeepCosts = { 90, 20, 0, 0, 0, 10 },
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_2,
+    .DefaultMusic = kMusicObjectRock2,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(

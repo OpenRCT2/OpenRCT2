@@ -22,10 +22,10 @@ constexpr RideTypeDescriptor kMultiDimensionRollerCoasterRTD =
     .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_VERTICAL, TRACK_BLOCK_BRAKES, TRACK_INLINE_TWIST_UNINVERTED,TRACK_QUARTER_LOOP_UNINVERTED_UP, TRACK_QUARTER_LOOP_UNINVERTED_DOWN, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMultiDimensionRC),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                      RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
                      RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_HAS_SEAT_ROTATION |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kMultiDimensionRollerCoasterRTD =
     .OperatingSettings = { 10, 27, 30, 25, 25, 0 },
     .Naming = { STR_RIDE_NAME_MULTI_DIMENSION_ROLLER_COASTER, STR_RIDE_DESCRIPTION_MULTI_DIMENSION_ROLLER_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER),
+    .kEnumName = nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 40, 24, 8, 11, },
     .MaxMass = 78,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kMultiDimensionRollerCoasterRTD =
     .UpkeepCosts = { 75, 20, 90, 11, 3, 15 },
     .BuildCosts = { 90.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_3,
+    .DefaultMusic = kMusicObjectRock3,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -88,21 +88,21 @@ constexpr RideTypeDescriptor kMultiDimensionRollerCoasterRTD =
 
 constexpr RideTypeDescriptor kMultiDimensionRollerCoasterAltRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_NONE,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_VERTICAL, TRACK_BLOCK_BRAKES, TRACK_INLINE_TWIST_INVERTED, TRACK_QUARTER_LOOP_INVERTED_UP, TRACK_QUARTER_LOOP_INVERTED_DOWN},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(nullptr),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAG_HAS_SEAT_ROTATION,
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                     kRideTypeFlagsCommonCoaster | RIDE_TYPE_FLAG_HAS_SEAT_ROTATION,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
     .DefaultMode = RideMode::ContinuousCircuit,
     .OperatingSettings = { 10, 27, 30, 25, 25, 0 },
     .Naming = { STR_RIDE_NAME_38, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT),
+    .kEnumName = nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 40, 24, 8, 11, },
     .MaxMass = 78,
@@ -111,7 +111,7 @@ constexpr RideTypeDescriptor kMultiDimensionRollerCoasterAltRTD =
     .UpkeepCosts = { 75, 20, 90, 11, 3, 15 },
     .BuildCosts = { 90.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_3,
+    .DefaultMusic = kMusicObjectRock3,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(

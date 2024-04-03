@@ -145,7 +145,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMotionsimulator(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack2x2:
+        case TrackElemType::kFlatTrack2x2:
             return PaintMotionSimulator;
     }
     return nullptr;

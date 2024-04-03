@@ -1646,41 +1646,41 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return ReverserRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return ReverserRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return ReverserRCTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return ReverserRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return ReverserRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return ReverserRCTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return ReverserRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return ReverserRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return ReverserRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return ReverserRCTrackRightQuarterTurn5;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return ReverserRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return ReverserRCTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return ReverserRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return ReverserRCTrackRightQuarterTurn3;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return ReverserRCTrackBrakes;
-        case TrackElemType::LeftReverser:
+        case TrackElemType::kLeftReverser:
             return ReverserRCTrackLeftReverser;
-        case TrackElemType::RightReverser:
+        case TrackElemType::kRightReverser:
             return ReverserRCTrackRightReverser;
     }
     return nullptr;

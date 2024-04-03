@@ -73,7 +73,7 @@ SpecialElementsDropdownState BuildSpecialElementsList(
         }
 
         // Additional tower bases can only be built if the ride allows for it (elevator)
-        if (trackType == TrackElemType::TowerBase
+        if (trackType == TrackElemType::kTowerBase
             && !currentRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES))
             entryIsDisabled = true;
 

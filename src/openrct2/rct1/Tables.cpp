@@ -236,11 +236,11 @@ namespace RCT1
             RIDE_TYPE_MINI_HELICOPTERS,             // RCT1_RIDE_TYPE_CYCLE_MONORAIL
             RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,      // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
             RIDE_TYPE_SUSPENDED_MONORAIL,           // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
-            RIDE_TYPE_NULL,                         // RCT1_RIDE_TYPE_40
+            kRideTypeNull,                         // RCT1_RIDE_TYPE_40
             RIDE_TYPE_REVERSER_ROLLER_COASTER,      // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
             RIDE_TYPE_HEARTLINE_TWISTER_COASTER,    // RCT1_RIDE_TYPE_HEARTLINE_TWISTER_ROLLER_COASTER
             RIDE_TYPE_MINI_GOLF,                    // RCT1_RIDE_TYPE_MINIATURE_GOLF
-            RIDE_TYPE_NULL,                         // RCT1_RIDE_TYPE_44
+            kRideTypeNull,                         // RCT1_RIDE_TYPE_44
             RIDE_TYPE_ROTO_DROP,                    // RCT1_RIDE_TYPE_ROTO_DROP
             RIDE_TYPE_FLYING_SAUCERS,               // RCT1_RIDE_TYPE_FLYING_SAUCERS
             RIDE_TYPE_CROOKED_HOUSE,                // RCT1_RIDE_TYPE_CROOKED_HOUSE

@@ -342,7 +342,7 @@ namespace OpenRCT2::Scripting
                 {
                     auto group = entry->SpriteGroups[g];
                     if (group.Enabled())
-                        groups.Set(SpriteGroupNames[g], ToDuk<VehicleSpriteGroup>(ctx, group));
+                        groups.Set(kSpriteGroupNames[g], ToDuk<VehicleSpriteGroup>(ctx, group));
                 }
             }
             return groups.Take();

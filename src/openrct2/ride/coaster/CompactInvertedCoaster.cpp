@@ -10155,231 +10155,231 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return CompactInvertedRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return CompactInvertedRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return CompactInvertedRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return CompactInvertedRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return CompactInvertedRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return CompactInvertedRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return CompactInvertedRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return CompactInvertedRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return CompactInvertedRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return CompactInvertedRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return CompactInvertedRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return CompactInvertedRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return CompactInvertedRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return CompactInvertedRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return CompactInvertedRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return CompactInvertedRCTrackRightQuarterTurn5;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return CompactInvertedRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return CompactInvertedRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return CompactInvertedRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return CompactInvertedRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return CompactInvertedRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return CompactInvertedRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::kLeftBankToUp25:
             return CompactInvertedRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::kRightBankToUp25:
             return CompactInvertedRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::kUp25ToLeftBank:
             return CompactInvertedRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::kUp25ToRightBank:
             return CompactInvertedRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::kLeftBankToDown25:
             return CompactInvertedRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
             return CompactInvertedRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::kDown25ToLeftBank:
             return CompactInvertedRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::kDown25ToRightBank:
             return CompactInvertedRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return CompactInvertedRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return CompactInvertedRCTrackRightBank;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::kLeftQuarterTurn5TilesUp25:
             return CompactInvertedRCTrackLeftQuarterTurn525DegUp;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::kRightQuarterTurn5TilesUp25:
             return CompactInvertedRCTrackRightQuarterTurn525DegUp;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::kLeftQuarterTurn5TilesDown25:
             return CompactInvertedRCTrackLeftQuarterTurn525DegDown;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::kRightQuarterTurn5TilesDown25:
             return CompactInvertedRCTrackRightQuarterTurn525DegDown;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return CompactInvertedRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return CompactInvertedRCTrackSBendRight;
-        case TrackElemType::LeftVerticalLoop:
+        case TrackElemType::kLeftVerticalLoop:
             return CompactInvertedRCTrackLeftVerticalLoop;
-        case TrackElemType::RightVerticalLoop:
+        case TrackElemType::kRightVerticalLoop:
             return CompactInvertedRCTrackRightVerticalLoop;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return CompactInvertedRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return CompactInvertedRCTrackRightQuarterTurn3;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
             return CompactInvertedRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
             return CompactInvertedRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
             return CompactInvertedRCTrackLeftQuarterTurn325DegUp;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
             return CompactInvertedRCTrackRightQuarterTurn325DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
             return CompactInvertedRCTrackLeftQuarterTurn325DegDown;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
             return CompactInvertedRCTrackRightQuarterTurn325DegDown;
-        case TrackElemType::LeftTwistDownToUp:
+        case TrackElemType::kLeftTwistDownToUp:
             return CompactInvertedRCTrackLeftTwistDownToUp;
-        case TrackElemType::RightTwistDownToUp:
+        case TrackElemType::kRightTwistDownToUp:
             return CompactInvertedRCTrackRightTwistDownToUp;
-        case TrackElemType::LeftTwistUpToDown:
+        case TrackElemType::kLeftTwistUpToDown:
             return CompactInvertedRCTrackLeftTwistUpToDown;
-        case TrackElemType::RightTwistUpToDown:
+        case TrackElemType::kRightTwistUpToDown:
             return CompactInvertedRCTrackRightTwistUpToDown;
-        case TrackElemType::HalfLoopUp:
+        case TrackElemType::kHalfLoopUp:
             return CompactInvertedRCTrackHalfLoopUp;
-        case TrackElemType::HalfLoopDown:
+        case TrackElemType::kHalfLoopDown:
             return CompactInvertedRCTrackHalfLoopDown;
-        case TrackElemType::LeftCorkscrewUp:
+        case TrackElemType::kLeftCorkscrewUp:
             return CompactInvertedRCTrackLeftCorkscrewUp;
-        case TrackElemType::RightCorkscrewUp:
+        case TrackElemType::kRightCorkscrewUp:
             return CompactInvertedRCTrackRightCorkscrewUp;
-        case TrackElemType::LeftCorkscrewDown:
+        case TrackElemType::kLeftCorkscrewDown:
             return CompactInvertedRCTrackLeftCorkscrewDown;
-        case TrackElemType::RightCorkscrewDown:
+        case TrackElemType::kRightCorkscrewDown:
             return CompactInvertedRCTrackRightCorkscrewDown;
-        case TrackElemType::LeftQuarterTurn1TileUp60:
+        case TrackElemType::kLeftQuarterTurn1TileUp60:
             return CompactInvertedRCTrackLeftQuarterTurn160DegUp;
-        case TrackElemType::RightQuarterTurn1TileUp60:
+        case TrackElemType::kRightQuarterTurn1TileUp60:
             return CompactInvertedRCTrackRightQuarterTurn160DegUp;
-        case TrackElemType::LeftQuarterTurn1TileDown60:
+        case TrackElemType::kLeftQuarterTurn1TileDown60:
             return CompactInvertedRCTrackLeftQuarterTurn160DegDown;
-        case TrackElemType::RightQuarterTurn1TileDown60:
+        case TrackElemType::kRightQuarterTurn1TileDown60:
             return CompactInvertedRCTrackRightQuarterTurn160DegDown;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return CompactInvertedRCTrackBrakes;
-        case TrackElemType::LeftQuarterBankedHelixLargeUp:
+        case TrackElemType::kLeftQuarterBankedHelixLargeUp:
             return CompactInvertedRCTrackLeftQuarterBankedHelixLargeUp;
-        case TrackElemType::RightQuarterBankedHelixLargeUp:
+        case TrackElemType::kRightQuarterBankedHelixLargeUp:
             return CompactInvertedRCTrackRightQuarterBankedHelixLargeUp;
-        case TrackElemType::LeftQuarterBankedHelixLargeDown:
+        case TrackElemType::kLeftQuarterBankedHelixLargeDown:
             return CompactInvertedRCTrackLeftQuarterBankedHelixLargeDown;
-        case TrackElemType::RightQuarterBankedHelixLargeDown:
+        case TrackElemType::kRightQuarterBankedHelixLargeDown:
             return CompactInvertedRCTrackRightQuarterBankedHelixLargeDown;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return CompactInvertedRCTrackOnRidePhoto;
-        case TrackElemType::Up90:
+        case TrackElemType::kUp90:
             return CompactInvertedRCTrack90DegUp;
-        case TrackElemType::Down90:
+        case TrackElemType::kDown90:
             return CompactInvertedRCTrack90DegDown;
-        case TrackElemType::Up60ToUp90:
+        case TrackElemType::kUp60ToUp90:
             return CompactInvertedRCTrack60DegUpTo90DegUp;
-        case TrackElemType::Down90ToDown60:
+        case TrackElemType::kDown90ToDown60:
             return CompactInvertedRCTrack90DegDownTo60DegDown;
-        case TrackElemType::Up90ToUp60:
+        case TrackElemType::kUp90ToUp60:
             return CompactInvertedRCTrack90DegUpTo60DegUp;
-        case TrackElemType::Down60ToDown90:
+        case TrackElemType::kDown60ToDown90:
             return CompactInvertedRCTrack60DegDownTo90DegDown;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return CompactInvertedRCTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return CompactInvertedRCTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return CompactInvertedRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return CompactInvertedRCTrackRightEighthToOrthogonal;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::kLeftEighthBankToDiag:
             return CompactInvertedRCTrackLeftEighthBankToDiag;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::kRightEighthBankToDiag:
             return CompactInvertedRCTrackRightEighthBankToDiag;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::kLeftEighthBankToOrthogonal:
             return CompactInvertedRCTrackLeftEighthBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::kRightEighthBankToOrthogonal:
             return CompactInvertedRCTrackRightEighthBankToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return CompactInvertedRCTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return CompactInvertedRCTrackDiag25DegUp;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::kDiagUp60:
             return CompactInvertedRCTrackDiag60DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return CompactInvertedRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::kDiagUp25ToUp60:
             return CompactInvertedRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::kDiagUp60ToUp25:
             return CompactInvertedRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return CompactInvertedRCTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return CompactInvertedRCTrackDiag25DegDown;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::kDiagDown60:
             return CompactInvertedRCTrackDiag60DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return CompactInvertedRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::kDiagDown25ToDown60:
             return CompactInvertedRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::kDiagDown60ToDown25:
             return CompactInvertedRCTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return CompactInvertedRCTrackDiag25DegDownToFlat;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::kDiagFlatToLeftBank:
             return CompactInvertedRCTrackDiagFlatToLeftBank;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::kDiagFlatToRightBank:
             return CompactInvertedRCTrackDiagFlatToRightBank;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::kDiagLeftBankToFlat:
             return CompactInvertedRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::kDiagRightBankToFlat:
             return CompactInvertedRCTrackDiagRightBankToFlat;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::kDiagLeftBankToUp25:
             return CompactInvertedRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::kDiagRightBankToUp25:
             return CompactInvertedRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::kDiagUp25ToLeftBank:
             return CompactInvertedRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::kDiagUp25ToRightBank:
             return CompactInvertedRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::kDiagLeftBankToDown25:
             return CompactInvertedRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::kDiagRightBankToDown25:
             return CompactInvertedRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::kDiagDown25ToLeftBank:
             return CompactInvertedRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::kDiagDown25ToRightBank:
             return CompactInvertedRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::kDiagLeftBank:
             return CompactInvertedRCTrackDiagLeftBank;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::kDiagRightBank:
             return CompactInvertedRCTrackDiagRightBank;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return CompactInvertedRCTrackBlockBrakes;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::kDiagBrakes:
             return CompactInvertedRCTrackDiagBrakes;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             return CompactInvertedRCTrackDiagBlockBrakes;
     }
     return nullptr;

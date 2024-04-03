@@ -18,14 +18,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kSplashBoatsRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_WATER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE, TRACK_ON_RIDE_PHOTO},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSplashBoats),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC |
@@ -36,7 +36,7 @@ constexpr RideTypeDescriptor kSplashBoatsRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_SPLASH_BOATS, STR_RIDE_DESCRIPTION_SPLASH_BOATS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_SPLASH_BOATS),
+    .kEnumName = nameof(RIDE_TYPE_SPLASH_BOATS),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 16, 24, 7, 11, },
     .MaxMass = 255,
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor kSplashBoatsRTD =
     .UpkeepCosts = { 70, 20, 0, 9, 0, 10 },
     .BuildCosts = { 28.50_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(

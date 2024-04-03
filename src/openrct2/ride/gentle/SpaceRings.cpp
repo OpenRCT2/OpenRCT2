@@ -187,7 +187,7 @@ static void PaintSpaceRings(
  */
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpaceRings(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::kFlatTrack3x3)
     {
         return nullptr;
     }

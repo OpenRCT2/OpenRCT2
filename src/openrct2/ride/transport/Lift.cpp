@@ -144,10 +144,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::kTowerBase:
             return PaintLiftBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::kTowerSection:
             return PaintLiftTowerSection;
     }
 

@@ -18,14 +18,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kMonorailCyclesRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMonorailCycles),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
                      RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kMonorailCyclesRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MONORAIL_CYCLES, STR_RIDE_DESCRIPTION_MONORAIL_CYCLES },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MONORAIL_CYCLES),
+    .kEnumName = nameof(RIDE_TYPE_MONORAIL_CYCLES),
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 5, 24, 8, 7, },
     .MaxMass = 2,
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor kMonorailCyclesRTD =
     .UpkeepCosts = { 47, 20, 0, 8, 3, 5 },
     .BuildCosts = { 10.00_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(

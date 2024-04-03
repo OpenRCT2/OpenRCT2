@@ -119,7 +119,7 @@ static void Paint3dCinema(
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::kFlatTrack3x3)
     {
         return nullptr;
     }

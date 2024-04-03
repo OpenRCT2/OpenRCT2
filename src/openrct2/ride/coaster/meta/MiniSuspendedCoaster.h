@@ -17,15 +17,15 @@
 // clang-format off
 constexpr RideTypeDescriptor kMiniSuspendedCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMiniSuspendedRC),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_IS_SUSPENDED,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kMiniSuspendedCoasterRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MINI_SUSPENDED_COASTER, STR_RIDE_DESCRIPTION_MINI_SUSPENDED_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MINI_SUSPENDED_COASTER),
+    .kEnumName = nameof(RIDE_TYPE_MINI_SUSPENDED_COASTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 10, 24, 24, 8, },
     .MaxMass = 3,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kMiniSuspendedCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 30.00_GBP, 2.50_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WILD_WEST,
+    .DefaultMusic = kMusicObjectWildWest,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(

@@ -18,12 +18,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kMiniatureRailwayRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_TRANSPORT,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMiniatureRailway),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
@@ -36,7 +36,7 @@ constexpr RideTypeDescriptor kMiniatureRailwayRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MINIATURE_RAILWAY),
+    .kEnumName = nameof(RIDE_TYPE_MINIATURE_RAILWAY),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 7, 32, 5, 9, },
     .MaxMass = 39,
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor kMiniatureRailwayRTD =
     .UpkeepCosts = { 60, 20, 0, 10, 3, 5 },
     .BuildCosts = { 17.50_GBP, 3.00_GBP, 50, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(

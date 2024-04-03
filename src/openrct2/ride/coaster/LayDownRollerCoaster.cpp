@@ -70,7 +70,7 @@ static void LayDownRCTrackFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Flat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -173,7 +173,7 @@ static void LayDownRCTrack25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Up25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -283,7 +283,7 @@ static void LayDownRCTrack60DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Up60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kUp60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -336,7 +336,7 @@ static void LayDownRCTrackFlatTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::FlatToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kFlatToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -446,7 +446,7 @@ static void LayDownRCTrack25DegUpTo60DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Up25ToUp60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kUp25ToUp60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -505,7 +505,7 @@ static void LayDownRCTrack60DegUpTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Up60ToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kUp60ToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -592,7 +592,7 @@ static void LayDownRCTrack25DegUpToFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Up25ToFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kUp25ToFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -750,7 +750,7 @@ static void LayDownRCTrackLeftQuarterTurn5(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftQuarterTurn5Tiles);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftQuarterTurn5Tiles);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -977,7 +977,7 @@ static void LayDownRCTrackFlatToLeftBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::FlatToLeftBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kFlatToLeftBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1033,7 +1033,7 @@ static void LayDownRCTrackFlatToRightBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::FlatToRightBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kFlatToRightBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1089,7 +1089,7 @@ static void LayDownRCTrackLeftBankToFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftBankToFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftBankToFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1145,7 +1145,7 @@ static void LayDownRCTrackRightBankToFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::RightBankToFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kRightBankToFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1201,7 +1201,7 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::BankedLeftQuarterTurn5Tiles);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kBankedLeftQuarterTurn5Tiles);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1423,7 +1423,7 @@ static void LayDownRCTrackLeftBankTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftBankToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftBankToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1507,7 +1507,7 @@ static void LayDownRCTrackRightBankTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::RightBankToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kRightBankToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1591,7 +1591,7 @@ static void LayDownRCTrack25DegUpToLeftBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Up25ToLeftBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kUp25ToLeftBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1675,7 +1675,7 @@ static void LayDownRCTrack25DegUpToRightBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Up25ToRightBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kUp25ToRightBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1791,7 +1791,7 @@ static void LayDownRCTrackLeftBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -1855,7 +1855,7 @@ static void LayDownRCTrackLeftQuarterTurn525DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftQuarterTurn5TilesUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftQuarterTurn5TilesUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -2053,7 +2053,7 @@ static void LayDownRCTrackRightQuarterTurn525DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::RightQuarterTurn5TilesUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kRightQuarterTurn5TilesUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -2269,7 +2269,7 @@ static void LayDownRCTrackSBendLeft(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::SBendLeft);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kSBendLeft);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -2477,7 +2477,7 @@ static void LayDownRCTrackSBendRight(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::SBendRight);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kSBendRight);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -3657,7 +3657,7 @@ static void LayDownRCTrackLeftQuarterTurn160DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftQuarterTurn1TileUp60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftQuarterTurn1TileUp60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -3712,7 +3712,7 @@ static void LayDownRCTrackRightQuarterTurn160DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::RightQuarterTurn1TileUp60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kRightQuarterTurn1TileUp60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -3783,7 +3783,7 @@ static void LayDownRCTrackBrakes(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::Brakes);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kBrakes);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -3828,7 +3828,7 @@ static void LayDownRCTrackOnRidePhoto(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::OnRidePhoto);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kOnRidePhoto);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -3873,7 +3873,7 @@ static void LayDownRCTrackLeftEighthToDiag(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftEighthToDiag);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftEighthToDiag);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -4071,7 +4071,7 @@ static void LayDownRCTrackRightEighthToDiag(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::RightEighthToDiag);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kRightEighthToDiag);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -4287,7 +4287,7 @@ static void LayDownRCTrackLeftEighthBankToDiag(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftEighthBankToDiag);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftEighthBankToDiag);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -4488,7 +4488,7 @@ static void LayDownRCTrackRightEighthBankToDiag(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::RightEighthBankToDiag);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kRightEighthBankToDiag);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -4706,7 +4706,7 @@ static void LayDownRCTrackDiagFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -4960,7 +4960,7 @@ static void LayDownRCTrackDiag25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -5136,7 +5136,7 @@ static void LayDownRCTrackDiag60DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagUp60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagUp60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -5256,7 +5256,7 @@ static void LayDownRCTrackDiagFlatTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagFlatToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagFlatToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -5432,7 +5432,7 @@ static void LayDownRCTrackDiag25DegUpTo60DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagUp25ToUp60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagUp25ToUp60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -5552,7 +5552,7 @@ static void LayDownRCTrackDiag60DegUpTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagUp60ToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagUp60ToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -5672,7 +5672,7 @@ static void LayDownRCTrackDiag25DegUpToFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagUp25ToFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagUp25ToFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -5848,7 +5848,7 @@ static void LayDownRCTrackDiag25DegDown(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagDown25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagDown25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -5968,7 +5968,7 @@ static void LayDownRCTrackDiag60DegDown(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagDown60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagDown60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6088,7 +6088,7 @@ static void LayDownRCTrackDiagFlatTo25DegDown(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagFlatToDown25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagFlatToDown25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6205,7 +6205,7 @@ static void LayDownRCTrackDiag25DegDownTo60DegDown(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagDown25ToDown60);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagDown25ToDown60);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6325,7 +6325,7 @@ static void LayDownRCTrackDiag60DegDownTo25DegDown(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagDown60ToDown25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagDown60ToDown25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6445,7 +6445,7 @@ static void LayDownRCTrackDiag25DegDownToFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagDown25ToFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagDown25ToFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6565,7 +6565,7 @@ static void LayDownRCTrackDiagFlatToLeftBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagFlatToLeftBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagFlatToLeftBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6685,7 +6685,7 @@ static void LayDownRCTrackDiagFlatToRightBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagFlatToRightBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagFlatToRightBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6805,7 +6805,7 @@ static void LayDownRCTrackDiagLeftBankToFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagLeftBankToFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagLeftBankToFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -6925,7 +6925,7 @@ static void LayDownRCTrackDiagRightBankToFlat(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagRightBankToFlat);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagRightBankToFlat);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7045,7 +7045,7 @@ static void LayDownRCTrackDiagLeftBankTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagLeftBankToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagLeftBankToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7165,7 +7165,7 @@ static void LayDownRCTrackDiagRightBankTo25DegUp(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagRightBankToUp25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagRightBankToUp25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7285,7 +7285,7 @@ static void LayDownRCTrackDiag25DegUpToLeftBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagUp25ToLeftBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagUp25ToLeftBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7405,7 +7405,7 @@ static void LayDownRCTrackDiag25DegUpToRightBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagUp25ToRightBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagUp25ToRightBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7525,7 +7525,7 @@ static void LayDownRCTrackDiagLeftBankTo25DegDown(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagLeftBankToDown25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagLeftBankToDown25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7642,7 +7642,7 @@ static void LayDownRCTrackDiagRightBankTo25DegDown(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagRightBankToDown25);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagRightBankToDown25);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7759,7 +7759,7 @@ static void LayDownRCTrackDiag25DegDownToLeftBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagDown25ToLeftBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagDown25ToLeftBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7879,7 +7879,7 @@ static void LayDownRCTrackDiag25DegDownToRightBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagDown25ToRightBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagDown25ToRightBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -7999,7 +7999,7 @@ static void LayDownRCTrackDiagLeftBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagLeftBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagLeftBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -8119,7 +8119,7 @@ static void LayDownRCTrackDiagRightBank(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::DiagRightBank);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kDiagRightBank);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -8745,7 +8745,7 @@ static void LayDownRCTrackRightFlyerCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftFlyerCorkscrewUp);
+    auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kLeftFlyerCorkscrewUp);
     function(session, ride, 2 - trackSequence, (direction + 3) % 4, height, trackElement);
     return;
 }
@@ -8757,7 +8757,7 @@ static void LayDownRCTrackBlockBrakes(
 {
     if (!trackElement.IsInverted())
     {
-        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::BlockBrakes);
+        auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::kBlockBrakes);
         function(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
@@ -9786,209 +9786,209 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return LayDownRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return LayDownRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return LayDownRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return LayDownRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return LayDownRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return LayDownRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return LayDownRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return LayDownRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return LayDownRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return LayDownRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return LayDownRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return LayDownRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return LayDownRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return LayDownRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return LayDownRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return LayDownRCTrackRightQuarterTurn5;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return LayDownRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return LayDownRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return LayDownRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return LayDownRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return LayDownRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return LayDownRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::kLeftBankToUp25:
             return LayDownRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::kRightBankToUp25:
             return LayDownRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::kUp25ToLeftBank:
             return LayDownRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::kUp25ToRightBank:
             return LayDownRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::kLeftBankToDown25:
             return LayDownRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::kRightBankToDown25:
             return LayDownRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::kDown25ToLeftBank:
             return LayDownRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::kDown25ToRightBank:
             return LayDownRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return LayDownRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return LayDownRCTrackRightBank;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::kLeftQuarterTurn5TilesUp25:
             return LayDownRCTrackLeftQuarterTurn525DegUp;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::kRightQuarterTurn5TilesUp25:
             return LayDownRCTrackRightQuarterTurn525DegUp;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::kLeftQuarterTurn5TilesDown25:
             return LayDownRCTrackLeftQuarterTurn525DegDown;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::kRightQuarterTurn5TilesDown25:
             return LayDownRCTrackRightQuarterTurn525DegDown;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return LayDownRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return LayDownRCTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return LayDownRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return LayDownRCTrackRightQuarterTurn3;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
             return LayDownRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
             return LayDownRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
             return LayDownRCTrackLeftQuarterTurn325DegUp;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
             return LayDownRCTrackRightQuarterTurn325DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
             return LayDownRCTrackLeftQuarterTurn325DegDown;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
             return LayDownRCTrackRightQuarterTurn325DegDown;
-        case TrackElemType::LeftQuarterTurn1TileUp60:
+        case TrackElemType::kLeftQuarterTurn1TileUp60:
             return LayDownRCTrackLeftQuarterTurn160DegUp;
-        case TrackElemType::RightQuarterTurn1TileUp60:
+        case TrackElemType::kRightQuarterTurn1TileUp60:
             return LayDownRCTrackRightQuarterTurn160DegUp;
-        case TrackElemType::LeftQuarterTurn1TileDown60:
+        case TrackElemType::kLeftQuarterTurn1TileDown60:
             return LayDownRCTrackLeftQuarterTurn160DegDown;
-        case TrackElemType::RightQuarterTurn1TileDown60:
+        case TrackElemType::kRightQuarterTurn1TileDown60:
             return LayDownRCTrackRightQuarterTurn160DegDown;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return LayDownRCTrackBrakes;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return LayDownRCTrackOnRidePhoto;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return LayDownRCTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return LayDownRCTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return LayDownRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return LayDownRCTrackRightEighthToOrthogonal;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::kLeftEighthBankToDiag:
             return LayDownRCTrackLeftEighthBankToDiag;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::kRightEighthBankToDiag:
             return LayDownRCTrackRightEighthBankToDiag;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::kLeftEighthBankToOrthogonal:
             return LayDownRCTrackLeftEighthBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::kRightEighthBankToOrthogonal:
             return LayDownRCTrackRightEighthBankToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return LayDownRCTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return LayDownRCTrackDiag25DegUp;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::kDiagUp60:
             return LayDownRCTrackDiag60DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return LayDownRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::kDiagUp25ToUp60:
             return LayDownRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::kDiagUp60ToUp25:
             return LayDownRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return LayDownRCTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return LayDownRCTrackDiag25DegDown;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::kDiagDown60:
             return LayDownRCTrackDiag60DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return LayDownRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::kDiagDown25ToDown60:
             return LayDownRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::kDiagDown60ToDown25:
             return LayDownRCTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return LayDownRCTrackDiag25DegDownToFlat;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::kDiagFlatToLeftBank:
             return LayDownRCTrackDiagFlatToLeftBank;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::kDiagFlatToRightBank:
             return LayDownRCTrackDiagFlatToRightBank;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::kDiagLeftBankToFlat:
             return LayDownRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::kDiagRightBankToFlat:
             return LayDownRCTrackDiagRightBankToFlat;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::kDiagLeftBankToUp25:
             return LayDownRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::kDiagRightBankToUp25:
             return LayDownRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::kDiagUp25ToLeftBank:
             return LayDownRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::kDiagUp25ToRightBank:
             return LayDownRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::kDiagLeftBankToDown25:
             return LayDownRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::kDiagRightBankToDown25:
             return LayDownRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::kDiagDown25ToLeftBank:
             return LayDownRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::kDiagDown25ToRightBank:
             return LayDownRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::kDiagLeftBank:
             return LayDownRCTrackDiagLeftBank;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::kDiagRightBank:
             return LayDownRCTrackDiagRightBank;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return LayDownRCTrackBlockBrakes;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::kDiagBrakes:
             return LayDownRCTrackDiagBrakes;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             return LayDownRCTrackDiagBlockBrakes;
 
         // Inverted only
-        case TrackElemType::LeftFlyerTwistDown:
+        case TrackElemType::kLeftFlyerTwistDown:
             return LayDownRCTrackLeftFlyerTwistDown;
-        case TrackElemType::RightFlyerTwistDown:
+        case TrackElemType::kRightFlyerTwistDown:
             return LayDownRCTrackRightFlyerTwistDown;
-        case TrackElemType::FlyerHalfLoopInvertedDown:
+        case TrackElemType::kFlyerHalfLoopInvertedDown:
             return LayDownRCTrackFlyerHalfLoopDown;
-        case TrackElemType::LeftFlyerCorkscrewDown:
+        case TrackElemType::kLeftFlyerCorkscrewDown:
             return LayDownRCTrackLeftFlyerCorkscrewDown;
-        case TrackElemType::RightFlyerCorkscrewDown:
+        case TrackElemType::kRightFlyerCorkscrewDown:
             return LayDownRCTrackRightFlyerCorkscrewDown;
-        case TrackElemType::LeftQuarterBankedHelixLargeUp:
+        case TrackElemType::kLeftQuarterBankedHelixLargeUp:
             return LayDownRCTrackLeftQuarterBankedHelixLargeUp;
-        case TrackElemType::RightQuarterBankedHelixLargeUp:
+        case TrackElemType::kRightQuarterBankedHelixLargeUp:
             return LayDownRCTrackRightQuarterBankedHelixLargeUp;
-        case TrackElemType::LeftQuarterBankedHelixLargeDown:
+        case TrackElemType::kLeftQuarterBankedHelixLargeDown:
             return LayDownRCTrackLeftQuarterBankedHelixLargeDown;
-        case TrackElemType::RightQuarterBankedHelixLargeDown:
+        case TrackElemType::kRightQuarterBankedHelixLargeDown:
             return LayDownRCTrackRightQuarterBankedHelixLargeDown;
-        case TrackElemType::FlyerHalfLoopInvertedUp:
+        case TrackElemType::kFlyerHalfLoopInvertedUp:
             return LayDownRCTrackHalfLoopInvertedUp;
     }
     return GetTrackPaintFunctionCorkscrewRC(trackType);

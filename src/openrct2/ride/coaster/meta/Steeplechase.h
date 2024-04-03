@@ -17,22 +17,22 @@
 // clang-format off
 constexpr RideTypeDescriptor kSteeplechaseRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_BLOCK_BRAKES},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSteeplechase),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
     .DefaultMode = RideMode::ContinuousCircuit,
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_STEEPLECHASE, STR_RIDE_DESCRIPTION_STEEPLECHASE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_STEEPLECHASE),
+    .kEnumName = nameof(RIDE_TYPE_STEEPLECHASE),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 14, 24, 7, 7, },
     .MaxMass = 4,
@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor kSteeplechaseRTD =
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 28.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(

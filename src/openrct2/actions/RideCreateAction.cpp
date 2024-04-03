@@ -61,7 +61,7 @@ int32_t RideCreateAction::GetRideObject() const
 
 uint16_t RideCreateAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideCreateAction::Serialise(DataSerialiser& stream)
@@ -165,7 +165,7 @@ GameActions::Result RideCreateAction::Execute() const
     if (GetGameState().Cheats.DisableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
-        if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
+        if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
         {
             ride->ProposedNumTrains = 12;
         }
@@ -209,7 +209,7 @@ GameActions::Result RideCreateAction::Execute() const
     auto& gameState = GetGameState();
     if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
             ride->price[i] = rtd.DefaultPrices[i];
         }
@@ -247,7 +247,7 @@ GameActions::Result RideCreateAction::Execute() const
             }
         }
 
-        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
             if (rideEntry->shop_item[i] != ShopItem::None)
             {

@@ -17,15 +17,15 @@
 // clang-format off
 constexpr RideTypeDescriptor kInvertedRollerCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_TWIST, TRACK_HALF_LOOP, TRACK_CORKSCREW, TRACK_HELIX_DOWN_BANKED_QUARTER, TRACK_HELIX_UP_BANKED_QUARTER, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_HALF_LOOP_LARGE, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
     .ExtraTrackPieces = {TRACK_BOOSTER},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionInvertedRC),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_IS_SUSPENDED |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch),
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kInvertedRollerCoasterRTD =
     .OperatingSettings = { 7, 27, 0, 0, 38, 0 },
     .Naming = { STR_RIDE_NAME_INVERTED_ROLLER_COASTER, STR_RIDE_DESCRIPTION_INVERTED_ROLLER_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_INVERTED_ROLLER_COASTER),
+    .kEnumName = nameof(RIDE_TYPE_INVERTED_ROLLER_COASTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 42, 40, 29, 8, },
     .MaxMass = 27,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kInvertedRollerCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 13, 3, 10 },
     .BuildCosts = { 65.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(

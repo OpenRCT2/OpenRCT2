@@ -62,9 +62,9 @@ GameActions::Result TrackRemoveAction::Query() const
     auto comparableTrackType = _trackType;
     switch (_trackType)
     {
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
-            comparableTrackType = TrackElemType::EndStation;
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
+            comparableTrackType = TrackElemType::kEndStation;
             break;
     }
 
@@ -95,9 +95,9 @@ GameActions::Result TrackRemoveAction::Query() const
         auto tileTrackType = tileElement->AsTrack()->GetTrackType();
         switch (tileTrackType)
         {
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
-                tileTrackType = TrackElemType::EndStation;
+            case TrackElemType::kBeginStation:
+            case TrackElemType::kMiddleStation:
+                tileTrackType = TrackElemType::kEndStation;
                 break;
         }
 
@@ -269,9 +269,9 @@ GameActions::Result TrackRemoveAction::Execute() const
     auto comparableTrackType = _trackType;
     switch (_trackType)
     {
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
-            comparableTrackType = TrackElemType::EndStation;
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
+            comparableTrackType = TrackElemType::kEndStation;
             break;
     }
 
@@ -302,9 +302,9 @@ GameActions::Result TrackRemoveAction::Execute() const
         auto tileTrackType = tileElement->AsTrack()->GetTrackType();
         switch (tileTrackType)
         {
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
-                tileTrackType = TrackElemType::EndStation;
+            case TrackElemType::kBeginStation:
+            case TrackElemType::kMiddleStation:
+                tileTrackType = TrackElemType::kEndStation;
                 break;
         }
 
@@ -469,14 +469,14 @@ GameActions::Result TrackRemoveAction::Execute() const
     {
         switch (trackType)
         {
-            case TrackElemType::OnRidePhoto:
+            case TrackElemType::kOnRidePhoto:
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                 break;
-            case TrackElemType::CableLiftHill:
+            case TrackElemType::kCableLiftHill:
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 break;
-            case TrackElemType::BlockBrakes:
-            case TrackElemType::DiagBlockBrakes:
+            case TrackElemType::kBlockBrakes:
+            case TrackElemType::kDiagBlockBrakes:
                 ride->num_block_brakes--;
                 if (ride->num_block_brakes == 0)
                 {
@@ -496,14 +496,14 @@ GameActions::Result TrackRemoveAction::Execute() const
 
         switch (trackType)
         {
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::kUp25ToFlat:
+            case TrackElemType::kUp60ToFlat:
+            case TrackElemType::kDiagUp25ToFlat:
+            case TrackElemType::kDiagUp60ToFlat:
                 if (!isLiftHill)
                     break;
                 [[fallthrough]];
-            case TrackElemType::CableLiftHill:
+            case TrackElemType::kCableLiftHill:
                 ride->num_block_brakes--;
                 break;
         }

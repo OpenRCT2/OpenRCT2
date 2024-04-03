@@ -114,13 +114,13 @@ GameActions::Result TrackPlaceAction::Query() const
 
     uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
-    if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
+    if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::kEndStation)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
     }
 
-    if (!(GetActionFlags() & GameActions::Flags::kAllowWhilePaused))
+    if (!(GetActionFlags() & GameActions::Flags::AllowWhilePaused))
     {
         if (GameIsPaused() && !GetGameState().Cheats.BuildInPauseMode)
         {
@@ -132,7 +132,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (!(rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE))
     {
-        if (_trackType == TrackElemType::OnRidePhoto)
+        if (_trackType == TrackElemType::kOnRidePhoto)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
             {
@@ -141,7 +141,7 @@ GameActions::Result TrackPlaceAction::Query() const
                     STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
             }
         }
-        else if (_trackType == TrackElemType::CableLiftHill)
+        else if (_trackType == TrackElemType::kCableLiftHill)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
             {
@@ -247,14 +247,14 @@ GameActions::Result TrackPlaceAction::Query() const
 
         clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
 
-        if (clearanceZ > MAX_TRACK_HEIGHT)
+        if (clearanceZ > kMaxTrackHeight)
         {
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
         uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                                && _trackType == TrackElemType::Flat)
+                                && _trackType == TrackElemType::kFlat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
@@ -470,7 +470,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
         uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                                && _trackType == TrackElemType::Flat)
+                                && _trackType == TrackElemType::kFlat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
@@ -580,20 +580,20 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         switch (_trackType)
         {
-            case TrackElemType::Waterfall:
+            case TrackElemType::kWaterfall:
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
-            case TrackElemType::Rapids:
+            case TrackElemType::kRapids:
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
-            case TrackElemType::Whirlpool:
+            case TrackElemType::kWhirlpool:
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
-            case TrackElemType::SpinningTunnel:
+            case TrackElemType::kSpinningTunnel:
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
-            case TrackElemType::Brakes:
-            case TrackElemType::DiagBrakes:
+            case TrackElemType::kBrakes:
+            case TrackElemType::kDiagBrakes:
                 trackElement->SetBrakeClosed(true);
                 break;
         }
@@ -679,15 +679,15 @@ GameActions::Result TrackPlaceAction::Execute() const
         InvalidateTestResults(*ride);
         switch (_trackType)
         {
-            case TrackElemType::OnRidePhoto:
+            case TrackElemType::kOnRidePhoto:
                 ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                 break;
-            case TrackElemType::CableLiftHill:
+            case TrackElemType::kCableLiftHill:
                 ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 ride->CableLiftLoc = originLocation;
                 break;
-            case TrackElemType::DiagBlockBrakes:
-            case TrackElemType::BlockBrakes:
+            case TrackElemType::kDiagBlockBrakes:
+            case TrackElemType::kBlockBrakes:
             {
                 ride->num_block_brakes++;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
@@ -711,14 +711,14 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         switch (_trackType)
         {
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::kUp25ToFlat:
+            case TrackElemType::kUp60ToFlat:
+            case TrackElemType::kDiagUp25ToFlat:
+            case TrackElemType::kDiagUp60ToFlat:
                 if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
                     break;
                 [[fallthrough]];
-            case TrackElemType::CableLiftHill:
+            case TrackElemType::kCableLiftHill:
                 ride->num_block_brakes++;
                 break;
         }

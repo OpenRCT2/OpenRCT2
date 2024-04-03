@@ -372,39 +372,39 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintMiniHelicoptersTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintMiniHelicoptersTrackStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintMiniHelicoptersTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintMiniHelicoptersTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintMiniHelicoptersTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintMiniHelicoptersTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintMiniHelicoptersTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintMiniHelicoptersTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return PaintMiniHelicoptersTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return PaintMiniHelicoptersTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return PaintMiniHelicoptersTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::SpinningTunnel:
+        case TrackElemType::kSpinningTunnel:
             return PaintMiniHelicoptersTrackSpinningTunnel;
     }
 

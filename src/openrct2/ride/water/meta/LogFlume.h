@@ -17,14 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kLogFlumeRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_WATER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_ON_RIDE_PHOTO, TRACK_LOG_FLUME_REVERSER, TRACK_SLOPE_STEEP_DOWN},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionLogFlume),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kLogFlumeRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_LOG_FLUME, STR_RIDE_DESCRIPTION_LOG_FLUME },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_LOG_FLUME),
+    .kEnumName = nameof(RIDE_TYPE_LOG_FLUME),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 10, 24, 7, 9, },
     .MaxMass = 255,
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor kLogFlumeRTD =
     .UpkeepCosts = { 80, 20, 0, 9, 0, 10 },
     .BuildCosts = { 22.50_GBP, 2.50_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(

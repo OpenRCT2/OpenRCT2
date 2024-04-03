@@ -17,12 +17,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kCircusRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::kFlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionCircus),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kCircusRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_CIRCUS, STR_RIDE_DESCRIPTION_CIRCUS },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_CIRCUS),
+    .kEnumName = nameof(RIDE_TYPE_CIRCUS),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,

@@ -17,14 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kMagicCarpetRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_THRILL,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack1x4A,
+    .StartTrackPiece = TrackElemType::kFlatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMagicCarpet),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
                      RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION |
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kMagicCarpetRTD =
     .OperatingSettings = { 7, 15, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MAGIC_CARPET),
+    .kEnumName = nameof(RIDE_TYPE_MAGIC_CARPET),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kMagicCarpetRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 99.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_EGYPTIAN,
+    .DefaultMusic = kMusicObjectEgyptian,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(

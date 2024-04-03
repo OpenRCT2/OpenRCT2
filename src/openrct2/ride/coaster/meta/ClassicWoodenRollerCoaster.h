@@ -17,15 +17,15 @@
 // clang-format off
 constexpr RideTypeDescriptor kClassicWoodenRollerCoasterRTD =
 {
-   .AlternateType = RIDE_TYPE_NULL,
+   .AlternateType = kRideTypeNull,
    .Category = RIDE_CATEGORY_ROLLERCOASTER,
    .EnabledTrackPieces = {TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_WATER_SPLASH, TRACK_BLOCK_BRAKES, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
    .ExtraTrackPieces = {},
    .CoveredTrackPieces = 0,
-   .StartTrackPiece = TrackElemType::EndStation,
+   .StartTrackPiece = TrackElemType::kEndStation,
    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionClassicWoodenRC),
-   .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                    RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+   .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                    kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                     RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
                     RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kClassicWoodenRollerCoasterRTD =
    .OperatingSettings = { 0, 0, 0, 0, 68, 0 },
    .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_ROLLER_COASTER },
    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-   .EnumName = nameof(RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER),
+   .kEnumName = nameof(RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER),
    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
    .Heights = { 24, 24, 8, 11, },
    .MaxMass = 19,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kClassicWoodenRollerCoasterRTD =
    .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
    .BuildCosts = {37.50_GBP, 3.50_GBP, 50,  },
    .DefaultPrices = { 20, 20 },
-   .DefaultMusic = MUSIC_OBJECT_WILD_WEST,
+   .DefaultMusic = kMusicObjectWildWest,
    .PhotoItem = ShopItem::Photo3,
    .BonusValue = 105,
    .ColourPresets = TRACK_COLOUR_PRESETS(

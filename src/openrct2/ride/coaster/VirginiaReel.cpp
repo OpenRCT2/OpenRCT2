@@ -584,36 +584,36 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintVirginiaReelTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintVirginiaReelStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintVirginiaReelTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintVirginiaReelTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintVirginiaReelTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintVirginiaReelTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintVirginiaReelTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintVirginiaReelTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return PaintVirginiaReelTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return PaintVirginiaReelTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return PaintVirginiaReelTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return PaintVirginiaReelTrackRightQuarterTurn1Tile;
     }
 

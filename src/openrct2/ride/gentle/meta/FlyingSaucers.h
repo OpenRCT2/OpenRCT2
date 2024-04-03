@@ -17,12 +17,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kFlyingSaucersRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack4x4,
+    .StartTrackPiece = TrackElemType::kFlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionFlyingSaucers),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
                      RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kFlyingSaucersRTD =
     .OperatingSettings = { 20, 180, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_FLYING_SAUCERS),
+    .kEnumName = nameof(RIDE_TYPE_FLYING_SAUCERS),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kFlyingSaucersRTD =
     .UpkeepCosts = { 90, 1, 0, 5, 0, 0 },
     .BuildCosts = { 35.00_GBP, 2.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(

@@ -1015,47 +1015,47 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(int32_t trackType
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return AirPoweredVerticalRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return AirPoweredVerticalRCTrackStation;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return AirPoweredVerticalRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return AirPoweredVerticalRCTrackRightQuarterTurn5;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return AirPoweredVerticalRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return AirPoweredVerticalRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return AirPoweredVerticalRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return AirPoweredVerticalRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return AirPoweredVerticalRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return AirPoweredVerticalRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return AirPoweredVerticalRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return AirPoweredVerticalRCTrackRightBank;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return AirPoweredVerticalRCTrackBrakes;
-        case TrackElemType::ReverseFreefallSlope:
+        case TrackElemType::kReverseFreefallSlope:
             return AirPoweredVerticalRCTrackVerticalSlopeUp;
-        case TrackElemType::ReverseFreefallVertical:
+        case TrackElemType::kReverseFreefallVertical:
             return AirPoweredVerticalRCTrackVerticalUp;
-        case TrackElemType::AirThrustTopCap:
+        case TrackElemType::kAirThrustTopCap:
             return AirPoweredVerticalRCTrackVerticalTop;
-        case TrackElemType::AirThrustVerticalDown:
+        case TrackElemType::kAirThrustVerticalDown:
             return AirPoweredVerticalRCTrackVerticalDown;
-        case TrackElemType::AirThrustVerticalDownToLevel:
+        case TrackElemType::kAirThrustVerticalDownToLevel:
             return AirPoweredVerticalRCTrackVerticalSlopeDown;
-        case TrackElemType::Booster:
+        case TrackElemType::kBooster:
             return AirPoweredVerticalRCTrackBooster;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return AirPoweredVerticalRCTrackOnridePhoto;
     }
     return nullptr;

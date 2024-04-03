@@ -17,15 +17,15 @@
 // clang-format off
 constexpr RideTypeDescriptor kSideFrictionRollerCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSideFrictionRC),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kSideFrictionRollerCoasterRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_SIDE_FRICTION_ROLLER_COASTER, STR_RIDE_DESCRIPTION_SIDE_FRICTION_ROLLER_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER),
+    .kEnumName = nameof(RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 18, 24, 4, 11, },
     .MaxMass = 15,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kSideFrictionRollerCoasterRTD =
     .UpkeepCosts = { 39, 20, 80, 10, 3, 10 },
     .BuildCosts = { 27.50_GBP, 3.00_GBP, 37, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo3,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(

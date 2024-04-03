@@ -171,7 +171,7 @@ static void PaintFerrisWheel(
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFerrisWheel(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack1x4C)
+    if (trackType != TrackElemType::kFlatTrack1x4C)
     {
         return nullptr;
     }

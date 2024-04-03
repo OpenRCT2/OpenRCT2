@@ -251,7 +251,7 @@ static void PaintSpiralSlide(
  */
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpiralSlide(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack2x2)
+    if (trackType != TrackElemType::kFlatTrack2x2)
     {
         return nullptr;
     }

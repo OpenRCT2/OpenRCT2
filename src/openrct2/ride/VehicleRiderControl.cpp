@@ -161,54 +161,54 @@ int32_t Vehicle::CalculateRiderBraking() const
     auto trackType = GetTrackType();
     switch (trackType)
     {
-        case TrackElemType::LeftQuarterTurn3Tiles:
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             targetSpeed = riderSettings.minSpeed;
             brakeThreshold = riderSettings.brakeThreshold / 2;
             break;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
-        case TrackElemType::RightQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
-        case TrackElemType::RightQuarterTurn3TilesDown25:
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::kRightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::kRightQuarterTurn3TilesDown25ToRightBank:
             targetSpeed = (riderSettings.maxSpeed + 3 * riderSettings.minSpeed) / 4;
             brakeThreshold = 3 * riderSettings.brakeThreshold / 4;
             break;
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
-        case TrackElemType::RightHalfBankedHelixUpSmall:
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
-        case TrackElemType::RightHalfBankedHelixDownSmall:
-        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-        case TrackElemType::RightBankedQuarterTurn3TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-        case TrackElemType::RightBankedQuarterTurn3TileDown25:
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
-        case TrackElemType::LeftQuarterTurn5Tiles:
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kLeftHalfBankedHelixUpSmall:
+        case TrackElemType::kRightHalfBankedHelixUpSmall:
+        case TrackElemType::kLeftHalfBankedHelixDownSmall:
+        case TrackElemType::kRightHalfBankedHelixDownSmall:
+        case TrackElemType::kLeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn3TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn3TileDown25:
+        case TrackElemType::kRightBankedQuarterTurn3TileDown25:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             targetSpeed = (riderSettings.maxSpeed + riderSettings.minSpeed) / 2;
             break;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
-        case TrackElemType::RightHalfBankedHelixUpLarge:
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
-        case TrackElemType::RightHalfBankedHelixDownLarge:
-        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-        case TrackElemType::RightBankedQuarterTurn5TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-        case TrackElemType::RightBankedQuarterTurn5TileDown25:
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
-        case TrackElemType::RightQuarterTurn5TilesUp25:
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
-        case TrackElemType::RightQuarterTurn5TilesDown25:
-        case TrackElemType::LeftEighthToDiag:
-        case TrackElemType::RightEighthToDiag:
-        case TrackElemType::LeftEighthToOrthogonal:
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kLeftHalfBankedHelixUpLarge:
+        case TrackElemType::kRightHalfBankedHelixUpLarge:
+        case TrackElemType::kLeftHalfBankedHelixDownLarge:
+        case TrackElemType::kRightHalfBankedHelixDownLarge:
+        case TrackElemType::kLeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn5TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn5TileDown25:
+        case TrackElemType::kRightBankedQuarterTurn5TileDown25:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5TilesUp25:
+        case TrackElemType::kRightQuarterTurn5TilesUp25:
+        case TrackElemType::kLeftQuarterTurn5TilesDown25:
+        case TrackElemType::kRightQuarterTurn5TilesDown25:
+        case TrackElemType::kLeftEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
+        case TrackElemType::kLeftEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             targetSpeed = (3 * riderSettings.maxSpeed + riderSettings.minSpeed) / 4;
             break;
         default:

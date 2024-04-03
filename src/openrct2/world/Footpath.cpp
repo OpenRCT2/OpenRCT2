@@ -2578,7 +2578,7 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    if (trackElement->GetTrackType() != TrackElemType::Flat)
+    if (trackElement->GetTrackType() != TrackElemType::kFlat)
     {
         return false;
     }

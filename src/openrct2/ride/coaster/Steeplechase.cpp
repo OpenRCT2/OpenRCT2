@@ -2730,64 +2730,64 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return SteeplechaseTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return SteeplechaseTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return SteeplechaseTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return SteeplechaseTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return SteeplechaseTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return SteeplechaseTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return SteeplechaseTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return SteeplechaseTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return SteeplechaseTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return SteeplechaseTrackRightQuarterTurn5;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return SteeplechaseTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return SteeplechaseTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return SteeplechaseTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return SteeplechaseTrackRightQuarterTurn3;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return SteeplechaseTrackBrakes;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return SteeplechaseTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return SteeplechaseTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return SteeplechaseTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return SteeplechaseTrackRightEighthToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return SteeplechaseTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return SteeplechaseTrackDiag25DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return SteeplechaseTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return SteeplechaseTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return SteeplechaseTrackDiag25DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return SteeplechaseTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return SteeplechaseTrackDiag25DegDownToFlat;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return SteeplechaseTrackBlockBrakes;
-        case TrackElemType::DiagBrakes:
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kDiagBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             return SteeplechaseTrackDiagBrakes;
     }
     return nullptr;

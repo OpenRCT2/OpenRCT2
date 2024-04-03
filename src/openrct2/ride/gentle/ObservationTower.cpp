@@ -194,10 +194,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::kTowerBase:
             return PaintObservationTowerBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::kTowerSection:
             return PaintObservationTowerSection;
     }
 

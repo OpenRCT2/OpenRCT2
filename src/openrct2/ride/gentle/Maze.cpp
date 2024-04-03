@@ -189,7 +189,7 @@ static void MazePaintSetup(
  */
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType)
 {
-    if (trackType != TrackElemType::Maze)
+    if (trackType != TrackElemType::kMaze)
     {
         return nullptr;
     }
@@ -199,7 +199,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType)
 
 money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const CoordsXYZ& loc)
 {
-    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+    const auto& ted = GetTrackElementDescriptor(TrackElemType::kMaze);
     money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;
 
     auto surfaceElement = MapGetSurfaceElementAt(loc);

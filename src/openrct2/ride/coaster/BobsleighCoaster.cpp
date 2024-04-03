@@ -4235,94 +4235,94 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return BobsleighRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return BobsleighRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return BobsleighRCTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return BobsleighRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return BobsleighRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return BobsleighRCTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return BobsleighRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return BobsleighRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return BobsleighRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return BobsleighRCTrackRightQuarterTurn5;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return BobsleighRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return BobsleighRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return BobsleighRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return BobsleighRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return BobsleighRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return BobsleighRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::kLeftBankToUp25:
             return BobsleighRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::kRightBankToUp25:
             return BobsleighRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::kUp25ToLeftBank:
             return BobsleighRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::kUp25ToRightBank:
             return BobsleighRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::kLeftBankToDown25:
             return BobsleighRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::kRightBankToDown25:
             return BobsleighRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::kDown25ToLeftBank:
             return BobsleighRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::kDown25ToRightBank:
             return BobsleighRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return BobsleighRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return BobsleighRCTrackRightBank;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return BobsleighRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return BobsleighRCTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return BobsleighRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return BobsleighRCTrackRightQuarterTurn3;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
             return BobsleighRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
             return BobsleighRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::kLeftHalfBankedHelixUpSmall:
             return BobsleighRCTrackLeftHalfBankedHelixUpSmall;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::kRightHalfBankedHelixUpSmall:
             return BobsleighRCTrackRightHalfBankedHelixUpSmall;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::kLeftHalfBankedHelixDownSmall:
             return BobsleighRCTrackLeftHalfBankedHelixDownSmall;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::kRightHalfBankedHelixDownSmall:
             return BobsleighRCTrackRightHalfBankedHelixDownSmall;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::kLeftHalfBankedHelixUpLarge:
             return BobsleighRCTrackLeftHalfBankedHelixUpLarge;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::kRightHalfBankedHelixUpLarge:
             return BobsleighRCTrackRightHalfBankedHelixUpLarge;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::kLeftHalfBankedHelixDownLarge:
             return BobsleighRCTrackLeftHalfBankedHelixDownLarge;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::kRightHalfBankedHelixDownLarge:
             return BobsleighRCTrackRightHalfBankedHelixDownLarge;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return BobsleighRCTrackBrakes;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return BobsleighRCTrackBlockBrakes;
 
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return BobsleighRCTrackOnRidePhoto;
     }
     return nullptr;

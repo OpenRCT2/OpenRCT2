@@ -18,12 +18,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kMonorailRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_TRANSPORT,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMonorail),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
@@ -36,7 +36,7 @@ constexpr RideTypeDescriptor kMonorailRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MONORAIL, STR_RIDE_DESCRIPTION_MONORAIL },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MONORAIL),
+    .kEnumName = nameof(RIDE_TYPE_MONORAIL),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 8, 32, 8, 9, },
     .MaxMass = 78,
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor kMonorailRTD =
     .UpkeepCosts = { 65, 20, 0, 10, 3, 10 },
     .BuildCosts = { 21.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(

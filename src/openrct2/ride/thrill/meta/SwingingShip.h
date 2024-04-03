@@ -17,12 +17,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kSwingingShipRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_THRILL,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack1x5,
+    .StartTrackPiece = TrackElemType::kFlatTrack1x5,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSwingingShip),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                      RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kSwingingShipRTD =
     .OperatingSettings = { 7, 25, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_SWINGING_SHIP, STR_RIDE_DESCRIPTION_SWINGING_SHIP },
     .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_SWINGING_SHIP),
+    .kEnumName = nameof(RIDE_TYPE_SWINGING_SHIP),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 112, 7, 11, },
     .MaxMass = 255,
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor kSwingingShipRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 77.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_PIRATE,
+    .DefaultMusic = kMusicObjectPirate,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(

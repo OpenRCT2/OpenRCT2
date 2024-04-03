@@ -141,7 +141,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     }
 
     auto curve = _currentTrackCurve;
-    if (curve == TrackElemType::None)
+    if (curve == TrackElemType::kNone)
     {
         return std::make_tuple(false, 0);
     }
@@ -182,9 +182,9 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
 
     switch (curve & 0xFFFF)
     {
-        case TrackElemType::EndStation:
-        case TrackElemType::SBendLeft:
-        case TrackElemType::SBendRight:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kSBendLeft:
+        case TrackElemType::kSBendRight:
             if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
             {
                 return std::make_tuple(false, 0);
@@ -197,8 +197,8 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
 
             return std::make_tuple(true, static_cast<track_type_t>(curve & 0xFFFF));
 
-        case TrackElemType::LeftVerticalLoop:
-        case TrackElemType::RightVerticalLoop:
+        case TrackElemType::kLeftVerticalLoop:
+        case TrackElemType::kRightVerticalLoop:
             if (startBank != TrackRoll::None || endBank != TrackRoll::None)
             {
                 return std::make_tuple(false, 0);
@@ -274,26 +274,26 @@ bool WindowRideConstructionUpdateState(
     {
         switch (trackType)
         {
-            case TrackElemType::FlatToUp60:
-                trackType = TrackElemType::FlatToUp60LongBase;
+            case TrackElemType::kFlatToUp60:
+                trackType = TrackElemType::kFlatToUp60LongBase;
                 break;
 
-            case TrackElemType::Up60ToFlat:
-                trackType = TrackElemType::Up60ToFlatLongBase;
+            case TrackElemType::kUp60ToFlat:
+                trackType = TrackElemType::kUp60ToFlatLongBase;
                 break;
 
-            case TrackElemType::FlatToDown60:
-                trackType = TrackElemType::FlatToDown60LongBase;
+            case TrackElemType::kFlatToDown60:
+                trackType = TrackElemType::kFlatToDown60LongBase;
                 break;
 
-            case TrackElemType::Down60ToFlat:
-                trackType = TrackElemType::Down60ToFlatLongBase;
+            case TrackElemType::kDown60ToFlat:
+                trackType = TrackElemType::kDown60ToFlatLongBase;
                 break;
 
-            case TrackElemType::DiagFlatToUp60:
-            case TrackElemType::DiagUp60ToFlat:
-            case TrackElemType::DiagFlatToDown60:
-            case TrackElemType::DiagDown60ToFlat:
+            case TrackElemType::kDiagFlatToUp60:
+            case TrackElemType::kDiagUp60ToFlat:
+            case TrackElemType::kDiagFlatToDown60:
+            case TrackElemType::kDiagDown60ToFlat:
                 return true;
         }
     }
@@ -306,7 +306,7 @@ bool WindowRideConstructionUpdateState(
         const auto& ted = GetTrackElementDescriptor(trackType);
         auto alternativeType = ted.AlternativeType;
         // this method limits the track element types that can be used
-        if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
+        if (alternativeType != TrackElemType::kNone && (availablePieces.get(trackType)))
         {
             trackType = alternativeType;
             if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
@@ -364,7 +364,7 @@ bool WindowRideConstructionUpdateState(
         liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
 
-        if (trackType == TrackElemType::LeftCurvedLiftHill || trackType == TrackElemType::RightCurvedLiftHill)
+        if (trackType == TrackElemType::kLeftCurvedLiftHill || trackType == TrackElemType::kRightCurvedLiftHill)
         {
             liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
         }

@@ -990,43 +990,43 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return DinghySlideTrackCoveredFlat;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return DinghySlideTrackCovered25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return DinghySlideTrackCovered60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return DinghySlideTrackCoveredFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return DinghySlideTrackCovered25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return DinghySlideTrackCovered60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return DinghySlideTrackCovered25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return DinghySlideTrackCovered25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return DinghySlideTrackCovered60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return DinghySlideTrackCoveredFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return DinghySlideTrackCovered25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return DinghySlideTrackCovered60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return DinghySlideTrackCovered25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return DinghySlideTrackCoveredLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return DinghySlideTrackCoveredRightQuarterTurn5;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return DinghySlideTrackCoveredSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return DinghySlideTrackCoveredSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return DinghySlideTrackCoveredLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return DinghySlideTrackCoveredRightQuarterTurn3;
     }
 

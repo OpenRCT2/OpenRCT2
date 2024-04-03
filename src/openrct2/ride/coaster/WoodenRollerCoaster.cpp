@@ -519,7 +519,7 @@ static void WoodenRCTrackStation(
     };
 
     int32_t trackType = trackElement.GetTrackType();
-    if (trackType == TrackElemType::EndStation)
+    if (trackType == TrackElemType::kEndStation)
     {
         const auto brakeImg = trackElement.IsBrakeClosed() ? _wooden_rc_station_block_brakes_image_ids[direction][1]
                                                            : _wooden_rc_station_block_brakes_image_ids[direction][0];
@@ -16134,291 +16134,291 @@ template<bool isClassic> TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClas
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return WoodenRCTrackFlat<isClassic>;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return WoodenRCTrackStation<isClassic>;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return WoodenRCTrack25DegUp<isClassic>;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return WoodenRCTrack60DegUp<isClassic>;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return WoodenRCTrackFlatTo25DegUp<isClassic>;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return WoodenRCTrack25DegUpTo60DegUp<isClassic>;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return WoodenRCTrack60DegUpTo25DegUp<isClassic>;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return WoodenRCTrack25DegUpToFlat<isClassic>;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return WoodenRCTrack25DegDown<isClassic>;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return WoodenRCTrack60DegDown<isClassic>;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return WoodenRCTrackFlatTo25DegDown<isClassic>;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return WoodenRCTrack25DegDownTo60DegDown<isClassic>;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return WoodenRCTrack60DegDownTo25DegDown<isClassic>;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return WoodenRCTrack25DegDownToFlat<isClassic>;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return WoodenRCTrackLeftQuarterTurn5<isClassic>;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return WoodenRCTrackRightQuarterTurn5<isClassic>;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return WoodenRCTrackFlatToLeftBank<isClassic>;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return WoodenRCTrackFlatToRightBank<isClassic>;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return WoodenRCTrackLeftBankToFlat<isClassic>;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return WoodenRCTrackRightBankToFlat<isClassic>;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return WoodenRCTrackBankedLeftQuarterTurn5<isClassic>;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return WoodenRCTrackBankedRightQuarterTurn5<isClassic>;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::kLeftBankToUp25:
             return WoodenRCTrackLeftBankTo25DegUp<isClassic>;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::kRightBankToUp25:
             return WoodenRCTrackRightBankTo25DegUp<isClassic>;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::kUp25ToLeftBank:
             return WoodenRCTrack25DegUpToLeftBank<isClassic>;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::kUp25ToRightBank:
             return WoodenRCTrack25DegUpToRightBank<isClassic>;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::kLeftBankToDown25:
             return WoodenRCTrackLeftBankTo25DegDown<isClassic>;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::kRightBankToDown25:
             return WoodenRCTrackRightBankTo25DegDown<isClassic>;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::kDown25ToLeftBank:
             return WoodenRCTrack25DegDownToLeftBank<isClassic>;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::kDown25ToRightBank:
             return WoodenRCTrack25DegDownToRightBank<isClassic>;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return WoodenRCTrackLeftBank<isClassic>;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return WoodenRCTrackRightBank<isClassic>;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::kLeftQuarterTurn5TilesUp25:
             return WoodenRCTrackLeftQuarterTurn525DegUp<isClassic>;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::kRightQuarterTurn5TilesUp25:
             return WoodenRCTrackRightQuarterTurn525DegUp<isClassic>;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::kLeftQuarterTurn5TilesDown25:
             return WoodenRCTrackLeftQuarterTurn525DegDown<isClassic>;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::kRightQuarterTurn5TilesDown25:
             return WoodenRCTrackRightQuarterTurn525DegDown<isClassic>;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return WoodenRCTrackSBendLeft<isClassic>;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return WoodenRCTrackSBendRight<isClassic>;
-        case TrackElemType::LeftVerticalLoop:
+        case TrackElemType::kLeftVerticalLoop:
             return WoodenRCTrackLeftVerticalLoop<isClassic>;
-        case TrackElemType::RightVerticalLoop:
+        case TrackElemType::kRightVerticalLoop:
             return WoodenRCTrackRightVerticalLoop<isClassic>;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return WoodenRCTrackLeftQuarterTurn3<isClassic>;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return WoodenRCTrackRightQuarterTurn3<isClassic>;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
             return WoodenRCTrackLeftQuarterTurn3Bank<isClassic>;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
             return WoodenRCTrackRightQuarterTurn3Bank<isClassic>;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
             return WoodenRCTrackLeftQuarterTurn325DegUp<isClassic>;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
             return WoodenRCTrackRightQuarterTurn325DegUp<isClassic>;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
             return WoodenRCTrackLeftQuarterTurn325DegDown<isClassic>;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
             return WoodenRCTrackRightQuarterTurn325DegDown<isClassic>;
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::kLeftHalfBankedHelixUpSmall:
             return WoodenRCTrackLeftHalfBankedHelixUpSmall<isClassic>;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::kRightHalfBankedHelixUpSmall:
             return WoodenRCTrackRightHalfBankedHelixUpSmall<isClassic>;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::kLeftHalfBankedHelixDownSmall:
             return WoodenRCTrackLeftHalfBankedHelixDownSmall<isClassic>;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::kRightHalfBankedHelixDownSmall:
             return WoodenRCTrackRightHalfBankedHelixDownSmall<isClassic>;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::kLeftHalfBankedHelixUpLarge:
             return WoodenRCTrackLeftHalfBankedHelixUpLarge<isClassic>;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::kRightHalfBankedHelixUpLarge:
             return WoodenRCTrackRightHalfBankedHelixUpLarge<isClassic>;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::kLeftHalfBankedHelixDownLarge:
             return WoodenRCTrackLeftHalfBankedHelixDownLarge<isClassic>;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::kRightHalfBankedHelixDownLarge:
             return WoodenRCTrackRightHalfBankedHelixDownLarge<isClassic>;
-        case TrackElemType::LeftQuarterTurn1TileUp60:
+        case TrackElemType::kLeftQuarterTurn1TileUp60:
             return WoodenRCTrackLeftQuarterTurn160DegUp<isClassic>;
-        case TrackElemType::RightQuarterTurn1TileUp60:
+        case TrackElemType::kRightQuarterTurn1TileUp60:
             return WoodenRCTrackRightQuarterTurn160DegUp<isClassic>;
-        case TrackElemType::LeftQuarterTurn1TileDown60:
+        case TrackElemType::kLeftQuarterTurn1TileDown60:
             return WoodenRCTrackLeftQuarterTurn160DegDown<isClassic>;
-        case TrackElemType::RightQuarterTurn1TileDown60:
+        case TrackElemType::kRightQuarterTurn1TileDown60:
             return WoodenRCTrackRightQuarterTurn160DegDown<isClassic>;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return WoodenRCTrackBrakes<isClassic>;
-        case TrackElemType::Up25LeftBanked:
+        case TrackElemType::kUp25LeftBanked:
             return WoodenRCTrack25DegUpLeftBanked<isClassic>;
-        case TrackElemType::Up25RightBanked:
+        case TrackElemType::kUp25RightBanked:
             return WoodenRCTrack25DegUpRightBanked<isClassic>;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return WoodenRCTrackOnRidePhoto<isClassic>;
-        case TrackElemType::Down25LeftBanked:
+        case TrackElemType::kDown25LeftBanked:
             return WoodenRCTrack25DegDownLeftBanked<isClassic>;
-        case TrackElemType::Down25RightBanked:
+        case TrackElemType::kDown25RightBanked:
             return WoodenRCTrack25DegDownRightBanked<isClassic>;
-        case TrackElemType::Watersplash:
+        case TrackElemType::kWatersplash:
             return WoodenRCTrackWaterSplash<isClassic>;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return WoodenRCTrackLeftEighthToDiag<isClassic>;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return WoodenRCTrackRightEighthToDiag<isClassic>;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return WoodenRCTrackLeftEighthToOrthogonal<isClassic>;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return WoodenRCTrackRightEighthToOrthogonal<isClassic>;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::kLeftEighthBankToDiag:
             return WoodenRCTrackLeftEighthBankToDiag<isClassic>;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::kRightEighthBankToDiag:
             return WoodenRCTrackRightEighthBankToDiag<isClassic>;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::kLeftEighthBankToOrthogonal:
             return WoodenRCTrackLeftEighthBankToOrthogonal<isClassic>;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::kRightEighthBankToOrthogonal:
             return WoodenRCTrackRightEighthBankToOrthogonal<isClassic>;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return WoodenRCTrackDiagFlat<isClassic>;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return WoodenRCTrackDiag25DegUp<isClassic>;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::kDiagUp60:
             return WoodenRCTrackDiag60DegUp<isClassic>;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return WoodenRCTrackDiagFlatTo25DegUp<isClassic>;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::kDiagUp25ToUp60:
             return WoodenRCTrackDiag25DegUpTo60DegUp<isClassic>;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::kDiagUp60ToUp25:
             return WoodenRCTrackDiag60DegUpTo25DegUp<isClassic>;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return WoodenRCTrackDiag25DegUpToFlat<isClassic>;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return WoodenRCTrackDiag25DegDown<isClassic>;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::kDiagDown60:
             return WoodenRCTrackDiag60DegDown<isClassic>;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return WoodenRCTrackDiagFlatTo25DegDown<isClassic>;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::kDiagDown25ToDown60:
             return WoodenRCTrackDiag25DegDownTo60DegDown<isClassic>;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::kDiagDown60ToDown25:
             return WoodenRCTrackDiag60DegDownTo25DegDown<isClassic>;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return WoodenRCTrackDiag25DegDownToFlat<isClassic>;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::kDiagFlatToLeftBank:
             return WoodenRCTrackDiagFlatToLeftBank<isClassic>;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::kDiagFlatToRightBank:
             return WoodenRCTrackDiagFlatToRightBank<isClassic>;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::kDiagLeftBankToFlat:
             return WoodenRCTrackDiagLeftBankToFlat<isClassic>;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::kDiagRightBankToFlat:
             return WoodenRCTrackDiagRightBankToFlat<isClassic>;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::kDiagLeftBankToUp25:
             return WoodenRCTrackDiagLeftBankTo25DegUp<isClassic>;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::kDiagRightBankToUp25:
             return WoodenRCTrackDiagRightBankTo25DegUp<isClassic>;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::kDiagUp25ToLeftBank:
             return WoodenRCTrackDiag25DegUpToLeftBank<isClassic>;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::kDiagUp25ToRightBank:
             return WoodenRCTrackDiag25DegUpToRightBank<isClassic>;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::kDiagLeftBankToDown25:
             return WoodenRCTrackDiagLeftBankTo25DegDown<isClassic>;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::kDiagRightBankToDown25:
             return WoodenRCTrackDiagRightBankTo25DegDown<isClassic>;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::kDiagDown25ToLeftBank:
             return WoodenRCTrackDiag25DegDownToLeftBank<isClassic>;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::kDiagDown25ToRightBank:
             return WoodenRCTrackDiag25DegDownToRightBank<isClassic>;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::kDiagLeftBank:
             return WoodenRCTrackDiagLeftBank<isClassic>;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::kDiagRightBank:
             return WoodenRCTrackDiagRightBank<isClassic>;
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftBankToLeftQuarterTurn3TilesUp25:
             return WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp<isClassic>;
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightBankToRightQuarterTurn3TilesUp25:
             return WoodenRCTrackRightBankToRightQuarterTurn325DegUp<isClassic>;
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25ToLeftBank:
             return WoodenRCTrackLeftQuarterTurn325DegDownToLeftBank<isClassic>;
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::kRightQuarterTurn3TilesDown25ToRightBank:
             return WoodenRCTrackRightQuarterTurn325DegDownToRightBank<isClassic>;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return WoodenRCTrackBlockBrakes<isClassic>;
-        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn3TileUp25:
             return WoodenRCTrackLeftBankedQuarterTurn325DegUp<isClassic>;
-        case TrackElemType::RightBankedQuarterTurn3TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn3TileUp25:
             return WoodenRCTrackRightBankedQuarterTurn325DegUp<isClassic>;
-        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
+        case TrackElemType::kLeftBankedQuarterTurn3TileDown25:
             return WoodenRCTrackLeftBankedQuarterTurn325DegDown<isClassic>;
-        case TrackElemType::RightBankedQuarterTurn3TileDown25:
+        case TrackElemType::kRightBankedQuarterTurn3TileDown25:
             return WoodenRCTrackRightBankedQuarterTurn325DegDown<isClassic>;
-        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn5TileUp25:
             return WoodenRCTrackLeftBankedQuarterTurn525DegUp<isClassic>;
-        case TrackElemType::RightBankedQuarterTurn5TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn5TileUp25:
             return WoodenRCTrackRightBankedQuarterTurn525DegUp<isClassic>;
-        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
+        case TrackElemType::kLeftBankedQuarterTurn5TileDown25:
             return WoodenRCTrackLeftBankedQuarterTurn525DegDown<isClassic>;
-        case TrackElemType::RightBankedQuarterTurn5TileDown25:
+        case TrackElemType::kRightBankedQuarterTurn5TileDown25:
             return WoodenRCTrackRightBankedQuarterTurn525DegDown<isClassic>;
-        case TrackElemType::Up25ToLeftBankedUp25:
+        case TrackElemType::kUp25ToLeftBankedUp25:
             return WoodenRCTrack25DegUpToLeftBanked25DegUp<isClassic>;
-        case TrackElemType::Up25ToRightBankedUp25:
+        case TrackElemType::kUp25ToRightBankedUp25:
             return WoodenRCTrack25DegUpToRightBanked25DegUp<isClassic>;
-        case TrackElemType::LeftBankedUp25ToUp25:
+        case TrackElemType::kLeftBankedUp25ToUp25:
             return WoodenRCTrackLeftBanked25DegUpTo25DegUp<isClassic>;
-        case TrackElemType::RightBankedUp25ToUp25:
+        case TrackElemType::kRightBankedUp25ToUp25:
             return WoodenRCTrackRightBanked25DegUpTo25DegUp<isClassic>;
-        case TrackElemType::Down25ToLeftBankedDown25:
+        case TrackElemType::kDown25ToLeftBankedDown25:
             return WoodenRCTrack25DegDownToLeftBanked25DegDown<isClassic>;
-        case TrackElemType::Down25ToRightBankedDown25:
+        case TrackElemType::kDown25ToRightBankedDown25:
             return WoodenRCTrack25DegDownToRightBanked25DegDown<isClassic>;
-        case TrackElemType::LeftBankedDown25ToDown25:
+        case TrackElemType::kLeftBankedDown25ToDown25:
             return WoodenRCTrackLeftBanked25DegDownTo25DegDown<isClassic>;
-        case TrackElemType::RightBankedDown25ToDown25:
+        case TrackElemType::kRightBankedDown25ToDown25:
             return WoodenRCTrackRightBanked25DegDownTo25DegDown<isClassic>;
-        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::kLeftBankedFlatToLeftBankedUp25:
             return WoodenRCTrackLeftBankedFlatToLeftBanked25DegUp<isClassic>;
-        case TrackElemType::RightBankedFlatToRightBankedUp25:
+        case TrackElemType::kRightBankedFlatToRightBankedUp25:
             return WoodenRCTrackRightBankedFlatToRightBanked25DegUp<isClassic>;
-        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::kLeftBankedUp25ToLeftBankedFlat:
             return WoodenRCTrackLeftBanked25DegUpToLeftBankedFlat<isClassic>;
-        case TrackElemType::RightBankedUp25ToRightBankedFlat:
+        case TrackElemType::kRightBankedUp25ToRightBankedFlat:
             return WoodenRCTrackRightBanked25DegUpToRightBankedFlat<isClassic>;
-        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::kLeftBankedFlatToLeftBankedDown25:
             return WoodenRCTrackLeftBankedFlatToLeftBanked25DegDown<isClassic>;
-        case TrackElemType::RightBankedFlatToRightBankedDown25:
+        case TrackElemType::kRightBankedFlatToRightBankedDown25:
             return WoodenRCTrackRightBankedFlatToRightBanked25DegDown<isClassic>;
-        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::kLeftBankedDown25ToLeftBankedFlat:
             return WoodenRCTrackLeftBanked25DegDownToLeftBankedFlat<isClassic>;
-        case TrackElemType::RightBankedDown25ToRightBankedFlat:
+        case TrackElemType::kRightBankedDown25ToRightBankedFlat:
             return WoodenRCTrackRightBanked25DegDownToRightBankedFlat<isClassic>;
-        case TrackElemType::FlatToLeftBankedUp25:
+        case TrackElemType::kFlatToLeftBankedUp25:
             return WoodenRCTrackFlatToLeftBanked25DegUp<isClassic>;
-        case TrackElemType::FlatToRightBankedUp25:
+        case TrackElemType::kFlatToRightBankedUp25:
             return WoodenRCTrackFlatToRightBanked25DegUp<isClassic>;
-        case TrackElemType::LeftBankedUp25ToFlat:
+        case TrackElemType::kLeftBankedUp25ToFlat:
             return WoodenRCTrackLeftBanked25DegUpToFlat<isClassic>;
-        case TrackElemType::RightBankedUp25ToFlat:
+        case TrackElemType::kRightBankedUp25ToFlat:
             return WoodenRCTrackRightBanked25DegUpToFlat<isClassic>;
-        case TrackElemType::FlatToLeftBankedDown25:
+        case TrackElemType::kFlatToLeftBankedDown25:
             return WoodenRCTrackFlatToLeftBanked25DegDown<isClassic>;
-        case TrackElemType::FlatToRightBankedDown25:
+        case TrackElemType::kFlatToRightBankedDown25:
             return WoodenRCTrackFlatToRightBanked25DegDown<isClassic>;
-        case TrackElemType::LeftBankedDown25ToFlat:
+        case TrackElemType::kLeftBankedDown25ToFlat:
             return WoodenRCTrackLeftBanked25DegDownToFlat<isClassic>;
-        case TrackElemType::RightBankedDown25ToFlat:
+        case TrackElemType::kRightBankedDown25ToFlat:
             return WoodenRCTrackRightBanked25DegDownToFlat<isClassic>;
-        case TrackElemType::Booster:
+        case TrackElemType::kBooster:
             return WoodenRCTrackBooster<isClassic>;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::kDiagBrakes:
             return WoodenRCTrackDiagBrakes<isClassic>;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             return WoodenRCTrackDiagBlockBrakes<isClassic>;
     }
     return nullptr;

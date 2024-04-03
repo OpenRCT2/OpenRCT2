@@ -603,7 +603,7 @@ static void ride_construction_reset_current_piece()
 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride->num_stations == 0)
     {
-        _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
+        _currentTrackCurve = rtd.StartTrackPiece | kRideConstructionSpecialPieceSelected;
         _currentTrackPitchEnd = TrackPitch::None;
         _currentTrackRollEnd = TrackRoll::None;
         _currentTrackLiftHill = 0;
@@ -617,7 +617,7 @@ static void ride_construction_reset_current_piece()
     }
     else
     {
-        _currentTrackCurve = TrackElemType::None;
+        _currentTrackCurve = TrackElemType::kNone;
         _rideConstructionState = RideConstructionState::State0;
     }
 }
@@ -1121,7 +1121,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
     InputSetFlag(INPUT_FLAG_6, true);
 
-    _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
+    _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | kRideConstructionSpecialPieceSelected;
     _currentTrackPitchEnd = TrackPitch::None;
     _currentTrackRollEnd = TrackRoll::None;
     _currentTrackLiftHill = 0;
@@ -1235,7 +1235,7 @@ CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY&
                 const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
                 if (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
-                    if (trackElement->GetTrackType() == TrackElemType::Maze)
+                    if (trackElement->GetTrackType() == TrackElemType::kMaze)
                     {
                         gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
                     }
@@ -1266,7 +1266,7 @@ CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY&
 
     entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
 
-    if (ride->type == RIDE_TYPE_NULL)
+    if (ride->type == kRideTypeNull)
     {
         entranceExitCoords.SetNull();
         return entranceExitCoords;
@@ -1313,7 +1313,7 @@ CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY&
                 auto* trackElement = tileElement->AsTrack();
                 if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                     continue;
-                if (trackElement->GetTrackType() == TrackElemType::Maze)
+                if (trackElement->GetTrackType() == TrackElemType::kMaze)
                 {
                     // if it's a maze, it can place the entrance and exit immediately
                     entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
@@ -1539,7 +1539,7 @@ void Ride::ValidateStations()
 
                 // get the StationIndex for the station
                 StationIndex stationId = StationIndex::FromUnderlying(0);
-                if (trackType != TrackElemType::Maze)
+                if (trackType != TrackElemType::kMaze)
                 {
                     uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 

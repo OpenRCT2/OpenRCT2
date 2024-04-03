@@ -18,15 +18,15 @@
 // clang-format off
 constexpr RideTypeDescriptor kHyperTwisterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = { TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_CURVE_BANKED, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_SLOPE_STEEP_LONG, TRACK_SLOPE_VERTICAL, TRACK_CURVE_VERTICAL, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
     .ExtraTrackPieces = { TRACK_LIFT_HILL_STEEP, TRACK_BRAKE_FOR_DROP, TRACK_BOOSTER, TRACK_POWERED_LIFT },
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionBolligerMabillard<MetalSupportType::Tubes>),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kHyperTwisterRTD =
     .OperatingSettings = { 10, 27, 30, 17, 68, 0 },
     .Naming = { STR_RIDE_NAME_HYPER_TWISTER, STR_RIDE_DESCRIPTION_HYPER_TWISTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station},
-    .EnumName = nameof(RIDE_TYPE_HYPER_TWISTER),
+    .kEnumName = nameof(RIDE_TYPE_HYPER_TWISTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 61, 24, 8, 9, },
     .MaxMass = 31,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kHyperTwisterRTD =
     .UpkeepCosts = { 43, 20, 80, 11, 3, 10 },
     .BuildCosts = { 60.00_GBP, 2.50_GBP, 55, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(

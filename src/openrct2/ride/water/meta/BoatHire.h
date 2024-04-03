@@ -18,12 +18,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kBoatHireRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_WATER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_CURVE_VERY_SMALL},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionBoatHire),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER |
                      RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kBoatHireRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
-    .EnumName = nameof(RIDE_TYPE_BOAT_HIRE),
+    .kEnumName = nameof(RIDE_TYPE_BOAT_HIRE),
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kBoatHireRTD =
     .UpkeepCosts = { 50, 1, 0, 4, 0, 0 },
     .BuildCosts = { 27.50_GBP, 0.00_GBP, 5, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(

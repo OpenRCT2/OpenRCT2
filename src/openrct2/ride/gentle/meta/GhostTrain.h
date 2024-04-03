@@ -18,14 +18,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kGhostTrainRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL, TRACK_BRAKES, TRACK_SPINNING_TUNNEL},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionGhostTrain),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK |
@@ -37,7 +37,7 @@ constexpr RideTypeDescriptor kGhostTrainRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_GHOST_TRAIN, STR_RIDE_DESCRIPTION_GHOST_TRAIN },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_GHOST_TRAIN),
+    .kEnumName = nameof(RIDE_TYPE_GHOST_TRAIN),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 8, 24, 6, 7, },
     .MaxMass = 2,
@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor kGhostTrainRTD =
     .UpkeepCosts = { 80, 20, 0, 8, 3, 5 },
     .BuildCosts = { 13.00_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_HORROR,
+    .DefaultMusic = kMusicObjectHorror,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(

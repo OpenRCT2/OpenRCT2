@@ -222,7 +222,7 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (TrackTypeIsStation(TrackType) || TrackType == TrackElemType::TowerBase)
+    if (TrackTypeIsStation(TrackType) || TrackType == TrackElemType::kTowerBase)
     {
         return (Sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -274,7 +274,7 @@ uint16_t RCT12TrackElement::GetMazeEntry() const
 
 uint8_t RCT12TrackElement::GetPhotoTimeout() const
 {
-    if (GetTrackType() == TrackElemType::OnRidePhoto)
+    if (GetTrackType() == TrackElemType::kOnRidePhoto)
     {
         return Sequence >> 4;
     }
@@ -575,59 +575,59 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s)
 
 namespace RCT12FormatCode
 {
-    constexpr codepoint_t kNewline = 5;
-    constexpr codepoint_t kNewlineSmall = 6;
-    constexpr codepoint_t kColourBlack = 142;
-    constexpr codepoint_t kColourGrey = 143;
-    constexpr codepoint_t kColourWhite = 144;
-    constexpr codepoint_t kColourRed = 145;
-    constexpr codepoint_t kColourGreen = 146;
-    constexpr codepoint_t kColourYellow = 147;
-    constexpr codepoint_t kColourTopaz = 148;
-    constexpr codepoint_t kColourCeladon = 149;
-    constexpr codepoint_t kColourBabyBlue = 150;
-    constexpr codepoint_t kColourPaleLavender = 151;
-    constexpr codepoint_t kColourPaleGold = 152;
-    constexpr codepoint_t kColourLightPink = 153;
-    constexpr codepoint_t kColourPearlAqua = 154;
-    constexpr codepoint_t kColourPaleSilver = 155;
+    constexpr codepoint_t Newline = 5;
+    constexpr codepoint_t NewlineSmall = 6;
+    constexpr codepoint_t ColourBlack = 142;
+    constexpr codepoint_t ColourGrey = 143;
+    constexpr codepoint_t ColourWhite = 144;
+    constexpr codepoint_t ColourRed = 145;
+    constexpr codepoint_t ColourGreen = 146;
+    constexpr codepoint_t ColourYellow = 147;
+    constexpr codepoint_t ColourTopaz = 148;
+    constexpr codepoint_t ColourCeladon = 149;
+    constexpr codepoint_t ColourBabyBlue = 150;
+    constexpr codepoint_t ColourPaleLavender = 151;
+    constexpr codepoint_t ColourPaleGold = 152;
+    constexpr codepoint_t ColourLightPink = 153;
+    constexpr codepoint_t ColourPearlAqua = 154;
+    constexpr codepoint_t ColourPaleSilver = 155;
 } // namespace RCT12FormatCode
 
 static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
 {
     switch (codepoint)
     {
-        case RCT12FormatCode::kNewline:
+        case RCT12FormatCode::Newline:
             return FormatToken::Newline;
-        case RCT12FormatCode::kNewlineSmall:
+        case RCT12FormatCode::NewlineSmall:
             return FormatToken::NewlineSmall;
-        case RCT12FormatCode::kColourBlack:
+        case RCT12FormatCode::ColourBlack:
             return FormatToken::ColourBlack;
-        case RCT12FormatCode::kColourGrey:
+        case RCT12FormatCode::ColourGrey:
             return FormatToken::ColourGrey;
-        case RCT12FormatCode::kColourWhite:
+        case RCT12FormatCode::ColourWhite:
             return FormatToken::ColourWhite;
-        case RCT12FormatCode::kColourRed:
+        case RCT12FormatCode::ColourRed:
             return FormatToken::ColourRed;
-        case RCT12FormatCode::kColourGreen:
+        case RCT12FormatCode::ColourGreen:
             return FormatToken::ColourGreen;
-        case RCT12FormatCode::kColourYellow:
+        case RCT12FormatCode::ColourYellow:
             return FormatToken::ColourYellow;
-        case RCT12FormatCode::kColourTopaz:
+        case RCT12FormatCode::ColourTopaz:
             return FormatToken::ColourTopaz;
-        case RCT12FormatCode::kColourCeladon:
+        case RCT12FormatCode::ColourCeladon:
             return FormatToken::ColourCeladon;
-        case RCT12FormatCode::kColourBabyBlue:
+        case RCT12FormatCode::ColourBabyBlue:
             return FormatToken::ColourBabyBlue;
-        case RCT12FormatCode::kColourPaleLavender:
+        case RCT12FormatCode::ColourPaleLavender:
             return FormatToken::ColourPaleLavender;
-        case RCT12FormatCode::kColourPaleGold:
+        case RCT12FormatCode::ColourPaleGold:
             return FormatToken::ColourPaleGold;
-        case RCT12FormatCode::kColourLightPink:
+        case RCT12FormatCode::ColourLightPink:
             return FormatToken::ColourLightPink;
-        case RCT12FormatCode::kColourPearlAqua:
+        case RCT12FormatCode::ColourPearlAqua:
             return FormatToken::ColourPearlAqua;
-        case RCT12FormatCode::kColourPaleSilver:
+        case RCT12FormatCode::ColourPaleSilver:
             return FormatToken::ColourPaleSilver;
         default:
             return FormatToken::Unknown;
@@ -664,26 +664,26 @@ track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType)
 {
     switch (origTrackType)
     {
-        case TrackElemType::FlatTrack1x4A_Alias:
-            return TrackElemType::FlatTrack1x4A;
-        case TrackElemType::FlatTrack2x2_Alias:
-            return TrackElemType::FlatTrack2x2;
-        case TrackElemType::FlatTrack4x4_Alias:
-            return TrackElemType::FlatTrack4x4;
-        case TrackElemType::FlatTrack2x4_Alias:
-            return TrackElemType::FlatTrack2x4;
-        case TrackElemType::FlatTrack1x5_Alias:
-            return TrackElemType::FlatTrack1x5;
-        case TrackElemType::FlatTrack1x1A_Alias:
-            return TrackElemType::FlatTrack1x1A;
-        case TrackElemType::FlatTrack1x4B_Alias:
-            return TrackElemType::FlatTrack1x4B;
-        case TrackElemType::FlatTrack1x1B_Alias:
-            return TrackElemType::FlatTrack1x1B;
-        case TrackElemType::FlatTrack1x4C_Alias:
-            return TrackElemType::FlatTrack1x4C;
-        case TrackElemType::FlatTrack3x3_Alias:
-            return TrackElemType::FlatTrack3x3;
+        case TrackElemType::kFlatTrack1x4A_Alias:
+            return TrackElemType::kFlatTrack1x4A;
+        case TrackElemType::kFlatTrack2x2_Alias:
+            return TrackElemType::kFlatTrack2x2;
+        case TrackElemType::kFlatTrack4x4_Alias:
+            return TrackElemType::kFlatTrack4x4;
+        case TrackElemType::kFlatTrack2x4_Alias:
+            return TrackElemType::kFlatTrack2x4;
+        case TrackElemType::kFlatTrack1x5_Alias:
+            return TrackElemType::kFlatTrack1x5;
+        case TrackElemType::kFlatTrack1x1A_Alias:
+            return TrackElemType::kFlatTrack1x1A;
+        case TrackElemType::kFlatTrack1x4B_Alias:
+            return TrackElemType::kFlatTrack1x4B;
+        case TrackElemType::kFlatTrack1x1B_Alias:
+            return TrackElemType::kFlatTrack1x1B;
+        case TrackElemType::kFlatTrack1x4C_Alias:
+            return TrackElemType::kFlatTrack1x4C;
+        case TrackElemType::kFlatTrack3x3_Alias:
+            return TrackElemType::kFlatTrack3x3;
     }
 
     return origTrackType;
@@ -693,26 +693,26 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
 {
     switch (origTrackType)
     {
-        case TrackElemType::FlatTrack1x4A:
-            return TrackElemType::FlatTrack1x4A_Alias;
-        case TrackElemType::FlatTrack2x2:
-            return TrackElemType::FlatTrack2x2_Alias;
-        case TrackElemType::FlatTrack4x4:
-            return TrackElemType::FlatTrack4x4_Alias;
-        case TrackElemType::FlatTrack2x4:
-            return TrackElemType::FlatTrack2x4_Alias;
-        case TrackElemType::FlatTrack1x5:
-            return TrackElemType::FlatTrack1x5_Alias;
-        case TrackElemType::FlatTrack1x1A:
-            return TrackElemType::FlatTrack1x1A_Alias;
-        case TrackElemType::FlatTrack1x4B:
-            return TrackElemType::FlatTrack1x4B_Alias;
-        case TrackElemType::FlatTrack1x1B:
-            return TrackElemType::FlatTrack1x1B_Alias;
-        case TrackElemType::FlatTrack1x4C:
-            return TrackElemType::FlatTrack1x4C_Alias;
-        case TrackElemType::FlatTrack3x3:
-            return TrackElemType::FlatTrack3x3_Alias;
+        case TrackElemType::kFlatTrack1x4A:
+            return TrackElemType::kFlatTrack1x4A_Alias;
+        case TrackElemType::kFlatTrack2x2:
+            return TrackElemType::kFlatTrack2x2_Alias;
+        case TrackElemType::kFlatTrack4x4:
+            return TrackElemType::kFlatTrack4x4_Alias;
+        case TrackElemType::kFlatTrack2x4:
+            return TrackElemType::kFlatTrack2x4_Alias;
+        case TrackElemType::kFlatTrack1x5:
+            return TrackElemType::kFlatTrack1x5_Alias;
+        case TrackElemType::kFlatTrack1x1A:
+            return TrackElemType::kFlatTrack1x1A_Alias;
+        case TrackElemType::kFlatTrack1x4B:
+            return TrackElemType::kFlatTrack1x4B_Alias;
+        case TrackElemType::kFlatTrack1x1B:
+            return TrackElemType::kFlatTrack1x1B_Alias;
+        case TrackElemType::kFlatTrack1x4C:
+            return TrackElemType::kFlatTrack1x4C_Alias;
+        case TrackElemType::kFlatTrack3x3:
+            return TrackElemType::kFlatTrack3x3_Alias;
     }
 
     return origTrackType;
@@ -890,7 +890,7 @@ void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
     else
     {
         auto speedOrSeatRotation = flags & EnumValue(TD46Flags::SpeedOrSeatRotation);
-        if (TrackTypeHasSpeedSetting(target.Type) && target.Type != TrackElemType::BlockBrakes)
+        if (TrackTypeHasSpeedSetting(target.Type) && target.Type != TrackElemType::kBlockBrakes)
         {
             target.BrakeBoosterSpeed = speedOrSeatRotation << 1;
         }
@@ -914,7 +914,7 @@ uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
     {
         trackFlags = (source.StationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
     }
-    else if (TrackTypeHasSpeedSetting(source.Type) && source.Type != TrackElemType::BlockBrakes)
+    else if (TrackTypeHasSpeedSetting(source.Type) && source.Type != TrackElemType::kBlockBrakes)
     {
         trackFlags = (source.BrakeBoosterSpeed >> 1);
     }

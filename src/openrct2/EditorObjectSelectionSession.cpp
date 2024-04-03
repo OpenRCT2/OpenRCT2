@@ -104,7 +104,7 @@ static void SetupTrackDesignerObjects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER))
                     {

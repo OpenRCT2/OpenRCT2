@@ -18,12 +18,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kMazeRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::Maze,
+    .StartTrackPiece = TrackElemType::kMaze,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMaze),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kMazeRTD =
     .OperatingSettings = { 1, 64, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MAZE),
+    .kEnumName = nameof(RIDE_TYPE_MAZE),
     .AvailableBreakdowns = 0,
     .Heights = { 6, 24, 0, 1, },
     .MaxMass = 18,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kMazeRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 8, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(

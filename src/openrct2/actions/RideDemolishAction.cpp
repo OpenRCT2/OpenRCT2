@@ -224,7 +224,7 @@ money64 RideDemolishAction::DemolishTracks() const
                 const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
                 const auto type = trackElement->GetTrackType();
 
-                if (type != TrackElemType::Maze)
+                if (type != TrackElemType::kMaze)
                 {
                     auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
                     trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
@@ -241,7 +241,7 @@ money64 RideDemolishAction::DemolishTracks() const
                 }
                 else
                 {
-                    static constexpr CoordsXY kDirOffsets[] = {
+                    static constexpr CoordsXY DirOffsets[] = {
                         { 0, 0 },
                         { 0, 16 },
                         { 16, 16 },
@@ -249,7 +249,7 @@ money64 RideDemolishAction::DemolishTracks() const
                     };
                     for (Direction dir : ALL_DIRECTIONS)
                     {
-                        const CoordsXYZ off = { kDirOffsets[dir], 0 };
+                        const CoordsXYZ off = { DirOffsets[dir], 0 };
                         money64 removePrice = MazeRemoveTrack({ location + off, dir });
                         if (removePrice != kMoney64Undefined)
                         {

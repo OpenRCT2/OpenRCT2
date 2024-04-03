@@ -303,8 +303,8 @@ static Widget window_new_ride_widgets[] = {
             _filter.clear();
 
             frame_no = 0;
-            _newRideVars.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
-            _lastTrackDesignCountRideType.Type = RIDE_TYPE_NULL;
+            _newRideVars.SelectedRide = { kRideTypeNull, OBJECT_ENTRY_INDEX_NULL };
+            _lastTrackDesignCountRideType.Type = kRideTypeNull;
             _lastTrackDesignCountRideType.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
             width = 1;
@@ -331,7 +331,7 @@ static Widget window_new_ride_widgets[] = {
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
             }
 
-            if (_newRideVars.SelectedRide.Type != RIDE_TYPE_NULL && _newRideVars.SelectedRideCountdown-- == 0)
+            if (_newRideVars.SelectedRide.Type != kRideTypeNull && _newRideVars.SelectedRideCountdown-- == 0)
             {
                 RideSelect();
             }
@@ -345,7 +345,7 @@ static Widget window_new_ride_widgets[] = {
                 // Remove highlight when mouse leaves rides list
                 if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
                 {
-                    _newRideVars.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+                    _newRideVars.HighlightedRide = { kRideTypeNull, OBJECT_ENTRY_INDEX_NULL };
                     WidgetInvalidate(*this, WIDX_RIDE_LIST);
                 }
             }
@@ -424,7 +424,7 @@ static Widget window_new_ride_widgets[] = {
             if (_currentTab != RESEARCH_TAB)
             {
                 RideSelection item = _newRideVars.HighlightedRide;
-                if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (item.Type != kRideTypeNull || item.EntryIndex != OBJECT_ENTRY_INDEX_NULL)
                     DrawRideInformation(dpi, item, windowPos + ScreenCoordsXY{ 3, height - 64 }, width - 6);
             }
             else
@@ -438,7 +438,7 @@ static Widget window_new_ride_widgets[] = {
             RideSelection* listItem = _windowNewRideListItems;
 
             int32_t count = 0;
-            while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+            while (listItem->Type != kRideTypeNull || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 count++;
                 listItem++;
@@ -461,7 +461,7 @@ static Widget window_new_ride_widgets[] = {
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             RideSelection item = ScrollGetRideListItemAt(screenCoords);
-            if (item.Type == RIDE_TYPE_NULL && item.EntryIndex == OBJECT_ENTRY_INDEX_NULL)
+            if (item.Type == kRideTypeNull && item.EntryIndex == OBJECT_ENTRY_INDEX_NULL)
             {
                 return;
             }
@@ -484,7 +484,7 @@ static Widget window_new_ride_widgets[] = {
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
-            while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+            while (listItem->Type != kRideTypeNull || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 // Draw flat button rectangle
                 int32_t buttonFlags = 0;
@@ -539,7 +539,7 @@ static Widget window_new_ride_widgets[] = {
         {
             _currentTab = tab;
             frame_no = 0;
-            _newRideVars.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+            _newRideVars.HighlightedRide = { kRideTypeNull, OBJECT_ENTRY_INDEX_NULL };
             _newRideVars.SelectedRideCountdown = std::numeric_limits<uint16_t>::max();
             PopulateRideList();
             RefreshWidgetSizing();
@@ -555,7 +555,7 @@ static Widget window_new_ride_widgets[] = {
         void RideSelect()
         {
             RideSelection item = _newRideVars.SelectedRide;
-            if (item.Type == RIDE_TYPE_NULL)
+            if (item.Type == kRideTypeNull)
             {
                 return;
             }
@@ -639,7 +639,7 @@ static Widget window_new_ride_widgets[] = {
         {
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
             auto obj = static_cast<RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, rideSelection.EntryIndex));
-            return obj == nullptr ? kImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
+            return obj == nullptr ? ImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
         }
 
         void PopulateRideList()
@@ -652,7 +652,7 @@ static Widget window_new_ride_widgets[] = {
             for (int32_t i = 0; i < static_cast<int32_t>(std::size(RideTypeViewOrder)); i++)
             {
                 auto rideType = RideTypeViewOrder[i];
-                if (rideType == RIDE_TYPE_NULL)
+                if (rideType == kRideTypeNull)
                     continue;
 
                 if (GetRideTypeDescriptor(rideType).Category != currentCategory)
@@ -661,7 +661,7 @@ static Widget window_new_ride_widgets[] = {
                 nextListItem = IterateOverRideType(rideType, nextListItem, listEnd);
             }
 
-            nextListItem->Type = RIDE_TYPE_NULL;
+            nextListItem->Type = kRideTypeNull;
             nextListItem->EntryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
 
@@ -874,7 +874,7 @@ static Widget window_new_ride_widgets[] = {
         RideSelection ScrollGetRideListItemAt(const ScreenCoordsXY& screenCoords)
         {
             RideSelection result;
-            result.Type = RIDE_TYPE_NULL;
+            result.Type = kRideTypeNull;
             result.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
             if (screenCoords.x <= 0 || screenCoords.y <= 0)
@@ -888,7 +888,7 @@ static Widget window_new_ride_widgets[] = {
             int32_t index = column + (row * 5);
 
             RideSelection* listItem = _windowNewRideListItems;
-            while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+            while (listItem->Type != kRideTypeNull || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 if (index-- == 0)
                 {

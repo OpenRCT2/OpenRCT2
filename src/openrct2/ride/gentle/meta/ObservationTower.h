@@ -18,14 +18,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kObservationTowerRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {TRACK_TOWER_BASE},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::kTowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionObservationTower),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kObservationTowerRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_OBSERVATION_TOWER),
+    .kEnumName = nameof(RIDE_TYPE_OBSERVATION_TOWER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kObservationTowerRTD =
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 18.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(

@@ -249,7 +249,7 @@ static void PaintTopSpin(
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::kFlatTrack3x3)
     {
         return nullptr;
     }

@@ -182,7 +182,7 @@ static void MultiDimensionRCTrackStation(
         { 15811, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED },
     };
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::kEndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
         uint8_t offset = isClosed ? 2 : 1;
@@ -15400,208 +15400,208 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return MultiDimensionRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return MultiDimensionRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return MultiDimensionRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return MultiDimensionRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return MultiDimensionRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return MultiDimensionRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return MultiDimensionRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return MultiDimensionRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return MultiDimensionRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return MultiDimensionRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return MultiDimensionRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return MultiDimensionRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return MultiDimensionRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return MultiDimensionRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return MultiDimensionRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return MultiDimensionRCTrackRightQuarterTurn5;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return MultiDimensionRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return MultiDimensionRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return MultiDimensionRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return MultiDimensionRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return MultiDimensionRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return MultiDimensionRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::kLeftBankToUp25:
             return MultiDimensionRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::kRightBankToUp25:
             return MultiDimensionRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::kUp25ToLeftBank:
             return MultiDimensionRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::kUp25ToRightBank:
             return MultiDimensionRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::kLeftBankToDown25:
             return MultiDimensionRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::kRightBankToDown25:
             return MultiDimensionRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::kDown25ToLeftBank:
             return MultiDimensionRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::kDown25ToRightBank:
             return MultiDimensionRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return MultiDimensionRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return MultiDimensionRCTrackRightBank;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return MultiDimensionRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return MultiDimensionRCTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return MultiDimensionRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return MultiDimensionRCTrackRightQuarterTurn3;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
             return MultiDimensionRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
             return MultiDimensionRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::kLeftHalfBankedHelixUpSmall:
             return MultiDimensionRCTrackLeftHalfBankedHelixUpSmall;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::kRightHalfBankedHelixUpSmall:
             return MultiDimensionRCTrackRightHalfBankedHelixUpSmall;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::kLeftHalfBankedHelixDownSmall:
             return MultiDimensionRCTrackLeftHalfBankedHelixDownSmall;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::kRightHalfBankedHelixDownSmall:
             return MultiDimensionRCTrackRightHalfBankedHelixDownSmall;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::kLeftHalfBankedHelixUpLarge:
             return MultiDimensionRCTrackLeftHalfBankedHelixUpLarge;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::kRightHalfBankedHelixUpLarge:
             return MultiDimensionRCTrackRightHalfBankedHelixUpLarge;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::kLeftHalfBankedHelixDownLarge:
             return MultiDimensionRCTrackLeftHalfBankedHelixDownLarge;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::kRightHalfBankedHelixDownLarge:
             return MultiDimensionRCTrackRightHalfBankedHelixDownLarge;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return MultiDimensionRCTrackBrakes;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return MultiDimensionRCTrackOnRidePhoto;
-        case TrackElemType::Up90:
+        case TrackElemType::kUp90:
             return MultiDimensionRCTrack90DegUp;
-        case TrackElemType::Down90:
+        case TrackElemType::kDown90:
             return MultiDimensionRCTrack90DegDown;
-        case TrackElemType::Up60ToUp90:
+        case TrackElemType::kUp60ToUp90:
             return MultiDimensionRCTrack60DegUpTo90DegUp;
-        case TrackElemType::Down90ToDown60:
+        case TrackElemType::kDown90ToDown60:
             return MultiDimensionRCTrack90DegDownTo60DegDown;
-        case TrackElemType::Up90ToUp60:
+        case TrackElemType::kUp90ToUp60:
             return MultiDimensionRCTrack90DegUpTo60DegUp;
-        case TrackElemType::Down60ToDown90:
+        case TrackElemType::kDown60ToDown90:
             return MultiDimensionRCTrack60DegDownTo90DegDown;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return MultiDimensionRCTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return MultiDimensionRCTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return MultiDimensionRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return MultiDimensionRCTrackRightEighthToOrthogonal;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::kLeftEighthBankToDiag:
             return MultiDimensionRCTrackLeftEighthBankToDiag;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::kRightEighthBankToDiag:
             return MultiDimensionRCTrackRightEighthBankToDiag;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::kLeftEighthBankToOrthogonal:
             return MultiDimensionRCTrackLeftEighthBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::kRightEighthBankToOrthogonal:
             return MultiDimensionRCTrackRightEighthBankToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return MultiDimensionRCTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return MultiDimensionRCTrackDiag25DegUp;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::kDiagUp60:
             return MultiDimensionRCTrackDiag60DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return MultiDimensionRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::kDiagUp25ToUp60:
             return MultiDimensionRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::kDiagUp60ToUp25:
             return MultiDimensionRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return MultiDimensionRCTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return MultiDimensionRCTrackDiag25DegDown;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::kDiagDown60:
             return MultiDimensionRCTrackDiag60DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return MultiDimensionRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::kDiagDown25ToDown60:
             return MultiDimensionRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::kDiagDown60ToDown25:
             return MultiDimensionRCTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return MultiDimensionRCTrackDiag25DegDownToFlat;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::kDiagFlatToLeftBank:
             return MultiDimensionRCTrackDiagFlatToLeftBank;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::kDiagFlatToRightBank:
             return MultiDimensionRCTrackDiagFlatToRightBank;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::kDiagLeftBankToFlat:
             return MultiDimensionRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::kDiagRightBankToFlat:
             return MultiDimensionRCTrackDiagRightBankToFlat;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::kDiagLeftBankToUp25:
             return MultiDimensionRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::kDiagRightBankToUp25:
             return MultiDimensionRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::kDiagUp25ToLeftBank:
             return MultiDimensionRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::kDiagUp25ToRightBank:
             return MultiDimensionRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::kDiagLeftBankToDown25:
             return MultiDimensionRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::kDiagRightBankToDown25:
             return MultiDimensionRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::kDiagDown25ToLeftBank:
             return MultiDimensionRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::kDiagDown25ToRightBank:
             return MultiDimensionRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::kDiagLeftBank:
             return MultiDimensionRCTrackDiagLeftBank;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::kDiagRightBank:
             return MultiDimensionRCTrackDiagRightBank;
-        case TrackElemType::LeftFlyerTwistUp:
+        case TrackElemType::kLeftFlyerTwistUp:
             return MultiDimensionRCTrackLeftFlyerTwistUp;
-        case TrackElemType::RightFlyerTwistUp:
+        case TrackElemType::kRightFlyerTwistUp:
             return MultiDimensionRCTrackRightFlyerTwistUp;
-        case TrackElemType::LeftFlyerTwistDown:
+        case TrackElemType::kLeftFlyerTwistDown:
             return MultiDimensionRCTrackLeftFlyerTwistDown;
-        case TrackElemType::RightFlyerTwistDown:
+        case TrackElemType::kRightFlyerTwistDown:
             return MultiDimensionRCTrackRightFlyerTwistDown;
-        case TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop:
+        case TrackElemType::kMultiDimInvertedFlatToDown90QuarterLoop:
             return MultiDimensionRCTrackMultidimInvertedFlatTo90DegQuarterLoopDown;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return MultiDimensionRCTrackBlockBrakes;
-        case TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop:
+        case TrackElemType::kMultiDimUp90ToInvertedFlatQuarterLoop:
             return MultiDimensionRCTrackMultidim90DegUpToInvertedFlatQuarterLoop;
-        case TrackElemType::MultiDimFlatToDown90QuarterLoop:
+        case TrackElemType::kMultiDimFlatToDown90QuarterLoop:
             return MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop;
-        case TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop:
+        case TrackElemType::kMultiDimInvertedUp90ToFlatQuarterLoop:
             return MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop;
 
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::kDiagBrakes:
             return MultiDimensionRCTrackDiagBrakes;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             return MultiDimensionRCTrackDiagBlockBrakes;
     }
     return nullptr;

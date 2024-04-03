@@ -57,7 +57,7 @@ namespace RCT2
         tempStream.WriteValue<uint32_t>(_trackDesign->flags);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
         tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
+        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
         {
             tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Body);
             tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Trim);
@@ -86,14 +86,14 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign->intensity);
         tempStream.WriteValue<uint8_t>(_trackDesign->nausea);
         tempStream.WriteValue<money16>(ToMoney16(_trackDesign->upkeep_cost));
-        tempStream.WriteArray(_trackDesign->track_spine_colour, Limits::kNumColourSchemes);
-        tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::kNumColourSchemes);
-        tempStream.WriteArray(_trackDesign->track_support_colour, Limits::kNumColourSchemes);
+        tempStream.WriteArray(_trackDesign->track_spine_colour, Limits::NumColourSchemes);
+        tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::NumColourSchemes);
+        tempStream.WriteArray(_trackDesign->track_support_colour, Limits::NumColourSchemes);
         tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
         tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
+        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
         {
             tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Tertiary);
         }
@@ -123,9 +123,9 @@ namespace RCT2
             for (const auto& trackElement : _trackDesign->track_elements)
             {
                 auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.Type);
-                if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
+                if (trackType == TrackElemType::kMultiDimInvertedUp90ToFlatQuarterLoop)
                 {
-                    trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
+                    trackType = TrackElemType::kInvertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
                 auto flags = ConvertToTD46Flags(trackElement);

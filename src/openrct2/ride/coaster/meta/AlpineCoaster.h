@@ -15,12 +15,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kAlpineCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = { TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_LONG, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF},
     .ExtraTrackPieces =  {TRACK_HELIX_UP_BANKED_HALF},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(AlpineRC::GetTrackPaintFunction),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                       RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kAlpineCoasterRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_ALPINE_COASTER, STR_RIDE_DESCRIPTION_ALPINE_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_ALPINE_ROLLER_COASTER),
+    .kEnumName = nameof(RIDE_TYPE_ALPINE_ROLLER_COASTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = {18, 24, 3, 7},
     .MaxMass = 4,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kAlpineCoasterRTD =
     .UpkeepCosts = { 35, 20, 80, 8, 3, 10 },
     .BuildCosts = { 22.50_GBP, 2.50_GBP, 50},
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(

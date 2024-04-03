@@ -17,12 +17,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kHauntedHouseRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::kFlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionHauntedHouse),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kHauntedHouseRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_HAUNTED_HOUSE, STR_RIDE_DESCRIPTION_HAUNTED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_HAUNTED_HOUSE),
+    .kEnumName = nameof(RIDE_TYPE_HAUNTED_HOUSE),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 16, 160, 3, 2, },
     .MaxMass = 255,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kHauntedHouseRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 42.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_HORROR,
+    .DefaultMusic = kMusicObjectHorror,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 22,
     .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,

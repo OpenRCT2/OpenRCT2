@@ -13,7 +13,7 @@
 
 #include <cstdint>
 
-constexpr const size_t VehicleTrackSubpositionSizeDefault = TrackElemType::Count * NumOrthogonalDirections;
+constexpr const size_t VehicleTrackSubpositionSizeDefault = TrackElemType::kCount * NumOrthogonalDirections;
 
 struct VehicleInfo;
 

@@ -734,51 +734,51 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return WoodenWildMouseTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return WoodenWildMouseTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return WoodenWildMouseTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return WoodenWildMouseTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return WoodenWildMouseTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return WoodenWildMouseTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return WoodenWildMouseTrack60DegTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return WoodenWildMouseTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return WoodenWildMouseTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return WoodenWildMouseTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return WoodenWildMouseTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return WoodenWildMouseTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return WoodenWildMouseTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return WoodenWildMouseTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return WoodenWildMouseTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return WoodenWildMouseTrackRightQuarterTurn3;
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return WoodenWildMouseTrackLeftQuarterTurn1;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return WoodenWildMouseTrackRightQuarterTurn1;
-        case TrackElemType::FlatToUp60:
+        case TrackElemType::kFlatToUp60:
             return WoodenWildMouseTrackFlatTo60DegUp;
-        case TrackElemType::Up60ToFlat:
+        case TrackElemType::kUp60ToFlat:
             return WoodenWildMouseTrack60DegUpToFlat;
-        case TrackElemType::FlatToDown60:
+        case TrackElemType::kFlatToDown60:
             return WoodenWildMouseTrackFlatTo60DegDown;
-        case TrackElemType::Down60ToFlat:
+        case TrackElemType::kDown60ToFlat:
             return WoodenWildMouseTrack60DegDownToFlat;
     }
     return nullptr;

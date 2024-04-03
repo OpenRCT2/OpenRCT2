@@ -169,7 +169,7 @@ static void PaintTwist(
  */
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwist(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::kFlatTrack3x3)
     {
         return nullptr;
     }

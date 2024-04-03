@@ -5059,109 +5059,109 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return SuspendedSwingingRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return SuspendedSwingingRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return SuspendedSwingingRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return SuspendedSwingingRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return SuspendedSwingingRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return SuspendedSwingingRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return SuspendedSwingingRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return SuspendedSwingingRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return SuspendedSwingingRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return SuspendedSwingingRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return SuspendedSwingingRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return SuspendedSwingingRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return SuspendedSwingingRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return SuspendedSwingingRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return SuspendedSwingingRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return SuspendedSwingingRCTrackRightQuarterTurn5;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::kLeftQuarterTurn5TilesUp25:
             return SuspendedSwingingRCTrackLeftQuarterTurn525DegUp;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::kRightQuarterTurn5TilesUp25:
             return SuspendedSwingingRCTrackRightQuarterTurn525DegUp;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::kLeftQuarterTurn5TilesDown25:
             return SuspendedSwingingRCTrackLeftQuarterTurn525DegDown;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::kRightQuarterTurn5TilesDown25:
             return SuspendedSwingingRCTrackRightQuarterTurn525DegDown;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return SuspendedSwingingRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return SuspendedSwingingRCTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return SuspendedSwingingRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return SuspendedSwingingRCTrackRightQuarterTurn3;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
             return SuspendedSwingingRCTrackLeftQuarterTurn325DegUp;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
             return SuspendedSwingingRCTrackRightQuarterTurn325DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
             return SuspendedSwingingRCTrackLeftQuarterTurn325DegDown;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
             return SuspendedSwingingRCTrackRightQuarterTurn325DegDown;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return SuspendedSwingingRCTrackBrakes;
-        case TrackElemType::LeftQuarterHelixLargeUp:
+        case TrackElemType::kLeftQuarterHelixLargeUp:
             return SuspendedSwingingRCTrackLeftQuarterHelixLargeUp;
-        case TrackElemType::RightQuarterHelixLargeUp:
+        case TrackElemType::kRightQuarterHelixLargeUp:
             return SuspendedSwingingRCTrackRightQuarterHelixLargeUp;
-        case TrackElemType::LeftQuarterHelixLargeDown:
+        case TrackElemType::kLeftQuarterHelixLargeDown:
             return SuspendedSwingingRCTrackLeftQuarterHelixLargeDown;
-        case TrackElemType::RightQuarterHelixLargeDown:
+        case TrackElemType::kRightQuarterHelixLargeDown:
             return SuspendedSwingingRCTrackRightQuarterHelixLargeDown;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return SuspendedSwingingRCTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return SuspendedSwingingRCTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return SuspendedSwingingRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return SuspendedSwingingRCTrackRightEighthToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return SuspendedSwingingRCTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return SuspendedSwingingRCTrackDiag25DegUp;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::kDiagUp60:
             return SuspendedSwingingRCTrackDiag60DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return SuspendedSwingingRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::kDiagUp25ToUp60:
             return SuspendedSwingingRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::kDiagUp60ToUp25:
             return SuspendedSwingingRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return SuspendedSwingingRCTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return SuspendedSwingingRCTrackDiag25DegDown;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::kDiagDown60:
             return SuspendedSwingingRCTrackDiag60DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return SuspendedSwingingRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::kDiagDown25ToDown60:
             return SuspendedSwingingRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::kDiagDown60ToDown25:
             return SuspendedSwingingRCTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return SuspendedSwingingRCTrackDiag25DegDownToFlat;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return SuspendedSwingingRCTrackBlockBrakes;
     }
     return nullptr;

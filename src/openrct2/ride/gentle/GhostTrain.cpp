@@ -248,7 +248,7 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::Down25ToFlat;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::kDown25ToFlat;
     uint8_t doorImage;
     if (!isBackwards)
     {
@@ -421,7 +421,7 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, GhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
         defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets);
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::LeftQuarterTurn3Tiles;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::kLeftQuarterTurn3Tiles;
     bool isDoorA = (!isBackwards && trackSequence == 0) || (isBackwards && trackSequence == 3);
     auto tunnelType = isDoorA ? DoorOpeningInwardsToImage[trackElement.GetDoorAState()]
                               : DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
@@ -471,7 +471,7 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::RightQuarterTurn1Tile;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::kRightQuarterTurn1Tile;
     uint8_t tunnelStartImage, tunnelEndImage;
     if (!isBackwards)
     {
@@ -556,42 +556,42 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintGhostTrainTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintGhostTrainStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintGhostTrainTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintGhostTrainTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintGhostTrainTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintGhostTrainTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintGhostTrainTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintGhostTrainTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return PaintGhostTrainTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return PaintGhostTrainTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return PaintGhostTrainTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return PaintGhostTrainTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return PaintGhostTrainTrackBrakes;
 
-        case TrackElemType::SpinningTunnel:
+        case TrackElemType::kSpinningTunnel:
             return PaintGhostTrainTrackSpinningTunnel;
     }
 

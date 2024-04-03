@@ -114,7 +114,7 @@ enum class RideStatus : uint8_t;
 struct Ride
 {
     RideId id{ RideId::GetNull() };
-    ride_type_t type{ RIDE_TYPE_NULL };
+    ride_type_t type{ kRideTypeNull };
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     ObjectEntryIndex subtype{ OBJECT_ENTRY_INDEX_NULL };
@@ -188,7 +188,7 @@ struct Ride
     uint16_t num_customers_timeout{};
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize]{};
-    money64 price[RCT2::ObjectLimits::kMaxShopItemsPerRideEntry]{};
+    money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {

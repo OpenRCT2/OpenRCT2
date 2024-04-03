@@ -16,12 +16,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kTwistRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_THRILL,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::kFlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionTwist),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
                      RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kTwistRTD =
     .OperatingSettings = { 3, 6, 0, 0, 0, 0, 12, 3 },
     .Naming = { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST },
     .NameConvention = { RideComponentType::Structure, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_TWIST),
+    .kEnumName = nameof(RIDE_TYPE_TWIST),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor kTwistRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 45.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
     .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,

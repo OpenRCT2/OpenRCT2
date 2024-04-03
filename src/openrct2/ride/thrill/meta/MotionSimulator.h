@@ -16,12 +16,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kMotionSimulatorRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_THRILL,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack2x2,
+    .StartTrackPiece = TrackElemType::kFlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMotionsimulator),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kMotionSimulatorRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MOTION_SIMULATOR),
+    .kEnumName = nameof(RIDE_TYPE_MOTION_SIMULATOR),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kMotionSimulatorRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 110.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,

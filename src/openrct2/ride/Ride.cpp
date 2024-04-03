@@ -194,7 +194,7 @@ Ride& RideGetTemporaryForPreview()
 static void RideReset(Ride& ride)
 {
     ride.id = RideId::GetNull();
-    ride.type = RIDE_TYPE_NULL;
+    ride.type = kRideTypeNull;
     ride.custom_name = {};
     ride.measurement = {};
 }
@@ -205,7 +205,7 @@ void RideDelete(RideId id)
     const auto idx = id.ToUnderlying();
 
     assert(idx < gameState.Rides.size());
-    assert(gameState.Rides[idx].type != RIDE_TYPE_NULL);
+    assert(gameState.Rides[idx].type != kRideTypeNull);
 
     auto& ride = gameState.Rides[idx];
     RideReset(ride);
@@ -233,7 +233,7 @@ Ride* GetRide(RideId index)
     }
 
     auto& ride = gameState.Rides[idx];
-    if (ride.type != RIDE_TYPE_NULL)
+    if (ride.type != kRideTypeNull)
     {
         assert(ride.id == index);
         return &ride;
@@ -484,8 +484,8 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
         // Check if it's not the station or ??? (but allow end piece of station)
         const auto& ted = GetTrackElementDescriptor(it.element->AsTrack()->GetTrackType());
         bool specialTrackPiece
-            = (it.element->AsTrack()->GetTrackType() != TrackElemType::BeginStation
-               && it.element->AsTrack()->GetTrackType() != TrackElemType::MiddleStation
+            = (it.element->AsTrack()->GetTrackType() != TrackElemType::kBeginStation
+               && it.element->AsTrack()->GetTrackType() != TrackElemType::kMiddleStation
                && (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN));
 
         // Set result tile to this track piece if first found track or a ???
@@ -2029,10 +2029,10 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     }
 
     auto trackType = vehicle->GetTrackType();
-    if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
-        || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
-        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
-        || trackType == TrackElemType::DiagBlockBrakes)
+    if (trackType == TrackElemType::kBlockBrakes || trackType == TrackElemType::kCableLiftHill
+        || trackType == TrackElemType::kUp25ToFlat || trackType == TrackElemType::kUp60ToFlat
+        || trackType == TrackElemType::kDiagUp25ToFlat || trackType == TrackElemType::kDiagUp60ToFlat
+        || trackType == TrackElemType::kDiagBlockBrakes)
         if (vehicle->velocity == 0)
             return;
 
@@ -2732,7 +2732,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
         if (TrackTypeIsBlockBrakes(it.current.element->AsTrack()->GetTrackType()))
         {
             auto type = it.last.element->AsTrack()->GetTrackType();
-            if (type == TrackElemType::EndStation)
+            if (type == TrackElemType::kEndStation)
             {
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION };
@@ -2742,8 +2742,8 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER };
             }
-            if (it.last.element->AsTrack()->HasChain() && type != TrackElemType::LeftCurvedLiftHill
-                && type != TrackElemType::RightCurvedLiftHill)
+            if (it.last.element->AsTrack()->HasChain() && type != TrackElemType::kLeftCurvedLiftHill
+                && type != TrackElemType::kRightCurvedLiftHill)
             {
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL };
@@ -3064,11 +3064,11 @@ void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLo
 {
     switch (trackElement.GetTrackType())
     {
-        case TrackElemType::DiagUp25ToFlat:
-        case TrackElemType::DiagUp60ToFlat:
-        case TrackElemType::CableLiftHill:
-        case TrackElemType::DiagBrakes:
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kDiagUp25ToFlat:
+        case TrackElemType::kDiagUp60ToFlat:
+        case TrackElemType::kCableLiftHill:
+        case TrackElemType::kDiagBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             GetTrackElementOriginAndApplyChanges(
                 { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
                 nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
@@ -3090,18 +3090,18 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
         auto trackType = currentElement.element->AsTrack()->GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::BlockBrakes:
-            case TrackElemType::DiagBlockBrakes:
+            case TrackElemType::kBlockBrakes:
+            case TrackElemType::kDiagBlockBrakes:
                 BlockBrakeSetLinkedBrakesClosed(
                     CoordsXYZ(currentElement.x, currentElement.y, currentElement.element->GetBaseZ()),
                     *currentElement.element->AsTrack(), false);
                 [[fallthrough]];
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
-            case TrackElemType::CableLiftHill:
-            case TrackElemType::EndStation:
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
+            case TrackElemType::kDiagUp25ToFlat:
+            case TrackElemType::kDiagUp60ToFlat:
+            case TrackElemType::kCableLiftHill:
+            case TrackElemType::kEndStation:
+            case TrackElemType::kUp25ToFlat:
+            case TrackElemType::kUp60ToFlat:
                 SetBrakeClosedMultiTile(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
                 break;
         }
@@ -3374,9 +3374,9 @@ static Vehicle* VehicleCreateCar(
         {
             if (rtd.HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
             {
-                if (rtd.StartTrackPiece != TrackElemType::FlatTrack1x4B)
+                if (rtd.StartTrackPiece != TrackElemType::kFlatTrack1x4B)
                 {
-                    if (rtd.StartTrackPiece != TrackElemType::FlatTrack1x4A)
+                    if (rtd.StartTrackPiece != TrackElemType::kFlatTrack1x4A)
                     {
                         if (ride.type == RIDE_TYPE_ENTERPRISE)
                         {
@@ -3544,14 +3544,14 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
         auto trackType = trackElement->GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::kDiagUp25ToFlat:
+            case TrackElemType::kDiagUp60ToFlat:
                 if (!trackElement->HasChain())
                 {
                     break;
                 }
                 [[fallthrough]];
-            case TrackElemType::DiagBlockBrakes:
+            case TrackElemType::kDiagBlockBrakes:
             {
                 TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
                     { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
@@ -3565,16 +3565,16 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
                 }
                 break;
             }
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
+            case TrackElemType::kUp25ToFlat:
+            case TrackElemType::kUp60ToFlat:
                 if (!trackElement->HasChain())
                 {
                     break;
                 }
                 [[fallthrough]];
-            case TrackElemType::EndStation:
-            case TrackElemType::CableLiftHill:
-            case TrackElemType::BlockBrakes:
+            case TrackElemType::kEndStation:
+            case TrackElemType::kCableLiftHill:
+            case TrackElemType::kBlockBrakes:
                 *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                 return;
         }
@@ -3733,7 +3733,7 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
         {
             car->ClearFlag(VehicleFlags::CollisionDisabled);
             car->SetState(Vehicle::Status::Travelling, car->sub_state);
-            if ((car->GetTrackType()) == TrackElemType::EndStation)
+            if ((car->GetTrackType()) == TrackElemType::kEndStation)
             {
                 car->SetState(Vehicle::Status::MovingToEndOfStation, car->sub_state);
             }
@@ -3805,7 +3805,7 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
         {
             case STATE_FIND_CABLE_LIFT:
                 // Search for a cable lift hill track element
-                if (trackType == TrackElemType::CableLiftHill)
+                if (trackType == TrackElemType::kCableLiftHill)
                 {
                     flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
                     state = STATE_FIND_STATION;
@@ -3815,17 +3815,17 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
                 // Search for the start of the hill
                 switch (trackType)
                 {
-                    case TrackElemType::Flat:
-                    case TrackElemType::Up25:
-                    case TrackElemType::Up60:
-                    case TrackElemType::FlatToUp25:
-                    case TrackElemType::Up25ToFlat:
-                    case TrackElemType::Up25ToUp60:
-                    case TrackElemType::Up60ToUp25:
-                    case TrackElemType::FlatToUp60LongBase:
+                    case TrackElemType::kFlat:
+                    case TrackElemType::kUp25:
+                    case TrackElemType::kUp60:
+                    case TrackElemType::kFlatToUp25:
+                    case TrackElemType::kUp25ToFlat:
+                    case TrackElemType::kUp25ToUp60:
+                    case TrackElemType::kUp60ToUp25:
+                    case TrackElemType::kFlatToUp60LongBase:
                         flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
                         break;
-                    case TrackElemType::EndStation:
+                    case TrackElemType::kEndStation:
                         state = STATE_REST_OF_TRACK;
                         break;
                     default:
@@ -4024,7 +4024,7 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 
 ResultWithMessage Ride::Test(bool isApplying)
 {
-    if (type == RIDE_TYPE_NULL)
+    if (type == kRideTypeNull)
     {
         LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
@@ -4071,7 +4071,7 @@ ResultWithMessage Ride::Test(bool isApplying)
 ResultWithMessage Ride::Simulate(bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
-    if (type == RIDE_TYPE_NULL)
+    if (type == kRideTypeNull)
     {
         LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
@@ -5050,7 +5050,7 @@ void Ride::UpdateMaxVehicles()
     int32_t maxNumTrains;
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
+    if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
     {
         num_cars_per_train = std::max(rideEntry->min_cars_in_train, num_cars_per_train);
         MinCarsPerTrain = rideEntry->min_cars_in_train;

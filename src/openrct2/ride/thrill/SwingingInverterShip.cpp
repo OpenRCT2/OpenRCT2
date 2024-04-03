@@ -199,7 +199,7 @@ static void PaintSwingingInverterShip(
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingInverterShip(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack1x4B)
+    if (trackType != TrackElemType::kFlatTrack1x4B)
     {
         return nullptr;
     }

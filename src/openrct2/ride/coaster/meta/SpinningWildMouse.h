@@ -16,21 +16,21 @@
 // clang-format off
 constexpr RideTypeDescriptor kSpinningWildMouseRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = {TRACK_STRAIGHT,TRACK_STATION_END,TRACK_LIFT_HILL,  TRACK_SLOPE,TRACK_SLOPE_LONG,TRACK_CURVE_VERY_SMALL,TRACK_CURVE_SMALL, TRACK_BRAKES,TRACK_BLOCK_BRAKES,TRACK_ROTATION_CONTROL_TOGGLE},
     .ExtraTrackPieces = {TRACK_LIFT_HILL_STEEP, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionWildMouse),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES,
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
     .DefaultMode = RideMode::ContinuousCircuit,
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_SPINNING_WILD_MOUSE_GROUP, STR_SPINNING_WILD_MOUSE_GROUP_DESC },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_SPINNING_WILD_MOUSE),
+    .kEnumName = nameof(RIDE_TYPE_SPINNING_WILD_MOUSE),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 16, 24, 4, 7, },
     .MaxMass = 4,
@@ -39,7 +39,7 @@ constexpr RideTypeDescriptor kSpinningWildMouseRTD =
     .UpkeepCosts = { 40, 20, 80, 9, 3, 10 },
     .BuildCosts = { 27.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(

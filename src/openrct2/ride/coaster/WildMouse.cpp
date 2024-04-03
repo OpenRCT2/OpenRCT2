@@ -207,7 +207,7 @@ static void WildMouseTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(baseImageIds[direction]),
         { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
-    if (trackType == TrackElemType::EndStation)
+    if (trackType == TrackElemType::kEndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsChildRotated(
@@ -1001,65 +1001,65 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return WildMouseTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return WildMouseTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return WildMouseTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return WildMouseTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return WildMouseTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return WildMouseTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return WildMouseTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return WildMouseTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return WildMouseTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return WildMouseTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return WildMouseTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return WildMouseTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return WildMouseTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return WildMouseTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return WildMouseTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return WildMouseTrackRightQuarterTurn3;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
             return WildMouseTrackLeftQuarterTurn325DegUp;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
             return WildMouseTrackRightQuarterTurn325DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
             return WildMouseTrackLeftQuarterTurn325DegDown;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
             return WildMouseTrackRightQuarterTurn325DegDown;
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return WildMouseTrackLeftQuarterTurn1;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return WildMouseTrackRightQuarterTurn1;
-        case TrackElemType::FlatToUp60:
+        case TrackElemType::kFlatToUp60:
             return WildMouseTrackFlatTo60DegUp;
-        case TrackElemType::Up60ToFlat:
+        case TrackElemType::kUp60ToFlat:
             return WildMouseTrack60DegUpToFlat;
-        case TrackElemType::FlatToDown60:
+        case TrackElemType::kFlatToDown60:
             return WildMouseTrackFlatTo60DegDown;
-        case TrackElemType::Down60ToFlat:
+        case TrackElemType::kDown60ToFlat:
             return WildMouseTrack60DegDownToFlat;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return WildMouseTrackBrakes;
-        case TrackElemType::RotationControlToggle:
+        case TrackElemType::kRotationControlToggle:
             return WildMouseTrackRotationControlToggle;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return WildMouseTrackBlockBrakes;
     }
     return nullptr;

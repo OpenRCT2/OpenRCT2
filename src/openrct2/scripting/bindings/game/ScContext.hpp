@@ -177,7 +177,7 @@ namespace OpenRCT2::Scripting
         DukValue getTrackSegment(track_type_t type)
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (type >= TrackElemType::Count)
+            if (type >= TrackElemType::kCount)
             {
                 return ToDuk(ctx, nullptr);
             }
@@ -192,7 +192,7 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             std::vector<DukValue> result;
-            for (track_type_t type = 0; type < TrackElemType::Count; type++)
+            for (track_type_t type = 0; type < TrackElemType::kCount; type++)
             {
                 auto obj = std::make_shared<ScTrackSegment>(type);
                 if (obj != nullptr)

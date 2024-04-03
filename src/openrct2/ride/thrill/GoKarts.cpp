@@ -356,7 +356,7 @@ static void PaintGoKartsStation(
     ImageId imageId;
     const uint32_t(*sprites)[2] = go_karts_track_pieces_starting_grid;
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::kEndStation)
     {
         sprites = go_karts_track_pieces_starting_grid_end;
     }
@@ -408,7 +408,7 @@ static void PaintGoKartsStation(
         TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
     }
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::kEndStation)
     {
         const bool hasGreenLight = trackElement.HasGreenLight();
 
@@ -542,31 +542,31 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGoKarts(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintGoKartsTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintGoKartsStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintGoKartsTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintGoKartsTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintGoKartsTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintGoKartsTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintGoKartsTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintGoKartsTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return PaintGoKartsTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return PaintGoKartsTrackRightQuarterTurn1Tile;
     }
 

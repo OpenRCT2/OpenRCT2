@@ -203,10 +203,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::kTowerBase:
             return PaintLaunchedFreefallBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::kTowerSection:
             return PaintLaunchedFreefallTowerSection;
     }
 

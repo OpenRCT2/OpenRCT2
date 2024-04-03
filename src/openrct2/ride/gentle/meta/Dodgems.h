@@ -18,14 +18,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kDodgemsRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack4x4,
+    .StartTrackPiece = TrackElemType::kFlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionDodgems),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
                      RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kDodgemsRTD =
     .OperatingSettings = { 20, 180, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_DODGEMS),
+    .kEnumName = nameof(RIDE_TYPE_DODGEMS),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor kDodgemsRTD =
     .UpkeepCosts = { 50, 1, 0, 5, 0, 0 },
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_DODGEMS,
+    .DefaultMusic = kMusicObjectDodgems,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(

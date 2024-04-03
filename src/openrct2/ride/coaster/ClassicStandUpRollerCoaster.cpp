@@ -624,7 +624,7 @@ static void classicStandUpRCTrackLeftEighthBankToDiag(
           kClassicStandUpRcLeftBankedOrthogonalToDiag2_1, kClassicStandUpRcLeftBankedOrthogonalToDiag3_1 },
         { kClassicStandUpRcLeftBankedOrthogonalToDiag0_2, kClassicStandUpRcLeftBankedOrthogonalToDiag1_2,
           kClassicStandUpRcLeftBankedOrthogonalToDiag2_2, kClassicStandUpRcLeftBankedOrthogonalToDiag3_2 },
-        { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined },
+        { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined },
         { kClassicStandUpRcLeftBankedOrthogonalToDiag0_3, kClassicStandUpRcLeftBankedOrthogonalToDiag1_3,
           kClassicStandUpRcLeftBankedOrthogonalToDiag2_3, kClassicStandUpRcLeftBankedOrthogonalToDiag3_3 },
     };
@@ -782,7 +782,7 @@ static void classicStandUpRCTrackRightEighthBankToDiag(
           kClassicStandUpRcRightBankedOrthogonalToDiag2_1, kClassicStandUpRcRightBankedOrthogonalToDiag3_1 },
         { kClassicStandUpRcRightBankedOrthogonalToDiag0_2, kClassicStandUpRcRightBankedOrthogonalToDiag1_2,
           kClassicStandUpRcRightBankedOrthogonalToDiag2_2, kClassicStandUpRcRightBankedOrthogonalToDiag3_2 },
-        { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined },
+        { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined },
         { kClassicStandUpRcRightBankedOrthogonalToDiag0_3, kClassicStandUpRcRightBankedOrthogonalToDiag1_3,
           kClassicStandUpRcRightBankedOrthogonalToDiag2_3, kClassicStandUpRcRightBankedOrthogonalToDiag3_3 },
     };
@@ -953,7 +953,7 @@ static void classicStandUpRCTrackRightBankedQuarterTurn3(
     static constexpr ImageIndex map[4][NumOrthogonalDirections] = {
         { kClassicStandUpRcRightTurn3TilesBanked0_0, kClassicStandUpRcRightTurn3TilesBanked1_0,
           kClassicStandUpRcRightTurn3TilesBanked2_0, kClassicStandUpRcRightTurn3TilesBanked3_0 },
-        { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined },
+        { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined },
         { kClassicStandUpRcRightTurn3TilesBanked0_1, kClassicStandUpRcRightTurn3TilesBanked1_1,
           kClassicStandUpRcRightTurn3TilesBanked2_1, kClassicStandUpRcRightTurn3TilesBanked3_1 },
 
@@ -1448,79 +1448,79 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
 
     switch (trackType)
     {
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return classicStandUpRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return classicStandUpRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return classicStandUpRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return classicStandUpRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return classicStandUpRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return classicStandUpRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::kLeftBankToUp25:
             return classicStandUpRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::kRightBankToUp25:
             return classicStandUpRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::kUp25ToLeftBank:
             return classicStandUpRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::kUp25ToRightBank:
             return classicStandUpRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::kLeftBankToDown25:
             return classicStandUpRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::kRightBankToDown25:
             return classicStandUpRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::kDown25ToLeftBank:
             return classicStandUpRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::kDown25ToRightBank:
             return classicStandUpRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return classicStandUpRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return classicStandUpRCTrackRightBank;
 
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::kLeftEighthBankToDiag:
             return classicStandUpRCTrackLeftEighthBankToDiag;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::kRightEighthBankToDiag:
             return classicStandUpRCTrackRightEighthBankToDiag;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::kLeftEighthBankToOrthogonal:
             return classicStandUpRCTrackLeftEighthDiagBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::kRightEighthBankToOrthogonal:
             return classicStandUpRCTrackRightEighthDiagBankToOrthogonal;
 
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
             return classicStandUpRCTrackLeftBankedQuarterTurn3;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
             return classicStandUpRCTrackRightBankedQuarterTurn3;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::kDiagFlatToLeftBank:
             return classicStandUpRCTrackDiagFlatToLeftBank;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::kDiagFlatToRightBank:
             return classicStandUpRCTrackDiagFlatToRightBank;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::kDiagLeftBankToFlat:
             return classicStandUpRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::kDiagRightBankToFlat:
             return classicStandUpRCTrackDiagRightBankToFlat;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::kDiagLeftBankToUp25:
             return classicStandUpRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::kDiagRightBankToUp25:
             return classicStandUpRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::kDiagUp25ToLeftBank:
             return classicStandUpRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::kDiagUp25ToRightBank:
             return classicStandUpRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::kDiagLeftBankToDown25:
             return classicStandUpRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::kDiagRightBankToDown25:
             return classicStandUpRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::kDiagDown25ToLeftBank:
             return classicStandUpRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::kDiagDown25ToRightBank:
             return classicStandUpRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::kDiagLeftBank:
             return classicStandUpRCTrackDiagLeftBank;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::kDiagRightBank:
             return classicStandUpRCTrackDiagRightBank;
     }
 

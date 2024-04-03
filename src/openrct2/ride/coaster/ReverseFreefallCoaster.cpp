@@ -430,17 +430,17 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintReverseFreefallRCFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintReverseFreefallRCStation;
-        case TrackElemType::ReverseFreefallSlope:
+        case TrackElemType::kReverseFreefallSlope:
             return PaintReverseFreefallRCSlope;
-        case TrackElemType::ReverseFreefallVertical:
+        case TrackElemType::kReverseFreefallVertical:
             return PaintReverseFreefallRCVertical;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return PaintReverseFreefallRCOnridePhoto;
     }
     return nullptr;

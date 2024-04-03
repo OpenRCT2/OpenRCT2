@@ -876,43 +876,43 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionRiverRapids(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintRiverRapidsTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintRiverRapidsStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintRiverRapidsTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintRiverRapidsTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintRiverRapidsTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintRiverRapidsTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintRiverRapidsTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintRiverRapidsTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return PaintRiverRapidsTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return PaintRiverRapidsTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::Waterfall:
+        case TrackElemType::kWaterfall:
             return PaintRiverRapidsTrackWaterfall;
 
-        case TrackElemType::Rapids:
+        case TrackElemType::kRapids:
             return PaintRiverRapidsTrackRapids;
 
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return PaintRiverRapidsTrackOnRidePhoto;
 
-        case TrackElemType::Whirlpool:
+        case TrackElemType::kWhirlpool:
             return PaintRiverRapidsTrackWhirlpool;
     }
 

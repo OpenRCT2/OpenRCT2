@@ -99,7 +99,7 @@ static bool MapLoc68BABCShouldContinue(
     // Crossing mode 2: building path over track
     else if (
         crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TileElementType::Track
-        && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
+        && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::kFlat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
         if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))

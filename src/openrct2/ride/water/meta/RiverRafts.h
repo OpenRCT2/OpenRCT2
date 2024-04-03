@@ -17,14 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kRiverRaftsRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_WATER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_S_BEND, TRACK_CURVE},
     .ExtraTrackPieces = {TRACK_SLOPE, TRACK_SLOPE_STEEP_DOWN, TRACK_ON_RIDE_PHOTO},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSplashBoats),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC |
@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kRiverRaftsRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_RIVER_RAFTS, STR_RIDE_DESCRIPTION_RIVER_RAFTS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_RIVER_RAFTS),
+    .kEnumName = nameof(RIDE_TYPE_RIVER_RAFTS),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 24, 7, 11, },
     .MaxMass = 255,
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor kRiverRaftsRTD =
     .UpkeepCosts = { 50, 20, 0, 9, 0, 10 },
     .BuildCosts = { 20.00_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 10, 20 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(

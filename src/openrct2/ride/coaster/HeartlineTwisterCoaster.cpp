@@ -1676,43 +1676,43 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return HeartlineTwisterRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return HeartlineTwisterRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return HeartlineTwisterRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return HeartlineTwisterRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return HeartlineTwisterRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return HeartlineTwisterRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return HeartlineTwisterRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return HeartlineTwisterRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return HeartlineTwisterRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return HeartlineTwisterRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return HeartlineTwisterRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return HeartlineTwisterRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return HeartlineTwisterRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return HeartlineTwisterRCTrack25DegDownToFlat;
-        case TrackElemType::HeartLineTransferUp:
+        case TrackElemType::kHeartLineTransferUp:
             return HeartlineTwisterRCTrackHeartlineTransferUp;
-        case TrackElemType::HeartLineTransferDown:
+        case TrackElemType::kHeartLineTransferDown:
             return HeartlineTwisterRCTrackHeartlineTransferDown;
-        case TrackElemType::LeftHeartLineRoll:
+        case TrackElemType::kLeftHeartLineRoll:
             return HeartlineTwisterRCTrackLeftHeartlineRoll;
-        case TrackElemType::RightHeartLineRoll:
+        case TrackElemType::kRightHeartLineRoll:
             return HeartlineTwisterRCTrackRightHeartlineRoll;
     }
     return nullptr;

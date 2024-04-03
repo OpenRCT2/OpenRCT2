@@ -17,14 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor kMiniGolfRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_MINI_GOLF_HOLE},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMiniGolf),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ONE_STATION |
+    .Flags = kRideTypeFagsTrackHas3Colours | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ONE_STATION |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kMiniGolfRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
     .NameConvention = { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_MINI_GOLF),
+    .kEnumName = nameof(RIDE_TYPE_MINI_GOLF),
     .AvailableBreakdowns = 0,
     .Heights = { 7, 32, 2, 2, },
     .MaxMass = 255,
@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor kMiniGolfRTD =
     .UpkeepCosts = { 30, 60, 0, 0, 0, 0 },
     .BuildCosts = { 25.00_GBP, 3.50_GBP, 20, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 23,
     .ColourPresets = TRACK_COLOUR_PRESETS(

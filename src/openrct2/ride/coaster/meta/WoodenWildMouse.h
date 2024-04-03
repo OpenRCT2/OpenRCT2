@@ -17,15 +17,15 @@
 // clang-format off
 constexpr RideTypeDescriptor kWoodenWildMouseRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_LIFT_HILL_STEEP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_LONG, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionWoodenWildMouse),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
+                     kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kWoodenWildMouseRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_WOODEN_WILD_MOUSE, STR_RIDE_DESCRIPTION_WOODEN_WILD_MOUSE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_WOODEN_WILD_MOUSE),
+    .kEnumName = nameof(RIDE_TYPE_WOODEN_WILD_MOUSE),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 14, 24, 4, 7, },
     .MaxMass = 4,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kWoodenWildMouseRTD =
     .UpkeepCosts = { 40, 20, 80, 9, 3, 10 },
     .BuildCosts = { 25.00_GBP, 3.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WILD_WEST,
+    .DefaultMusic = kMusicObjectWildWest,
     .PhotoItem = ShopItem::Photo3,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(

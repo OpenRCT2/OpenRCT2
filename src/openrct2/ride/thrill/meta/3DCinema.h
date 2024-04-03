@@ -17,12 +17,12 @@
 // C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
 constexpr RideTypeDescriptor kCinemaRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_THRILL,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::kFlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunction3dCinema),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |

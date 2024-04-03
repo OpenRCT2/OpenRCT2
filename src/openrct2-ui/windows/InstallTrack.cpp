@@ -416,7 +416,7 @@ static Widget window_install_track_widgets[] = {
         }
 
         ObjectManagerUnloadAllObjects();
-        if (trackDesign->type == RIDE_TYPE_NULL)
+        if (trackDesign->type == kRideTypeNull)
         {
             LOG_ERROR("Failed to load track (ride type null): %s", path);
             return nullptr;

@@ -215,7 +215,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         const auto& element = trackElement.element->AsTrack();
 
         // Remove this check for new track design format
-        if (element->GetTrackType() > TrackElemType::HighestAlias)
+        if (element->GetTrackType() > TrackElemType::kHighestAlias)
         {
             return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
         }
@@ -228,7 +228,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.SeatRotation = element->GetSeatRotation();
 
         // This warning will not apply to new track design format
-        if (track.Type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        if (track.Type == TrackElemType::kBlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
             warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
         }
@@ -261,7 +261,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         trackElement.x = newCoords->x;
         trackElement.y = newCoords->y;
 
-        if (track_elements.size() > RCT2::Limits::kTd6MaxTrackElements)
+        if (track_elements.size() > RCT2::Limits::TD6MaxTrackElements)
         {
             return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         }

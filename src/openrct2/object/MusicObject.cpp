@@ -144,7 +144,7 @@ void MusicObject::ParseRideTypes(const json_t& jRideTypes)
         if (!szRideType.empty())
         {
             auto rideType = RideObject::ParseRideType(szRideType);
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != kRideTypeNull)
             {
                 _rideTypes.push_back(rideType);
             }

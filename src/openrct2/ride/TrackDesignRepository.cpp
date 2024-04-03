@@ -35,7 +35,7 @@ struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
-    ride_type_t RideType = RIDE_TYPE_NULL;
+    ride_type_t RideType = kRideTypeNull;
     std::string ObjectEntry;
     uint32_t Flags = 0;
 };

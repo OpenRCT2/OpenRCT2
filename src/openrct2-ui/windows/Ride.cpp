@@ -2388,10 +2388,10 @@ static_assert(std::size(RatingNames) == 6);
             if (vehicle->status != Vehicle::Status::Crashing && vehicle->status != Vehicle::Status::Crashed)
             {
                 auto trackType = vehicle->GetTrackType();
-                if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
-                    || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
-                    || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
-                    || trackType == TrackElemType::DiagBlockBrakes)
+                if (trackType == TrackElemType::kBlockBrakes || trackType == TrackElemType::kCableLiftHill
+                    || trackType == TrackElemType::kUp25ToFlat || trackType == TrackElemType::kUp60ToFlat
+                    || trackType == TrackElemType::kDiagUp25ToFlat || trackType == TrackElemType::kDiagUp60ToFlat
+                    || trackType == TrackElemType::kDiagBlockBrakes)
                 {
                     if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
                     {
@@ -2414,7 +2414,7 @@ static_assert(std::size(RatingNames) == 6);
             ft.Add<StringId>(stringId);
             uint16_t speedInMph = (abs(vehicle->velocity) * 9) >> 18;
             ft.Add<uint16_t>(speedInMph);
-            const RideComponentName stationName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station);
+            const kRideComponentName stationName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station);
             ft.Add<StringId>(ride->num_stations > 1 ? stationName.number : stationName.singular);
             ft.Add<uint16_t>(vehicle->current_station.ToUnderlying() + 1);
             return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
@@ -3011,7 +3011,7 @@ static_assert(std::size(RatingNames) == 6);
                 if (availableModes & (1uLL << i))
                 {
                     gDropdownItems[numAvailableModes].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numAvailableModes].Args = RideModeNames[i];
+                    gDropdownItems[numAvailableModes].Args = kRideModeNames[i];
 
                     if (ride->mode == static_cast<RideMode>(i))
                         checkedIndex = numAvailableModes;
@@ -3446,7 +3446,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Mode
-            widgets[WIDX_MODE].text = RideModeNames[EnumValue(ride->mode)];
+            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
 
             // Waiting
             widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
@@ -3720,9 +3720,9 @@ static_assert(std::size(RatingNames) == 6);
 
                 case WIDX_FORCE_BREAKDOWN:
                     numItems = 1;
-                    for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
+                    for (j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
                     {
-                        if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                        if (rideEntry->ride_type[j] != kRideTypeNull)
                             break;
                     }
                     gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
@@ -3860,9 +3860,9 @@ static_assert(std::size(RatingNames) == 6);
                     else
                     {
                         int32_t j;
-                        for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
+                        for (j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
                         {
-                            if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                            if (rideEntry->ride_type[j] != kRideTypeNull)
                                 break;
                         }
                         int32_t i;
@@ -4742,7 +4742,7 @@ static_assert(std::size(RatingNames) == 6);
                     GfxClear(clippedDpi, PALETTE_INDEX_12);
 
                     auto stationObj = ride->GetStationObject();
-                    if (stationObj != nullptr && stationObj->BaseImageId != kImageIndexUndefined)
+                    if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
                     {
                         auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
 

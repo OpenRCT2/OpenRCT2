@@ -115,7 +115,7 @@ static void BolligerMabillardTrackStation(
         { 17155, SPR_STATION_BASE_A_NW_SE },
     };
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::kEndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
@@ -14777,380 +14777,380 @@ template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctio
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return BolligerMabillardTrackFlat<supportType>;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return BolligerMabillardTrackStation<supportType>;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return BolligerMabillardTrack25DegUp<supportType>;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return BolligerMabillardTrack60DegUp<supportType>;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return BolligerMabillardTrackFlatTo25DegUp<supportType>;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return BolligerMabillardTrack25DegUpTo60DegUp<supportType>;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return BolligerMabillardTrack60DegUpTo25DegUp<supportType>;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return BolligerMabillardTrack25DegUpToFlat<supportType>;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return BolligerMabillardTrack25DegDown<supportType>;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return BolligerMabillardTrack60DegDown<supportType>;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return BolligerMabillardTrackFlatTo25DegDown<supportType>;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return BolligerMabillardTrack25DegDownTo60DegDown<supportType>;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return BolligerMabillardTrack60DegDownTo25DegDown<supportType>;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return BolligerMabillardTrack25DegDownToFlat<supportType>;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return BolligerMabillardTrackLeftQuarterTurn5<supportType>;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return BolligerMabillardTrackRightQuarterTurn5<supportType>;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::kFlatToLeftBank:
             return BolligerMabillardTrackFlatToLeftBank<supportType>;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::kFlatToRightBank:
             return BolligerMabillardTrackFlatToRightBank<supportType>;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::kLeftBankToFlat:
             return BolligerMabillardTrackLeftBankToFlat<supportType>;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::kRightBankToFlat:
             return BolligerMabillardTrackRightBankToFlat<supportType>;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::kBankedLeftQuarterTurn5Tiles:
             return BolligerMabillardTrackBankedLeftQuarterTurn5<supportType>;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::kBankedRightQuarterTurn5Tiles:
             return BolligerMabillardTrackBankedRightQuarterTurn5<supportType>;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::kLeftBankToUp25:
             return BolligerMabillardTrackLeftBankTo25DegUp<supportType>;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::kRightBankToUp25:
             return BolligerMabillardTrackRightBankTo25DegUp<supportType>;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::kUp25ToLeftBank:
             return BolligerMabillardTrack25DegUpToLeftBank<supportType>;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::kUp25ToRightBank:
             return BolligerMabillardTrack25DegUpToRightBank<supportType>;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::kLeftBankToDown25:
             return BolligerMabillardTrackLeftBankTo25DegDown<supportType>;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::kRightBankToDown25:
             return BolligerMabillardTrackRightBankTo25DegDown<supportType>;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::kDown25ToLeftBank:
             return BolligerMabillardTrack25DegDownToLeftBank<supportType>;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::kDown25ToRightBank:
             return BolligerMabillardTrack25DegDownToRightBank<supportType>;
-        case TrackElemType::LeftBank:
+        case TrackElemType::kLeftBank:
             return BolligerMabillardTrackLeftBank<supportType>;
-        case TrackElemType::RightBank:
+        case TrackElemType::kRightBank:
             return BolligerMabillardTrackRightBank<supportType>;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::kLeftQuarterTurn5TilesUp25:
             return BolligerMabillardTrackLeftQuarterTurn525DegUp<supportType>;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::kRightQuarterTurn5TilesUp25:
             return BolligerMabillardTrackRightQuarterTurn525DegUp<supportType>;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::kLeftQuarterTurn5TilesDown25:
             return BolligerMabillardTrackLeftQuarterTurn525DegDown<supportType>;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::kRightQuarterTurn5TilesDown25:
             return BolligerMabillardTrackRightQuarterTurn525DegDown<supportType>;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return BolligerMabillardTrackSBendLeft<supportType>;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return BolligerMabillardTrackSBendRight<supportType>;
-        case TrackElemType::LeftVerticalLoop:
+        case TrackElemType::kLeftVerticalLoop:
             return BolligerMabillardTrackLeftVerticalLoop<supportType>;
-        case TrackElemType::RightVerticalLoop:
+        case TrackElemType::kRightVerticalLoop:
             return BolligerMabillardTrackRightVerticalLoop<supportType>;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return BolligerMabillardTrackLeftQuarterTurn3<supportType>;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return BolligerMabillardTrackRightQuarterTurn3<supportType>;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::kLeftBankedQuarterTurn3Tiles:
             return BolligerMabillardTrackLeftQuarterTurn3Bank<supportType>;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::kRightBankedQuarterTurn3Tiles:
             return BolligerMabillardTrackRightQuarterTurn3Bank<supportType>;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftQuarterTurn3TilesUp25:
             return BolligerMabillardTrackLeftQuarterTurn325DegUp<supportType>;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightQuarterTurn3TilesUp25:
             return BolligerMabillardTrackRightQuarterTurn325DegUp<supportType>;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25:
             return BolligerMabillardTrackLeftQuarterTurn325DegDown<supportType>;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::kRightQuarterTurn3TilesDown25:
             return BolligerMabillardTrackRightQuarterTurn325DegDown<supportType>;
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::kLeftHalfBankedHelixUpSmall:
             return BolligerMabillardTrackLeftHalfBankedHelixUpSmall<supportType>;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::kRightHalfBankedHelixUpSmall:
             return BolligerMabillardTrackRightHalfBankedHelixUpSmall<supportType>;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::kLeftHalfBankedHelixDownSmall:
             return BolligerMabillardTrackLeftHalfBankedHelixDownSmall<supportType>;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::kRightHalfBankedHelixDownSmall:
             return BolligerMabillardTrackRightHalfBankedHelixDownSmall<supportType>;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::kLeftHalfBankedHelixUpLarge:
             return BolligerMabillardTrackLeftHalfBankedHelixUpLarge<supportType>;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::kRightHalfBankedHelixUpLarge:
             return BolligerMabillardTrackRightHalfBankedHelixUpLarge<supportType>;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::kLeftHalfBankedHelixDownLarge:
             return BolligerMabillardTrackLeftHalfBankedHelixDownLarge<supportType>;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::kRightHalfBankedHelixDownLarge:
             return BolligerMabillardTrackRightHalfBankedHelixDownLarge<supportType>;
-        case TrackElemType::LeftQuarterTurn1TileUp60:
+        case TrackElemType::kLeftQuarterTurn1TileUp60:
             return BolligerMabillardTrackLeftQuarterTurn160DegUp<supportType>;
-        case TrackElemType::RightQuarterTurn1TileUp60:
+        case TrackElemType::kRightQuarterTurn1TileUp60:
             return BolligerMabillardTrackRightQuarterTurn160DegUp<supportType>;
-        case TrackElemType::LeftQuarterTurn1TileDown60:
+        case TrackElemType::kLeftQuarterTurn1TileDown60:
             return BolligerMabillardTrackLeftQuarterTurn160DegDown<supportType>;
-        case TrackElemType::RightQuarterTurn1TileDown60:
+        case TrackElemType::kRightQuarterTurn1TileDown60:
             return BolligerMabillardTrackRightQuarterTurn160DegDown<supportType>;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return BolligerMabillardTrackBrakes<supportType>;
-        case TrackElemType::Up25LeftBanked:
+        case TrackElemType::kUp25LeftBanked:
             return BolligerMabillardTrack25DegUpLeftBanked<supportType>;
-        case TrackElemType::Up25RightBanked:
+        case TrackElemType::kUp25RightBanked:
             return BolligerMabillardTrack25DegUpRightBanked<supportType>;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return BolligerMabillardTrackOnRidePhoto<supportType>;
-        case TrackElemType::Down25LeftBanked:
+        case TrackElemType::kDown25LeftBanked:
             return BolligerMabillardTrack25DegDownLeftBanked<supportType>;
-        case TrackElemType::Down25RightBanked:
+        case TrackElemType::kDown25RightBanked:
             return BolligerMabillardTrack25DegDownRightBanked<supportType>;
-        case TrackElemType::Up90:
+        case TrackElemType::kUp90:
             return BolligerMabillardTrack90DegUp<supportType>;
-        case TrackElemType::Down90:
+        case TrackElemType::kDown90:
             return BolligerMabillardTrack90DegDown<supportType>;
-        case TrackElemType::Up60ToUp90:
+        case TrackElemType::kUp60ToUp90:
             return BolligerMabillardTrack60DegUpTo90DegUp<supportType>;
-        case TrackElemType::Down90ToDown60:
+        case TrackElemType::kDown90ToDown60:
             return BolligerMabillardTrack90DegDownTo60DegDown<supportType>;
-        case TrackElemType::Up90ToUp60:
+        case TrackElemType::kUp90ToUp60:
             return BolligerMabillardTrack90DegUpTo60DegUp<supportType>;
-        case TrackElemType::Down60ToDown90:
+        case TrackElemType::kDown60ToDown90:
             return BolligerMabillardTrack60DegDownTo90DegDown<supportType>;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return BolligerMabillardTrackLeftEighthToDiag<supportType>;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return BolligerMabillardTrackRightEighthToDiag<supportType>;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return BolligerMabillardTrackLeftEighthToOrthogonal<supportType>;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return BolligerMabillardTrackRightEighthToOrthogonal<supportType>;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::kLeftEighthBankToDiag:
             return BolligerMabillardTrackLeftEighthBankToDiag<supportType>;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::kRightEighthBankToDiag:
             return BolligerMabillardTrackRightEighthBankToDiag<supportType>;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::kLeftEighthBankToOrthogonal:
             return BolligerMabillardTrackLeftEighthBankToOrthogonal<supportType>;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::kRightEighthBankToOrthogonal:
             return BolligerMabillardTrackRightEighthBankToOrthogonal<supportType>;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return BolligerMabillardTrackDiagFlat<supportType>;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return BolligerMabillardTrackDiag25DegUp<supportType>;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::kDiagUp60:
             return BolligerMabillardTrackDiag60DegUp<supportType>;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return BolligerMabillardTrackDiagFlatTo25DegUp<supportType>;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::kDiagUp25ToUp60:
             return BolligerMabillardTrackDiag25DegUpTo60DegUp<supportType>;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::kDiagUp60ToUp25:
             return BolligerMabillardTrackDiag60DegUpTo25DegUp<supportType>;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return BolligerMabillardTrackDiag25DegUpToFlat<supportType>;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return BolligerMabillardTrackDiag25DegDown<supportType>;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::kDiagDown60:
             return BolligerMabillardTrackDiag60DegDown<supportType>;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return BolligerMabillardTrackDiagFlatTo25DegDown<supportType>;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::kDiagDown25ToDown60:
             return BolligerMabillardTrackDiag25DegDownTo60DegDown<supportType>;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::kDiagDown60ToDown25:
             return BolligerMabillardTrackDiag60DegDownTo25DegDown<supportType>;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return BolligerMabillardTrackDiag25DegDownToFlat<supportType>;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::kDiagFlatToLeftBank:
             return BolligerMabillardTrackDiagFlatToLeftBank<supportType>;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::kDiagFlatToRightBank:
             return BolligerMabillardTrackDiagFlatToRightBank<supportType>;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::kDiagLeftBankToFlat:
             return BolligerMabillardTrackDiagLeftBankToFlat<supportType>;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::kDiagRightBankToFlat:
             return BolligerMabillardTrackDiagRightBankToFlat<supportType>;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::kDiagLeftBankToUp25:
             return BolligerMabillardTrackDiagLeftBankTo25DegUp<supportType>;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::kDiagRightBankToUp25:
             return BolligerMabillardTrackDiagRightBankTo25DegUp<supportType>;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::kDiagUp25ToLeftBank:
             return BolligerMabillardTrackDiag25DegUpToLeftBank<supportType>;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::kDiagUp25ToRightBank:
             return BolligerMabillardTrackDiag25DegUpToRightBank<supportType>;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::kDiagLeftBankToDown25:
             return BolligerMabillardTrackDiagLeftBankTo25DegDown<supportType>;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::kDiagRightBankToDown25:
             return BolligerMabillardTrackDiagRightBankTo25DegDown<supportType>;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::kDiagDown25ToLeftBank:
             return BolligerMabillardTrackDiag25DegDownToLeftBank<supportType>;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::kDiagDown25ToRightBank:
             return BolligerMabillardTrackDiag25DegDownToRightBank<supportType>;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::kDiagLeftBank:
             return BolligerMabillardTrackDiagLeftBank<supportType>;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::kDiagRightBank:
             return BolligerMabillardTrackDiagRightBank<supportType>;
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::kLeftBankToLeftQuarterTurn3TilesUp25:
             return BolligerMabillardTrackLeftBankToLeftQuarterTurn325DegUp<supportType>;
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::kRightBankToRightQuarterTurn3TilesUp25:
             return BolligerMabillardTrackRightBankToRightQuarterTurn325DegUp<supportType>;
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::kLeftQuarterTurn3TilesDown25ToLeftBank:
             return BolligerMabillardTrackLeftQuarterTurn325DegDownToLeftBank<supportType>;
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::kRightQuarterTurn3TilesDown25ToRightBank:
             return BolligerMabillardTrackRightQuarterTurn325DegDownToRightBank<supportType>;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::kBlockBrakes:
             return BolligerMabillardTrackBlockBrakes<supportType>;
-        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn3TileUp25:
             return BolligerMabillardTrackLeftBankedQuarterTurn325DegUp<supportType>;
-        case TrackElemType::RightBankedQuarterTurn3TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn3TileUp25:
             return BolligerMabillardTrackRightBankedQuarterTurn325DegUp<supportType>;
-        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
+        case TrackElemType::kLeftBankedQuarterTurn3TileDown25:
             return BolligerMabillardTrackLeftBankedQuarterTurn325DegDown<supportType>;
-        case TrackElemType::RightBankedQuarterTurn3TileDown25:
+        case TrackElemType::kRightBankedQuarterTurn3TileDown25:
             return BolligerMabillardTrackRightBankedQuarterTurn325DegDown<supportType>;
-        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::kLeftBankedQuarterTurn5TileUp25:
             return BolligerMabillardTrackLeftBankedQuarterTurn525DegUp<supportType>;
-        case TrackElemType::RightBankedQuarterTurn5TileUp25:
+        case TrackElemType::kRightBankedQuarterTurn5TileUp25:
             return BolligerMabillardTrackRightBankedQuarterTurn525DegUp<supportType>;
-        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
+        case TrackElemType::kLeftBankedQuarterTurn5TileDown25:
             return BolligerMabillardTrackLeftBankedQuarterTurn525DegDown<supportType>;
-        case TrackElemType::RightBankedQuarterTurn5TileDown25:
+        case TrackElemType::kRightBankedQuarterTurn5TileDown25:
             return BolligerMabillardTrackRightBankedQuarterTurn525DegDown<supportType>;
-        case TrackElemType::Up25ToLeftBankedUp25:
+        case TrackElemType::kUp25ToLeftBankedUp25:
             return BolligerMabillardTrack25DegUpToLeftBanked25DegUp<supportType>;
-        case TrackElemType::Up25ToRightBankedUp25:
+        case TrackElemType::kUp25ToRightBankedUp25:
             return BolligerMabillardTrack25DegUpToRightBanked25DegUp<supportType>;
-        case TrackElemType::LeftBankedUp25ToUp25:
+        case TrackElemType::kLeftBankedUp25ToUp25:
             return BolligerMabillardTrackLeftBanked25DegUpTo25DegUp<supportType>;
-        case TrackElemType::RightBankedUp25ToUp25:
+        case TrackElemType::kRightBankedUp25ToUp25:
             return BolligerMabillardTrackRightBanked25DegUpTo25DegUp<supportType>;
-        case TrackElemType::Down25ToLeftBankedDown25:
+        case TrackElemType::kDown25ToLeftBankedDown25:
             return BolligerMabillardTrack25DegDownToLeftBanked25DegDown<supportType>;
-        case TrackElemType::Down25ToRightBankedDown25:
+        case TrackElemType::kDown25ToRightBankedDown25:
             return BolligerMabillardTrack25DegDownToRightBanked25DegDown<supportType>;
-        case TrackElemType::LeftBankedDown25ToDown25:
+        case TrackElemType::kLeftBankedDown25ToDown25:
             return BolligerMabillardTrackLeftBanked25DegDownTo25DegDown<supportType>;
-        case TrackElemType::RightBankedDown25ToDown25:
+        case TrackElemType::kRightBankedDown25ToDown25:
             return BolligerMabillardTrackRightBanked25DegDownTo25DegDown<supportType>;
-        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::kLeftBankedFlatToLeftBankedUp25:
             return BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegUp<supportType>;
-        case TrackElemType::RightBankedFlatToRightBankedUp25:
+        case TrackElemType::kRightBankedFlatToRightBankedUp25:
             return BolligerMabillardTrackRightBankedFlatToRightBanked25DegUp<supportType>;
-        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::kLeftBankedUp25ToLeftBankedFlat:
             return BolligerMabillardTrackLeftBanked25DegUpToLeftBankedFlat<supportType>;
-        case TrackElemType::RightBankedUp25ToRightBankedFlat:
+        case TrackElemType::kRightBankedUp25ToRightBankedFlat:
             return BolligerMabillardTrackRightBanked25DegUpToRightBankedFlat<supportType>;
-        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::kLeftBankedFlatToLeftBankedDown25:
             return BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegDown<supportType>;
-        case TrackElemType::RightBankedFlatToRightBankedDown25:
+        case TrackElemType::kRightBankedFlatToRightBankedDown25:
             return BolligerMabillardTrackRightBankedFlatToRightBanked25DegDown<supportType>;
-        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::kLeftBankedDown25ToLeftBankedFlat:
             return BolligerMabillardTrackLeftBanked25DegDownToLeftBankedFlat<supportType>;
-        case TrackElemType::RightBankedDown25ToRightBankedFlat:
+        case TrackElemType::kRightBankedDown25ToRightBankedFlat:
             return BolligerMabillardTrackRightBanked25DegDownToRightBankedFlat<supportType>;
-        case TrackElemType::FlatToLeftBankedUp25:
+        case TrackElemType::kFlatToLeftBankedUp25:
             return BolligerMabillardTrackFlatToLeftBanked25DegUp<supportType>;
-        case TrackElemType::FlatToRightBankedUp25:
+        case TrackElemType::kFlatToRightBankedUp25:
             return BolligerMabillardTrackFlatToRightBanked25DegUp<supportType>;
-        case TrackElemType::LeftBankedUp25ToFlat:
+        case TrackElemType::kLeftBankedUp25ToFlat:
             return BolligerMabillardTrackLeftBanked25DegUpToFlat<supportType>;
-        case TrackElemType::RightBankedUp25ToFlat:
+        case TrackElemType::kRightBankedUp25ToFlat:
             return BolligerMabillardTrackRightBanked25DegUpToFlat<supportType>;
-        case TrackElemType::FlatToLeftBankedDown25:
+        case TrackElemType::kFlatToLeftBankedDown25:
             return BolligerMabillardTrackFlatToLeftBanked25DegDown<supportType>;
-        case TrackElemType::FlatToRightBankedDown25:
+        case TrackElemType::kFlatToRightBankedDown25:
             return BolligerMabillardTrackFlatToRightBanked25DegDown<supportType>;
-        case TrackElemType::LeftBankedDown25ToFlat:
+        case TrackElemType::kLeftBankedDown25ToFlat:
             return BolligerMabillardTrackLeftBanked25DegDownToFlat<supportType>;
-        case TrackElemType::RightBankedDown25ToFlat:
+        case TrackElemType::kRightBankedDown25ToFlat:
             return BolligerMabillardTrackRightBanked25DegDownToFlat<supportType>;
-        case TrackElemType::LeftQuarterTurn1TileUp90:
+        case TrackElemType::kLeftQuarterTurn1TileUp90:
             return BolligerMabillardTrackLeftQuarterTurn190DegUp<supportType>;
-        case TrackElemType::RightQuarterTurn1TileUp90:
+        case TrackElemType::kRightQuarterTurn1TileUp90:
             return BolligerMabillardTrackRightQuarterTurn190DegUp<supportType>;
-        case TrackElemType::LeftQuarterTurn1TileDown90:
+        case TrackElemType::kLeftQuarterTurn1TileDown90:
             return BolligerMabillardTrackLeftQuarterTurn190DegDown<supportType>;
-        case TrackElemType::RightQuarterTurn1TileDown90:
+        case TrackElemType::kRightQuarterTurn1TileDown90:
             return BolligerMabillardTrackRightQuarterTurn190DegDown<supportType>;
         /* The following track elements used to be specific to the vertical RC */
-        case TrackElemType::FlatToUp60:
+        case TrackElemType::kFlatToUp60:
             return BolligerMabillardTrackFlatTo60DegUp<supportType>;
-        case TrackElemType::Up60ToFlat:
+        case TrackElemType::kUp60ToFlat:
             return BolligerMabillardTrack60DegUpToFlat<supportType>;
-        case TrackElemType::FlatToDown60:
+        case TrackElemType::kFlatToDown60:
             return BolligerMabillardTrackFlatTo60DegDown<supportType>;
-        case TrackElemType::Down60ToFlat:
+        case TrackElemType::kDown60ToFlat:
             return BolligerMabillardTrack60DegDownToFlat<supportType>;
-        case TrackElemType::BrakeForDrop:
+        case TrackElemType::kBrakeForDrop:
             return BolligerMabillardTrackBrakeForDrop<supportType>;
-        case TrackElemType::DiagFlatToUp60:
+        case TrackElemType::kDiagFlatToUp60:
             return BolligerMabillardTrackDiagFlatTo60DegUp<supportType>;
-        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::kDiagUp60ToFlat:
             return BolligerMabillardTrackDiag60DegUpToFlat<supportType>;
-        case TrackElemType::DiagFlatToDown60:
+        case TrackElemType::kDiagFlatToDown60:
             return BolligerMabillardTrackDiagFlatTo60DegDown<supportType>;
-        case TrackElemType::DiagDown60ToFlat:
+        case TrackElemType::kDiagDown60ToFlat:
             return BolligerMabillardTrackDiag60DegDownToFlat<supportType>;
         /* The following track elements used to be specific to the Twister RC */
-        case TrackElemType::HalfLoopUp:
+        case TrackElemType::kHalfLoopUp:
             return BolligerMabillardTrackHalfLoopUp<supportType>;
-        case TrackElemType::HalfLoopDown:
+        case TrackElemType::kHalfLoopDown:
             return BolligerMabillardTrackHalfLoopDown<supportType>;
-        case TrackElemType::LeftCorkscrewUp:
+        case TrackElemType::kLeftCorkscrewUp:
             return BolligerMabillardTrackLeftCorkscrewUp<supportType>;
-        case TrackElemType::RightCorkscrewUp:
+        case TrackElemType::kRightCorkscrewUp:
             return BolligerMabillardTrackRightCorkscrewUp<supportType>;
-        case TrackElemType::LeftCorkscrewDown:
+        case TrackElemType::kLeftCorkscrewDown:
             return BolligerMabillardTrackLeftCorkscrewDown<supportType>;
-        case TrackElemType::RightCorkscrewDown:
+        case TrackElemType::kRightCorkscrewDown:
             return BolligerMabillardTrackRightCorkscrewDown<supportType>;
-        case TrackElemType::FlatToUp60LongBase:
+        case TrackElemType::kFlatToUp60LongBase:
             return BolligerMabillardTrackFlatTo60DegUpLongBase<supportType>;
-        case TrackElemType::Up60ToFlatLongBase:
+        case TrackElemType::kUp60ToFlatLongBase:
             return BolligerMabillardTrack60DegUpToFlatLongBase<supportType>;
-        case TrackElemType::Down60ToFlatLongBase:
+        case TrackElemType::kDown60ToFlatLongBase:
             return BolligerMabillardTrack60DegDownToFlatLongBase<supportType>;
-        case TrackElemType::FlatToDown60LongBase:
+        case TrackElemType::kFlatToDown60LongBase:
             return BolligerMabillardTrackFlatTo60DegDownLongBase<supportType>;
-        case TrackElemType::LeftBarrelRollUpToDown:
+        case TrackElemType::kLeftBarrelRollUpToDown:
             return BolligerMabillardTrackLeftBarrelRollUpToDown<supportType>;
-        case TrackElemType::RightBarrelRollUpToDown:
+        case TrackElemType::kRightBarrelRollUpToDown:
             return BolligerMabillardTrackRightBarrelRollUpToDown<supportType>;
-        case TrackElemType::LeftBarrelRollDownToUp:
+        case TrackElemType::kLeftBarrelRollDownToUp:
             return BolligerMabillardTrackLeftBarrelRollDownToUp<supportType>;
-        case TrackElemType::RightBarrelRollDownToUp:
+        case TrackElemType::kRightBarrelRollDownToUp:
             return BolligerMabillardTrackRightBarrelRollDownToUp<supportType>;
-        case TrackElemType::PoweredLift:
+        case TrackElemType::kPoweredLift:
             return BolligerMabillardTrackPoweredLift<supportType>;
-        case TrackElemType::LeftLargeHalfLoopUp:
+        case TrackElemType::kLeftLargeHalfLoopUp:
             return BolligerMabillardTrackLeftLargeHalfLoopUp<supportType>;
-        case TrackElemType::RightLargeHalfLoopUp:
+        case TrackElemType::kRightLargeHalfLoopUp:
             return BolligerMabillardTrackRightLargeHalfLoopUp<supportType>;
-        case TrackElemType::LeftLargeHalfLoopDown:
+        case TrackElemType::kLeftLargeHalfLoopDown:
             return BolligerMabillardTrackLeftLargeHalfLoopDown<supportType>;
-        case TrackElemType::RightLargeHalfLoopDown:
+        case TrackElemType::kRightLargeHalfLoopDown:
             return BolligerMabillardTrackRightLargeHalfLoopDown<supportType>;
-        case TrackElemType::Up90ToInvertedFlatQuarterLoop:
+        case TrackElemType::kUp90ToInvertedFlatQuarterLoop:
             return BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp<supportType>;
-        case TrackElemType::InvertedFlatToDown90QuarterLoop:
+        case TrackElemType::kInvertedFlatToDown90QuarterLoop:
             return BolligerMabillardTrackInvertedFlatTo90DegQuarterLoopDown<supportType>;
 
-        case TrackElemType::Booster:
+        case TrackElemType::kBooster:
             return BolligerMabillardTrackBooster<supportType>;
-        case TrackElemType::LeftTwistDownToUp:
+        case TrackElemType::kLeftTwistDownToUp:
             return BolligerMabillardTrackLeftTwistDownToUp<supportType>;
-        case TrackElemType::RightTwistDownToUp:
+        case TrackElemType::kRightTwistDownToUp:
             return BolligerMabillardTrackRightTwistDownToUp<supportType>;
-        case TrackElemType::LeftTwistUpToDown:
+        case TrackElemType::kLeftTwistUpToDown:
             return BolligerMabillardTrackLeftTwistUpToDown<supportType>;
-        case TrackElemType::RightTwistUpToDown:
+        case TrackElemType::kRightTwistUpToDown:
             return BolligerMabillardTrackRightTwistUpToDown<supportType>;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::kDiagBrakes:
             return BolligerMabillardTrackDiagBrakes<supportType>;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::kDiagBlockBrakes:
             return BolligerMabillardTrackDiagBlockBrakes<supportType>;
     }
     return nullptr;

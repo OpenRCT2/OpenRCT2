@@ -17,12 +17,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kCrookedHouseRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_GENTLE,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::kFlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionCrookedHouse),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kCrookedHouseRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_CROOKED_HOUSE),
+    .kEnumName = nameof(RIDE_TYPE_CROOKED_HOUSE),
     .AvailableBreakdowns = 0,
     .Heights = { 16, 96, 3, 2, },
     .MaxMass = 255,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kCrookedHouseRTD =
     .UpkeepCosts = { 30, 1, 0, 0, 0, 0 },
     .BuildCosts = { 32.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 6, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 22,
     .ColourPresets = TRACK_COLOUR_PRESETS(

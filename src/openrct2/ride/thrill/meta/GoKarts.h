@@ -18,12 +18,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kGoKartsRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_THRILL,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionGoKarts),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_ONE_STATION |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kGoKartsRTD =
     .OperatingSettings = { 1, 10, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_GO_KARTS),
+    .kEnumName = nameof(RIDE_TYPE_GO_KARTS),
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 7, 24, 2, 1, },
     .MaxMass = 255,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor kGoKartsRTD =
     .UpkeepCosts = { 50, 20, 0, 8, 0, 0 },
     .BuildCosts = { 31.00_GBP, 2.00_GBP, 20, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(

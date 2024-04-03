@@ -107,7 +107,7 @@ static void PaintDodgems(
  */
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionDodgems(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack4x4)
+    if (trackType != TrackElemType::kFlatTrack4x4)
     {
         return nullptr;
     }

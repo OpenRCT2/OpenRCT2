@@ -273,7 +273,7 @@ static bool MapAnimationInvalidateTrackWaterfall(const CoordsXYZ& loc)
         if (tileElement->GetType() != TileElementType::Track)
             continue;
 
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Waterfall)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::kWaterfall)
         {
             MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 46 });
             return false;
@@ -302,7 +302,7 @@ static bool MapAnimationInvalidateTrackRapids(const CoordsXYZ& loc)
         if (tileElement->GetType() != TileElementType::Track)
             continue;
 
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Rapids)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::kRapids)
         {
             MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 18 });
             return false;
@@ -331,7 +331,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
         if (tileElement->GetType() != TileElementType::Track)
             continue;
 
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::kOnRidePhoto)
         {
             MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             if (GameIsPaused())
@@ -370,7 +370,7 @@ static bool MapAnimationInvalidateTrackWhirlpool(const CoordsXYZ& loc)
         if (tileElement->GetType() != TileElementType::Track)
             continue;
 
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Whirlpool)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::kWhirlpool)
         {
             MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 18 });
             return false;
@@ -399,7 +399,7 @@ static bool MapAnimationInvalidateTrackSpinningTunnel(const CoordsXYZ& loc)
         if (tileElement->GetType() != TileElementType::Track)
             continue;
 
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::SpinningTunnel)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::kSpinningTunnel)
         {
             MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 32 });
             return false;
@@ -686,16 +686,16 @@ void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
             auto track = el->AsTrack();
             switch (track->GetTrackType())
             {
-                case TrackElemType::Waterfall:
+                case TrackElemType::kWaterfall:
                     MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, loc);
                     break;
-                case TrackElemType::Rapids:
+                case TrackElemType::kRapids:
                     MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, loc);
                     break;
-                case TrackElemType::Whirlpool:
+                case TrackElemType::kWhirlpool:
                     MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, loc);
                     break;
-                case TrackElemType::SpinningTunnel:
+                case TrackElemType::kSpinningTunnel:
                     MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
                     break;
             }

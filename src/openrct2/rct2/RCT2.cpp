@@ -113,23 +113,23 @@ namespace RCT2
     {
         // Boosters share their ID with the Spinning Control track.
         return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
-            && trackType == TrackElemType::Booster;
+            && trackType == TrackElemType::kBooster;
     }
 
     track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat)
     {
         if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
-        if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
-            return TrackElemType::RotationControlToggle;
+        if (origTrackType == TrackElemType::kRotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
+            return TrackElemType::kRotationControlToggle;
 
         return origTrackType;
     }
 
     RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType)
     {
-        if (origTrackType == TrackElemType::RotationControlToggle)
-            return TrackElemType::RotationControlToggleAlias;
+        if (origTrackType == TrackElemType::kRotationControlToggle)
+            return TrackElemType::kRotationControlToggleAlias;
 
         // This function is safe to run this way round.
         return OpenRCT2FlatTrackTypeToRCT12(origTrackType);

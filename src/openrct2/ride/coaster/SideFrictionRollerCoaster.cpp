@@ -3502,86 +3502,86 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return SideFrictionRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return SideFrictionRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return SideFrictionRCTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return SideFrictionRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return SideFrictionRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return SideFrictionRCTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return SideFrictionRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return SideFrictionRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return SideFrictionRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return SideFrictionRCTrackRightQuarterTurn5;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return SideFrictionRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return SideFrictionRCTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return SideFrictionRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return SideFrictionRCTrackRightQuarterTurn3;
-        case TrackElemType::Brakes:
+        case TrackElemType::kBrakes:
             return SideFrictionRCTrackBrakes;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::kLeftEighthToDiag:
             return SideFrictionRCTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::kRightEighthToDiag:
             return SideFrictionRCTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::kLeftEighthToOrthogonal:
             return SideFrictionRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::kRightEighthToOrthogonal:
             return SideFrictionRCTrackRightEighthToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::kDiagFlat:
             return SideFrictionRCTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::kDiagUp25:
             return SideFrictionRCTrackDiag25DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::kDiagFlatToUp25:
             return SideFrictionRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::kDiagUp25ToFlat:
             return SideFrictionRCTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::kDiagDown25:
             return SideFrictionRCTrackDiag25DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::kDiagFlatToDown25:
             return SideFrictionRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::kDiagDown25ToFlat:
             return SideFrictionRCTrackDiag25DegDownToFlat;
 
         // Added by OpenRCT2
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return SideFrictionRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return SideFrictionRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return SideFrictionRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return SideFrictionRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return SideFrictionRCTrack60DegUp;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return SideFrictionRCTrack60DegDown;
 
-        case TrackElemType::DiagUp60:
+        case TrackElemType::kDiagUp60:
             return SideFrictionRCTrackDiag60DegUp;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::kDiagDown60:
             return SideFrictionRCTrackDiag60DegDown;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::kDiagUp60ToUp25:
             return SideFrictionRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::kDiagDown25ToDown60:
             return SideFrictionRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::kDiagUp25ToUp60:
             return SideFrictionRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::kDiagDown60ToDown25:
             return SideFrictionRCTrackDiag60DegDownTo25DegDown;
     }
     return nullptr;

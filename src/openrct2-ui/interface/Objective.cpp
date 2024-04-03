@@ -22,7 +22,7 @@ void formatObjective(Formatter& ft, Objective objective)
     {
         StringId rideTypeString = STR_NONE;
         auto rideTypeId = objective.RideId;
-        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+        if (rideTypeId != kRideTypeNull && rideTypeId < RIDE_TYPE_COUNT)
         {
             rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
         }

@@ -268,7 +268,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack1x4A:
+        case TrackElemType::kFlatTrack1x4A:
             return PaintMagicCarpet;
     }
     return nullptr;

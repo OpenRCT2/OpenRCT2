@@ -746,54 +746,54 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintCarRideTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintCarRideStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintCarRideTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::kUp60:
             return PaintCarRideTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintCarRideTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::kUp25ToUp60:
             return PaintCarRideTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::kUp60ToUp25:
             return PaintCarRideTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintCarRideTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintCarRideTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return PaintCarRideTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintCarRideTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return PaintCarRideTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return PaintCarRideTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintCarRideTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return PaintCarRideTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return PaintCarRideTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::kLeftQuarterTurn1Tile:
             return PaintCarRideTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::kRightQuarterTurn1Tile:
             return PaintCarRideTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::Rapids:
+        case TrackElemType::kRapids:
             return PaintCarRideTrackLogBumps;
 
-        case TrackElemType::SpinningTunnel:
+        case TrackElemType::kSpinningTunnel:
             return PaintCarRideTrackSpinningTunnel;
     }
 

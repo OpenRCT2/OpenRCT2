@@ -695,27 +695,27 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintMonorailCyclesTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintMonorailCyclesStation;
 
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::kLeftQuarterTurn5Tiles:
             return PaintMonorailCyclesTrackLeftQuarterTurn5Tiles;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::kRightQuarterTurn5Tiles:
             return PaintMonorailCyclesTrackRightQuarterTurn5Tiles;
 
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return PaintMonorailCyclesTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return PaintMonorailCyclesTrackSBendRight;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return PaintMonorailCyclesTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return PaintMonorailCyclesTrackRightQuarterTurn3Tiles;
     }
 

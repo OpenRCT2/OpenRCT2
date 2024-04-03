@@ -2986,8 +2986,8 @@ static void VehiclePitchDown75(
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
     {
-        if (vehicle->GetTrackType() != TrackElemType::Down90ToDown60
-            && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
+        if (vehicle->GetTrackType() != TrackElemType::kDown90ToDown60
+            && (vehicle->GetTrackType()) != TrackElemType::kDown60ToDown90)
         {
             carEntry--;
         }
@@ -3010,8 +3010,8 @@ static void VehiclePitchDown90(
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
     {
-        if (vehicle->GetTrackType() != TrackElemType::Down90 && (vehicle->GetTrackType()) != TrackElemType::Down90ToDown60
-            && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
+        if (vehicle->GetTrackType() != TrackElemType::kDown90 && (vehicle->GetTrackType()) != TrackElemType::kDown90ToDown60
+            && (vehicle->GetTrackType()) != TrackElemType::kDown60ToDown90)
         {
             carEntry--;
         }
@@ -3784,7 +3784,7 @@ static constexpr vehicle_sprite_func PaintFunctionsByPitch[] = {
  */
 static void vehicle_visual_splash1_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->GetTrackType() != TrackElemType::Watersplash)
+    if (vehicle->GetTrackType() != TrackElemType::kWatersplash)
     {
         return;
     }
@@ -3972,7 +3972,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
     int32_t zOffset = 0;
     if (IsCableLift())
     {
-        carEntry = &CableLiftVehicle;
+        carEntry = &kCableLiftVehicle;
     }
     else
     {

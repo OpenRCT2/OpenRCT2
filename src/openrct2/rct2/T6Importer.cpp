@@ -80,7 +80,7 @@ namespace RCT2
             td->ride_mode = static_cast<RideMode>(td6.RideMode);
             td->track_flags = 0;
             td->colour_scheme = td6.VersionAndColourScheme & 0x3;
-            for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
+            for (auto i = 0; i < Limits::MaxVehicleColours; ++i)
             {
                 td->vehicle_colours[i].Body = td6.VehicleColours[i].BodyColour;
                 td->vehicle_colours[i].Trim = td6.VehicleColours[i].TrimColour;
@@ -116,7 +116,7 @@ namespace RCT2
             td->intensity = td6.Intensity;
             td->nausea = td6.Nausea;
             td->upkeep_cost = ToMoney64(td6.UpkeepCost);
-            for (auto i = 0; i < Limits::kNumColourSchemes; ++i)
+            for (auto i = 0; i < Limits::NumColourSchemes; ++i)
             {
                 td->track_spine_colour[i] = td6.TrackSpineColour[i];
                 td->track_rail_colour[i] = td6.TrackRailColour[i];
@@ -162,9 +162,9 @@ namespace RCT2
                     TrackDesignTrackElement trackElement{};
 
                     track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, td->type, true);
-                    if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
+                    if (trackType == TrackElemType::kInvertedUp90ToFlatQuarterLoopAlias)
                     {
-                        trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
+                        trackType = TrackElemType::kMultiDimInvertedUp90ToFlatQuarterLoop;
                     }
 
                     trackElement.Type = trackType;

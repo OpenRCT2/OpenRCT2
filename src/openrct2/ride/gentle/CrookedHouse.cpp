@@ -142,7 +142,7 @@ static void PaintCrookedHouse(
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::kFlatTrack3x3)
     {
         return nullptr;
     }

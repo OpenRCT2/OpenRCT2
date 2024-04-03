@@ -17,20 +17,20 @@
 // clang-format off
 constexpr RideTypeDescriptor kReverseFreefallCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL_STEEP, TRACK_REVERSE_FREEFALL, TRACK_ON_RIDE_PHOTO},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionReverseFreefallRC),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
+    .Flags = kRideTypeFagsTrackHas3Colours | kRideTypeFlagsCommonCoaster | kRideTypeFlagsCommonCoasterNonAlt | RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
     .RideModes = EnumsToFlags(RideMode::LimPoweredLaunch),
     .DefaultMode = RideMode::LimPoweredLaunch,
     .OperatingSettings = { 7, 30, 30, 40, 40, 0 },
     .Naming = { STR_RIDE_NAME_REVERSE_FREEFALL_COASTER, STR_RIDE_DESCRIPTION_REVERSE_FREEFALL_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_REVERSE_FREEFALL_COASTER),
+    .kEnumName = nameof(RIDE_TYPE_REVERSE_FREEFALL_COASTER),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 4, 7, },
     .MaxMass = 255,
@@ -39,7 +39,7 @@ constexpr RideTypeDescriptor kReverseFreefallCoasterRTD =
     .UpkeepCosts = { 80, 20, 0, 0, 0, 10 },
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(

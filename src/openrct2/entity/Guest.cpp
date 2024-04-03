@@ -1933,7 +1933,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
     if (ride.status == RideStatus::Open && !(ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
-        assert(ride.type < std::size(RideTypeDescriptors));
+        assert(ride.type < std::size(kRideTypeDescriptors));
         if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride.value == RIDE_VALUE_UNDEFINED
             || RideGetPrice(ride) != 0)
         {
@@ -4172,7 +4172,7 @@ void Guest::UpdateRideLeaveVehicle()
             for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
                 auto trackType = vehicle->GetTrackType();
-                if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
+                if (trackType == TrackElemType::kFlat || trackType > TrackElemType::kMiddleStation)
                     continue;
 
                 bool foundStation = false;

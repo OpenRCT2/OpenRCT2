@@ -120,7 +120,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     auto ride = GetRide(_rideIndex);
-    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr || ride->type == kRideTypeNull)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
@@ -177,7 +177,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     Guard::Assert(trackElement != nullptr);
 
     trackElement->SetClearanceZ(clearanceHeight);
-    trackElement->SetTrackType(TrackElemType::Maze);
+    trackElement->SetTrackType(TrackElemType::kMaze);
     trackElement->SetRideType(ride->type);
     trackElement->SetRideIndex(_rideIndex);
     trackElement->SetMazeEntry(_mazeEntry);

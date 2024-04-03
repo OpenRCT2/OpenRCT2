@@ -17,12 +17,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kRiverRapidsRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_WATER,
     .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_ON_RIDE_PHOTO, TRACK_RAPIDS, TRACK_WATERFALL, TRACK_WHIRLPOOL},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::kEndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionRiverRapids),
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
@@ -36,7 +36,7 @@ constexpr RideTypeDescriptor kRiverRapidsRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_RIVER_RAPIDS, STR_RIDE_DESCRIPTION_RIVER_RAPIDS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_RIVER_RAPIDS),
+    .kEnumName = nameof(RIDE_TYPE_RIVER_RAPIDS),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 9, 32, 14, 15, },
     .MaxMass = 255,
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor kRiverRapidsRTD =
     .UpkeepCosts = { 82, 20, 0, 10, 0, 10 },
     .BuildCosts = { 31.00_GBP, 3.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(

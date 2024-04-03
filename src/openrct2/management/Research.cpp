@@ -44,7 +44,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr int32_t kResearchRate[] = {
+static constexpr int32_t _researchRate[] = {
     0,
     160,
     250,
@@ -102,7 +102,7 @@ static void ResearchCalculateExpectedDate()
 
         int32_t progressRemaining = gameState.ResearchProgressStage == RESEARCH_STAGE_COMPLETING_DESIGN ? 0x10000 : 0x20000;
         progressRemaining -= gameState.ResearchProgress;
-        int32_t daysRemaining = (progressRemaining / kResearchRate[gameState.ResearchFundingLevel]) * 128;
+        int32_t daysRemaining = (progressRemaining / _researchRate[gameState.ResearchFundingLevel]) * 128;
 
         int32_t expectedDay = date.GetMonthTicks() + (daysRemaining & 0xFFFF);
         int32_t dayQuotient = expectedDay / 0x10000;
@@ -193,7 +193,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
         ObjectEntryIndex rideEntryIndex = researchItem.entryIndex;
         const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
-        if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
+        if (rideEntry != nullptr && base_ride_type != kRideTypeNull)
         {
             if (!RideTypeIsValid(base_ride_type))
             {
@@ -221,7 +221,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                     const auto* rideEntry2 = GetRideEntryByIndex(i);
                     if (rideEntry2 != nullptr)
                     {
-                        for (uint8_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
+                        for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
                         {
                             if (rideEntry2->ride_type[j] == base_ride_type)
                             {
@@ -325,7 +325,7 @@ void ResearchUpdate()
     }
 
     currentResearchProgress = gameState.ResearchProgress;
-    currentResearchProgress += kResearchRate[researchLevel];
+    currentResearchProgress += _researchRate[researchLevel];
     if (currentResearchProgress <= 0xFFFF)
     {
         gameState.ResearchProgress = currentResearchProgress;
@@ -464,7 +464,7 @@ void ResearchPopulateListRandom()
         int32_t researched = (ScenarioRand() & 0xFF) > 128;
         for (auto rideType : rideEntry->ride_type)
         {
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != kRideTypeNull)
             {
                 ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                 ResearchInsertRideEntry(rideType, i, category, researched);
@@ -488,7 +488,7 @@ void ResearchPopulateListRandom()
 
 bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
 {
-    if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (rideType != kRideTypeNull && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(Research::EntryType::Ride, entryIndex, rideType, category, 0);
         ResearchInsert(std::move(tmpItem), researched);
@@ -506,7 +506,7 @@ void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched)
 
     for (auto rideType : rideEntry->ride_type)
     {
-        if (rideType != RIDE_TYPE_NULL)
+        if (rideType != kRideTypeNull)
         {
             ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
             ResearchInsertRideEntry(rideType, entryIndex, category, researched);
@@ -774,7 +774,7 @@ static void ResearchMarkItemAsResearched(const ResearchItem& item)
             RideEntrySetInvented(item.entryIndex);
             for (auto rideType : rideEntry->ride_type)
             {
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     RideTypeSetInvented(rideType);
                 }
@@ -835,7 +835,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry != nullptr)
         {
-            for (uint8_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
                 if (seenBaseEntry[rideEntry->ride_type[j]])
                 {
@@ -862,7 +862,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         if (rideEntry != nullptr)
         {
             bool baseSeen = false;
-            for (uint8_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
                 if (seenBaseEntry[rideEntry->ride_type[j]])
                 {

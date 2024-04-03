@@ -28,7 +28,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 // clang-format off
 /** rct2: 0x00993CE9 */
-static constexpr uint8_t kByte993Ce9[] = {
+static constexpr uint8_t Byte993CE9[] = {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
     6, 2, 4, 5,
@@ -37,7 +37,7 @@ static constexpr uint8_t kByte993Ce9[] = {
 };
 
 /** rct2: 0x00993CFC */
-static constexpr uint8_t kByte993Cfc[] = {
+static constexpr uint8_t Byte993CFC[] = {
     5, 12, 0xFF, 0xFF,
     9, 0, 0xFF, 0xFF,
     13, 4, 0xFF, 0xFF,
@@ -45,7 +45,7 @@ static constexpr uint8_t kByte993Cfc[] = {
 };
 
 /** rct2: 0x00993D0C */
-static constexpr uint8_t kByte993D0C[] = {
+static constexpr uint8_t Byte993D0C[] = {
     3, 0, 0xFF, 0xFF,
     0, 1, 0xFF, 0xFF,
     1, 2, 0xFF, 0xFF,
@@ -134,7 +134,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         }
     }
 
-    TileElement* tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
+    TileElement* tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::kMaze, _rideIndex);
     if (tileElement == nullptr)
     {
         if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -206,7 +206,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
         WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
     }
 
-    auto tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
+    auto tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::kMaze, _rideIndex);
     if (tileElement == nullptr)
     {
         res.Cost = MazeCalculateCost(0, *ride, _loc);
@@ -217,7 +217,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
         Guard::Assert(trackElement != nullptr);
 
         trackElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
-        trackElement->SetTrackType(TrackElemType::Maze);
+        trackElement->SetTrackType(TrackElemType::kMaze);
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(0xFFFF);
@@ -247,16 +247,16 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
             if (!_initialPlacement)
             {
-                segmentOffset = kByte993Ce9[(_loc.direction + segmentOffset)];
+                segmentOffset = Byte993CE9[(_loc.direction + segmentOffset)];
                 tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
-                uint8_t temp_edx = kByte993Cfc[segmentOffset];
+                uint8_t temp_edx = Byte993CFC[segmentOffset];
                 if (temp_edx != 0xFF)
                 {
                     auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
                     TileElement* previousTileElement = MapGetTrackElementAtOfTypeFromRide(
-                        { previousElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
+                        { previousElementLoc, _loc.z }, TrackElemType::kMaze, _rideIndex);
 
                     if (previousTileElement != nullptr)
                     {
@@ -281,7 +281,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 auto previousSegment = CoordsXY{ _loc.x - CoordsDirectionDelta[_loc.direction].x / 2,
                                                  _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
-                tileElement = MapGetTrackElementAtOfTypeFromRide({ previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
+                tileElement = MapGetTrackElementAtOfTypeFromRide({ previousSegment, _loc.z }, TrackElemType::kMaze, _rideIndex);
 
                 MapInvalidateTileFull(previousSegment.ToTileStart());
                 if (tileElement == nullptr)
@@ -305,15 +305,15 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
-                    uint32_t direction1 = kByte993D0C[segmentBit];
+                    uint32_t direction1 = Byte993D0C[segmentBit];
                     auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                     TileElement* tmp_tileElement = MapGetTrackElementAtOfTypeFromRide(
-                        { nextElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
+                        { nextElementLoc, _loc.z }, TrackElemType::kMaze, _rideIndex);
 
                     if (tmp_tileElement != nullptr)
                     {
-                        uint8_t edx11 = kByte993Cfc[segmentBit];
+                        uint8_t edx11 = Byte993CFC[segmentBit];
                         tmp_tileElement->AsTrack()->MazeEntryAdd(1 << (edx11));
                     }
 

@@ -16,12 +16,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kFoodStallRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_SHOP,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack1x1A,
+    .StartTrackPiece = TrackElemType::kFlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionShop),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
                      RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -32,16 +32,16 @@ constexpr RideTypeDescriptor kFoodStallRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_FOOD_STALL, STR_RIDE_DESCRIPTION_FOOD_STALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_FOOD_STALL),
+    .kEnumName = nameof(RIDE_TYPE_FOOD_STALL),
     .AvailableBreakdowns = 0,
-    .Heights = { 12, DefaultFoodStallHeight, 0, 0, },
+    .Heights = { 12, kDefaultFoodStallHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 300.00_GBP, 0.00_GBP, 1, },
     .DefaultPrices = { 0, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 15,
     .ColourPresets = DEFAULT_STALL_COLOUR_PRESET,

@@ -1084,44 +1084,44 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLogFlume(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::kFlat:
             return PaintLogFlumeTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::kEndStation:
+        case TrackElemType::kBeginStation:
+        case TrackElemType::kMiddleStation:
             return PaintLogFlumeTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::kUp25:
             return PaintLogFlumeTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::kFlatToUp25:
             return PaintLogFlumeTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::kUp25ToFlat:
             return PaintLogFlumeTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::kDown25:
             return PaintLogFlumeTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::kFlatToDown25:
             return PaintLogFlumeTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::kDown25ToFlat:
             return PaintLogFlumeTrack25DegDownToFlat;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::kSBendLeft:
             return PaintLogFlumeTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::kSBendRight:
             return PaintLogFlumeTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::kLeftQuarterTurn3Tiles:
             return PaintLogFlumeTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::kRightQuarterTurn3Tiles:
             return PaintLogFlumeTrackRightQuarterTurn3Tiles;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::kOnRidePhoto:
             return PaintLogFlumeTrackOnRidePhoto;
-        case TrackElemType::LogFlumeReverser:
+        case TrackElemType::kLogFlumeReverser:
             return PaintLogFlumeTrackReverser;
 
             // Added by OpenRCT2
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::kDown25ToDown60:
             return LogFlumeTrack25Down60;
-        case TrackElemType::Down60:
+        case TrackElemType::kDown60:
             return LogFlumeTrack60Down;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::kDown60ToDown25:
             return LogFlumeTrack60Down25;
     }
 

@@ -63,8 +63,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack1x1A:
-        case TrackElemType::FlatTrack1x1B:
+        case TrackElemType::kFlatTrack1x1A:
+        case TrackElemType::kFlatTrack1x1B:
             return PaintShop;
     }
     return nullptr;

@@ -16,12 +16,12 @@
 // clang-format off
 constexpr RideTypeDescriptor kCashMachineRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
+    .AlternateType = kRideTypeNull,
     .Category = RIDE_CATEGORY_SHOP,
     .EnabledTrackPieces = {},
     .ExtraTrackPieces = {},
     .CoveredTrackPieces = {},
-    .StartTrackPiece = TrackElemType::FlatTrack1x1A,
+    .StartTrackPiece = TrackElemType::kFlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionShop),
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
                      RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_IS_CASH_MACHINE | RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY |
@@ -31,16 +31,16 @@ constexpr RideTypeDescriptor kCashMachineRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_CASH_MACHINE, STR_RIDE_DESCRIPTION_CASH_MACHINE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_CASH_MACHINE),
+    .kEnumName = nameof(RIDE_TYPE_CASH_MACHINE),
     .AvailableBreakdowns = 0,
-    .Heights = { 12, DefaultCashMachineHeight, 0, 0, },
+    .Heights = { 12, kDefaultCashMachineHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 40, 1, 0, 0, 0, 0 },
     .BuildCosts = { 200.00_GBP, 0.00_GBP, 1, },
     .DefaultPrices = { 0, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 5,
     .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,

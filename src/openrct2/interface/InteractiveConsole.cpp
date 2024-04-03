@@ -176,7 +176,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                     for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
                     {
                         char mode_name[128] = { 0 };
-                        StringId mode_string_id = RideModeNames[i];
+                        StringId mode_string_id = kRideModeNames[i];
                         OpenRCT2::FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
@@ -1252,10 +1252,10 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
             // Automatically research the ride so it's supported by the game.
             const auto* rideEntry = GetRideEntryByIndex(groupIndex);
 
-            for (int32_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
+            for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
                 auto rideType = rideEntry->ride_type[j];
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     ResearchInsertRideEntry(rideType, groupIndex, category, true);

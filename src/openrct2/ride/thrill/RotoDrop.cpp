@@ -224,10 +224,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::kTowerBase:
             return PaintRotoDropBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::kTowerSection:
             return PaintRotoDropTowerSection;
     }
 

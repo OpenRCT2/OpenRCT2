@@ -78,7 +78,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFacility(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack1x1A:
+        case TrackElemType::kFlatTrack1x1A:
             return PaintFacility;
     }
     return nullptr;

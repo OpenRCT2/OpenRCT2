@@ -63,11 +63,11 @@ struct DodgemsTrackSize
 
 constexpr DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
 {
-    if (type == TrackElemType::FlatTrack2x2)
+    if (type == TrackElemType::kFlatTrack2x2)
         return { 4, 4, 59, 59 };
-    if (type == TrackElemType::FlatTrack4x4)
+    if (type == TrackElemType::kFlatTrack4x4)
         return { 4, 4, 123, 123 };
-    if (type == TrackElemType::FlatTrack2x4)
+    if (type == TrackElemType::kFlatTrack2x4)
         return { 4, 4, 59, 123 };
     return { 0, 0, 0, 0 };
 }
