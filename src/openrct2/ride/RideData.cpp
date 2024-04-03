@@ -307,15 +307,15 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER       */ SideFrictionRollerCoasterRTD,
     /* RIDE_TYPE_STEEL_WILD_MOUSE                   */ SteelWildMouseRTD,
     /* RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER     */ MultiDimensionRollerCoasterRTD,
-    /* RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT */ MultiDimensionRollerCoasterAltRTD,
+    /* RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT */ MultiDimensionRollerCoasterRTD,
     /* RIDE_TYPE_FLYING_ROLLER_COASTER              */ FlyingRollerCoasterRTD,
-    /* RIDE_TYPE_FLYING_ROLLER_COASTER_ALT          */ FlyingRollerCoasterAltRTD,
+    /* RIDE_TYPE_FLYING_ROLLER_COASTER_ALT          */ FlyingRollerCoasterRTD,
     /* RIDE_TYPE_VIRGINIA_REEL                      */ VirginiaReelRTD,
     /* RIDE_TYPE_SPLASH_BOATS                       */ SplashBoatsRTD,
     /* RIDE_TYPE_MINI_HELICOPTERS                   */ MiniHelicoptersRTD,
     /* RIDE_TYPE_LAY_DOWN_ROLLER_COASTER            */ LayDownRollerCoasterRTD,
     /* RIDE_TYPE_SUSPENDED_MONORAIL                 */ SuspendedMonorailRTD,
-    /* RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT        */ LayDownRollerCoasterAltRTD,
+    /* RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT        */ LayDownRollerCoasterRTD,
     /* RIDE_TYPE_REVERSER_ROLLER_COASTER            */ ReverserRollerCoasterRTD,
     /* RIDE_TYPE_HEARTLINE_TWISTER_COASTER          */ HeartlineTwisterCoasterRTD,
     /* RIDE_TYPE_MINI_GOLF                          */ MiniGolfRTD,
@@ -359,17 +359,9 @@ bool RideTypeDescriptor::HasFlag(uint64_t flag) const
     return Flags & flag;
 }
 
-void RideTypeDescriptor::GetAvailableTrackPieces(RideTrackGroup& res) const
-{
-    res = EnabledTrackPieces;
-    if (GetGameState().Cheats.EnableAllDrawableTrackPieces)
-        res |= ExtraTrackPieces;
-}
-
 bool RideTypeDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
 {
-    return EnabledTrackPieces.get(trackPiece)
-        || (GetGameState().Cheats.EnableAllDrawableTrackPieces && ExtraTrackPieces.get(trackPiece));
+    return TrackPaintFunctions.Regular.SupportsTrackPiece(trackPiece);
 }
 
 ResearchCategory RideTypeDescriptor::GetResearchCategory() const
@@ -408,9 +400,9 @@ bool IsTrackEnabled(int32_t trackFlagIndex)
     return _enabledRidePieces.get(trackFlagIndex);
 }
 
-void UpdateEnabledRidePieces(ride_type_t rideType)
+void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor)
 {
-    GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
+    trackDrawerDescriptor.Regular.GetAvailableTrackPieces(_enabledRidePieces);
 
     if (!GetGameState().Cheats.EnableAllDrawableTrackPieces)
     {
@@ -421,4 +413,44 @@ void UpdateEnabledRidePieces(ride_type_t rideType)
 void UpdateDisabledRidePieces(const RideTrackGroup& res)
 {
     _disabledRidePieces = res;
+}
+
+void TrackDrawerEntry::GetAvailableTrackPieces(RideTrackGroup& res) const
+{
+    res = EnabledTrackPieces;
+    if (GetGameState().Cheats.EnableAllDrawableTrackPieces)
+        res |= ExtraTrackPieces;
+}
+
+bool TrackDrawerEntry::SupportsTrackPiece(const uint64_t trackPiece) const
+{
+    return EnabledTrackPieces.get(trackPiece)
+        || (GetGameState().Cheats.EnableAllDrawableTrackPieces && ExtraTrackPieces.get(trackPiece));
+}
+
+bool TrackDrawerDescriptor::HasCoveredPieces() const
+{
+    return Covered.EnabledTrackPieces.count() > 0;
+}
+
+bool TrackDrawerDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
+{
+    return Regular.SupportsTrackPiece(trackPiece);
+}
+
+TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted)
+{
+    return isInverted ? rtd.InvertedTrackPaintFunctions : rtd.TrackPaintFunctions;
+}
+
+TrackDrawerEntry getTrackDrawerEntry(const RideTypeDescriptor& rtd, bool isInverted, bool isCovered)
+{
+    auto descriptor = getTrackDrawerDescriptor(rtd, isInverted);
+
+    if (isCovered)
+    {
+        return descriptor.Covered;
+    }
+
+    return descriptor.Regular;
 }
