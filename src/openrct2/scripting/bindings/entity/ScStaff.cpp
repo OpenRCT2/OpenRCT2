@@ -118,11 +118,41 @@ namespace OpenRCT2::Scripting
         return 0;
     }
 
+    // TODO: move elsewhere
+    static std::array entertainerSpriteTypes = {
+        PeepSpriteType::EntertainerPanda,   PeepSpriteType::EntertainerTiger,     PeepSpriteType::EntertainerElephant,
+        PeepSpriteType::EntertainerRoman,   PeepSpriteType::EntertainerGorilla,   PeepSpriteType::EntertainerSnowman,
+        PeepSpriteType::EntertainerKnight,  PeepSpriteType::EntertainerAstronaut, PeepSpriteType::EntertainerBandit,
+        PeepSpriteType::EntertainerSheriff, PeepSpriteType::EntertainerPirate,
+    };
+
+    static bool isValidCostumeForStaffType(StaffType staffType, PeepSpriteType spriteType)
+    {
+        if (staffType == StaffType::Entertainer)
+        {
+            return std::find(entertainerSpriteTypes.begin(), entertainerSpriteTypes.end(), spriteType)
+                != entertainerSpriteTypes.end();
+        }
+        else
+        {
+            return (staffType == StaffType::Handyman && spriteType == PeepSpriteType::Handyman)
+                || (staffType == StaffType::Mechanic && spriteType == PeepSpriteType::Mechanic)
+                || (staffType == StaffType::Security && spriteType == PeepSpriteType::Security);
+        }
+    }
+
+    // TODO: accept string value
     void ScStaff::costume_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
+
         auto peep = GetStaff();
-        if (peep != nullptr)
+        if (peep == nullptr)
+        {
+            return;
+        }
+
+        if (isValidCostumeForStaffType(peep->AssignedStaffType, PeepSpriteType(value)))
         {
             peep->SetCostume(value);
         }
