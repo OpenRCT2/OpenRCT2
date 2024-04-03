@@ -28,7 +28,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 // clang-format off
 /** rct2: 0x00993CE9 */
-static constexpr uint8_t Byte993CE9[] = {
+static constexpr uint8_t kByte993Ce9[] = {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
     6, 2, 4, 5,
@@ -37,7 +37,7 @@ static constexpr uint8_t Byte993CE9[] = {
 };
 
 /** rct2: 0x00993CFC */
-static constexpr uint8_t Byte993CFC[] = {
+static constexpr uint8_t kByte993Cfc[] = {
     5, 12, 0xFF, 0xFF,
     9, 0, 0xFF, 0xFF,
     13, 4, 0xFF, 0xFF,
@@ -45,7 +45,7 @@ static constexpr uint8_t Byte993CFC[] = {
 };
 
 /** rct2: 0x00993D0C */
-static constexpr uint8_t Byte993D0C[] = {
+static constexpr uint8_t kByte993D0C[] = {
     3, 0, 0xFF, 0xFF,
     0, 1, 0xFF, 0xFF,
     1, 2, 0xFF, 0xFF,
@@ -247,10 +247,10 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
             if (!_initialPlacement)
             {
-                segmentOffset = Byte993CE9[(_loc.direction + segmentOffset)];
+                segmentOffset = kByte993Ce9[(_loc.direction + segmentOffset)];
                 tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
-                uint8_t temp_edx = Byte993CFC[segmentOffset];
+                uint8_t temp_edx = kByte993Cfc[segmentOffset];
                 if (temp_edx != 0xFF)
                 {
                     auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
@@ -305,7 +305,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
-                    uint32_t direction1 = Byte993D0C[segmentBit];
+                    uint32_t direction1 = kByte993D0C[segmentBit];
                     auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                     TileElement* tmp_tileElement = MapGetTrackElementAtOfTypeFromRide(
@@ -313,7 +313,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
                     if (tmp_tileElement != nullptr)
                     {
-                        uint8_t edx11 = Byte993CFC[segmentBit];
+                        uint8_t edx11 = kByte993Cfc[segmentBit];
                         tmp_tileElement->AsTrack()->MazeEntryAdd(1 << (edx11));
                     }
 

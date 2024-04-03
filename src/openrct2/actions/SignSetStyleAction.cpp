@@ -36,7 +36,7 @@ void SignSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t SignSetStyleAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void SignSetStyleAction::Serialise(DataSerialiser& stream)

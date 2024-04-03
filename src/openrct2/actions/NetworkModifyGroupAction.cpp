@@ -33,7 +33,7 @@ void NetworkModifyGroupAction::AcceptParameters(GameActionParameterVisitor& visi
 
 uint16_t NetworkModifyGroupAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void NetworkModifyGroupAction::Serialise(DataSerialiser& stream)

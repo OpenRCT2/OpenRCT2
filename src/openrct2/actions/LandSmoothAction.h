@@ -19,7 +19,7 @@ private:
     uint8_t _selectionType{};
     bool _isLowering{};
 
-    constexpr static StringId _ErrorTitles[] = {
+    constexpr static StringId kErrorTitles[] = {
         STR_CANT_LOWER_LAND_HERE,
         STR_CANT_RAISE_LAND_HERE,
     };

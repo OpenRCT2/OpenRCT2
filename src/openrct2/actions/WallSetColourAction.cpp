@@ -41,7 +41,7 @@ void WallSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t WallSetColourAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void WallSetColourAction::Serialise(DataSerialiser& stream)

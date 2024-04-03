@@ -31,7 +31,7 @@ void StaffSetPatrolAreaAction::AcceptParameters(GameActionParameterVisitor& visi
 
 uint16_t StaffSetPatrolAreaAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)

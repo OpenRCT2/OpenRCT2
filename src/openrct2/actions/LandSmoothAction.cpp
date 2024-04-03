@@ -341,7 +341,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
     int32_t centreZ = TileElementHeight(_coords);
 
     auto res = GameActions::Result();
-    res.ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
+    res.ErrorTitle = kErrorTitles[_isLowering ? 0 : 1];
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords.x, _coords.y, centreZ };
 
@@ -557,14 +557,14 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
             // Table with corners for each edge selection. The first two are the selected corners, the latter
             // two are the opposites
-            static constexpr uint8_t cornerIndices[][4] = {
+            static constexpr uint8_t kCornerIndices[][4] = {
                 { 2, 3, 1, 0 }, // MAP_SELECT_TYPE_EDGE_0
                 { 3, 0, 2, 1 }, // MAP_SELECT_TYPE_EDGE_1
                 { 0, 1, 3, 2 }, // MAP_SELECT_TYPE_EDGE_2
                 { 1, 2, 0, 3 }, // MAP_SELECT_TYPE_EDGE_3
             };
             // Big coordinate offsets for the neighbouring tile for the given edge selection
-            static constexpr CoordsXY stepOffsets[] = {
+            static constexpr CoordsXY kStepOffsets[] = {
                 { -32, 0 },
                 { 0, 32 },
                 { 32, 0 },
@@ -572,29 +572,29 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             };
 
             // Smooth higher and lower edges
-            uint8_t c1 = cornerIndices[edge][0];
-            uint8_t c2 = cornerIndices[edge][1];
-            uint8_t c3 = cornerIndices[edge][2];
-            uint8_t c4 = cornerIndices[edge][3];
+            uint8_t c1 = kCornerIndices[edge][0];
+            uint8_t c2 = kCornerIndices[edge][1];
+            uint8_t c3 = kCornerIndices[edge][2];
+            uint8_t c4 = kCornerIndices[edge][3];
             uint8_t z1 = MapGetCornerHeight(newBaseZ, newSlope, c1);
             uint8_t z2 = MapGetCornerHeight(newBaseZ, newSlope, c2);
             uint8_t z3 = MapGetCornerHeight(newBaseZ, newSlope, c3);
             uint8_t z4 = MapGetCornerHeight(newBaseZ, newSlope, c4);
             // Smooth the edge at the top of the new slope
             res.Cost += SmoothLandRowByEdge(
-                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z1, z2, stepOffsets[edge].x, stepOffsets[edge].y,
+                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z1, z2, kStepOffsets[edge].x, kStepOffsets[edge].y,
                 c3, c4, c1, c2);
             // Smooth the edge at the bottom of the new slope
             res.Cost += SmoothLandRowByEdge(
-                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z3, z4, -stepOffsets[edge].x, -stepOffsets[edge].y,
+                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z3, z4, -kStepOffsets[edge].x, -kStepOffsets[edge].y,
                 c1, c2, c3, c4);
 
             // Smooth corners
             res.Cost += SmoothLandRowByCorner(
-                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z1, -stepOffsets[edge].y, stepOffsets[edge].x, c2,
+                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z1, -kStepOffsets[edge].y, kStepOffsets[edge].x, c2,
                 c1);
             res.Cost += SmoothLandRowByCorner(
-                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z2, stepOffsets[edge].y, -stepOffsets[edge].x, c1,
+                isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z2, kStepOffsets[edge].y, -kStepOffsets[edge].x, c1,
                 c2);
             int32_t z = MapGetCornerHeight(newBaseZ, newSlope, 2);
             res.Cost += SmoothLandRowByCorner(isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);

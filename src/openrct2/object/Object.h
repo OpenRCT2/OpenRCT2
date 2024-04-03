@@ -199,7 +199,7 @@ private:
     ObjectGeneration _generation{};
     bool _usesFallbackImages{};
     bool _isCompatibilityObject{};
-    ImageIndex _baseImageId{ ImageIndexUndefined };
+    ImageIndex _baseImageId{ kImageIndexUndefined };
 
 protected:
     StringTable& GetStringTable()

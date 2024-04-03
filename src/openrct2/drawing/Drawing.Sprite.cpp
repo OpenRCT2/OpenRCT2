@@ -183,7 +183,7 @@ void MaskScalar(
 static Gx _g1 = {};
 static Gx _g2 = {};
 static Gx _csg = {};
-static G1Element _scrollingText[MaxScrollingTextEntries]{};
+static G1Element _scrollingText[kMaxScrollingTextEntries]{};
 static bool _csgLoaded = false;
 
 static G1Element _g1Temp = {};
@@ -702,7 +702,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     Guard::Assert(!gOpenRCT2NoGraphics, "GfxGetG1Element called on headless instance");
 
     auto offset = static_cast<size_t>(image_id);
-    if (offset == 0x7FFFF || offset == ImageIndexUndefined)
+    if (offset == 0x7FFFF || offset == kImageIndexUndefined)
     {
         return nullptr;
     }

@@ -33,7 +33,7 @@ void PeepSpawnPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t PeepSpawnPlaceAction::GetActionFlags() const
 {
-    return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;
+    return GameActionBase::GetActionFlags() | GameActions::Flags::kEditorOnly | GameActions::Flags::kAllowWhilePaused;
 }
 
 void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)

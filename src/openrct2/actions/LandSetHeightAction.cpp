@@ -43,7 +43,7 @@ void LandSetHeightAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t LandSetHeightAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+    return GameAction::GetActionFlags() | GameActions::Flags::kEditorOnly;
 }
 
 void LandSetHeightAction::Serialise(DataSerialiser& stream)

@@ -20,13 +20,13 @@
 #endif
 
 // Allow chunks to be uncompressed to a maximum of 16 MiB
-constexpr size_t MAX_UNCOMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
+constexpr size_t kMaxUncompressedChunkSize = 16 * 1024 * 1024;
 
-constexpr const char* EXCEPTION_MSG_CORRUPT_CHUNK_SIZE = "Corrupt chunk size.";
-constexpr const char* EXCEPTION_MSG_CORRUPT_RLE = "Corrupt RLE compression data.";
-constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger than allocated destination capacity.";
-constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
-constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
+constexpr const char* kExceptionMsgCorruptChunkSize = "Corrupt chunk size.";
+constexpr const char* kExceptionMsgCorruptRle = "Corrupt RLE compression data.";
+constexpr const char* kExceptionMsgDestinationTooSmall = "Chunk data larger than allocated destination capacity.";
+constexpr const char* kExceptionMsgInvalidChunkEncoding = "Invalid chunk encoding.";
+constexpr const char* kExceptionMsgZeroSizedChunk = "Encountered zero-sized chunk.";
 
 SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
     : _stream(stream)
@@ -55,8 +55,8 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
     try
     {
         auto header = _stream->ReadValue<SawyerCodingChunkHeader>();
-        if (header.length >= MAX_UNCOMPRESSED_CHUNK_SIZE)
-            throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+        if (header.length >= kMaxUncompressedChunkSize)
+            throw SawyerChunkException(kExceptionMsgCorruptChunkSize);
 
         switch (header.encoding)
         {
@@ -68,21 +68,21 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
                 auto compressedData = std::make_unique<uint8_t[]>(header.length);
                 if (_stream->TryRead(compressedData.get(), header.length) != header.length)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+                    throw SawyerChunkException(kExceptionMsgCorruptChunkSize);
                 }
 
-                auto buffer = std::make_unique<uint8_t[]>(MAX_UNCOMPRESSED_CHUNK_SIZE);
+                auto buffer = std::make_unique<uint8_t[]>(kMaxUncompressedChunkSize);
                 size_t uncompressedLength = DecodeChunk(
-                    buffer.get(), MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
+                    buffer.get(), kMaxUncompressedChunkSize, compressedData.get(), header);
                 if (uncompressedLength == 0)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+                    throw SawyerChunkException(kExceptionMsgZeroSizedChunk);
                 }
                 return std::make_shared<SawyerChunk>(
                     static_cast<SAWYER_ENCODING>(header.encoding), std::move(buffer), uncompressedLength);
             }
             default:
-                throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
+                throw SawyerChunkException(kExceptionMsgInvalidChunkEncoding);
         }
     }
     catch (const std::exception&)
@@ -102,22 +102,22 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
         int64_t compressedDataLength64 = _stream->GetLength() - _stream->GetPosition() - 4;
         if (compressedDataLength64 < 0 || compressedDataLength64 > std::numeric_limits<uint32_t>::max())
         {
-            throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+            throw SawyerChunkException(kExceptionMsgZeroSizedChunk);
         }
         uint32_t compressedDataLength = compressedDataLength64;
         auto compressedData = std::make_unique<uint8_t[]>(compressedDataLength);
 
         if (_stream->TryRead(compressedData.get(), compressedDataLength) != compressedDataLength)
         {
-            throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+            throw SawyerChunkException(kExceptionMsgCorruptChunkSize);
         }
 
-        auto buffer = std::make_unique<uint8_t[]>(MAX_UNCOMPRESSED_CHUNK_SIZE);
+        auto buffer = std::make_unique<uint8_t[]>(kMaxUncompressedChunkSize);
         SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
-        size_t uncompressedLength = DecodeChunk(buffer.get(), MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
+        size_t uncompressedLength = DecodeChunk(buffer.get(), kMaxUncompressedChunkSize, compressedData.get(), header);
         if (uncompressedLength == 0)
         {
-            throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+            throw SawyerChunkException(kExceptionMsgZeroSizedChunk);
         }
         return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, std::move(buffer), uncompressedLength);
     }
@@ -158,7 +158,7 @@ size_t SawyerChunkReader::DecodeChunk(void* dst, size_t dstCapacity, const void*
         case CHUNK_ENCODING_NONE:
             if (header.length > dstCapacity)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+                throw SawyerChunkException(kExceptionMsgDestinationTooSmall);
             }
             std::memcpy(dst, src, header.length);
             resultLength = header.length;
@@ -173,15 +173,15 @@ size_t SawyerChunkReader::DecodeChunk(void* dst, size_t dstCapacity, const void*
             resultLength = DecodeChunkRotate(dst, dstCapacity, src, header.length);
             break;
         default:
-            throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
+            throw SawyerChunkException(kExceptionMsgInvalidChunkEncoding);
     }
     return resultLength;
 }
 
 size_t SawyerChunkReader::DecodeChunkRLERepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength)
 {
-    auto immBuffer = std::make_unique<uint8_t[]>(MAX_UNCOMPRESSED_CHUNK_SIZE);
-    auto immLength = DecodeChunkRLE(immBuffer.get(), MAX_UNCOMPRESSED_CHUNK_SIZE, src, srcLength);
+    auto immBuffer = std::make_unique<uint8_t[]>(kMaxUncompressedChunkSize);
+    auto immLength = DecodeChunkRLE(immBuffer.get(), kMaxUncompressedChunkSize, src, srcLength);
     auto size = DecodeChunkRepeat(dst, dstCapacity, immBuffer.get(), immLength);
     return size;
 }
@@ -201,11 +201,11 @@ size_t SawyerChunkReader::DecodeChunkRLE(void* dst, size_t dstCapacity, const vo
 
             if (i >= srcLength)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                throw SawyerChunkException(kExceptionMsgCorruptRle);
             }
             if (dst8 + count > dstEnd)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+                throw SawyerChunkException(kExceptionMsgDestinationTooSmall);
             }
 
             std::fill_n(dst8, count, src8[i]);
@@ -215,15 +215,15 @@ size_t SawyerChunkReader::DecodeChunkRLE(void* dst, size_t dstCapacity, const vo
         {
             if (i + 1 >= srcLength)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                throw SawyerChunkException(kExceptionMsgCorruptRle);
             }
             if (dst8 + rleCodeByte + 1 > dstEnd)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+                throw SawyerChunkException(kExceptionMsgDestinationTooSmall);
             }
             if (i + 1 + rleCodeByte + 1 > srcLength)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                throw SawyerChunkException(kExceptionMsgCorruptRle);
             }
 
             std::memcpy(dst8, src8 + i + 1, rleCodeByte + 1);
@@ -252,16 +252,16 @@ size_t SawyerChunkReader::DecodeChunkRepeat(void* dst, size_t dstCapacity, const
 
             if (dst8 + count >= dstEnd || copySrc + count >= dstEnd)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+                throw SawyerChunkException(kExceptionMsgDestinationTooSmall);
             }
             if (copySrc < dst)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                throw SawyerChunkException(kExceptionMsgCorruptRle);
             }
             if ((copySrc < (dst8 + count) && copySrc >= dst8)
                 || ((copySrc + count) <= (dst8 + count) && (copySrc + count) > dst8))
             {
-                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                throw SawyerChunkException(kExceptionMsgCorruptRle);
             }
 
             std::memcpy(dst8, copySrc, count);
@@ -275,7 +275,7 @@ size_t SawyerChunkReader::DecodeChunkRotate(void* dst, size_t dstCapacity, const
 {
     if (srcLength > dstCapacity)
     {
-        throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+        throw SawyerChunkException(kExceptionMsgDestinationTooSmall);
     }
 
     auto src8 = static_cast<const uint8_t*>(src);

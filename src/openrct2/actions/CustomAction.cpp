@@ -37,7 +37,7 @@ std::string CustomAction::GetPluginName() const
 
 uint16_t CustomAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void CustomAction::Serialise(DataSerialiser& stream)

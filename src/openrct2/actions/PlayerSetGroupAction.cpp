@@ -25,7 +25,7 @@ void PlayerSetGroupAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t PlayerSetGroupAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void PlayerSetGroupAction::Serialise(DataSerialiser& stream)

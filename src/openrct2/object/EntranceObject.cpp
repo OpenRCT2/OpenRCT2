@@ -68,7 +68,7 @@ void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
 ImageIndex EntranceObject::GetImage(uint8_t sequence, Direction direction) const
 {
     if (sequence > 2)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     return _legacyType.image_id + ((direction & 3) * 3) + sequence;
 }
 

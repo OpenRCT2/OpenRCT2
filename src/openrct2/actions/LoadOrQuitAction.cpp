@@ -26,7 +26,7 @@ void LoadOrQuitAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t LoadOrQuitAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::ClientOnly | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kClientOnly | GameActions::Flags::kAllowWhilePaused;
 }
 
 void LoadOrQuitAction::Serialise(DataSerialiser& stream)

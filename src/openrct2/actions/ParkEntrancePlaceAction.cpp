@@ -38,7 +38,7 @@ void ParkEntrancePlaceAction::AcceptParameters(GameActionParameterVisitor& visit
 
 uint16_t ParkEntrancePlaceAction::GetActionFlags() const
 {
-    return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly;
+    return GameActionBase::GetActionFlags() | GameActions::Flags::kEditorOnly;
 }
 
 void ParkEntrancePlaceAction::Serialise(DataSerialiser& stream)

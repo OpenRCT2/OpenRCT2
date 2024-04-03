@@ -2466,11 +2466,11 @@ static Widget _topToolbarWidgets[] = {
             ClearableItems itemsToClear = 0;
 
             if (gClearSmallScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_SMALL;
+                itemsToClear |= CLEARABLE_ITEMS::kScenerySmall;
             if (gClearLargeScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_LARGE;
+                itemsToClear |= CLEARABLE_ITEMS::kSceneryLarge;
             if (gClearFootpath)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_FOOTPATH;
+                itemsToClear |= CLEARABLE_ITEMS::kSceneryFootpath;
 
             return ClearAction(range, itemsToClear);
         }

@@ -32,7 +32,7 @@ void BannerSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t BannerSetStyleAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void BannerSetStyleAction::Serialise(DataSerialiser& stream)

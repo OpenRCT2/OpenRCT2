@@ -77,7 +77,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
+static constexpr ObjectEntryIndex kObjectEntryIndexIgnore = 254;
 
 namespace RCT1
 {
@@ -737,7 +737,7 @@ namespace RCT1
             if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL || sceneryThemeType == RCT1_SCENERY_THEME_JUMPING_FOUNTAINS
                 || sceneryThemeType == RCT1_SCENERY_THEME_GARDEN_CLOCK)
             {
-                _sceneryThemeTypeToEntryMap[sceneryThemeType] = ObjectEntryIndexIgnore;
+                _sceneryThemeTypeToEntryMap[sceneryThemeType] = kObjectEntryIndexIgnore;
             }
             else
             {
@@ -800,7 +800,7 @@ namespace RCT1
 
         void ImportRides()
         {
-            for (int32_t i = 0; i < Limits::MaxRidesInPark; i++)
+            for (int32_t i = 0; i < Limits::kMaxRidesInPark; i++)
             {
                 if (_s4.Rides[i].Type != RideType::Null)
                 {
@@ -875,7 +875,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->OverallView.x, src->OverallView.y }.ToCoordsXY();
             }
 
-            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 if (src->StationStarts[i].IsNull())
@@ -912,7 +912,7 @@ namespace RCT1
                 dstStation.SegmentLength = src->Length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 dstStation.Start.SetNull();
@@ -1111,7 +1111,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::NumColourSchemes; i++)
+                for (int i = 0; i < Limits::kNumColourSchemes; i++)
                 {
                     dst->track_colour[i].main = RCT1::GetColour(src->TrackColourMain[i]);
                     dst->track_colour[i].additional = RCT1::GetColour(src->TrackColourAdditional[i]);
@@ -1367,8 +1367,8 @@ namespace RCT1
             //                                          index in the array ----^     ^--- bit position in the 8-bit value
             // We do the opposite in this function to recover the x and y values.
 
-            int32_t peepOffset = staffId * Limits::PatrolAreaSize;
-            for (int32_t i = 0; i < Limits::PatrolAreaSize; i++)
+            int32_t peepOffset = staffId * Limits::kPatrolAreaSize;
+            for (int32_t i = 0; i < Limits::kPatrolAreaSize; i++)
             {
                 if (_s4.PatrolAreas[peepOffset + i] == 0)
                 {
@@ -1412,7 +1412,7 @@ namespace RCT1
         {
             auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
-            for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
+            for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
                 if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
@@ -1440,16 +1440,16 @@ namespace RCT1
             gameState.ParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.CurrentProfit = ToMoney64(_s4.Profit);
 
-            for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
+            for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.ParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
-            for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
+            for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
-                for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
+                for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
                     gameState.ExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
@@ -1539,7 +1539,7 @@ namespace RCT1
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
-                            if (srcElement->BaseHeight == Limits::MaxElementHeight)
+                            if (srcElement->BaseHeight == Limits::kMaxElementHeight)
                                 continue;
 
                             // Reserve 8 elements for import
@@ -1927,7 +1927,7 @@ namespace RCT1
                     {
                         uint8_t rct1SceneryTheme = researchItem.Item;
                         auto sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
-                        if (sceneryGroupEntryIndex != ObjectEntryIndexIgnore
+                        if (sceneryGroupEntryIndex != kObjectEntryIndexIgnore
                             && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
                         {
                             ResearchInsertSceneryGroupEntry(sceneryGroupEntryIndex, researched);
@@ -2184,7 +2184,7 @@ namespace RCT1
             }
 
             // News items
-            for (size_t i = 0; i < Limits::MaxNewsItems; i++)
+            for (size_t i = 0; i < Limits::kMaxNewsItems; i++)
             {
                 const RCT12NewsItem* src = &_s4.Messages[i];
                 News::Item* dst = &gameState.NewsItems[i];
@@ -2289,7 +2289,7 @@ namespace RCT1
             {
                 auto entryIndex = _sceneryThemeTypeToEntryMap[srcItem];
 
-                if (entryIndex != ObjectEntryIndexIgnore && entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (entryIndex != kObjectEntryIndexIgnore && entryIndex != OBJECT_ENTRY_INDEX_NULL)
                 {
                     dst->entryIndex = entryIndex;
                     dst->type = Research::EntryType::Scenery;
@@ -2450,7 +2450,7 @@ namespace RCT1
             gameState.ParkEntrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.ParkEntrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.ParkEntrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 

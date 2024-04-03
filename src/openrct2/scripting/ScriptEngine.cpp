@@ -1085,7 +1085,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
             obj.Set("type", EnumValue(customAction.GetType()));
 
             auto flags = customAction.GetActionFlags();
-            obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+            obj.Set("isClientOnly", (flags & GameActions::Flags::kClientOnly) != 0);
             pluginCallArgs = { obj.Take() };
         }
 
@@ -1466,7 +1466,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
         obj.Set("type", EnumValue(actionId));
 
         auto flags = action.GetActionFlags();
-        obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+        obj.Set("isClientOnly", (flags & GameActions::Flags::kClientOnly) != 0);
 
         obj.Set("result", GameActionResultToDuk(action, result));
         auto dukEventArgs = obj.Take();

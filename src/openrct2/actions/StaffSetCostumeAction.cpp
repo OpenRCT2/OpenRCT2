@@ -50,7 +50,7 @@ void StaffSetCostumeAction::AcceptParameters(GameActionParameterVisitor& visitor
 
 uint16_t StaffSetCostumeAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void StaffSetCostumeAction::Serialise(DataSerialiser& stream)

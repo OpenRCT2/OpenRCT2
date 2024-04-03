@@ -25,10 +25,10 @@ namespace GameActions
 {
     namespace Flags
     {
-        constexpr uint16_t AllowWhilePaused = 1 << 0;
-        constexpr uint16_t ClientOnly = 1 << 1;
-        constexpr uint16_t EditorOnly = 1 << 2;
-        constexpr uint16_t IgnoreForReplays = 1 << 3;
+        constexpr uint16_t kAllowWhilePaused = 1 << 0;
+        constexpr uint16_t kClientOnly = 1 << 1;
+        constexpr uint16_t kEditorOnly = 1 << 2;
+        constexpr uint16_t kIgnoreForReplays = 1 << 3;
     } // namespace Flags
 
 } // namespace GameActions
@@ -162,12 +162,12 @@ public:
 
         if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_NO_SPEND) != 0)
         {
-            flags |= GameActions::Flags::ClientOnly;
+            flags |= GameActions::Flags::kClientOnly;
         }
 
         if (GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
         {
-            flags |= GameActions::Flags::AllowWhilePaused;
+            flags |= GameActions::Flags::kAllowWhilePaused;
         }
 
         return flags;

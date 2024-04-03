@@ -31,7 +31,7 @@ void StaffSetOrdersAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t StaffSetOrdersAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void StaffSetOrdersAction::Serialise(DataSerialiser& stream)

@@ -49,7 +49,7 @@ struct RideObjectEntry
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
-    ride_type_t ride_type[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+    ride_type_t ride_type[RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;
     uint8_t cars_per_flat_ride;
@@ -64,13 +64,13 @@ struct RideObjectEntry
     uint8_t RearCar;
     uint8_t ThirdCar;
     uint8_t BuildMenuPriority;
-    CarEntry Cars[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
+    CarEntry Cars[RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
     VehicleColourPresetList* vehicle_preset_list;
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
     uint8_t max_height;
-    ShopItem shop_item[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
+    ShopItem shop_item[RCT2::ObjectLimits::kMaxShopItemsPerRideEntry];
     StringId capacity;
     void* obj;
     uint8_t Clearance;

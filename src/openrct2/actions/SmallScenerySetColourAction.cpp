@@ -51,7 +51,7 @@ void SmallScenerySetColourAction::AcceptParameters(GameActionParameterVisitor& v
 
 uint16_t SmallScenerySetColourAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void SmallScenerySetColourAction::Serialise(DataSerialiser& stream)

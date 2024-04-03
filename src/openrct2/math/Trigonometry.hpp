@@ -20,7 +20,7 @@ namespace OpenRCT2::Math::Trigonometry
      * Where L1 represents an incrementing column 0 - 63
      * Note: Must be at least 32bit to ensure all users do not overflow
      */
-    static constexpr CoordsXY YawToDirectionVector[64] = {
+    static constexpr CoordsXY kYawToDirectionVector[64] = {
         { -256, 0 },    { -255, 25 },   { -251, 50 },   { -245, 74 },   { -237, 98 },   { -226, 121 },  { -213, 142 },
         { -198, 162 },  { -181, 181 },  { -162, 198 },  { -142, 213 },  { -121, 226 },  { -98, 237 },   { -74, 245 },
         { -50, 251 },   { -25, 255 },   { 0, 256 },     { 25, 255 },    { 50, 251 },    { 74, 245 },    { 98, 237 },
@@ -33,14 +33,14 @@ namespace OpenRCT2::Math::Trigonometry
         { -255, -25 },
     };
     // Currently OpenRCT2::Entity::Yaw::BaseSpritePrecision is 32, but one day it will be 64.
-    static_assert(std::size(YawToDirectionVector) == 64);
+    static_assert(std::size(kYawToDirectionVector) == 64);
 
     /**
      * The cos and sin of vehicle pitch based on vehicle sprite angles
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
      */
-    constexpr CoordsXY PitchToDirectionVectorFromGeometry[] = {
+    constexpr CoordsXY kPitchToDirectionVectorFromGeometry[] = {
         { 256, 0 },     // flat
         { 251, 49 },    // slopes up
         { 236, 97 },    // slopes up
@@ -102,16 +102,16 @@ namespace OpenRCT2::Math::Trigonometry
         { 134, -217 },  // inverting transition slopes down
         { 252, 44 },    // spiral lift hill up
     };
-    static_assert(std::size(PitchToDirectionVectorFromGeometry) == NumVehiclePitches);
+    static_assert(std::size(kPitchToDirectionVectorFromGeometry) == NumVehiclePitches);
 
     constexpr int32_t ComputeHorizontalMagnitude(int32_t length, uint8_t pitch)
     {
-        return (-PitchToDirectionVectorFromGeometry[pitch].y * length) / 256;
+        return (-kPitchToDirectionVectorFromGeometry[pitch].y * length) / 256;
     }
 
     constexpr CoordsXY ComputeXYVector(int32_t magnitude, uint8_t yaw)
     {
-        return (static_cast<CoordsXY>(YawToDirectionVector[yaw]) * magnitude) / 256;
+        return (static_cast<CoordsXY>(kYawToDirectionVector[yaw]) * magnitude) / 256;
     }
 
     constexpr CoordsXY ComputeXYVector(int32_t length, uint8_t pitch, uint8_t yaw)

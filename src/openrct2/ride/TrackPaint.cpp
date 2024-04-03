@@ -802,7 +802,7 @@ bool TrackPaintUtilDrawStationCovers2(
     }
 
     auto baseImageIndex = stationObject->ShelterImageId;
-    if (baseImageIndex == ImageIndexUndefined)
+    if (baseImageIndex == kImageIndexUndefined)
         return false;
 
     static constexpr int16_t heights[][2] = {

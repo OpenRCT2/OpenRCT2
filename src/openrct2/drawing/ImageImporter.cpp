@@ -304,7 +304,7 @@ namespace OpenRCT2::Drawing
     {
         if (!IsTransparentPixel(colour))
         {
-            for (uint32_t i = 0; i < PALETTE_SIZE; i++)
+            for (uint32_t i = 0; i < kPaletteSize; i++)
             {
                 if (static_cast<int16_t>(palette[i].Red) == colour[0] && static_cast<int16_t>(palette[i].Green) == colour[1]
                     && static_cast<int16_t>(palette[i].Blue) == colour[2])
@@ -362,7 +362,7 @@ namespace OpenRCT2::Drawing
     {
         auto smallestError = static_cast<uint32_t>(-1);
         auto bestMatch = PALETTE_TRANSPARENT;
-        for (uint32_t x = 0; x < PALETTE_SIZE; x++)
+        for (uint32_t x = 0; x < kPaletteSize; x++)
         {
             if (IsChangablePixel(x))
             {

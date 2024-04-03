@@ -33,7 +33,7 @@ void StaffSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t StaffSetColourAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void StaffSetColourAction::Serialise(DataSerialiser& stream)

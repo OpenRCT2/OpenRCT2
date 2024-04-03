@@ -36,7 +36,7 @@ void TileModifyAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t TileModifyAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void TileModifyAction::Serialise(DataSerialiser& stream)

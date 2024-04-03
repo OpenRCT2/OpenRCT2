@@ -155,7 +155,7 @@ static void FASTCALL DrawRLESpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArg
             numPixels = std::min(numPixels, width - x);
 
             auto dst = dstLineStart + (x >> TZoom);
-            if constexpr ((TBlendOp & BLEND_SRC) == 0 && (TBlendOp & BLEND_DST) == 0 && TZoom == 0)
+            if constexpr ((TBlendOp & kBlendSrc) == 0 && (TBlendOp & kBlendDst) == 0 && TZoom == 0)
             {
                 // Since we're sampling each pixel at this zoom level, just do a straight std::memcpy
                 if (numPixels > 0)
@@ -219,19 +219,19 @@ void FASTCALL GfxRleSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& arg
     {
         if (args.Image.IsBlended())
         {
-            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC | BLEND_DST>(dpi, args);
+            DrawRLESprite<kBlendTransparent | kBlendSrc | kBlendDst>(dpi, args);
         }
         else
         {
-            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC>(dpi, args);
+            DrawRLESprite<kBlendTransparent | kBlendSrc>(dpi, args);
         }
     }
     else if (args.Image.IsBlended())
     {
-        DrawRLESprite<BLEND_TRANSPARENT | BLEND_DST>(dpi, args);
+        DrawRLESprite<kBlendTransparent | kBlendDst>(dpi, args);
     }
     else
     {
-        DrawRLESprite<BLEND_TRANSPARENT>(dpi, args);
+        DrawRLESprite<kBlendTransparent>(dpi, args);
     }
 }

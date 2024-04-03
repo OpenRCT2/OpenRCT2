@@ -906,7 +906,7 @@ static Widget _windowFinancesResearchWidgets[] =
                     // Draw button text
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
                     auto ft = Formatter();
-                    ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
+                    ft.Add<money64>(kAdvertisingCampaignPricePerWeek[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
 
                     screenCoords.y += BUTTON_FACE_HEIGHT + 2;

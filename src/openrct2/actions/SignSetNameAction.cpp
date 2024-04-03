@@ -34,7 +34,7 @@ void SignSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t SignSetNameAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void SignSetNameAction::Serialise(DataSerialiser& stream)

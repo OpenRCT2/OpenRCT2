@@ -92,14 +92,14 @@ static void DrawLightRain(
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, RainPattern);
+    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 0x18;
     y_start = (currentTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, RainPattern);
+    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
 }
 
 /**
@@ -116,28 +116,28 @@ static void DrawHeavyRain(
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, RainPattern);
+    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 0x10;
     y_start = (currentTicks * 6) + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, RainPattern);
+    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 8;
     y_start = (currentTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, RainPattern);
+    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 0x18;
     y_start = (currentTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, RainPattern);
+    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
 }
 
 static void DrawLightSnow(

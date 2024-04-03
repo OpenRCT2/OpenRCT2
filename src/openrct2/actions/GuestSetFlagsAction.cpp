@@ -27,7 +27,7 @@ void GuestSetFlagsAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t GuestSetFlagsAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void GuestSetFlagsAction::Serialise(DataSerialiser& stream)

@@ -27,9 +27,9 @@ namespace
 {
     using namespace std::chrono_literals;
 
-    constexpr const char* APPLICATION_ID = "378612438200877056";
-    constexpr const char* STEAM_APP_ID = nullptr;
-    constexpr auto REFRESH_INTERVAL = 5.0s;
+    constexpr const char* kApplicationID = "378612438200877056";
+    constexpr const char* kSteamAppID = nullptr;
+    constexpr auto kRefreshInterval = 5.0s;
 } // namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)
@@ -53,7 +53,7 @@ DiscordService::DiscordService()
     handlers.ready = OnReady;
     handlers.disconnected = OnDisconnected;
     handlers.errored = OnErrored;
-    Discord_Initialize(APPLICATION_ID, &handlers, 1, STEAM_APP_ID);
+    Discord_Initialize(kApplicationID, &handlers, 1, kSteamAppID);
 }
 
 DiscordService::~DiscordService()
@@ -75,7 +75,7 @@ void DiscordService::Tick()
 {
     Discord_RunCallbacks();
 
-    if (_updateTimer.GetElapsedTime() < REFRESH_INTERVAL)
+    if (_updateTimer.GetElapsedTime() < kRefreshInterval)
         return;
 
     RefreshPresence();

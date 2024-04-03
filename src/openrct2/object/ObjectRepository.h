@@ -56,8 +56,8 @@ struct ObjectRepositoryItem
     struct
     {
         uint8_t RideFlags;
-        uint8_t RideCategory[RCT2::ObjectLimits::MaxCategoriesPerRide];
-        ride_type_t RideType[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+        uint8_t RideCategory[RCT2::ObjectLimits::kMaxCategoriesPerRide];
+        ride_type_t RideType[RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     } RideInfo;
     struct
     {

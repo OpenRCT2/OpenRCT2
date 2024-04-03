@@ -25,7 +25,7 @@ void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t StaffFireAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void StaffFireAction::Serialise(DataSerialiser& stream)

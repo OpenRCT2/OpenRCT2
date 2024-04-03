@@ -186,7 +186,7 @@ namespace GameActions
             return true;
         if (GetGameState().Cheats.BuildInPauseMode)
             return true;
-        if (actionFlags & GameActions::Flags::AllowWhilePaused)
+        if (actionFlags & GameActions::Flags::kAllowWhilePaused)
             return true;
         return false;
     }
@@ -294,7 +294,7 @@ namespace GameActions
         uint32_t flags = action->GetFlags();
 
         // Some actions are not recorded in the replay.
-        const auto ignoreForReplays = (actionFlags & GameActions::Flags::IgnoreForReplays) != 0;
+        const auto ignoreForReplays = (actionFlags & GameActions::Flags::kIgnoreForReplays) != 0;
 
         auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
         if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
@@ -330,7 +330,7 @@ namespace GameActions
                 if (NetworkGetMode() == NETWORK_MODE_CLIENT)
                 {
                     // As a client we have to wait or send it first.
-                    if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & GameActions::Flags::kClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
                         NetworkSendGameAction(action);
@@ -343,7 +343,7 @@ namespace GameActions
                     // If player is the server it would execute right away as where clients execute the commands
                     // at the beginning of the frame, so we have to put them into the queue.
                     // This is also the case when its executed from the UI update.
-                    if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & GameActions::Flags::kClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
                         Enqueue(action, GetGameState().CurrentTicks);
@@ -380,7 +380,7 @@ namespace GameActions
                 MoneyEffect::Create(result.Cost, result.Position);
             }
 
-            if (!(actionFlags & GameActions::Flags::ClientOnly) && result.Error == GameActions::Status::Ok)
+            if (!(actionFlags & GameActions::Flags::kClientOnly) && result.Error == GameActions::Status::Ok)
             {
                 if (NetworkGetMode() != NETWORK_MODE_NONE)
                 {
@@ -494,7 +494,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
         obj.Set("type", EnumValue(_type));
 
         auto flags = GetActionFlags();
-        obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+        obj.Set("isClientOnly", (flags & GameActions::Flags::kClientOnly) != 0);
         obj.Set("result", true);
 
         // Call the subscriptions
