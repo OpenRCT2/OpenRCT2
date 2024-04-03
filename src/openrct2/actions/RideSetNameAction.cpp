@@ -35,7 +35,7 @@ void RideSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t RideSetNameAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void RideSetNameAction::Serialise(DataSerialiser& stream)

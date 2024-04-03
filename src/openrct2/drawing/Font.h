@@ -15,7 +15,7 @@
 
 #include <array>
 
-constexpr uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
+constexpr uint16_t kFontSpriteGlyphCount = 224;
 
 enum class FontStyle : uint8_t
 {
@@ -24,8 +24,8 @@ enum class FontStyle : uint8_t
     Tiny = 2,
 };
 
-constexpr uint8_t FontStyleCount = 3;
-constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
+constexpr uint8_t kFontStyleCount = 3;
+constexpr std::array<FontStyle, kFontStyleCount> kFontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
 
 #ifndef NO_TTF
 
@@ -45,7 +45,7 @@ struct TTFFontDescriptor
 
 struct TTFFontSetDescriptor
 {
-    TTFFontDescriptor size[FontStyleCount];
+    TTFFontDescriptor size[kFontStyleCount];
 };
 
 extern TTFFontSetDescriptor* gCurrentTTFFontSet;

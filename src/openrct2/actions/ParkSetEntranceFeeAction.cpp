@@ -30,7 +30,7 @@ void ParkSetEntranceFeeAction::AcceptParameters(GameActionParameterVisitor& visi
 
 uint16_t ParkSetEntranceFeeAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void ParkSetEntranceFeeAction::Serialise(DataSerialiser& stream)

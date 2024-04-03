@@ -34,7 +34,7 @@ void ParkSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t ParkSetNameAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void ParkSetNameAction::Serialise(DataSerialiser& stream)

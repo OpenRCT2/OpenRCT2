@@ -62,7 +62,7 @@ static u8string _rct2DataPath = {};
 static bool _silentBreakpad = false;
 
 // clang-format off
-static constexpr CommandLineOptionDefinition StandardOptions[]
+static constexpr CommandLineOptionDefinition kStandardOptions[]
 {
     { CMDLINE_TYPE_SWITCH,  &_help,             'h', "help",               "show this help message and exit"                            },
     { CMDLINE_TYPE_SWITCH,  &_version,          'v', "version",            "show version information and exit"                          },
@@ -113,25 +113,25 @@ static void PrintAbout();
 static void PrintVersion();
 static void PrintLaunchInformation();
 
-const CommandLineCommand CommandLine::RootCommands[]
+const CommandLineCommand CommandLine::kRootCommands[]
 {
     // Main commands
 #ifndef DISABLE_HTTP
-    DefineCommand("",         "<uri>",                  StandardOptions, HandleNoCommand     ),
-    DefineCommand("edit",     "<uri>",                  StandardOptions, HandleCommandEdit   ),
+    DefineCommand("",         "<uri>",                  kStandardOptions, HandleNoCommand     ),
+    DefineCommand("edit",     "<uri>",                  kStandardOptions, HandleCommandEdit   ),
 #else
     DefineCommand("",         "<path>",                 StandardOptions, HandleNoCommand     ),
     DefineCommand("edit",     "<path>",                 StandardOptions, HandleCommandEdit   ),
 #endif
-    DefineCommand("intro",    "",                       StandardOptions, HandleCommandIntro  ),
+    DefineCommand("intro",    "",                       kStandardOptions, HandleCommandIntro  ),
 #ifndef DISABLE_NETWORK
-    DefineCommand("host",     "<uri>",                  StandardOptions, HandleCommandHost   ),
-    DefineCommand("join",     "<hostname>",             StandardOptions, HandleCommandJoin   ),
+    DefineCommand("host",     "<uri>",                  kStandardOptions, HandleCommandHost   ),
+    DefineCommand("join",     "<hostname>",             kStandardOptions, HandleCommandJoin   ),
 #endif
-    DefineCommand("set-rct2", "<path>",                 StandardOptions, HandleCommandSetRCT2),
-    DefineCommand("convert",  "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
-    DefineCommand("scan-objects", "<path>",             StandardOptions, HandleCommandScanObjects),
-    DefineCommand("handle-uri", "openrct2://.../",      StandardOptions, CommandLine::HandleCommandUri),
+    DefineCommand("set-rct2", "<path>",                 kStandardOptions, HandleCommandSetRCT2),
+    DefineCommand("convert",  "<source> <destination>", kStandardOptions, CommandLine::HandleCommandConvert),
+    DefineCommand("scan-objects", "<path>",             kStandardOptions, HandleCommandScanObjects),
+    DefineCommand("handle-uri", "openrct2://.../",      kStandardOptions, CommandLine::HandleCommandUri),
 
 #if defined(_WIN32)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
@@ -139,13 +139,13 @@ const CommandLineCommand CommandLine::RootCommands[]
 
     // Sub-commands
     DefineSubCommand("screenshot",      CommandLine::ScreenshotCommands       ),
-    DefineSubCommand("sprite",          CommandLine::SpriteCommands           ),
-    DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
+    DefineSubCommand("sprite",          CommandLine::kSpriteCommands           ),
+    DefineSubCommand("simulate",        CommandLine::kSimulateCommands         ),
     DefineSubCommand("parkinfo",        CommandLine::ParkInfoCommands         ),
     CommandTableEnd
 };
 
-const CommandLineExample CommandLine::RootExamples[]
+const CommandLineExample CommandLine::kRootExamples[]
 {
     { "./my_park.sv6",                                "open a saved park"                      },
     { "./SnowyPark.sc6",                              "install and open a scenario"            },

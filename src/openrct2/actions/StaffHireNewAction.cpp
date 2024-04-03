@@ -58,7 +58,7 @@ void StaffHireNewAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t StaffHireNewAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void StaffHireNewAction::Serialise(DataSerialiser& stream)

@@ -24,7 +24,7 @@ MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize)
 
 uint16_t MapChangeSizeAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void MapChangeSizeAction::Serialise(DataSerialiser& stream)

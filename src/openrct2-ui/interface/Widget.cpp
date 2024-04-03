@@ -220,7 +220,7 @@ static void WidgetTabDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetI
     // Get the widget
     auto& widget = w.widgets[widgetIndex];
 
-    if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == ImageIndexUndefined)
+    if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == kImageIndexUndefined)
         return;
 
     if (widget.type == WindowWidgetType::Tab)
@@ -228,7 +228,7 @@ static void WidgetTabDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetI
         if (WidgetIsDisabled(w, widgetIndex))
             return;
 
-        if (widget.image.GetIndex() == ImageIndexUndefined)
+        if (widget.image.GetIndex() == kImageIndexUndefined)
         {
             // Set standard tab sprite to use.
             widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);

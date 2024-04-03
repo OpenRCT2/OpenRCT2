@@ -93,7 +93,7 @@ bool CommandLineArgEnumerator::TryPopString(const char** result)
 
 namespace CommandLine
 {
-    constexpr const char* HelpText = "openrct2 -ha shows help for all commands. "
+    constexpr const char* kHelpText = "openrct2 -ha shows help for all commands. "
                                      "openrct2 <command> -h will show help and details for a given command.";
 
     static void PrintHelpFor(const CommandLineCommand* commands);
@@ -114,12 +114,12 @@ namespace CommandLine
 
     void PrintHelp(bool allCommands)
     {
-        PrintHelpFor(RootCommands);
-        PrintExamples(RootExamples);
+        PrintHelpFor(kRootCommands);
+        PrintExamples(kRootExamples);
 
         if (allCommands)
         {
-            for (const CommandLineCommand* command = RootCommands; command->Name != nullptr; command++)
+            for (const CommandLineCommand* command = kRootCommands; command->Name != nullptr; command++)
             {
                 if (command->SubCommands != nullptr)
                 {
@@ -141,7 +141,7 @@ namespace CommandLine
         }
         else
         {
-            Console::WriteLine(HelpText);
+            Console::WriteLine(kHelpText);
         }
     }
 
@@ -531,7 +531,7 @@ int32_t CommandLineRun(const char** argv, int32_t argc)
     // Pop process path
     argEnumerator.TryPop();
 
-    const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
+    const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::kRootCommands, &argEnumerator);
 
     if (command == nullptr)
     {
@@ -547,7 +547,7 @@ int32_t CommandLineRun(const char** argv, int32_t argc)
         }
     }
 
-    if (command == CommandLine::RootCommands && command->Func == nullptr)
+    if (command == CommandLine::kRootCommands && command->Func == nullptr)
     {
         return CommandLine::HandleCommandDefault();
     }

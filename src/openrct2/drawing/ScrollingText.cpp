@@ -37,8 +37,8 @@ struct DrawScrollText
     uint8_t bitmap[64 * 40];
 };
 
-static DrawScrollText _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
-static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
+static DrawScrollText _drawScrollTextList[OpenRCT2::kMaxScrollingTextEntries];
+static uint8_t _characterBitmaps[kFontSpriteGlyphCount + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
 
@@ -79,7 +79,7 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
 
 static void ScrollingTextInitialiseScrollingText()
 {
-    for (int32_t i = 0; i < OpenRCT2::MaxScrollingTextEntries; i++)
+    for (int32_t i = 0; i < OpenRCT2::kMaxScrollingTextEntries; i++)
     {
         const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
 
@@ -104,17 +104,17 @@ static void ScrollingTextInitialiseScrollingText()
 
 void ScrollingTextInitialiseBitmaps()
 {
-    ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, FONT_SPRITE_GLYPH_COUNT, gTinyFontAntiAliased);
-    ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, FONT_SPRITE_GLYPH_COUNT, SPR_G2_GLYPH_COUNT, false);
+    ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, kFontSpriteGlyphCount, gTinyFontAntiAliased);
+    ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, kFontSpriteGlyphCount, SPR_G2_GLYPH_COUNT, false);
     ScrollingTextInitialiseScrollingText();
 }
 
 static uint8_t* FontSpriteGetCodepointBitmap(int32_t codepoint)
 {
     auto offset = FontSpriteGetCodepointOffset(codepoint);
-    if (offset >= FONT_SPRITE_GLYPH_COUNT)
+    if (offset >= kFontSpriteGlyphCount)
     {
-        return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + FONT_SPRITE_GLYPH_COUNT];
+        return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + kFontSpriteGlyphCount];
     }
 
     return _characterBitmaps[offset];

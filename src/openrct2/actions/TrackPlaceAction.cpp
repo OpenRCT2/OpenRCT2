@@ -120,7 +120,7 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
     }
 
-    if (!(GetActionFlags() & GameActions::Flags::AllowWhilePaused))
+    if (!(GetActionFlags() & GameActions::Flags::kAllowWhilePaused))
     {
         if (GameIsPaused() && !GetGameState().Cheats.BuildInPauseMode)
         {

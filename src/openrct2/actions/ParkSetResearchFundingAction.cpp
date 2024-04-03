@@ -34,7 +34,7 @@ void ParkSetResearchFundingAction::AcceptParameters(GameActionParameterVisitor& 
 
 uint16_t ParkSetResearchFundingAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void ParkSetResearchFundingAction::Serialise(DataSerialiser& stream)

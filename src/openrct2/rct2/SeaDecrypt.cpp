@@ -18,7 +18,7 @@
 #include <memory>
 #include <string_view>
 
-constexpr int32_t MASK_SIZE = 0x1000;
+constexpr int32_t kMaskSize = 0x1000;
 
 struct EncryptionKey
 {
@@ -47,10 +47,10 @@ static EncryptionKey GetEncryptionKey(std::string_view fileName)
 static std::vector<uint8_t> CreateMask(const EncryptionKey& key)
 {
     std::vector<uint8_t> result;
-    result.resize(MASK_SIZE);
+    result.resize(kMaskSize);
     uint32_t seed0 = key.Seed0;
     uint32_t seed1 = key.Seed1;
-    for (size_t i = 0; i < MASK_SIZE; i += 4)
+    for (size_t i = 0; i < kMaskSize; i += 4)
     {
         uint32_t s0 = seed0;
         uint32_t s1 = seed1 ^ 0xF7654321;
@@ -71,9 +71,9 @@ static void Decrypt(std::vector<uint8_t>& data, const EncryptionKey& key)
     uint32_t c = 0;
     for (size_t i = 0; i < data.size(); i++)
     {
-        auto a = b % MASK_SIZE;
-        c = c % MASK_SIZE;
-        b = (a + 1) % MASK_SIZE;
+        auto a = b % kMaskSize;
+        c = c % kMaskSize;
+        b = (a + 1) % kMaskSize;
 
         data[i] = (((data[i] - mask[b]) ^ mask[c]) + mask[a]) & 0xFF;
 

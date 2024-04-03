@@ -40,7 +40,7 @@ void ParkMarketingAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t ParkMarketingAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void ParkMarketingAction::Serialise(DataSerialiser& stream)
@@ -51,7 +51,7 @@ void ParkMarketingAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkMarketingAction::Query() const
 {
-    if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
+    if (static_cast<size_t>(_type) >= std::size(kAdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -100,5 +100,5 @@ GameActions::Result ParkMarketingAction::CreateResult() const
 
 money64 ParkMarketingAction::CalculatePrice() const
 {
-    return _numWeeks * AdvertisingCampaignPricePerWeek[_type];
+    return _numWeeks * kAdvertisingCampaignPricePerWeek[_type];
 }

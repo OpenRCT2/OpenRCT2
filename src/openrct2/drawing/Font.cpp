@@ -21,14 +21,14 @@
 #include <limits>
 #include <unordered_map>
 
-static constexpr int32_t SpriteFontLineHeight[FontStyleCount] = {
+static constexpr int32_t kSpriteFontLineHeight[kFontStyleCount] = {
     10,
     10,
     6,
 };
 
-static uint8_t _spriteFontCharacterWidths[FontStyleCount][FONT_SPRITE_GLYPH_COUNT];
-static uint8_t _additionalSpriteFontCharacterWidth[FontStyleCount][SPR_G2_GLYPH_COUNT] = {};
+static uint8_t _spriteFontCharacterWidths[kFontStyleCount][kFontSpriteGlyphCount];
+static uint8_t _additionalSpriteFontCharacterWidth[kFontStyleCount][SPR_G2_GLYPH_COUNT] = {};
 
 #ifndef NO_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
@@ -261,10 +261,10 @@ void FontSpriteInitialiseCharacters()
         _biggestCodepointValue = std::max(_biggestCodepointValue, entry.first);
     }
 
-    for (const auto& fontStyle : FontStyles)
+    for (const auto& fontStyle : kFontStyles)
     {
-        int32_t glyphOffset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
-        for (uint8_t glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++)
+        int32_t glyphOffset = EnumValue(fontStyle) * kFontSpriteGlyphCount;
+        for (uint8_t glyphIndex = 0; glyphIndex < kFontSpriteGlyphCount; glyphIndex++)
         {
             const G1Element* g1 = GfxGetG1Element(glyphIndex + SPR_CHAR_START + glyphOffset);
             int32_t width = 0;
@@ -277,7 +277,7 @@ void FontSpriteInitialiseCharacters()
         }
     }
 
-    for (const auto& fontStyle : FontStyles)
+    for (const auto& fontStyle : kFontStyles)
     {
         int32_t glyphOffset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
         for (int32_t glyphIndex = 0; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
@@ -317,7 +317,7 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
 {
     int32_t glyphIndex = FontSpriteGetCodepointOffset(codepoint);
     auto baseFontIndex = EnumValue(fontStyle);
-    if (glyphIndex >= FONT_SPRITE_GLYPH_COUNT)
+    if (glyphIndex >= kFontSpriteGlyphCount)
     {
         glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
 
@@ -329,7 +329,7 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
         return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
     }
 
-    if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
+    if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(kFontSpriteGlyphCount))
     {
         LOG_WARNING("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;
@@ -339,9 +339,9 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
 
 ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint)
 {
-    int32_t offset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
+    int32_t offset = EnumValue(fontStyle) * kFontSpriteGlyphCount;
     auto codePointOffset = FontSpriteGetCodepointOffset(codepoint);
-    if (codePointOffset > FONT_SPRITE_GLYPH_COUNT)
+    if (codePointOffset > kFontSpriteGlyphCount)
     {
         offset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
     }
@@ -358,7 +358,7 @@ int32_t FontGetLineHeight(FontStyle fontStyle)
         return gCurrentTTFFontSet->size[fontSize].line_height;
     }
 #endif // NO_TTF
-    return SpriteFontLineHeight[fontSize];
+    return kSpriteFontLineHeight[fontSize];
 }
 
 int32_t FontGetLineHeightSmall(FontStyle fontStyle)

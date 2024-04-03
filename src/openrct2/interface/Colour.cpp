@@ -156,9 +156,9 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 
 static void InitBlendColourMap()
 {
-    for (size_t i = 0; i < PALETTE_SIZE; i++)
+    for (size_t i = 0; i < kPaletteSize; i++)
     {
-        for (size_t j = i; j < PALETTE_SIZE; j++)
+        for (size_t j = i; j < kPaletteSize; j++)
         {
             uint8_t red = (gPalette[i].Red + gPalette[j].Red) / 2;
             uint8_t green = (gPalette[i].Green + gPalette[j].Green) / 2;

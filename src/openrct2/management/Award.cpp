@@ -29,7 +29,7 @@ using namespace OpenRCT2;
 constexpr uint8_t NEGATIVE = 0;
 constexpr uint8_t POSITIVE = 1;
 
-static constexpr uint8_t AwardPositiveMap[] = {
+static constexpr uint8_t kAwardPositiveMap[] = {
     NEGATIVE, // AwardType::MostUntidy
     POSITIVE, // AwardType::MostTidy
     POSITIVE, // AwardType::BestRollerCoasters
@@ -71,7 +71,7 @@ static constexpr StringId AwardNewsStrings[] = {
 
 bool AwardIsPositive(AwardType type)
 {
-    return AwardPositiveMap[EnumValue(type)];
+    return kAwardPositiveMap[EnumValue(type)];
 }
 
 #pragma region Award checks

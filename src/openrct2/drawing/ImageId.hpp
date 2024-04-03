@@ -17,7 +17,7 @@ using colour_t = uint8_t;
 enum class FilterPaletteID : int32_t;
 typedef uint32_t ImageIndex;
 
-static constexpr ImageIndex ImageIndexUndefined = std::numeric_limits<ImageIndex>::max();
+static constexpr ImageIndex kImageIndexUndefined = std::numeric_limits<ImageIndex>::max();
 
 enum class ImageCatalogue
 {
@@ -67,7 +67,7 @@ private:
     // PRIMARY | SECONDARY = Remap with primary and secondary colours
     // SECONDARY = Remap with primary, secondary and tertiary colours
 
-    ImageIndex _index = ImageIndexUndefined;
+    ImageIndex _index = kImageIndexUndefined;
     uint8_t _primary = 0;
     uint8_t _secondary = 0;
     uint8_t _tertiary = 0;
@@ -97,7 +97,7 @@ public:
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)
-        : _index(index == INDEX_UNDEFINED ? ImageIndexUndefined : index)
+        : _index(index == INDEX_UNDEFINED ? kImageIndexUndefined : index)
     {
     }
 
@@ -139,7 +139,7 @@ public:
 
     bool HasValue() const
     {
-        return GetIndex() != ImageIndexUndefined;
+        return GetIndex() != kImageIndexUndefined;
     }
 
     bool HasPrimary() const

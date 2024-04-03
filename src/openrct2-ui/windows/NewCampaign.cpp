@@ -371,13 +371,13 @@ static Widget window_new_campaign_widgets[] = {
 
             // Price per week
             ft = Formatter();
-            ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type]);
+            ft.Add<money64>(kAdvertisingCampaignPricePerWeek[Campaign.campaign_type]);
             DrawTextBasic(dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
             screenCoords.y += 13;
 
             // Total price
             ft = Formatter();
-            ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type] * Campaign.no_weeks);
+            ft.Add<money64>(kAdvertisingCampaignPricePerWeek[Campaign.campaign_type] * Campaign.no_weeks);
             DrawTextBasic(dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
         }
 

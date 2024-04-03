@@ -51,7 +51,7 @@ void LandSetRightsAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t LandSetRightsAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+    return GameAction::GetActionFlags() | GameActions::Flags::kEditorOnly;
 }
 
 void LandSetRightsAction::Serialise(DataSerialiser& stream)

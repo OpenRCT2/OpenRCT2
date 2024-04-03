@@ -125,7 +125,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     }
 
     auto stationObj = ride->GetStationObject();
-    if (stationObj == nullptr || stationObj->BaseImageId == ImageIndexUndefined)
+    if (stationObj == nullptr || stationObj->BaseImageId == kImageIndexUndefined)
     {
         return;
     }

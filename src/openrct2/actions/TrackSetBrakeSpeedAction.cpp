@@ -27,7 +27,7 @@ void TrackSetBrakeSpeedAction::AcceptParameters(GameActionParameterVisitor& visi
 
 uint16_t TrackSetBrakeSpeedAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void TrackSetBrakeSpeedAction::Serialise(DataSerialiser& stream)

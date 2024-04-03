@@ -36,7 +36,7 @@ void LargeScenerySetColourAction::AcceptParameters(GameActionParameterVisitor& v
 
 uint16_t LargeScenerySetColourAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void LargeScenerySetColourAction::Serialise(DataSerialiser& stream)

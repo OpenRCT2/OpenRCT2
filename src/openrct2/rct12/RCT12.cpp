@@ -575,59 +575,59 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s)
 
 namespace RCT12FormatCode
 {
-    constexpr codepoint_t Newline = 5;
-    constexpr codepoint_t NewlineSmall = 6;
-    constexpr codepoint_t ColourBlack = 142;
-    constexpr codepoint_t ColourGrey = 143;
-    constexpr codepoint_t ColourWhite = 144;
-    constexpr codepoint_t ColourRed = 145;
-    constexpr codepoint_t ColourGreen = 146;
-    constexpr codepoint_t ColourYellow = 147;
-    constexpr codepoint_t ColourTopaz = 148;
-    constexpr codepoint_t ColourCeladon = 149;
-    constexpr codepoint_t ColourBabyBlue = 150;
-    constexpr codepoint_t ColourPaleLavender = 151;
-    constexpr codepoint_t ColourPaleGold = 152;
-    constexpr codepoint_t ColourLightPink = 153;
-    constexpr codepoint_t ColourPearlAqua = 154;
-    constexpr codepoint_t ColourPaleSilver = 155;
+    constexpr codepoint_t kNewline = 5;
+    constexpr codepoint_t kNewlineSmall = 6;
+    constexpr codepoint_t kColourBlack = 142;
+    constexpr codepoint_t kColourGrey = 143;
+    constexpr codepoint_t kColourWhite = 144;
+    constexpr codepoint_t kColourRed = 145;
+    constexpr codepoint_t kColourGreen = 146;
+    constexpr codepoint_t kColourYellow = 147;
+    constexpr codepoint_t kColourTopaz = 148;
+    constexpr codepoint_t kColourCeladon = 149;
+    constexpr codepoint_t kColourBabyBlue = 150;
+    constexpr codepoint_t kColourPaleLavender = 151;
+    constexpr codepoint_t kColourPaleGold = 152;
+    constexpr codepoint_t kColourLightPink = 153;
+    constexpr codepoint_t kColourPearlAqua = 154;
+    constexpr codepoint_t kColourPaleSilver = 155;
 } // namespace RCT12FormatCode
 
 static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
 {
     switch (codepoint)
     {
-        case RCT12FormatCode::Newline:
+        case RCT12FormatCode::kNewline:
             return FormatToken::Newline;
-        case RCT12FormatCode::NewlineSmall:
+        case RCT12FormatCode::kNewlineSmall:
             return FormatToken::NewlineSmall;
-        case RCT12FormatCode::ColourBlack:
+        case RCT12FormatCode::kColourBlack:
             return FormatToken::ColourBlack;
-        case RCT12FormatCode::ColourGrey:
+        case RCT12FormatCode::kColourGrey:
             return FormatToken::ColourGrey;
-        case RCT12FormatCode::ColourWhite:
+        case RCT12FormatCode::kColourWhite:
             return FormatToken::ColourWhite;
-        case RCT12FormatCode::ColourRed:
+        case RCT12FormatCode::kColourRed:
             return FormatToken::ColourRed;
-        case RCT12FormatCode::ColourGreen:
+        case RCT12FormatCode::kColourGreen:
             return FormatToken::ColourGreen;
-        case RCT12FormatCode::ColourYellow:
+        case RCT12FormatCode::kColourYellow:
             return FormatToken::ColourYellow;
-        case RCT12FormatCode::ColourTopaz:
+        case RCT12FormatCode::kColourTopaz:
             return FormatToken::ColourTopaz;
-        case RCT12FormatCode::ColourCeladon:
+        case RCT12FormatCode::kColourCeladon:
             return FormatToken::ColourCeladon;
-        case RCT12FormatCode::ColourBabyBlue:
+        case RCT12FormatCode::kColourBabyBlue:
             return FormatToken::ColourBabyBlue;
-        case RCT12FormatCode::ColourPaleLavender:
+        case RCT12FormatCode::kColourPaleLavender:
             return FormatToken::ColourPaleLavender;
-        case RCT12FormatCode::ColourPaleGold:
+        case RCT12FormatCode::kColourPaleGold:
             return FormatToken::ColourPaleGold;
-        case RCT12FormatCode::ColourLightPink:
+        case RCT12FormatCode::kColourLightPink:
             return FormatToken::ColourLightPink;
-        case RCT12FormatCode::ColourPearlAqua:
+        case RCT12FormatCode::kColourPearlAqua:
             return FormatToken::ColourPearlAqua;
-        case RCT12FormatCode::ColourPaleSilver:
+        case RCT12FormatCode::kColourPaleSilver:
             return FormatToken::ColourPaleSilver;
         default:
             return FormatToken::Unknown;

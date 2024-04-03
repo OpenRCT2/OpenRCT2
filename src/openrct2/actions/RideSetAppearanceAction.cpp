@@ -39,7 +39,7 @@ void RideSetAppearanceAction::AcceptParameters(GameActionParameterVisitor& visit
 
 uint16_t RideSetAppearanceAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void RideSetAppearanceAction::Serialise(DataSerialiser& stream)

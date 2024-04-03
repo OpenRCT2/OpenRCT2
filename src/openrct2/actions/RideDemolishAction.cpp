@@ -241,7 +241,7 @@ money64 RideDemolishAction::DemolishTracks() const
                 }
                 else
                 {
-                    static constexpr CoordsXY DirOffsets[] = {
+                    static constexpr CoordsXY kDirOffsets[] = {
                         { 0, 0 },
                         { 0, 16 },
                         { 16, 16 },
@@ -249,7 +249,7 @@ money64 RideDemolishAction::DemolishTracks() const
                     };
                     for (Direction dir : ALL_DIRECTIONS)
                     {
-                        const CoordsXYZ off = { DirOffsets[dir], 0 };
+                        const CoordsXYZ off = { kDirOffsets[dir], 0 };
                         money64 removePrice = MazeRemoveTrack({ location + off, dir });
                         if (removePrice != kMoney64Undefined)
                         {

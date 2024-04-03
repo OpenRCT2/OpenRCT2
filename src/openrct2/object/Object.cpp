@@ -207,7 +207,7 @@ std::string Object::GetName(int32_t language) const
 
 ImageIndex Object::LoadImages()
 {
-    if (_baseImageId == ImageIndexUndefined)
+    if (_baseImageId == kImageIndexUndefined)
     {
         _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     }
@@ -216,10 +216,10 @@ ImageIndex Object::LoadImages()
 
 void Object::UnloadImages()
 {
-    if (_baseImageId != ImageIndexUndefined)
+    if (_baseImageId != kImageIndexUndefined)
     {
         GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
-        _baseImageId = ImageIndexUndefined;
+        _baseImageId = kImageIndexUndefined;
     }
 }
 

@@ -22,18 +22,18 @@ namespace OpenRCT2
     {
         namespace BitSet
         {
-            static constexpr size_t BitsPerByte = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
+            static constexpr size_t kBitsPerByte = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
 
             template<size_t TNumBits> static constexpr size_t ByteAlignBits()
             {
-                const auto reminder = TNumBits % BitsPerByte;
+                const auto reminder = TNumBits % kBitsPerByte;
                 if constexpr (reminder == 0u)
                 {
                     return TNumBits;
                 }
                 else
                 {
-                    return TNumBits + (BitsPerByte - (TNumBits % BitsPerByte));
+                    return TNumBits + (kBitsPerByte - (TNumBits % kBitsPerByte));
                 }
             }
 
@@ -56,7 +56,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    const auto numBytes = numBits / BitsPerByte;
+                    const auto numBytes = numBits / kBitsPerByte;
                     auto mask = 1u;
                     while (mask < numBytes)
                     {
@@ -73,7 +73,7 @@ namespace OpenRCT2
                 while (numBits > 0)
                 {
                     numBlocks++;
-                    numBits -= std::min(TBlockSizeBytes * BitsPerByte, numBits);
+                    numBits -= std::min(TBlockSizeBytes * kBitsPerByte, numBits);
                 }
                 return numBlocks;
             }
@@ -138,7 +138,7 @@ namespace OpenRCT2
         using StorageBlockType = typename Detail::BitSet::storage_block_type_aligned<ByteAlignedBitSize>::value_type;
 
         static constexpr size_t BlockByteSize = sizeof(StorageBlockType);
-        static constexpr size_t BlockBitSize = BlockByteSize * Detail::BitSet::BitsPerByte;
+        static constexpr size_t BlockBitSize = BlockByteSize * Detail::BitSet::kBitsPerByte;
         static constexpr size_t BlockCount = Detail::BitSet::ComputeBlockCount<ByteAlignedBitSize, BlockByteSize>();
         static constexpr size_t CapacityBits = BlockCount * BlockBitSize;
 

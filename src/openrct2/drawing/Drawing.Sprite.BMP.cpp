@@ -88,28 +88,28 @@ void FASTCALL GfxBmpSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& arg
         if (imageId.IsBlended())
         {
             // Copy non-transparent bitmap data but blend src and dst pixel using the palette map.
-            DrawBMPSprite<BLEND_TRANSPARENT | BLEND_SRC | BLEND_DST>(dpi, args);
+            DrawBMPSprite<kBlendTransparent | kBlendSrc | kBlendDst>(dpi, args);
         }
         else
         {
             // Copy non-transparent bitmap data but re-colour using the palette map.
-            DrawBMPSprite<BLEND_TRANSPARENT | BLEND_SRC>(dpi, args);
+            DrawBMPSprite<kBlendTransparent | kBlendSrc>(dpi, args);
         }
     }
     else if (imageId.IsBlended())
     {
         // Image is only a transparency mask. Just colour the pixels using the palette map.
         // Used for glass.
-        DrawBMPSprite<BLEND_TRANSPARENT | BLEND_DST>(dpi, args);
+        DrawBMPSprite<kBlendTransparent | kBlendDst>(dpi, args);
     }
     else if (!(args.SourceImage.flags & G1_FLAG_HAS_TRANSPARENCY))
     {
         // Copy raw bitmap data to target
-        DrawBMPSprite<BLEND_NONE>(dpi, args);
+        DrawBMPSprite<kBlendNone>(dpi, args);
     }
     else
     {
         // Copy raw bitmap data to target but exclude transparent pixels
-        DrawBMPSprite<BLEND_TRANSPARENT>(dpi, args);
+        DrawBMPSprite<kBlendTransparent>(dpi, args);
     }
 }

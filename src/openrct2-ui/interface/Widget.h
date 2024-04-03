@@ -79,7 +79,7 @@ constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NO
     const ScreenSize size = kTabSize;
     const WindowWidgetType type = WindowWidgetType::Tab;
     const WindowColour colour = WindowColour::Secondary;
-    const auto content = ImageId(ImageIndexUndefined);
+    const auto content = ImageId(kImageIndexUndefined);
 
     return MakeWidget(origin, size, type, colour, content, tooltip);
 }

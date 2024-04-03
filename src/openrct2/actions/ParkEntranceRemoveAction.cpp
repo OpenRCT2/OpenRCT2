@@ -29,7 +29,7 @@ void ParkEntranceRemoveAction::AcceptParameters(GameActionParameterVisitor& visi
 
 uint16_t ParkEntranceRemoveAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+    return GameAction::GetActionFlags() | GameActions::Flags::kEditorOnly;
 }
 
 void ParkEntranceRemoveAction::Serialise(DataSerialiser& stream)

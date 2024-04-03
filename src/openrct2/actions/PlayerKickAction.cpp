@@ -23,7 +23,7 @@ void PlayerKickAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t PlayerKickAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void PlayerKickAction::Serialise(DataSerialiser& stream)

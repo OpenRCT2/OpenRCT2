@@ -32,7 +32,7 @@ void ParkSetLoanAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t ParkSetLoanAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void ParkSetLoanAction::Serialise(DataSerialiser& stream)

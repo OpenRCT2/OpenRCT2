@@ -188,7 +188,7 @@ struct Ride
     uint16_t num_customers_timeout{};
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize]{};
-    money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    money64 price[RCT2::ObjectLimits::kMaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {

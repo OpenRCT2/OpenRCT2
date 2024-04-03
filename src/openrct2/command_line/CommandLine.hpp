@@ -113,13 +113,13 @@ constexpr char NAC = '\0';
 
 namespace CommandLine
 {
-    extern const CommandLineCommand RootCommands[];
+    extern const CommandLineCommand kRootCommands[];
     extern const CommandLineCommand ScreenshotCommands[];
-    extern const CommandLineCommand SpriteCommands[];
-    extern const CommandLineCommand SimulateCommands[];
+    extern const CommandLineCommand kSpriteCommands[];
+    extern const CommandLineCommand kSimulateCommands[];
     extern const CommandLineCommand ParkInfoCommands[];
 
-    extern const CommandLineExample RootExamples[];
+    extern const CommandLineExample kRootExamples[];
 
     void PrintHelp(bool allCommands = false);
     exitcode_t HandleCommandDefault();

@@ -37,7 +37,7 @@ void RideSetPriceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t RideSetPriceAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void RideSetPriceAction::Serialise(DataSerialiser& stream)

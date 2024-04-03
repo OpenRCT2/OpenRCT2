@@ -37,7 +37,7 @@ void RideSetColourSchemeAction::AcceptParameters(GameActionParameterVisitor& vis
 
 uint16_t RideSetColourSchemeAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void RideSetColourSchemeAction::Serialise(DataSerialiser& stream)

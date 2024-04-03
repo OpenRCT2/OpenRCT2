@@ -29,7 +29,7 @@ void BannerSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor
 
 uint16_t BannerSetColourAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void BannerSetColourAction::Serialise(DataSerialiser& stream)

@@ -33,7 +33,7 @@ void PeepPickupAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t PeepPickupAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void PeepPickupAction::Serialise(DataSerialiser& stream)

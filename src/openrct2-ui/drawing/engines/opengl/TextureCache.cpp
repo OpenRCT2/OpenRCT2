@@ -205,7 +205,7 @@ void TextureCache::CreateTextures()
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
             glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_R8UI, PALETTE_SIZE, PALETTE_SIZE, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, blendArray);
+                GL_TEXTURE_2D, 0, GL_R8UI, kPaletteSize, kPaletteSize, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, blendArray);
         }
 
         _initialized = true;
@@ -216,7 +216,7 @@ void TextureCache::CreateTextures()
 
 void TextureCache::GeneratePaletteTexture()
 {
-    static_assert(PALETTE_TOTAL_OFFSETS + 5 < 256, "Height of palette too large!");
+    static_assert(kPaletteTotalOffsets + 5 < 256, "Height of palette too large!");
     constexpr int32_t height = 256;
     constexpr int32_t width = height;
     DrawPixelInfo dpi = CreateDPI(width, height);
@@ -227,7 +227,7 @@ void TextureCache::GeneratePaletteTexture()
         dpi.bits[i] = i;
     }
 
-    for (int i = 0; i < PALETTE_TOTAL_OFFSETS; ++i)
+    for (int i = 0; i < kPaletteTotalOffsets; ++i)
     {
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 

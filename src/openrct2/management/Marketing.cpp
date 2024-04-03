@@ -27,7 +27,7 @@
 
 using namespace OpenRCT2;
 
-const money64 AdvertisingCampaignPricePerWeek[] = {
+const money64 kAdvertisingCampaignPricePerWeek[] = {
     50.00_GBP,  // PARK_ENTRY_FREE
     50.00_GBP,  // RIDE_FREE
     50.00_GBP,  // PARK_ENTRY_HALF_PRICE
@@ -36,7 +36,7 @@ const money64 AdvertisingCampaignPricePerWeek[] = {
     200.00_GBP, // RIDE
 };
 
-static constexpr uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
+static constexpr uint16_t kAdvertisingCampaignGuestGenerationProbabilities[] = {
     400, 300, 200, 200, 250, 200,
 };
 
@@ -49,7 +49,7 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
         return 0;
 
     // Lower probability of guest generation if price was already low
-    auto probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->Type];
+    auto probability = kAdvertisingCampaignGuestGenerationProbabilities[campaign->Type];
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:

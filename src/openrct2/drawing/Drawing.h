@@ -44,16 +44,16 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
-constexpr auto PALETTE_SIZE = 256U;
+constexpr auto kPaletteSize = 256U;
 
 struct GamePalette
 {
-    PaletteBGRA Colour[PALETTE_SIZE]{};
+    PaletteBGRA Colour[kPaletteSize]{};
 
     PaletteBGRA& operator[](size_t idx)
     {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
+        assert(idx < kPaletteSize);
+        if (idx >= kPaletteSize)
         {
             static PaletteBGRA dummy;
             return dummy;
@@ -64,8 +64,8 @@ struct GamePalette
 
     const PaletteBGRA operator[](size_t idx) const
     {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
+        assert(idx < kPaletteSize);
+        if (idx >= kPaletteSize)
             return {};
 
         return Colour[idx];
@@ -182,25 +182,25 @@ enum
 
 using DrawBlendOp = uint8_t;
 
-constexpr DrawBlendOp BLEND_NONE = 0;
+constexpr DrawBlendOp kBlendNone = 0;
 
 /**
  * Only supported by BITMAP. RLE images always encode transparency via the encoding.
  * Pixel value of 0 represents transparent.
  */
-constexpr DrawBlendOp BLEND_TRANSPARENT = 1 << 0;
+constexpr DrawBlendOp kBlendTransparent = 1 << 0;
 
 /**
  * Whether to use the pixel value from the source image.
  * This is usually only unset for glass images where there the src is only a transparency mask.
  */
-constexpr DrawBlendOp BLEND_SRC = 1 << 1;
+constexpr DrawBlendOp kBlendSrc = 1 << 1;
 
 /**
  * Whether to use the pixel value of the destination image for blending.
  * This is used for any image that filters the target image, e.g. glass or water.
  */
-constexpr DrawBlendOp BLEND_DST = 2 << 2;
+constexpr DrawBlendOp kBlendDst = 2 << 2;
 
 enum
 {
@@ -434,7 +434,7 @@ struct DrawSpriteArgs
 
 template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
 {
-    if constexpr (TBlendOp & BLEND_TRANSPARENT)
+    if constexpr (TBlendOp & kBlendTransparent)
     {
         // Ignore transparent pixels
         if (*src == 0)
@@ -443,10 +443,10 @@ template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8
         }
     }
 
-    if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
+    if constexpr (((TBlendOp & kBlendSrc) != 0) && ((TBlendOp & kBlendDst) != 0))
     {
         auto pixel = paletteMap.Blend(*src, *dst);
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -456,10 +456,10 @@ template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8
         *dst = pixel;
         return true;
     }
-    else if constexpr ((TBlendOp & BLEND_SRC) != 0)
+    else if constexpr ((TBlendOp & kBlendSrc) != 0)
     {
         auto pixel = paletteMap[*src];
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -469,10 +469,10 @@ template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8
         *dst = pixel;
         return true;
     }
-    else if constexpr ((TBlendOp & BLEND_DST) != 0)
+    else if constexpr ((TBlendOp & kBlendDst) != 0)
     {
         auto pixel = paletteMap[*dst];
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -505,7 +505,7 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 }
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
-constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
+constexpr uint8_t kPaletteTotalOffsets = 192;
 
 #define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)

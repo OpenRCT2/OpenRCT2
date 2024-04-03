@@ -103,7 +103,7 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
         }
     }
 
-    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
+    if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
     {
         ResetClearLargeSceneryFlag();
     }
@@ -138,7 +138,7 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
             switch (tileElement->GetType())
             {
                 case TileElementType::Path:
-                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
+                    if (_itemsToClear & CLEARABLE_ITEMS::kSceneryFootpath)
                     {
                         auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
                         footpathRemoveAction.SetFlags(GetFlags());
@@ -154,7 +154,7 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                     }
                     break;
                 case TileElementType::SmallScenery:
-                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
+                    if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                     {
                         auto removeSceneryAction = SmallSceneryRemoveAction(
                             { tilePos, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
@@ -172,7 +172,7 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                     }
                     break;
                 case TileElementType::Wall:
-                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
+                    if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                     {
                         CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() };
                         auto wallRemoveAction = WallRemoveAction(wallLocation);
@@ -189,7 +189,7 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                     }
                     break;
                 case TileElementType::LargeScenery:
-                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
+                    if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
                     {
                         auto removeSceneryAction = LargeSceneryRemoveAction(
                             { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
