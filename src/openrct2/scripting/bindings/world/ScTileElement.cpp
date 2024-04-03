@@ -2072,19 +2072,6 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    DukValue ScTileElement::owner_get() const
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        duk_push_uint(ctx, _element->GetOwner());
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::owner_set(uint8_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        _element->SetOwner(value);
-    }
-
     DukValue ScTileElement::bannerText_get() const
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -2166,7 +2153,6 @@ namespace OpenRCT2::Scripting
             ctx, &ScTileElement::occupiedQuadrants_get, &ScTileElement::occupiedQuadrants_set, "occupiedQuadrants");
         dukglue_register_property(ctx, &ScTileElement::isGhost_get, &ScTileElement::isGhost_set, "isGhost");
         dukglue_register_property(ctx, &ScTileElement::isHidden_get, &ScTileElement::isHidden_set, "isHidden");
-        dukglue_register_property(ctx, &ScTileElement::owner_get, &ScTileElement::owner_set, "owner");
 
         // Track | Small Scenery | Wall | Entrance | Large Scenery | Banner
         dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
