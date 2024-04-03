@@ -4270,7 +4270,7 @@ bool Ride::NameExists(std::string_view name, RideId excludeRideId)
 
 int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
 {
-    if (rideType >= std::size(RideTypeDescriptors))
+    if (rideType >= std::size(kRideTypeDescriptors))
     {
         return 0;
     }
@@ -5748,7 +5748,7 @@ void Ride::FormatNameTo(Formatter& ft) const
 uint64_t Ride::GetAvailableModes() const
 {
     if (GetGameState().Cheats.ShowAllOperatingModes)
-        return AllRideModesAvailable;
+        return kAllRideModesAvailable;
 
     return GetRideTypeDescriptor().RideModes;
 }

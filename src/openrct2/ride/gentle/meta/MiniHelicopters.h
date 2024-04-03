@@ -16,7 +16,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor MiniHelicoptersRTD =
+constexpr RideTypeDescriptor kMiniHelicoptersRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,

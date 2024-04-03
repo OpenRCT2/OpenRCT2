@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor RiverRapidsRTD =
+constexpr RideTypeDescriptor kRiverRapidsRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_WATER,

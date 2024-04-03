@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor WoodenWildMouseRTD =
+constexpr RideTypeDescriptor kWoodenWildMouseRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,

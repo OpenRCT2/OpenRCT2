@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor SuspendedMonorailRTD =
+constexpr RideTypeDescriptor kSuspendedMonorailRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_TRANSPORT,

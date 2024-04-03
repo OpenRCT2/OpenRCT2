@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor MagicCarpetRTD =
+constexpr RideTypeDescriptor kMagicCarpetRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_THRILL,

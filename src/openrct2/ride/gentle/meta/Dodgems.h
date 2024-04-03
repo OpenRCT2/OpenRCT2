@@ -16,7 +16,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor DodgemsRTD =
+constexpr RideTypeDescriptor kDodgemsRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,

@@ -14,7 +14,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor InformationKioskRTD =
+constexpr RideTypeDescriptor kInformationKioskRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_SHOP,

@@ -16,7 +16,7 @@
 
 // clang-format off
 // Non-inverted variant
-constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
+constexpr RideTypeDescriptor kFlyingRollerCoasterRTD =
 {
     .AlternateType = RIDE_TYPE_FLYING_ROLLER_COASTER_ALT,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
@@ -88,7 +88,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 };
 
 // Inverted variant
-constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
+constexpr RideTypeDescriptor kFlyingRollerCoasterAltRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_NONE,

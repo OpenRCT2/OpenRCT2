@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
+constexpr RideTypeDescriptor kMultiDimensionRollerCoasterRTD =
 {
     .AlternateType = RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
@@ -86,7 +86,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     },
 };
 
-constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
+constexpr RideTypeDescriptor kMultiDimensionRollerCoasterAltRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_NONE,

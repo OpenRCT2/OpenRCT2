@@ -13,7 +13,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
+constexpr RideTypeDescriptor kSingleRailRollerCoasterRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,

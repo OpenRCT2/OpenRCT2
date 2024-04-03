@@ -100,7 +100,7 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
 
 static bool _removeShell = false;
 
-static constexpr CommandLineOptionDefinition RegisterShellOptions[]
+static constexpr CommandLineOptionDefinition kRegisterShellOptions[]
 {
     { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
 };
@@ -134,7 +134,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineCommand("handle-uri", "openrct2://.../",      StandardOptions, CommandLine::HandleCommandUri),
 
 #if defined(_WIN32)
-    DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
+    DefineCommand("register-shell", "", kRegisterShellOptions, HandleCommandRegisterShell),
 #endif
 
     // Sub-commands

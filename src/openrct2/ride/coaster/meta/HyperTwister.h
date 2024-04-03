@@ -16,7 +16,7 @@
 #include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
-constexpr RideTypeDescriptor HyperTwisterRTD =
+constexpr RideTypeDescriptor kHyperTwisterRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,

@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
+constexpr RideTypeDescriptor kLayDownRollerCoasterRTD =
 {
     .AlternateType = RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
@@ -81,7 +81,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     },
 };
 
-constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
+constexpr RideTypeDescriptor kLayDownRollerCoasterAltRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_NONE,

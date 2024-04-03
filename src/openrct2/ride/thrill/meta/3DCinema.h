@@ -15,7 +15,7 @@
 
 // clang-format off
 // C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
-constexpr RideTypeDescriptor CinemaRTD =
+constexpr RideTypeDescriptor kCinemaRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_THRILL,
@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor CinemaRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = nameof(RIDE_TYPE_3D_CINEMA),
+    .kEnumName = nameof(RIDE_TYPE_3D_CINEMA),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor CinemaRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 70.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,

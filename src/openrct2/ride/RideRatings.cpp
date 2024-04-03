@@ -81,7 +81,7 @@ struct ShelteredEights
 // Amount of updates allowed per updating state on the current tick.
 // The total amount would be MaxRideRatingSubSteps * RideRatingMaxUpdateStates which
 // would be currently 80, this is the worst case of sub-steps and may break out earlier.
-static constexpr size_t MaxRideRatingUpdateSubSteps = 20;
+static constexpr size_t kMaxRideRatingUpdateSubSteps = 20;
 
 static void ride_ratings_update_state(RideRatingUpdateState& state);
 static void ride_ratings_update_state_0(RideRatingUpdateState& state);
@@ -193,7 +193,7 @@ void RideRatingsUpdateAll()
 
     for (auto& updateState : GetGameState().RideRatingUpdateStates)
     {
-        for (size_t i = 0; i < MaxRideRatingUpdateSubSteps; ++i)
+        for (size_t i = 0; i < kMaxRideRatingUpdateSubSteps; ++i)
         {
             ride_ratings_update_state(updateState);
 

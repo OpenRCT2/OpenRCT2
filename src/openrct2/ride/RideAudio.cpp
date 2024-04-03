@@ -30,7 +30,7 @@ using namespace OpenRCT2::Audio;
 
 namespace OpenRCT2::RideAudio
 {
-    constexpr size_t MAX_RIDE_MUSIC_CHANNELS = 32;
+    constexpr size_t kMaxRideMusicChannels = 32;
 
     /**
      * Represents an audio channel to play a particular ride's music track.
@@ -242,7 +242,7 @@ namespace OpenRCT2::RideAudio
         {
             foundChannel->Update(instance);
         }
-        else if (_musicChannels.size() < MAX_RIDE_MUSIC_CHANNELS)
+        else if (_musicChannels.size() < kMaxRideMusicChannels)
         {
             StartRideMusicChannel(instance);
         }
@@ -314,7 +314,7 @@ namespace OpenRCT2::RideAudio
     {
         if (offset < length)
         {
-            if (_musicInstances.size() < MAX_RIDE_MUSIC_CHANNELS)
+            if (_musicInstances.size() < kMaxRideMusicChannels)
             {
                 auto& instance = _musicInstances.emplace_back();
                 instance.RideId = ride.id;

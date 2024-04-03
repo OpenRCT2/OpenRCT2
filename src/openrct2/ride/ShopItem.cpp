@@ -25,7 +25,7 @@ ShopItem& operator++(ShopItem& d, int)
 
 // clang-format off
 /** rct2: 0x00982164 (cost, base value, hot and cold value); 0x00982358 (default price) */
-constexpr ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
+constexpr ShopItemDescriptor kShopItems[EnumValue(ShopItem::Count)] = {
     // Item,                            Cost,     Base value, Hot value, Cold value, Default price, Image,                               Price label,                                      Singular,                                   Plural,                                     Indefinite,                                     Display (in guest inventory),                Shop Item Flag,                                              Litter type,                    Consumption time, Discard Container,          Peep thought price too much,            Peep thought price good value,
     /* ShopItem::Balloon */          {  0.30_GBP, 1.40_GBP,   1.40_GBP,  1.40_GBP,   0.90_GBP,      SPR_SHOP_ITEM_BALLOON,             { STR_SHOP_ITEM_PRICE_LABEL_BALLOON,                STR_SHOP_ITEM_SINGULAR_BALLOON,             STR_SHOP_ITEM_PLURAL_BALLOON,               STR_SHOP_ITEM_INDEFINITE_BALLOON,               STR_SHOP_ITEM_DISPLAY_BALLOON             }, SHOP_ITEM_FLAG_IS_SOUVENIR | SHOP_ITEM_FLAG_IS_RECOLOURABLE, Litter::Type::Rubbish,          0,                ShopItem::None,             PeepThoughtType::BalloonMuch,           PeepThoughtType::Balloon            },
     /* ShopItem::Toy */              {  1.50_GBP, 3.00_GBP,   3.00_GBP,  3.00_GBP,   2.50_GBP,      SPR_SHOP_ITEM_TOY,                 { STR_SHOP_ITEM_PRICE_LABEL_CUDDLY_TOY,             STR_SHOP_ITEM_SINGULAR_CUDDLY_TOY,          STR_SHOP_ITEM_PLURAL_CUDDLY_TOY,            STR_SHOP_ITEM_INDEFINITE_CUDDLY_TOY,            STR_SHOP_ITEM_DISPLAY_CUDDLY_TOY          }, SHOP_ITEM_FLAG_IS_SOUVENIR,                                  Litter::Type::Rubbish,          0,                ShopItem::None,             PeepThoughtType::ToyMuch,               PeepThoughtType::Toy                },
@@ -89,7 +89,7 @@ constexpr uint64_t GetAllShopItemsWithFlag(uint16_t flag)
     uint64_t ret = 0;
     for (auto i = 0; i < EnumValue(ShopItem::Count); ++i)
     {
-        const auto& sid = ShopItems[i];
+        const auto& sid = kShopItems[i];
         if (sid.HasFlag(flag))
         {
             ret |= (1uLL << i);
@@ -182,5 +182,5 @@ bool ShopItemDescriptor::IsRecolourable() const
 
 const ShopItemDescriptor& GetShopItemDescriptor(const ShopItem item)
 {
-    return ShopItems[EnumValue(item)];
+    return kShopItems[EnumValue(item)];
 }

@@ -38,15 +38,15 @@
 
 enum class ResearchCategory : uint8_t;
 
-constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultToiletHeight = 4 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultInformationKioskHeight = 6 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultFirstAidHeight = 6 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultCashMachineHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t kDefaultFoodStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t kDefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t kDefaultShopHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t kDefaultToiletHeight = 4 * COORDS_Z_STEP;
+constexpr const uint8_t kDefaultInformationKioskHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t kDefaultFirstAidHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t kDefaultCashMachineHeight = 8 * COORDS_Z_STEP;
 
-struct RideComponentName
+struct kRideComponentName
 {
     StringId singular;
     StringId plural;
@@ -306,7 +306,7 @@ struct RideTypeDescriptor
     RideOperatingSettings OperatingSettings;
     RideNaming Naming;
     RideNameConvention NameConvention;
-    const char* EnumName;
+    const char* kEnumName;
     uint8_t AvailableBreakdowns;
     /** rct2: 0x0097D218 */
     RideHeights Heights;
@@ -364,7 +364,7 @@ struct RideTypeDescriptor
     bool SupportsRideMode(RideMode rideMode) const;
 };
 
-extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
+extern const RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT];
 
 enum
 {
@@ -446,20 +446,20 @@ enum ride_type_flags : uint64_t
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
-constexpr uint64_t RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN
+constexpr uint64_t kRideTypeFagsTrackHas3Colours = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN
     | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS;
 // Set on _all_ roller coaster ride types, including the _ALT types used for constructing upside down.
-constexpr uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER = RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING
+constexpr uint64_t kRideTypeFlagsCommonCoaster = RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING
     | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN
     | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK
     | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT
     | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS;
 // Set on all roller coaster ride types, excluding the _ALT types used for constructing upside down.
-constexpr uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT = RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_HAS_AIR_TIME
+constexpr uint64_t kRideTypeFlagsCommonCoasterNonAlt = RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_HAS_AIR_TIME
     | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT;
 
 // clang-format off
-constexpr RideComponentName RideComponentNames[] =
+constexpr kRideComponentName RideComponentNames[] =
 {
     { STR_RIDE_COMPONENT_TRAIN,             STR_RIDE_COMPONENT_TRAIN_PLURAL,            STR_RIDE_COMPONENT_TRAIN_CAPITALISED,               STR_RIDE_COMPONENT_TRAIN_CAPITALISED_PLURAL,            STR_RIDE_COMPONENT_TRAIN_COUNT,             STR_RIDE_COMPONENT_TRAIN_COUNT_PLURAL,              STR_RIDE_COMPONENT_TRAIN_NO },
     { STR_RIDE_COMPONENT_BOAT,              STR_RIDE_COMPONENT_BOAT_PLURAL,             STR_RIDE_COMPONENT_BOAT_CAPITALISED,                STR_RIDE_COMPONENT_BOAT_CAPITALISED_PLURAL,             STR_RIDE_COMPONENT_BOAT_COUNT,              STR_RIDE_COMPONENT_BOAT_COUNT_PLURAL,               STR_RIDE_COMPONENT_BOAT_NO },
@@ -478,26 +478,26 @@ constexpr RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
-constexpr std::string_view MUSIC_OBJECT_DODGEMS = "rct2.music.dodgems";
-constexpr std::string_view MUSIC_OBJECT_EGYPTIAN = "rct2.music.egyptian";
-constexpr std::string_view MUSIC_OBJECT_FAIRGROUND = "rct2.music.fairground";
-constexpr std::string_view MUSIC_OBJECT_GENTLE = "rct2.music.gentle";
-constexpr std::string_view MUSIC_OBJECT_HORROR = "rct2.music.horror";
-constexpr std::string_view MUSIC_OBJECT_PIRATE = "rct2.music.pirate";
-constexpr std::string_view MUSIC_OBJECT_ROCK_1 = "rct2.music.rock1";
-constexpr std::string_view MUSIC_OBJECT_ROCK_2 = "rct2.music.rock2";
-constexpr std::string_view MUSIC_OBJECT_ROCK_3 = "rct2.music.rock3";
-constexpr std::string_view MUSIC_OBJECT_SUMMER = "rct2.music.summer";
-constexpr std::string_view MUSIC_OBJECT_TECHNO = "rct2.music.techno";
-constexpr std::string_view MUSIC_OBJECT_WATER = "rct2.music.water";
-constexpr std::string_view MUSIC_OBJECT_WILD_WEST = "rct2.music.wildwest";
+constexpr std::string_view kMusicObjectDodgems = "rct2.music.dodgems";
+constexpr std::string_view kMusicObjectEgyptian = "rct2.music.egyptian";
+constexpr std::string_view kMusicObjectFairground = "rct2.music.fairground";
+constexpr std::string_view kMusicObjectGentle = "rct2.music.gentle";
+constexpr std::string_view kMusicObjectHorror = "rct2.music.horror";
+constexpr std::string_view kMusicObjectPirate = "rct2.music.pirate";
+constexpr std::string_view kMusicObjectRock1 = "rct2.music.rock1";
+constexpr std::string_view kMusicObjectRock2 = "rct2.music.rock2";
+constexpr std::string_view kMusicObjectRock3 = "rct2.music.rock3";
+constexpr std::string_view kMusicObjectSummer = "rct2.music.summer";
+constexpr std::string_view kMusicObjectTechno = "rct2.music.techno";
+constexpr std::string_view kMusicObjectWater = "rct2.music.water";
+constexpr std::string_view kMusicObjectWildWest = "rct2.music.wildwest";
 
-constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
+constexpr const kRideComponentName& GetRideComponentName(const RideComponentType type)
 {
     return RideComponentNames[EnumValue(type)];
 }
 
-constexpr uint64_t AllRideModesAvailable = EnumsToFlags(
+constexpr uint64_t kAllRideModesAvailable = EnumsToFlags(
     RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle,
     RideMode::PoweredLaunchPasstrough, RideMode::Shuttle, RideMode::Normal, RideMode::BoatHire, RideMode::UpwardLaunch,
     RideMode::RotatingLift, RideMode::StationToStation, RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission,
@@ -508,14 +508,14 @@ constexpr uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
     RideMode::PoweredLaunchBlockSectioned);
 
-extern const CarEntry CableLiftVehicle;
+extern const CarEntry kCableLiftVehicle;
 
-extern const uint16_t RideFilmLength[3];
+extern const uint16_t kRideFilmLength[3];
 
-extern const StringId RideModeNames[EnumValue(RideMode::Count)];
+extern const StringId kRideModeNames[EnumValue(RideMode::Count)];
 
 // clang-format off
-constexpr RideTypeDescriptor DummyRTD =
+constexpr RideTypeDescriptor kDummyRTD =
 {
     .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_NONE,
@@ -530,7 +530,7 @@ constexpr RideTypeDescriptor DummyRTD =
     .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "(INVALID)",
+    .kEnumName = "(INVALID)",
     .AvailableBreakdowns = 0,
     .Heights = { 12, 64, 0, 0, },
     .MaxMass = 255,
@@ -539,7 +539,7 @@ constexpr RideTypeDescriptor DummyRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 0.00_GBP, 0.00_GBP, 1 },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 0,
     .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
@@ -569,15 +569,15 @@ constexpr RideTypeDescriptor DummyRTD =
 
 constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
 {
-    if (rideType >= std::size(RideTypeDescriptors))
-        return DummyRTD;
+    if (rideType >= std::size(kRideTypeDescriptors))
+        return kDummyRTD;
 
-    return RideTypeDescriptors[rideType];
+    return kRideTypeDescriptors[rideType];
 }
 
 constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 {
-    return rideType < std::size(RideTypeDescriptors);
+    return rideType < std::size(kRideTypeDescriptors);
 }
 
 bool IsTrackEnabled(int32_t trackFlagIndex);
