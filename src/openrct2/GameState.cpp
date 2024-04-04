@@ -362,7 +362,7 @@ namespace OpenRCT2
         // WindowDispatchUpdateAll();
 
         // Start autosave timer after update
-    if (gLastAutoSaveUpdate == kAutosavePause)
+        if (gLastAutoSaveUpdate == kAutosavePause)
         {
             gLastAutoSaveUpdate = Platform::GetTicks();
         }
