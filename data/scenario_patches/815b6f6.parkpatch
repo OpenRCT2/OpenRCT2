@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Pokey Park",
+    "sha256": "815b6f6b626cf178c02cc0e4c75b71bb100cc52a503129d9d5c03c6264e733b8",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 84, 71 ], [ 64, 102 ]
+            ]
+        }
+    }
+}

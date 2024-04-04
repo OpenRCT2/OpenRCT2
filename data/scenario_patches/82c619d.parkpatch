@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Woodworm Park (.sea)",
+    "sha256": "82c619d167ef7472b990066e28372ed3a02218aea03d03c45f5269759d8367ee",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 62, 105 ], [ 101, 55 ]
+            ]
+        }
+    }
+}

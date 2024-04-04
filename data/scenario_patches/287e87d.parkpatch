@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Dynamite Dunes",
+    "sha256": "287e87db95f51dd1594b7568bbdd22cadece87749216d2f65a6ff3b506018eb3",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 97, 18 ], [ 99, 19 ], [ 83, 34 ]
+            ]
+        }
+    }
+}

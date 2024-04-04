@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Utopia Park",
+    "sha256": "0dcee4815ded0995d5b2b675e409eb2d37814194e4c8cea8ce1dbff5b1e9d91b",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 85, 73 ], [ 71, 75 ], [ 90, 73 ]
+            ]
+        }
+    }
+}
