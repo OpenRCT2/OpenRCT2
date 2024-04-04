@@ -398,7 +398,7 @@ namespace OpenRCT2
 
     // Define animation group for IceCream sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupIceCream = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteIceCreamStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceIceCreamNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteIceCreamStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceIceCreamWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteIceCreamStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceIceCreamEatFood };
@@ -416,7 +416,7 @@ namespace OpenRCT2
 
     // Define animation group for Chips sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupChips = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteChipsStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceChipsNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteChipsStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceChipsWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteChipsStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceChipsEatFood };
@@ -434,7 +434,7 @@ namespace OpenRCT2
 
     // Define animation group for Burger sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupBurger = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteBurgerStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceBurgerNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteBurgerStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceBurgerWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteBurgerStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceBurgerEatFood };
@@ -452,7 +452,7 @@ namespace OpenRCT2
 
     // Define animation group for Drink sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupDrink = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteDrinkStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceDrinkNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteDrinkStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceDrinkWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteDrinkStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceDrinkEatFood };
@@ -468,7 +468,7 @@ namespace OpenRCT2
 
     // Define animation group for Balloon sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupBalloon = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]        = { kPeepSpriteBalloonStateNoneId,        { 11, 28,  5 }, kPeepAnimationSequenceBalloonNone };
         pag[PeepActionSpriteType::WatchRide]   = { kPeepSpriteBalloonStateWatchRideId,   { 11, 28,  5 }, kPeepAnimationSequenceBalloonWatchRide };
         pag[PeepActionSpriteType::SittingIdle] = { kPeepSpriteBalloonStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceBalloonSittingIdle };
@@ -484,7 +484,7 @@ namespace OpenRCT2
 
     // Define animation group for Candyfloss sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupCandyfloss = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteCandyflossStateNoneId,           { 11, 19,  5 }, kPeepAnimationSequenceCandyflossNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteCandyflossStateWatchRideId,      { 11, 19,  5 }, kPeepAnimationSequenceCandyflossWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteCandyflossStateEatFoodId,        { 11, 19,  5 }, kPeepAnimationSequenceCandyflossEatFood };
@@ -500,7 +500,7 @@ namespace OpenRCT2
 
     // Define animation group for Umbrella sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupUmbrella = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]        = { kPeepSpriteUmbrellaStateNoneId,        { 14, 21,  5 }, kPeepAnimationSequenceUmbrellaNone };
         pag[PeepActionSpriteType::WatchRide]   = { kPeepSpriteUmbrellaStateWatchRideId,   { 14, 21,  5 }, kPeepAnimationSequenceUmbrellaWatchRide };
         pag[PeepActionSpriteType::SittingIdle] = { kPeepSpriteUmbrellaStateSittingIdleId, { 14, 19,  6 }, kPeepAnimationSequenceUmbrellaSittingIdle };
@@ -516,7 +516,7 @@ namespace OpenRCT2
 
     // Define animation group for Pizza sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupPizza = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpritePizzaStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequencePizzaNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpritePizzaStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequencePizzaWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpritePizzaStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequencePizzaEatFood };
@@ -550,7 +550,7 @@ namespace OpenRCT2
 
     // Define animation group for Popcorn sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupPopcorn = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpritePopcornStateNoneId,           { 11, 19,  5 }, kPeepAnimationSequencePopcornNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpritePopcornStateWatchRideId,      { 11, 19,  5 }, kPeepAnimationSequencePopcornWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpritePopcornStateEatFoodId,        { 11, 19,  5 }, kPeepAnimationSequencePopcornEatFood };
@@ -564,7 +564,7 @@ namespace OpenRCT2
 
     // Define animation group for ArmsCrossed sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupArmsCrossed = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None] = { kPeepSpriteArmsCrossedStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceArmsCrossedNone };
         return pag;
     }();
@@ -574,7 +574,7 @@ namespace OpenRCT2
 
     // Define animation group for HeadDown sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupHeadDown = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None] = { kPeepSpriteHeadDownStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceHeadDownNone };
         return pag;
     }();
@@ -584,7 +584,7 @@ namespace OpenRCT2
 
     // Define animation group for Nauseous sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupNauseous = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None] = { kPeepSpriteNauseousStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceNauseousNone };
         return pag;
     }();
@@ -596,7 +596,7 @@ namespace OpenRCT2
 
     // Define animation group for VeryNauseous sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupVeryNauseous = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]        = { kPeepSpriteVeryNauseousStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceVeryNauseousNone };
         pag[PeepActionSpriteType::WatchRide]   = { kPeepSpriteVeryNauseousStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceVeryNauseousWatchRide };
         pag[PeepActionSpriteType::SittingIdle] = { kPeepSpriteVeryNauseousStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceVeryNauseousSittingIdle };
@@ -608,7 +608,7 @@ namespace OpenRCT2
 
     // Define animation group for RequireToilet sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupRequireToilet = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None] = { kPeepSpriteRequireToiletStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceRequireToiletNone };
         return pag;
     }();
@@ -620,7 +620,7 @@ namespace OpenRCT2
 
     // Define animation group for Hat sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupHat = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]        = { kPeepSpriteHatStateNoneId,        { 12, 32,  5 }, kPeepAnimationSequenceHatNone };
         pag[PeepActionSpriteType::WatchRide]   = { kPeepSpriteHatStateWatchRideId,   { 12, 32,  5 }, kPeepAnimationSequenceHatWatchRide };
         pag[PeepActionSpriteType::SittingIdle] = { kPeepSpriteHatStateSittingIdleId, { 10, 20,  6 }, kPeepAnimationSequenceHatSittingIdle };
@@ -636,7 +636,7 @@ namespace OpenRCT2
 
     // Define animation group for HotDog sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupHotDog = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteHotDogStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceHotDogNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteHotDogStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceHotDogWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteHotDogStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceHotDogEatFood };
@@ -654,7 +654,7 @@ namespace OpenRCT2
 
     // Define animation group for Tentacle sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupTentacle = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteTentacleStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceTentacleNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteTentacleStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceTentacleWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteTentacleStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceTentacleEatFood };
@@ -672,7 +672,7 @@ namespace OpenRCT2
 
     // Define animation group for ToffeeApple sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupToffeeApple = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteToffeeAppleStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceToffeeAppleNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteToffeeAppleStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceToffeeAppleWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteToffeeAppleStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceToffeeAppleEatFood };
@@ -690,7 +690,7 @@ namespace OpenRCT2
 
     // Define animation group for Donut sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupDonut = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteDonutStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceDonutNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteDonutStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceDonutWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteDonutStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceDonutEatFood };
@@ -708,7 +708,7 @@ namespace OpenRCT2
 
     // Define animation group for Coffee sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupCoffee = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteCoffeeStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceCoffeeNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteCoffeeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceCoffeeWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteCoffeeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceCoffeeEatFood };
@@ -726,7 +726,7 @@ namespace OpenRCT2
 
     // Define animation group for Chicken sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupChicken = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteChickenStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceChickenNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteChickenStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceChickenWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteChickenStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceChickenEatFood };
@@ -744,7 +744,7 @@ namespace OpenRCT2
 
     // Define animation group for Lemonade sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupLemonade = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteLemonadeStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceLemonadeNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteLemonadeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceLemonadeWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteLemonadeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceLemonadeEatFood };
@@ -758,7 +758,7 @@ namespace OpenRCT2
 
     // Define animation group for Watching sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupWatching = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::WatchRide] = { kPeepSpriteWatchingStateWatchRideId, {  8, 16,  5 }, kPeepAnimationSequenceWatchingWatchRide };
         return pag;
     }();
@@ -772,7 +772,7 @@ namespace OpenRCT2
 
     // Define animation group for Pretzel sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupPretzel = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpritePretzelStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequencePretzelNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpritePretzelStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequencePretzelWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpritePretzelStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequencePretzelEatFood };
@@ -788,7 +788,7 @@ namespace OpenRCT2
 
     // Define animation group for Sunglasses sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupSunglasses = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]        = { kPeepSpriteSunglassesStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSunglassesNone };
         pag[PeepActionSpriteType::WatchRide]   = { kPeepSpriteSunglassesStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSunglassesWatchRide };
         pag[PeepActionSpriteType::SittingIdle] = { kPeepSpriteSunglassesStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSunglassesSittingIdle };
@@ -804,7 +804,7 @@ namespace OpenRCT2
 
     // Define animation group for SuJongkwa sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupSuJongkwa = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteSuJongkwaStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSuJongkwaNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteSuJongkwaStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSuJongkwaWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteSuJongkwaStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSuJongkwaEatFood };
@@ -822,7 +822,7 @@ namespace OpenRCT2
 
     // Define animation group for Juice sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupJuice = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteJuiceStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceJuiceNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteJuiceStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceJuiceWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteJuiceStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceJuiceEatFood };
@@ -840,7 +840,7 @@ namespace OpenRCT2
 
     // Define animation group for FunnelCake sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupFunnelCake = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteFunnelCakeStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceFunnelCakeNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteFunnelCakeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceFunnelCakeWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteFunnelCakeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceFunnelCakeEatFood };
@@ -858,7 +858,7 @@ namespace OpenRCT2
 
     // Define animation group for Noodles sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupNoodles = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteNoodlesStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceNoodlesNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteNoodlesStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceNoodlesWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteNoodlesStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceNoodlesEatFood };
@@ -876,7 +876,7 @@ namespace OpenRCT2
 
     // Define animation group for Sausage sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupSausage = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteSausageStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSausageNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteSausageStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSausageWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteSausageStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSausageEatFood };
@@ -894,7 +894,7 @@ namespace OpenRCT2
 
     // Define animation group for Soup sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupSoup = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteSoupStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSoupNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteSoupStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSoupWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteSoupStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSoupEatFood };
@@ -912,7 +912,7 @@ namespace OpenRCT2
 
     // Define animation group for Sandwich sequences
     static constexpr PeepAnimationGroup kPeepAnimationGroupSandwich = []() {
-        PeepAnimationGroup pag;
+        PeepAnimationGroup pag = kPeepAnimationGroupNormal;
         pag[PeepActionSpriteType::None]           = { kPeepSpriteSandwichStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSandwichNone };
         pag[PeepActionSpriteType::WatchRide]      = { kPeepSpriteSandwichStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSandwichWatchRide };
         pag[PeepActionSpriteType::EatFood]        = { kPeepSpriteSandwichStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSandwichEatFood };
