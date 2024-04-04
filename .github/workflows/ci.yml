@@ -365,7 +365,7 @@ jobs:
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=RelWithDebInfo -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
       - name: Build AppImage
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
