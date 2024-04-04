@@ -486,7 +486,7 @@ std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObje
     std::vector<std::pair<std::string, Image>> result;
     for (auto& jsonImage : jsonImages)
     {
-        if (jsonImage.is_object())
+        if (jsonImage.is_object() && jsonImage.contains("path"))
         {
             auto path = Json::GetString(jsonImage["path"]);
             auto keepPalette = Json::GetString(jsonImage["palette"]) == "keep";
@@ -536,9 +536,36 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
             }
             else if (jsonImage.is_object())
             {
-                auto images = ParseImages(context, imageSources, jsonImage);
-                allImages.insert(
-                    allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                if (jsonImage.contains("gx"))
+                {
+                    auto xOverride = Json::GetNumber<int16_t>(jsonImage["x"], std::numeric_limits<int16_t>::max());
+                    auto yOverride = Json::GetNumber<int16_t>(jsonImage["y"], std::numeric_limits<int16_t>::max());
+                    const bool hasXOverride = xOverride != std::numeric_limits<int16_t>::max();
+                    const bool hasYOverride = yOverride != std::numeric_limits<int16_t>::max();
+
+                    auto strImage = jsonImage["gx"].get<std::string>();
+                    auto images = ParseImages(context, strImage);
+
+                    if (hasXOverride || hasYOverride)
+                    {
+                        for (auto& image : images)
+                        {
+                            if (hasXOverride)
+                                image->g1.x_offset = xOverride;
+                            if (hasYOverride)
+                                image->g1.y_offset = yOverride;
+                        }
+                    }
+
+                    allImages.insert(
+                        allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                }
+                else
+                {
+                    auto images = ParseImages(context, imageSources, jsonImage);
+                    allImages.insert(
+                        allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                }
             }
         }
 
