@@ -2309,7 +2309,8 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        const auto trackDrawerEntry = getTrackDrawerEntry(rtd, trackElement.IsInverted(), TrackElementIsCovered(trackType));
+        bool isInverted = trackElement.IsInverted() && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE);
+        const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
         if (trackDrawerEntry.Drawer != nullptr)
         {
