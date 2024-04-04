@@ -59,6 +59,7 @@
 - Change: [#21350] Group Dodgems and Flying Saucers vehicles.
 - Change: [#21453] Reintroduce lost RCT1 Jet skis colour presets to the boat hire.
 - Change: [objects#285] Mark old reversed train objects as compatibility objects.
+- Fix: [#15782] Some error messages from game actions are empty.
 - Fix: [#17610] Some scenery items are unavailable in RCT1 scenarios.
 - Fix: [#18963] Research table in parks from Loopy Landscapes is imported incorrectly.
 - Fix: [#20164] Grass and Rock terrain objects cannot be de-selected.
