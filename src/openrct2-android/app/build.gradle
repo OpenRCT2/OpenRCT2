@@ -7,7 +7,7 @@ android {
     namespace "io.openrct2"
     defaultConfig {
         applicationId 'io.openrct2'
-        minSdkVersion 21
+        minSdkVersion 27
         targetSdkVersion 28
 
         versionCode 2
