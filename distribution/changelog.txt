@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#21734] Park admittance price can now be set via text input.
 - Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
+- Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Fix: [#866] Boat Hire boats get stuck entering track.
 
 0.4.10 (2024-04-02)
