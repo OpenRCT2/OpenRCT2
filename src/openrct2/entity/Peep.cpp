@@ -35,6 +35,7 @@
 #include "../network/network.h"
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
+#include "../peep/PeepData.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -333,7 +334,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
  */
 void Peep::UpdateCurrentActionSpriteType()
 {
-    if (EnumValue(SpriteType) >= std::size(g_peep_animation_entries))
+    if (EnumValue(SpriteType) >= EnumValue(PeepSpriteType::Count))
     {
         return;
     }
@@ -438,32 +439,34 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
                 nextDirection = 0;
             }
         }
+
         Orientation = nextDirection;
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
+
         WalkingFrameNum++;
-        const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
-        const uint8_t* imageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets;
-        if (WalkingFrameNum >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
+        const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
+        if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
         {
             WalkingFrameNum = 0;
         }
-        ActionSpriteImageOffset = imageOffset[WalkingFrameNum];
+        ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingFrameNum];
+
         return loc;
     }
 
-    const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
+    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
     ActionFrame++;
 
     // If last frame of action
-    if (ActionFrame >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
+    if (ActionFrame >= peepAnimation.frame_offsets.size())
     {
         ActionSpriteImageOffset = 0;
         Action = PeepActionType::Walking;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    ActionSpriteImageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets[ActionFrame];
+    ActionSpriteImageOffset = peepAnimation.frame_offsets[ActionFrame];
 
     auto* guest = As<Guest>();
     // If not throwing up and not at the frame where sick appears.

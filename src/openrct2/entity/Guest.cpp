@@ -36,6 +36,7 @@
 #include "../object/PathAdditionEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
+#include "../peep/PeepData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"

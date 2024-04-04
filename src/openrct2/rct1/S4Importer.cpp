@@ -46,6 +46,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../peep/PeepData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/EntryList.h"
 #include "../ride/RideData.h"

@@ -20,6 +20,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../peep/PeepData.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
