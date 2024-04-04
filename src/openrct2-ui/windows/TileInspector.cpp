@@ -35,6 +35,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
+#include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>

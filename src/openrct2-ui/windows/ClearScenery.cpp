@@ -192,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw cost amount
             if (gClearSceneryCost != kMoney64Undefined && gClearSceneryCost != 0
-                && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gClearSceneryCost);

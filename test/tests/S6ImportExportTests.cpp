@@ -138,10 +138,9 @@ static void RecordGameStateSnapshot(std::unique_ptr<IContext>& context, MemorySt
 
 static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 {
-    auto* gameState = context->GetGameState();
     for (uint32_t i = 0; i < ticks; i++)
     {
-        gameState->UpdateLogic();
+        gameStateUpdateLogic();
     }
 }
 

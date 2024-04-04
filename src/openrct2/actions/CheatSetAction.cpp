@@ -222,13 +222,13 @@ GameActions::Result CheatSetAction::Execute() const
             GetGameState().Cheats.NeverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!ParkIsOpen());
+            ParkSetOpen(!GetGameState().Park.IsOpen());
             break;
         case CheatType::HaveFun:
             gameState.ScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
-            ParkSetForcedRating(_param1);
+            Park::SetForcedRating(_param1);
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
             GetGameState().Cheats.AllowArbitraryRideTypeChanges = _param1 != 0;
@@ -562,11 +562,11 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
     auto& gameState = GetGameState();
     if (enabled)
     {
-        gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
+        gameState.Park.Flags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
+        gameState.Park.Flags &= ~PARK_FLAGS_NO_MONEY;
     }
 
     // Invalidate all windows that have anything to do with finance
@@ -607,10 +607,9 @@ void CheatSetAction::ClearLoan() const
 
 void CheatSetAction::GenerateGuests(int32_t count) const
 {
-    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     for (int32_t i = 0; i < count; i++)
     {
-        park.GenerateGuest();
+        Park::GenerateGuest();
     }
     WindowInvalidateByClass(WindowClass::BottomToolbar);
 }
@@ -767,7 +766,7 @@ void CheatSetAction::OwnAllLand() const
             if (destOwnership != OWNERSHIP_UNOWNED)
             {
                 surfaceElement->SetOwnership(destOwnership);
-                ParkUpdateFencesAroundTile(coords);
+                Park::UpdateFencesAroundTile(coords);
                 MapInvalidateTile({ coords, baseZ, baseZ + 16 });
             }
         }
@@ -780,7 +779,7 @@ void CheatSetAction::OwnAllLand() const
         if (surfaceElement != nullptr)
         {
             surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-            ParkUpdateFencesAroundTile(spawn);
+            Park::UpdateFencesAroundTile(spawn);
             uint16_t baseZ = surfaceElement->GetBaseZ();
             MapInvalidateTile({ spawn, baseZ, baseZ + 16 });
         }

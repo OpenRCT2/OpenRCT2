@@ -97,7 +97,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
         {
-            if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
                 {

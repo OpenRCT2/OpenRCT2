@@ -45,17 +45,15 @@ TEST(MultiLaunchTest, all)
 
         // Check ride count to check load was successful
         ASSERT_EQ(RideGetCount(), 134);
-        auto gs = context->GetGameState();
-        ASSERT_NE(gs, nullptr);
 
-        auto& date = gs->GetDate();
+        auto& date = GetGameState().Date;
         // NOTE: This value is saved in the SV6 file, after the import this will be the current state.
         // In case the save file gets replaced this needs to be adjusted.
         ASSERT_EQ(date.GetMonthTicks(), 0x1e98);
 
         for (int j = 0; j < updatesToTest; j++)
         {
-            gs->UpdateLogic();
+            gameStateUpdateLogic();
         }
 
         ASSERT_EQ(date.GetMonthTicks(), 7862 + updatesToTest);

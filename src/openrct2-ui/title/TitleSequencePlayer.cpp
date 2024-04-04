@@ -46,8 +46,6 @@ namespace OpenRCT2::Title
     class TitleSequencePlayer final : public ITitleSequencePlayer
     {
     private:
-        GameState& _gameState;
-
         std::unique_ptr<TitleSequence> _sequence;
         int32_t _position = 0;
         int32_t _waitCounter = 0;
@@ -57,8 +55,7 @@ namespace OpenRCT2::Title
         ScreenCoordsXY _previousViewPosition = {};
 
     public:
-        explicit TitleSequencePlayer(GameState& gameState)
-            : _gameState(gameState)
+        explicit TitleSequencePlayer()
         {
         }
 
@@ -248,7 +245,7 @@ namespace OpenRCT2::Title
             {
                 if (Update())
                 {
-                    _gameState.UpdateLogic();
+                    gameStateUpdateLogic();
                 }
                 else
                 {
@@ -431,8 +428,8 @@ namespace OpenRCT2::Title
         }
     };
 
-    std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(GameState& gameState)
+    std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer()
     {
-        return std::make_unique<TitleSequencePlayer>(gameState);
+        return std::make_unique<TitleSequencePlayer>();
     }
 } // namespace OpenRCT2::Title

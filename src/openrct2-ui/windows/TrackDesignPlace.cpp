@@ -306,7 +306,7 @@ static Widget _trackPlaceWidgets[] = {
             }
 
             // Price
-            if (_placementCost != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (_placementCost != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 ft = Formatter();
                 ft.Add<money64>(_placementCost);

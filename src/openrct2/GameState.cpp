@@ -58,353 +58,332 @@ namespace OpenRCT2
     {
         return _gameState;
     }
-} // namespace OpenRCT2
 
-GameState::GameState()
-{
-    _park = std::make_unique<Park>();
-}
+    /**
+     * Initialises the map, park etc. basically all S6 data.
+     */
+    void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize)
+    {
+        PROFILED_FUNCTION();
 
-/**
- * Initialises the map, park etc. basically all S6 data.
- */
-void GameState::InitAll(const TileCoordsXY& mapSize)
-{
-    PROFILED_FUNCTION();
+        gInMapInitCode = true;
+        gameState.CurrentTicks = 0;
 
-    auto& gameState = GetGameState();
-    gInMapInitCode = true;
-    gameState.CurrentTicks = 0;
+        MapInit(mapSize);
+        Park::Initialise(gameState);
+        FinanceInit();
+        BannerInit(gameState);
+        RideInitAll();
+        ResetAllEntities();
+        UpdateConsolidatedPatrolAreas();
+        ResetDate();
+        ClimateReset(ClimateType::CoolAndWet);
+        News::InitQueue();
 
-    MapInit(mapSize);
-    _park->Initialise();
-    FinanceInit();
-    BannerInit(gameState);
-    RideInitAll();
-    ResetAllEntities();
-    UpdateConsolidatedPatrolAreas();
-    ResetDate();
-    ClimateReset(ClimateType::CoolAndWet);
-    News::InitQueue();
+        gInMapInitCode = false;
 
-    gInMapInitCode = false;
+        GetGameState().NextGuestNumber = 1;
 
-    GetGameState().NextGuestNumber = 1;
+        ContextInit();
+        ScenerySetDefaultPlacementConfiguration();
 
-    ContextInit();
-    ScenerySetDefaultPlacementConfiguration();
+        auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+        ContextBroadcastIntent(&intent);
 
-    auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-    ContextBroadcastIntent(&intent);
+        LoadPalette();
 
-    LoadPalette();
-
-    CheatsReset();
-    ClearRestrictedScenery();
+        CheatsReset();
+        ClearRestrictedScenery();
 
 #ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    scriptEngine.ClearParkStorage();
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine.ClearParkStorage();
 #endif
 
-    EntityTweener::Get().Reset();
-}
+        EntityTweener::Get().Reset();
+    }
 
-/**
- * Function will be called every kGameUpdateTimeMS.
- * It has its own loop which might run multiple updates per call such as
- * when operating as a client it may run multiple updates to catch up with the server tick,
- * another influence can be the game speed setting.
- */
-void GameState::Tick()
-{
-    PROFILED_FUNCTION();
-
-    // Normal game play will update only once every kGameUpdateTimeMS
-    uint32_t numUpdates = 1;
-
-    // 0x006E3AEC // screen_game_process_mouse_input();
-    ScreenshotCheck();
-    GameHandleKeyboardInput();
-
-    if (GameIsNotPaused() && gPreviewingTitleSequenceInGame)
+    /**
+     * Function will be called every kGameUpdateTimeMS.
+     * It has its own loop which might run multiple updates per call such as
+     * when operating as a client it may run multiple updates to catch up with the server tick,
+     * another influence can be the game speed setting.
+     */
+    void gameStateTick()
     {
-        auto player = GetContext()->GetUiContext()->GetTitleSequencePlayer();
-        if (player != nullptr)
+        PROFILED_FUNCTION();
+
+        // Normal game play will update only once every kGameUpdateTimeMS
+        uint32_t numUpdates = 1;
+
+        // 0x006E3AEC // screen_game_process_mouse_input();
+        ScreenshotCheck();
+        GameHandleKeyboardInput();
+
+        if (GameIsNotPaused() && gPreviewingTitleSequenceInGame)
         {
-            player->Update();
+            auto player = GetContext()->GetUiContext()->GetTitleSequencePlayer();
+            if (player != nullptr)
+            {
+                player->Update();
+            }
         }
-    }
 
-    NetworkUpdate();
+        NetworkUpdate();
 
-    if (NetworkGetMode() == NETWORK_MODE_CLIENT && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
-        && NetworkGetAuthstatus() == NetworkAuth::Ok)
-    {
-        numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - GetGameState().CurrentTicks, 0, 10);
-    }
-    else
-    {
-        // Determine how many times we need to update the game
-        if (gGameSpeed > 1)
+        if (NetworkGetMode() == NETWORK_MODE_CLIENT && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
+            && NetworkGetAuthstatus() == NetworkAuth::Ok)
         {
-            // Update more often if game speed is above normal.
-            numUpdates = 1 << (gGameSpeed - 1);
-        }
-    }
-
-    bool isPaused = GameIsPaused();
-    if (NetworkGetMode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
-    {
-        // If we are headless we always have 1 player (host), pause if no one else is around.
-        if (gOpenRCT2Headless && NetworkGetNumPlayers() == 1)
-        {
-            isPaused |= true;
-        }
-    }
-
-    bool didRunSingleFrame = false;
-    if (isPaused)
-    {
-        if (gDoSingleUpdate && NetworkGetMode() == NETWORK_MODE_NONE)
-        {
-            didRunSingleFrame = true;
-            PauseToggle();
-            numUpdates = 1;
+            numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - GetGameState().CurrentTicks, 0, 10);
         }
         else
         {
-            // NOTE: Here are a few special cases that would be normally handled in UpdateLogic.
-            // If the game is paused it will not call UpdateLogic at all.
-            numUpdates = 0;
-
-            if (NetworkGetMode() == NETWORK_MODE_SERVER)
+            // Determine how many times we need to update the game
+            if (gGameSpeed > 1)
             {
-                // Make sure the client always knows about what tick the host is on.
-                NetworkSendTick();
+                // Update more often if game speed is above normal.
+                numUpdates = 1 << (gGameSpeed - 1);
             }
-
-            // Keep updating the money effect even when paused.
-            UpdateMoneyEffect();
-
-            // Update the animation list. Note this does not
-            // increment the map animation.
-            MapAnimationInvalidateAll();
-
-            // Post-tick network update
-            NetworkProcessPending();
-
-            // Post-tick game actions.
-            GameActions::ProcessQueue();
         }
-    }
 
-    // Update the game one or more times
-    for (uint32_t i = 0; i < numUpdates; i++)
-    {
-        UpdateLogic();
-        if (gGameSpeed == 1)
+        bool isPaused = GameIsPaused();
+        if (NetworkGetMode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
         {
-            if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
+            // If we are headless we always have 1 player (host), pause if no one else is around.
+            if (gOpenRCT2Headless && NetworkGetNumPlayers() == 1)
             {
-                if (InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING))
-                {
-                    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-                    break;
-                }
+                isPaused |= true;
+            }
+        }
+
+        bool didRunSingleFrame = false;
+        if (isPaused)
+        {
+            if (gDoSingleUpdate && NetworkGetMode() == NETWORK_MODE_NONE)
+            {
+                didRunSingleFrame = true;
+                PauseToggle();
+                numUpdates = 1;
             }
             else
             {
-                break;
+                // NOTE: Here are a few special cases that would be normally handled in UpdateLogic.
+                // If the game is paused it will not call UpdateLogic at all.
+                numUpdates = 0;
+
+                if (NetworkGetMode() == NETWORK_MODE_SERVER)
+                {
+                    // Make sure the client always knows about what tick the host is on.
+                    NetworkSendTick();
+                }
+
+                // Keep updating the money effect even when paused.
+                UpdateMoneyEffect();
+
+                // Update the animation list. Note this does not
+                // increment the map animation.
+                MapAnimationInvalidateAll();
+
+                // Post-tick network update
+                NetworkProcessPending();
+
+                // Post-tick game actions.
+                GameActions::ProcessQueue();
             }
         }
-        // Don't call UpdateLogic again if the game was just paused.
-        isPaused |= GameIsPaused();
-        if (isPaused)
-            break;
-    }
 
-    NetworkFlush();
-
-    if (!gOpenRCT2Headless)
-    {
-        InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-
-        // the flickering frequency is reduced by 4, compared to the original
-        // it was done due to inability to reproduce original frequency
-        // and decision that the original one looks too fast
-        if (gCurrentRealTimeTicks % 4 == 0)
-            gWindowMapFlashingFlags ^= MapFlashingFlags::SwitchColour;
-
-        // Handle guest map flashing
-        gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashGuests;
-        if (gWindowMapFlashingFlags & MapFlashingFlags::GuestListOpen)
-            gWindowMapFlashingFlags |= MapFlashingFlags::FlashGuests;
-        gWindowMapFlashingFlags &= ~MapFlashingFlags::GuestListOpen;
-
-        // Handle staff map flashing
-        gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashStaff;
-        if (gWindowMapFlashingFlags & MapFlashingFlags::StaffListOpen)
-            gWindowMapFlashingFlags |= MapFlashingFlags::FlashStaff;
-        gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
-
-        ContextUpdateMapTooltip();
-    }
-
-    // Always perform autosave check, even when paused
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
-    {
-        ScenarioAutosaveCheck();
-    }
-
-    WindowDispatchUpdateAll();
-
-    if (didRunSingleFrame && GameIsNotPaused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
-    {
-        PauseToggle();
-    }
-
-    gDoSingleUpdate = false;
-}
-
-void GameState::UpdateLogic()
-{
-    PROFILED_FUNCTION();
-
-    gInUpdateCode = true;
-
-    gScreenAge++;
-    if (gScreenAge == 0)
-        gScreenAge--;
-
-    GetContext()->GetReplayManager()->Update();
-
-    NetworkUpdate();
-
-    if (NetworkGetMode() == NETWORK_MODE_SERVER)
-    {
-        if (NetworkGamestateSnapshotsEnabled())
+        // Update the game one or more times
+        for (uint32_t i = 0; i < numUpdates; i++)
         {
-            CreateStateSnapshot();
-        }
-
-        // Send current tick out.
-        NetworkSendTick();
-    }
-    else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
-    {
-        // Don't run past the server, this condition can happen during map changes.
-        if (NetworkGetServerTick() == GetGameState().CurrentTicks)
-        {
-            gInUpdateCode = false;
-            return;
-        }
-
-        // Check desync.
-        bool desynced = NetworkCheckDesynchronisation();
-        if (desynced)
-        {
-            // If desync debugging is enabled and we are still connected request the specific game state from server.
-            if (NetworkGamestateSnapshotsEnabled() && NetworkGetStatus() == NETWORK_STATUS_CONNECTED)
+            gameStateUpdateLogic();
+            if (gGameSpeed == 1)
             {
-                // Create snapshot from this tick so we can compare it later
-                // as we won't pause the game on this event.
-                CreateStateSnapshot();
+                if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
+                {
+                    if (InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING))
+                    {
+                        InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // Don't call UpdateLogic again if the game was just paused.
+            isPaused |= GameIsPaused();
+            if (isPaused)
+                break;
+        }
 
-                NetworkRequestGamestateSnapshot();
+        NetworkFlush();
+
+        if (!gOpenRCT2Headless)
+        {
+            InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+
+            // the flickering frequency is reduced by 4, compared to the original
+            // it was done due to inability to reproduce original frequency
+            // and decision that the original one looks too fast
+            if (gCurrentRealTimeTicks % 4 == 0)
+                gWindowMapFlashingFlags ^= MapFlashingFlags::SwitchColour;
+
+            // Handle guest map flashing
+            gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashGuests;
+            if (gWindowMapFlashingFlags & MapFlashingFlags::GuestListOpen)
+                gWindowMapFlashingFlags |= MapFlashingFlags::FlashGuests;
+            gWindowMapFlashingFlags &= ~MapFlashingFlags::GuestListOpen;
+
+            // Handle staff map flashing
+            gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashStaff;
+            if (gWindowMapFlashingFlags & MapFlashingFlags::StaffListOpen)
+                gWindowMapFlashingFlags |= MapFlashingFlags::FlashStaff;
+            gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
+
+            ContextUpdateMapTooltip();
+        }
+
+        // Always perform autosave check, even when paused
+        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+        {
+            ScenarioAutosaveCheck();
+        }
+
+        WindowDispatchUpdateAll();
+
+        if (didRunSingleFrame && GameIsNotPaused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        {
+            PauseToggle();
+        }
+
+        gDoSingleUpdate = false;
+    }
+
+    static void gameStateCreateStateSnapshot()
+    {
+        PROFILED_FUNCTION();
+
+        IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+        auto& snapshot = snapshots->CreateSnapshot();
+        snapshots->Capture(snapshot);
+        snapshots->LinkSnapshot(snapshot, GetGameState().CurrentTicks, ScenarioRandState().s0);
+    }
+
+    void gameStateUpdateLogic()
+    {
+        PROFILED_FUNCTION();
+
+        gInUpdateCode = true;
+
+        gScreenAge++;
+        if (gScreenAge == 0)
+            gScreenAge--;
+
+        GetContext()->GetReplayManager()->Update();
+
+        NetworkUpdate();
+
+        if (NetworkGetMode() == NETWORK_MODE_SERVER)
+        {
+            if (NetworkGamestateSnapshotsEnabled())
+            {
+                gameStateCreateStateSnapshot();
+            }
+
+            // Send current tick out.
+            NetworkSendTick();
+        }
+        else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
+        {
+            // Don't run past the server, this condition can happen during map changes.
+            if (NetworkGetServerTick() == GetGameState().CurrentTicks)
+            {
+                gInUpdateCode = false;
+                return;
+            }
+
+            // Check desync.
+            bool desynced = NetworkCheckDesynchronisation();
+            if (desynced)
+            {
+                // If desync debugging is enabled and we are still connected request the specific game state from server.
+                if (NetworkGamestateSnapshotsEnabled() && NetworkGetStatus() == NETWORK_STATUS_CONNECTED)
+                {
+                    // Create snapshot from this tick so we can compare it later
+                    // as we won't pause the game on this event.
+                    gameStateCreateStateSnapshot();
+
+                    NetworkRequestGamestateSnapshot();
+                }
             }
         }
-    }
 
+        auto& gameState = GetGameState();
 #ifdef ENABLE_SCRIPTING
-    // Stash the current day number before updating the date so that we
-    // know if the day number changes on this tick.
-    auto day = _date.GetDay();
+        // Stash the current day number before updating the date so that we
+        // know if the day number changes on this tick.
+        auto day = gameState.Date.GetDay();
 #endif
 
-    _date.Update();
+        DateUpdate(gameState);
 
-    auto& gameState = GetGameState();
-    ScenarioUpdate(gameState);
-    ClimateUpdate();
-    MapUpdateTiles();
-    // Temporarily remove provisional paths to prevent peep from interacting with them
-    MapRemoveProvisionalElements();
-    MapUpdatePathWideFlags();
-    PeepUpdateAll();
-    MapRestoreProvisionalElements();
-    VehicleUpdateAll();
-    UpdateAllMiscEntities();
-    Ride::UpdateAll();
+        ScenarioUpdate(gameState);
+        ClimateUpdate();
+        MapUpdateTiles();
+        // Temporarily remove provisional paths to prevent peep from interacting with them
+        MapRemoveProvisionalElements();
+        MapUpdatePathWideFlags();
+        PeepUpdateAll();
+        MapRestoreProvisionalElements();
+        VehicleUpdateAll();
+        UpdateAllMiscEntities();
+        Ride::UpdateAll();
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
-    {
-        _park->Update(_date);
-    }
+        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+        {
+            Park::Update(gameState, gameState.Date);
+        }
 
-    ResearchUpdate();
-    RideRatingsUpdateAll();
-    RideMeasurementsUpdate();
-    News::UpdateCurrentItem();
+        ResearchUpdate();
+        RideRatingsUpdateAll();
+        RideMeasurementsUpdate();
+        News::UpdateCurrentItem();
 
-    MapAnimationInvalidateAll();
-    VehicleSoundsUpdate();
-    PeepUpdateCrowdNoise();
-    ClimateUpdateSound();
-    EditorOpenWindowsForCurrentStep();
+        MapAnimationInvalidateAll();
+        VehicleSoundsUpdate();
+        PeepUpdateCrowdNoise();
+        ClimateUpdateSound();
+        EditorOpenWindowsForCurrentStep();
 
-    // Update windows
-    // WindowDispatchUpdateAll();
+        // Update windows
+        // WindowDispatchUpdateAll();
 
-    // Start autosave timer after update
-    if (gLastAutoSaveUpdate == kAutosavePause)
-    {
-        gLastAutoSaveUpdate = Platform::GetTicks();
-    }
+        // Start autosave timer after update
+        if (gLastAutoSaveUpdate == kAutosavePause)
+        {
+            gLastAutoSaveUpdate = Platform::GetTicks();
+        }
 
-    GameActions::ProcessQueue();
+        GameActions::ProcessQueue();
 
-    NetworkProcessPending();
-    NetworkFlush();
+        NetworkProcessPending();
+        NetworkFlush();
 
-    gameState.CurrentTicks++;
+        gameState.CurrentTicks++;
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
 
-    if (day != _date.GetDay())
-    {
-        hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
-    }
+        if (day != gameState.Date.GetDay())
+        {
+            hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
+        }
 #endif
 
-    gInUpdateCode = false;
-}
-
-void GameState::CreateStateSnapshot()
-{
-    PROFILED_FUNCTION();
-
-    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
-
-    auto& snapshot = snapshots->CreateSnapshot();
-    snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, GetGameState().CurrentTicks, ScenarioRandState().s0);
-}
-
-void GameState::SetDate(Date newDate)
-{
-    _date = newDate;
-}
-
-/**
- *
- *  rct2: 0x006C4494
- */
-void GameState::ResetDate()
-{
-    _date = OpenRCT2::Date();
-    gCurrentRealTimeTicks = 0;
-}
+        gInUpdateCode = false;
+    }
+} // namespace OpenRCT2

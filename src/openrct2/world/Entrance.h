@@ -41,6 +41,7 @@ extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern StationIndex gRideEntranceExitGhostStationIndex;
 
 void ParkEntranceRemoveGhost();
+int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos);
 
 void ParkEntranceReset();
 void MazeEntranceHedgeReplacement(const CoordsXYE& entrance);

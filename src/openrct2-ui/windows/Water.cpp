@@ -156,7 +156,7 @@ static Widget _waterWidgets[] = {
                     dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
 
-            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Draw raise cost amount
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };

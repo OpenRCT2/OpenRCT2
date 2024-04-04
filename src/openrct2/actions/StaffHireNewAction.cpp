@@ -288,10 +288,10 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     {
         // No walking guests; pick random park entrance
         const auto& gameState = GetGameState();
-        if (!gameState.ParkEntrances.empty())
+        if (!gameState.Park.Entrances.empty())
         {
-            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.ParkEntrances.size()));
-            const auto& entrance = gameState.ParkEntrances[rand];
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.Park.Entrances.size()));
+            const auto& entrance = gameState.Park.Entrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;
             // TODO: Replace with CoordsDirectionDelta

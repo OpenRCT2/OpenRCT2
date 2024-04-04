@@ -56,7 +56,7 @@ void LandSetHeightAction::Serialise(DataSerialiser& stream)
 GameActions::Result LandSetHeightAction::Query() const
 {
     auto& gameState = GetGameState();
-    if (gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    if (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
     }
@@ -78,7 +78,7 @@ GameActions::Result LandSetHeightAction::Query() const
     money64 sceneryRemovalCost = 0;
     if (!GetGameState().Cheats.DisableClearanceChecks)
     {
-        if (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             // Check for obstructing large trees
             TileElement* tileElement = CheckTreeObstructions();

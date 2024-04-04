@@ -1575,7 +1575,7 @@ static Widget _rideConstructionWidgets[] = {
                 DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
             screenCoords.y += 11;
-            if (_currentTrackPrice != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (_currentTrackPrice != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);

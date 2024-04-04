@@ -3036,7 +3036,7 @@ static Widget _topToolbarWidgets[] = {
                 widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
             }
 
-            if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
+            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)

@@ -5321,11 +5321,11 @@ bool Ride::IsRide() const
 
 money64 RideGetPrice(const Ride& ride)
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
         return 0;
     if (ride.IsRide())
     {
-        if (!ParkRidePricesUnlocked())
+        if (!Park::RidePricesUnlocked())
         {
             return 0;
         }
