@@ -96,7 +96,7 @@ namespace RCT2
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
         bool _isScenario = false;
-        OpenRCT2::BitSet<Limits::MaxRidesInPark> _isFlatRide{};
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isFlatRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
@@ -291,9 +291,9 @@ namespace RCT2
             gameState.NumGuestsInPark = _s6.GuestsInPark;
             gameState.NumGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
-            for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
+            for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
-                for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
+                for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
                     gameState.ExpenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
                 }
@@ -364,7 +364,7 @@ namespace RCT2
 
             gameState.ParkValue = ToMoney64(_s6.ParkValue);
 
-            for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
+            for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.CashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
@@ -415,7 +415,7 @@ namespace RCT2
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.ParkEntrances.clear();
-            for (uint8_t i = 0; i < Limits::MaxParkEntrances; i++)
+            for (uint8_t i = 0; i < Limits::kMaxParkEntrances; i++)
             {
                 if (_s6.ParkEntranceX[i] != LOCATION_NULL)
                 {
@@ -470,7 +470,7 @@ namespace RCT2
 
             // News items
             News::InitQueue();
-            for (size_t i = 0; i < Limits::MaxNewsItems; i++)
+            for (size_t i = 0; i < Limits::kMaxNewsItems; i++)
             {
                 const RCT12NewsItem* src = &_s6.NewsItems[i];
                 News::Item* dst = &gameState.NewsItems[i];
@@ -1235,7 +1235,7 @@ namespace RCT2
 
         void ImportRides()
         {
-            for (uint8_t index = 0; index < Limits::MaxRidesInPark; index++)
+            for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
                 if (src->Type != kRideTypeNull)
@@ -1261,7 +1261,7 @@ namespace RCT2
          */
         void DetermineFlatRideStatus()
         {
-            for (uint8_t index = 0; index < Limits::MaxRidesInPark; index++)
+            for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
                 if (src->Type == kRideTypeNull)
@@ -1322,7 +1322,7 @@ namespace RCT2
             dst->mode = static_cast<RideMode>(src->Mode);
             dst->colour_scheme_type = src->ColourSchemeType;
 
-            for (uint8_t i = 0; i < Limits::MaxVehicleColours; i++)
+            for (uint8_t i = 0; i < Limits::kMaxVehicleColours; i++)
             {
                 dst->vehicle_colours[i].Body = src->VehicleColours[i].BodyColour;
                 dst->vehicle_colours[i].Trim = src->VehicleColours[i].TrimColour;
@@ -1351,7 +1351,7 @@ namespace RCT2
                 dst->overall_view = tileLoc.ToCoordsXY();
             }
 
-            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 StationIndex stationIndex = StationIndex::FromUnderlying(i);
                 auto& destStation = dst->GetStation(stationIndex);
@@ -1391,7 +1391,7 @@ namespace RCT2
                 destStation.QueueLength = src->QueueLength[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
                 StationIndex stationIndex = StationIndex::FromUnderlying(i);
                 auto& destStation = dst->GetStation(stationIndex);
@@ -1403,11 +1403,11 @@ namespace RCT2
                 destStation.LastPeepInQueue = EntityId::GetNull();
             }
 
-            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::FromUnderlying(src->Vehicles[i]);
             }
-            for (int32_t i = Limits::MaxTrainsPerRide - 1; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = Limits::kMaxTrainsPerRide - 1; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::GetNull();
             }
@@ -1475,7 +1475,7 @@ namespace RCT2
             dst->cur_num_customers = src->CurNumCustomers;
             dst->num_customers_timeout = src->NumCustomersTimeout;
 
-            for (uint8_t i = 0; i < Limits::CustomerHistorySize; i++)
+            for (uint8_t i = 0; i < Limits::kCustomerHistorySize; i++)
             {
                 dst->num_customers[i] = src->NumCustomers[i];
             }
@@ -1539,7 +1539,7 @@ namespace RCT2
             dst->inspection_interval = src->InspectionInterval;
             dst->last_inspection = src->LastInspection;
 
-            for (uint8_t i = 0; i < Limits::DowntimeHistorySize; i++)
+            for (uint8_t i = 0; i < Limits::kDowntimeHistorySize; i++)
             {
                 dst->downtime_history[i] = src->DowntimeHistory[i];
             }
@@ -1555,7 +1555,7 @@ namespace RCT2
             dst->income_per_hour = ToMoney64(src->IncomePerHour);
             dst->profit = ToMoney64(src->Profit);
 
-            for (uint8_t i = 0; i < Limits::NumColourSchemes; i++)
+            for (uint8_t i = 0; i < Limits::kNumColourSchemes; i++)
             {
                 dst->track_colour[i].main = src->TrackColourMain[i];
                 dst->track_colour[i].additional = src->TrackColourAdditional[i];
@@ -1592,7 +1592,7 @@ namespace RCT2
             dst->guests_favourite = src->GuestsFavourite;
             dst->lifecycle_flags = src->LifecycleFlags;
 
-            for (uint8_t i = 0; i < Limits::MaxTrainsPerRide; i++)
+            for (uint8_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicle_colours[i].Tertiary = src->VehicleColoursExtended[i];
             }
@@ -1619,7 +1619,7 @@ namespace RCT2
             dst.ProximityStart = { src.ProximityStartX, src.ProximityStartY, src.ProximityStartZ };
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
-            if (src.CurrentRide < Limits::MaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(kRideTypeDescriptors))
+            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(kRideTypeDescriptors))
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
             else
@@ -1761,7 +1761,7 @@ namespace RCT2
 
             auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
-            for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
+            for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
                 if (_s6.PeepSpawns[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
@@ -1796,12 +1796,12 @@ namespace RCT2
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-                Limits::MaxMapSize, _s6.TileElements, std::size(_s6.TileElements));
+                Limits::kMaxMapSize, _s6.TileElements, std::size(_s6.TileElements));
 
             std::vector<TileElement> tileElements;
             bool nextElementInvisible = false;
             bool restOfTileInvisible = false;
-            const auto maxSize = std::min(Limits::MaxMapSize, _s6.MapSize);
+            const auto maxSize = std::min(Limits::kMaxMapSize, _s6.MapSize);
             for (TileCoordsXY coords = { 0, 0 }; coords.y < kMaximumMapSizeTechnical; coords.y++)
             {
                 for (coords.x = 0; coords.x < kMaximumMapSizeTechnical; coords.x++)
@@ -1817,7 +1817,7 @@ namespace RCT2
                         {
                             do
                             {
-                                if (srcElement->BaseHeight == RCT12::Limits::MaxElementHeight)
+                                if (srcElement->BaseHeight == RCT12::Limits::kMaxElementHeight)
                                 {
                                     continue;
                                 }
@@ -2181,8 +2181,8 @@ namespace RCT2
             {
                 return;
             }
-            int32_t peepOffset = staffId * Limits::PatrolAreaSize;
-            for (int32_t i = 0; i < Limits::PatrolAreaSize; i++)
+            int32_t peepOffset = staffId * Limits::kPatrolAreaSize;
+            for (int32_t i = 0; i < Limits::kPatrolAreaSize; i++)
             {
                 if (_s6.PatrolAreas[peepOffset + i] == 0)
                 {
@@ -2221,7 +2221,7 @@ namespace RCT2
 
         uint16_t GetMaxEntities()
         {
-            return (_s6.Header.ClassicFlag == 0xf) ? Limits::MaxEntitiesRCTCExtended : Limits::MaxEntities;
+            return (_s6.Header.ClassicFlag == 0xf) ? Limits::kMaxEntitiesRCTCExtended : Limits::kMaxEntities;
         }
 
         template<typename OpenRCT2_T> void ImportEntity(const RCT12EntityBase& src);

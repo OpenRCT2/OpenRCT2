@@ -639,7 +639,7 @@ static Widget window_new_ride_widgets[] = {
         {
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
             auto obj = static_cast<RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, rideSelection.EntryIndex));
-            return obj == nullptr ? ImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
+            return obj == nullptr ? kImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
         }
 
         void PopulateRideList()

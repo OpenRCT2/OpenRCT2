@@ -61,7 +61,7 @@ int32_t RideCreateAction::GetRideObject() const
 
 uint16_t RideCreateAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::kAllowWhilePaused;
 }
 
 void RideCreateAction::Serialise(DataSerialiser& stream)
@@ -209,7 +209,7 @@ GameActions::Result RideCreateAction::Execute() const
     auto& gameState = GetGameState();
     if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
             ride->price[i] = rtd.DefaultPrices[i];
         }
@@ -247,7 +247,7 @@ GameActions::Result RideCreateAction::Execute() const
             }
         }
 
-        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
             if (rideEntry->shop_item[i] != ShopItem::None)
             {

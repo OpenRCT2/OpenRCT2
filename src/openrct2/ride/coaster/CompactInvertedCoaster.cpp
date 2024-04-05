@@ -10211,7 +10211,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(int32_t trackType)
             return CompactInvertedRCTrack25DegUpToRightBank;
         case TrackElemType::kLeftBankToDown25:
             return CompactInvertedRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::kRightBankToDown25:
             return CompactInvertedRCTrackRightBankTo25DegDown;
         case TrackElemType::kDown25ToLeftBank:
             return CompactInvertedRCTrack25DegDownToLeftBank;

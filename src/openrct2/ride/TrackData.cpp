@@ -3018,7 +3018,7 @@ static constexpr PreviewTrack TrackBlocksRightEighthToOrthogonalDown25[] = {
 
 
 // rct2: 0x00994638
-static constexpr std::array<const PreviewTrack*, TrackElemType::Count> TrackBlocks = {
+static constexpr std::array<const PreviewTrack*, TrackElemType::kCount> TrackBlocks = {
     TrackBlocks000,
     TrackBlocks001,
     TrackBlocks002,

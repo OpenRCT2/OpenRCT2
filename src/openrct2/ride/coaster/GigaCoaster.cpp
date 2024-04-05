@@ -18667,7 +18667,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType)
             return GigaRCTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::kLeftHalfBankedHelixUpLarge:
             return GigaRCTrackLeftHalfBankedHelixUpLarge;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::kRightHalfBankedHelixUpLarge:
             return GigaRCTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::kLeftHalfBankedHelixDownLarge:
             return GigaRCTrackLeftHalfBankedHelixDownLarge;
@@ -18763,7 +18763,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType)
             return GigaRCTrackDiag25DegUpToRightBank;
         case TrackElemType::kDiagLeftBankToDown25:
             return GigaRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::kDiagRightBankToDown25:
             return GigaRCTrackDiagRightBankTo25DegDown;
         case TrackElemType::kDiagDown25ToLeftBank:
             return GigaRCTrackDiag25DegDownToLeftBank;

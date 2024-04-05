@@ -221,7 +221,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                     const auto* rideEntry2 = GetRideEntryByIndex(i);
                     if (rideEntry2 != nullptr)
                     {
-                        for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+                        for (uint8_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
                         {
                             if (rideEntry2->ride_type[j] == base_ride_type)
                             {
@@ -835,7 +835,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry != nullptr)
         {
-            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
             {
                 if (seenBaseEntry[rideEntry->ride_type[j]])
                 {
@@ -862,7 +862,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         if (rideEntry != nullptr)
         {
             bool baseSeen = false;
-            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
             {
                 if (seenBaseEntry[rideEntry->ride_type[j]])
                 {

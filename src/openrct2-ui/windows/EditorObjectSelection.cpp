@@ -1473,7 +1473,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             if (item->Type == ObjectType::Ride)
             {
                 ride_type_t rideType = 0;
-                for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+                for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
                 {
                     if (item->RideInfo.RideType[i] != kRideTypeNull)
                     {
@@ -1606,7 +1606,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
     static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
     {
         StringId result = STR_NONE;
-        for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+        for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
             auto rideType = item->RideInfo.RideType[i];
             if (rideType != kRideTypeNull)

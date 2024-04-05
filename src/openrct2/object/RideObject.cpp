@@ -118,7 +118,7 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrame
 
 static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
 {
-    for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+    for (auto i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
     {
         auto oldRideType = rideEntry.ride_type[i];
         if (oldRideType != kRideTypeNull)
@@ -201,7 +201,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     }
 
     // Read peep loading positions
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCarTypesPerRideEntry; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxCarTypesPerRideEntry; i++)
     {
         _peepLoadingWaypoints[i].clear();
         _peepLoadingPositions[i].clear();
@@ -275,8 +275,8 @@ void RideObject::Load()
     _legacyType.images_offset = LoadImages();
     _legacyType.vehicle_preset_list = &_presetColours;
 
-    int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCarTypesPerRideEntry; i++)
+    int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::kMaxRideTypesPerRideEntry;
+    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxCarTypesPerRideEntry; i++)
     {
         CarEntry& carEntry = _legacyType.Cars[i];
         if (carEntry.GroupEnabled(SpriteGroupType::SlopeFlat))
@@ -379,7 +379,7 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
     auto it = std::find(std::begin(_legacyType.ride_type), std::end(_legacyType.ride_type), type);
     if (it == std::end(_legacyType.ride_type))
     {
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     }
 
     return _legacyType.images_offset + std::distance(std::begin(_legacyType.ride_type), it);
@@ -391,11 +391,11 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
     auto firstRideType = _legacyType.GetFirstNonNullRideType();
     uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
 
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
     }
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCategoriesPerRide; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxCategoriesPerRide; i++)
     {
         item->RideInfo.RideCategory[i] = category;
     }
@@ -527,7 +527,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         json_t rideTypes = Json::AsArray(properties["type"]);
         size_t numRideTypes = rideTypes.size();
 
-        for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+        for (size_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
             ObjectEntryIndex rideType = kRideTypeNull;
 
@@ -573,7 +573,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             // Shop item
             auto rideSells = Json::AsArray(properties["sells"]);
-            auto numShopItems = std::min(static_cast<size_t>(RCT2::ObjectLimits::MaxShopItemsPerRideEntry), rideSells.size());
+            auto numShopItems = std::min(static_cast<size_t>(RCT2::ObjectLimits::kMaxShopItemsPerRideEntry), rideSells.size());
             for (size_t i = 0; i < numShopItems; i++)
             {
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));

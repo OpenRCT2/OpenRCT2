@@ -3720,7 +3720,7 @@ static_assert(std::size(RatingNames) == 6);
 
                 case WIDX_FORCE_BREAKDOWN:
                     numItems = 1;
-                    for (j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+                    for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
                     {
                         if (rideEntry->ride_type[j] != kRideTypeNull)
                             break;
@@ -3860,7 +3860,7 @@ static_assert(std::size(RatingNames) == 6);
                     else
                     {
                         int32_t j;
-                        for (j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+                        for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
                         {
                             if (rideEntry->ride_type[j] != kRideTypeNull)
                                 break;
@@ -4742,7 +4742,7 @@ static_assert(std::size(RatingNames) == 6);
                     GfxClear(clippedDpi, PALETTE_INDEX_12);
 
                     auto stationObj = ride->GetStationObject();
-                    if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
+                    if (stationObj != nullptr && stationObj->BaseImageId != kImageIndexUndefined)
                     {
                         auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
 

@@ -845,7 +845,7 @@ namespace RCT2
 
         // SC6[6]
         uint32_t NextFreeTileElementPointerIndex;
-        Entity Entities[Limits::kMaxEntitiesRctcExtended];
+        Entity Entities[Limits::kMaxEntitiesRCTCExtended];
         uint16_t EntityListsHead[EnumValue(EntityListId::Count)];
         uint16_t EntityListsCount[EnumValue(EntityListId::Count)];
         StringId ParkName;
