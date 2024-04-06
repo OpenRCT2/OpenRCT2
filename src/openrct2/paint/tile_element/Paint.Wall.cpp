@@ -89,7 +89,7 @@ static void PaintWallDoor(
         case 0:
         {
             BoundBoxXYZ bbR1 = { { 1, 1, height + 1 }, { 1, 3, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 9 }, { 1, 28, 3 } };
+            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 4 }, { 1, 28, 3 } };
 
             BoundBoxXYZ bbL = { { 1, 1, height + 1 }, { 1, 28, bbHeight } };
 
@@ -101,7 +101,7 @@ static void PaintWallDoor(
         case 1:
         {
             BoundBoxXYZ bbR1 = { { 1, 30, height + 1 }, { 3, 3, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 1, 30, height + bbHeight - 8 }, { 29, 3, 2 } };
+            BoundBoxXYZ bbR2 = { { 1, 30, height + bbHeight - 3 }, { 29, 3, 2 } };
             BoundBoxXYZ bbL = { { 2, 30, height + 1 }, { 29, 1, bbHeight } };
 
             CoordsXYZ offset = { 1, 31, height };
@@ -112,7 +112,7 @@ static void PaintWallDoor(
         case 2:
         {
             BoundBoxXYZ bbR1 = { { 30, 1, height + 1 }, { 3, 3, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 30, 1, height + bbHeight - 8 }, { 3, 29, 2 } };
+            BoundBoxXYZ bbR2 = { { 30, 1, height + bbHeight - 3 }, { 3, 29, 2 } };
             BoundBoxXYZ bbL = { { 30, 2, height + 1 }, { 1, 29, bbHeight } };
 
             CoordsXYZ offset = { 31, 0, height };
@@ -123,7 +123,7 @@ static void PaintWallDoor(
         case 3:
         {
             BoundBoxXYZ bbR1 = { { 1, 1, height + 1 }, { 3, 1, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 9 }, { 28, 1, 3 } };
+            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 4 }, { 28, 1, 3 } };
             BoundBoxXYZ bbL = { { 1, 1, height + 1 }, { 28, 1, bbHeight } };
 
             CoordsXYZ offset = { 2, 1, height };
