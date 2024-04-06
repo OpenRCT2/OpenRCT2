@@ -52,22 +52,14 @@ static constexpr const uint8_t* DirectionToDoorImageOffset[] = { DirectionToDoor
 
 static void PaintWallDoor(
     PaintSession& session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, BoundBoxXYZ bbR1,
-    BoundBoxXYZ bbR2, BoundBoxXYZ bbL)
+    BoundBoxXYZ bbR2)
 {
     PROFILED_FUNCTION();
 
     auto newImageId0 = imageId;
     auto newImageId1 = imageId.WithIndexOffset(1);
-    if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
-    {
-        PaintAddImageAsParent(session, newImageId0, offset, bbR1);
-        PaintAddImageAsParent(session, newImageId1, offset, bbR2);
-    }
-    else
-    {
-        PaintAddImageAsParent(session, newImageId0, offset, bbL);
-        PaintAddImageAsChild(session, newImageId1, offset, bbL);
-    }
+    PaintAddImageAsParent(session, newImageId0, offset, bbR1);
+    PaintAddImageAsParent(session, newImageId1, offset, bbR2);
 }
 
 static void PaintWallDoor(
@@ -91,44 +83,39 @@ static void PaintWallDoor(
             BoundBoxXYZ bbR1 = { { 1, 1, height + 1 }, { 1, 3, bbHeight - 5 } };
             BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 4 }, { 1, 28, 3 } };
 
-            BoundBoxXYZ bbL = { { 1, 1, height + 1 }, { 1, 28, bbHeight } };
-
             CoordsXYZ offset = { 0, 0, height };
 
-            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2, bbL);
+            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2);
             break;
         }
         case 1:
         {
             BoundBoxXYZ bbR1 = { { 1, 30, height + 1 }, { 3, 3, bbHeight - 5 } };
             BoundBoxXYZ bbR2 = { { 1, 30, height + bbHeight - 3 }, { 29, 3, 2 } };
-            BoundBoxXYZ bbL = { { 2, 30, height + 1 }, { 29, 1, bbHeight } };
 
             CoordsXYZ offset = { 1, 31, height };
 
-            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2, bbL);
+            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2);
             break;
         }
         case 2:
         {
             BoundBoxXYZ bbR1 = { { 30, 1, height + 1 }, { 3, 3, bbHeight - 5 } };
             BoundBoxXYZ bbR2 = { { 30, 1, height + bbHeight - 3 }, { 3, 29, 2 } };
-            BoundBoxXYZ bbL = { { 30, 2, height + 1 }, { 1, 29, bbHeight } };
 
             CoordsXYZ offset = { 31, 0, height };
 
-            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2, bbL);
+            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2);
             break;
         }
         case 3:
         {
             BoundBoxXYZ bbR1 = { { 1, 1, height + 1 }, { 3, 1, bbHeight - 5 } };
             BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 4 }, { 28, 1, 3 } };
-            BoundBoxXYZ bbL = { { 1, 1, height + 1 }, { 28, 1, bbHeight } };
 
             CoordsXYZ offset = { 2, 1, height };
 
-            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2, bbL);
+            PaintWallDoor(session, wallEntry, imageTemplate.WithIndex(imageId), offset, bbR1, bbR2);
             break;
         }
     }
