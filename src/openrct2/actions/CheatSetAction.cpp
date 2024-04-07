@@ -516,7 +516,7 @@ void CheatSetAction::FixBrokenRides() const
         {
             auto mechanic = RideGetAssignedMechanic(ride);
 
-            if ((ride.mechanic_status == RIDE_MECHANIC_STATUS_FIXING))
+            if (ride.mechanic_status == RIDE_MECHANIC_STATUS_FIXING)
             {
                 if (mechanic != nullptr)
                 {
