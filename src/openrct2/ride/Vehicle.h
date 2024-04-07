@@ -425,6 +425,12 @@ enum class MiniGolfAnimation : uint8_t
     Putt,
 };
 
+enum BoatHireSubState : uint8_t
+{
+    Normal,
+    EnteringReturnPosition,
+};
+
 namespace VehicleFlags
 {
     constexpr uint32_t OnLiftHill = (1 << 0);

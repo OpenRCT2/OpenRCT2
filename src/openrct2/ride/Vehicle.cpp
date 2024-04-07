@@ -3771,7 +3771,7 @@ void Vehicle::UpdateMotionBoatHire()
                         return;
 
                     bool do_Loc6DAA97 = false;
-                    if (sub_state != 1)
+                    if (sub_state != BoatHireSubState::EnteringReturnPosition)
                     {
                         do_Loc6DAA97 = true;
                     }
@@ -3908,12 +3908,12 @@ void Vehicle::UpdateBoatLocation()
 
     if (location.ToTileStart() == returnPosition.ToCoordsXY())
     {
-        sub_state = 1;
+        sub_state = BoatHireSubState::EnteringReturnPosition;
         BoatLocation = location.ToTileStart();
         return;
     }
 
-    sub_state = 0;
+    sub_state = BoatHireSubState::Normal;
     uint8_t curDirection = ((Orientation + 19) >> 3) & 3;
     uint8_t randDirection = ScenarioRand() & 3;
 
