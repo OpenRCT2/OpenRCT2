@@ -512,10 +512,17 @@ void CheatSetAction::FixBrokenRides() const
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+        if ((ride.mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
+            && (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
         {
+            auto mechanic = RideGetAssignedMechanic(ride);
+            if (mechanic != nullptr)
+            {
+                mechanic->RemoveFromRide();
+            }
+
             RideFixBreakdown(ride, 0);
-            ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;         
+            ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
         }
     }
 }
