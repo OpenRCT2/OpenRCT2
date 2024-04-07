@@ -6638,14 +6638,13 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         }
     }
 
-    if (!mayCollide)
+    if (!mayCollide || collideVehicle == nullptr)
     {
         CollisionDetectionTimer = 0;
         return false;
     }
 
-    if (collideVehicle->status == Vehicle::Status::TravellingBoat
-        && sub_state == BoatHireSubState::EnteringReturnPosition)
+    if (collideVehicle->status == Vehicle::Status::TravellingBoat && sub_state == BoatHireSubState::EnteringReturnPosition)
     {
         return false;
     }
@@ -6658,8 +6657,6 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             *otherVehicleIndex = collideVehicle->Id;
         return true;
     }
-
-    // TODO Is it possible for collideVehicle to be NULL?
 
     if (status == Vehicle::Status::MovingToEndOfStation)
     {
