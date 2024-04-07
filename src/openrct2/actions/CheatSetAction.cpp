@@ -512,13 +512,22 @@ void CheatSetAction::FixBrokenRides() const
 {
     for (auto& ride : GetRideManager())
     {
-        if ((ride.mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
-            && (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+        if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             auto mechanic = RideGetAssignedMechanic(ride);
+
             if (mechanic != nullptr)
             {
-                mechanic->RemoveFromRide();
+                if (ride.mechanic_status == RIDE_MECHANIC_STATUS_FIXING)
+                {
+                    mechanic->RideSubState = PeepRideSubState::ApproachExit;
+                }
+                else if (
+                    ride.mechanic_status == RIDE_MECHANIC_STATUS_CALLING
+                    || ride.mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
+                {
+                    mechanic->RemoveFromRide();
+                }
             }
 
             RideFixBreakdown(ride, 0);
