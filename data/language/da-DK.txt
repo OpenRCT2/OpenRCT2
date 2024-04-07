@@ -3687,6 +3687,11 @@ STR_6614    :Kan ikke ændre parkens entré pris
 STR_6615    :Spor på dette felt kræver vand
 STR_6616    :Handlingen er ugyldig for denne medarbejdertype
 STR_6617    :Kan ikke bytte felt element med sig selv
+STR_6618    :Objektet kan ikke begrænses eller afgrænses...
+STR_6619    :Objekttype kan ikke begrænses!
+STR_6620    :Objektet blev ikke fundet!
+STR_6621    :Begræns
+STR_6622    :Begræns objekt til scenarieeditoren og sandkassetilstanden.
 
 #############
 # Scenarios #
