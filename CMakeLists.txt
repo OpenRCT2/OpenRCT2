@@ -125,12 +125,13 @@ if (APPIMAGE)
 endif ()
 
 if (MACOS_USE_DEPENDENCIES)
+    message("Using OpenRCT2 dependencies instead of system libraries")
     # if we're building on macOS, then we need the dependencies
     include(cmake/download.cmake)
     
-    set(MACOS_DYLIBS_VERSION "33")
+    set(MACOS_DYLIBS_VERSION "35")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-universal-macos-dylibs.zip")
-    set(MACOS_DYLIBS_SHA1 "8b47f3a3603f3ad3a1ee292033d0daffe9a3e43c")
+    set(MACOS_DYLIBS_SHA1 "bed4340c32b6dbee9634ceaf19cb6b49a837aead")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
@@ -147,6 +148,7 @@ if (MACOS_USE_DEPENDENCIES)
     # if we're making the OpenRCT2.app bundle, rpath will be handled by fixup_bundle
     # if we're building the CLI executable, we need to do it ourselves
     if (NOT MACOS_BUNDLE)
+        message("Setting rpath for macOS dylibs")
         # the RPATH to be used when installing, but only if it's not a system directory
         list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
         if("${isSystemDir}" STREQUAL "-1")

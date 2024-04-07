@@ -121,32 +121,20 @@ private:
             SDL_UnlockSurface(_surface);
         }
 
-        // Copy the surface to the window
-        if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
+        // Copy the surface to the window:
+        // first blit to rgba surface to change the pixel format
+        if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
         {
-            SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
-            if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
-            {
-                LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
-                exit(1);
-            }
+            LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
+            exit(1);
         }
-        else
-        {
-            // first blit to rgba surface to change the pixel format
-            if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
-            {
-                LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
-                exit(1);
-            }
 
-            // then scale to window size. Without changing to RGBA first, SDL complains
-            // about blit configurations being incompatible.
-            if (SDL_BlitScaled(_RGBASurface, nullptr, SDL_GetWindowSurface(_window), nullptr))
-            {
-                LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
-                exit(1);
-            }
+        // then scale to window size. Without changing to RGBA first, SDL complains
+        // about blit configurations being incompatible.
+        if (SDL_BlitScaled(_RGBASurface, nullptr, SDL_GetWindowSurface(_window), nullptr))
+        {
+            LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
+            exit(1);
         }
         if (SDL_UpdateWindowSurface(_window))
         {
