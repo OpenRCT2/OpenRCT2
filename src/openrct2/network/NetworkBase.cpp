@@ -46,9 +46,13 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
+<<<<<<< HEAD
 constexpr std::string_view kNetworkStreamVersion = "3";
+=======
+constexpr uint8_t kNetworkStreamVersion = 0;
+>>>>>>> e1796213f (Part of #21421: incorporate feedback from #21760)
 
-const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::string(kNetworkStreamVersion);
+const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::to_string(kNetworkStreamVersion);
 
 static Peep* _pickup_peep = nullptr;
 static int32_t _pickup_peep_old_x = LOCATION_NULL;

@@ -52,7 +52,7 @@ namespace OpenRCT2
         ClimateState ClimateNext;
         uint16_t ClimateUpdateTimer;
         money64 Cash;
-        money64 CashHistory[FINANCE_GRAPH_SIZE];
+        money64 CashHistory[kFinanceGraphSize];
         money64 InitialCash;
         money64 GuestInitialCash;
         uint8_t GuestInitialHappiness;
@@ -68,7 +68,7 @@ namespace OpenRCT2
         money64 TotalIncomeFromAdmissions;
         money64 TotalRideValueForMoney;
         uint16_t WeeklyProfitAverageDivisor;
-        money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+        money64 WeeklyProfitHistory[kFinanceGraphSize];
         Objective ScenarioObjective;
         uint16_t ScenarioParkRatingWarningDays;
         money64 ScenarioCompletedCompanyValue;
