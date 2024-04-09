@@ -229,6 +229,13 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::BannerToggleBlockingEdge(_loc, elementIndex, edgeIndex, isExecuting);
             break;
         }
+        case TileModifyType::WallSetAnimationIsBackwards:
+        {
+            const auto elementIndex = _value1;
+            const bool broken = _value2;
+            res = TileInspector::WallSetAnimationIsBackwards(_loc, elementIndex, broken, isExecuting);
+            break;
+        }
         default:
             LOG_ERROR("Invalid tile modification type %u", _setting);
             return GameActions::Result(
