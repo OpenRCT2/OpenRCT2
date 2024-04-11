@@ -716,10 +716,19 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
     static std::string formatted;
     formatted.clear();
     formatted += "{OUTLINE}";
+    // // TODO: Change this
+    // formatted += "{BABYBLUE}";
+
     if (fromplayer != nullptr)
     {
-        // TODO: Change this
-        formatted += "{BABYBLUE}";
+        if (fromplayer->Group == 1) 
+        {
+            formatted += "{COLOUR_YELLOW}";
+        } 
+        else 
+        {
+            formatted += "{COLOUR_MOSS_GREEN}";
+        }
         formatted += fromplayer->Name;
         formatted += ": ";
     }
