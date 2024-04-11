@@ -718,6 +718,7 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
     formatted += "{OUTLINE}";
     if (fromplayer != nullptr)
     {
+        // TODO: Change this
         formatted += "{BABYBLUE}";
         formatted += fromplayer->Name;
         formatted += ": ";
