@@ -789,7 +789,7 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
         */
         formatted += ": ";
     }
-    formatted += "{WHITE}";
+    // formatted += "{COLOUR_MOSS_GREEN}";
     formatted += text;
     return formatted.c_str();
 }
