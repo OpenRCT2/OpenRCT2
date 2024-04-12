@@ -334,6 +334,9 @@ static constexpr WindowParkAward _parkAwards[] = {
                 case WINDOW_PARK_PAGE_OBJECTIVE:
                     OnTextInputObjective(widgetIndex, text);
                     break;
+                case WINDOW_PARK_PAGE_PRICE:
+                    OnTextInputPrice(widgetIndex, text);
+                    break;
             }
         }
 
@@ -848,6 +851,14 @@ static constexpr WindowParkAward _parkAwards[] = {
                     GameActions::Execute(&gameAction);
                     break;
                 }
+                case WIDX_PRICE:
+                {
+                    utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
+                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, MONEY_STRING_MAXLENGTH, false);
+                    WindowTextInputRawOpen(
+                        this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
+                        MONEY_STRING_MAXLENGTH);
+                }
             }
         }
 
@@ -1049,6 +1060,23 @@ static constexpr WindowParkAward _parkAwards[] = {
                 std::string strText(text);
                 ScenarioSuccessSubmitName(GetGameState(), strText.c_str());
                 Invalidate();
+            }
+        }
+
+        void OnTextInputPrice(WidgetIndex widgetIndex, std::string_view text)
+        {
+            if (widgetIndex == WIDX_PRICE && !text.empty())
+            {
+                std::string strText(text);
+                auto money = StringToMoney(strText.c_str());
+                if (money == kMoney64Undefined)
+                {
+                    return;
+                }
+
+                money = std::clamp(money, 0.00_GBP, MAX_ENTRANCE_FEE);
+                auto gameAction = ParkSetEntranceFeeAction(money);
+                GameActions::Execute(&gameAction);
             }
         }
 

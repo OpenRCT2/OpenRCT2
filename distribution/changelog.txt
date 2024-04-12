@@ -1,5 +1,6 @@
 0.4.11 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21734] Park admittance price can now be set via text input.
 - Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
 - Fix: [#866] Boat Hire boats get stuck entering track.
 
