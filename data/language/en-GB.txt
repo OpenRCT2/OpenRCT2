@@ -3698,6 +3698,11 @@ STR_6623    :Type ‘help’ for a list of available commands. Type ‘hide’ t
 STR_6624    :Tile Inspector: Sort elements
 STR_6625    :Invalid colour
 
+# Role colors
+STR_6626    :{RED}{STRING}
+STR_6627    :{WHITE}{STRING}
+STR_6628    :{GREEN}{STRING}
+
 #############
 # Scenarios #
 ################

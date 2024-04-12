@@ -722,17 +722,19 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
 
     if (fromplayer != nullptr)
     {
-        if (fromplayer->Group == 1) 
+        if (fromplayer->Group == 0) 
         {
             formatted += "{RED}";
         } 
         else 
         {
-            formatted += "{RED}";
+            formatted += "{GREEN}";
         }
-        // formatted += fromplayer->Name + "yooyoyoy";
+        formatted += fromplayer->Name;
         formatted += ": ";
     }
+    formatted += "{WHITE}";
+
     // formatted += "{COLOUR_MOSS_GREEN}";
     formatted += text;
     return formatted.c_str();
