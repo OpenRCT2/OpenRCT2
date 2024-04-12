@@ -121,20 +121,37 @@ private:
             SDL_UnlockSurface(_surface);
         }
 
-        // Copy the surface to the window:
-        // first blit to rgba surface to change the pixel format
-        if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
+// On macOS with high DPI ("retina") screens this renders only to a quarter of the screen.
+// A workaround is to always scale the surface, but that incurs an additonal copy.
+// https://github.com/OpenRCT2/OpenRCT2/issues/21772
+#if defined(__APPLE__)
+        // Copy the surface to the window
+        if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
         {
-            LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
-            exit(1);
+            SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
+            if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
+            {
+                LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
+                exit(1);
+            }
         }
-
-        // then scale to window size. Without changing to RGBA first, SDL complains
-        // about blit configurations being incompatible.
-        if (SDL_BlitScaled(_RGBASurface, nullptr, SDL_GetWindowSurface(_window), nullptr))
+        else
+#endif
         {
-            LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
-            exit(1);
+            // first blit to rgba surface to change the pixel format
+            if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
+            {
+                LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
+                exit(1);
+            }
+
+            // then scale to window size. Without changing to RGBA first, SDL complains
+            // about blit configurations being incompatible.
+            if (SDL_BlitScaled(_RGBASurface, nullptr, SDL_GetWindowSurface(_window), nullptr))
+            {
+                LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
+                exit(1);
+            }
         }
         if (SDL_UpdateWindowSurface(_window))
         {
