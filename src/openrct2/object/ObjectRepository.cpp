@@ -470,6 +470,13 @@ private:
         }
     }
 
+    // 0x0098DA2C
+    static constexpr std::array<int32_t, 11> kLegacyObjectEntryGroupEncoding = {
+        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,    CHUNK_ENCODING_RLE,
+        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,    CHUNK_ENCODING_RLE,
+        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_ROTATE,
+    };
+
     static void SaveObject(
         std::string_view path, const RCTObjectEntry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
@@ -525,7 +532,7 @@ private:
         // Encode data
         ObjectType objectType = entry->GetType();
         SawyerCodingChunkHeader chunkHeader;
-        chunkHeader.encoding = object_entry_group_encoding[EnumValue(objectType)];
+        chunkHeader.encoding = kLegacyObjectEntryGroupEncoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
         size_t encodedDataSize = SawyerCodingWriteChunkBuffer(

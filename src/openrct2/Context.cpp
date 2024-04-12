@@ -799,9 +799,9 @@ namespace OpenRCT2
     private:
         bool HasObjectsThatUseFallbackImages()
         {
-            for (auto objectType : ObjectTypes)
+            for (auto objectType : getAllObjectTypes())
             {
-                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(getObjectEntryGroupCount(objectType));
                 for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
                 {
                     auto obj = _objectManager->GetLoadedObject(objectType, i);

@@ -1048,8 +1048,8 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             {
                 auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
 
-                int32_t numSelected = _numSelectedObjectsForType[EnumValue(GetSelectedObjectType())];
-                int32_t totalSelectable = object_entry_group_counts[EnumValue(GetSelectedObjectType())];
+                auto numSelected = _numSelectedObjectsForType[EnumValue(GetSelectedObjectType())];
+                auto totalSelectable = getObjectEntryGroupCount(GetSelectedObjectType());
 
                 auto ft = Formatter();
                 ft.Add<uint16_t>(numSelected);

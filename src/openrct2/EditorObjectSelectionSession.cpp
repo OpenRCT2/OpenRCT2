@@ -36,7 +36,7 @@
 
 std::optional<StringId> _gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
-int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
+uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
 
 static void SetupInUseSelectionFlags();
@@ -125,9 +125,9 @@ void SetupInUseSelectionFlags()
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    for (auto objectType : TransientObjectTypes)
+    for (auto objectType : getTransientObjectTypes())
     {
-        for (int32_t i = 0; i < object_entry_group_counts[EnumValue(objectType)]; i++)
+        for (auto i = 0u; i < getObjectEntryGroupCount(objectType); i++)
         {
             Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::AllFlags);
 
@@ -580,7 +580,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     }
 
     ObjectType objectType = item->Type;
-    uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
+    auto maxObjects = getObjectEntryGroupCount(objectType);
 
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
     {
