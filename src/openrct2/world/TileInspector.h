@@ -53,5 +53,7 @@ namespace OpenRCT2::TileInspector
         const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
     GameActions::Result BannerToggleBlockingEdge(
         const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting);
+    GameActions::Result WallSetAnimationIsBackwards(
+        const CoordsXY& loc, int32_t elementIndex, bool backwards, bool isExecuting);
 
 } // namespace OpenRCT2::TileInspector

@@ -940,6 +940,21 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
+    GameActions::Result WallSetAnimationIsBackwards(const CoordsXY& loc, int32_t elementIndex, bool backwards, bool isExecuting)
+    {
+        TileElement* const wallElement = MapGetNthElementAt(loc, elementIndex);
+        if (wallElement == nullptr || wallElement->GetType() != TileElementType::Wall)
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_WALL_ELEMENT_NOT_FOUND);
+
+        if (isExecuting)
+        {
+            wallElement->AsWall()->SetAnimationIsBackwards(backwards);
+        }
+
+        return GameActions::Result();
+    }
+
     TileElement* GetSelectedElement()
     {
         if (windowTileInspectorSelectedIndex == -1)
