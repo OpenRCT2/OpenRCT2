@@ -715,18 +715,21 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
 {
     static std::string formatted;
     formatted.clear();
-    // formatted += "{OUTLINE}";
-    // // TODO: Change this
-    // formatted += "{RED}";
-    // formatted += "{STRING}";
 
     if (fromplayer != nullptr)
     {
-        if (fromplayer->Group == 0) 
+        // If the user is the Admin
+        if (fromplayer->Group == 0)
         {
             formatted += "{RED}";
-        } 
-        else 
+        }
+        // If the user is a Spectator
+        else if (fromplayer->Group == 1)
+        {
+            formatted += "{WHITE}";
+        }
+        // If the user is a User
+        else
         {
             formatted += "{GREEN}";
         }
