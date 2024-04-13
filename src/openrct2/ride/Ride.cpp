@@ -5444,7 +5444,7 @@ bool RideHasRatings(const Ride& ride)
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
 {
-    int8_t shiftFactor = GetRideTypeDescriptor(rideType).OperatingSettings.BoosterSpeedFactor;
+    int8_t shiftFactor = GetRideTypeDescriptor(rideType).LegacyBoosterSettings.BoosterSpeedFactor;
     if (shiftFactor == 0)
     {
         return rawSpeed;

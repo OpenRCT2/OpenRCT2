@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor TwistRTD =
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::Rotation),
     .DefaultMode = RideMode::Rotation,
-    .OperatingSettings = { 3, 6, 0, 0, 0, 0, 12, 3 },
+    .OperatingSettings = { 3, 6, 3 },
     .Naming = { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST },
     .NameConvention = { RideComponentType::Structure, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_TWIST),

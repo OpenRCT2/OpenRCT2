@@ -199,12 +199,29 @@ struct RideOperatingSettings
 {
     uint8_t MinValue;
     uint8_t MaxValue;
-    uint8_t MaxBrakesSpeed;
+    uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+};
+
+struct RideTrackSpeedSettings
+{
+    int8_t BrakesMaxSpeed = 30;
+    int8_t BoosterMaxSpeed = 30;
+};
+
+struct RideBoosterSettings
+{
     uint8_t PoweredLiftAcceleration;
     uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
-    uint16_t AccelerationFactor = 12;
-    uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+    uint8_t AccelerationFactor = 12; // the amount to right-shift the launch speed for powered launch from a station
+};
+
+struct RideLegacyBoosterSettings
+// These values that must be kept for backwards compatibility. New ride types should set the acceleration values equal to
+// BoosterSettings' and leave BoosterSpeedFactor at default.
+{
+    uint8_t PoweredLiftAcceleration = 0; // PoweredLiftAcceleration value before unified-speed update
+    uint8_t BoosterAcceleration = 0;     // BoosterAcceleration value before unified-speed update
+    int8_t BoosterSpeedFactor = 0;       // The factor to shift the raw booster speed with
 };
 
 struct RatingsModifier
@@ -317,6 +334,9 @@ struct RideTypeDescriptor
     RideMode DefaultMode{};
     /** rct2: 0x0097CF40 */
     RideOperatingSettings OperatingSettings{};
+    RideTrackSpeedSettings TrackSpeedSettings{};
+    RideBoosterSettings BoosterSettings{};
+    RideLegacyBoosterSettings LegacyBoosterSettings{};
     RideNaming Naming{};
     RideNameConvention NameConvention{};
     const char* EnumName{};
@@ -540,7 +560,10 @@ constexpr RideTypeDescriptor DummyRTD =
     .Flags = 0,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
+    .OperatingSettings = { 0, 0, 1 },
+    .TrackSpeedSettings = { 30, 30 },
+    .BoosterSettings = {0, 0, 12},
+    .LegacyBoosterSettings = {0, 0, 0},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = "(INVALID)",

@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::Dodgems),
     .DefaultMode = RideMode::Dodgems,
-    .OperatingSettings = { 20, 180, 0, 0, 0, 0 },
+    .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_FLYING_SAUCERS),

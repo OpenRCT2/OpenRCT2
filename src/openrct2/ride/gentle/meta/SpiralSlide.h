@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY | RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE,
     .RideModes = EnumsToFlags(RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission),
     .DefaultMode = RideMode::SingleRidePerAdmission,
-    .OperatingSettings = { 1, 5, 0, 0, 0, 0 },
+    .OperatingSettings = { 1, 5 },
     .Naming = { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_SPIRAL_SLIDE),

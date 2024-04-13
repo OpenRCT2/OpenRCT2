@@ -30,7 +30,6 @@ constexpr RideTypeDescriptor FoodStallRTD =
                      RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN,
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_FOOD_STALL, STR_RIDE_DESCRIPTION_FOOD_STALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_FOOD_STALL),
