@@ -868,7 +868,7 @@ static void GuestUpdateThoughts(Guest* peep)
     // a holding zone. Before it becomes fresh.
     int32_t add_fresh = 1;
     int32_t fresh_thought = -1;
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
+    for (int32_t i = 0; i < kPeepMaxThoughts; i++)
     {
         if (peep->Thoughts[i].type == PeepThoughtType::None)
             break;
@@ -896,11 +896,11 @@ static void GuestUpdateThoughts(Guest* peep)
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 
                     // Clear top thought, push others up
-                    if (i < PEEP_MAX_THOUGHTS - 2)
+                    if (i < kPeepMaxThoughts - 2)
                     {
-                        memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
+                        memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
                     }
-                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
+                    peep->Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
                 }
             }
         }
@@ -1093,7 +1093,7 @@ void PeepProblemWarningsUpdate()
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warningThrottle[0])
         --warningThrottle[0];
-    else if (hungerCounter >= PEEP_HUNGER_WARNING_THRESHOLD && hungerCounter >= gameState.NumGuestsInPark / 16)
+    else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[0] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1105,7 +1105,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[1])
         --warningThrottle[1];
-    else if (thirstCounter >= PEEP_THIRST_WARNING_THRESHOLD && thirstCounter >= gameState.NumGuestsInPark / 16)
+    else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[1] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1117,7 +1117,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[2])
         --warningThrottle[2];
-    else if (toiletCounter >= PEEP_TOILET_WARNING_THRESHOLD && toiletCounter >= gameState.NumGuestsInPark / 16)
+    else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[2] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1129,7 +1129,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[3])
         --warningThrottle[3];
-    else if (litterCounter >= PEEP_LITTER_WARNING_THRESHOLD && litterCounter >= gameState.NumGuestsInPark / 32)
+    else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[3] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1141,7 +1141,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[4])
         --warningThrottle[4];
-    else if (disgustCounter >= PEEP_DISGUST_WARNING_THRESHOLD && disgustCounter >= gameState.NumGuestsInPark / 32)
+    else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[4] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1153,7 +1153,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[5])
         --warningThrottle[5];
-    else if (vandalismCounter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalismCounter >= gameState.NumGuestsInPark / 32)
+    else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[5] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1165,7 +1165,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[6])
         --warningThrottle[6];
-    else if (noexitCounter >= PEEP_NOEXIT_WARNING_THRESHOLD)
+    else if (noexitCounter >= kPeepNoExitWarningThreshold)
     {
         warningThrottle[6] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1174,7 +1174,7 @@ void PeepProblemWarningsUpdate()
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
         }
     }
-    else if (lostCounter >= PEEP_LOST_WARNING_THRESHOLD)
+    else if (lostCounter >= kPeepLostWarningThreshold)
     {
         warningThrottle[6] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1186,7 +1186,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[7])
         --warningThrottle[7];
-    else if (tooLongQueueCounter > PEEP_TOO_LONG_QUEUE_THRESHOLD && tooLongQueueCounter > inQueueCounter / 20)
+    else if (tooLongQueueCounter > kPeepTooLongQueueThreshold && tooLongQueueCounter > inQueueCounter / 20)
     { // The amount of guests complaining about queue duration is at least 5% of the amount of queuing guests.
       // This includes guests who are no longer queuing.
         warningThrottle[7] = 4;

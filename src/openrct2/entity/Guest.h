@@ -15,23 +15,23 @@
 #include "../ride/ShopItem.h"
 #include "Peep.h"
 
-#define PEEP_MAX_THOUGHTS 5
+constexpr int8_t kPeepMaxThoughts = 5;
 
-#define PEEP_HUNGER_WARNING_THRESHOLD 25
-#define PEEP_THIRST_WARNING_THRESHOLD 25
-#define PEEP_TOILET_WARNING_THRESHOLD 28
-#define PEEP_LITTER_WARNING_THRESHOLD 23
-#define PEEP_DISGUST_WARNING_THRESHOLD 22
-#define PEEP_VANDALISM_WARNING_THRESHOLD 15
-#define PEEP_NOEXIT_WARNING_THRESHOLD 8
-#define PEEP_LOST_WARNING_THRESHOLD 8
-#define PEEP_TOO_LONG_QUEUE_THRESHOLD 25
+constexpr int8_t kPeepHungerWarningThreshold = 25;
+constexpr int8_t kPeepThirstWarningThreshold = 25;
+constexpr int8_t kPeepToiletWarningThreshold = 28;
+constexpr int8_t kPeepLitterWarningThreshold = 23;
+constexpr int8_t kPeepDisgustWarningThreshold = 22;
+constexpr int8_t kPeepVandalismWarningThreshold = 15;
+constexpr int8_t kPeepNoExitWarningThreshold = 8;
+constexpr int8_t kPeepLostWarningThreshold = 8;
+constexpr int8_t kPeepTooLongQueueThreshold = 25;
 
-#define PEEP_MAX_HAPPINESS 255
-#define PEEP_MAX_HUNGER 255
-#define PEEP_MAX_TOILET 255
-#define PEEP_MAX_NAUSEA 255
-#define PEEP_MAX_THIRST 255
+constexpr int kPeepMaxHappiness = 255;
+constexpr int kPeepMaxHunger = 255;
+constexpr int16_t kPeepMaxToilet = 255;
+constexpr int16_t kPeepMaxNausea = 255;
+constexpr int kPeepMaxThirst = 255;
 
 enum class PeepThoughtType : uint8_t
 {
@@ -294,7 +294,7 @@ public:
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
     RideId PreviousRide;
     uint16_t PreviousRideTimeOut;
-    std::array<PeepThought, PEEP_MAX_THOUGHTS> Thoughts;
+    std::array<PeepThought, kPeepMaxThoughts> Thoughts;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t LitterCount;
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc

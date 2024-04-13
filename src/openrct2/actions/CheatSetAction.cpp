@@ -350,21 +350,21 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             {
                 case GUEST_PARAMETER_HAPPINESS:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                             { 0, PEEP_MAX_HAPPINESS } };
+                             { 0, kPeepMaxHappiness } };
                 case GUEST_PARAMETER_ENERGY:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                              { PEEP_MIN_ENERGY, PEEP_MAX_ENERGY } };
                 case GUEST_PARAMETER_HUNGER:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_HUNGER } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxHunger } };
                 case GUEST_PARAMETER_THIRST:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_THIRST } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxThirst } };
                 case GUEST_PARAMETER_NAUSEA:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_NAUSEA } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxNausea } };
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                              { EnumValue(PeepNauseaTolerance::None), EnumValue(PeepNauseaTolerance::High) } };
                 case GUEST_PARAMETER_TOILET:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_TOILET } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxToilet } };
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, 255 } };
                 default:
