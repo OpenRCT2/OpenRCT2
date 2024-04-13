@@ -135,7 +135,7 @@ namespace OpenRCT2::Audio
         Null = 255
     };
 
-    constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
+    constexpr uint8_t kRCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
 
     namespace AudioObjectIdentifiers
     {
