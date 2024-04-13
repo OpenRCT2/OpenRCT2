@@ -146,7 +146,7 @@ namespace OpenRCT2::Audio
         constexpr std::string_view kRCTCBase = "rct2.audio.base.rctc";
         constexpr std::string_view kRCT2Title = "rct2.audio.title";
         constexpr std::string_view kOpenRCT2Title = "openrct2.audio.title";
-        constexpr std::string_view RCT2Circus = "rct2.audio.circus";
+        constexpr std::string_view kRCT2Circus = "rct2.audio.circus";
         constexpr std::string_view OpenRCT2Additional = "openrct2.audio.additional";
     } // namespace AudioObjectIdentifiers
 

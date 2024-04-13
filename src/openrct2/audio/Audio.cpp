@@ -110,7 +110,7 @@ namespace OpenRCT2::Audio
         objManager.LoadObject(AudioObjectIdentifiers::OpenRCT2Additional);
         _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(
             AudioObjectIdentifiers::OpenRCT2Additional);
-        objManager.LoadObject(AudioObjectIdentifiers::RCT2Circus);
+        objManager.LoadObject(AudioObjectIdentifiers::kRCT2Circus);
     }
 
     void PopulateDevices()
