@@ -268,7 +268,7 @@ namespace OpenRCT2::Audio
 
         if (IsRCT1TitleMusicAvailable())
         {
-            musicMap.emplace(TitleMusicKind::RCT1, AudioObjectIdentifiers::RCT1Title);
+            musicMap.emplace(TitleMusicKind::RCT1, AudioObjectIdentifiers::kRCT1Title);
         }
 
         return musicMap;
