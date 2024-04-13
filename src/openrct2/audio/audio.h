@@ -24,7 +24,7 @@ struct CoordsXYZ;
 namespace OpenRCT2::Audio
 {
     constexpr size_t kMaxDeviceNameSize = 256;
-    constexpr size_t MaxVehicleSounds = 14;
+    constexpr size_t kMaxVehicleSounds = 14;
     constexpr size_t MaxDefaultMusic = 46;
     constexpr uint16_t SoundIdNull = 0xFFFF;
 
@@ -153,7 +153,7 @@ namespace OpenRCT2::Audio
     extern bool gGameSoundsOff;
     extern int32_t gVolumeAdjustZoom;
 
-    extern VehicleSound gVehicleSoundList[MaxVehicleSounds];
+    extern VehicleSound gVehicleSoundList[kMaxVehicleSounds];
 
     /**
      * Returns false when no audio device is available or when audio is turned off, otherwise true.

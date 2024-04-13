@@ -58,7 +58,7 @@ namespace OpenRCT2::Audio
 
     static std::shared_ptr<IAudioChannel> _titleMusicChannel = nullptr;
 
-    VehicleSound gVehicleSoundList[MaxVehicleSounds];
+    VehicleSound gVehicleSoundList[kMaxVehicleSounds];
 
     bool IsAvailable()
     {
