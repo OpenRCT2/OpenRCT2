@@ -90,7 +90,7 @@ bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
-uint32_t gCurrentRealTimeTicks;
+RealTimeTicks gCurrentRealTimeTicks;
 
 #ifdef ENABLE_SCRIPTING
 static bool _mapChangedExpected;
