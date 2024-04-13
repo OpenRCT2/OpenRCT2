@@ -142,7 +142,7 @@ namespace OpenRCT2::Audio
         constexpr std::string_view kRCT1Title = "rct1.audio.title";
         // virtual name, used by either RCT2Base or RCTCBase, depending on which one is loaded.
         constexpr std::string_view kRCT2 = "rct2.audio.base";
-        constexpr std::string_view RCT2Base = "rct2.audio.base.rct2";
+        constexpr std::string_view kRCT2Base = "rct2.audio.base.rct2";
         constexpr std::string_view RCTCBase = "rct2.audio.base.rctc";
         constexpr std::string_view RCT2Title = "rct2.audio.title";
         constexpr std::string_view OpenRCT2Title = "openrct2.audio.title";
