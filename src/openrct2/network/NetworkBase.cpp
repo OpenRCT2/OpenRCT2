@@ -718,6 +718,58 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
 
     if (fromplayer != nullptr)
     {
+        auto& network = OpenRCT2::GetContext()->GetNetwork();
+        auto it = network.GetGroupByID(fromplayer->Id);
+        std::string groupname = "";
+        if (it != nullptr)
+        {
+            groupname = it->GetName();
+        }
+
+        std::vector<std::string> colors;
+
+        for (size_t i = 0; i < groupname.size(); ++i)
+        {
+            if (groupname[i] == '{')
+            {
+                std::string color = "";
+                while (i < groupname.size() && groupname[i] != '}' && groupname[i] != '{') 
+                {
+                    color += groupname[i];
+                    i++;
+                }
+                color += '}';
+                // TODO: Add a check to make sure it's a valid color before pushing it
+                if (groupname[i] == '}' && i < groupname.size())
+                {
+                    colors.push_back(color);
+                }
+            }
+        }
+
+        if (colors.size() == 0)
+        {
+            formatted += fromplayer->Name;
+        }
+        else
+        {
+            size_t j = 0;
+            for (size_t i = 0; i < colors.size(); ++i)
+            {
+                formatted += colors[i];
+                size_t numcharacters = (fromplayer->Name.size() / colors.size()) + j;
+                for (; j < numcharacters && j < fromplayer->Name.size(); ++j)
+                {
+                    formatted += fromplayer->Name[j];
+                }
+            }
+            if (j < fromplayer->Name.size())
+            {
+                formatted += fromplayer->Name[j];
+            }
+        }
+
+        /*
         // If the user is the Admin
         if (fromplayer->Group == 0)
         {
@@ -734,11 +786,10 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
             formatted += "{GREEN}";
         }
         formatted += fromplayer->Name;
+        */
         formatted += ": ";
     }
     formatted += "{WHITE}";
-
-    // formatted += "{COLOUR_MOSS_GREEN}";
     formatted += text;
     return formatted.c_str();
 }
