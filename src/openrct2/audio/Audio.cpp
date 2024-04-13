@@ -382,7 +382,7 @@ namespace OpenRCT2::Audio
         Close();
         for (auto& vehicleSound : gVehicleSoundList)
         {
-            vehicleSound.id = SoundIdNull;
+            vehicleSound.id = kSoundIdNull;
         }
 
         _currentAudioDevice = device;
@@ -436,9 +436,9 @@ namespace OpenRCT2::Audio
 
         for (auto& vehicleSound : gVehicleSoundList)
         {
-            if (vehicleSound.id != SoundIdNull)
+            if (vehicleSound.id != kSoundIdNull)
             {
-                vehicleSound.id = SoundIdNull;
+                vehicleSound.id = kSoundIdNull;
                 if (vehicleSound.TrackSound.Id != SoundId::Null)
                 {
                     vehicleSound.TrackSound.Channel->Stop();
