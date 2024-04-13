@@ -107,9 +107,9 @@ namespace OpenRCT2::Audio
             _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
         }
 
-        objManager.LoadObject(AudioObjectIdentifiers::OpenRCT2Additional);
+        objManager.LoadObject(AudioObjectIdentifiers::kOpenRCT2Additional);
         _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(
-            AudioObjectIdentifiers::OpenRCT2Additional);
+            AudioObjectIdentifiers::kOpenRCT2Additional);
         objManager.LoadObject(AudioObjectIdentifiers::kRCT2Circus);
     }
 
