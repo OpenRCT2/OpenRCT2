@@ -238,6 +238,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Jan Kelemen (jan-kelemen)
 * Cory Ye (CoryfY)
 * Karsten Van Fossan (karstenvanf)
+* Daniel Lightbourn (Daniel-Lightbourn)
 
 ## Toolchain
 * (Balletie) - macOS

@@ -133,7 +133,16 @@ void TitleScreen::Load()
     ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
     TitleInitialise();
-    OpenRCT2::Audio::PlayTitleMusic();
+
+    // Defer the title music until window messages can be processed.
+    if (static bool firstTime = true; firstTime)
+    {
+        firstTime = false;
+    }
+    else
+    {
+        OpenRCT2::Audio::PlayTitleMusic();
+    }
 
     if (gOpenRCT2ShowChangelog)
     {
