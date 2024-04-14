@@ -368,7 +368,7 @@ static Widget _windowFinancesResearchWidgets[] =
             if (page != WINDOW_FINANCES_PAGE_SUMMARY)
                 return;
 
-            auto screenCoords = ScreenCoordsXY{ 0, TABLE_CELL_HEIGHT + 2 };
+            auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
             Widget self = widgets[WIDX_SUMMARY_SCROLL];
             int32_t row_width = std::max<uint16_t>(scrolls[0].h_right, self.width());
@@ -381,10 +381,10 @@ static Widget _windowFinancesResearchWidgets[] =
                     GfxFillRect(
                         dpi,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
-                          screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
+                          screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1]].lighter | 0x1000000);
 
-                screenCoords.y += TABLE_CELL_HEIGHT;
+                screenCoords.y += kTableCellHeight;
             }
 
             auto& gameState = GetGameState();
@@ -422,7 +422,7 @@ static Widget _windowFinancesResearchWidgets[] =
                             dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
                             { TextAlignment::RIGHT });
                     }
-                    screenCoords.y += TABLE_CELL_HEIGHT;
+                    screenCoords.y += kTableCellHeight;
                 }
                 screenCoords.y += 4;
 
@@ -555,11 +555,11 @@ static Widget _windowFinancesResearchWidgets[] =
                     GfxFillRect(
                         dpi,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
-                          screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
+                          screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1]].lighter | 0x1000000);
 
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
-                screenCoords.y += TABLE_CELL_HEIGHT;
+                screenCoords.y += kTableCellHeight;
             }
 
             // Horizontal rule below expenditure / income table
