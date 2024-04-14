@@ -49,8 +49,8 @@ constexpr uint8_t kButtonFaceHeight = 12;
 constexpr uint8_t kSpinnerHeight = 12;
 constexpr uint8_t kDropdownHeight = 12;
 
-constexpr int16_t kTextInputSize = 1024;
-#define TOP_TOOLBAR_HEIGHT 27
+constexpr uint16_t kTextInputSize = 1024;
+constexpr uint16_t kTopToolbarHeight = 27;
 
 extern u8string gTextBoxInput;
 extern int32_t gTextBoxFrameNo;

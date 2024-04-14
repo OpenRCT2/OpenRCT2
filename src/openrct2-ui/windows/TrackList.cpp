@@ -768,11 +768,11 @@ static Widget _trackListWidgets[] = {
         {
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
-            screenPos = { screenWidth / 2 - 300, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
+            screenPos = { screenWidth / 2 - 300, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
         }
         else
         {
-            screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
+            screenPos = { 0, kTopToolbarHeight + 2 };
         }
         return WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
     }

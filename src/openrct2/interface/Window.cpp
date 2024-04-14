@@ -1367,7 +1367,7 @@ void WindowRelocateWindows(int32_t width, int32_t height)
 
         // Calculate the new locations
         auto newWinPos = w->windowPos;
-        w->windowPos = { new_location, new_location + TOP_TOOLBAR_HEIGHT + 1 };
+        w->windowPos = { new_location, new_location + kTopToolbarHeight + 1 };
 
         // Move the next new location so windows are not directly on top
         new_location += 8;
@@ -1612,7 +1612,7 @@ static void window_snap_bottom(WindowBase& w, int32_t proximity)
 void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
 {
     auto originalPos = w.windowPos;
-    int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
+    int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : kTopToolbarHeight + 2;
 
     newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
 

@@ -435,7 +435,7 @@ static Widget window_install_track_widgets[] = {
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
-        auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
+        auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
 
         auto* window = WindowFocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
         window->SetupTrack(path, std::move(trackDesign));

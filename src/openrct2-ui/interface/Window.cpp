@@ -63,7 +63,7 @@ static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int3
 {
     if (loc.x < 0)
         return false;
-    if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
     if (loc.x + width > ContextGetWidth())
         return false;
@@ -84,7 +84,7 @@ static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t
     unk = screenWidth + (unk * 2);
     if (loc.x > unk)
         return false;
-    if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
     unk = screenHeight - (height / 4);
     if (loc.y > unk)
@@ -101,7 +101,7 @@ static ScreenCoordsXY ClampWindowToScreen(
     else if (screenPos.x + width > screenWidth)
         screenPos.x = screenWidth - width;
 
-    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (TOP_TOOLBAR_HEIGHT + 1);
+    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (kTopToolbarHeight + 1);
     if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
         screenPos.y = toolbarAllowance;
     else if (screenPos.y + height - toolbarAllowance > screenHeight)
@@ -205,7 +205,7 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
     auto uiContext = GetContext()->GetUiContext();
     auto screenWidth = uiContext->GetWidth();
     auto screenHeight = uiContext->GetHeight();
-    return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
+    return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
 }
 
 WindowBase* WindowCreate(
