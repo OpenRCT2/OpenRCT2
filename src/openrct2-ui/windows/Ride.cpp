@@ -5735,7 +5735,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // Anchor graph widget
             auto x = width - 4;
-            auto y = height - BUTTON_FACE_HEIGHT - 8;
+            auto y = height - kButtonFaceHeight - 8;
 
             widgets[WIDX_GRAPH].right = x;
             widgets[WIDX_GRAPH].bottom = y;
@@ -5744,7 +5744,7 @@ static_assert(std::size(RatingNames) == 6);
             widgets[WIDX_GRAPH_ALTITUDE].top = y;
             widgets[WIDX_GRAPH_VERTICAL].top = y;
             widgets[WIDX_GRAPH_LATERAL].top = y;
-            y += BUTTON_FACE_HEIGHT + 1;
+            y += kButtonFaceHeight + 1;
             widgets[WIDX_GRAPH_VELOCITY].bottom = y;
             widgets[WIDX_GRAPH_ALTITUDE].bottom = y;
             widgets[WIDX_GRAPH_VERTICAL].bottom = y;

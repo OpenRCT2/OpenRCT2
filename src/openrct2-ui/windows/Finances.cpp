@@ -825,8 +825,8 @@ static Widget _windowFinancesResearchWidgets[] =
                 {
                     campaignButton->type = WindowWidgetType::Button;
                     campaignButton->top = y;
-                    campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
-                    y += BUTTON_FACE_HEIGHT + 2;
+                    campaignButton->bottom = y + kButtonFaceHeight + 1;
+                    y += kButtonFaceHeight + 2;
                 }
                 else
                 {
@@ -908,7 +908,7 @@ static Widget _windowFinancesResearchWidgets[] =
                     ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
 
-                    screenCoords.y += BUTTON_FACE_HEIGHT + 2;
+                    screenCoords.y += kButtonFaceHeight + 2;
                 }
             }
         }

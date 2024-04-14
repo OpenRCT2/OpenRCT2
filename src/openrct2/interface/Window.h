@@ -45,7 +45,7 @@ constexpr uint8_t CloseButtonWidth = 10;
 constexpr uint8_t kScrollableRowHeight = 12;
 constexpr uint8_t kListRowHeight = 12;
 constexpr uint8_t kTableCellHeight = 12;
-#define BUTTON_FACE_HEIGHT 12
+constexpr uint8_t kButtonFaceHeight = 12;
 #define SPINNER_HEIGHT 12
 #define DROPDOWN_HEIGHT 12
 
