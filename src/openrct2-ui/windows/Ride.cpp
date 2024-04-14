@@ -2805,7 +2805,7 @@ static_assert(std::size(RatingNames) == 6);
             // Excitement Factor
             if (rideEntry->excitement_multiplier != 0)
             {
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
 
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->excitement_multiplier));
@@ -2821,7 +2821,7 @@ static_assert(std::size(RatingNames) == 6);
                 if (lineHeight != 10)
                     screenCoords.x += 150;
                 else
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->intensity_multiplier));
@@ -2835,7 +2835,7 @@ static_assert(std::size(RatingNames) == 6);
             // Nausea Factor
             if (rideEntry->nausea_multiplier != 0)
             {
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
 
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
@@ -5336,7 +5336,7 @@ static_assert(std::size(RatingNames) == 6);
                     StringId stringId = !RideHasRatings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE
                                                                : STR_EXCITEMENT_RATING;
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     // Intensity
                     ratingName = GetRatingName(ride->intensity);
@@ -5351,7 +5351,7 @@ static_assert(std::size(RatingNames) == 6);
                         stringId = STR_INTENSITY_RATING_RED;
 
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     // Nausea
                     ratingName = GetRatingName(ride->nausea);
@@ -5360,7 +5360,7 @@ static_assert(std::size(RatingNames) == 6);
                     ft.Add<StringId>(ratingName);
                     stringId = !RideHasRatings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
-                    screenCoords.y += 2 * LIST_ROW_HEIGHT;
+                    screenCoords.y += 2 * kListRowHeight;
 
                     // Horizontal rule
                     GfxFillRectInset(
@@ -5375,7 +5375,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<uint16_t>(ride->holes);
                             DrawTextBasic(dpi, screenCoords, STR_HOLES, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
                         else
                         {
@@ -5383,13 +5383,13 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<int32_t>((ride->max_speed * 9) >> 18);
                             DrawTextBasic(dpi, screenCoords, STR_MAX_SPEED, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Average speed
                             ft = Formatter();
                             ft.Add<int32_t>((ride->average_speed * 9) >> 18);
                             DrawTextBasic(dpi, screenCoords, STR_AVERAGE_SPEED, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Ride time
                             ft = Formatter();
@@ -5429,7 +5429,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft.Add<uint16_t>(0);
                             ft.Add<uint16_t>(0);
                             DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
 
                         // Ride length
@@ -5470,7 +5470,7 @@ static_assert(std::size(RatingNames) == 6);
                         ft.Add<uint16_t>(0);
                         DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
 
-                        screenCoords.y += LIST_ROW_HEIGHT;
+                        screenCoords.y += kListRowHeight;
 
                         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
                         {
@@ -5480,7 +5480,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->max_positive_vertical_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Max. negative vertical G's
                             stringId = ride->max_negative_vertical_g <= RIDE_G_FORCES_RED_NEG_VERTICAL
@@ -5489,7 +5489,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<int32_t>(ride->max_negative_vertical_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Max lateral G's
                             stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED
@@ -5497,13 +5497,13 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->max_lateral_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Total 'air' time
                             ft = Formatter();
                             ft.Add<fixed32_2dp>(ride->total_air_time * 3);
                             DrawTextBasic(dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
 
                         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
@@ -5513,14 +5513,14 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<uint16_t>(drops);
                             DrawTextBasic(dpi, screenCoords, STR_DROPS, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Highest drop height
                             auto highestDropHeight = (ride->highest_drop_height * 3) / 4;
                             ft = Formatter();
                             ft.Add<int32_t>(highestDropHeight);
                             DrawTextBasic(dpi, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
 
                         if (ride->type != RIDE_TYPE_MINI_GOLF)
@@ -5531,7 +5531,7 @@ static_assert(std::size(RatingNames) == 6);
                                 ft = Formatter();
                                 ft.Add<uint16_t>(ride->inversions);
                                 DrawTextBasic(dpi, screenCoords, STR_INVERSIONS, ft);
-                                screenCoords.y += LIST_ROW_HEIGHT;
+                                screenCoords.y += kListRowHeight;
                             }
                         }
                     }
@@ -6393,7 +6393,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<money64>(ride->income_per_hour);
 
                 DrawTextBasic(dpi, screenCoords, STR_INCOME_PER_HOUR, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Running cost per hour
@@ -6402,7 +6402,7 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter();
             ft.Add<money64>(costPerHour);
             DrawTextBasic(dpi, screenCoords, stringId, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Profit per hour
             if (ride->profit != kMoney64Undefined)
@@ -6410,7 +6410,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft = Formatter();
                 ft.Add<money64>(ride->profit);
                 DrawTextBasic(dpi, screenCoords, STR_PROFIT_PER_HOUR, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 5;
 
@@ -6550,14 +6550,14 @@ static_assert(std::size(RatingNames) == 6);
                 auto ft = Formatter();
                 ft.Add<int16_t>(ride->num_riders);
                 DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Customers per hour
             auto ft = Formatter();
             ft.Add<int32_t>(RideCustomersPerHour(*ride));
             DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Popularity
             popularity = ride->popularity;
@@ -6573,7 +6573,7 @@ static_assert(std::size(RatingNames) == 6);
             ft = Formatter();
             ft.Add<int16_t>(popularity);
             DrawTextBasic(dpi, screenCoords, stringId, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Satisfaction
             satisfaction = ride->satisfaction;
@@ -6589,7 +6589,7 @@ static_assert(std::size(RatingNames) == 6);
             ft = Formatter();
             ft.Add<int16_t>(satisfaction);
             DrawTextBasic(dpi, screenCoords, stringId, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Queue time
             if (ride->IsRide())
@@ -6610,7 +6610,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
                 ft.Add<uint32_t>(ride->no_primary_items_sold);
                 DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Secondary shop items sold / on-ride photos sold
@@ -6622,14 +6622,14 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
                 ft.Add<uint32_t>(ride->no_secondary_items_sold);
                 DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Total customers
             ft = Formatter();
             ft.Add<uint32_t>(ride->total_customers);
             DrawTextBasic(dpi, screenCoords, STR_TOTAL_CUSTOMERS, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Guests favourite
             if (ride->IsRide())
@@ -6638,7 +6638,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<uint32_t>(ride->guests_favourite);
                 stringId = ride->guests_favourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
                 DrawTextBasic(dpi, screenCoords, stringId, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 2;
 

@@ -171,7 +171,7 @@ static Widget WindowNewsOptionsWidgets[] = {
                 checkboxWidget->left = baseCheckBox.left;
                 checkboxWidget->right = baseCheckBox.right;
                 checkboxWidget->top = y;
-                checkboxWidget->bottom = checkboxWidget->top + LIST_ROW_HEIGHT + 3;
+                checkboxWidget->bottom = checkboxWidget->top + kListRowHeight + 3;
                 checkboxWidget->text = ndef->caption;
 
                 const bool* configValue = GetNotificationValuePtr(ndef);
@@ -179,7 +179,7 @@ static Widget WindowNewsOptionsWidgets[] = {
 
                 checkboxWidgetIndex++;
                 checkboxWidget++;
-                y += LIST_ROW_HEIGHT + 3;
+                y += kListRowHeight + 3;
             }
 
             // Remove unused checkboxes

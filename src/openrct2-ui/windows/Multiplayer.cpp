@@ -303,7 +303,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
         {
             int32_t numLines;
             GfxWrapString(NetworkGetServerName(), baseWidth, FontStyle::Medium, nullptr, &numLines);
-            baseHeight += (numLines + 1) * lineHeight + (LIST_ROW_HEIGHT / 2);
+            baseHeight += (numLines + 1) * lineHeight + (kListRowHeight / 2);
         }
 
         // Likewise, for the optional server description -- which can be a little longer.
@@ -312,22 +312,22 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
         {
             int32_t numLines;
             GfxWrapString(descString, baseWidth, FontStyle::Medium, nullptr, &numLines);
-            baseHeight += (numLines + 1) * lineHeight + (LIST_ROW_HEIGHT / 2);
+            baseHeight += (numLines + 1) * lineHeight + (kListRowHeight / 2);
         }
 
         // Finally, account for provider info, if present.
         {
             const auto& providerName = NetworkGetServerProviderName();
             if (!providerName.empty())
-                baseHeight += LIST_ROW_HEIGHT;
+                baseHeight += kListRowHeight;
 
             const auto& providerEmail = NetworkGetServerProviderEmail();
             if (!providerEmail.empty())
-                baseHeight += LIST_ROW_HEIGHT;
+                baseHeight += kListRowHeight;
 
             const auto& providerWebsite = NetworkGetServerProviderWebsite();
             if (!providerWebsite.empty())
-                baseHeight += LIST_ROW_HEIGHT;
+                baseHeight += kListRowHeight;
         }
 
         // TODO: Are these casts still neccessary?
@@ -686,7 +686,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 auto ft = Formatter();
                 ft.Add<const char*>(name.c_str());
                 screenCoords.y += DrawTextWrapped(clippedDPI, screenCoords, newWidth, STR_STRING, ft, { colours[1] });
-                screenCoords.y += LIST_ROW_HEIGHT / 2;
+                screenCoords.y += kListRowHeight / 2;
             }
 
             const auto& description = NetworkGetServerDescription();
@@ -695,7 +695,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 auto ft = Formatter();
                 ft.Add<const char*>(description.c_str());
                 screenCoords.y += DrawTextWrapped(clippedDPI, screenCoords, newWidth, STR_STRING, ft, { colours[1] });
-                screenCoords.y += LIST_ROW_HEIGHT / 2;
+                screenCoords.y += kListRowHeight / 2;
             }
 
             const auto& providerName = NetworkGetServerProviderName();
@@ -704,7 +704,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 auto ft = Formatter();
                 ft.Add<const char*>(providerName.c_str());
                 DrawTextBasic(clippedDPI, screenCoords, STR_PROVIDER_NAME, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             const auto& providerEmail = NetworkGetServerProviderEmail();
@@ -713,7 +713,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 auto ft = Formatter();
                 ft.Add<const char*>(providerEmail.c_str());
                 DrawTextBasic(clippedDPI, screenCoords, STR_PROVIDER_EMAIL, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             const auto& providerWebsite = NetworkGetServerProviderWebsite();

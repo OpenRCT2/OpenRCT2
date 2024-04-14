@@ -630,7 +630,7 @@ static Widget *window_player_page_widgets[] = {
             ft.Add<uint32_t>(NetworkGetPlayerCommandsRan(player));
             DrawTextBasic(dpi, screenCoords, STR_COMMANDS_RAN, ft);
 
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<uint32_t>(NetworkGetPlayerMoneySpent(player));

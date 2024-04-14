@@ -809,7 +809,7 @@ static Widget _windowFinancesResearchWidgets[] =
         {
             // Count number of active campaigns
             int32_t numActiveCampaigns = static_cast<int32_t>(gMarketingCampaigns.size());
-            int32_t y = std::max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
+            int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
 
             // Update group box positions
             _windowFinancesMarketingWidgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
@@ -886,13 +886,13 @@ static Widget _windowFinancesResearchWidgets[] =
                     dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
                     weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
 
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             if (noCampaignsActive)
             {
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 34;
 
