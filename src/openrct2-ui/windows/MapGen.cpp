@@ -1089,7 +1089,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_LOW_UP:
-                    _heightmapLow = std::min(_heightmapLow + 1, 142 - 1);
+                    _heightmapLow = std::min(_heightmapLow + 1, kMaximumWaterHeight - 1);
                     _heightmapHigh = std::max(_heightmapHigh, _heightmapLow + 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
@@ -1098,7 +1098,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
-                    _heightmapHigh = std::min(_heightmapHigh + 1, 142);
+                    _heightmapHigh = std::min<int32_t>(_heightmapHigh + 1, kMaximumWaterHeight);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
