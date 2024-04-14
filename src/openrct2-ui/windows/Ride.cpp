@@ -48,7 +48,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/StationObject.h>
-#include <openrct2/peep/PeepData.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/RideConstruction.h>

@@ -27,7 +27,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/PeepData.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>

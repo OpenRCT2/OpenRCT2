@@ -30,7 +30,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/PeepData.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>

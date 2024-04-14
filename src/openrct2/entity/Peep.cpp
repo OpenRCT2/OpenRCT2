@@ -35,7 +35,7 @@
 #include "../network/network.h"
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
-#include "../peep/PeepData.h"
+#include "../peep/PeepAnimationData.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
