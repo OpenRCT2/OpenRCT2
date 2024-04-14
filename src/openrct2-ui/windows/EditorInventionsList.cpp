@@ -230,11 +230,11 @@ static Widget _inventionListDragWidgets[] = {
             ScreenSize size{};
             if (scrollIndex == 0)
             {
-                size.height = static_cast<int32_t>(gameState.ResearchItemsInvented.size()) * kScrollableRowHeight;
+                size.height = static_cast<int32_t>(gameState.ResearchItemsInvented.size()) * SCROLLABLE_ROW_HEIGHT;
             }
             else
             {
-                size.height = static_cast<int32_t>(gameState.ResearchItemsUninvented.size()) * kScrollableRowHeight;
+                size.height = static_cast<int32_t>(gameState.ResearchItemsUninvented.size()) * SCROLLABLE_ROW_HEIGHT;
             }
             return size;
         }
@@ -279,14 +279,14 @@ static Widget _inventionListDragWidgets[] = {
             GfxClear(dpi, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
-            int32_t itemY = -kScrollableRowHeight;
+            int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
             auto* dragItem = WindowEditorInventionsListDragGetItem();
 
             const auto& researchList = scrollIndex == 0 ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
             for (const auto& researchItem : researchList)
             {
-                itemY += kScrollableRowHeight;
-                if (itemY + kScrollableRowHeight < dpi.y || itemY >= dpi.y + dpi.height)
+                itemY += SCROLLABLE_ROW_HEIGHT;
+                if (itemY + SCROLLABLE_ROW_HEIGHT < dpi.y || itemY >= dpi.y + dpi.height)
                     continue;
 
                 if (_selectedResearchItem == &researchItem)
@@ -296,7 +296,7 @@ static Widget _inventionListDragWidgets[] = {
                     {
                         // Highlight
                         top = itemY;
-                        bottom = itemY + kScrollableRowHeight - 1;
+                        bottom = itemY + SCROLLABLE_ROW_HEIGHT - 1;
                     }
                     else
                     {
@@ -559,7 +559,7 @@ static Widget _inventionListDragWidgets[] = {
             auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
             for (auto& researchItem : researchList)
             {
-                y -= kScrollableRowHeight;
+                y -= SCROLLABLE_ROW_HEIGHT;
                 if (y < 0)
                 {
                     return &researchItem;
@@ -575,7 +575,7 @@ static Widget _inventionListDragWidgets[] = {
             auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
             for (auto& researchItem : researchList)
             {
-                y -= kScrollableRowHeight;
+                y -= SCROLLABLE_ROW_HEIGHT;
                 if (y < 0)
                 {
                     return &researchItem;

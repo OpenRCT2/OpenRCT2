@@ -465,19 +465,19 @@ static Widget window_object_load_error_widgets[] = {
 
         ScreenSize OnScrollGetSize(const int32_t scrollIndex) override
         {
-            return ScreenSize(0, no_list_items * kScrollableRowHeight);
+            return ScreenSize(0, no_list_items * SCROLLABLE_ROW_HEIGHT);
         }
 
         void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto selectedItem = screenCoords.y / kScrollableRowHeight;
+            const auto selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
             SelectObjectFromList(selectedItem);
         }
 
         void OnScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             // Highlight item that the cursor is over, or remove highlighting if none
-            const auto selectedItem = screenCoords.y / kScrollableRowHeight;
+            const auto selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
             if (selectedItem < 0 || selectedItem >= no_list_items)
                 _highlightedIndex = -1;
             else
@@ -513,15 +513,15 @@ static Widget window_object_load_error_widgets[] = {
             for (int32_t i = 0; i < no_list_items; i++)
             {
                 ScreenCoordsXY screenCoords;
-                screenCoords.y = i * kScrollableRowHeight;
+                screenCoords.y = i * SCROLLABLE_ROW_HEIGHT;
                 if (screenCoords.y > dpi.y + dpi.height)
                     break;
 
-                if (screenCoords.y + kScrollableRowHeight < dpi.y)
+                if (screenCoords.y + SCROLLABLE_ROW_HEIGHT < dpi.y)
                     continue;
 
                 const auto screenRect = ScreenRect{ { 0, screenCoords.y },
-                                                    { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
+                                                    { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
                 // If hovering over item, change the color and fill the backdrop.
                 if (i == selected_list_item)
                     GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].darker);

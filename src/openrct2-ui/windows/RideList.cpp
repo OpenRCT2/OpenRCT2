@@ -211,7 +211,7 @@ static Widget _rideListWidgets[] = {
             widgets[WIDX_SORT].left = width - 60;
             widgets[WIDX_SORT].right = width - 60 + 54;
 
-            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, 46 }, { width - 216, DROPDOWN_HEIGHT });
+            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, 46 }, { width - 216, kDropdownHeight });
 
             // Refreshing the list can be a very intensive operation
             // owing to its use of ride_has_any_track_elements().
@@ -386,7 +386,7 @@ static Widget _rideListWidgets[] = {
          */
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            const auto newHeight = static_cast<int32_t>(_rideList.size() * kScrollableRowHeight);
+            const auto newHeight = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
             if (selected_list_item != -1)
             {
                 selected_list_item = -1;
@@ -411,7 +411,7 @@ static Widget _rideListWidgets[] = {
          */
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / kScrollableRowHeight;
+            const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
             if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
                 return;
 
@@ -437,7 +437,7 @@ static Widget _rideListWidgets[] = {
          */
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / kScrollableRowHeight;
+            const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
             if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
                 return;
 
@@ -552,7 +552,7 @@ static Widget _rideListWidgets[] = {
                 if (i == static_cast<size_t>(selected_list_item))
                 {
                     // Background highlight
-                    GfxFilterRect(dpi, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
                     format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
@@ -742,7 +742,7 @@ static Widget _rideListWidgets[] = {
                     ft.Add<StringId>(formatSecondary);
                 }
                 DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
-                y += kScrollableRowHeight;
+                y += SCROLLABLE_ROW_HEIGHT;
             }
         }
 
