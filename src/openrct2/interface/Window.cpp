@@ -1670,8 +1670,8 @@ void WindowStartTextbox(
     // text.
     if (existing_text != STR_NONE)
     {
-        char tempBuf[TEXT_INPUT_SIZE]{};
-        size_t len = FormatStringLegacy(tempBuf, TEXT_INPUT_SIZE, existing_text, &existing_args);
+        char tempBuf[kTextInputSize]{};
+        size_t len = FormatStringLegacy(tempBuf, kTextInputSize, existing_text, &existing_args);
         gTextBoxInput.assign(tempBuf, len);
     }
 

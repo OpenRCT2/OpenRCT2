@@ -276,7 +276,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     Invalidate();
                     break;
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filteredSceneryTab.Filter.data(), TEXT_INPUT_SIZE);
+                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filteredSceneryTab.Filter.data(), kTextInputSize);
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _tabEntries[_activeTabIndex].Filter.clear();
