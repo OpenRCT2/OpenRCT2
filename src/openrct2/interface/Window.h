@@ -42,7 +42,7 @@ enum class CloseWindowModifier : uint8_t;
 
 constexpr uint8_t CloseButtonWidth = 10;
 
-#define SCROLLABLE_ROW_HEIGHT 12
+constexpr uint8_t kScrollableRowHeight = 12;
 #define LIST_ROW_HEIGHT 12
 #define TABLE_CELL_HEIGHT 12
 #define BUTTON_FACE_HEIGHT 12

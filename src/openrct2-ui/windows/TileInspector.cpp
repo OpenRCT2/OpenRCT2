@@ -994,7 +994,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return ScreenSize(WW - 30, windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT);
+            return ScreenSize(WW - 30, windowTileInspectorElementCount * kScrollableRowHeight);
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -1004,7 +1004,7 @@ static uint64_t PageDisabledWidgets[] = {
                 return;
 
             // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
-            const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
+            const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / kScrollableRowHeight - 1;
             const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
             if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
             { // Checkbox was clicked
@@ -1018,7 +1018,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
+            int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / kScrollableRowHeight - 1;
             if (index < 0 || index >= windowTileInspectorElementCount)
                 _highlightedIndex = -1;
             else
@@ -1585,7 +1585,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
 
             ScreenCoordsXY screenCoords{};
-            screenCoords.y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
+            screenCoords.y = kScrollableRowHeight * (windowTileInspectorElementCount - 1);
             int32_t i = 0;
             char buffer[256];
 
@@ -1602,7 +1602,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                 // Draw row background colour
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
-                                                 { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
+                                                 { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 if (selectedRow)
                     GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
                 else if (hoveredRow)
@@ -1719,7 +1719,7 @@ static uint64_t PageDisabledWidgets[] = {
                 if (last)
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
 
-                screenCoords.y -= SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y -= kScrollableRowHeight;
                 i++;
             } while (!(tileElement++)->IsLastForTile());
         }
