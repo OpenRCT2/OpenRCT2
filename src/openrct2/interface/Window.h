@@ -46,7 +46,7 @@ constexpr uint8_t kScrollableRowHeight = 12;
 constexpr uint8_t kListRowHeight = 12;
 constexpr uint8_t kTableCellHeight = 12;
 constexpr uint8_t kButtonFaceHeight = 12;
-#define SPINNER_HEIGHT 12
+constexpr uint8_t kSpinnerHeight = 12;
 #define DROPDOWN_HEIGHT 12
 
 #define TEXT_INPUT_SIZE 1024

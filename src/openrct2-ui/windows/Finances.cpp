@@ -554,8 +554,7 @@ static Widget _windowFinancesResearchWidgets[] =
                 if (i % 2 == 0)
                     GfxFillRect(
                         dpi,
-                        { screenCoords - ScreenCoordsXY{ 0, 1 },
-                          screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
+                        { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1]].lighter | 0x1000000);
 
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);

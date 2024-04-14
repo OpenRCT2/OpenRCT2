@@ -1936,7 +1936,7 @@ static Widget _rideConstructionWidgets[] = {
                 widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WindowWidgetType::Button;
                 widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
 
-                ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, 138 }, { 85, SPINNER_HEIGHT });
+                ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, 138 }, { 85, kSpinnerHeight });
 
                 hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
