@@ -1101,7 +1101,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             screenCoords.y += LIST_ROW_HEIGHT;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
 
-            int32_t energy = NormalizeGuestStatValue(peep->Energy - kPeepMinEnergy, PEEP_MAX_ENERGY - kPeepMinEnergy, 10);
+            int32_t energy = NormalizeGuestStatValue(peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
             barColour = COLOUR_BRIGHT_GREEN;
             barBlink = energy < 50;
             StatsBarsDraw(energy, screenCoords, dpi, barColour, barBlink);
