@@ -678,7 +678,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             if (surfaceObj != nullptr)
             {
                 surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != 255)
+                if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
                 {
                     surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
                 }
