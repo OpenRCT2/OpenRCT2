@@ -15,7 +15,7 @@
 #include <string_view>
 
 constexpr int8_t kChatHistorySize = 10;
-#define CHAT_INPUT_SIZE 1024
+constexpr int16_t kChatInputSize = 1024;
 #define CHAT_MAX_MESSAGE_LENGTH 200
 #define CHAT_MAX_WINDOW_WIDTH 600
 
