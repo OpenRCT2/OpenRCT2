@@ -158,7 +158,7 @@ void ChatDraw(DrawPixelInfo& dpi, uint8_t chatBackgroundColor)
     int32_t stringHeight = 0;
 
     // Draw chat history
-    for (size_t i = 0; i < CHAT_HISTORY_SIZE; i++, screenCoords.y -= stringHeight)
+    for (size_t i = 0; i < kChatHistorySize; i++, screenCoords.y -= stringHeight)
     {
         if (i >= _chatHistory.size())
             break;
@@ -220,7 +220,7 @@ void ChatAddHistory(std::string_view s)
     std::string buffer = timeBuffer;
     buffer += s;
 
-    if (_chatHistory.size() >= CHAT_HISTORY_SIZE)
+    if (_chatHistory.size() >= kChatHistorySize)
     {
         _chatHistory.pop_back();
         _chatHistoryTime.pop_back();
