@@ -97,7 +97,7 @@ void ChatDraw(DrawPixelInfo& dpi, uint8_t chatBackgroundColor)
     }
 
     _chatLeft = 10;
-    _chatRight = std::min((ContextGetWidth() - 10), CHAT_MAX_WINDOW_WIDTH);
+    _chatRight = std::min<int16_t>((ContextGetWidth() - 10), kChatMaxWindowWidth);
     _chatWidth = _chatRight - _chatLeft;
     _chatBottom = ContextGetHeight() - 45;
     _chatTop = _chatBottom - 10;

@@ -16,8 +16,8 @@
 
 constexpr int8_t kChatHistorySize = 10;
 constexpr int16_t kChatInputSize = 1024;
-constexpr int kChatMaxMessageLength = 200;
-#define CHAT_MAX_WINDOW_WIDTH 600
+constexpr uint8_t kChatMaxMessageLength = 200;
+constexpr int16_t kChatMaxWindowWidth = 600;
 
 struct DrawPixelInfo;
 struct ScreenCoordsXY;
