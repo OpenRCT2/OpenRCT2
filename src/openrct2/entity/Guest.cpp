@@ -838,7 +838,7 @@ void Guest::Loc68FA89()
     }
     else
     {
-        newEnergy = std::min(PEEP_MAX_ENERGY_TARGET, newEnergy + 4);
+        newEnergy = std::min(kPeepMaxEnergyTarget, newEnergy + 4);
         if (newEnergy > newTargetEnergy)
             newEnergy = newTargetEnergy;
     }
@@ -3035,7 +3035,7 @@ static void PeepUpdateHunger(Guest* peep)
     {
         peep->Hunger -= 2;
 
-        peep->EnergyTarget = std::min(peep->EnergyTarget + 2, PEEP_MAX_ENERGY_TARGET);
+        peep->EnergyTarget = std::min(peep->EnergyTarget + 2, kPeepMaxEnergyTarget);
         peep->Toilet = std::min(peep->Toilet + 1, 255);
     }
 }

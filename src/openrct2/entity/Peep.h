@@ -23,7 +23,7 @@
 
 constexpr uint8_t kPeepMinEnergy = 32;
 constexpr uint8_t kPeepMaxEnergy = 128;
-#define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
+constexpr int kPeepMaxEnergyTarget = 255; // Oddly, this differs from max energy!
 
 constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
