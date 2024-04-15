@@ -721,12 +721,15 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
         auto& network = OpenRCT2::GetContext()->GetNetwork();
         auto it = network.GetGroupByID(fromplayer->Id);
         std::string groupname = "";
+        std::vector<std::string> colors;
         if (it != nullptr)
         {
             groupname = it->GetName();
+            if (groupname[0] != '{')
+            {
+                colors.push_back("{WHITE}");
+            }
         }
-
-        std::vector<std::string> colors;
 
         for (size_t i = 0; i < groupname.size(); ++i)
         {
@@ -748,7 +751,7 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
             }
         }
 
-        if (colors.size() == 0)
+        if (colors.size() == 0 || (colors.size() == 1 && colors[0] == "{WHITE}"))
         {
             formatted += "{BABYBLUE}";
             formatted += fromplayer->Name;
