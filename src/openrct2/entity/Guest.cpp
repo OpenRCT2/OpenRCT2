@@ -973,7 +973,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     if (thought_type != PeepThoughtType::None)
                     {
                         InsertNewThought(thought_type);
-                        HappinessTarget = std::min(PEEP_MAX_HAPPINESS, HappinessTarget + 45);
+                        HappinessTarget = std::min(kPeepMaxHappiness, HappinessTarget + 45);
                     }
                 }
             }
@@ -1596,8 +1596,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             }
 
             int32_t happinessGrowth = itemValue * 4;
-            HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
-            Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
+            HappinessTarget = std::min((HappinessTarget + happinessGrowth), kPeepMaxHappiness);
+            Happiness = std::min((Happiness + happinessGrowth), kPeepMaxHappiness);
         }
 
         // reset itemValue for satisfaction calculation
@@ -1744,7 +1744,7 @@ void Guest::OnEnterRide(Ride& ride)
 
     SetHasRidden(ride);
     PeepUpdateFavouriteRide(this, ride);
-    HappinessTarget = std::clamp(HappinessTarget + satisfaction, 0, PEEP_MAX_HAPPINESS);
+    HappinessTarget = std::clamp(HappinessTarget + satisfaction, 0, kPeepMaxHappiness);
     PeepUpdateRideNauseaGrowth(this, ride);
 }
 
@@ -2695,7 +2695,7 @@ static int16_t PeepCalculateRideSatisfaction(Guest* peep, const Ride& ride)
 static void PeepUpdateFavouriteRide(Guest* peep, const Ride& ride)
 {
     peep->PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-    uint8_t peepRideRating = std::clamp((ride.excitement / 4) + peep->Happiness, 0, PEEP_MAX_HAPPINESS);
+    uint8_t peepRideRating = std::clamp((ride.excitement / 4) + peep->Happiness, 0, kPeepMaxHappiness);
     if (peepRideRating >= peep->FavouriteRideRating)
     {
         if (peep->Happiness >= 160 && peep->HappinessTarget >= 160)
@@ -3270,7 +3270,7 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
     }
 
     // Remove the related thought
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
     {
         PeepThought* thought = &Thoughts[i];
 
@@ -3280,12 +3280,12 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
         if (thought->type != thoughtType)
             continue;
 
-        if (i < PEEP_MAX_THOUGHTS - 1)
+        if (i < kPeepMaxThoughts - 1)
         {
-            memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
+            memmove(thought, thought + 1, sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
         }
 
-        Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
+        Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
 
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
@@ -5098,7 +5098,7 @@ void Guest::UpdateRideShopInteract()
             RideSubState = PeepRideSubState::LeaveShop;
 
             SetDestination({ tileCentreX, tileCentreY }, 3);
-            HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
+            HappinessTarget = std::min(HappinessTarget + 30, kPeepMaxHappiness);
             Happiness = HappinessTarget;
         }
         else
@@ -5125,7 +5125,7 @@ void Guest::UpdateRideShopInteract()
 
     SetDestination({ tileCentreX, tileCentreY }, 3);
 
-    HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
+    HappinessTarget = std::min(HappinessTarget + 30, kPeepMaxHappiness);
     Happiness = HappinessTarget;
     StopPurchaseThought(ride->type);
 }
@@ -6963,7 +6963,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
         UpdateCurrentActionSpriteType();
     }
 
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
     {
         PeepThought* thought = &Thoughts[i];
         // Remove the oldest thought by setting it to NONE.
@@ -6975,15 +6975,15 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
             // If the thought type has not changed then we need to move
             // it to the top of the thought list. This is done by first removing the
             // existing thought and placing it at the top.
-            if (i < PEEP_MAX_THOUGHTS - 2)
+            if (i < kPeepMaxThoughts - 2)
             {
-                memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
+                memmove(thought, thought + 1, sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
             }
             break;
         }
     }
 
-    memmove(&std::get<1>(Thoughts), &std::get<0>(Thoughts), sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - 1));
+    memmove(&std::get<1>(Thoughts), &std::get<0>(Thoughts), sizeof(PeepThought) * (kPeepMaxThoughts - 1));
 
     auto& thought = std::get<0>(Thoughts);
     thought.type = thoughtType;
@@ -7181,7 +7181,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Initial value will vary by -15..16 */
     int8_t happinessDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
+    peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, kPeepMaxHappiness);
     peep->HappinessTarget = peep->Happiness;
     peep->Nausea = 0;
     peep->NauseaTarget = 0;
@@ -7193,7 +7193,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Initial value will vary by -15..16 */
     int8_t hungerDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
+    peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, kPeepMaxHunger);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
@@ -7202,7 +7202,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Initial value will vary by -15..16 */
     int8_t thirstDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, PEEP_MAX_THIRST);
+    peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, kPeepMaxThirst);
 
     peep->Toilet = 0;
     peep->TimeToConsume = 0;

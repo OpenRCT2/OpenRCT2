@@ -792,7 +792,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             }
 
             int32_t i = 0;
-            for (; i < PEEP_MAX_THOUGHTS; ++i)
+            for (; i < kPeepMaxThoughts; ++i)
             {
                 if (peep->Thoughts[i].type == PeepThoughtType::None)
                 {
@@ -804,7 +804,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                     break;
                 }
             }
-            if (i == PEEP_MAX_THOUGHTS)
+            if (i == kPeepMaxThoughts)
             {
                 _marqueePosition = 0;
                 return;
@@ -1092,7 +1092,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             // Happiness
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
 
-            int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
+            int32_t happiness = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 10);
             int32_t barColour = COLOUR_BRIGHT_GREEN;
             bool barBlink = happiness < 50;
             StatsBarsDraw(happiness, screenCoords, dpi, barColour, barBlink);
