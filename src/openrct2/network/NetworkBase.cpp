@@ -774,24 +774,6 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
             }
         }
 
-        /*
-        // If the user is the Admin
-        if (fromplayer->Group == 0)
-        {
-            formatted += "{GREEN}";
-        }
-        // If the user is a Spectator
-        else if (fromplayer->Group == 1)
-        {
-            formatted += "{WHITE}";
-        }
-        // If the user is a User
-        else
-        {
-            formatted += "{GREEN}";
-        }
-        formatted += fromplayer->Name;
-        */
         formatted += ": ";
     }
     formatted += "{WHITE}";
