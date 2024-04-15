@@ -843,8 +843,8 @@ void Guest::Loc68FA89()
             newEnergy = newTargetEnergy;
     }
 
-    if (newEnergy < PEEP_MIN_ENERGY)
-        newEnergy = PEEP_MIN_ENERGY;
+    if (newEnergy < kPeepMinEnergy)
+        newEnergy = kPeepMinEnergy;
 
     /* Previous code here suggested maximum energy is 128. */
     newEnergy = std::min(static_cast<uint8_t>(PEEP_MAX_ENERGY), newEnergy);

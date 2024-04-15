@@ -981,7 +981,7 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, PEEP_MAX_ENERGY);
                     break;
                 case WIDX_GUEST_ENERGY_MIN:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, PEEP_MIN_ENERGY);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, kPeepMinEnergy);
                     break;
                 case WIDX_GUEST_HUNGER_MAX:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, 0);

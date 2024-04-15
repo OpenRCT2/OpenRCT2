@@ -353,7 +353,7 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
                              { 0, kPeepMaxHappiness } };
                 case GUEST_PARAMETER_ENERGY:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                             { PEEP_MIN_ENERGY, PEEP_MAX_ENERGY } };
+                             { kPeepMinEnergy, PEEP_MAX_ENERGY } };
                 case GUEST_PARAMETER_HUNGER:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxHunger } };
                 case GUEST_PARAMETER_THIRST:

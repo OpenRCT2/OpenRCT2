@@ -21,7 +21,7 @@
 #include <array>
 #include <optional>
 
-#define PEEP_MIN_ENERGY 32
+constexpr int8_t kPeepMinEnergy = 32;
 #define PEEP_MAX_ENERGY 128
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
 
