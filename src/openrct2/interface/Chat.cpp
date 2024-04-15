@@ -53,7 +53,7 @@ bool ChatAvailable()
 void ChatOpen()
 {
     gChatOpen = true;
-    _chatTextInputSession = ContextStartTextInput(_chatCurrentLine, CHAT_MAX_MESSAGE_LENGTH);
+    _chatTextInputSession = ContextStartTextInput(_chatCurrentLine, kChatMaxMessageLength);
 }
 
 void ChatClose()
