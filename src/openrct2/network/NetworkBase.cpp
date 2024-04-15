@@ -733,11 +733,11 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
             if (groupname[i] == '{')
             {
                 std::string color = "{";
-                i++;
+                ++i;
                 while (i < groupname.size() && groupname[i] != '}' && groupname[i] != '{') 
                 {
                     color += groupname[i];
-                    i++;
+                    ++i;
                 }
                 color += '}';
                 // TODO: Add a check to make sure it's a valid color before pushing it
@@ -750,6 +750,7 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
 
         if (colors.size() == 0)
         {
+            formatted += "{BABYBLUE}";
             formatted += fromplayer->Name;
         }
         else
