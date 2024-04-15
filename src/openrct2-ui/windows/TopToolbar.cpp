@@ -289,6 +289,7 @@ static Widget _topToolbarWidgets[] = {
     {
     private:
         bool _landToolBlocked{ false };
+        bool _waitingForPause{ false };
         uint8_t _unkF64F0E{ 0 };
         int16_t _unkF64F0A{ 0 };
 
@@ -2487,6 +2488,7 @@ static Widget _topToolbarWidgets[] = {
                     {
                         auto pauseToggleAction = PauseToggleAction();
                         GameActions::Execute(&pauseToggleAction);
+                        _waitingForPause = true;
                     }
                     break;
                 case WIDX_ZOOM_OUT:
@@ -3141,8 +3143,13 @@ static Widget _topToolbarWidgets[] = {
             else
                 pressed_widgets |= (1uLL << WIDX_PATH);
 
-            if (gGamePaused & GAME_PAUSED_NORMAL)
+            bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
+            if (paused || _waitingForPause)
+            {
                 pressed_widgets |= (1uLL << WIDX_PAUSE);
+                if (paused)
+                    _waitingForPause = false;
+            }
             else
                 pressed_widgets &= ~(1uLL << WIDX_PAUSE);
 
