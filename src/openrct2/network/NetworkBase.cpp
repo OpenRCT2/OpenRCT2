@@ -737,6 +737,7 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
             {
                 std::string color = "{";
                 ++i;
+
                 while (i < groupname.size() && groupname[i] != '}' && groupname[i] != '{') 
                 {
                     color += groupname[i];
