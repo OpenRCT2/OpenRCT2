@@ -743,7 +743,6 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
                     ++i;
                 }
                 color += '}';
-                // TODO: Add a check to make sure it's a valid color before pushing it
                 if (groupname[i] == '}' && i < groupname.size())
                 {
                     colors.push_back(color);
@@ -796,8 +795,6 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
         formatted += ": ";
     }
     formatted += "{WHITE}";
-
-    // formatted += "{COLOUR_MOSS_GREEN}";
     formatted += text;
     return formatted.c_str();
 }
