@@ -188,7 +188,7 @@ STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
 STR_0770    :Security Guard {INT32}
 STR_0771    :Entertainer {INT32}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0777    :Unnamed park
 STR_0778    :Sign
 STR_0779    :1st
 STR_0780    :2nd
