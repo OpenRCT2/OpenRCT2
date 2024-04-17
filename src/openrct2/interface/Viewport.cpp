@@ -133,6 +133,19 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewpo
     return { screenCoord };
 }
 
+
+static ScreenCoordsXY Translate3DTo2D(int32_t rotation, const CoordsXY& pos)
+{
+    return Translate3DTo2DWithZ(rotation, CoordsXYZ{ pos, 0 });
+}
+
+ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos)
+{
+    auto rotated = pos.Rotate(rotation);
+    // Use right shift to avoid issues like #9301
+    return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
+}
+
 CoordsXYZ Focus::GetPos() const
 {
     return std::visit(
@@ -156,6 +169,7 @@ CoordsXYZ Focus::GetPos() const
         },
         data);
 }
+
 
 /**
  * Viewport will look at sprite or at coordinates as specified in flags 0b_1X

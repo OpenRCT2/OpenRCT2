@@ -163,6 +163,8 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
+
+ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos);
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 
 std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport);
