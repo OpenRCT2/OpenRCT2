@@ -1536,7 +1536,7 @@ static Widget _rideConstructionWidgets[] = {
             }
 
             // Set window title arguments
-            ft = Formatter::Common();
+            ft.Rewind();
             ft.Increment(4);
             currentRide->FormatNameTo(ft);
         }
