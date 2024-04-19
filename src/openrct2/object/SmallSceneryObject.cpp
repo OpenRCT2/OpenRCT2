@@ -19,6 +19,7 @@
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
+#include "SceneryBoundingBox.h"
 
 #include <algorithm>
 
@@ -35,6 +36,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.animation_mask = stream->ReadValue<uint16_t>();
     _legacyType.num_frames = stream->ReadValue<uint16_t>();
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    SetBoundingBoxFromFlags();
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
@@ -247,6 +249,17 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
                 }
             }
         }
+        SetBoundingBoxFromFlags();
+        auto jBBox = properties["boundingBox"];
+        if (!jBBox.empty())
+        {
+            _legacyType.boundBoxes = ReadBoundBoxes(
+                jBBox, _legacyType.boundBoxes[0].length.z,
+                _legacyType.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) || _legacyType.HasFlag(SMALL_SCENERY_FLAG_HALF_SPACE));
+        }
+        auto jSpriteOffset = properties["spriteOffsetCoordinates"];
+        if (!jSpriteOffset.empty())
+            _legacyType.spriteOffset = ReadSpriteOffset(jSpriteOffset);
 
         auto jFrameOffsets = properties["frameOffsets"];
         if (jFrameOffsets.is_array())
@@ -270,4 +283,51 @@ std::vector<uint8_t> SmallSceneryObject::ReadJsonFrameOffsets(json_t& jFrameOffs
         offsets.push_back(Json::GetNumber<uint8_t>(jOffset));
     }
     return offsets;
+}
+
+static int32_t getBoundBoxHeight(uint8_t clearanceHeight)
+{
+    int32_t height = clearanceHeight - 4;
+    if (height > 128 || height < 0)
+    {
+        height = 128;
+    }
+    return height - 1;
+}
+
+void SmallSceneryObject::SetBoundingBoxFromFlags()
+{
+    DefaultBoundingBoxType boundBoxType = DefaultBoundingBoxType::QuarterTileBox;
+    DefaultSpriteOffsetType spriteOffsetType = DefaultSpriteOffsetType::QuarterTileOffset;
+    if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+    {
+        boundBoxType = DefaultBoundingBoxType::FullTileThinBox;
+        spriteOffsetType = DefaultSpriteOffsetType::FullTileThinOffset;
+        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HALF_SPACE))
+        {
+            spriteOffsetType = DefaultSpriteOffsetType::FullTileOffset;
+            boundBoxType = DefaultBoundingBoxType::HalfTileBox;
+        }
+        else
+        {
+            if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            {
+                boundBoxType = DefaultBoundingBoxType::FullTileBox;
+                spriteOffsetType = DefaultSpriteOffsetType::FullTileOffset;
+                if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
+                {
+                    boundBoxType = DefaultBoundingBoxType::FullTileLargeBox;
+                    spriteOffsetType = DefaultSpriteOffsetType::FullTileLargeOffset;
+                }
+            }
+        }
+    }
+    _legacyType.spriteOffset = GetDefaultSpriteOffset(spriteOffsetType);
+    _legacyType.boundBoxes = GetDefaultSceneryBoundBoxes(boundBoxType);
+
+    auto clearanceHeight = getBoundBoxHeight(_legacyType.height);
+    for (uint8_t i = 0; i < NumOrthogonalDirections; i++)
+    {
+        _legacyType.boundBoxes[i].length.z = clearanceHeight;
+    }
 }

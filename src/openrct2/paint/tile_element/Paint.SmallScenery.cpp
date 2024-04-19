@@ -26,6 +26,13 @@
 
 using namespace OpenRCT2;
 
+static constexpr CoordsXY newQuadrantOffsets[NumOrthogonalDirections] = {
+    { 0, 0 },
+    { 0, 16 },
+    { 16, 16 },
+    { 16, 0 },
+};
+
 static constexpr CoordsXY lengths[] = {
     { 12, 26 },
     { 26, 12 },
@@ -119,9 +126,21 @@ static void PaintSmallSceneryBody(
 {
     PROFILED_FUNCTION();
 
-    BoundBoxXYZ boundBox = { { 0, 0, height }, { 2, 2, 0 } };
+    BoundBoxXYZ boundBox = sceneryEntry->boundBoxes[direction];
+    CoordsXYZ offset = sceneryEntry->spriteOffset;
+    boundBox.offset.z += height;
+    offset.z += height;
 
-    CoordsXYZ offset = { 0, 0, height };
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+    {
+        uint8_t quadrant = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) & 3;
+        boundBox.offset += newQuadrantOffsets[quadrant];
+        offset += newQuadrantOffsets[quadrant];
+    }
+
+#pragma region LegacyVerification
+    BoundBoxXYZ boundBoxLegacy = { { 0, 0, height }, { 2, 2, 0 } };
+    CoordsXYZ offsetLegacy = { 0, 0, height };
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
     {
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HALF_SPACE))
@@ -132,50 +151,58 @@ static void PaintSmallSceneryBody(
                 { 17, 3 },
                 { 3, 3 },
             };
-            boundBox.offset.x = sceneryHalfTileOffsets[direction].x;
-            boundBox.offset.y = sceneryHalfTileOffsets[direction].y;
-            boundBox.length.x = lengths[direction].x;
-            boundBox.length.y = lengths[direction].y;
-            offset.x = 3;
-            offset.y = 3;
+            boundBoxLegacy.offset.x = sceneryHalfTileOffsets[direction].x;
+            boundBoxLegacy.offset.y = sceneryHalfTileOffsets[direction].y;
+            boundBoxLegacy.length.x = lengths[direction].x;
+            boundBoxLegacy.length.y = lengths[direction].y;
+            offsetLegacy.x = 3;
+            offsetLegacy.y = 3;
         }
         else
         {
-            offset.x = 15;
-            offset.y = 15;
+            offsetLegacy.x = 15;
+            offsetLegacy.y = 15;
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
-                offset.x = 3;
-                offset.y = 3;
-                boundBox.length.x = 26;
-                boundBox.length.y = 26;
+                offsetLegacy.x = 3;
+                offsetLegacy.y = 3;
+                boundBoxLegacy.length.x = 26;
+                boundBoxLegacy.length.y = 26;
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
-                    offset.x = 1;
-                    offset.y = 1;
-                    boundBox.length.x = 30;
-                    boundBox.length.y = 30;
+                    offsetLegacy.x = 1;
+                    offsetLegacy.y = 1;
+                    boundBoxLegacy.length.x = 30;
+                    boundBoxLegacy.length.y = 30;
                 }
             }
-            boundBox.offset.x = offset.x;
-            boundBox.offset.y = offset.y;
+            boundBoxLegacy.offset.x = offset.x;
+            boundBoxLegacy.offset.y = offset.y;
         }
     }
     else
     {
         uint8_t quadrant = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) & 3;
         // -1 to maintain compatibility with existing CSOs in context of issue #17616
-        offset.x = SceneryQuadrantOffsets[quadrant].x - 1;
-        offset.y = SceneryQuadrantOffsets[quadrant].y - 1;
-        boundBox.offset.x = offset.x;
-        boundBox.offset.y = offset.y;
+        offsetLegacy.x = SceneryQuadrantOffsets[quadrant].x - 1;
+        offsetLegacy.y = SceneryQuadrantOffsets[quadrant].y - 1;
+        boundBoxLegacy.offset.x = offsetLegacy.x;
+        boundBoxLegacy.offset.y = offsetLegacy.y;
     }
-    boundBox.length.z = sceneryEntry->height - 4;
-    if (boundBox.length.z > 128 || boundBox.length.z < 0)
+    boundBoxLegacy.length.z = sceneryEntry->height - 4;
+    if (boundBoxLegacy.length.z > 128 || boundBoxLegacy.length.z < 0)
     {
-        boundBox.length.z = 128;
+        boundBoxLegacy.length.z = 128;
     }
-    boundBox.length.z--;
+    boundBoxLegacy.length.z--;
+
+    auto boxOffsetDelta = boundBoxLegacy.offset - boundBox.offset;
+    auto boxLengthDelta = boundBoxLegacy.length - boundBox.length;
+    auto offsetDelta = offsetLegacy - offset;
+    assert(boxOffsetDelta.x == 0 && boxOffsetDelta.y == 0 && boxOffsetDelta.z == 0);
+    assert(boxLengthDelta.x == 0 && boxLengthDelta.y == 0 && boxLengthDelta.z == 0);
+    assert(offsetDelta.x == 0 && offsetDelta.y == 0 && offsetDelta.z == 0);
+#pragma endregion
 
     ImageIndex baseImageIndex = sceneryEntry->image + direction;
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))

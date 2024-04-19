@@ -38,4 +38,5 @@ private:
     static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
     static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
     void PerformFixes();
+    void SetBoundingBoxFromFlags();
 };

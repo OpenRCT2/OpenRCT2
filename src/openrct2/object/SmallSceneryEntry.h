@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../interface/Cursors.h"
+#include "../world/Scenery.h"
 #include "ObjectTypes.h"
 
 enum SMALL_SCENERY_FLAGS : uint32_t
@@ -67,6 +68,8 @@ struct SmallSceneryEntry
     uint16_t animation_mask;
     uint16_t num_frames;
     ObjectEntryIndex scenery_tab_id;
+    SceneryBoundBoxes boundBoxes;
+    CoordsXYZ spriteOffset;
 
     constexpr bool HasFlag(const uint32_t _flags) const
     {

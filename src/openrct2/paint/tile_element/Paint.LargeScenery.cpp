@@ -387,6 +387,12 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
     }
 
+    auto boundBox = tile->boundBoxes[direction];
+    auto offset = tile->spriteOffset;
+    boundBox.offset.z += height;
+    offset.z += height;
+
+#pragma region LegacyVerification
     auto boxlengthZ = std::min<uint8_t>(tile->z_clearance, 128) - 3;
     auto flags = tile->flags;
     auto bbIndex = 16;
@@ -399,8 +405,16 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     const CoordsXYZ& bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
     const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
 
+    auto boxOffsetDelta = bbOffset - boundBox.offset;
+    auto boxLengthDelta = bbLength - boundBox.length;
+    auto offsetDelta = CoordsXYZ(0, 0, height) - offset;
+    assert(boxOffsetDelta.x == 0 && boxOffsetDelta.y == 0 && boxOffsetDelta.z == 0);
+    assert(boxLengthDelta.x == 0 && boxLengthDelta.y == 0 && boxLengthDelta.z == 0);
+    assert(offsetDelta.x == 0 && offsetDelta.y == 0 && offsetDelta.z == 0);
+#pragma endregion
+
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { bbOffset, bbLength });
+    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
 
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE && direction != 1 && direction != 2)
     {
@@ -413,7 +427,8 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
             auto sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection2 == direction)
             {
-                PaintLargeSceneryScrollingText(session, *sceneryEntry, tileElement, direction, height, bbOffset, isGhost);
+                PaintLargeSceneryScrollingText(
+                    session, *sceneryEntry, tileElement, direction, height, boundBox.offset, isGhost);
             }
         }
     }

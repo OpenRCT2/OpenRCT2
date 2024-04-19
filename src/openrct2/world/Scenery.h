@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../paint/Boundbox.h"
 #include "Location.hpp"
 #include "ScenerySelection.h"
 
@@ -17,6 +18,8 @@
 
 constexpr uint8_t kSceneryWitherAgeThreshold1 = 0x28;
 constexpr uint8_t kSceneryWitherAgeThreshold2 = 0x37;
+
+using SceneryBoundBoxes = std::array<BoundBoxXYZ, NumOrthogonalDirections>;
 
 enum
 {

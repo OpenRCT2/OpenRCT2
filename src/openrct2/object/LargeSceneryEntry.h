@@ -11,6 +11,7 @@
 #include "../common.h"
 #include "../interface/Cursors.h"
 #include "../world/Location.hpp"
+#include "../world/Scenery.h"
 #include "ObjectTypes.h"
 
 struct LargeSceneryText;
@@ -23,6 +24,8 @@ struct LargeSceneryTile
     uint8_t z_clearance;
     // CCCC WWWW 0SS0 0000
     uint16_t flags;
+    SceneryBoundBoxes boundBoxes = {};
+    CoordsXYZ spriteOffset = {};
 };
 
 enum
