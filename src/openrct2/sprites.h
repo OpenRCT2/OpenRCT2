@@ -19,6 +19,8 @@ enum
     // Used for on-demand drawing of dynamic memory
     SPR_TEMP = 0x7FFFE,
 
+    SPR_DEFAULT_PALETTE = 1532,
+
     SPR_SCROLLING_TEXT_LEGACY_START = 1542,
     SPR_SCROLLING_TEXT_LEGACY_END = SPR_SCROLLING_TEXT_LEGACY_START + OpenRCT2::MaxScrollingTextLegacyEntries,
     SPR_SCROLLING_TEXT_DEFAULT = 1574,
