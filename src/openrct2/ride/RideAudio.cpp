@@ -16,6 +16,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../interface/Viewport.h"
 #include "../object/AudioObject.h"
 #include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
