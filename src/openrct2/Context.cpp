@@ -84,12 +84,13 @@
 #include <string>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Localisation;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
+
+using OpenRCT2::Audio::IAudioContext;
 
 namespace OpenRCT2
 {
@@ -451,9 +452,9 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless)
             {
                 Audio::Init();
-                PopulateDevices();
-                InitRideSoundsAndInfo();
-                gGameSoundsOff = !gConfigSound.MasterSoundEnabled;
+                Audio::PopulateDevices();
+                Audio::InitRideSoundsAndInfo();
+                Audio::gGameSoundsOff = !gConfigSound.MasterSoundEnabled;
             }
 
             ChatInit();
@@ -1343,7 +1344,7 @@ namespace OpenRCT2
 
     std::unique_ptr<IContext> CreateContext()
     {
-        return CreateContext(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext());
+        return CreateContext(CreatePlatformEnvironment(), Audio::CreateDummyAudioContext(), CreateDummyUiContext());
     }
 
     std::unique_ptr<IContext> CreateContext(
