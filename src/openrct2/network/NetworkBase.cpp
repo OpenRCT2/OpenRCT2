@@ -758,10 +758,11 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
         else
         {
             size_t j = 0;
+            size_t proportionalsize = fromplayer->Name.size() / colors.size();
             for (size_t i = 0; i < colors.size(); ++i)
             {
                 formatted += colors[i];
-                size_t numcharacters = (fromplayer->Name.size() / colors.size()) + j;
+                size_t numcharacters = proportionalsize + j;
                 for (; j < numcharacters && j < fromplayer->Name.size(); ++j)
                 {
                     formatted += fromplayer->Name[j];
