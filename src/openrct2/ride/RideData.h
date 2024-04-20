@@ -306,45 +306,45 @@ struct TrackDrawerDescriptor
 
 struct RideTypeDescriptor
 {
-    uint8_t Category;
+    uint8_t Category{};
     /** rct2: 0x0097CC68 */
-    track_type_t StartTrackPiece;
+    track_type_t StartTrackPiece{};
     TrackDrawerDescriptor TrackPaintFunctions{};
     TrackDrawerDescriptor InvertedTrackPaintFunctions{};
-    uint64_t Flags;
+    uint64_t Flags{};
     /** rct2: 0x0097C8AC */
-    uint64_t RideModes;
-    RideMode DefaultMode;
+    uint64_t RideModes{};
+    RideMode DefaultMode{};
     /** rct2: 0x0097CF40 */
-    RideOperatingSettings OperatingSettings;
-    RideNaming Naming;
-    RideNameConvention NameConvention;
-    const char* EnumName;
-    uint8_t AvailableBreakdowns;
+    RideOperatingSettings OperatingSettings{};
+    RideNaming Naming{};
+    RideNameConvention NameConvention{};
+    const char* EnumName{};
+    uint8_t AvailableBreakdowns{};
     /** rct2: 0x0097D218 */
-    RideHeights Heights;
-    uint8_t MaxMass;
+    RideHeights Heights{};
+    uint8_t MaxMass{};
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-    RideLiftData LiftData;
+    RideLiftData LiftData{};
     // rct2: 0x0097CD1E
-    RatingTuple RatingsMultipliers;
-    UpkeepCostsDescriptor UpkeepCosts;
+    RatingTuple RatingsMultipliers{};
+    UpkeepCostsDescriptor UpkeepCosts{};
     // rct2: 0x0097DD78
-    RideBuildCost BuildCosts;
-    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
-    std::string_view DefaultMusic;
+    RideBuildCost BuildCosts{};
+    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    std::string_view DefaultMusic{};
     /** rct2: 0x0097D7CB */
-    ShopItemIndex PhotoItem;
+    ShopItemIndex PhotoItem{};
     /** rct2: 0x0097D21E */
-    uint8_t BonusValue;
-    TrackColourPresetList ColourPresets;
-    RideColourPreview ColourPreview;
-    RideColourKey ColourKey;
+    uint8_t BonusValue{};
+    TrackColourPresetList ColourPresets{};
+    RideColourPreview ColourPreview{};
+    RideColourKey ColourKey{};
 
     // json name lookup
-    std::string_view Name;
+    std::string_view Name{};
 
-    RideRatingsDescriptor RatingsData;
+    RideRatingsDescriptor RatingsData{};
 
     UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
