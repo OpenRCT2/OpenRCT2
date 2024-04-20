@@ -23,6 +23,7 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../interface/Cursors.h"
+#include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -287,7 +288,6 @@ bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements)
 }
 
 static void ClearElementsAt(const CoordsXY& loc);
-static ScreenCoordsXY Translate3DTo2D(int32_t rotation, const CoordsXY& pos);
 
 void TileElementIteratorBegin(TileElementIterator* it)
 {
@@ -1102,7 +1102,7 @@ static void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* to
 
     for (const auto& corner : corners)
     {
-        auto screenCoord = Translate3DTo2D(rotation, corner);
+        auto screenCoord = Translate3DTo2DWithZ(rotation, CoordsXYZ{ corner, 0 });
         if (screenCoord.x < *left)
             *left = screenCoord.x;
         if (screenCoord.x > *right)
@@ -1769,18 +1769,6 @@ bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, u
     }
 
     return true;
-}
-
-static ScreenCoordsXY Translate3DTo2D(int32_t rotation, const CoordsXY& pos)
-{
-    return Translate3DTo2DWithZ(rotation, CoordsXYZ{ pos, 0 });
-}
-
-ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos)
-{
-    auto rotated = pos.Rotate(rotation);
-    // Use right shift to avoid issues like #9301
-    return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
 }
 
 static void MapInvalidateTileUnderZoom(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom)

@@ -239,8 +239,6 @@ LargeSceneryElement* MapGetLargeScenerySegment(const CoordsXYZD& sceneryPos, int
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement);
 
-ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos);
-
 TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos);
 TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, track_type_t trackType);
 TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence);
