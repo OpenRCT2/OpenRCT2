@@ -162,6 +162,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_INVERT_DRAG,
     WIDX_ZOOM_TO_CURSOR,
     WIDX_WINDOW_BUTTONS_ON_THE_LEFT,
+    WIDX_ENLARGED_UI,
     WIDX_HOTKEY_DROPDOWN,
     WIDX_THEMES_GROUP,
     WIDX_THEMES_LABEL,
@@ -320,18 +321,19 @@ static Widget window_options_audio_widgets[] = {
 };
 
 constexpr int32_t kControlsGroupStart = 53;
-constexpr int32_t kThemesGroupStart = 163;
-constexpr int32_t kToolbarGroupStart = 215;
+constexpr int32_t kThemesGroupStart = 178;
+constexpr int32_t kToolbarGroupStart = 230;
 
 static Widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget({  5, kControlsGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
+    MakeWidget({  5, kControlsGroupStart +  0}, {300,122}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
     MakeWidget({ 10, kControlsGroupStart + 13}, {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
     MakeWidget({ 10, kControlsGroupStart + 30}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_TRAP_MOUSE,                 STR_TRAP_MOUSE_TIP                ), // Trap mouse
     MakeWidget({ 10, kControlsGroupStart + 45}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_INVERT_RIGHT_MOUSE_DRAG,    STR_INVERT_RIGHT_MOUSE_DRAG_TIP   ), // Invert right mouse dragging
     MakeWidget({ 10, kControlsGroupStart + 60}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_TO_CURSOR,             STR_ZOOM_TO_CURSOR_TIP            ), // Zoom to cursor
     MakeWidget({ 10, kControlsGroupStart + 75}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
-    MakeWidget({155, kControlsGroupStart + 90}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
+    MakeWidget({ 10, kControlsGroupStart + 90}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI                    ),
+    MakeWidget({155, kControlsGroupStart + 105}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
 
     MakeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
     MakeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
@@ -1592,6 +1594,12 @@ static Widget *window_options_page_widgets[] = {
                     Invalidate();
                     WindowInvalidateAll();
                     break;
+                case WIDX_ENLARGED_UI:
+                    Config::Get().interface.EnlargedUi ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    WindowInvalidateAll();
+                    break;
                 case WIDX_INVERT_DRAG:
                     Config::Get().general.InvertViewportDrag ^= 1;
                     Config::Save();
@@ -1658,6 +1666,7 @@ static Widget *window_options_page_widgets[] = {
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
             SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
+            SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);

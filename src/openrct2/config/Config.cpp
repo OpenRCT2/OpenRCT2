@@ -43,6 +43,11 @@ static constexpr bool WindowButtonsOnTheLeftDefault = true;
 #else
 static constexpr bool WindowButtonsOnTheLeftDefault = false;
 #endif
+#ifdef __ANDROID__
+static constexpr bool kEnlargedUiDefault = true;
+#else
+static constexpr bool kEnlargedUiDefault = false;
+#endif
 
 namespace OpenRCT2::Config
 {
@@ -351,6 +356,7 @@ namespace OpenRCT2::Config
             model->ScenarioselectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
             model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
             model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", WindowButtonsOnTheLeftDefault);
+            model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
         }
     }
 
@@ -374,6 +380,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("scenarioselect_last_tab", model->ScenarioselectLastTab);
         writer->WriteBoolean("list_ride_vehicles_separately", model->ListRideVehiclesSeparately);
         writer->WriteBoolean("window_buttons_on_the_left", model->WindowButtonsOnTheLeft);
+        writer->WriteBoolean("enlarged_ui", model->EnlargedUi);
     }
 
     static void ReadSound(IIniReader* reader)
