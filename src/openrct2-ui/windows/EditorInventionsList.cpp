@@ -640,7 +640,7 @@ static Widget _inventionListDragWidgets[] = {
             do
             {
                 res = inventionListWindow->GetResearchItemAt(newScreenCoords);
-                newScreenCoords.y += LIST_ROW_HEIGHT;
+                newScreenCoords.y += kListRowHeight;
             } while (res.has_value() && res->research != nullptr && res->research->IsAlwaysResearched());
 
             if (res.has_value())

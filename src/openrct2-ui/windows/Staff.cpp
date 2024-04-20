@@ -936,13 +936,13 @@ static Widget _staffOptionsWidgets[] = {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
                 DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             auto ft = Formatter();
             ft.Add<int32_t>(staff->GetHireDate());
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             switch (staff->AssignedStaffType)
             {
@@ -950,17 +950,17 @@ static Widget _staffOptionsWidgets[] = {
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffLawnsMown);
                     DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffGardensWatered);
                     DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffLitterSwept);
                     DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffBinsEmptied);
@@ -970,7 +970,7 @@ static Widget _staffOptionsWidgets[] = {
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffRidesInspected);
                     DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffRidesFixed);

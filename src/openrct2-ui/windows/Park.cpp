@@ -992,7 +992,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             auto ft = Formatter();
             ft.Add<uint32_t>(parkSize);
             DrawTextBasic(dpi, screenCoords, stringIndex, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Draw number of rides / attractions
             if (_numberOfRides != -1)
@@ -1001,7 +1001,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 ft.Add<uint32_t>(_numberOfRides);
                 DrawTextBasic(dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Draw number of staff
             if (_numberOfStaff != -1)
@@ -1010,13 +1010,13 @@ static constexpr WindowParkAward _parkAwards[] = {
                 ft.Add<uint32_t>(_numberOfStaff);
                 DrawTextBasic(dpi, screenCoords, STR_STAFF_LABEL, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Draw number of guests in park
             ft = Formatter();
             ft.Add<uint32_t>(gameState.NumGuestsInPark);
             DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<uint32_t>(gameState.TotalAdmissions);
@@ -1116,7 +1116,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Your objective:
             DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Objective
             ft = Formatter();

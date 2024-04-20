@@ -765,7 +765,7 @@ static Widget _scenarioSelectWidgets[] = {
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
-        ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - WH) / 2) };
+        ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - WH) / 2) };
         window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback);
         return window;
     }

@@ -963,11 +963,11 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                         GfxFillRect(
                             dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                             RideKeyColours[i]);
-                        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, MapLabels[i], {});
-                        screenCoords.y += LIST_ROW_HEIGHT;
+                        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ kListRowHeight, 0 }, MapLabels[i], {});
+                        screenCoords.y += kListRowHeight;
                         if (i == 3)
                         {
-                            screenCoords += { _firstColumnWidth, -(LIST_ROW_HEIGHT * 4) };
+                            screenCoords += { _firstColumnWidth, -(kListRowHeight * 4) };
                         }
                     }
                 }
@@ -1468,14 +1468,14 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
                 widgets[WIDX_MAP].bottom = height - 1 - 72;
             else if (selected_tab == PAGE_RIDES)
-                widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
+                widgets[WIDX_MAP].bottom = height - 1 - (4 * kListRowHeight + 4);
             else
                 widgets[WIDX_MAP].bottom = height - 1 - 14;
         }
 
         void CalculateTextLayout()
         {
-            int32_t textOffset = 4 + LIST_ROW_HEIGHT;
+            int32_t textOffset = 4 + kListRowHeight;
             _firstColumnWidth = 118;
             for (uint32_t i = 0; i < 4; i++)
             {

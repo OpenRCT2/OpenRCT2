@@ -176,7 +176,7 @@ static Widget window_install_track_widgets[] = {
                     // Scenery not available
                     DrawTextEllipsised(
                         dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
-                    screenPos.y -= LIST_ROW_HEIGHT;
+                    screenPos.y -= kListRowHeight;
                 }
             }
 
@@ -190,7 +190,7 @@ static Widget window_install_track_widgets[] = {
                 auto ft = Formatter();
                 ft.Add<const char*>(trackName);
                 DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 1, 0 }, STR_TRACK_DESIGN_NAME, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
 
             // Friendly Track name
@@ -211,7 +211,7 @@ static Widget window_install_track_widgets[] = {
                 }
 
                 DrawTextBasic(dpi, screenPos, STR_TRACK_DESIGN_TYPE, ft);
-                screenPos.y += LIST_ROW_HEIGHT + 4;
+                screenPos.y += kListRowHeight + 4;
             }
 
             // Stats
@@ -220,21 +220,21 @@ static Widget window_install_track_widgets[] = {
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
             {
                 fixed32_2dp rating = td6->intensity * 10;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
             {
                 fixed32_2dp rating = td6->nausea * 10;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
-                screenPos.y += LIST_ROW_HEIGHT + 4;
+                screenPos.y += kListRowHeight + 4;
             }
 
             const auto& rtd = GetRideTypeDescriptor(td6->type);
@@ -247,7 +247,7 @@ static Widget window_install_track_widgets[] = {
                     auto ft = Formatter();
                     ft.Add<uint16_t>(holes);
                     DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
                 else
                 {
@@ -257,7 +257,7 @@ static Widget window_install_track_widgets[] = {
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
-                        screenPos.y += LIST_ROW_HEIGHT;
+                        screenPos.y += kListRowHeight;
                     }
                     // Average speed
                     {
@@ -265,7 +265,7 @@ static Widget window_install_track_widgets[] = {
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
-                        screenPos.y += LIST_ROW_HEIGHT;
+                        screenPos.y += kListRowHeight;
                     }
                 }
 
@@ -274,7 +274,7 @@ static Widget window_install_track_widgets[] = {
                 ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
                 ft.Add<uint16_t>(td6->ride_length);
                 DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
 
             if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -285,7 +285,7 @@ static Widget window_install_track_widgets[] = {
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
                 // Maximum negative vertical Gs
                 {
@@ -293,7 +293,7 @@ static Widget window_install_track_widgets[] = {
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
                 // Maximum lateral Gs
                 {
@@ -301,7 +301,7 @@ static Widget window_install_track_widgets[] = {
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
                 if (td6->total_air_time != 0)
                 {
@@ -310,7 +310,7 @@ static Widget window_install_track_widgets[] = {
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
             }
 
@@ -321,11 +321,11 @@ static Widget window_install_track_widgets[] = {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(drops);
                 DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
 
                 // Drop height is multiplied by 0.75
                 DrawTextBasic(dpi, screenPos, STR_HIGHEST_DROP_HEIGHT, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
 
             if (td6->type != RIDE_TYPE_MINI_GOLF)
@@ -337,7 +337,7 @@ static Widget window_install_track_widgets[] = {
                     auto ft = Formatter();
                     ft.Add<uint16_t>(inversions);
                     DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
             }
             screenPos.y += 4;
@@ -349,7 +349,7 @@ static Widget window_install_track_widgets[] = {
                 ft.Add<uint16_t>(td6->space_required_x);
                 ft.Add<uint16_t>(td6->space_required_y);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
 
             if (td6->cost != 0)
@@ -435,7 +435,7 @@ static Widget window_install_track_widgets[] = {
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
-        auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
+        auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
 
         auto* window = WindowFocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
         window->SetupTrack(path, std::move(trackDesign));

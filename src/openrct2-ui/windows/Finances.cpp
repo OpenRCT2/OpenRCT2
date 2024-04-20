@@ -368,7 +368,7 @@ static Widget _windowFinancesResearchWidgets[] =
             if (page != WINDOW_FINANCES_PAGE_SUMMARY)
                 return;
 
-            auto screenCoords = ScreenCoordsXY{ 0, TABLE_CELL_HEIGHT + 2 };
+            auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
             Widget self = widgets[WIDX_SUMMARY_SCROLL];
             int32_t row_width = std::max<uint16_t>(scrolls[0].h_right, self.width());
@@ -381,10 +381,10 @@ static Widget _windowFinancesResearchWidgets[] =
                     GfxFillRect(
                         dpi,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
-                          screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
+                          screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1]].lighter | 0x1000000);
 
-                screenCoords.y += TABLE_CELL_HEIGHT;
+                screenCoords.y += kTableCellHeight;
             }
 
             auto& gameState = GetGameState();
@@ -422,7 +422,7 @@ static Widget _windowFinancesResearchWidgets[] =
                             dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
                             { TextAlignment::RIGHT });
                     }
-                    screenCoords.y += TABLE_CELL_HEIGHT;
+                    screenCoords.y += kTableCellHeight;
                 }
                 screenCoords.y += 4;
 
@@ -554,12 +554,11 @@ static Widget _windowFinancesResearchWidgets[] =
                 if (i % 2 == 0)
                     GfxFillRect(
                         dpi,
-                        { screenCoords - ScreenCoordsXY{ 0, 1 },
-                          screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
+                        { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1]].lighter | 0x1000000);
 
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
-                screenCoords.y += TABLE_CELL_HEIGHT;
+                screenCoords.y += kTableCellHeight;
             }
 
             // Horizontal rule below expenditure / income table
@@ -809,7 +808,7 @@ static Widget _windowFinancesResearchWidgets[] =
         {
             // Count number of active campaigns
             int32_t numActiveCampaigns = static_cast<int32_t>(gMarketingCampaigns.size());
-            int32_t y = std::max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
+            int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
 
             // Update group box positions
             _windowFinancesMarketingWidgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
@@ -825,8 +824,8 @@ static Widget _windowFinancesResearchWidgets[] =
                 {
                     campaignButton->type = WindowWidgetType::Button;
                     campaignButton->top = y;
-                    campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
-                    y += BUTTON_FACE_HEIGHT + 2;
+                    campaignButton->bottom = y + kButtonFaceHeight + 1;
+                    y += kButtonFaceHeight + 2;
                 }
                 else
                 {
@@ -886,13 +885,13 @@ static Widget _windowFinancesResearchWidgets[] =
                     dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
                     weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
 
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             if (noCampaignsActive)
             {
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 34;
 
@@ -908,7 +907,7 @@ static Widget _windowFinancesResearchWidgets[] =
                     ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
 
-                    screenCoords.y += BUTTON_FACE_HEIGHT + 2;
+                    screenCoords.y += kButtonFaceHeight + 2;
                 }
             }
         }
