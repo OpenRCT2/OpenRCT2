@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -27,6 +28,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 
     constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
+    constexpr int32_t DROPDOWN_ITEM_HEIGHT_TOUCH = 24;
 
     static constexpr std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
         1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
@@ -84,6 +86,16 @@ namespace OpenRCT2::Ui::Windows
             gDropdownIsColour = false;
             gDropdownDefaultIndex = -1;
             InputSetState(InputState::DropdownActive);
+        }
+
+        static int32_t GetDefaultRowHeight()
+        {
+            return gConfigInterface.EnlargedUi ? DROPDOWN_ITEM_HEIGHT_TOUCH : DROPDOWN_ITEM_HEIGHT;
+        }
+
+        static int32_t GetAdditionalRowPadding()
+        {
+            return gConfigInterface.EnlargedUi ? 6 : 0;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -154,8 +166,9 @@ namespace OpenRCT2::Ui::Windows
                             colour = NOT_TRANSLUCENT(colours[0]) | COLOUR_FLAG_INSET;
 
                         // Draw item string
+                        auto yOffset = GetAdditionalRowPadding();
                         Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
-                        DrawTextEllipsised(dpi, screenCoords, width - 5, item, ft, { colour });
+                        DrawTextEllipsised(dpi, { screenCoords.x, screenCoords.y + yOffset }, width - 5, item, ft, { colour });
                     }
                 }
             }
@@ -167,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Set and calculate num items, rows and columns
             ItemWidth = itemWidth;
-            ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : DROPDOWN_ITEM_HEIGHT;
+            ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : GetDefaultRowHeight();
             gDropdownNumItems = static_cast<int32_t>(numItems);
             // There must always be at least one column to prevent dividing by zero
             if (gDropdownNumItems == 0)
@@ -493,9 +506,10 @@ static constexpr colour_t kColoursDropdownOrder[] = {
         }
 
         // Show dropdown
+        auto squareSize = DropdownWindow::GetDefaultRowHeight();
         WindowDropdownShowImage(
             w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-            Dropdown::Flag::StayOpen, numColours, 12, 12,
+            Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
         gDropdownIsColour = true;
