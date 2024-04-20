@@ -1515,6 +1515,10 @@ static Widget _rideConstructionWidgets[] = {
                 }
                 ft.Add<uint16_t>(brakeSpeed2);
             }
+            else
+            {
+                ft.Increment(2);
+            }
 
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
                 [_currentSeatRotationAngle];
@@ -1536,8 +1540,6 @@ static Widget _rideConstructionWidgets[] = {
             }
 
             // Set window title arguments
-            ft.Rewind();
-            ft.Increment(4);
             currentRide->FormatNameTo(ft);
         }
 
