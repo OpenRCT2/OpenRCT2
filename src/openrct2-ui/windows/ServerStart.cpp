@@ -104,7 +104,7 @@ static Widget _windowServerStartWidgets[] = {
                     WindowStartTextbox(*this, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
                     break;
                 case WIDX_GREETING_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
+                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _greeting, kChatInputSize);
                     break;
                 case WIDX_PASSWORD_INPUT:
                     WindowStartTextbox(*this, widgetIndex, STR_STRING, _password, 32);
@@ -259,7 +259,7 @@ static Widget _windowServerStartWidgets[] = {
         char _port[7];
         char _name[65];
         char _description[MAX_SERVER_DESCRIPTION_LENGTH];
-        char _greeting[CHAT_INPUT_SIZE];
+        char _greeting[kChatInputSize];
         char _password[33];
         static void ScenarioSelectCallback(const utf8* path)
         {

@@ -838,16 +838,16 @@ void Guest::Loc68FA89()
     }
     else
     {
-        newEnergy = std::min(PEEP_MAX_ENERGY_TARGET, newEnergy + 4);
+        newEnergy = std::min<uint16_t>(kPeepMaxEnergyTarget, newEnergy + 4);
         if (newEnergy > newTargetEnergy)
             newEnergy = newTargetEnergy;
     }
 
-    if (newEnergy < PEEP_MIN_ENERGY)
-        newEnergy = PEEP_MIN_ENERGY;
+    if (newEnergy < kPeepMinEnergy)
+        newEnergy = kPeepMinEnergy;
 
     /* Previous code here suggested maximum energy is 128. */
-    newEnergy = std::min(static_cast<uint8_t>(PEEP_MAX_ENERGY), newEnergy);
+    newEnergy = std::min(kPeepMaxEnergy, newEnergy);
 
     if (newEnergy != Energy)
     {
@@ -3035,7 +3035,7 @@ static void PeepUpdateHunger(Guest* peep)
     {
         peep->Hunger -= 2;
 
-        peep->EnergyTarget = std::min(peep->EnergyTarget + 2, PEEP_MAX_ENERGY_TARGET);
+        peep->EnergyTarget = std::min<uint16_t>(peep->EnergyTarget + 2, kPeepMaxEnergyTarget);
         peep->Toilet = std::min(peep->Toilet + 1, 255);
     }
 }
