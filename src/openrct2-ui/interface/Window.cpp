@@ -462,7 +462,7 @@ namespace OpenRCT2
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
-    void Window::ResizeFrame()
+    int32_t Window::ResizeFrame()
     {
         // Frame
         widgets[0].right = width - 1;
@@ -470,24 +470,45 @@ namespace OpenRCT2
         // Title
         widgets[1].right = width - 2;
         // Close button
+        auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
             widgets[2].left = 2;
-            widgets[2].right = 2 + kCloseButtonWidth;
+            widgets[2].right = 2 + closeButtonSize;
         }
         else
         {
-            widgets[2].left = width - 3 - kCloseButtonWidth;
+            widgets[2].left = width - 3 - closeButtonSize;
             widgets[2].right = width - 3;
         }
+        auto defaultHeight = Config::Get().interface.EnlargedUi ? 24 : 12;
+        auto currentHeight = widgets[1].height();
+        auto heightDifference = defaultHeight - currentHeight;
+        if (heightDifference != 0)
+        {
+            widgets[1].bottom += heightDifference;
+            widgets[2].bottom += heightDifference;
+
+            for (auto i = 3; widgets[i].type != WindowWidgetType::Last; i++)
+            {
+                widgets[i].top += heightDifference;
+                widgets[i].bottom += heightDifference;
+            }
+            height += heightDifference;
+        }
+
+        return heightDifference;
     }
 
-    void Window::ResizeFrameWithPage()
+    int32_t Window::ResizeFrameWithPage()
     {
-        ResizeFrame();
-        // Page background
-        widgets[3].right = width - 1;
-        widgets[3].bottom = height - 1;
+        auto heightDifference = ResizeFrame();
+
+        constexpr auto pageBackgroundOffset = 3;
+        widgets[pageBackgroundOffset].right = width - 1;
+        widgets[pageBackgroundOffset].bottom = height - 1;
+
+        return heightDifference;
     }
 
     void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
@@ -551,7 +572,7 @@ namespace OpenRCT2
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2
