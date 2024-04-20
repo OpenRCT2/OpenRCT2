@@ -3,6 +3,7 @@
 - Feature: [#11512] Coloured usernames by group on multiplayer servers.
 - Feature: [#21734] Park admittance price can now be set via text input.
 - Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
+- Improved: [#21855] Add a separator between “Load Game” and “Save Game”, to avoid accidental overwriting.
 - Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Change: [#21855] Cheats menu dropdown no longer requires dragging.
 - Fix: [#866] Boat Hire boats get stuck entering track.

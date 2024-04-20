@@ -119,19 +119,20 @@ namespace OpenRCT2::Ui::Windows
     {
         DDIDX_NEW_GAME = 0,
         DDIDX_LOAD_GAME = 1,
-        DDIDX_SAVE_GAME = 2,
-        DDIDX_SAVE_GAME_AS = 3,
         // separator
-        DDIDX_ABOUT = 5,
-        DDIDX_OPTIONS = 6,
-        DDIDX_SCREENSHOT = 7,
-        DDIDX_GIANT_SCREENSHOT = 8,
+        DDIDX_SAVE_GAME = 3,
+        DDIDX_SAVE_GAME_AS = 4,
         // separator
-        DDIDX_FILE_BUG_ON_GITHUB = 10,
-        DDIDX_UPDATE_AVAILABLE = 11,
+        DDIDX_ABOUT = 6,
+        DDIDX_OPTIONS = 7,
+        DDIDX_SCREENSHOT = 8,
+        DDIDX_GIANT_SCREENSHOT = 9,
         // separator
-        DDIDX_QUIT_TO_MENU = 13,
-        DDIDX_EXIT_OPENRCT2 = 14,
+        DDIDX_FILE_BUG_ON_GITHUB = 11,
+        DDIDX_UPDATE_AVAILABLE = 12,
+        // separator
+        DDIDX_QUIT_TO_MENU = 14,
+        DDIDX_EXIT_OPENRCT2 = 15,
     };
 
     enum TopToolbarViewMenuDdidx
@@ -3673,6 +3674,7 @@ static Widget _topToolbarWidgets[] = {
         else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         {
             gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
             gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
             gDropdownItems[numItems++].Format = STR_EMPTY;
             gDropdownItems[numItems++].Format = STR_ABOUT;
@@ -3693,6 +3695,7 @@ static Widget _topToolbarWidgets[] = {
         {
             gDropdownItems[numItems++].Format = STR_NEW_GAME;
             gDropdownItems[numItems++].Format = STR_LOAD_GAME;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
             gDropdownItems[numItems++].Format = STR_SAVE_GAME;
             gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
             gDropdownItems[numItems++].Format = STR_EMPTY;
