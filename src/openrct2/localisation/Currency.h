@@ -33,6 +33,8 @@ enum class CurrencyType : uint8_t
     TWD,          // New Taiwan Dollar
     Yuan,         // Chinese Yuan
     Forint,       // Hungarian Forint
+    AUD,          // Australian Dollar
+    CAD,          // Canadian Dollar
 
     Custom, // Custom currency
 

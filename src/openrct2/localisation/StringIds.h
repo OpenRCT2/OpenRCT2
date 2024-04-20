@@ -4045,6 +4045,9 @@ enum : uint16_t
 
     STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS = 6626,
 
+    STR_AUSTRALIAN_DOLLAR = 6627,
+    STR_CANADIAN_DOLLAR = 6628,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

@@ -72,6 +72,8 @@ namespace Config
         ConfigEnumEntry<CurrencyType>("TWD", CurrencyType::TWD),
         ConfigEnumEntry<CurrencyType>("CNY", CurrencyType::Yuan),
         ConfigEnumEntry<CurrencyType>("HUF", CurrencyType::Forint),
+        ConfigEnumEntry<CurrencyType>("AUD", CurrencyType::AUD),
+        ConfigEnumEntry<CurrencyType>("CAD", CurrencyType::CAD),
         ConfigEnumEntry<CurrencyType>("CUSTOM", CurrencyType::Custom),
     });
 

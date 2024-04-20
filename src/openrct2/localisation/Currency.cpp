@@ -32,6 +32,8 @@ CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
     {   "TWD",  1000,   CurrencyAffix::Prefix,    u8"NT$",    CurrencyAffix::Prefix,    "NT$",  STR_NEW_TAIWAN_DOLLAR}, // New Taiwan Dollar
     {   "CNY",  100,    CurrencyAffix::Prefix,    u8"CN¥",    CurrencyAffix::Prefix,    "CNY",  STR_CHINESE_YUAN    },  // Chinese Yuan
     {   "HUF",  1000,   CurrencyAffix::Suffix,    u8" Ft",    CurrencyAffix::Suffix,    " Ft",  STR_HUNGARIAN_FORINT},  // Hungarian Forint
+    {   "AUD",  10,     CurrencyAffix::Prefix,    u8"AU$",     CurrencyAffix::Prefix,    "AUD",  STR_AUSTRALIAN_DOLLAR},  // Australian Dollar
+    {   "CAD",  10,     CurrencyAffix::Prefix,    u8"CA$",     CurrencyAffix::Prefix,    "CAD",  STR_CANADIAN_DOLLAR },  // Canadian Dollar
     {   "CTM",  10,     CurrencyAffix::Prefix,    u8"Ctm",    CurrencyAffix::Prefix,    "Ctm",  STR_CUSTOM_CURRENCY },  // Customizable currency
 };
 // clang-format on
