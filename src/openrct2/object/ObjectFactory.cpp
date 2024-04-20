@@ -526,11 +526,11 @@ namespace ObjectFactory
             auto id = Json::GetString(jRoot["id"]);
 
             // Base audio files are renamed to a common, virtual name so asset packs can override it correctly.
-            const bool isRCT2BaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::RCT2Base && !isUsingClassic();
-            const bool isRCTCBaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::RCTCBase && isUsingClassic();
+            const bool isRCT2BaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::kRCT2Base && !isUsingClassic();
+            const bool isRCTCBaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::kRCTCBase && isUsingClassic();
             if (isRCT2BaseAudio || isRCTCBaseAudio)
             {
-                id = OpenRCT2::Audio::AudioObjectIdentifiers::RCT2;
+                id = OpenRCT2::Audio::AudioObjectIdentifiers::kRCT2;
             }
 
             auto version = VersionTuple(Json::GetString(jRoot["version"]));

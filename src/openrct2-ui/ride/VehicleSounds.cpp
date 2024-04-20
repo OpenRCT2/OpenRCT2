@@ -230,7 +230,7 @@ namespace OpenRCT2::Audio
      *  rct2: 0x006BB9FF
      */
     static void UpdateSoundParams(
-        const Vehicle& vehicle, FixedVector<VehicleSoundParams, MaxVehicleSounds>& vehicleSoundParamsList)
+        const Vehicle& vehicle, FixedVector<VehicleSoundParams, kMaxVehicleSounds>& vehicleSoundParamsList)
     {
         if (!SoundCanPlay(vehicle))
             return;
@@ -243,14 +243,14 @@ namespace OpenRCT2::Audio
 
         if (soundParamIter == std::end(vehicleSoundParamsList))
         {
-            if (vehicleSoundParamsList.size() < MaxVehicleSounds)
+            if (vehicleSoundParamsList.size() < kMaxVehicleSounds)
             {
                 vehicleSoundParamsList.push_back(CreateSoundParam(vehicle, soundPriority));
             }
         }
         else
         {
-            if (vehicleSoundParamsList.size() < MaxVehicleSounds)
+            if (vehicleSoundParamsList.size() < kMaxVehicleSounds)
             {
                 // Shift all sound params down one if using a free space
                 vehicleSoundParamsList.insert(soundParamIter, CreateSoundParam(vehicle, soundPriority));
@@ -351,7 +351,7 @@ namespace OpenRCT2::Audio
         for (auto& vehicleSound : gVehicleSoundList)
         {
             // Use free slot
-            if (vehicleSound.id == SoundIdNull)
+            if (vehicleSound.id == kSoundIdNull)
             {
                 vehicleSound.id = sound_params->id;
                 vehicleSound.TrackSound.Id = SoundId::Null;
@@ -528,7 +528,7 @@ namespace OpenRCT2::Audio
         if (!IsAvailable())
             return;
 
-        FixedVector<VehicleSoundParams, MaxVehicleSounds> vehicleSoundParamsList;
+        FixedVector<VehicleSoundParams, kMaxVehicleSounds> vehicleSoundParamsList;
 
         VehicleSoundsUpdateWindowSetup();
 
@@ -540,7 +540,7 @@ namespace OpenRCT2::Audio
         // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
         for (auto& vehicleSound : gVehicleSoundList)
         {
-            if (vehicleSound.id != SoundIdNull)
+            if (vehicleSound.id != kSoundIdNull)
             {
                 bool keepPlaying = false;
                 for (auto vehicleSoundParams : vehicleSoundParamsList)
@@ -563,7 +563,7 @@ namespace OpenRCT2::Audio
                 {
                     vehicleSound.OtherSound.Channel->Stop();
                 }
-                vehicleSound.id = SoundIdNull;
+                vehicleSound.id = kSoundIdNull;
             }
         }
 
