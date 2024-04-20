@@ -309,6 +309,8 @@ static Widget _topToolbarWidgets[] = {
 
         void RotateMenuDropdown(int16_t dropdownIndex);
 
+        void InitFileMenu(Widget& widget);
+
         void InitCheatsMenu(Widget& widget);
 
         void CheatsMenuDropdown(int16_t dropdownIndex);
@@ -2560,77 +2562,12 @@ static Widget _topToolbarWidgets[] = {
 
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
-            int32_t numItems = 0;
             Widget& widget = widgets[widgetIndex];
 
             switch (widgetIndex)
             {
                 case WIDX_FILE_MENU:
-                    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-                    {
-                        gDropdownItems[numItems++].Format = STR_ABOUT;
-                        gDropdownItems[numItems++].Format = STR_OPTIONS;
-                        gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
-
-                        if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                            gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
-
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-
-                        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                            gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
-                        else
-                            gDropdownItems[numItems++].Format = STR_QUIT_TRACK_DESIGNS_MANAGER;
-
-                        gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
-                    }
-                    else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-                    {
-                        gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
-                        gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_ABOUT;
-                        gDropdownItems[numItems++].Format = STR_OPTIONS;
-                        gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
-
-                        if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                            gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
-
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
-                        gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
-                    }
-                    else
-                    {
-                        gDropdownItems[numItems++].Format = STR_NEW_GAME;
-                        gDropdownItems[numItems++].Format = STR_LOAD_GAME;
-                        gDropdownItems[numItems++].Format = STR_SAVE_GAME;
-                        gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_ABOUT;
-                        gDropdownItems[numItems++].Format = STR_OPTIONS;
-                        gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
-
-                        if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                            gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
-
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
-                        gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
-                    }
-
-                    WindowDropdownShowText(
-                        { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80,
-                        Dropdown::Flag::StayOpen, numItems);
+                    InitFileMenu(widget);
                     break;
                 case WIDX_CHEATS:
                     InitCheatsMenu(widget);
@@ -3707,6 +3644,76 @@ static Widget _topToolbarWidgets[] = {
         {
             ViewportRotateAll(-1);
         }
+    }
+
+    void TopToolbar::InitFileMenu(Widget& widget)
+    {
+        int32_t numItems = 0;
+        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        {
+            gDropdownItems[numItems++].Format = STR_ABOUT;
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
+            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+
+            if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+                gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
+            else
+                gDropdownItems[numItems++].Format = STR_QUIT_TRACK_DESIGNS_MANAGER;
+
+            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+        }
+        else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        {
+            gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
+            gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_ABOUT;
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
+            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
+            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+        }
+        else
+        {
+            gDropdownItems[numItems++].Format = STR_NEW_GAME;
+            gDropdownItems[numItems++].Format = STR_LOAD_GAME;
+            gDropdownItems[numItems++].Format = STR_SAVE_GAME;
+            gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_ABOUT;
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
+            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
+            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+        }
+
+        WindowDropdownShowText(
+            { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80,
+            Dropdown::Flag::StayOpen, numItems);
     }
 
     void TopToolbar::InitCheatsMenu(Widget& widget)
