@@ -1,5 +1,6 @@
 0.4.11 (in development)
 ------------------------------------------------------------------------
+- Feature: [#11512] Coloured usernames by group on multiplayer servers.
 - Feature: [#21734] Park admittance price can now be set via text input.
 - Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
 - Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
