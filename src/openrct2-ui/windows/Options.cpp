@@ -1324,6 +1324,9 @@ static Widget *window_options_page_widgets[] = {
                     if (!gConfigSound.RideMusicEnabled)
                     {
                         OpenRCT2::RideAudio::StopAllChannels();
+                        OpenRCT2::Audio::StopTitleMusic();
+                    } else {
+                        OpenRCT2::Audio::PlayTitleMusic();
                     }
                     ConfigSaveDefault();
                     Invalidate();
