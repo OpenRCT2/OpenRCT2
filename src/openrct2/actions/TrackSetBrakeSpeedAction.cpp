@@ -68,6 +68,12 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
     }
 
+    if (_brakeSpeed > kMaximumBrakeSpeed)
+    {
+        LOG_WARNING("Invalid speed for track, speed = %d", _brakeSpeed);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_SPEED_TOO_HIGH, STR_NONE);
+    }
+
     if (isExecuting)
     {
         GetTrackElementOriginAndApplyChanges(

@@ -3698,6 +3698,7 @@ STR_6623    :Type ‘help’ for a list of available commands. Type ‘hide’ t
 STR_6624    :Tile Inspector: Sort elements
 STR_6625    :Invalid colour
 STR_6626    :Animation is backwards
+STR_6627    :Track speed too high!
 
 #############
 # Scenarios #

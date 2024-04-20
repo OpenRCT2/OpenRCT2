@@ -1336,9 +1336,8 @@ static Widget _rideConstructionWidgets[] = {
                     else
                     {
                         uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
-                        uint8_t maxBrakesSpeed = 30;
                         uint8_t brakesSpeed = *brakesSpeedPtr + 2;
-                        if (brakesSpeed <= maxBrakesSpeed)
+                        if (brakesSpeed <= kMaximumBrakeSpeed)
                         {
                             if (_rideConstructionState == RideConstructionState::Selected)
                             {
