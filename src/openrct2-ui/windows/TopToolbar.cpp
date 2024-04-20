@@ -3730,8 +3730,8 @@ static Widget _topToolbarWidgets[] = {
         SetItems(items);
 
         WindowDropdownShowText(
-            { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80, 0,
-            TOP_TOOLBAR_CHEATS_COUNT);
+            { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80,
+            Dropdown::Flag::StayOpen, TOP_TOOLBAR_CHEATS_COUNT);
 
         // Disable items that are not yet available in multiplayer
         if (NetworkGetMode() != NETWORK_MODE_NONE)
