@@ -711,66 +711,66 @@ int32_t NetworkBase::GetNumVisiblePlayers() const noexcept
     return static_cast<int32_t>(player_list.size());
 }
 
-const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
+const char* NetworkBase::FormatChat(NetworkPlayer* fromPlayer, const char* text)
 {
     static std::string formatted;
     formatted.clear();
 
-    if (fromplayer != nullptr)
+    if (fromPlayer != nullptr)
     {
         auto& network = OpenRCT2::GetContext()->GetNetwork();
-        auto it = network.GetGroupByID(fromplayer->Id);
-        std::string groupname = "";
-        std::vector<std::string> colors;
+        auto it = network.GetGroupByID(fromPlayer->Id);
+        std::string groupName = "";
+        std::vector<std::string> colours;
         if (it != nullptr)
         {
-            groupname = it->GetName();
-            if (groupname[0] != '{')
+            groupName = it->GetName();
+            if (groupName[0] != '{')
             {
-                colors.push_back("{WHITE}");
+                colours.push_back("{WHITE}");
             }
         }
 
-        for (size_t i = 0; i < groupname.size(); ++i)
+        for (size_t i = 0; i < groupName.size(); ++i)
         {
-            if (groupname[i] == '{')
+            if (groupName[i] == '{')
             {
-                std::string color = "{";
+                std::string colour = "{";
                 ++i;
-                while (i < groupname.size() && groupname[i] != '}' && groupname[i] != '{')
+                while (i < groupName.size() && groupName[i] != '}' && groupName[i] != '{')
                 {
-                    color += groupname[i];
+                    colour += groupName[i];
                     ++i;
                 }
-                color += '}';
-                if (groupname[i] == '}' && i < groupname.size())
+                colour += '}';
+                if (groupName[i] == '}' && i < groupName.size())
                 {
-                    colors.push_back(color);
+                    colours.push_back(colour);
                 }
             }
         }
 
-        if (colors.size() == 0 || (colors.size() == 1 && colors[0] == "{WHITE}"))
+        if (colours.size() == 0 || (colours.size() == 1 && colours[0] == "{WHITE}"))
         {
             formatted += "{BABYBLUE}";
-            formatted += fromplayer->Name;
+            formatted += fromPlayer->Name;
         }
         else
         {
             size_t j = 0;
-            size_t proportionalsize = fromplayer->Name.size() / colors.size();
-            for (size_t i = 0; i < colors.size(); ++i)
+            size_t proportionalSize = fromPlayer->Name.size() / colours.size();
+            for (size_t i = 0; i < colours.size(); ++i)
             {
-                formatted += colors[i];
-                size_t numcharacters = proportionalsize + j;
-                for (; j < numcharacters && j < fromplayer->Name.size(); ++j)
+                formatted += colours[i];
+                size_t numCharacters = proportionalSize + j;
+                for (; j < numCharacters && j < fromPlayer->Name.size(); ++j)
                 {
-                    formatted += fromplayer->Name[j];
+                    formatted += fromPlayer->Name[j];
                 }
             }
-            while (j < fromplayer->Name.size())
+            while (j < fromPlayer->Name.size())
             {
-                formatted += fromplayer->Name[j];
+                formatted += fromPlayer->Name[j];
                 j++;
             }
         }
