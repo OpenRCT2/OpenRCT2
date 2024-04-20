@@ -3695,6 +3695,10 @@ STR_6619    :¡Este tipo de objeto no puede ser restringido!
 STR_6620    :¡Objeto no encontrado!
 STR_6621    :Restringir
 STR_6622    :Restringir objeto al Editor de Escenarios y el modo Sandbox.
+STR_6623    :Escribe ‘help’ para ver la lista de comandos disponibles. Escribe ‘hide’ para ocultar la consola.
+STR_6624    :Inspector de cuadrícula: Ordernar elementos
+STR_6625    :Color no válido
+STR_6626    :La animación está reflejada
 
 ##############
 # Escenarios #

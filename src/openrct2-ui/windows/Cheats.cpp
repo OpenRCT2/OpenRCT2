@@ -972,7 +972,7 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_GUEST_HAPPINESS_MAX:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, PEEP_MAX_HAPPINESS);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, kPeepMaxHappiness);
                     break;
                 case WIDX_GUEST_HAPPINESS_MIN:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, 0);
@@ -987,16 +987,16 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, 0);
                     break;
                 case WIDX_GUEST_HUNGER_MIN:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, PEEP_MAX_HUNGER);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, kPeepMaxHunger);
                     break;
                 case WIDX_GUEST_THIRST_MAX:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, 0);
                     break;
                 case WIDX_GUEST_THIRST_MIN:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, PEEP_MAX_THIRST);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, kPeepMaxThirst);
                     break;
                 case WIDX_GUEST_NAUSEA_MAX:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, PEEP_MAX_NAUSEA);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, kPeepMaxNausea);
                     break;
                 case WIDX_GUEST_NAUSEA_MIN:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, 0);
@@ -1010,7 +1010,7 @@ static StringId window_cheats_page_titles[] = {
                         CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::None));
                     break;
                 case WIDX_GUEST_TOILET_MAX:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, PEEP_MAX_TOILET);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, kPeepMaxToilet);
                     break;
                 case WIDX_GUEST_TOILET_MIN:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, 0);

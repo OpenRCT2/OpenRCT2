@@ -10,11 +10,9 @@
 #include "Paint.Surface.h"
 
 #include "../../Cheats.h"
-#include "../../Context.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
-#include "../../core/Guard.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
@@ -23,7 +21,6 @@
 #include "../../entity/Staff.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
-#include "../../object/ObjectManager.h"
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../paint/Paint.h"
@@ -31,7 +28,6 @@
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Surface.h"
-#include "../../world/TileInspector.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "Paint.TileElement.h"
@@ -539,8 +535,8 @@ static bool TileIsInsideClipView(const TileDescriptor& tile)
 }
 
 static void ViewportSurfaceDrawTileSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
-    struct TileDescriptor neighbour, bool isWater)
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, const TileDescriptor& self,
+    const TileDescriptor& neighbour, bool isWater)
 {
     PROFILED_FUNCTION();
 
@@ -734,29 +730,9 @@ static void ViewportSurfaceDrawTileSideBottom(
     }
 }
 
-/**
- *  rct2: 0x0065EB7D, 0x0065F0D8
- */
-static void ViewportSurfaceDrawLandSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
-    struct TileDescriptor neighbour)
-{
-    ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeObject, self, neighbour, false);
-}
-
-/**
- *  rct2: 0x0065F8B9, 0x0065FE26
- */
-static void ViewportSurfaceDrawWaterSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
-    struct TileDescriptor neighbour)
-{
-    ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeObject, self, neighbour, true);
-}
-
 static void ViewportSurfaceDrawTileSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
-    struct TileDescriptor neighbour, bool isWater)
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, const TileDescriptor& self,
+    const TileDescriptor& neighbour, bool isWater)
 {
     PROFILED_FUNCTION();
 
@@ -891,26 +867,6 @@ static void ViewportSurfaceDrawTileSideTop(
 
     auto imageId = baseImageId.WithIndexOffset(image_offset);
     PaintAddImageAsParent(session, imageId, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
-}
-
-/**
- *  rct2: 0x0065F63B, 0x0065F77D
- */
-static void ViewportSurfaceDrawLandSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
-    struct TileDescriptor neighbour)
-{
-    ViewportSurfaceDrawTileSideTop(session, edge, height, edgeObject, self, neighbour, false);
-}
-
-/**
- *  rct2: 0x0066039B, 0x006604F1
- */
-static void ViewportSurfaceDrawWaterSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
-    struct TileDescriptor neighbour)
-{
-    ViewportSurfaceDrawTileSideTop(session, edge, height, edgeObject, self, neighbour, true);
 }
 
 static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
@@ -1349,10 +1305,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2]);
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3]);
-        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0]);
-        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1]);
+        ViewportSurfaceDrawTileSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false);
+        ViewportSurfaceDrawTileSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false);
+        ViewportSurfaceDrawTileSideBottom(
+            session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0], false);
+        ViewportSurfaceDrawTileSideBottom(
+            session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1], false);
     }
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
@@ -1382,13 +1340,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
-            ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0]);
-            ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1]);
-            ViewportSurfaceDrawWaterSideTop(session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2]);
-            ViewportSurfaceDrawWaterSideTop(
-                session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3]);
+            ViewportSurfaceDrawTileSideBottom(
+                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true);
+            ViewportSurfaceDrawTileSideBottom(
+                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1], true);
+            ViewportSurfaceDrawTileSideTop(
+                session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2], true);
+            ViewportSurfaceDrawTileSideTop(
+                session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3], true);
         }
     }
 

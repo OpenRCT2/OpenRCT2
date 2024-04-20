@@ -3690,6 +3690,10 @@ STR_6619    :Dit objecttype kan niet worden beperkt!
 STR_6620    :Object niet gevonden!
 STR_6621    :Beperken
 STR_6622    :Maakt het object enkel beschikbaar in de scenariobewerker en zandbakmodus.
+STR_6623    :Voer ‘help’ in voor een lijst met beschikbare commando’s. Voer ‘hide’ in om de console te verbergen.
+STR_6624    :Vakinspecteur: Elementen sorteren
+STR_6625    :Ongeldige kleur
+STR_6626    :Animatie is in spiegelbeeld
 
 #############
 # Scenarios #

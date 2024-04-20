@@ -781,13 +781,12 @@ void LoadPalette()
         return;
     }
 
+    uint32_t palette = SPR_DEFAULT_PALETTE;
+
     auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
-
-    uint32_t palette = 0x5FC;
-
     if (water_type != nullptr)
     {
-        Guard::Assert(water_type->image_id != 0xFFFFFFFF, "Failed to load water palette");
+        Guard::Assert(water_type->image_id != ImageIndexUndefined, "Failed to load water palette");
         palette = water_type->image_id;
     }
 

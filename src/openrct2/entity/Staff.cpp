@@ -896,12 +896,12 @@ void Staff::EntertainerUpdateNearbyPeeps() const
 
         if (guest->State == PeepState::Walking)
         {
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
         }
         else if (guest->State == PeepState::Queuing)
         {
             guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
         }
     }
 }

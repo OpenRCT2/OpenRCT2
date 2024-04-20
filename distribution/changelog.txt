@@ -1,6 +1,10 @@
 0.4.11 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21734] Park admittance price can now be set via text input.
+- Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
+- Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Fix: [#866] Boat Hire boats get stuck entering track.
+- Fix: [#21787] Map generator heightmap should respect increased height limits.
 - Fix: [#11512] Coloured usernames by group on multiplayer servers
 
 0.4.10 (2024-04-02)
@@ -22,6 +26,7 @@
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
 - Change: [#21545] Reorder Wacky Worlds scenarios and adjust their difficulty classification.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
+- Fix: [#6725] Z fighting issue with cars using animated doors.
 - Fix: [#18413] Crash when mouse over a hacked train.
 - Fix: [#20338] Cannot select Scenery Picker or Scatter Tool when the scenery recolouring tool is active.
 - Fix: [#21317] Track designer allows proceeding without an object selected.

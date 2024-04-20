@@ -562,7 +562,7 @@ namespace Editor
     {
         if (index != OBJECT_ENTRY_INDEX_NULL)
         {
-            assert(static_cast<int32_t>(objectType) < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
+            assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::Paths));
             auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
             if (list.size() <= index)
             {

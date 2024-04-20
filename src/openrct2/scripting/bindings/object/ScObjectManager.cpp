@@ -106,7 +106,7 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
                     throw DukException() << "Expected number for 'index'.";
 
                 auto index = static_cast<size_t>(p2.as_int());
-                auto limit = GetObjectTypeLimit(installedObject->Type);
+                auto limit = getObjectTypeLimit(installedObject->Type);
                 if (index < limit)
                 {
                     auto loadedObject = objectManager.GetLoadedObject(installedObject->Type, index);
@@ -214,8 +214,8 @@ std::vector<DukValue> ScObjectManager::getAllObjects(const std::string& typez) c
     auto type = ScObject::StringToObjectType(typez);
     if (type)
     {
-        auto count = object_entry_group_counts[EnumValue(*type)];
-        for (int32_t i = 0; i < count; i++)
+        auto count = getObjectEntryGroupCount(*type);
+        for (auto i = 0u; i < count; i++)
         {
             auto obj = objManager.GetLoadedObject(*type, i);
             if (obj != nullptr)
