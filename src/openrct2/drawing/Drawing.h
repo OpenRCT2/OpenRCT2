@@ -510,7 +510,7 @@ constexpr uint8_t kPaletteTotalOffsets = 192;
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
 #define INSET_RECT_F_E0 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT)
 
-#define MAX_SCROLLING_TEXT_MODES 38
+constexpr int8_t kMaxScrollingTextModes = 38;
 
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];

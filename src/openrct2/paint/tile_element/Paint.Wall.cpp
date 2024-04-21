@@ -165,7 +165,7 @@ static void PaintWallScrollingText(
         return;
 
     scrollingMode = wallEntry.scrolling_mode + ((direction + 1) & 3);
-    if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
+    if (scrollingMode >= kMaxScrollingTextModes)
         return;
 
     auto banner = wallElement.GetBanner();
