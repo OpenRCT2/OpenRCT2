@@ -33,28 +33,6 @@
 
 using namespace OpenRCT2;
 
-// clang-format off
-static constexpr BoundBoxXY LargeSceneryBoundBoxes[] = {
-    { { 3, 3 }, { 26, 26 } },
-    { { 17, 17 }, { 12, 12 } },
-    { { 17, 3 }, { 12, 12 } },
-    { { 17, 3 }, { 12, 26 } },
-    { { 3, 3 }, { 12, 12 } },
-    { { 3, 3 }, { 26, 26 } },
-    { { 3, 3 }, { 28, 12 } },
-    { { 3, 3 }, { 26, 26 } },
-    { { 3, 17 }, { 12, 12 } },
-    { { 3, 17 }, { 26, 12 } },
-    { { 3, 3 }, { 26, 26 } },
-    { { 3, 3 }, { 26, 26 } },
-    { { 3, 3 }, { 12, 28 } },
-    { { 3, 3 }, { 26, 26 } },
-    { { 3, 3 }, { 26, 26 } },
-    { { 3, 3 }, { 26, 26 } },
-    { { 1, 1 }, { 30, 30 } },
-};
-// clang-format on
-
 static void PaintLargeScenerySupports(
     PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
     const LargeSceneryTile& tile)
@@ -391,27 +369,6 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     auto offset = tile->spriteOffset;
     boundBox.offset.z += height;
     offset.z += height;
-
-#pragma region LegacyVerification
-    auto boxlengthZ = std::min<uint8_t>(tile->z_clearance, 128) - 3;
-    auto flags = tile->flags;
-    auto bbIndex = 16;
-    if (flags & 0xF00)
-    {
-        flags &= 0xF000;
-        flags = Numerics::rol16(flags, direction);
-        bbIndex = (flags & 0xF) | (flags >> 12);
-    }
-    const CoordsXYZ& bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
-    const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
-
-    auto boxOffsetDelta = bbOffset - boundBox.offset;
-    auto boxLengthDelta = bbLength - boundBox.length;
-    auto offsetDelta = CoordsXYZ(0, 0, height) - offset;
-    assert(boxOffsetDelta.x == 0 && boxOffsetDelta.y == 0 && boxOffsetDelta.z == 0);
-    assert(boxLengthDelta.x == 0 && boxLengthDelta.y == 0 && boxLengthDelta.z == 0);
-    assert(offsetDelta.x == 0 && offsetDelta.y == 0 && offsetDelta.z == 0);
-#pragma endregion
 
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
