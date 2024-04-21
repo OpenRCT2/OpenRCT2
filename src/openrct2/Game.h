@@ -18,6 +18,124 @@
 class Intent;
 struct ParkLoadResult;
 
+// TODO: Move or remove these constants if
+//       we can use the constants defined
+//       in Context.h
+namespace TickConversion
+{
+    constexpr uint32_t kGameUpdateFPS = 40;
+    constexpr float kGameUpdateFPMS =  kGameUpdateFPS / 1000.0f;
+} // namespace TickConversion
+
+template <typename T, typename Tag>
+struct GameTicks
+{
+    using ValueType = T;
+
+    ValueType Value;
+
+    static constexpr GameTicks FromSeconds(uint32_t seconds)
+    {
+        GameTicks<T, Tag> result;
+        result.Value = seconds * TickConversion::kGameUpdateFPS;
+        return result;
+    }
+    static constexpr GameTicks FromMilliseconds(uint32_t milliseconds)
+    {
+        GameTicks<T, Tag> result;
+        result.Value = milliseconds * TickConversion::kGameUpdateFPMS;
+        return result;
+    }
+
+    constexpr void operator=(T rhs)
+    {
+        Value = rhs;
+    }
+
+    constexpr GameTicks& operator++()
+    {
+        ++Value;
+        return *this;
+    }
+    constexpr GameTicks operator++(int)
+    {
+        GameTicks<T, Tag> temp = *this;
+        Value++;
+        return temp;
+    }
+    constexpr GameTicks& operator--()
+    {
+        --Value;
+        return *this;
+    }
+    constexpr GameTicks operator--(int)
+    {
+        GameTicks<T, Tag> temp = *this;
+        Value--;
+        return temp;
+    }
+
+    constexpr GameTicks operator+(GameTicks rhs) const
+    {
+        return GameTicks(Value + rhs.Value);
+    }
+    constexpr GameTicks operator-(GameTicks rhs) const
+    {
+        return GameTicks(Value - rhs.Value);
+    }
+    constexpr GameTicks operator*(GameTicks rhs) const
+    {
+        return GameTicks(Value * rhs.Value);
+    }
+    constexpr GameTicks operator/(GameTicks rhs) const
+    {
+        return GameTicks(Value / rhs.GameTicks);
+    }
+
+    constexpr GameTicks& operator+=(GameTicks rhs)
+    {
+        Value += rhs.Value;
+        return *this;
+    }
+    constexpr GameTicks& operator-=(GameTicks rhs)
+    {
+        Value -= rhs.Value;
+        return *this;
+    }
+
+    constexpr bool operator==(const GameTicks& rhs)
+    {
+        return Value == rhs.Value;
+    }
+    constexpr bool operator<(const GameTicks& rhs)
+    {
+        return Value < rhs.Value;
+    }
+    constexpr bool operator>(const GameTicks& rhs)
+    {
+        return Value > rhs.Value;
+    }
+    constexpr bool operator<=(const GameTicks& rhs)
+    {
+        return Value <= rhs.Value;
+    }
+    constexpr bool operator>=(const GameTicks& rhs)
+    {
+        return Value >= rhs.Value;
+    }
+    constexpr bool operator!=(const GameTicks& rhs)
+    {
+        return Value != rhs.Value;
+    }
+
+    constexpr GameTicks& operator%(const GameTicks& rhs)
+    {
+        GameTicks result;
+        result.Value = Value % rhs.Value;
+        return result;
+    }
+};
+
 enum class GameCommand : int32_t
 {
     SetRideAppearance,
