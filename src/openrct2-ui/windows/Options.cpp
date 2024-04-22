@@ -317,6 +317,7 @@ static Widget window_options_audio_widgets[] = {
     kWidgetsEnd,
 };
 constexpr int32_t kControlsGroupStart = 53;
+constexpr int32_t kThemesGroupStart = 163;
 static Widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget({  5, kControlsGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
@@ -326,13 +327,13 @@ static Widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({ 10, kControlsGroupStart + 60}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_TO_CURSOR,             STR_ZOOM_TO_CURSOR_TIP            ), // Zoom to cursor
     MakeWidget({ 10, kControlsGroupStart + 75}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
     MakeWidget({155, kControlsGroupStart + 90}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
-#define THEMES_GROUP_START 163
-    MakeWidget({  5, THEMES_GROUP_START +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
-    MakeWidget({ 10, THEMES_GROUP_START + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
-    MakeWidget({155, THEMES_GROUP_START + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                ),
-    MakeWidget({288, THEMES_GROUP_START + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
-    MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
-#undef THEMES_GROUP_START
+
+    MakeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
+    MakeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
+    MakeWidget({155, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                ),
+    MakeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
+    MakeWidget({155, kThemesGroupStart + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
+
 #define TOOLBAR_GROUP_START 215
 
 
