@@ -46,11 +46,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-<<<<<<< HEAD
-constexpr std::string_view kNetworkStreamVersion = "3";
-=======
-constexpr uint8_t kNetworkStreamVersion = 0;
->>>>>>> e1796213f (Part of #21421: incorporate feedback from #21760)
+constexpr uint8_t kNetworkStreamVersion = 3;
 
 const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::to_string(kNetworkStreamVersion);
 
