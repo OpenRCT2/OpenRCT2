@@ -853,11 +853,11 @@ static constexpr WindowParkAward _parkAwards[] = {
                 }
                 case WIDX_PRICE:
                 {
-                    utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
-                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, MONEY_STRING_MAXLENGTH, false);
+                    utf8 _moneyInputText[kMoneyStringMaxlength] = {};
+                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
                         this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                        MONEY_STRING_MAXLENGTH);
+                        kMoneyStringMaxlength);
                 }
             }
         }
