@@ -350,15 +350,15 @@ static Widget window_options_controls_and_interface_widgets[] = {
     kWidgetsEnd,
 };
 
-#define TITLE_SEQUENCE_START 53
-#define SCENARIO_START (TITLE_SEQUENCE_START + 35)
+constexpr int32_t kTitleSequenceStart = 53;
+#define SCENARIO_START (kTitleSequenceStart + 35)
 #define SCENARIO_OPTIONS_START (SCENARIO_START + 55)
 #define TWEAKS_START (SCENARIO_OPTIONS_START + 39)
 
 static Widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget(         {  5, TITLE_SEQUENCE_START +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
-    MakeDropdownWidgets({ 10, TITLE_SEQUENCE_START + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
+    MakeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
+    MakeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
 
     MakeWidget({  5,  SCENARIO_START + 0}, {300, 51}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
     MakeWidget({ 10, SCENARIO_START + 16}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_SCENARIO_GROUPING,  STR_SCENARIO_GROUPING_TIP ),
@@ -382,7 +382,6 @@ static Widget window_options_misc_widgets[] = {
 #undef TWEAKS_START
 #undef SCENARIO_OPTIONS_START
 #undef SCENARIO_START
-#undef TITLE_SEQUENCE_START
 
 static Widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
