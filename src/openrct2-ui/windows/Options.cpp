@@ -316,8 +316,11 @@ static Widget window_options_audio_widgets[] = {
     MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
     kWidgetsEnd,
 };
+
 constexpr int32_t kControlsGroupStart = 53;
 constexpr int32_t kThemesGroupStart = 163;
+constexpr int32_t kToolbarGroupStart = 215;
+
 static Widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget({  5, kControlsGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
@@ -334,21 +337,17 @@ static Widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
     MakeWidget({155, kThemesGroupStart + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
-#define TOOLBAR_GROUP_START 215
-
-
-    MakeWidget({  5, TOOLBAR_GROUP_START +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
-    MakeWidget({ 10, TOOLBAR_GROUP_START + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP),
-    MakeWidget({ 10, TOOLBAR_GROUP_START + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
-    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
-    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
-    MakeWidget({155, TOOLBAR_GROUP_START + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
+    MakeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
+    MakeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP),
+    MakeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
+    MakeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
+    MakeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
+    MakeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
+    MakeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
+    MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
+    MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
+    MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
     kWidgetsEnd,
-#undef TOOLBAR_GROUP_START
 };
 
 #define TITLE_SEQUENCE_START 53
