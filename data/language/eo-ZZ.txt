@@ -3691,6 +3691,10 @@ STR_6619    :Objekotipo ne povas esti limigita!
 STR_6620    :Objekto ne troviĝis!
 STR_6621    :Limigi
 STR_6622    :Limigi objekton al la Scenaroredaktilo kaj Provejo-reĝimo.
+STR_6623    :Tajpu la komandon ‘help’ por montri liston de disponeblaj komandoj. Tajpu la komandon ‘hide’ por kaŝi la konsolon.
+STR_6624    :Inspektilo de Bloko: Ordigi elementojn
+STR_6625    :Nevalida koloro
+STR_6626    :Animacio movas malantaŭen
 
 #############
 # Scenarios #
