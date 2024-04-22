@@ -159,12 +159,19 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+            , _objectRepository(CreateObjectRepository(_env))
+            , _objectManager(CreateObjectManager(*_objectRepository))
+            , _trackDesignRepository(CreateTrackDesignRepository(_env))
+            , _scenarioRepository(CreateScenarioRepository(_env))
+            , _replayManager(CreateReplayManager())
+            , _gameStateSnapshots(CreateGameStateSnapshots())
 #ifdef ENABLE_SCRIPTING
             , _scriptEngine(_stdInOutConsole, *env)
 #endif
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
+            , _titleScreen(std::make_unique<TitleScreen>())
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -379,12 +386,6 @@ namespace OpenRCT2
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
 
-            _objectRepository = CreateObjectRepository(_env);
-            _objectManager = CreateObjectManager(*_objectRepository);
-            _trackDesignRepository = CreateTrackDesignRepository(_env);
-            _scenarioRepository = CreateScenarioRepository(_env);
-            _replayManager = CreateReplayManager();
-            _gameStateSnapshots = CreateGameStateSnapshots();
             if (!gOpenRCT2Headless)
             {
                 _assetPackManager = std::make_unique<AssetPackManager>();
@@ -478,7 +479,6 @@ namespace OpenRCT2
             _scriptEngine.Initialise();
 #endif
 
-            _titleScreen = std::make_unique<TitleScreen>();
             _uiContext->Initialise();
 
             return true;
