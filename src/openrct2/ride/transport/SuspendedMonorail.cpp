@@ -1444,15 +1444,7 @@ static void SuspendedMonorailTrackDiagFlat(
                         { { -16, -16, height + 32 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+
             break;
         case 1:
             switch (direction)
@@ -1463,14 +1455,7 @@ static void SuspendedMonorailTrackDiagFlat(
                         { { -16, -16, height + 32 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+
             break;
         case 2:
             switch (direction)
@@ -1481,15 +1466,7 @@ static void SuspendedMonorailTrackDiagFlat(
                         { { -16, -16, height + 32 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+
             break;
         case 3:
             switch (direction)
@@ -1501,40 +1478,16 @@ static void SuspendedMonorailTrackDiagFlat(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::LeftCorner, 0, height + 42,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::RightCorner, 0, height + 42,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomCorner, 0, height + 42,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, MetalSupportType::Boxed, MetalSupportPlace::LeftCorner, direction, 0, height + 42,
+                session.SupportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
     }
+
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00863824 */

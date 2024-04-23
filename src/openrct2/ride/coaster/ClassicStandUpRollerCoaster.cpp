@@ -1036,14 +1036,7 @@ static inline void classicStandUpRCTrackDiagFlatWithBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
+
             break;
         case 1:
             switch (direction)
@@ -1054,13 +1047,7 @@ static inline void classicStandUpRCTrackDiagFlatWithBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
+
             break;
         case 2:
             switch (direction)
@@ -1071,14 +1058,7 @@ static inline void classicStandUpRCTrackDiagFlatWithBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
+
             break;
         case 3:
             switch (direction)
@@ -1092,17 +1072,11 @@ static inline void classicStandUpRCTrackDiagFlatWithBank(
             MetalASupportsPaintSetupRotated(
                 session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
 
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
             break;
     }
 
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 

@@ -1459,15 +1459,7 @@ static void SteeplechaseTrackDiagFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
             break;
         case 1:
             if (trackElement.HasChain())
@@ -1492,14 +1484,7 @@ static void SteeplechaseTrackDiagFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
             break;
         case 2:
             if (trackElement.HasChain())
@@ -1524,42 +1509,17 @@ static void SteeplechaseTrackDiagFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
             break;
         case 3:
             if (trackElement.HasChain())
             {
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(28758), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
             }
@@ -1567,41 +1527,22 @@ static void SteeplechaseTrackDiagFlat(
             {
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(28742), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
+            MetalASupportsPaintSetupRotated(
+                session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
             break;
     }
+
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void SteeplechaseTrackDiagBrakes(

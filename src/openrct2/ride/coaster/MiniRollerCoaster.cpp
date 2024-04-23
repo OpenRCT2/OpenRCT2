@@ -5664,15 +5664,7 @@ static void MiniRCTrackDiagFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
             break;
         case 1:
             if (trackElement.HasChain())
@@ -5697,14 +5689,7 @@ static void MiniRCTrackDiagFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
             break;
         case 2:
             if (trackElement.HasChain())
@@ -5729,41 +5714,17 @@ static void MiniRCTrackDiagFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
             break;
         case 3:
             if (trackElement.HasChain())
             {
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(19187), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height,
-                            session.SupportColours);
                         break;
                 }
             }
@@ -5771,40 +5732,23 @@ static void MiniRCTrackDiagFlat(
             {
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(19125), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height,
-                            session.SupportColours);
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
+            MetalASupportsPaintSetupRotated(
+                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
+
             break;
     }
+
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A4F4C */
