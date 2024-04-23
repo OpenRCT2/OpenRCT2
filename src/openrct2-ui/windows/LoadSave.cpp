@@ -31,7 +31,7 @@
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/title/TitleScreen.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -354,7 +354,9 @@ static Widget window_loadsave_widgets[] =
                 {
                     WindowCloseByClass(WindowClass::Loadsave);
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                    TitleLoad();
+
+                    auto* context = OpenRCT2::GetContext();
+                    context->SetActiveScene(context->GetTitleScene());
                 }
                 else
                 {

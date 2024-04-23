@@ -144,8 +144,14 @@ namespace OpenRCT2
         virtual NetworkBase& GetNetwork() abstract;
 #endif
 
+        virtual IScene* GetLoadingScene() abstract;
+        virtual IScene* GetIntroScene() abstract;
+        virtual IScene* GetTitleScene() abstract;
+        virtual IScene* GetGameScene() abstract;
+        virtual IScene* GetEditorScene() abstract;
+
         virtual IScene* GetActiveScene() abstract;
-        virtual void SetActiveScene(IScene * screen) abstract;
+        virtual void SetActiveScene(IScene* screen) abstract;
 
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 

@@ -25,7 +25,7 @@ namespace OpenRCT2
         virtual IContext& GetContext() = 0;
 
         virtual void Load() = 0;
-        virtual void Update() = 0;
+        virtual void Tick() = 0;
         virtual void Stop() = 0;
     };
 

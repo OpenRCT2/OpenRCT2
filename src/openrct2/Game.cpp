@@ -53,8 +53,8 @@
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
+#include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
-#include "title/TitleScreen.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/SawyerCoding.h"
@@ -511,11 +511,13 @@ void GameFixSaveVars()
 
 void GameLoadInit()
 {
-    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+    auto* context = GetContext();
+
+    IGameStateSnapshots* snapshots = context->GetGameStateSnapshots();
     snapshots->Reset();
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-    OpenRCT2::Audio::StopAll();
+    context->SetActiveScene(context->GetGameScene());
+
     if (!gLoadKeepWindowsOpen)
     {
         ViewportInitAll();
@@ -527,7 +529,7 @@ void GameLoadInit()
         WindowUnfollowSprite(*mainWindow);
     }
 
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = context->GetUiContext()->GetWindowManager();
     auto& gameState = GetGameState();
     windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
@@ -553,7 +555,6 @@ void GameLoadInit()
         ContextBroadcastIntent(&intent);
     }
 
-    OpenRCT2::Audio::StopTitleMusic();
     gGameSpeed = 1;
 }
 
@@ -841,7 +842,9 @@ void GameLoadOrQuitNoSavePrompt()
             gFirstTimeSaving = true;
             GameNotifyMapChange();
             GameUnloadScripts();
-            TitleLoad();
+
+            auto* context = OpenRCT2::GetContext();
+            context->SetActiveScene(context->GetTitleScene());
             break;
         }
         case PromptMode::SaveBeforeNewGame:

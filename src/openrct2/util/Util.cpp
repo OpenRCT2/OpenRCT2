@@ -15,7 +15,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../platform/Platform.h"
-#include "../title/TitleScreen.h"
+#include "../scenes/title/TitleScene.h"
 #include "zlib.h"
 
 #include <algorithm>

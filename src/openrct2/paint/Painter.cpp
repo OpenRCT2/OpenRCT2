@@ -24,7 +24,7 @@
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
-#include "../title/TitleScreen.h"
+#include "../scenes/title/TitleScene.h"
 #include "../ui/UiContext.h"
 #include "../world/TileInspector.h"
 

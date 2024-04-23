@@ -9,21 +9,17 @@
 
 #pragma once
 
-#include "../../core/String.hpp"
+#include "../../common.h"
 
-#include <cstdint>
-
-constexpr uint8_t kTitleCommandScenarioLength = 64;
-
-namespace OpenRCT2::Title
+struct ITitleSequencePlayer
 {
-    struct LoadScenarioCommand
-    {
-        static constexpr const char* Name = "Load Scenario Command";
-        static constexpr const char* ScriptingName = "loadsc";
+    virtual ~ITitleSequencePlayer() = default;
 
-        utf8 Scenario[kTitleCommandScenarioLength]{};
+    virtual int32_t GetCurrentPosition() const abstract;
 
-        int16_t operator()(int16_t timer);
-    };
-} // namespace OpenRCT2::Title
+    virtual bool Begin(size_t titleSequenceId) abstract;
+    virtual void Reset() abstract;
+    virtual bool Update() abstract;
+    virtual void Seek(int32_t position) abstract;
+    virtual void Eject() abstract;
+};

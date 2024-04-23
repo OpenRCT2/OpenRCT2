@@ -9,7 +9,7 @@
 
 #include "FollowEntity.h"
 
-#include "../../interface/Window.h"
+#include "../../../interface/Window.h"
 
 namespace OpenRCT2::Title
 {
