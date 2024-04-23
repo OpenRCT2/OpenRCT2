@@ -762,8 +762,6 @@ private:
 
         UpdateFullscreenResolutions();
 
-        // Fix #4022: Force Mac to windowed to avoid cursor offset on launch issue
-        // Fix #21696: This workaround is obsolete, reverting it so that Mac remembers window mode
         SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.FullscreenMode));
         TriggerResize();
     }
