@@ -1100,14 +1100,6 @@ namespace OpenRCT2
 
             _uiContext->ProcessMessages();
 
-            // Start the title music now that focus events have been processed.
-            if (static bool firstTime = true; firstTime)
-            {
-                firstTime = false;
-
-                OpenRCT2::Audio::PlayTitleMusic();
-            }
-
             if (_ticksAccumulator < kGameUpdateTimeMS)
             {
                 const auto sleepTimeSec = (kGameUpdateTimeMS - _ticksAccumulator);
