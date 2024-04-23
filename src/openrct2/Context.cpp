@@ -66,6 +66,7 @@
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
+#include "scenes/Scene.h"
 #include "scripting/HookEngine.h"
 #include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
@@ -121,6 +122,9 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         NetworkBase _network;
 #endif
+
+        // Scenes
+        IScene* _activeScene = nullptr;
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -303,6 +307,20 @@ namespace OpenRCT2
                 return EXIT_SUCCESS;
             }
             return EXIT_FAILURE;
+        }
+
+        virtual IScene* GetActiveScene() override
+        {
+            return _activeScene;
+        }
+
+        void SetActiveScene(IScene* screen) override
+        {
+            if (_activeScene != nullptr)
+                _activeScene->Stop();
+            _activeScene = screen;
+            if (_activeScene)
+                _activeScene->Load();
         }
 
         void WriteLine(const std::string& s) override

@@ -84,6 +84,7 @@ namespace OpenRCT2
 
     struct IPlatformEnvironment;
     struct IReplayManager;
+    struct IScene;
 
     namespace Audio
     {
@@ -142,6 +143,10 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         virtual NetworkBase& GetNetwork() abstract;
 #endif
+
+        virtual IScene* GetActiveScene() abstract;
+        virtual void SetActiveScene(IScene * screen) abstract;
+
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
         virtual bool Initialise() abstract;

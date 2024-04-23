@@ -511,6 +511,7 @@
     <ClInclude Include="scenario\Scenario.h" />
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
+    <ClInclude Include="scenes\Scene.h" />
     <ClInclude Include="scripting\bindings\entity\ScGuest.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScLitter.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
@@ -999,6 +1000,7 @@
     <ClCompile Include="scenario\Scenario.cpp" />
     <ClCompile Include="scenario\ScenarioRepository.cpp" />
     <ClCompile Include="scenario\ScenarioSources.cpp" />
+    <ClCompile Include="scenes\Scene.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
