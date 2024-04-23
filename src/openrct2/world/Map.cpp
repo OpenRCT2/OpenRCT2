@@ -2298,7 +2298,7 @@ void ShiftMap(const TileCoordsXY& amount)
     for (auto& spawn : gameState.PeepSpawns)
         spawn += amountToMove;
 
-    for (auto& entrance : gameState.ParkEntrances)
+    for (auto& entrance : gameState.Park.Entrances)
         entrance += amountToMove;
 
     // Entities
