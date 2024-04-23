@@ -5,6 +5,7 @@
 - Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
 - Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Fix: [#866] Boat Hire boats get stuck entering track.
+- Fix: [#21696] Fullscreen window option not correctly applied on macOS.
 - Fix: [#21787] Map generator heightmap should respect increased height limits.
 - Fix: [#21829] When creating a new scenario, the default name contains formatting codes.
 
