@@ -6,6 +6,7 @@
 - Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Fix: [#866] Boat Hire boats get stuck entering track.
 - Fix: [#21787] Map generator heightmap should respect increased height limits.
+- Fix: [#21829] When creating a new scenario, the default name contains formatting codes.
 
 0.4.10 (2024-04-02)
 ------------------------------------------------------------------------
