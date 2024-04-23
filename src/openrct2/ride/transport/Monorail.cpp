@@ -13,6 +13,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
 #include "../Track.h"
@@ -1168,7 +1170,7 @@ static void PaintMonorailTrackDiagFlat(
             session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -1190,7 +1192,7 @@ static void PaintMonorailTrackDiag25DegUp(
             session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 8, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -1212,7 +1214,7 @@ static void PaintMonorailTrackDiagFlatTo25DegUp(
             session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -1234,7 +1236,7 @@ static void PaintMonorailTrackDiag25DegUpToFlat(
             session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -1256,7 +1258,7 @@ static void PaintMonorailTrackDiag25DegDown(
             session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 8, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -1278,7 +1280,7 @@ static void PaintMonorailTrackDiagFlatTo25DegDown(
             session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -1300,7 +1302,7 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
             session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }

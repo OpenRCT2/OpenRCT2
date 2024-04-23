@@ -13,6 +13,8 @@
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"

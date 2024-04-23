@@ -18,6 +18,8 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -10337,11 +10339,7 @@ namespace HybridRC
                 WoodenASupportsPaintSetupRotated(
                     session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
             case 1:
@@ -10489,11 +10487,7 @@ namespace HybridRC
                 WoodenASupportsPaintSetupRotated(
                     session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
             case 1:
@@ -10655,11 +10649,7 @@ namespace HybridRC
                 WoodenASupportsPaintSetupRotated(
                     session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
                 break;
             case 1:
@@ -10698,11 +10688,7 @@ namespace HybridRC
                 WoodenASupportsPaintSetupRotated(
                     session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
@@ -10858,11 +10844,7 @@ namespace HybridRC
                 WoodenASupportsPaintSetupRotated(
                     session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
                 break;
             case 1:
@@ -10901,11 +10883,7 @@ namespace HybridRC
                 WoodenASupportsPaintSetupRotated(
                     session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:

@@ -40,6 +40,7 @@
 #include "Paint.PathAddition.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
 using namespace OpenRCT2;
 

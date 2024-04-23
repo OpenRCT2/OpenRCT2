@@ -18,6 +18,8 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -86,10 +88,7 @@ namespace SingleRailRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -201,10 +200,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -283,10 +279,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
     }
 
@@ -365,10 +358,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -459,10 +449,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
     }
 
@@ -553,10 +540,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
     }
 
@@ -635,10 +619,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -716,11 +697,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -776,11 +753,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -832,10 +805,7 @@ namespace SingleRailRC
                 break;
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
     }
 
@@ -874,11 +844,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height + 48, TUNNEL_2);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
             case 1:
@@ -1272,11 +1238,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -1442,11 +1404,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -4240,10 +4198,7 @@ namespace SingleRailRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -4287,10 +4242,7 @@ namespace SingleRailRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -4355,10 +4307,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -4409,10 +4358,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -4463,10 +4409,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -4517,10 +4460,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -4586,10 +4526,7 @@ namespace SingleRailRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -6552,11 +6489,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -6738,11 +6671,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -7737,11 +7666,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
                 break;
             case 1:
@@ -7787,11 +7712,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
                 break;
             case 1:
@@ -7857,10 +7778,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -7908,10 +7826,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -7959,10 +7874,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -8010,10 +7922,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -8086,10 +7995,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -8134,10 +8040,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -8182,10 +8085,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -8230,10 +8130,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -8306,10 +8203,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -8354,10 +8248,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
@@ -8419,10 +8310,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -8470,10 +8358,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
@@ -8521,10 +8406,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -8572,10 +8454,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
@@ -11453,11 +11332,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -11558,11 +11433,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
@@ -11601,10 +11472,7 @@ namespace SingleRailRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -11683,11 +11551,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -11720,11 +11584,7 @@ namespace SingleRailRC
                         session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
@@ -11757,11 +11617,7 @@ namespace SingleRailRC
                         session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 3:
@@ -11803,11 +11659,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
         }
@@ -11852,11 +11704,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
             case 1:
@@ -11889,11 +11737,7 @@ namespace SingleRailRC
                         session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 18, height, session.SupportColours);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
             case 2:
@@ -11926,11 +11770,7 @@ namespace SingleRailRC
                         session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
@@ -11972,11 +11812,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
@@ -12022,10 +11858,7 @@ namespace SingleRailRC
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
@@ -12795,11 +12628,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -13011,11 +12840,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
@@ -13256,11 +13081,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
             case 1:
@@ -13400,11 +13221,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
             case 1:
@@ -13554,11 +13371,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
                 break;
             case 1:
@@ -13594,11 +13407,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
@@ -13754,11 +13563,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
                 break;
             case 1:
@@ -13794,11 +13599,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
@@ -14525,11 +14326,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -14565,11 +14362,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
@@ -14798,11 +14591,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -14838,11 +14627,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
@@ -15147,10 +14932,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
     }
 
@@ -15241,10 +15023,7 @@ namespace SingleRailRC
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_0);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
     }
 
@@ -16061,11 +15840,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -16247,11 +16022,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -16570,11 +16341,7 @@ namespace SingleRailRC
                 }
 
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
@@ -18443,11 +18210,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -18629,11 +18392,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -18950,11 +18709,7 @@ namespace SingleRailRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }

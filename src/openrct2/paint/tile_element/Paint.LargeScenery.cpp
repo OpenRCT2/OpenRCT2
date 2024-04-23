@@ -30,6 +30,7 @@
 #include "../Boundbox.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
 using namespace OpenRCT2;
 
