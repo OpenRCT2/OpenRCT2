@@ -2238,6 +2238,18 @@ MapRange ClampRangeWithinMap(const MapRange& range)
     return validRange;
 }
 
+static inline void shiftIfNotNull(TileCoordsXY& coords, const TileCoordsXY& amount)
+{
+    if (!coords.IsNull())
+        coords += amount;
+}
+
+static inline void shiftIfNotNull(CoordsXY& coords, const CoordsXY& amount)
+{
+    if (!coords.IsNull())
+        coords += amount;
+}
+
 void ShiftMap(const TileCoordsXY& amount)
 {
     if (amount.x == 0 && amount.y == 0)
@@ -2392,17 +2404,17 @@ void ShiftMap(const TileCoordsXY& amount)
         auto& stations = ride.GetStations();
         for (auto& station : stations)
         {
-            station.Start += amountToMove;
-            station.Entrance += amount;
-            station.Exit += amount;
+            shiftIfNotNull(station.Start, amountToMove);
+            shiftIfNotNull(station.Entrance, amount);
+            shiftIfNotNull(station.Exit, amount);
         }
 
-        ride.overall_view += amountToMove;
-        ride.boat_hire_return_position += amount;
-        ride.CurTestTrackLocation += amount;
-        ride.ChairliftBullwheelLocation[0] += amount;
-        ride.ChairliftBullwheelLocation[1] += amount;
-        ride.CableLiftLoc += amountToMove;
+        shiftIfNotNull(ride.overall_view, amountToMove);
+        shiftIfNotNull(ride.boat_hire_return_position, amount);
+        shiftIfNotNull(ride.CurTestTrackLocation, amount);
+        shiftIfNotNull(ride.ChairliftBullwheelLocation[0], amount);
+        shiftIfNotNull(ride.ChairliftBullwheelLocation[1], amount);
+        shiftIfNotNull(ride.CableLiftLoc, amountToMove);
     }
 
     // Banners
