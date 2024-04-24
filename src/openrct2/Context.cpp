@@ -505,18 +505,24 @@ namespace OpenRCT2
             ContextInit();
 
             _preloaderScene->AddJob([&]() {
-                _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
+                auto currentLanguage = _localisationService->GetCurrentLanguage();
+
+                _preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
+                _objectRepository->LoadOrConstruct(currentLanguage);
 
                 if (!gOpenRCT2Headless)
                 {
+                    _preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);
                     _assetPackManager->Scan();
                     _assetPackManager->LoadEnabledAssetPacks();
                     _assetPackManager->Reload();
                 }
 
-                _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
+                _preloaderScene->UpdateCaption(STR_CHECKING_TRACK_DESIGN_FILES);
+                _trackDesignRepository->Scan(currentLanguage);
 
-                _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
+                _preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
+                _scenarioRepository->Scan(currentLanguage);
             });
 
             TitleSequenceManager::Scan();

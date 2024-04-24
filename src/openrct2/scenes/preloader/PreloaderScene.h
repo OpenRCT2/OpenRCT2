@@ -23,6 +23,7 @@ namespace OpenRCT2
         void Load() override;
         void Tick() override;
         void Stop() override;
+        void UpdateCaption(StringId stringId);
         void AddJob(const std::function<void()>& fn)
         {
             _jobs.AddTask(fn);

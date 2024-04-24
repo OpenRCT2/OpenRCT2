@@ -16,6 +16,7 @@
 #include "../../audio/audio.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
+#include "../../localisation/LocalisationService.h"
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
 
@@ -37,9 +38,7 @@ void PreloaderScene::Load()
     ContextOpenWindow(WindowClass::MainWindow);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 
-    auto intent = Intent(WindowClass::NetworkStatus);
-    intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ "Loading..." });
-    ContextOpenIntent(&intent);
+    UpdateCaption(STR_LOADING_GENERIC);
 
     LOG_VERBOSE("PreloaderScene::Load() finished");
 }
@@ -61,6 +60,15 @@ void PreloaderScene::Tick()
         FinishScene();
     }
 }
+
+void PreloaderScene::UpdateCaption(StringId stringId)
+{
+    LOG_VERBOSE("PreloaderScene::UpdateCaption()");
+
+    auto intent = Intent(WindowClass::NetworkStatus);
+    intent.PutExtra(INTENT_EXTRA_MESSAGE, GetContext().GetLocalisationService().GetString(stringId));
+    ContextOpenIntent(&intent);
+};
 
 void PreloaderScene::Stop()
 {

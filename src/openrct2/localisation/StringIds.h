@@ -3855,6 +3855,12 @@ enum : uint16_t
     STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED = 6629,
     STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP = 6630,
 
+    STR_LOADING_GENERIC = 6631,
+    STR_CHECKING_OBJECT_FILES = 6632,
+    STR_CHECKING_SCENARIO_FILES = 6633,
+    STR_CHECKING_TRACK_DESIGN_FILES = 6634,
+    STR_CHECKING_ASSET_PACKS = 6635,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
