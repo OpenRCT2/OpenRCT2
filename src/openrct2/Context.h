@@ -144,7 +144,7 @@ namespace OpenRCT2
         virtual NetworkBase& GetNetwork() abstract;
 #endif
 
-        virtual IScene* GetLoadingScene() abstract;
+        virtual IScene* GetPreloaderScene() abstract;
         virtual IScene* GetIntroScene() abstract;
         virtual IScene* GetTitleScene() abstract;
         virtual IScene* GetGameScene() abstract;

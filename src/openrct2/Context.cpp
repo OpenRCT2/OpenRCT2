@@ -68,6 +68,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
 #include "scenes/intro/IntroScene.h"
+#include "scenes/preloader/PreloaderScene.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequenceManager.h"
 #include "scripting/HookEngine.h"
@@ -124,6 +125,7 @@ namespace OpenRCT2
 #endif
 
         // Scenes
+        std::unique_ptr<PreloaderScene> _preloaderScene;
         std::unique_ptr<IntroScene> _introScene;
         std::unique_ptr<TitleScene> _titleScene;
         std::unique_ptr<GameScene> _gameScene;
@@ -175,6 +177,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
+            , _preloaderScene(std::make_unique<PreloaderScene>(*this))
             , _introScene(std::make_unique<IntroScene>(*this))
             , _titleScene(std::make_unique<TitleScene>(*this))
             , _gameScene(std::make_unique<GameScene>(*this))
@@ -311,10 +314,9 @@ namespace OpenRCT2
             return EXIT_FAILURE;
         }
 
-        IScene* GetLoadingScene() override
+        IScene* GetPreloaderScene() override
         {
-            // TODO: Implement me.
-            return nullptr;
+            return _preloaderScene.get();
         }
 
         IScene* GetIntroScene() override
@@ -477,26 +479,6 @@ namespace OpenRCT2
 
             EnsureUserContentDirectoriesExist();
 
-            // TODO Ideally we want to delay this until we show the title so that we can
-            //      still open the game window and draw a progress screen for the creation
-            //      of the object cache.
-            _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
-
-            if (!gOpenRCT2Headless)
-            {
-                _assetPackManager->Scan();
-                _assetPackManager->LoadEnabledAssetPacks();
-                _assetPackManager->Reload();
-            }
-
-            // TODO Like objects, this can take a while if there are a lot of track designs
-            //      its also really something really we might want to do in the background
-            //      as its not required until the player wants to place a new ride.
-            _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
-
-            _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
-            TitleSequenceManager::Scan();
-
             if (!gOpenRCT2Headless)
             {
                 Audio::Init();
@@ -520,7 +502,27 @@ namespace OpenRCT2
             InputResetPlaceObjModifier();
             ViewportInitAll();
 
-            gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+            ContextInit();
+
+            _preloaderScene->AddJob([&]() {
+                _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
+
+                if (!gOpenRCT2Headless)
+                {
+                    _assetPackManager->Scan();
+                    _assetPackManager->LoadEnabledAssetPacks();
+                    _assetPackManager->Reload();
+                }
+
+                _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
+
+                _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
+            });
+
+            TitleSequenceManager::Scan();
+
+            _preloaderScene->SetCompletionScene(GetTitleScene());
+            SetActiveScene(_preloaderScene.get());
 
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Initialise();
