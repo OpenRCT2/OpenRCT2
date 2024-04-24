@@ -29,6 +29,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/S6ImportExportTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/SawyerCodingTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/StringTest.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/GameTicksTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TestData.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TestData.h"
    "${CMAKE_CURRENT_SOURCE_DIR}/tests.cpp"
