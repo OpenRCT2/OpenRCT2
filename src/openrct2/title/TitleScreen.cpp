@@ -133,7 +133,6 @@ void TitleScreen::Load()
     ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
     TitleInitialise();
-    OpenRCT2::Audio::PlayTitleMusic();
 
     if (gOpenRCT2ShowChangelog)
     {
@@ -164,6 +163,7 @@ void TitleScreen::Tick()
     {
         TryLoadSequence();
         _sequencePlayer->Update();
+        OpenRCT2::Audio::PlayTitleMusic();
 
         int32_t numUpdates = 1;
         if (gGameSpeed > 1)
