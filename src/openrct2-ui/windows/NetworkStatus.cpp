@@ -117,6 +117,7 @@ static Widget window_network_status_widgets[] = {
         void SetWindowNetworkStatusText(const std::string& text)
         {
             _windowNetworkStatusText = text;
+            Invalidate();
         }
 
         void SetPassword(char* password)

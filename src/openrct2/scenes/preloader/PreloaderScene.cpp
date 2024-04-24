@@ -14,6 +14,8 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/audio.h"
+#include "../../drawing/IDrawingContext.h"
+#include "../../drawing/IDrawingEngine.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
 #include "../../localisation/LocalisationService.h"
@@ -37,6 +39,11 @@ void PreloaderScene::Load()
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
+
+    // Reset screen
+    auto* engine = GetContext().GetDrawingEngine();
+    auto* drawingContext = engine->GetDrawingContext();
+    drawingContext->Clear(*engine->GetDrawingPixelInfo(), PALETTE_INDEX_10);
 
     UpdateCaption(STR_LOADING_GENERIC);
 
