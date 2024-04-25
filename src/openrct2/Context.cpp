@@ -504,31 +504,19 @@ namespace OpenRCT2
 
             ContextInit();
 
-            _preloaderScene->AddJob([&]() {
-                auto currentLanguage = _localisationService->GetCurrentLanguage();
-
-                _preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
-                _objectRepository->LoadOrConstruct(currentLanguage);
-
-                if (!gOpenRCT2Headless)
-                {
-                    _preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);
-                    _assetPackManager->Scan();
-                    _assetPackManager->LoadEnabledAssetPacks();
-                    _assetPackManager->Reload();
-                }
-
-                _preloaderScene->UpdateCaption(STR_CHECKING_TRACK_DESIGN_FILES);
-                _trackDesignRepository->Scan(currentLanguage);
-
-                _preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
-                _scenarioRepository->Scan(currentLanguage);
-            });
-
             TitleSequenceManager::Scan();
 
-            _preloaderScene->SetCompletionScene(GetTitleScene());
-            SetActiveScene(_preloaderScene.get());
+            if (!gOpenRCT2Headless)
+            {
+                _preloaderScene->AddJob([this]() { InitialiseRepositories(); });
+
+                // TODO: preload the title scene in another (parallel) job.
+                SetActiveScene(_preloaderScene.get());
+            }
+            else
+            {
+                InitialiseRepositories();
+            }
 
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Initialise();
@@ -539,6 +527,37 @@ namespace OpenRCT2
             return true;
         }
 
+    private:
+        void InitialiseRepositories()
+        {
+            if (!_initialised)
+            {
+                throw std::runtime_error("Context needs to be initialised first.");
+            }
+
+            auto currentLanguage = _localisationService->GetCurrentLanguage();
+
+            _preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
+            _objectRepository->LoadOrConstruct(currentLanguage);
+
+            if (!gOpenRCT2Headless)
+            {
+                _preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);
+                _assetPackManager->Scan();
+                _assetPackManager->LoadEnabledAssetPacks();
+                _assetPackManager->Reload();
+            }
+
+            _preloaderScene->UpdateCaption(STR_CHECKING_TRACK_DESIGN_FILES);
+            _trackDesignRepository->Scan(currentLanguage);
+
+            _preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
+            _scenarioRepository->Scan(currentLanguage);
+
+            _preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
+        }
+
+    public:
         void InitialiseDrawingEngine() final override
         {
             assert(_drawingEngine == nullptr);
@@ -1020,7 +1039,14 @@ namespace OpenRCT2
             }
 
             auto* scene = DetermineStartUpScene();
-            SetActiveScene(scene);
+            if (!gOpenRCT2Headless)
+            {
+                _preloaderScene->SetCompletionScene(scene);
+            }
+            else
+            {
+                SetActiveScene(scene);
+            }
 
             if (scene == GetGameScene())
             {
