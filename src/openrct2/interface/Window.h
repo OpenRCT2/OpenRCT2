@@ -137,6 +137,18 @@ struct Widget
         return top - 1;
     }
 
+    void moveRight(int32_t amount)
+    {
+        left += amount;
+        right += amount;
+    }
+
+    void moveDown(int32_t amount)
+    {
+        top += amount;
+        bottom += amount;
+    }
+
     bool IsVisible() const
     {
         return !(flags & WIDGET_FLAGS::IS_HIDDEN);

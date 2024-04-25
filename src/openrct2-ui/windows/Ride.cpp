@@ -2559,7 +2559,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void VehicleResize()
         {
-            WindowSetResize(*this, 316, 221, 316, 221);
+            auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6;
+            WindowSetResize(*this, 316, bottom, 316, bottom);
         }
 
         void VehicleOnMouseDown(WidgetIndex widgetIndex)
@@ -2841,6 +2842,19 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
                 StringId stringId = rideEntry->nausea_multiplier > 0 ? STR_NAUSEA_FACTOR : STR_NAUSEA_FACTOR_NEGATIVE;
                 DrawTextBasic(dpi, screenCoords, stringId, ft);
+            }
+
+            const auto minimumPreviewStart = screenCoords.y - windowPos.y + kListRowHeight + 5;
+            if (minimumPreviewStart > widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top)
+            {
+                auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
+                height += heightIncrease;
+                ResizeFrameWithPage();
+
+                for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
+                {
+                    widgets[i].moveDown(heightIncrease);
+                }
             }
         }
 
