@@ -13,6 +13,7 @@
 
 #    include "../../../entity/Guest.h"
 #    include "ScPeep.hpp"
+#    include "../ride/ScRide.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -164,6 +165,9 @@ namespace OpenRCT2::Scripting
 
         uint8_t lostCountdown_get() const;
         void lostCountdown_set(uint8_t value);
+
+        std::shared_ptr<ScRide> rideHeadedTo_get() const;
+        void rideHeadedTo_set(int32_t rideId);
 
         DukValue thoughts_get() const;
 

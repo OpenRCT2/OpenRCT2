@@ -55,4 +55,5 @@ private:
     void ParkSetOpen(bool isOpen) const;
     void CreateDucks(int count) const;
     void RemoveParkFences() const;
+    void SendGuestToRide(EntityId guestId, RideId rideId) const;
 };

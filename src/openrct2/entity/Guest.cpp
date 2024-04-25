@@ -1804,6 +1804,52 @@ void Guest::OnExitRide(Ride& ride)
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 }
 
+
+void Guest::SendToRide(RideId rideId)
+{
+    if (rideId.IsNull())
+        return;
+    Ride* ride = GetRide(rideId);
+    if (ride == nullptr)
+        return;
+    if (x == LOCATION_NULL)
+        return;
+
+    // Make the guest stay in the park
+    if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+    {
+        PeepFlags &= ~PEEP_FLAGS_LEAVING_PARK;
+    }
+    /**
+     * Ideally it would also be able affect guests that are
+     * PeepState::Queuing and PeepState::QueuingFront for a different ride,
+     * but there's some issue causing the game to crash
+     * when the original ride tries processing its depleted queue.
+     */
+    if (
+        State != PeepState::Walking &&
+        State != PeepState::Sitting &&
+        State != PeepState::Watching &&
+        State != PeepState::UsingBin
+        )
+        return;
+
+    // Head to that ride
+    SetState(PeepState::Walking);
+    GuestHeadingToRideId = ride->id;
+    GuestIsLostCountdown = 200;
+    TimeLost = 0;
+    ResetPathfindGoal();
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
+
+
+    // Make peep look at their map if they have one
+    if (HasItem(ShopItem::Map))
+    {
+        ReadMap();
+    }
+}
+
 /**
  *
  *  rct2: 0x00695DD2

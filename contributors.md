@@ -119,6 +119,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Tiago Reul (reul) - Misc.
 * Fredrik Tegnell (fredriktegnell) - Misc.
 * Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
+* Smitty Penman (ltsSmitty) - Add API for sending guest to rides
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)

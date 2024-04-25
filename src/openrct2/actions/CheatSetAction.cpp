@@ -264,6 +264,13 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::RemoveParkFences:
             RemoveParkFences();
             break;
+        case CheatType::SendGuestToRide:
+        {
+            EntityId guestId = EntityId::FromUnderlying(_param1);
+            RideId rideId = RideId::FromUnderlying(_param2);
+            SendGuestToRide(guestId, rideId);
+        }
+            break;
         default:
         {
             LOG_ERROR("Invalid cheat type %d", _cheatType.id);
@@ -414,6 +421,8 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             [[fallthrough]];
         case CheatType::RemoveParkFences:
             return { { 0, 0 }, { 0, 0 } };
+        case CheatType::SendGuestToRide:
+            return { { 0, MAX_ENTITIES}, { 0, 10000} };
         case CheatType::Count:
             break;
     }
@@ -821,4 +830,15 @@ void CheatSetAction::RemoveParkFences() const
     } while (TileElementIteratorNext(&it));
 
     GfxInvalidateScreen();
+}
+
+void CheatSetAction::SendGuestToRide(EntityId guestId, RideId rideId) const
+{
+    auto guest = TryGetEntity<Guest>(guestId);
+    if (guest != nullptr)
+    {
+        {
+            guest->SendToRide(rideId);
+        }
+    }
 }
