@@ -10,6 +10,8 @@
 #if defined(__amd64__) || defined(_M_AMD64) || defined(__i386__) || defined(_M_IX86)
 // Don't bother checking for CPUID, prefetch is available since Pentium 4
 #    include <xmmintrin.h>
+// This cannot be expressed as `constexpr` function, exclude it from clang-tidy check
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #    define PREFETCH(x) _mm_prefetch(reinterpret_cast<const char*>(x), _MM_HINT_T0)
 
 #elif defined(_MSC_VER) && defined(_M_ARM64)
