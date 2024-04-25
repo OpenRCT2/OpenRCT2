@@ -2883,6 +2883,16 @@ declare global {
         lostCountdown: number;
 
         /**
+         * The guest's current ride or stall destination.
+         */
+        rideHeadedTo: number | null;
+
+        /**
+         * Sends a guest to a given ride, regardless of their interest in it.
+         */
+        sendToRide(rideId: number): void;
+
+        /**
          * The list of thoughts this guest has.
          */
         readonly thoughts: Thought[];

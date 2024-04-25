@@ -16,6 +16,7 @@
 #    include "../../../localisation/Localisation.h"
 #    include "../../../peep/PeepAnimationData.h"
 #    include "../../../ride/RideEntry.h"
+#    include "../ride/ScRide.hpp"
 
 namespace OpenRCT2::Scripting
 {

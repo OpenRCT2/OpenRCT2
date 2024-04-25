@@ -120,6 +120,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Fredrik Tegnell (fredriktegnell) - Misc.
 * Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
 * Arnold Zhou (mrmagic2020) - Added plugin API for getting and setting guests' favourite rides.
+* Smitty Penman (ltsSmitty) - Add API for sending guest to rides
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
