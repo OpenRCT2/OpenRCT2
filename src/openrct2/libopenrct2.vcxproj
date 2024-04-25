@@ -567,6 +567,7 @@
     <ClInclude Include="ui\UiContext.h" />
     <ClInclude Include="ui\WindowManager.h" />
     <ClInclude Include="util\Math.hpp" />
+    <ClInclude Include="util/Prefetch.h" />
     <ClInclude Include="util\SawyerCoding.h" />
     <ClInclude Include="util\Util.h" />
     <ClInclude Include="Version.h" />
