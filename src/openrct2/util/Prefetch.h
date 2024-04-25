@@ -17,7 +17,7 @@
 #elif defined(_MSC_VER) && defined(_M_ARM64)
 // ARM64 prefetch is available since ARMv8.
 // MSVC's help (https://learn.microsoft.com/en-us/cpp/intrinsics/arm64-intrinsics?view=msvc-170)
-// is useless and points to a different header (arm64_neon.h), which doesn't contain prefetch.
+// is incorrect and points to a different header (arm64_neon.h), which doesn't contain prefetch.
 // Correct header info taken from
 // https://github.com/microsoft/wdkmetadata/blob/1ac0dd0719f19196334de12cf2a6dec20316d440/generation/WDK/IdlHeaders/km/crt/intrin.h#L2
 // and
