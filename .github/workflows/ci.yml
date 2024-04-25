@@ -190,7 +190,7 @@ jobs:
           if-no-files-found: error
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
-    runs-on: macos-latest
+    runs-on: macos-12
     needs: check-code-formatting
     strategy:
       fail-fast: false
@@ -200,7 +200,8 @@ jobs:
           - arch: x64
             cache_key: macos-x64
             # Note: only build/run tests on the native architecture of the CI agent
-            # GitHub macos-latest agents are currently all Intel
+            # GitHub macos-12 agents are all Intel, but as of 2024-04-25 new images, e.g. macos-14 (current macos-latest) are arm64
+            # See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
             build_flags: -DARCH="x86_64" -DWITH_TESTS=on
             run_tests: true
           - arch: arm64
@@ -248,7 +249,7 @@ jobs:
         if: ${{matrix.run_tests}}
   macos-universal:
     name: macOS universal app bundle
-    runs-on: macos-latest
+    runs-on: macos-12
     needs: macos-cmake
     steps:
       - name: Checkout
