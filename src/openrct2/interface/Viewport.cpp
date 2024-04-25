@@ -177,7 +177,7 @@ CoordsXYZ Focus::GetPos() const
 void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
 {
     Viewport* viewport = nullptr;
-    if (_viewports.size() >= MAX_VIEWPORT_COUNT)
+    if (_viewports.size() >= kMaxViewportCount)
     {
         LOG_ERROR("No more viewport slots left to allocate.");
         return;
