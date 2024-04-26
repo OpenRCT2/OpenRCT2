@@ -194,7 +194,7 @@ static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
 void WindowSetWindowLimit(int32_t value)
 {
     int32_t prev = gConfigGeneral.WindowLimit;
-    int32_t val = std::clamp<int32_t>(value, kWindowLimitMin, WINDOW_LIMIT_MAX);
+    int32_t val = std::clamp<int32_t>(value, kWindowLimitMin, kWindowLimitMax);
     gConfigGeneral.WindowLimit = val;
     ConfigSaveDefault();
     // Checks if value decreases and then closes surplus

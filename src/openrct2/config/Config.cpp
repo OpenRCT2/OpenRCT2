@@ -217,7 +217,7 @@ namespace Config
             model->LastSaveScenarioDirectory = reader->GetString("last_scenario_directory", "");
             model->LastSaveTrackDirectory = reader->GetString("last_track_directory", "");
             model->UseNativeBrowseDialog = reader->GetBoolean("use_native_browse_dialog", false);
-            model->WindowLimit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
+            model->WindowLimit = reader->GetInt32("window_limit", kWindowLimitMax);
             model->ZoomToCursor = reader->GetBoolean("zoom_to_cursor", true);
             model->RenderWeatherEffects = reader->GetBoolean("render_weather_effects", true);
             model->RenderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
