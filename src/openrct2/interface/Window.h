@@ -484,7 +484,7 @@ using close_callback = void (*)();
 
 constexpr int8_t kWindowLimitMin = 4;
 constexpr int8_t kWindowLimitMax = 64;
-#define WINDOW_LIMIT_RESERVED 4 // Used to reserve room for the main viewport, toolbars, etc.
+constexpr int8_t kWindowLimitReserved = 4; // Used to reserve room for the main viewport, toolbars, etc.
 
 extern WindowBase* gWindowAudioExclusive;
 

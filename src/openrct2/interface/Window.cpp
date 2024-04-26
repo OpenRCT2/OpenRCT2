@@ -164,7 +164,7 @@ static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
     // find the amount of windows that are currently open
     auto count = static_cast<int32_t>(g_window_list.size());
     // difference between amount open and cap = amount to close
-    auto diff = count - WINDOW_LIMIT_RESERVED - cap;
+    auto diff = count - kWindowLimitReserved - cap;
     for (auto i = 0; i < diff; i++)
     {
         // iterates through the list until it finds the newest window, or a window that can be closed
