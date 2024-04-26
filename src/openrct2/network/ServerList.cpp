@@ -270,7 +270,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         constexpr auto RECV_DELAY_MS = 10;
         constexpr auto RECV_WAIT_MS = 2000;
 
-        std::string_view msg = NETWORK_LAN_BROADCAST_MSG;
+        std::string_view msg = kNetworkLanBroadcastMsg;
         auto udpSocket = CreateUdpSocket();
 
         LOG_VERBOSE("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress.c_str());
