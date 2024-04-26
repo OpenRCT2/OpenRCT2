@@ -504,8 +504,7 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
     }
 }
 
-#define PALETTE_TO_G1_OFFSET_COUNT 144
-constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
+constexpr uint8_t kPaletteTotalOffsets = 192;
 
 #define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)

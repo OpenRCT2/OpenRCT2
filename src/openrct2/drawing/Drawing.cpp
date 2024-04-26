@@ -405,7 +405,7 @@ const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-static constexpr uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
+static constexpr uint16_t palette_to_g1_offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -904,7 +904,7 @@ void GfxDrawPickedUpPeep(DrawPixelInfo& dpi)
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 {
-    if (paletteId < PALETTE_TOTAL_OFFSETS)
+    if (paletteId < kPaletteTotalOffsets)
     {
         return palette_to_g1_offset[paletteId];
     }

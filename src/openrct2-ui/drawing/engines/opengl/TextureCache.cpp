@@ -216,7 +216,7 @@ void TextureCache::CreateTextures()
 
 void TextureCache::GeneratePaletteTexture()
 {
-    static_assert(PALETTE_TOTAL_OFFSETS + 5 < 256, "Height of palette too large!");
+    static_assert(kPaletteTotalOffsets + 5 < 256, "Height of palette too large!");
     constexpr int32_t height = 256;
     constexpr int32_t width = height;
     DrawPixelInfo dpi = CreateDPI(width, height);
@@ -227,7 +227,7 @@ void TextureCache::GeneratePaletteTexture()
         dpi.bits[i] = i;
     }
 
-    for (int i = 0; i < PALETTE_TOTAL_OFFSETS; ++i)
+    for (int i = 0; i < kPaletteTotalOffsets; ++i)
     {
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
