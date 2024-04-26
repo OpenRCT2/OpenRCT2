@@ -40,7 +40,7 @@
 #ifndef DISABLE_NETWORK
 int32_t gNetworkStart = NETWORK_MODE_NONE;
 std::string gNetworkStartHost;
-int32_t gNetworkStartPort = NETWORK_DEFAULT_PORT;
+int32_t gNetworkStartPort = kNetworkDefaultPort;
 std::string gNetworkStartAddress;
 
 static uint32_t _port = 0;
