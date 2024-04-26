@@ -48,7 +48,7 @@ using namespace OpenRCT2;
 
 #define NETWORK_STREAM_VERSION "3"
 
-#define NETWORK_STREAM_ID openrct2Version "-" NETWORK_STREAM_VERSION
+#define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
 static int32_t _pickup_peep_old_x = LOCATION_NULL;

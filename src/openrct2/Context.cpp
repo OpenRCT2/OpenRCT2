@@ -339,14 +339,14 @@ namespace OpenRCT2
 
             CrashInit();
 
-            if (String::Equals(gConfigGeneral.LastRunVersion, openrct2Version))
+            if (String::Equals(gConfigGeneral.LastRunVersion, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                gConfigGeneral.LastRunVersion = openrct2Version;
+                gConfigGeneral.LastRunVersion = OPENRCT2_VERSION;
                 ConfigSaveDefault();
             }
 

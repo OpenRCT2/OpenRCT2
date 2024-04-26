@@ -22,7 +22,7 @@
 
 namespace Http
 {
-    static constexpr char OPENRCT2_USER_AGENT[] = "OpenRCT2/" openrct2Version;
+    static constexpr char OPENRCT2_USER_AGENT[] = "OpenRCT2/" OPENRCT2_VERSION;
 
     static void ThrowWin32Exception(const char* methodName)
     {
