@@ -302,30 +302,13 @@ static constexpr TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
     },
 };
 
-static ImageId GetSurfaceImage(
-    const PaintSession& session, const TerrainSurfaceObject* surfaceObject, int32_t offset, uint8_t rotation,
-    int32_t grassLength, bool grid, bool underground)
-{
-    ImageId image;
-    if (surfaceObject != nullptr)
-    {
-        image = ImageId(surfaceObject->GetImageId(
-            { session.MapPosition.x >> 5, session.MapPosition.y >> 5 }, grassLength, rotation, offset, grid, underground));
-        if (surfaceObject->Colour != 255)
-        {
-            image = image.WithPrimary(surfaceObject->Colour);
-        }
-    }
-    return image;
-}
-
 static ImageId GetSurfacePattern(const TerrainSurfaceObject* surfaceObject, int32_t offset)
 {
     ImageId image;
     if (surfaceObject != nullptr)
     {
         image = ImageId(surfaceObject->PatternBaseImageId + offset);
-        if (surfaceObject->Colour != 255)
+        if (surfaceObject->Colour != TerrainSurfaceObject::kNoValue)
         {
             image = image.WithPrimary(surfaceObject->Colour);
         }
@@ -1108,15 +1091,6 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     {
         const bool showGridlines = (session.ViewFlags & VIEWPORT_FLAG_GRIDLINES);
 
-        auto grassLength = -1;
-        if (zoomLevel <= ZoomLevel{ 0 })
-        {
-            if ((session.ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
-            {
-                grassLength = tileElement.GetGrassLength() & 0x7;
-            }
-        }
-
         assert(surfaceShape < std::size(Byte97B444));
         const uint8_t image_offset = Byte97B444[surfaceShape];
 
@@ -1125,9 +1099,17 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         {
             imageId = ImageId(SPR_TERRAIN_TRACK_DESIGNER);
         }
-        else
+        else if (surfaceObject != nullptr)
         {
-            imageId = GetSurfaceImage(session, surfaceObject, image_offset, rotation, grassLength, showGridlines, false);
+            uint8_t grassLength = TerrainSurfaceObject::kNoValue;
+            if (zoomLevel <= ZoomLevel{ 0 })
+            {
+                if ((session.ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
+                {
+                    grassLength = tileElement.GetGrassLength() & 0x7;
+                }
+            }
+            imageId = surfaceObject->GetImageId(session.MapPosition, grassLength, rotation, image_offset, showGridlines, false);
         }
         if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
@@ -1299,7 +1281,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
         const uint8_t image_offset = Byte97B444[surfaceShape];
-        auto imageId = GetSurfaceImage(session, surfaceObject, image_offset, rotation, 1, false, true);
+        ImageId imageId;
+        if (surfaceObject != nullptr)
+            imageId = surfaceObject->GetImageId(session.MapPosition, 1, rotation, image_offset, false, true);
         PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
 
