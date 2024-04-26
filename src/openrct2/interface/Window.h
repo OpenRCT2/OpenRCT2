@@ -482,9 +482,9 @@ enum class Tool
 using modal_callback = void (*)(int32_t result);
 using close_callback = void (*)();
 
-#define WINDOW_LIMIT_MIN 4
-#define WINDOW_LIMIT_MAX 64
-#define WINDOW_LIMIT_RESERVED 4 // Used to reserve room for the main viewport, toolbars, etc.
+constexpr int8_t kWindowLimitMin = 4;
+constexpr int8_t kWindowLimitMax = 64;
+constexpr int8_t kWindowLimitReserved = 4; // Used to reserve room for the main viewport, toolbars, etc.
 
 extern WindowBase* gWindowAudioExclusive;
 
