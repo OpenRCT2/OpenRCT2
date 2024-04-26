@@ -169,7 +169,7 @@ static bool OnCrash(
     wprintf(L"Dump Path: %s\n", dumpPath);
     wprintf(L"Dump File Path: %s\n", dumpFilePath);
     wprintf(L"Dump Id: %s\n", miniDumpId);
-    wprintf(L"Version: %s\n", WSZ(OPENRCT2_VERSION));
+    wprintf(L"Version: %s\n", WSZ(openrct2Version));
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
     bool savedGameDumped = false;
@@ -253,7 +253,7 @@ static bool OnCrash(
                                              L"We would like to upload the crash dump for automated analysis, do you agree?\n"
                                              L"The automated analysis is done by courtesy of https://backtrace.io/";
     wchar_t message[MAX_PATH * 2];
-    swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
+    swprintf_s(message, MessageFormat, dumpFilePath, WSZ(openrct2Version), _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
     int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);

@@ -39,7 +39,7 @@ static int32_t InGameConsoleGetLineHeight()
 
 void InGameConsole::WriteInitial()
 {
-    InteractiveConsole::WriteLine(OPENRCT2_NAME " " OPENRCT2_VERSION);
+    InteractiveConsole::WriteLine(OPENRCT2_NAME " " openrct2Version);
     InteractiveConsole::WriteLine(LanguageGetString(STR_CONSOLE_HELPER_TEXT));
     InteractiveConsole::WriteLine("");
     WritePrompt();
