@@ -370,6 +370,8 @@
     <ClInclude Include="park\ParkFile.h" />
     <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
+    <ClInclude Include="peep\PeepAnimationData.h" />
+    <ClInclude Include="peep\PeepSpriteIds.h" />
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
     <ClInclude Include="platform\Crash.h" />
@@ -875,7 +877,7 @@
     <ClCompile Include="park\Legacy.cpp" />
     <ClCompile Include="park\ParkFile.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
-    <ClCompile Include="peep\PeepData.cpp" />
+    <ClCompile Include="peep\PeepAnimationData.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
     <ClCompile Include="platform\Crash.cpp" />

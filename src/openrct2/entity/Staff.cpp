@@ -957,6 +957,7 @@ void Staff::SetCostume(uint8_t value)
 {
     auto costume = static_cast<EntertainerCostume>(value);
     SpriteType = EntertainerCostumeToSprite(costume);
+    UpdateAction();
 }
 
 void Staff::SetHireDate(int32_t hireDate)
