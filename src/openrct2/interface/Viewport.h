@@ -114,7 +114,7 @@ struct InteractionInfo
     ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
 };
 
-#define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
+constexpr int32_t kMaxViewportCount = WINDOW_LIMIT_MAX;
 
 /**
  * A reference counter for whether something is forcing the grid lines to show. When the counter
