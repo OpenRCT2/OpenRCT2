@@ -275,7 +275,6 @@
     <ClInclude Include="interface\WindowClasses.h" />
     <ClInclude Include="interface\Window_internal.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
-    <ClInclude Include="Intro.h" />
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\ConversionTables.h" />
     <ClInclude Include="localisation\Currency.h" />
@@ -512,6 +511,7 @@
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
+    <ClInclude Include="scenes\intro\IntroScene.h" />
     <ClInclude Include="scenes\game\GameScene.h" />
     <ClInclude Include="scenes\title\Command\End.h" />
     <ClInclude Include="scenes\title\Command\FollowEntity.h" />
@@ -793,7 +793,6 @@
     <ClCompile Include="interface\Window.cpp" />
     <ClCompile Include="interface\Window_internal.cpp" />
     <ClCompile Include="interface\ZoomLevel.cpp" />
-    <ClCompile Include="Intro.cpp" />
     <ClCompile Include="localisation\ConversionTables.cpp" />
     <ClCompile Include="localisation\Convert.cpp" />
     <ClCompile Include="localisation\Currency.cpp" />
@@ -1003,6 +1002,7 @@
     <ClCompile Include="scenario\ScenarioSources.cpp" />
     <ClCompile Include="scenes\Scene.cpp" />
     <ClCompile Include="scenes\game\GameScene.cpp" />
+    <ClCompile Include="scenes\intro\IntroScene.cpp" />
     <ClCompile Include="scenes\title\Command\End.cpp" />
     <ClCompile Include="scenes\title\Command\FollowEntity.cpp" />
     <ClCompile Include="scenes\title\Command\LoadPark.cpp" />

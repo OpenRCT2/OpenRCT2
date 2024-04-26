@@ -19,7 +19,6 @@
 #include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
-#include "Intro.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
@@ -67,6 +66,7 @@
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
+#include "scenes/intro/IntroScene.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequenceManager.h"
 #include "scripting/HookEngine.h"
@@ -124,6 +124,7 @@ namespace OpenRCT2
 #endif
 
         // Scenes
+        std::unique_ptr<IntroScene> _introScene;
         std::unique_ptr<TitleScene> _titleScene;
         std::unique_ptr<GameScene> _gameScene;
         IScene* _activeScene = nullptr;
@@ -174,6 +175,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
+            , _introScene(std::make_unique<IntroScene>(*this))
             , _titleScene(std::make_unique<TitleScene>(*this))
             , _gameScene(std::make_unique<GameScene>(*this))
             , _painter(std::make_unique<Painter>(uiContext))
@@ -317,8 +319,7 @@ namespace OpenRCT2
 
         IScene* GetIntroScene() override
         {
-            // TODO: Implement me.
-            return nullptr;
+            return _introScene.get();
         }
 
         IScene* GetTitleScene() override
@@ -917,7 +918,6 @@ namespace OpenRCT2
                 });
             }
 
-            gIntroState = IntroState::None;
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
@@ -937,8 +937,7 @@ namespace OpenRCT2
             switch (gOpenRCT2StartupAction)
             {
                 case StartupAction::Intro:
-                    gIntroState = IntroState::PublisherBegin;
-                    SetActiveScene(GetTitleScene());
+                    SetActiveScene(GetIntroScene());
                     break;
                 case StartupAction::Title:
                     SetActiveScene(GetTitleScene());
