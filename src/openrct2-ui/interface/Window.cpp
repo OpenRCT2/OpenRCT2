@@ -835,6 +835,12 @@ ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 
 namespace OpenRCT2::Ui::Windows
 {
+    static u8string _textBoxInput;
+    static int32_t _textBoxFrameNo = 0;
+    static bool _usingWidgetTextBox = false;
+    static TextInputSession* _textInput;
+    static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+
     WindowBase* WindowGetListening()
     {
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -858,5 +864,78 @@ namespace OpenRCT2::Ui::Windows
     WindowClass WindowGetClassification(const WindowBase& window)
     {
         return window.classification;
+    }
+
+    void WindowStartTextbox(const WindowBase& callW, WidgetIndex callWidget, u8string existingText, int32_t maxLength)
+    {
+        if (_usingWidgetTextBox)
+            WindowCancelTextbox();
+
+        _usingWidgetTextBox = true;
+        _currentTextBox.window.classification = callW.classification;
+        _currentTextBox.window.number = callW.number;
+        _currentTextBox.widget_index = callWidget;
+        _textBoxFrameNo = 0;
+
+        WindowCloseByClass(WindowClass::Textinput);
+
+        _textBoxInput = existingText;
+
+        _textInput = ContextStartTextInput(_textBoxInput, maxLength);
+    }
+
+    void WindowCancelTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            _currentTextBox.window.classification = WindowClass::Null;
+            _currentTextBox.window.number = 0;
+            ContextStopTextInput();
+            _usingWidgetTextBox = false;
+            if (w != nullptr)
+            {
+                WidgetInvalidate(*w, _currentTextBox.widget_index);
+            }
+            _currentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
+        }
+    }
+
+    void WindowUpdateTextboxCaret()
+    {
+        _textBoxFrameNo++;
+        if (_textBoxFrameNo > 30)
+            _textBoxFrameNo = 0;
+    }
+
+    void WindowUpdateTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            _textBoxFrameNo = 0;
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
+        }
+    }
+    const TextInputSession* GetTextboxSession()
+    {
+        return _textInput;
+    }
+    void SetTexboxSession(TextInputSession* session)
+    {
+        _textInput = session;
+    }
+    bool IsUsingWidgetTextBox()
+    {
+        return _usingWidgetTextBox;
+    }
+    bool TextBoxCaretIsFlashed()
+    {
+        return _textBoxFrameNo <= 15;
+    }
+    const WidgetIdentifier& GetCurrentTextBox()
+    {
+        return _currentTextBox;
     }
 } // namespace OpenRCT2::Ui::Windows

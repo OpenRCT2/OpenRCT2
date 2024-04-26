@@ -1022,8 +1022,8 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
     if (widgetIndex == -1)
         return;
 
-    if (windowClass != gCurrentTextBox.window.classification || windowNumber != gCurrentTextBox.window.number
-        || widgetIndex != gCurrentTextBox.widget_index)
+    if (windowClass != GetCurrentTextBox().window.classification || windowNumber != GetCurrentTextBox().window.number
+        || widgetIndex != GetCurrentTextBox().widget_index)
     {
         WindowCancelTextbox();
     }

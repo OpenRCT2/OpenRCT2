@@ -45,12 +45,7 @@ using namespace OpenRCT2;
 std::list<std::shared_ptr<WindowBase>> g_window_list;
 WindowBase* gWindowAudioExclusive;
 
-WidgetIdentifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
 WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
-u8string gTextBoxInput;
-int32_t gTextBoxFrameNo = 0;
-bool gUsingWidgetTextBox = false;
-TextInputSession* gTextInput;
 
 uint32_t gWindowUpdateTicks;
 uint16_t gWindowMapFlashingFlags;
@@ -1647,70 +1642,6 @@ int32_t WindowCanResize(const WindowBase& w)
 void TextinputCancel()
 {
     WindowCloseByClass(WindowClass::Textinput);
-}
-
-void WindowStartTextbox(
-    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength)
-{
-    if (gUsingWidgetTextBox)
-        WindowCancelTextbox();
-
-    gUsingWidgetTextBox = true;
-    gCurrentTextBox.window.classification = call_w.classification;
-    gCurrentTextBox.window.number = call_w.number;
-    gCurrentTextBox.widget_index = call_widget;
-    gTextBoxFrameNo = 0;
-
-    WindowCloseByClass(WindowClass::Textinput);
-
-    // Clear the text input buffer
-    gTextBoxInput.clear();
-
-    // Enter in the text input buffer any existing
-    // text.
-    if (existing_text != STR_NONE)
-    {
-        char tempBuf[kTextInputSize]{};
-        size_t len = FormatStringLegacy(tempBuf, kTextInputSize, existing_text, &existing_args);
-        gTextBoxInput.assign(tempBuf, len);
-    }
-
-    gTextInput = ContextStartTextInput(gTextBoxInput, maxLength);
-}
-
-void WindowCancelTextbox()
-{
-    if (gUsingWidgetTextBox)
-    {
-        WindowBase* w = WindowFindByNumber(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        gCurrentTextBox.window.classification = WindowClass::Null;
-        gCurrentTextBox.window.number = 0;
-        ContextStopTextInput();
-        gUsingWidgetTextBox = false;
-        if (w != nullptr)
-        {
-            WidgetInvalidate(*w, gCurrentTextBox.widget_index);
-        }
-        gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
-    }
-}
-
-void WindowUpdateTextboxCaret()
-{
-    gTextBoxFrameNo++;
-    if (gTextBoxFrameNo > 30)
-        gTextBoxFrameNo = 0;
-}
-
-void WindowUpdateTextbox()
-{
-    if (gUsingWidgetTextBox)
-    {
-        gTextBoxFrameNo = 0;
-        WindowBase* w = WindowFindByNumber(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        WidgetInvalidate(*w, gCurrentTextBox.widget_index);
-        w->OnTextInput(gCurrentTextBox.widget_index, gTextBoxInput);
-    }
 }
 
 bool WindowIsVisible(WindowBase& w)

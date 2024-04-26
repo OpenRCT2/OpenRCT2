@@ -95,19 +95,19 @@ static Widget _windowServerStartWidgets[] = {
                     Close();
                     break;
                 case WIDX_PORT_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _port, 6);
+                    WindowStartTextbox(*this, widgetIndex, _port, 6);
                     break;
                 case WIDX_NAME_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _name, 64);
+                    WindowStartTextbox(*this, widgetIndex, _name, 64);
                     break;
                 case WIDX_DESCRIPTION_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
+                    WindowStartTextbox(*this, widgetIndex, _description, MAX_SERVER_DESCRIPTION_LENGTH);
                     break;
                 case WIDX_GREETING_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _greeting, kChatInputSize);
+                    WindowStartTextbox(*this, widgetIndex, _greeting, kChatInputSize);
                     break;
                 case WIDX_PASSWORD_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _password, 32);
+                    WindowStartTextbox(*this, widgetIndex, _password, 32);
                     break;
                 case WIDX_MAXPLAYERS_INCREASE:
                     if (gConfigNetwork.Maxplayers < 255)
@@ -154,7 +154,7 @@ static Widget _windowServerStartWidgets[] = {
         }
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_NAME_INPUT);

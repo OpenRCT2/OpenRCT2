@@ -276,7 +276,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     Invalidate();
                     break;
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filteredSceneryTab.Filter.data(), kTextInputSize);
+                    WindowStartTextbox(*this, widgetIndex, _filteredSceneryTab.Filter, kTextInputSize);
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _tabEntries[_activeTabIndex].Filter.clear();
@@ -463,7 +463,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
             }
 
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);

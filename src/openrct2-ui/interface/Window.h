@@ -12,6 +12,8 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/Window_internal.h>
 
+struct TextInputSession;
+
 struct Window : WindowBase
 {
     virtual void OnDraw(DrawPixelInfo& dpi) override;
@@ -73,4 +75,15 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* WindowGetListening();
     WindowClass WindowGetClassification(const WindowBase& window);
+
+    void WindowStartTextbox(const WindowBase& callW, WidgetIndex callWidget, u8string existingText, int32_t maxLength);
+    void WindowCancelTextbox();
+    void WindowUpdateTextboxCaret();
+    void WindowUpdateTextbox();
+
+    const TextInputSession* GetTextboxSession();
+    void SetTexboxSession(TextInputSession* session);
+    bool IsUsingWidgetTextBox();
+    bool TextBoxCaretIsFlashed();
+    const WidgetIdentifier& GetCurrentTextBox();
 } // namespace OpenRCT2::Ui::Windows
