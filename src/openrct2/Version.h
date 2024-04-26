@@ -14,6 +14,7 @@
 #include <string>
 
 constexpr const char* openrct2Name = "OpenRCT2";
+constexpr std::string_view openrct2NameFormatted = "OpenRCT2";
 constexpr const char* openrct2Version = "0.4.10";
 
 #if defined(__amd64__) || defined(_M_AMD64)
