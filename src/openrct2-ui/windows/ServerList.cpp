@@ -557,7 +557,7 @@ static Widget _serverListWidgets[] = {
 
     void JoinServer(std::string address)
     {
-        int32_t port = NETWORK_DEFAULT_PORT;
+        int32_t port = kNetworkDefaultPort;
         auto endBracketIndex = address.find(']');
         auto colonIndex = address.find_last_of(':');
         if (colonIndex != std::string::npos)

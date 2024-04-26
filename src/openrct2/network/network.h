@@ -9,7 +9,7 @@
 
 #pragma once
 
-#define NETWORK_DEFAULT_PORT 11753
+constexpr int16_t kNetworkDefaultPort = 11753;
 #define NETWORK_LAN_BROADCAST_PORT 11754
 #define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
 #define MAX_SERVER_DESCRIPTION_LENGTH 256

@@ -422,7 +422,7 @@ namespace Config
 
             auto model = &gConfigNetwork;
             model->PlayerName = std::move(playerName);
-            model->DefaultPort = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
+            model->DefaultPort = reader->GetInt32("default_port", kNetworkDefaultPort);
             model->ListenAddress = reader->GetString("listen_address", "");
             model->DefaultPassword = reader->GetString("default_password", "");
             model->StayConnected = reader->GetBoolean("stay_connected", true);
