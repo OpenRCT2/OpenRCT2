@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <!-- Allow any version of VS and Windows SDK -->
+    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
+
+    <CharacterSet>Unicode</CharacterSet>
+
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <ShowAllFiles>true</ShowAllFiles>
+
+    <VcpkgTriplet Condition="'$(Platform)'=='Win32' and '$(UseSharedLibs)'!='true'">x86-windows-static</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='arm64' and '$(UseSharedLibs)'!='true'">arm64-windows-static</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='ReleaseLTCG'">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <DisableSpecificWarnings>4068;4091;4100;4121;4132;4200;4201;4204;4206;4221;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <!-- Warnings:
+             C4068: unknown pragma
+             C4091: 'keyword': ignored on left of 'type' when no variable is declared
+             C4100: 'identifier': unreferenced formal parameter
+             C4121: 'identifier': alignment of a member was sensitive to packing
+             C4132: 'identifier': const object should be initialized
+             C4200: nonstandard extension used: zero-sized array in struct/union
+             C4201: nonstandard extension used: nameless struct/union
+             C4204: nonstandard extension used: non-constant aggregate initializer
+             C4206: nonstandard extension used: translation unit is empty
+             C4221: nonstandard extension used: 'identifier': cannot be initialized using address of automatic variable 'identifier'
+             C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
+      -->
+      <TreatSpecificWarningsAsErrors>4263;4265;4548;4549;4555</TreatSpecificWarningsAsErrors>
+      <!-- Warnings, that have to be enabled manually:
+             C4263: 'function': member function does not override any base class virtual member function
+             C4265: 'class': class has virtual functions, but destructor is not virtual
+             C4548: expression before comma has no effect; expected expression with side-effect
+             C4549: 'operator': operator before comma has no effect; did you intend 'operator'?
+             C4555: expression has no effect; expected expression with side-effect
+      -->
+      <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">__AVX2__;__SSE4_1__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENABLE_SCRIPTING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary Condition="'$(UseSharedLibs)'!='true'">MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(UseSharedLibs)'=='true'">MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>/utf-8 /std:c++20 /permissive- /Zc:externConstexpr /Zc:char8_t-</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <LargeAddressAware Condition="'$(Platform)'=='Win32'">true</LargeAddressAware>
+      <AdditionalDependencies>wininet.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;shlwapi.lib;setupapi.lib;bcrypt.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">fribidi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>DEBUG;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary Condition="'$(UseSharedLibs)'!='true'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(UseSharedLibs)'=='true'">MultiThreadedDebugDLL</RuntimeLibrary>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalDependencies>brotlicommon.lib;brotlidec.lib;brotlienc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">libbreakpadd.lib;libbreakpad_clientd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bz2d.lib;discord-rpc.lib;flac.lib;freetyped.lib;libpng16d.lib;ogg.lib;speexdsp.lib;SDL2-staticd.lib;vorbis.lib;vorbisfile.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release' or '$(Configuration)'=='ReleaseLTCG'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck />
+      <OmitFramePointers />
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>brotlicommon.lib;brotlidec.lib;brotlienc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">libbreakpad.lib;libbreakpad_client.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bz2.lib;discord-rpc.lib;flac.lib;freetype.lib;libpng16.lib;ogg.lib;speexdsp.lib;SDL2-static.lib;vorbis.lib;vorbisfile.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)src\thirdparty;$(SolutionDir)src\thirdparty\duktape;$(SolutionDir)lib\$(Platform)\include;$(SolutionDir)lib\$(Platform)\include\SDL2;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)'=='Debug'">$(SolutionDir)lib\$(Platform)\debug\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)'!='Debug'">$(SolutionDir)lib\$(Platform)\lib;$(LibraryPath)</LibraryPath>
+    <LinkIncremental />
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  
+  <PropertyGroup>
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+</Project>

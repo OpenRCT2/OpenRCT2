@@ -1,0 +1,86 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2024 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include "../common.h"
+#include "../drawing/Drawing.h"
+#include "../util/Util.h"
+
+enum class ClimateType : uint8_t
+{
+    CoolAndWet,
+    Warm,
+    HotAndDry,
+    Cold,
+    Count
+};
+
+enum class WeatherType : uint8_t
+{
+    Sunny,
+    PartiallyCloudy,
+    Cloudy,
+    Rain,
+    HeavyRain,
+    Thunder,
+    Snow,
+    HeavySnow,
+    Blizzard,
+    Count
+};
+
+enum class WeatherEffectType : uint8_t
+{
+    None,
+    Rain,
+    Storm,
+    Snow,
+    Blizzard,
+};
+
+enum class WeatherLevel
+{
+    None,
+    Light,
+    Heavy,
+};
+
+struct WeatherState
+{
+    int8_t TemperatureDelta;
+    WeatherEffectType EffectLevel;
+    int8_t GloomLevel;
+    WeatherLevel Level;
+    uint32_t SpriteId;
+};
+
+struct ClimateState
+{
+    WeatherType Weather;
+    int8_t Temperature;
+    WeatherEffectType WeatherEffect;
+    uint8_t WeatherGloom;
+    WeatherLevel Level;
+};
+
+extern uint16_t gClimateLightningFlash;
+
+int32_t ClimateCelsiusToFahrenheit(int32_t celsius);
+void ClimateReset(ClimateType climate);
+void ClimateUpdate();
+void ClimateUpdateSound();
+void ClimateStopWeatherSound();
+void ClimateForceWeather(WeatherType weather);
+
+bool ClimateIsRaining();
+bool ClimateIsSnowing();
+bool WeatherIsDry(WeatherType);
+FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
+uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);

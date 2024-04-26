@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+
+  <mime-type type="application/x-openrct2-savegame">
+    <icon name="openrct2" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRCT2 Savegame</comment>
+    <comment xml:lang="ca">Partida desada de l'OpenRCT2</comment>
+    <comment xml:lang="cz">Uložená hra OpenRCT2</comment>
+    <comment xml:lang="de">OpenRCT2 - gespeichertes Spiel</comment>
+    <comment xml:lang="es">OpenRCT2 Juegos guardados</comment>
+    <comment xml:lang="fi">OpenRCT2 Tallennettu peli</comment>
+    <comment xml:lang="fr">Partie sauvegardée OpenRCT2</comment>
+    <comment xml:lang="hu">OpenRCT2 mentett játék</comment>
+    <comment xml:lang="it">Partita di OpenRCT2 salvata</comment>
+    <comment xml:lang="ko">OpenRCT2 저장된 게임 파일</comment>
+    <comment xml:lang="nb">OpenRCT2 lagret spill</comment>
+    <comment xml:lang="nl">Opgeslagen spel van OpenRCT2</comment>
+    <comment xml:lang="pl">Zapis gry OpenRCT2</comment>
+    <comment xml:lang="pt">OpenRCT2 Jogo Salvo</comment>
+    <comment xml:lang="ru">Игра OpenRCT2</comment>
+    <comment xml:lang="sv">OpenRCT2 Sparat Spel</comment>
+    <comment xml:lang="zh-CN">OpenRCT2 游戏存档</comment>
+    <comment xml:lang="zh-TW">OpenRCT2 遊戲存檔</comment>
+    <glob weight="60" pattern="*.sv6"/>
+    <glob weight="60" pattern="*.sv4"/>
+    <glob weight="60" pattern="*.sv7"/>
+    <glob weight="60" pattern="*.park"/>
+  </mime-type>
+
+  <mime-type type="application/x-openrct2-scenario">
+    <icon name="openrct2" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRCT2 Scenario</comment>
+    <comment xml:lang="ca">Arxiu d'escenari de l'OpenRCT2</comment>
+    <comment xml:lang="cz">Soubor scénáře OpenRCT2</comment>
+    <comment xml:lang="de">OpenRCT2 - Szenariodatei</comment>
+    <comment xml:lang="es">OpenRCT2 Archivo de Escenario</comment>
+    <comment xml:lang="fi">OpenRCT2 Skenaariotiedosto</comment>
+    <comment xml:lang="fr">Fichier de scénario OpenRCT2</comment>
+    <comment xml:lang="it">File di scenario per OpenRCT2</comment>
+    <comment xml:lang="ko">OpenRCT2 시나리오 파일</comment>
+    <comment xml:lang="nb">OpenRCT2 scenariofil</comment>
+    <comment xml:lang="nl">Scenario voor OpenRCT2</comment>
+    <comment xml:lang="pl">Scenariusz OpenRCT2</comment>
+    <comment xml:lang="pt">OpenRCT2 Arquivo de Cenário</comment>
+    <comment xml:lang="ru">Сценарий OpenRCT2</comment>
+    <comment xml:lang="sv">OpenRCT2 Sparat Scenario</comment>
+    <comment xml:lang="zh-CN">OpenRCT2 关卡文件</comment>
+    <comment xml:lang="zh-TW">OpenRCT2 劇情檔案</comment>
+    <glob weight="60" pattern="*.sc6"/>
+    <glob weight="60" pattern="*.sc4"/>
+    <glob weight="60" pattern="*.sea"/>
+  </mime-type>
+
+</mime-info>

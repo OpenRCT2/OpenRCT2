@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [[ $(uname) == "Linux" ]]; then
+    basedir="$(readlink -f `dirname $0`/..)"
+elif [[ $(uname) == "Darwin" ]]; then
+    basedir="$(perl -MCwd=abs_path -le 'print abs_path readlink(shift);' `dirname $0`/..)"
+else
+    echo "Error: unknown OS: $(uname)"
+    exit 1
+fi
+cd $basedir
+
+git clone --depth 1 -b v3.4.0 https://github.com/discordapp/discord-rpc
+git clone --depth 1 -b patch-1 https://github.com/janisozaur/rapidjson discord-rpc/thirdparty/rapidjson

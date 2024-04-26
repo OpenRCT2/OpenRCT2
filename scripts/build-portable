@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
+    # Create a Windows symbols archive for OpenRCT2
+    basedir="$(readlink -f `dirname $0`/..)"
+    cd $basedir/bin
+
+    destination=../artifacts/openrct2-portable-$CONFIGURATION-$PLATFORM.zip
+
+    # Check 7z is available
+    if ! [ -x "$(command -v 7z)" ]; then
+        echo -e >&2 "\033[0;7z not found\033[0m"
+        exit 1
+    fi
+
+    echo -e "\033[0;36mCreating portable zip for Windows OpenRCT2...\033[0m"
+    if [[ -f $destination ]]; then
+        rm $destination
+    fi
+    7z a -r $destination \
+        openrct2.exe openrct2.com data \
+        ../contributors.md \
+        ../licence.txt \
+        ../distribution/changelog.txt \
+        ../distribution/readme.txt \
+        ../distribution/scripting.md \
+        ../distribution/openrct2.d.ts
+
+    destination=$(cygpath -w $(readlink -f $destination))
+    printf '\033[0;32m%s\033[0m\n' "${destination} created successfully"
+else
+    if [[ "$#" -ne 2 ]]; then
+        echo 'Turn an OpenRCT2 cmake install into a portable tar.gz.'
+        echo ''
+        echo 'Usage: build-portable <output-file> <install-path>'
+        exit 1
+    fi
+
+    output=$1
+    install=$2
+
+    echo -e "\033[0;36mCreating $output...\033[0m"
+    outputdir=$(dirname $output)
+    if ! [[ -d $outputdir ]]; then
+        mkdir -p $outputdir
+    fi
+
+    workdir=$output-temp
+    if [[ -d "$workdir" ]]
+    then
+        rm -rf $workdir
+    fi
+
+    mkdir -p $workdir/OpenRCT2
+    cp -r $install/bin/* $workdir/OpenRCT2
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        cp -R $install/lib/ $workdir/OpenRCT2
+    fi
+    cp -r $install/share/doc/openrct2 $workdir/OpenRCT2/doc
+    cp -r $install/share/openrct2 $workdir/OpenRCT2/data
+    pushd $workdir > /dev/null
+        tar -czf output.tar.gz OpenRCT2
+    popd > /dev/null
+    mv $workdir/output.tar.gz $output
+    rm -rf $workdir
+    echo -e "\033[0;32m$output created successfully\033[0m"
+fi

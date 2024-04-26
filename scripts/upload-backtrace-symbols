@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [[ "$#" -ne 1 ]]; then
+    echo 'Upload OpenRCT2 debug symbols to https://backtrace.io.'
+    echo ''
+    echo 'Usage: upload-backtrace-symbols <path>'
+    echo ''
+    echo 'Environment variable ''BACKTRACE_IO_TOKEN'' must be set.'
+    exit 1
+fi
+
+path=$1
+
+if [ -z "$BACKTRACE_IO_TOKEN" ]; then
+    echo -e "\033[0;31mBACKTRACE_IO_TOKEN not set"
+    exit 1
+fi
+
+curl -m 300 --connect-timeout 5 -o - \
+    --data-binary "@$path" \
+    "https://openrct2.sp.backtrace.io:6098/post?format=symbols&token=$BACKTRACE_IO_TOKEN"

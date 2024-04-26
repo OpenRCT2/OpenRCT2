@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+set -e
+
+# This sets up more environment variables using the existing environment
+# It should be dot sourced into your environment
+if [[ "$GITHUB_ACTIONS" != "true" ]]; then
+    export OPENRCT2_BUILD_SERVER=$(hostname)
+    export OPENRCT2_VERSION=0.4.10
+    GITHUB_REF=$(git rev-parse --symbolic-full-name HEAD)
+    GITHUB_SHA=$(git rev-parse HEAD)
+fi
+
+echo -e "\033[0;36mSetting up environment for OpenRCT2...\033[0m"
+
+# Get the build number (number of commits since last tag)
+get_build_number()
+{
+    local pattern='.+-([0-9]+)-.+'
+    [[ $OPENRCT2_DESCRIBE =~ $pattern ]]
+    echo "${BASH_REMATCH[1]}"
+}
+export OPENRCT2_BUILD=$(get_build_number)
+
+# Get the name of the branch and decide whether we should push the build to openrct2.org
+unset OPENRCT2_TAG
+unset OPENRCT2_PUSH
+if [[ $GITHUB_REF == refs/tags/* ]]; then
+    unset OPENRCT2_BRANCH
+    export OPENRCT2_TAG=true
+    export OPENRCT2_PUSH=true
+else
+    export OPENRCT2_BRANCH=${GITHUB_REF#refs/heads/}
+    if [[ "$OPENRCT2_BRANCH" =~ ^(develop|push/) ]]; then
+        export OPENRCT2_PUSH=true
+    fi
+fi
+if [[ -z "$OPENRCT2_ORG_TOKEN" ]]; then
+    unset OPENRCT2_PUSH
+fi
+
+# Get the short SHA1
+export OPENRCT2_SHA1=$GITHUB_SHA
+export OPENRCT2_SHA1_SHORT=${OPENRCT2_SHA1::7}
+unset OPENRCT2_VERSION_EXTRA
+if [[ "$OPENRCT2_TAG" != "true" ]]; then
+    export OPENRCT2_VERSION_EXTRA=$OPENRCT2_BRANCH-$OPENRCT2_SHA1_SHORT
+fi
+
+# Add scripts directory to PATH
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$(pwd)/${1#./}"
+}
+scriptsdir="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
+export PATH="$scriptsdir:$PATH"
+export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+
+# Output all the variables
+if [[ "$1" != "-q" ]]; then
+    echo "----------------------------------------------"
+    echo "OPENRCT2_BUILD_SERVER:  $OPENRCT2_BUILD_SERVER"
+    echo "OPENRCT2_TAG:           $OPENRCT2_TAG"
+    echo "OPENRCT2_BRANCH:        $OPENRCT2_BRANCH"
+    echo "OPENRCT2_VERSION:       $OPENRCT2_VERSION"
+    echo "OPENRCT2_VERSION_EXTRA: $OPENRCT2_VERSION_EXTRA"
+    echo "OPENRCT2_BUILD:         $OPENRCT2_BUILD"
+    echo "OPENRCT2_DESCRIBE:      $OPENRCT2_DESCRIBE"
+    echo "OPENRCT2_PUSH:          $OPENRCT2_PUSH"
+    echo "OPENRCT2_SHA1:          $OPENRCT2_SHA1"
+    echo "OPENRCT2_SHA1_SHORT:    $OPENRCT2_SHA1_SHORT"
+    echo "----------------------------------------------"
+fi

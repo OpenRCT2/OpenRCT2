@@ -1,0 +1,276 @@
+.Dd December 19, 2021
+.Dt OPENRCT2 6
+.Os
+.Sh NAME
+.Nm openrct2
+.Nd An open source re-implementation of \(lqRollerCoaster Tycoon 2\(rq.
+.sp
+.Sh SYNOPSIS
+.Nm
+.Op Fl h | -help
+.Op Fl v | -version
+.Op Fl -verbose
+.Nm
+.Op uri
+.Nm
+.Ar edit
+.Op uri
+.Nm
+.Ar intro
+.sp
+.Nm
+.Ar host
+uri
+.Op Fl -address Ar address
+.Op Fl -port Ar port
+.Op Fl -password Ar password
+.Op Fl -headless
+.Nm
+.Ar join
+hostname
+.Op Fl -port Ar port
+.Op Fl -password Ar password
+.sp
+.Nm
+.Ar set-rct2
+path
+.Nm
+.Ar convert
+source
+destination
+.Nm
+.Ar scan-objects
+path
+.Nm
+.Ar handle-uri
+openrct2://.../
+.sp
+.Nm
+.Ar screenshot
+file output_image width height
+.Op x y zoom rotation
+.Op options
+.Nm
+.Ar screenshot
+file output_image
+.Ar giant
+zoom rotation
+.Op options
+.sp
+.Nm
+.Ar sprite append
+spritefile input
+.Op x_offset y_offset
+.Op options
+.Nm
+.Ar sprite build
+spritefile json_path
+.Op silent
+.Op options
+.Nm
+.Ar sprite create
+spritefile
+.Op options
+.Nm
+.Ar sprite details
+spritefile
+.Op idx
+.Op options
+.Nm
+.Ar sprite export
+spritefile idx output
+.Op options
+.Nm
+.Ar sprite exportall
+spritefile output_directory
+.Op options
+.Nm
+.Ar sprite exportalldat
+dat_identifier output_directory
+.Op options
+.sp
+.Nm
+.Ar benchgfx
+parkfile ticks
+.Nm
+.Ar benchspritesort
+.Op file
+.Op options
+.Nm
+.Ar benchsimulate
+.Op file
+.Op options
+.Nm
+.Ar simulate
+parkfile ticks
+.sp
+.Sh DESCRIPTION
+OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2).
+The gameplay revolves around building and maintaining an amusement park
+containing attractions, shops and facilities. The player must try to make a profit
+and maintain a good park reputation whilst keeping the guests happy. OpenRCT2
+allows for both scenario and sandbox play. Scenarios require the player to complete
+a certain objective in a set time limit whilst sandbox allows the player to build a
+more flexible park with optionally no restrictions or finance.
+.sp
+RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly and
+is the sequel to RollerCoaster Tycoon. The engine was based on Transport Tycoon,
+an older game which also has an equivalent open-source project, OpenTTD. OpenRCT2
+attempts to provide everything from RCT2 as well as many improvements and
+additional features, some of these include support for modern platforms, an improved
+interface, improved guest and staff AI, more editing tools, increased limits, and
+cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tycoon that
+were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool
+in-game, the \(lqhave fun\(rq objective, launched coasters (not passing-through the
+station) and several buttons on the toolbar.
+.sp
+.Sh OPTIONS
+.Bl -tag -width "-openrct2-data-path path "
+.sp
+.It Fl h | -help
+Print a summary of all options to stdout and exit.
+.sp
+.It Fl v | -version
+Show version information and exit.
+.sp
+.It Fl n | -no-install
+Do not install scenario if passed.
+.sp
+.It Fl a | -all
+Show help for all commands.
+.sp
+.It Fl -about
+Show information about
+.Nm .
+.sp
+.It Fl -verbose
+Print diagnostic information to stdout.
+.sp
+.It Fl -headless
+run
+.Nm
+without a graphical window.
+.sp
+.It Fl -port Ar port
+Port to use for hosting or joining a server; if not specified, the default port of 11753 will be used.
+.sp
+.It Fl -address Ar address
+Address to bind to when hosting a server.
+.sp
+.It Fl -password Ar password
+Password needed to join the server.
+.sp
+.It Fl -user-data-path Ar path
+Path to the user data directory (containing
+.Pa config.ini )
+.sp
+.It Fl -openrct2-data-path Ar path
+Path to the OpenRCT2 data directory (containing
+.Pa languages )
+.sp
+.It Fl -rct1-data-path Ar path
+Path to the RollerCoaster Tycoon 1 data directory (containing
+.Pa data/csg1.dat )
+.sp
+.It Fl -rct2-data-path Ar path
+Path to the RollerCoaster Tycoon 2 data directory (containing
+.Pa data/g1.dat )
+.El
+.sp
+Options specific to screenshots:
+.Bl -tag -width "-fix-vandalism "
+.sp
+.It Fl -weather Ar 0-6
+Weather to be used (0 = default, 1 = sunny, ..., 6 = thunder).
+.sp
+.It Fl -no-peeps
+Hide peeps.
+.sp
+.It Fl -no-sprites
+Hide all sprites (e.g. balloons, vehicles, guests).
+.sp
+.It Fl -clear-grass
+Set all grass to be clear of weeds.
+.sp
+.It Fl -mowed-grass
+Set all grass to be mowed.
+.sp
+.It Fl -water-plants
+Water plants for the screenshot.
+.sp
+.It Fl -fix-vandalism
+Fix vandalism for the screenshot.
+.sp
+.It Fl -remove-litter
+Remove litter for the screenshot.
+.sp
+.It Fl -tidy-up-park
+Clear grass, water plants, fix vandalism and remove litter.
+.sp
+.It Fl -transparent
+Make the background transparent.
+.El
+.sp
+Options specific to sprite commands:
+.Bl -tag -width "m | --mode Ar mode "
+.sp
+.It Fl m | -mode Ar mode
+The type of sprite conversion (default, closest, or dithering).
+.El
+.sp
+Options specific to benchmark commands:
+.Bl -tag -width "-benchmark_report_aggregates_only Ar {true|false} "
+.sp
+.It Fl -benchmark_list_tests Ar {true|false}
+.It Fl -benchmark_filter Ar regex
+.It Fl -benchmark_min_time Ar min_time
+.It Fl -benchmark_repetitions Ar num_repetitions
+.It Fl -benchmark_report_aggregates_only Ar {true|false}
+.It Fl -benchmark_format Ar <console|json|csv>
+.It Fl -benchmark_out Ar filename
+.It Fl -benchmark_out_format Ar <json|console|csv>
+.It Fl -benchmark_color Ar {auto|true|false}
+.It Fl -benchmark_counters_tabular Ar {true|false}
+.It Fl -v Ar verbosity
+.El
+.sp
+.Sh FILES
+On UNIX systems, OpenRCT2 stores user configuration, data, and cache in
+\fB$XDG_CONFIG_HOME/OpenRCT2\fR, falling back to \fB~/.config/OpenRCT2\fR if
+XDG_CONFIG_HOME is not set in the environment.
+.sp
+.Sh NOTES
+Playing OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought
+at either Steam or GOG.com. If you have the original RollerCoaster Tycoon and its expansion
+packs, you can point OpenRCT2 to these in order to play the original scenarios.
+.sp
+OpenRCT2 allows custom scripts (also known as plug-ins) to be written and executed in
+the game providing additional behaviour on top of the vanilla experience. This can range
+from extra windows providing information about the park to entire new multiplayer game
+modes.
+.sp
+Version 0.4.0 of OpenRCT2 introduced a new park save format that allows for higher limits and
+more features than the original RollerCoaster Tycoon 2. Old .SV4 and .SV6 files will continue to
+work - forever. The only thing changed is that you can no longer save to .SV6, it will now be
+saved as .park.
+.sp
+.Sh EXAMPLES
+.Bl -tag -width "openrct2 https://example.org/files/ExamplePark.sv6 "
+.It openrct2 ./my_park.sv6
+Open a saved park.
+.It openrct2 ./SnowyPark.sc6
+Install and open a scenario.
+.It openrct2 ./ShuttleLoop.td6
+Install a track.
+.It openrct2 https://example.org/files/ExamplePark.sv6
+Download and open a saved park.
+.It openrct2 host ./my_park.sv6 --port 11753 --headless
+Run a headless server for a saved park.
+.El
+.sp
+.Sh SEE ALSO
+openrct2-cli(6)
+.sp
+.Lk https://openrct2.io "Official site"
+.sp
+.Lk https://github.com/OpenRCT2/OpenRCT2 "GitHub"

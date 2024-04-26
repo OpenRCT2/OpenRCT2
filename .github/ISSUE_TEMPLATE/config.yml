@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+- name: Feature request
+  url: https://github.com/OpenRCT2/OpenRCT2/discussions/categories/feature-requests
+  about: Request a new feature to be added to OpenRCT2.
+- name: Translation / Localisation
+  url: https://github.com/OpenRCT2/Localisation
+  about: For localisation issues, go to the localisation repository.
+- name: OpenRCT2 Discord Server
+  url: https://discord.gg/ZXZd8D8
+  about: For help with running or playing the game, join our Discord server.

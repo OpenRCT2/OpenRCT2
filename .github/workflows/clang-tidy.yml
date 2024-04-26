@@ -1,0 +1,21 @@
+name: clang-tidy-check
+on:
+  pull_request:
+    paths-ignore:
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.github/*_TEMPLATE/**'
+      - '.github/workflows/localisation.yml'
+      - '.gitignore'
+      - '.vscode/**'
+
+jobs:
+  clang-tidy-check:
+    runs-on: ubuntu-latest
+    container: openrct2/openrct2-build:13-jammy
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ZehMatt/clang-tidy-annotations@v1
+      with:
+        build_dir: 'build'
+        cmake_args: '-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_DISCORD_RPC=ON'
