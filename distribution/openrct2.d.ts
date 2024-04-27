@@ -3168,12 +3168,12 @@ declare global {
         readonly patrolArea: PatrolArea;
 
         /**
-         * The animations available to this staff memer.
+         * The animations available to this staff member.
          */
         readonly availableAnimations: string[];
 
         /**
-         * The animation the staff memer is currently exhibiting.
+         * The animation the staff member is currently exhibiting.
          */
         animation: string;
 
