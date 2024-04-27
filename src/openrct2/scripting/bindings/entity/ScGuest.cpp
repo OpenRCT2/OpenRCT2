@@ -205,8 +205,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
         dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
         dukglue_register_property(ctx, &ScGuest::availableAnimations_get, nullptr, "availableAnimations");
-        dukglue_register_property(ctx, &ScGuest::animation_get, nullptr, "animation");
-        dukglue_register_property(ctx, &ScGuest::animationOffset_get, nullptr, "animationOffset");
+        dukglue_register_property(ctx, &ScGuest::animation_get, &ScGuest::animation_set, "animation");
+        dukglue_register_property(ctx, &ScGuest::animationOffset_get, &ScGuest::animationOffset_set, "animationOffset");
         dukglue_register_property(ctx, &ScGuest::animationLength_get, nullptr, "animationLength");
         dukglue_register_method(ctx, &ScGuest::has_item, "hasItem");
         dukglue_register_method(ctx, &ScGuest::give_item, "giveItem");
@@ -847,6 +847,25 @@ namespace OpenRCT2::Scripting
         return std::string(action);
     }
 
+    void ScGuest::animation_set(std::string groupKey)
+    {
+        ThrowIfGameStateNotMutable();
+
+        auto newType = availableGuestAnimations.TryGet(groupKey);
+        if (newType == std::nullopt)
+        {
+            return;
+        }
+
+        auto* peep = GetGuest();
+        peep->ActionSpriteType = *newType;
+        peep->ActionFrame = 0;
+
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[peep->ActionFrame];
+        peep->UpdateCurrentActionSpriteType();
+    }
+
     uint8_t ScGuest::animationOffset_get() const
     {
         auto* peep = GetGuest();
@@ -856,6 +875,19 @@ namespace OpenRCT2::Scripting
         }
 
         return peep->ActionSpriteImageOffset;
+    }
+
+    void ScGuest::animationOffset_set(uint8_t offset)
+    {
+        ThrowIfGameStateNotMutable();
+
+        auto* peep = GetGuest();
+
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto length = animationGroup.frame_offsets.size();
+
+        peep->ActionFrame = offset % length;
+        peep->UpdateCurrentActionSpriteType();
     }
 
     uint8_t ScGuest::animationLength_get() const

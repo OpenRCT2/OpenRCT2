@@ -175,7 +175,9 @@ namespace OpenRCT2::Scripting
 
         std::vector<std::string> availableAnimations_get() const;
         std::string animation_get() const;
+        void animation_set(std::string groupKey);
         uint8_t animationOffset_get() const;
+        void animationOffset_set(uint8_t offset);
         uint8_t animationLength_get() const;
     };
 
