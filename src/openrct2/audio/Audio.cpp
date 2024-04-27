@@ -294,7 +294,8 @@ namespace OpenRCT2::Audio
 
     void PlayTitleMusic()
     {
-        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != IntroState::None)
+        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != IntroState::None
+            || !gConfigSound.RideMusicEnabled)
         {
             StopTitleMusic();
             return;
