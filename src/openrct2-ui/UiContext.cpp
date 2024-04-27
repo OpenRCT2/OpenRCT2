@@ -31,6 +31,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Input.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/Version.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
@@ -118,6 +119,20 @@ public:
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
+        }
+        if (gConfigGeneral.RefreshDPIScaling)
+        {
+            float ddpi, hdpi, vdpi;
+            if (!SDL_GetDisplayDPI(0, &ddpi, &hdpi, &vdpi))
+            {
+                // If DPI can be read, divide DPI by regular DPI (96.0f) and round to nearest 0.25
+                gConfigGeneral.WindowScale = std::round(ddpi / 96.0f * 4.0) / 4.0;
+
+                LOG_VERBOSE("Changing DPI scaling to %f\n", gConfigGeneral.WindowScale);
+            }
+            gConfigGeneral.RefreshDPIScaling = false;
+            auto configPath = env->GetFilePath(PATHID::CONFIG);
+            ConfigSave(configPath.c_str());
         }
         _cursorRepository.LoadCursors();
         _shortcutManager.LoadUserBindings();

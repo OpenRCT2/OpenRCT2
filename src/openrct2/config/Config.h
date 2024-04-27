@@ -36,6 +36,7 @@ namespace OpenRCT2::Config
         int32_t FullscreenWidth;
         int32_t FullscreenHeight;
         float WindowScale;
+        bool RefreshDPIScaling;
         ::DrawingEngine DrawingEngine;
         bool UncapFPS;
         bool UseVSync;
