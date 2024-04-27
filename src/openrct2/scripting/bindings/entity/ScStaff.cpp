@@ -387,7 +387,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
-        return animationGroup.frame_offsets.size();
+        return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 
     ScPatrolArea::ScPatrolArea(EntityId id)
