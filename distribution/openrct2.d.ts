@@ -2819,6 +2819,26 @@ declare global {
          * Removes all items from the guest's possession.
          */
         removeAllItems(): void;
+
+        /**
+         * The animations available to this guest.
+         */
+        readonly availableAnimations: string[];
+
+        /**
+         * The animation the guest is currently exhibiting.
+         */
+        animation: string;
+
+        /**
+         * The frame offset in the current animation.
+         */
+        animationOffset: number;
+
+        /**
+         * The total number of frames in the current animation.
+         */
+        readonly animationLength: number;
     }
 
     /**
@@ -3146,6 +3166,26 @@ declare global {
          * Gets the patrol area for the staff member.
          */
         readonly patrolArea: PatrolArea;
+
+        /**
+         * The animations available to this staff memer.
+         */
+        readonly availableAnimations: string[];
+
+        /**
+         * The animation the staff memer is currently exhibiting.
+         */
+        animation: string;
+
+        /**
+         * The frame offset in the current animation.
+         */
+        animationOffset: number;
+
+        /**
+         * The total number of frames in the current animation.
+         */
+        readonly animationLength: number;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
