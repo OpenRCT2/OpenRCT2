@@ -13,9 +13,51 @@
 
 #    include "../../../entity/PatrolArea.h"
 #    include "../../../entity/Staff.h"
+#    include "../../../peep/PeepAnimationData.h"
 
 namespace OpenRCT2::Scripting
 {
+    static const DukEnumMap<PeepActionSpriteType> availableHandymanAnimations({
+        { "walking", PeepActionSpriteType::None },
+        { "watchRide", PeepActionSpriteType::WatchRide },
+        { "hanging", PeepActionSpriteType::Ui },
+        { "staffMower", PeepActionSpriteType::StaffMower },
+        { "staffSweep", PeepActionSpriteType::StaffSweep },
+        { "drowning", PeepActionSpriteType::Drowning },
+        { "staffWatering", PeepActionSpriteType::StaffWatering },
+        { "staffEmptyBin", PeepActionSpriteType::StaffEmptyBin },
+    });
+
+    static const DukEnumMap<PeepActionSpriteType> availableMechanicAnimations({
+        { "walking", PeepActionSpriteType::None },
+        { "watchRide", PeepActionSpriteType::WatchRide },
+        { "hanging", PeepActionSpriteType::Ui },
+        { "staffAnswerCall", PeepActionSpriteType::StaffAnswerCall },
+        { "staffAnswerCall2", PeepActionSpriteType::StaffAnswerCall2 },
+        { "staffCheckboard", PeepActionSpriteType::StaffCheckboard },
+        { "staffFix", PeepActionSpriteType::StaffFix },
+        { "staffFix2", PeepActionSpriteType::StaffFix2 },
+        { "staffFixGround", PeepActionSpriteType::StaffFixGround },
+        { "staffFix3", PeepActionSpriteType::StaffFix3 },
+    });
+
+    static const DukEnumMap<PeepActionSpriteType> availableSecurityAnimations({
+        { "walking", PeepActionSpriteType::None },
+        { "watchRide", PeepActionSpriteType::WatchRide },
+        { "hanging", PeepActionSpriteType::Ui },
+        { "drowning", PeepActionSpriteType::Drowning },
+    });
+
+    static const DukEnumMap<PeepActionSpriteType> availableEntertainerAnimations({
+        { "walking", PeepActionSpriteType::None },
+        { "watchRide", PeepActionSpriteType::WatchRide },
+        { "wave", PeepActionSpriteType::EatFood }, // NB: this not a typo
+        { "hanging", PeepActionSpriteType::Ui },
+        { "drowning", PeepActionSpriteType::Drowning },
+        { "joy", PeepActionSpriteType::Joy },
+        { "wave2", PeepActionSpriteType::Wave2 },
+    });
+
     ScStaff::ScStaff(EntityId Id)
         : ScPeep(Id)
     {
@@ -30,6 +72,10 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScStaff::costume_get, &ScStaff::costume_set, "costume");
         dukglue_register_property(ctx, &ScStaff::patrolArea_get, nullptr, "patrolArea");
         dukglue_register_property(ctx, &ScStaff::orders_get, &ScStaff::orders_set, "orders");
+        dukglue_register_property(ctx, &ScStaff::availableAnimations_get, nullptr, "availableAnimations");
+        dukglue_register_property(ctx, &ScStaff::animation_get, &ScStaff::animation_set, "animation");
+        dukglue_register_property(ctx, &ScStaff::animationOffset_get, &ScStaff::animationOffset_set, "animationOffset");
+        dukglue_register_property(ctx, &ScStaff::animationLength_get, nullptr, "animationLength");
     }
 
     Staff* ScStaff::GetStaff() const
@@ -241,6 +287,107 @@ namespace OpenRCT2::Scripting
         {
             peep->StaffOrders = value;
         }
+    }
+
+    const DukEnumMap<PeepActionSpriteType>& ScStaff::animationsByStaffType(StaffType staffType) const
+    {
+        switch (staffType)
+        {
+            case StaffType::Handyman:
+                return availableHandymanAnimations;
+            case StaffType::Mechanic:
+                return availableMechanicAnimations;
+            case StaffType::Security:
+                return availableSecurityAnimations;
+            case StaffType::Entertainer:
+            default:
+                return availableEntertainerAnimations;
+        }
+    }
+
+    std::vector<std::string> ScStaff::availableAnimations_get() const
+    {
+        std::vector<std::string> availableAnimations{};
+
+        auto* peep = GetStaff();
+        if (peep != nullptr)
+        {
+            for (auto& animation : animationsByStaffType(peep->AssignedStaffType))
+            {
+                availableAnimations.push_back(std::string(animation.first));
+            }
+        }
+
+        return availableAnimations;
+    }
+
+    std::string ScStaff::animation_get() const
+    {
+        auto* peep = GetStaff();
+        if (peep == nullptr)
+        {
+            return nullptr;
+        }
+
+        auto& animationGroups = animationsByStaffType(peep->AssignedStaffType);
+        std::string_view action = animationGroups[peep->ActionSpriteType];
+        return std::string(action);
+    }
+
+    void ScStaff::animation_set(std::string groupKey)
+    {
+        ThrowIfGameStateNotMutable();
+
+        auto* peep = GetStaff();
+        auto& animationGroups = animationsByStaffType(peep->AssignedStaffType);
+        auto newType = animationGroups.TryGet(groupKey);
+        if (newType == std::nullopt)
+        {
+            return;
+        }
+
+        peep->ActionSpriteType = *newType;
+        peep->ActionFrame = 0;
+
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[peep->ActionFrame];
+        peep->UpdateCurrentActionSpriteType();
+    }
+
+    uint8_t ScStaff::animationOffset_get() const
+    {
+        auto* peep = GetStaff();
+        if (peep == nullptr)
+        {
+            return 0;
+        }
+
+        return peep->ActionSpriteImageOffset;
+    }
+
+    void ScStaff::animationOffset_set(uint8_t offset)
+    {
+        ThrowIfGameStateNotMutable();
+
+        auto* peep = GetStaff();
+
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto length = animationGroup.frame_offsets.size();
+
+        peep->ActionFrame = offset % length;
+        peep->UpdateCurrentActionSpriteType();
+    }
+
+    uint8_t ScStaff::animationLength_get() const
+    {
+        auto* peep = GetStaff();
+        if (peep == nullptr)
+        {
+            return 0;
+        }
+
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        return animationGroup.frame_offsets.size();
     }
 
     ScPatrolArea::ScPatrolArea(EntityId id)
