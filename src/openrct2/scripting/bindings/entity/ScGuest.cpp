@@ -13,6 +13,7 @@
 
 #    include "../../../entity/Guest.h"
 #    include "../../../localisation/Localisation.h"
+#    include "../../../peep/PeepAnimationData.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -144,6 +145,35 @@ namespace OpenRCT2::Scripting
         { "here_we_are", PeepThoughtType::HereWeAre },
     });
 
+    static const DukEnumMap<PeepActionSpriteType> availableGuestAnimations({
+        { "walking", PeepActionSpriteType::None },
+        { "checkTime", PeepActionSpriteType::CheckTime },
+        { "watchRide", PeepActionSpriteType::WatchRide },
+        { "eatFood", PeepActionSpriteType::EatFood },
+        { "shakeHead", PeepActionSpriteType::ShakeHead },
+        { "emptyPockets", PeepActionSpriteType::EmptyPockets },
+        { "holdMat", PeepActionSpriteType::HoldMat },
+        { "sittingIdle", PeepActionSpriteType::SittingIdle },
+        { "sittingEatFood", PeepActionSpriteType::SittingEatFood },
+        { "sittingLookAroundLeft", PeepActionSpriteType::SittingLookAroundLeft },
+        { "sittingLookAroundRight", PeepActionSpriteType::SittingLookAroundRight },
+        { "hanging", PeepActionSpriteType::Ui },
+        { "wow", PeepActionSpriteType::Wow },
+        { "throwUp", PeepActionSpriteType::ThrowUp },
+        { "jump", PeepActionSpriteType::Jump },
+        { "drowning", PeepActionSpriteType::Drowning },
+        { "joy", PeepActionSpriteType::Joy },
+        { "readMap", PeepActionSpriteType::ReadMap },
+        { "wave", PeepActionSpriteType::Wave },
+        { "wave2", PeepActionSpriteType::Wave2 },
+        { "takePhoto", PeepActionSpriteType::TakePhoto },
+        { "clap", PeepActionSpriteType::Clap },
+        { "disgust", PeepActionSpriteType::Disgust },
+        { "drawPicture", PeepActionSpriteType::DrawPicture },
+        { "beingWatched", PeepActionSpriteType::BeingWatched },
+        { "withdrawMoney", PeepActionSpriteType::WithdrawMoney },
+    });
+
     ScGuest::ScGuest(EntityId id)
         : ScPeep(id)
     {
@@ -174,6 +204,10 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
         dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
         dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
+        dukglue_register_property(ctx, &ScGuest::availableAnimations_get, nullptr, "availableAnimations");
+        dukglue_register_property(ctx, &ScGuest::animation_get, nullptr, "animation");
+        dukglue_register_property(ctx, &ScGuest::animationOffset_get, nullptr, "animationOffset");
+        dukglue_register_property(ctx, &ScGuest::animationLength_get, nullptr, "animationLength");
         dukglue_register_method(ctx, &ScGuest::has_item, "hasItem");
         dukglue_register_method(ctx, &ScGuest::give_item, "giveItem");
         dukglue_register_method(ctx, &ScGuest::remove_item, "removeItem");
@@ -789,6 +823,51 @@ namespace OpenRCT2::Scripting
             peep->RemoveAllItems();
             peep->UpdateSpriteType();
         }
+    }
+
+    std::vector<std::string> ScGuest::availableAnimations_get() const
+    {
+        std::vector<std::string> availableAnimations{};
+        for (auto& animation : availableGuestAnimations)
+        {
+            availableAnimations.push_back(std::string(animation.first));
+        }
+        return availableAnimations;
+    }
+
+    std::string ScGuest::animation_get() const
+    {
+        auto* peep = GetGuest();
+        if (peep == nullptr)
+        {
+            return nullptr;
+        }
+
+        std::string_view action = availableGuestAnimations[peep->ActionSpriteType];
+        return std::string(action);
+    }
+
+    uint8_t ScGuest::animationOffset_get() const
+    {
+        auto* peep = GetGuest();
+        if (peep == nullptr)
+        {
+            return 0;
+        }
+
+        return peep->ActionSpriteImageOffset;
+    }
+
+    uint8_t ScGuest::animationLength_get() const
+    {
+        auto* peep = GetGuest();
+        if (peep == nullptr)
+        {
+            return 0;
+        }
+
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        return animationGroup.frame_offsets.size();
     }
 
     ScThought::ScThought(PeepThought backing)

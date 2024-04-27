@@ -172,6 +172,11 @@ namespace OpenRCT2::Scripting
         void give_item(const DukValue& item) const;
         void remove_item(const DukValue& item) const;
         void remove_all_items() const;
+
+        std::vector<std::string> availableAnimations_get() const;
+        std::string animation_get() const;
+        uint8_t animationOffset_get() const;
+        uint8_t animationLength_get() const;
     };
 
 } // namespace OpenRCT2::Scripting
