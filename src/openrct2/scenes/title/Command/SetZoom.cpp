@@ -7,23 +7,21 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "SetZoom.h"
 
-#include "../../core/String.hpp"
-
-#include <cstdint>
-
-constexpr uint8_t kTitleCommandScenarioLength = 64;
+#include "../../../interface/Window.h"
+#include "../../../interface/ZoomLevel.h"
 
 namespace OpenRCT2::Title
 {
-    struct LoadScenarioCommand
+    int16_t SetZoomCommand::operator()(int16_t timer)
     {
-        static constexpr const char* Name = "Load Scenario Command";
-        static constexpr const char* ScriptingName = "loadsc";
+        WindowBase* w = WindowGetMain();
+        if (w != nullptr)
+        {
+            WindowZoomSet(*w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
+        }
 
-        utf8 Scenario[kTitleCommandScenarioLength]{};
-
-        int16_t operator()(int16_t timer);
-    };
+        return 0;
+    }
 } // namespace OpenRCT2::Title

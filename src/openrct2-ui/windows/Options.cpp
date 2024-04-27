@@ -40,9 +40,9 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideAudio.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/sprites.h>
-#include <openrct2/title/TitleScreen.h>
-#include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 

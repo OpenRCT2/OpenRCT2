@@ -30,10 +30,10 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/title/TitleScreen.h>
-#include <openrct2/title/TitleSequence.h>
-#include <openrct2/title/TitleSequenceManager.h>
-#include <openrct2/title/TitleSequencePlayer.h>
+#include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/scenes/title/TitleSequence.h>
+#include <openrct2/scenes/title/TitleSequenceManager.h>
+#include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>

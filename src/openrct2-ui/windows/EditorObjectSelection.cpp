@@ -35,8 +35,8 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
-#include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <string>
@@ -368,7 +368,9 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     {
                         GameNotifyMapChange();
                         GameUnloadScripts();
-                        TitleLoad();
+
+                        auto* context = OpenRCT2::GetContext();
+                        context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
                 case WIDX_FILTER_RIDE_TAB_ALL:

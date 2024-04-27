@@ -7,17 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Wait.h"
+#include "FollowEntity.h"
 
-#include "../../Context.h"
-
-#include <algorithm>
+#include "../../../interface/Window.h"
 
 namespace OpenRCT2::Title
 {
-    int16_t WaitCommand::operator()(int16_t timer)
+    int16_t FollowEntityCommand::operator()(int16_t timer)
     {
-        // Return number of game ticks this wait command lasts
-        return std::max<int16_t>(1, kGameUpdateFPS * Milliseconds / 1000);
+        auto* w = WindowGetMain();
+        if (w != nullptr)
+        {
+            WindowFollowSprite(*w, Follow.SpriteIndex);
+        }
+
+        return 0;
     }
 } // namespace OpenRCT2::Title

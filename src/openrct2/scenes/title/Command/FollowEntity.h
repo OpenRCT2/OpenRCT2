@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "../../Identifiers.h"
-#include "../../core/String.hpp"
-#include "../../localisation/Localisation.h"
+#include "../../../Identifiers.h"
+#include "../../../core/String.hpp"
+#include "../../../localisation/Localisation.h"
 
 #include <cstdint>
 

@@ -10,12 +10,12 @@
 #include "X8DrawingEngine.h"
 
 #include "../Context.h"
-#include "../Intro.h"
 #include "../config/Config.h"
 #include "../core/Numerics.hpp"
 #include "../interface/Screenshot.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "Drawing.h"
@@ -184,7 +184,7 @@ void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32
 
 void X8DrawingEngine::BeginDraw()
 {
-    if (gIntroState == IntroState::None)
+    if (!IntroIsPlaying())
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
         if (_lastLightFXenabled != (gConfigGeneral.EnableLightFx != 0))

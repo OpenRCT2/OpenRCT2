@@ -10,7 +10,6 @@
 #include "audio.h"
 
 #include "../Context.h"
-#include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
@@ -26,6 +25,7 @@
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
+#include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
@@ -294,7 +294,7 @@ namespace OpenRCT2::Audio
 
     void PlayTitleMusic()
     {
-        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != IntroState::None)
+        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || IntroIsPlaying())
         {
             StopTitleMusic();
             return;

@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/CheatSetAction.h"
@@ -490,7 +489,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             throw std::runtime_error("Failed to load park.");
         }
 
-        gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
         Viewport viewport{};

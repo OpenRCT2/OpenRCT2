@@ -7,20 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FollowEntity.h"
+#pragma once
 
-#include "../../interface/Window.h"
+#include "../../common.h"
 
-namespace OpenRCT2::Title
+struct ITitleSequencePlayer
 {
-    int16_t FollowEntityCommand::operator()(int16_t timer)
-    {
-        auto* w = WindowGetMain();
-        if (w != nullptr)
-        {
-            WindowFollowSprite(*w, Follow.SpriteIndex);
-        }
+    virtual ~ITitleSequencePlayer() = default;
 
-        return 0;
-    }
-} // namespace OpenRCT2::Title
+    virtual int32_t GetCurrentPosition() const abstract;
+
+    virtual bool Begin(size_t titleSequenceId) abstract;
+    virtual void Reset() abstract;
+    virtual bool Update() abstract;
+    virtual void Seek(int32_t position) abstract;
+    virtual void Eject() abstract;
+};
