@@ -258,6 +258,8 @@ extern const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3];
 extern const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3];
 extern const CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3];
 
+constexpr int8_t kRightQuarterTurn3TilesSpriteMap[] = { 0, -1, 1, 2 };
+
 extern const CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2];
 extern const CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2];
 

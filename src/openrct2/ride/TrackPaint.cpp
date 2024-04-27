@@ -1625,19 +1625,12 @@ constexpr CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
     },
 };
 
-static constexpr int8_t right_quarter_turn_3_tiles_sprite_map[] = {
-    0,
-    -1,
-    1,
-    2,
-};
-
 void TrackPaintUtilRightQuarterTurn3TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
     const CoordsXYZ boundsOffsets[4][3])
 {
-    int32_t index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int32_t index = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (index < 0)
     {
         return;
@@ -1665,7 +1658,7 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint2WithHeightOffset(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
 {
-    int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int8_t sprite = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (sprite < 0)
     {
         return;
@@ -1753,7 +1746,7 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint3(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[4][3])
 {
-    int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int8_t sprite = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (sprite < 0)
     {
         return;
@@ -1770,7 +1763,7 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint4(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[4][3])
 {
-    int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int8_t sprite = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (sprite < 0)
     {
         return;
