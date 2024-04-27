@@ -16,10 +16,11 @@ class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlacePa
 private:
     CoordsXYZD _loc;
     ObjectEntryIndex _pathType;
+    ObjectEntryIndex _entranceType;
 
 public:
     ParkEntrancePlaceAction() = default;
-    ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
+    ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
