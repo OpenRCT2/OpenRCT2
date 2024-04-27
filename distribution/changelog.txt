@@ -11,6 +11,8 @@
 - Fix: [#21696] Fullscreen window option not correctly applied on macOS.
 - Fix: [#21787] Map generator heightmap should respect increased height limits.
 - Fix: [#21829] When creating a new scenario, the default name contains formatting codes.
+- Fix: [objects#324] Cannot build Colosseum inside a turn or helix.
+- Fix: [objects#325] Sloped castle walls are vertically offset by one pixel (original bug).
 
 0.4.10 (2024-04-02)
 ------------------------------------------------------------------------
