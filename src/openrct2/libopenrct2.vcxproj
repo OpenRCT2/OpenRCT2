@@ -1078,6 +1078,7 @@
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\Intent.cpp" />
     <ClCompile Include="windows\_legacy.cpp" />
+    <ClCompile Include="world\tile_element\Entrance.cpp" />
     <ClCompile Include="world\Banner.cpp" />
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\ConstructionClearance.cpp" />

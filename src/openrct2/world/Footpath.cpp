@@ -87,13 +87,6 @@ const std::array<CoordsXY, kNumOrthogonalDirections> DirectionOffsets = {
     { 0, -1 },
 };
 
-// rct2: 0x0097B974
-static constexpr uint16_t EntranceDirections[] = {
-    (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,
-    (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_EXIT,
-    (4 | 1), 0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_PARK_ENTRANCE
-};
-
 /** rct2: 0x0098D7F0 */
 static constexpr uint8_t connected_path_count[] = {
     0, // 0b0000
@@ -113,11 +106,6 @@ static constexpr uint8_t connected_path_count[] = {
     3, // 0b1110
     4, // 0b1111
 };
-
-int32_t EntranceElement::GetDirections() const
-{
-    return EntranceDirections[(GetEntranceType() * 8) + GetSequenceIndex()];
-}
 
 static bool entrance_has_direction(const EntranceElement& entranceElement, int32_t direction)
 {
