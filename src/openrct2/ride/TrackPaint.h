@@ -77,7 +77,12 @@ constexpr uint8_t kEdges4x4[] = {
 };
 // clang-format on
 
-extern const uint8_t track_map_1x4[][4];
+constexpr uint8_t kTrackMap1x4[][4] = {
+    { 0, 1, 2, 3 },
+    { 2, 3, 0, 1 },
+    { 2, 3, 0, 1 },
+    { 0, 1, 2, 3 },
+};
 
 extern const int32_t DiagBlockedSegments[];
 extern const MetalSupportPlace DiagSupportPlacement[];

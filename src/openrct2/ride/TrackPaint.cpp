@@ -64,13 +64,6 @@ const MetalSupportPlace DiagSupportPlacement[] = {
     MetalSupportPlace::BottomCorner,
 };
 
-const uint8_t track_map_1x4[][4] = {
-    { 0, 1, 2, 3 },
-    { 2, 3, 0, 1 },
-    { 2, 3, 0, 1 },
-    { 0, 1, 2, 3 },
-};
-
 const uint32_t floorSpritesCork[] = {
     SPR_FLOOR_CORK_SE_SW,
     SPR_FLOOR_CORK_SW,
