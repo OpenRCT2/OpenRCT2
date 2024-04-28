@@ -8,6 +8,7 @@
 - Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Change: [#21855] Cheats menu dropdown no longer requires dragging.
 - Fix: [#866] Boat Hire boats get stuck entering track.
+- Fix: [#10701] No reason specified when placing door over unsuitable track.
 - Fix: [#19559] Custom rides with long descriptions extend into lower widgets.
 - Fix: [#21696] Fullscreen window option not correctly applied on macOS.
 - Fix: [#21787] Map generator heightmap should respect increased height limits.
