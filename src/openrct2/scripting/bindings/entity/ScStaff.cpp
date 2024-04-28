@@ -26,6 +26,7 @@ namespace OpenRCT2::Scripting
         dukglue_set_base_class<ScPeep, ScStaff>(ctx);
         dukglue_register_property(ctx, &ScStaff::staffType_get, &ScStaff::staffType_set, "staffType");
         dukglue_register_property(ctx, &ScStaff::colour_get, &ScStaff::colour_set, "colour");
+        dukglue_register_property(ctx, &ScStaff::availableCostumes_get, nullptr, "availableCostumes");
         dukglue_register_property(ctx, &ScStaff::costume_get, &ScStaff::costume_set, "costume");
         dukglue_register_property(ctx, &ScStaff::patrolArea_get, nullptr, "patrolArea");
         dukglue_register_property(ctx, &ScStaff::orders_get, &ScStaff::orders_set, "orders");
@@ -150,6 +151,20 @@ namespace OpenRCT2::Scripting
             default:
                 return availableEntertainerCostumes;
         }
+    }
+
+    std::vector<std::string> ScStaff::availableCostumes_get() const
+    {
+        std::vector<std::string> availableCostumes{};
+        auto peep = GetStaff();
+        if (peep != nullptr)
+        {
+            for (auto& costume : costumesByStaffType(peep->AssignedStaffType))
+            {
+                availableCostumes.push_back(std::string(costume.first));
+            }
+        }
+        return availableCostumes;
     }
 
     std::string ScStaff::costume_get() const
