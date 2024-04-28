@@ -84,6 +84,10 @@ namespace OpenRCT2::Scripting
                 peep->AssignedStaffType = StaffType::Entertainer;
                 peep->SpriteType = PeepSpriteType::EntertainerPanda;
             }
+
+            // Reset state to walking to prevent invalid actions from carrying over
+            peep->Action = PeepActionType::Walking;
+            peep->ActionSpriteType = peep->NextActionSpriteType = PeepActionSpriteType::None;
         }
     }
 
