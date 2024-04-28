@@ -36,6 +36,7 @@
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
+#include "../peep/PeepSpriteIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -2802,21 +2803,21 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     auto* guest = As<Guest>();
     if (guest != nullptr)
     {
-        if (baseImageId >= 10717 && baseImageId < 10749)
+        if (baseImageId >= kPeepSpriteHatStateWatchRideId && baseImageId < (kPeepSpriteHatStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->HatColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
-        if (baseImageId >= 10781 && baseImageId < 10813)
+        if (baseImageId >= kPeepSpriteBalloonStateWatchRideId && baseImageId < (kPeepSpriteBalloonStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->BalloonColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
-        if (baseImageId >= 11197 && baseImageId < 11229)
+        if (baseImageId >= kPeepSpriteUmbrellaStateNoneId && baseImageId < (kPeepSpriteUmbrellaStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
