@@ -585,6 +585,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             case TileElementType::Track:
                 if (!WallCheckObstructionWithTrack(wall, z0, tileElement->AsTrack(), wallAcrossTrack))
                 {
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
