@@ -106,7 +106,7 @@ static void PaintMotionSimulator(
 {
     trackSequence = kTrackMap2x2[direction][trackSequence];
 
-    int32_t edges = edges_2x2[trackSequence];
+    int32_t edges = kEdges2x2[trackSequence];
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(

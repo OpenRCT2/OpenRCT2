@@ -50,13 +50,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const uint8_t edges_2x2[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE | EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-};
-
 const uint8_t track_map_3x3[][9] = {
     { 0, 1, 2, 3, 4, 5, 6, 7, 8 },
     { 0, 3, 5, 7, 2, 8, 1, 6, 4 },

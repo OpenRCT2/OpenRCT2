@@ -23,7 +23,12 @@ constexpr uint8_t kTrackMap2x2[][4] = {
     { 3, 2, 1, 0 },
     { 2, 0, 3, 1 },
 };
-extern const uint8_t edges_2x2[];
+constexpr uint8_t kEdges2x2[] = {
+    EDGE_NE | EDGE_NW,
+    EDGE_NE | EDGE_SE,
+    EDGE_SW | EDGE_NW,
+    EDGE_SW | EDGE_SE,
+};
 
 extern const uint8_t track_map_3x3[][9];
 extern const uint8_t edges_3x3[];
