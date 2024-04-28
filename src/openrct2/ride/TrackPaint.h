@@ -56,7 +56,26 @@ constexpr uint8_t kTrackMap4x4[][16] = {
     { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
     { 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 },
 };
-extern const uint8_t edges_4x4[];
+// clang-format off
+constexpr uint8_t kEdges4x4[] = {
+    EDGE_NE | EDGE_NW,
+    EDGE_NE,
+    EDGE_NE,
+    EDGE_NE | EDGE_SE,
+    EDGE_NW,
+    0,
+    0,
+    EDGE_SE,
+    EDGE_NW,
+    0,
+    0,
+    EDGE_SE,
+    EDGE_NW | EDGE_SW,
+    EDGE_SW,
+    EDGE_SW,
+    EDGE_SW | EDGE_SE,
+};
+// clang-format on
 
 extern const uint8_t track_map_1x4[][4];
 

@@ -93,7 +93,7 @@ static void PaintEnterprise(
 {
     trackSequence = kTrackMap4x4[direction][trackSequence];
 
-    int32_t edges = edges_4x4[trackSequence];
+    int32_t edges = kEdges4x4[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,

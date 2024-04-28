@@ -49,7 +49,7 @@ static void PaintDodgems(
 {
     uint8_t relativeTrackSequence = kTrackMap4x4[direction][trackSequence];
 
-    int32_t edges = edges_4x4[relativeTrackSequence];
+    int32_t edges = kEdges4x4[relativeTrackSequence];
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,

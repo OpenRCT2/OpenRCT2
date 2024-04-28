@@ -50,27 +50,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-// clang-format off
-const uint8_t edges_4x4[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW | EDGE_SW,
-    EDGE_SW,
-    EDGE_SW,
-    EDGE_SW | EDGE_SE,
-};
-// clang-format on
-
 const int32_t DiagBlockedSegments[] = {
     EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
     EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
