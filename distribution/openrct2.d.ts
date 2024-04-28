@@ -2648,6 +2648,11 @@ declare global {
          * @param value Whether to set or clear the flag.
          */
         setFlag(key: PeepFlags, value: boolean): void;
+
+        /**
+         * Gets an array of sprite ids representing the peep's walking animation.
+         */
+        getWalkingSpriteIds(): number[];
     }
 
     type PeepFlags =
