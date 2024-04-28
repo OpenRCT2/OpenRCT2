@@ -50,20 +50,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-// clang-format off
-const uint8_t edges_3x3[] = {
-    0,
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-    EDGE_SW,
-};
-// clang-format on
-
 const uint8_t track_map_4x4[][16] = {
     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
     { 3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12 },

@@ -54,7 +54,7 @@ static void Paint3dCinema(
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
-    int32_t edges = edges_3x3[trackSequence];
+    int32_t edges = kEdges3x3[trackSequence];
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(

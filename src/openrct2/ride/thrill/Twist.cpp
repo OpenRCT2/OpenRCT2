@@ -87,7 +87,7 @@ static void PaintTwist(
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
-    const uint8_t edges = edges_3x3[trackSequence];
+    const uint8_t edges = kEdges3x3[trackSequence];
 
     ImageId imageId;
 

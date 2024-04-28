@@ -89,7 +89,7 @@ static void PaintSpaceRings(
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
-    int32_t edges = edges_3x3[trackSequence];
+    int32_t edges = kEdges3x3[trackSequence];
     CoordsXY position = session.MapPosition;
 
     ImageId imageId;

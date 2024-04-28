@@ -68,7 +68,7 @@ static void PaintLiftBase(
         return;
     }
 
-    int32_t edges = edges_3x3[trackSequence];
+    int32_t edges = kEdges3x3[trackSequence];
 
     auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL_B);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
