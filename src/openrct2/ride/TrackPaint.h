@@ -17,7 +17,12 @@
 
 class StationObject;
 
-extern const uint8_t track_map_2x2[][4];
+constexpr uint8_t kTrackMap2x2[][4] = {
+    { 0, 1, 2, 3 },
+    { 1, 3, 0, 2 },
+    { 3, 2, 1, 0 },
+    { 2, 0, 3, 1 },
+};
 extern const uint8_t edges_2x2[];
 
 extern const uint8_t track_map_3x3[][9];

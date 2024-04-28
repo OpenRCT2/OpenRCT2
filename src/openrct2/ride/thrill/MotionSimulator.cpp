@@ -104,7 +104,7 @@ static void PaintMotionSimulator(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = track_map_2x2[direction][trackSequence];
+    trackSequence = kTrackMap2x2[direction][trackSequence];
 
     int32_t edges = edges_2x2[trackSequence];
 

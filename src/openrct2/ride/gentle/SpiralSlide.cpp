@@ -200,7 +200,7 @@ static void PaintSpiralSlide(
     if (rideEntry == nullptr)
         return;
 
-    trackSequence = track_map_2x2[direction][trackSequence];
+    trackSequence = kTrackMap2x2[direction][trackSequence];
 
     int32_t edges = edges_2x2[trackSequence];
 
