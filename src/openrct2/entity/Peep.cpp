@@ -497,6 +497,9 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
 void Peep::ThrowUp()
 {
     auto* guest = As<Guest>();
+    if (guest == nullptr)
+        return;
+
     guest->Hunger /= 2;
     guest->NauseaTarget /= 2;
 
