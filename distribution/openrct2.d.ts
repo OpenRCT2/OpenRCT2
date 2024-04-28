@@ -3105,14 +3105,14 @@ declare global {
         staffType: StaffType;
 
         /**
-         * Colour of the staff member. Not applicable for entertainers.
+         * Colour of the staff member. Not applicable to entertainers.
          */
         colour: number;
 
         /**
-         * The entertainer's costume, only applicable for entertainers.
+         * The staff member's costume.
          */
-        costume: number;
+        costume: number | string;
 
         /**
          * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.
