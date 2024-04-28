@@ -375,6 +375,7 @@ namespace OpenRCT2::Scripting
         auto length = animationGroup.frame_offsets.size();
 
         peep->ActionFrame = offset % length;
+        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[peep->ActionFrame];
         peep->UpdateSpriteBoundingBox();
     }
 
