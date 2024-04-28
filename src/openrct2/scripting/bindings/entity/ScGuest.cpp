@@ -859,10 +859,15 @@ namespace OpenRCT2::Scripting
 
         auto* peep = GetGuest();
         peep->ActionSpriteType = *newType;
-        peep->ActionFrame = 0;
+
+        auto offset = 0;
+        if (peep->IsActionWalking())
+            peep->WalkingFrameNum = offset;
+        else
+            peep->ActionFrame = offset;
 
         auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
-        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[peep->ActionFrame];
+        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 
@@ -885,9 +890,14 @@ namespace OpenRCT2::Scripting
 
         auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
         auto length = animationGroup.frame_offsets.size();
+        offset %= length;
 
-        peep->ActionFrame = offset % length;
-        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[peep->ActionFrame];
+        if (peep->IsActionWalking())
+            peep->WalkingFrameNum = offset;
+        else
+            peep->ActionFrame = offset;
+
+        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 
