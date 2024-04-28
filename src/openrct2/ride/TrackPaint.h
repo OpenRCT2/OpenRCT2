@@ -84,7 +84,12 @@ constexpr uint8_t kTrackMap1x4[][4] = {
     { 0, 1, 2, 3 },
 };
 
-extern const int32_t DiagBlockedSegments[];
+constexpr int32_t kDiagBlockedSegments[] = {
+    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
+    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
+    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
+    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
+};
 extern const MetalSupportPlace DiagSupportPlacement[];
 
 enum

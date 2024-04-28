@@ -4076,7 +4076,7 @@ static void LayDownRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
 
     TrackPaintUtilDiagTilesPaint(
         session, -3, height + 24, direction, trackSequence, session.TrackColours, LaydownDiagBrakeImages,
@@ -4096,7 +4096,7 @@ static void LayDownRCTrackDiagBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
 
     TrackPaintUtilDiagTilesPaint(
         session, -3, height + 24, direction, trackSequence, session.TrackColours,

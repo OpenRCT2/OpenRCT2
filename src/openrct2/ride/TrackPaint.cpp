@@ -50,13 +50,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const int32_t DiagBlockedSegments[] = {
-    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
-    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
-    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
-    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
-};
-
 const MetalSupportPlace DiagSupportPlacement[] = {
     MetalSupportPlace::LeftCorner,
     MetalSupportPlace::TopCorner,
