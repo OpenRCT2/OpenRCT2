@@ -351,7 +351,7 @@ namespace OpenRCT2::Scripting
 
         auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
         peep->ActionSpriteImageOffset = animationGroup.frame_offsets[peep->ActionFrame];
-        peep->UpdateCurrentActionSpriteType();
+        peep->UpdateSpriteBoundingBox();
     }
 
     uint8_t ScStaff::animationOffset_get() const
@@ -375,7 +375,7 @@ namespace OpenRCT2::Scripting
         auto length = animationGroup.frame_offsets.size();
 
         peep->ActionFrame = offset % length;
-        peep->UpdateCurrentActionSpriteType();
+        peep->UpdateSpriteBoundingBox();
     }
 
     uint8_t ScStaff::animationLength_get() const

@@ -344,8 +344,14 @@ void Peep::UpdateCurrentActionSpriteType()
         return;
     }
 
-    Invalidate();
     ActionSpriteType = newActionSpriteType;
+
+    UpdateSpriteBoundingBox();
+}
+
+void Peep::UpdateSpriteBoundingBox()
+{
+    Invalidate();
 
     const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
     SpriteData.Width = spriteBounds->sprite_width;
