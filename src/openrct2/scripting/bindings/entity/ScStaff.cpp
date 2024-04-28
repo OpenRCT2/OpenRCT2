@@ -346,7 +346,7 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        peep->ActionSpriteType = *newType;
+        peep->ActionSpriteType = peep->NextActionSpriteType = *newType;
 
         auto offset = 0;
         if (peep->IsActionWalking())
