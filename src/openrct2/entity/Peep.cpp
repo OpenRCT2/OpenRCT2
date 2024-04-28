@@ -36,6 +36,7 @@
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
+#include "../peep/PeepSpriteIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -416,43 +417,10 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
+    // We're taking an easier route if we're just walking
     if (IsActionWalking())
     {
-        if (xy_distance <= DestinationTolerance)
-        {
-            return std::nullopt;
-        }
-        int32_t nextDirection = 0;
-        if (x_delta < y_delta)
-        {
-            nextDirection = 8;
-            if (differenceLoc.y >= 0)
-            {
-                nextDirection = 24;
-            }
-        }
-        else
-        {
-            nextDirection = 16;
-            if (differenceLoc.x >= 0)
-            {
-                nextDirection = 0;
-            }
-        }
-
-        Orientation = nextDirection;
-        CoordsXY loc = { x, y };
-        loc += word_981D7C[nextDirection / 8];
-
-        WalkingFrameNum++;
-        const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
-        if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
-        {
-            WalkingFrameNum = 0;
-        }
-        ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingFrameNum];
-
-        return loc;
+        return UpdateWalkingAction(differenceLoc, xy_distance);
     }
 
     const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
@@ -468,14 +436,70 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     }
     ActionSpriteImageOffset = peepAnimation.frame_offsets[ActionFrame];
 
+    // Should we throw up, and are we at the frame where sick appears?
     auto* guest = As<Guest>();
-    // If not throwing up and not at the frame where sick appears.
-    if (Action != PeepActionType::ThrowUp || ActionFrame != 15 || guest == nullptr)
+    if (Action == PeepActionType::ThrowUp && ActionFrame == 15 && guest != nullptr)
     {
-        return { { x, y } };
+        ThrowUp();
     }
 
-    // We are throwing up
+    return { { x, y } };
+}
+
+std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance)
+{
+    if (!IsActionWalking())
+    {
+        return std::nullopt;
+    }
+
+    if (xy_distance <= DestinationTolerance)
+    {
+        return std::nullopt;
+    }
+
+    int32_t x_delta = abs(differenceLoc.x);
+    int32_t y_delta = abs(differenceLoc.y);
+
+    int32_t nextDirection = 0;
+    if (x_delta < y_delta)
+    {
+        nextDirection = 8;
+        if (differenceLoc.y >= 0)
+        {
+            nextDirection = 24;
+        }
+    }
+    else
+    {
+        nextDirection = 16;
+        if (differenceLoc.x >= 0)
+        {
+            nextDirection = 0;
+        }
+    }
+
+    Orientation = nextDirection;
+    CoordsXY loc = { x, y };
+    loc += word_981D7C[nextDirection / 8];
+
+    WalkingFrameNum++;
+    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
+    if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
+    {
+        WalkingFrameNum = 0;
+    }
+    ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingFrameNum];
+
+    return loc;
+}
+
+void Peep::ThrowUp()
+{
+    auto* guest = As<Guest>();
+    if (guest == nullptr)
+        return;
+
     guest->Hunger /= 2;
     guest->NauseaTarget /= 2;
 
@@ -497,8 +521,6 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     };
     auto soundId = coughs[ScenarioRand() & 3];
     OpenRCT2::Audio::Play3D(soundId, curLoc);
-
-    return { { x, y } };
 }
 
 /**
@@ -2802,21 +2824,21 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     auto* guest = As<Guest>();
     if (guest != nullptr)
     {
-        if (baseImageId >= 10717 && baseImageId < 10749)
+        if (baseImageId >= kPeepSpriteHatStateWatchRideId && baseImageId < (kPeepSpriteHatStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->HatColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
-        if (baseImageId >= 10781 && baseImageId < 10813)
+        if (baseImageId >= kPeepSpriteBalloonStateWatchRideId && baseImageId < (kPeepSpriteBalloonStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->BalloonColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
-        if (baseImageId >= 11197 && baseImageId < 11229)
+        if (baseImageId >= kPeepSpriteUmbrellaStateNoneId && baseImageId < (kPeepSpriteUmbrellaStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
