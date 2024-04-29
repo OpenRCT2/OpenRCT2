@@ -206,6 +206,7 @@ namespace OpenRCT2::Scripting
             if (newSpriteType != std::nullopt)
             {
                 peep->SpriteType = *newSpriteType;
+                return;
             }
         }
         else if (value.type() == DukValue::Type::NUMBER)
@@ -214,8 +215,11 @@ namespace OpenRCT2::Scripting
             if (availableCostumes.find(newSpriteType) != availableCostumes.end())
             {
                 peep->SpriteType = newSpriteType;
+                return;
             }
         }
+
+        throw DukException() << "Invalid costume for this staff member";
     }
 
     std::shared_ptr<ScPatrolArea> ScStaff::patrolArea_get() const
