@@ -475,7 +475,7 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    RideId ScGuest::rideHeadedTo_get() const
+    int16_t ScGuest::rideHeadedTo_get() const
     {
         auto peep = GetGuest();
         if (peep != nullptr)
@@ -484,13 +484,13 @@ namespace OpenRCT2::Scripting
             auto ride = GetRideManager()[rideId];
             if (ride != nullptr)
             {
-                return (ride->id);
+                return (ride->id.ToUnderlying());
             }
         }
-        return {};
+        return -1;
     }
 
-    void ScGuest::rideHeadedTo_set(int32_t rideId)
+    void ScGuest::rideHeadedTo_set(uint16_t rideId)
     {
         ThrowIfGameStateNotMutable();
         auto guest = GetGuest();
