@@ -515,6 +515,7 @@ declare global {
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
+        subscribe(hook: "park.guest.softcap.calculate", callback: (e: ParkCalculateGuestCapArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
 
@@ -640,6 +641,7 @@ declare global {
         "network.chat" |
         "network.join" |
         "network.leave" |
+        "park.guest.softcap.calculate" |
         "ride.ratings.calculate" |
         "vehicle.crash";
 
@@ -1413,6 +1415,14 @@ declare global {
     interface VehicleCrashArgs {
         readonly id: number;
         readonly crashIntoType: VehicleCrashIntoType;
+    }
+
+    /**
+     * The 'suggestedGuestMaximum' field in this interface can be used to override
+     * the park's suggested guest cap.
+     */
+    interface ParkCalculateGuestCapArgs {
+        suggestedGuestMaximum: number;
     }
 
     /**

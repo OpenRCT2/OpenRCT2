@@ -1,6 +1,7 @@
 0.4.15 (in development)
 ------------------------------------------------------------------------
 - Feature: [#15642] Track design placement can now use contruction modifier keys (ctrl/shift).
+- Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Fix: [#2614] The colour tab of the ride window does not hide invisible cars (original bug).
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
