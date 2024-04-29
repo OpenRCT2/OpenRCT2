@@ -92,6 +92,14 @@ void FinancePayment(money64 amount, ExpenditureType type)
 }
 
 /**
+ * Calculate the cost multiplier with the expenditure modifier applied.
+*/
+money64 FinanceGetModifiedCost(money64 cost, ExpenditureType type)
+{
+    return cost * GetGameState().CostMultiplierExpenditureTable[EnumValue(type)] / 100;
+}
+
+/**
  * Pays the wages of all active staff members in the park.
  *  rct2: 0x006C18A9
  */
@@ -106,7 +114,8 @@ void FinancePayWages()
 
     for (auto peep : EntityList<Staff>())
     {
-        FinancePayment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::Wages);
+        auto modifiedCost = FinanceGetModifiedCost(GetStaffWage(peep->AssignedStaffType), ExpenditureType::Wages);
+        FinancePayment(modifiedCost / 4, ExpenditureType::Wages);
     }
 }
 
@@ -123,7 +132,8 @@ void FinancePayResearch()
     }
 
     const uint8_t level = gameState.ResearchFundingLevel;
-    FinancePayment(research_cost_table[level] / 4, ExpenditureType::Research);
+    auto modifiedCost = FinanceGetModifiedCost(research_cost_table[level], ExpenditureType::Research);
+    FinancePayment(modifiedCost / 4, ExpenditureType::Research);
 }
 
 /**
@@ -147,7 +157,8 @@ void FinancePayInterest()
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
 
-    FinancePayment(interest_to_pay, ExpenditureType::Interest);
+    auto modifiedCost = FinanceGetModifiedCost(interest_to_pay, ExpenditureType::Interest);
+    FinancePayment(modifiedCost, ExpenditureType::Interest);
 }
 
 /**
@@ -167,12 +178,12 @@ void FinancePayRideUpkeep()
 
         if (ride.status != RideStatus::Closed && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            auto upkeep = ride.upkeep_cost;
-            if (upkeep != kMoney64Undefined)
+            auto modifiedUpkeep = FinanceGetModifiedCost(ride.upkeep_cost, ExpenditureType::RideRunningCosts);
+            if (modifiedUpkeep != kMoney64Undefined)
             {
-                ride.total_profit -= upkeep;
+                ride.total_profit -= modifiedUpkeep;
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-                FinancePayment(upkeep, ExpenditureType::RideRunningCosts);
+                FinancePayment(modifiedUpkeep, ExpenditureType::RideRunningCosts);
             }
         }
 
@@ -214,6 +225,7 @@ void FinanceInit()
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
         gameState.ExpenditureTable[0][i] = 0;
+        gameState.CostMultiplierExpenditureTable[i] = 50;
     }
 
     gameState.CurrentExpenditure = 0;

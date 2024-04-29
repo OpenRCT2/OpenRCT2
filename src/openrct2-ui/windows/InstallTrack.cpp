@@ -355,7 +355,8 @@ static Widget window_install_track_widgets[] = {
             if (td6->cost != 0)
             {
                 auto ft = Formatter();
-                ft.Add<money64>(td6->cost);
+                auto cost = FinanceGetModifiedCost(td6->cost, ExpenditureType::RideConstruction);
+                ft.Add<money64>(cost);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
             }
         }

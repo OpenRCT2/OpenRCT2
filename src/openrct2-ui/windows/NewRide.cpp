@@ -969,7 +969,8 @@ static Widget window_new_ride_widgets[] = {
                     stringId = STR_NEW_RIDE_COST_FROM;
 
                 ft = Formatter();
-                ft.Add<money64>(price);
+                auto modifiedPrice = FinanceGetModifiedCost(price,ExpenditureType::RideConstruction);
+                ft.Add<money64>(modifiedPrice);
                 DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
             }
         }

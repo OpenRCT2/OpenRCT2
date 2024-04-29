@@ -195,7 +195,8 @@ namespace OpenRCT2::Ui::Windows
                 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
-                ft.Add<money64>(gClearSceneryCost);
+                auto modifiedCost = FinanceGetModifiedCost(gClearSceneryCost,ExpenditureType::Landscaping);
+                ft.Add<money64>(modifiedCost);
                 screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
                 screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
                 DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });

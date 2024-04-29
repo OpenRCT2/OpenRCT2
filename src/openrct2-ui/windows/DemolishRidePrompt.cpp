@@ -88,7 +88,8 @@ static Widget window_ride_demolish_widgets[] =
                                                                                   : STR_DEMOLISH_RIDE_ID_MONEY;
                 auto ft = Formatter();
                 currentRide->FormatNameTo(ft);
-                ft.Add<money64>(_demolishRideCost);
+                auto modifiedCost = FinanceGetModifiedCost(_demolishRideCost,ExpenditureType::RideConstruction);
+                ft.Add<money64>(modifiedCost);
 
                 ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
                 DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
