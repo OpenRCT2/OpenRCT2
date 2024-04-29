@@ -515,9 +515,7 @@ constexpr uint8_t kPaletteTotalOffsets = 192;
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
-extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
-extern thread_local uint8_t gPeepPalette[256];
-extern thread_local uint8_t gOtherPalette[256];
+
 extern uint8_t gTextPalette[];
 extern const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT];
 
