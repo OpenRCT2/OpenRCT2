@@ -213,6 +213,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::animationOffset_get, &ScGuest::animationOffset_set, "animationOffset");
         dukglue_register_property(ctx, &ScGuest::animationLength_get, nullptr, "animationLength");
         dukglue_register_method(ctx, &ScGuest::getAnimationSpriteIds, "getAnimationSpriteIds");
+        dukglue_register_property(ctx, &ScGuest::rideHeadedTo_get, &ScGuest::rideHeadedTo_set, "rideHeadedTo");
         dukglue_register_method(ctx, &ScGuest::has_item, "hasItem");
         dukglue_register_method(ctx, &ScGuest::give_item, "giveItem");
         dukglue_register_method(ctx, &ScGuest::remove_item, "removeItem");

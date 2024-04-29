@@ -335,7 +335,6 @@ public:
     void TryGetUpFromSitting();
     bool ShouldRideWhileRaining(const Ride& ride);
     void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
-    void SendToRide(RideId rideId);
     void PickRideToGoOn();
     void ReadMap();
     bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
@@ -381,7 +380,7 @@ public:
 
 private:
     void UpdateRide();
-    void UpdateOnRide(){}; // TODO
+    void UpdateOnRide() {}; // TODO
     void UpdateWalking();
     void UpdateWaitingAtCrossing();
     void UpdateQueuing();
