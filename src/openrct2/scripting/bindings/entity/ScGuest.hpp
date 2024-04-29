@@ -12,8 +12,8 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../entity/Guest.h"
-#    include "ScPeep.hpp"
 #    include "../ride/ScRide.hpp"
+#    include "ScPeep.hpp"
 
 namespace OpenRCT2::Scripting
 {

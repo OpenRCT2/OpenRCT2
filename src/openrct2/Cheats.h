@@ -103,7 +103,6 @@ enum class CheatType : int32_t
     AllowRegularPathAsQueue,
     AllowSpecialColourSchemes,
     RemoveParkFences,
-    SendGuestToRide,
     Count,
 };
 
