@@ -61,7 +61,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPeep::energyTarget_get, &ScPeep::energyTarget_set, "energyTarget");
             dukglue_register_method(ctx, &ScPeep::getFlag, "getFlag");
             dukglue_register_method(ctx, &ScPeep::setFlag, "setFlag");
-            dukglue_register_method(ctx, &ScPeep::getWalkingSpriteIds, "getWalkingSpriteIds");
         }
 
     private:
@@ -115,8 +114,6 @@ namespace OpenRCT2::Scripting
                 peep->Invalidate();
             }
         }
-
-        std::vector<uint32_t> getWalkingSpriteIds() const;
 
         DukValue destination_get() const
         {

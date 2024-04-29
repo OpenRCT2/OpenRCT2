@@ -76,6 +76,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScStaff::animation_get, &ScStaff::animation_set, "animation");
         dukglue_register_property(ctx, &ScStaff::animationOffset_get, &ScStaff::animationOffset_set, "animationOffset");
         dukglue_register_property(ctx, &ScStaff::animationLength_get, nullptr, "animationLength");
+        dukglue_register_method(ctx, &ScStaff::getAnimationSpriteIds, "getAnimationSpriteIds");
     }
 
     Staff* ScStaff::GetStaff() const
@@ -319,6 +320,38 @@ namespace OpenRCT2::Scripting
         }
 
         return availableAnimations;
+    }
+
+    std::vector<uint32_t> ScStaff::getAnimationSpriteIds(std::string groupKey, uint8_t rotation) const
+    {
+        std::vector<uint32_t> spriteIds{};
+
+        auto* peep = GetStaff();
+        if (peep == nullptr)
+        {
+            return spriteIds;
+        }
+
+        auto& animationGroups = animationsByStaffType(peep->AssignedStaffType);
+        auto animationType = animationGroups.TryGet(groupKey);
+        if (animationType == std::nullopt)
+        {
+            return spriteIds;
+        }
+
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, *animationType);
+        for (auto frameOffset : animationGroup.frame_offsets)
+        {
+            auto imageId = animationGroup.base_image;
+            if (animationType != PeepActionSpriteType::Ui)
+                imageId += rotation + frameOffset * 4;
+            else
+                imageId += frameOffset;
+
+            spriteIds.push_back(imageId);
+        }
+
+        return spriteIds;
     }
 
     std::string ScStaff::animation_get() const

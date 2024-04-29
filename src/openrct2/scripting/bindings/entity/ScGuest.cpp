@@ -208,6 +208,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::animation_get, &ScGuest::animation_set, "animation");
         dukglue_register_property(ctx, &ScGuest::animationOffset_get, &ScGuest::animationOffset_set, "animationOffset");
         dukglue_register_property(ctx, &ScGuest::animationLength_get, nullptr, "animationLength");
+        dukglue_register_method(ctx, &ScGuest::getAnimationSpriteIds, "getAnimationSpriteIds");
         dukglue_register_method(ctx, &ScGuest::has_item, "hasItem");
         dukglue_register_method(ctx, &ScGuest::give_item, "giveItem");
         dukglue_register_method(ctx, &ScGuest::remove_item, "removeItem");
@@ -833,6 +834,34 @@ namespace OpenRCT2::Scripting
             availableAnimations.push_back(std::string(animation.first));
         }
         return availableAnimations;
+    }
+
+    std::vector<uint32_t> ScGuest::getAnimationSpriteIds(std::string groupKey, uint8_t rotation) const
+    {
+        std::vector<uint32_t> spriteIds{};
+
+        auto animationType = availableGuestAnimations.TryGet(groupKey);
+        if (animationType == std::nullopt)
+        {
+            return spriteIds;
+        }
+
+        auto peep = GetPeep();
+        if (peep != nullptr)
+        {
+            auto& animationGroup = GetPeepAnimation(peep->SpriteType, *animationType);
+            for (auto frameOffset : animationGroup.frame_offsets)
+            {
+                auto imageId = animationGroup.base_image;
+                if (animationType != PeepActionSpriteType::Ui)
+                    imageId += rotation + frameOffset * 4;
+                else
+                    imageId += frameOffset;
+
+                spriteIds.push_back(imageId);
+            }
+        }
+        return spriteIds;
     }
 
     std::string ScGuest::animation_get() const

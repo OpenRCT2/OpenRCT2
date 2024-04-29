@@ -1020,7 +1020,6 @@
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
-    <ClCompile Include="scripting\bindings\entity\ScPeep.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScVehicle.cpp" />
     <ClCompile Include="scripting\bindings\network\ScNetwork.cpp" />

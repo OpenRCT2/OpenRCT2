@@ -2648,11 +2648,6 @@ declare global {
          * @param value Whether to set or clear the flag.
          */
         setFlag(key: PeepFlags, value: boolean): void;
-
-        /**
-         * Gets an array of sprite ids representing the peep's walking animation.
-         */
-        getWalkingSpriteIds(): number[];
     }
 
     type PeepFlags =
@@ -2686,6 +2681,34 @@ declare global {
      * @deprecated since version 34, use EntityType instead.
      */
     type PeepType = "guest" | "staff";
+
+    type GuestAnimation =
+        "walking" |
+        "checkTime" |
+        "watchRide" |
+        "eatFood" |
+        "shakeHead" |
+        "emptyPockets" |
+        "holdMat" |
+        "sittingIdle" |
+        "sittingEatFood" |
+        "sittingLookAroundLeft" |
+        "sittingLookAroundRight" |
+        "hanging" |
+        "wow" |
+        "throwUp" |
+        "jump" |
+        "drowning" |
+        "joy" |
+        "readMap" |
+        "wave" |
+        "wave2" |
+        "takePhoto" |
+        "clap" |
+        "disgust" |
+        "drawPicture" |
+        "beingWatched" |
+        "withdrawMoney";
 
     /**
      * Represents a guest.
@@ -2828,12 +2851,17 @@ declare global {
         /**
          * The animations available to this guest.
          */
-        readonly availableAnimations: string[];
+        readonly availableAnimations: GuestAnimation[];
+
+        /**
+         * Gets an array of sprite ids representing a particular guest animation.
+         */
+        getAnimationSpriteIds(animation: GuestAnimation, rotation: number): number[];
 
         /**
          * The animation the guest is currently exhibiting.
          */
-        animation: string;
+        animation: GuestAnimation;
 
         /**
          * The frame offset in the current animation.
@@ -3138,6 +3166,26 @@ declare global {
         "sheriff" |
         "pirate";
 
+    type StaffAnimation =
+        "walking" |
+        "watchRide" |
+        "wave" |
+        "hanging" |
+        "staffMower" |
+        "staffSweep" |
+        "drowning" |
+        "staffAnswerCall" |
+        "staffAnswerCall2" |
+        "staffCheckboard" |
+        "staffFix" |
+        "staffFix2" |
+        "staffFixGround" |
+        "staffFix3" |
+        "staffWatering" |
+        "joy" |
+        "staffEmptyBin" |
+        "wave2";
+
     /**
      * Represents a staff member.
      */
@@ -3175,12 +3223,17 @@ declare global {
         /**
          * The animations available to this staff member.
          */
-        readonly availableAnimations: string[];
+        readonly availableAnimations: StaffAnimation[];
+
+        /**
+         * Gets an array of sprite ids representing a particular staff animation.
+         */
+        getAnimationSpriteIds(animation: StaffAnimation, rotation: number): number[];
 
         /**
          * The animation the staff member is currently exhibiting.
          */
-        animation: string;
+        animation: StaffAnimation;
 
         /**
          * The frame offset in the current animation.

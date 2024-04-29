@@ -69,6 +69,7 @@ namespace OpenRCT2::Scripting
         void orders_set(uint8_t value);
 
         const DukEnumMap<PeepActionSpriteType>& animationsByStaffType(StaffType staffType) const;
+        std::vector<uint32_t> getAnimationSpriteIds(std::string groupKey, uint8_t rotation) const;
         std::vector<std::string> availableAnimations_get() const;
         std::string animation_get() const;
         void animation_set(std::string groupKey);
