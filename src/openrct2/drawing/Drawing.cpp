@@ -300,7 +300,7 @@ enum
     SPR_PALETTE_GLASS_VOID,
 };
 
-const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
+static constexpr FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
     FilterPaletteID::PaletteGlassBlack,
     FilterPaletteID::PaletteGlassGrey,
     FilterPaletteID::PaletteGlassWhite,
