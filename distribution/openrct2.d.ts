@@ -3128,6 +3128,11 @@ declare global {
         colour: number;
 
         /**
+         * Array of costumes available to this particular staff member.
+         */
+        availableCostumes: StaffCostume[];
+
+        /**
          * The staff member's costume.
          */
         costume: StaffCostume | string | number;
