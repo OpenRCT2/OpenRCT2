@@ -2782,14 +2782,12 @@ declare global {
         lostCountdown: number;
 
         /**
-         * The guest's current ride or stall destination.
+         * The guest's current ride or stall destination id.
+         *
+         * If set to a `rideId` value, guest will be sent to that ride.
+         * Has no effect on guests who are on a ride or outside of the park.
          */
         rideHeadedTo: number | null;
-
-        /**
-         * Sends a guest to a given ride, regardless of their interest in it.
-         */
-        sendToRide(rideId: number): void;
 
         /**
          * The list of thoughts this guest has.

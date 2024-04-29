@@ -475,7 +475,7 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    std::shared_ptr<ScRide> ScGuest::rideHeadedTo_get() const
+    RideId ScGuest::rideHeadedTo_get() const
     {
         auto peep = GetGuest();
         if (peep != nullptr)
@@ -484,7 +484,7 @@ namespace OpenRCT2::Scripting
             auto ride = GetRideManager()[rideId];
             if (ride != nullptr)
             {
-                return std::make_shared<ScRide>(ride->id);
+                return (ride->id);
             }
         }
         return {};
