@@ -13,6 +13,8 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../localisation/Localisation.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 
 using namespace OpenRCT2;
 
@@ -45,10 +47,7 @@ void EntranceObject::Unload()
 void EntranceObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-
-    GfxDrawSprite(dpi, ImageId(_legacyType.image_id + 1), screenCoords + ScreenCoordsXY{ -32, 14 });
-    GfxDrawSprite(dpi, ImageId(_legacyType.image_id + 0), screenCoords + ScreenCoordsXY{ 0, 28 });
-    GfxDrawSprite(dpi, ImageId(_legacyType.image_id + 2), screenCoords + ScreenCoordsXY{ 32, 44 });
+    PaintParkEntrancePreview(dpi, _legacyType.image_id, screenCoords);
 }
 
 void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)

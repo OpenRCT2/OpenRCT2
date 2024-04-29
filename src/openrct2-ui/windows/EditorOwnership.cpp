@@ -1,0 +1,170 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2024 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/object/EntranceObject.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
+#include <openrct2/sprites.h>
+
+namespace OpenRCT2::Ui::Windows
+{
+    static constexpr StringId _windowTitle = STR_OBJECT_SELECTION_PARK_ENTRANCE;
+    static constexpr int32_t _imageSize = 116;
+    static constexpr int32_t _numColumns = 4;
+    static constexpr int32_t _windowHeight = 382;
+    static constexpr int32_t _windowWidth = (_imageSize * _numColumns) + 21;
+
+    struct EntranceSelection
+    {
+        ObjectEntryIndex entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        StringId stringId = STR_NONE;
+        ImageIndex imageId = SPR_NONE;
+    };
+
+    enum WindowEditorOwnershipListWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_TAB_CONTENT_PANEL,
+        WIDX_TAB,
+        WIDX_LIST,
+        WIDX_ROTATE_ENTRANCE_BUTTON,
+    };
+
+    // validate_global_widx(WC_EDITOR_OWNERSHIP, WIDX_ROTATE_ENTRANCE_BUTTON);
+
+    // clang-format off
+    static Widget _widgets[] = {
+        WINDOW_SHIM(_windowTitle, _windowWidth, _windowHeight),
+        MakeWidget     ({                 0,  43 }, {      _windowWidth,                      _windowHeight - 43 }, WindowWidgetType::Resize,    WindowColour::Secondary                                                   ),
+        MakeTab        ({  3, 17},                                                                                                                                        STR_NONE                                         ),
+        MakeWidget     ({                 2,  45 }, { _windowWidth - 28, _windowHeight - 45 - kListRowHeight - 2 }, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                  ),
+        MakeWidget     ({ _windowWidth - 26,  59 }, {                24,                                      24 }, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
+        kWidgetsEnd,
+    };
+    // clang-format on
+
+    class EditorOwnership final : public Window
+    {
+    private:
+        ObjectEntryIndex _selectedEntranceType = 0;
+        std::vector<EntranceSelection> _entranceTypes{};
+
+        void InitParkEntranceItems()
+        {
+            _entranceTypes.clear();
+            for (ObjectEntryIndex objectIndex = 0; objectIndex < OBJECT_ENTRY_INDEX_NULL; objectIndex++)
+            {
+                auto& objManager = GetContext()->GetObjectManager();
+                auto* object = static_cast<EntranceObject*>(objManager.GetLoadedObject(ObjectType::ParkEntrance, objectIndex));
+                if (object != nullptr)
+                {
+                    const auto* legacyData = reinterpret_cast<const EntranceEntry*>(object->GetLegacyData());
+                    _entranceTypes.push_back({ objectIndex, legacyData->string_idx, legacyData->image_id });
+                }
+            }
+        }
+
+    public:
+        void OnOpen() override
+        {
+            widgets = _widgets;
+
+            InitScrollWidgets();
+
+            list_information_type = 0;
+            min_width = _windowWidth;
+            min_height = _windowHeight;
+            max_width = _windowWidth;
+            max_height = _windowHeight;
+
+            InitParkEntranceItems();
+            pressed_widgets |= 1LL << WIDX_TAB;
+        }
+
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_CLOSE:
+                    Close();
+                    break;
+            }
+        }
+
+        void OnDraw(DrawPixelInfo& dpi) override
+        {
+            DrawWidgets(dpi);
+            GfxDrawSprite(
+                dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
+                windowPos + ScreenCoordsXY{ widgets[WIDX_TAB].left, widgets[WIDX_TAB].top });
+        }
+
+        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        {
+            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+
+            ScreenCoordsXY coords{ 1, 1 };
+
+            for (auto& entranceType : _entranceTypes)
+            {
+                // Draw flat button rectangle
+                int32_t buttonFlags = 0;
+                if (_selectedEntranceType == entranceType.entryIndex)
+                    buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
+
+                if (buttonFlags != 0)
+                    GfxFillRectInset(
+                        dpi, { coords, coords + ScreenCoordsXY{ _imageSize - 1, _imageSize - 1 } }, colours[1],
+                        INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
+
+                DrawPixelInfo clipDPI;
+                auto screenPos = coords + ScreenCoordsXY{ 2, 2 };
+                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _imageSize - 4, _imageSize - 4))
+                {
+                    PaintParkEntrancePreview(
+                        clipDPI, entranceType.imageId, coords + ScreenCoordsXY{ _imageSize / 2, _imageSize / 2 });
+                    //_loadedObject->DrawPreview(clipDPI, _width, _height);
+                }
+
+                // Draw ride image with feathered border
+                //                auto mask = ImageId(SPR_NEW_RIDE_MASK);
+                //                auto entranceImage = ImageId(entranceType.imageId);
+                //                GfxDrawSpriteRawMasked(dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, entranceImage);
+
+                // Next position
+                coords.x += _imageSize;
+                if (coords.x >= _imageSize * _numColumns + 1)
+                {
+                    coords.x = 1;
+                    coords.y += _imageSize;
+                }
+            }
+        }
+    };
+
+    WindowBase* EditorOwnershipOpen()
+    {
+        WindowBase* window;
+
+        // Check if window is already open
+        window = WindowBringToFrontByClass(WindowClass::EditorOwnership);
+        if (window != nullptr)
+            return window;
+
+        window = WindowCreate<EditorOwnership>(WindowClass::EditorOwnership, _windowWidth, _windowHeight, WF_10 | WF_RESIZABLE);
+
+        return window;
+    }
+} // namespace OpenRCT2::Ui::Windows

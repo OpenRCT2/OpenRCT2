@@ -1225,7 +1225,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindow(WindowClass::Map);
                     break;
                 case 1:
-                    ContextOpenWindow(WindowClass::Viewport);
+                    ContextOpenWindow(WindowClass::EditorOwnership);
                     break;
                 case 2:
                     ContextOpenWindow(WindowClass::Mapgen);
