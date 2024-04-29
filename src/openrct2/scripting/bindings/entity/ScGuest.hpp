@@ -169,6 +169,9 @@ namespace OpenRCT2::Scripting
 
         DukValue favouriteRide_get() const;
         void favouriteRide_set(const DukValue& value);
+        
+        RideId rideHeadedTo_get() const;
+        void rideHeadedTo_set(int32_t rideId);
 
         DukValue thoughts_get() const;
 
