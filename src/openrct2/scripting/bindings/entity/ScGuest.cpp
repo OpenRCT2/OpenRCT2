@@ -883,7 +883,7 @@ namespace OpenRCT2::Scripting
         auto newType = availableGuestAnimations.TryGet(groupKey);
         if (newType == std::nullopt)
         {
-            return;
+            throw DukException() << "Invalid animation for this guest (" << groupKey << ")";
         }
 
         auto* peep = GetGuest();

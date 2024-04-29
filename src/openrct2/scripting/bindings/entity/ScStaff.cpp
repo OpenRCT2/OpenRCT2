@@ -376,7 +376,7 @@ namespace OpenRCT2::Scripting
         auto newType = animationGroups.TryGet(groupKey);
         if (newType == std::nullopt)
         {
-            return;
+            throw DukException() << "Invalid animation for this staff member (" << groupKey << ")";
         }
 
         peep->ActionSpriteType = peep->NextActionSpriteType = *newType;
