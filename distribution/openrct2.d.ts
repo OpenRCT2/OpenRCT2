@@ -3130,7 +3130,7 @@ declare global {
         /**
          * Array of costumes available to this particular staff member.
          */
-        availableCostumes: StaffCostume[];
+        readonly availableCostumes: StaffCostume[];
 
         /**
          * The staff member's costume.
