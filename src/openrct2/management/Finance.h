@@ -57,3 +57,4 @@ money64 FinanceGetMaximumLoan();
 money64 FinanceGetCurrentCash();
 
 money64 FinanceGetLastMonthShopProfit();
+money64 FinanceGetModifiedCost(money64 cost, ExpenditureType type);

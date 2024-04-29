@@ -270,7 +270,8 @@ static Widget window_land_widgets[] = {
                 if (gLandToolRaiseCost != kMoney64Undefined && gLandToolRaiseCost != 0)
                 {
                     auto ft = Formatter();
-                    ft.Add<money64>(gLandToolRaiseCost);
+                    auto raiseCost = FinanceGetModifiedCost(gLandToolRaiseCost, ExpenditureType::Landscaping);
+                    ft.Add<money64>(raiseCost);
                     DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 10;
@@ -279,7 +280,8 @@ static Widget window_land_widgets[] = {
                 if (gLandToolLowerCost != kMoney64Undefined && gLandToolLowerCost != 0)
                 {
                     auto ft = Formatter();
-                    ft.Add<money64>(gLandToolLowerCost);
+                    auto lowerCost = FinanceGetModifiedCost(gLandToolLowerCost, ExpenditureType::Landscaping);
+                    ft.Add<money64>(lowerCost);
                     DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 50;
@@ -304,7 +306,8 @@ static Widget window_land_widgets[] = {
                 if (price != 0)
                 {
                     auto ft = Formatter();
-                    ft.Add<money64>(price);
+                    auto modifiedPrice = FinanceGetModifiedCost(price, ExpenditureType::Landscaping);
+                    ft.Add<money64>(modifiedPrice);
                     DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
             }
