@@ -532,7 +532,7 @@ namespace OpenRCT2::Scripting
         {
             duk_push_null(ctx);
         }
-        return {};
+        return -1;
     }
 
     void ScGuest::favouriteRide_set(const DukValue& value)
