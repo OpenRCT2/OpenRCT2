@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
 #include "../config/Config.h"
@@ -27,7 +28,7 @@
 
 #include <cstring>
 
-GamePalette gPalette;
+using namespace OpenRCT2;
 
 const PaletteMap& PaletteMap::GetDefault()
 {
@@ -89,6 +90,7 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
     std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
 }
 
+GamePalette gPalette;
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
 
@@ -948,6 +950,177 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
     if (!gOpenRCT2Headless)
     {
         DrawingEngineSetPalette(gPalette);
+    }
+}
+
+enum
+{
+    SPR_GAME_PALETTE_DEFAULT = 1532,
+    SPR_GAME_PALETTE_WATER = 1533,
+    SPR_GAME_PALETTE_WATER_DARKER_1 = 1534,
+    SPR_GAME_PALETTE_WATER_DARKER_2 = 1535,
+    SPR_GAME_PALETTE_3 = 1536,
+    SPR_GAME_PALETTE_3_DARKER_1 = 1537,
+    SPR_GAME_PALETTE_3_DARKER_2 = 1538,
+    SPR_GAME_PALETTE_4 = 1539,
+    SPR_GAME_PALETTE_4_DARKER_1 = 1540,
+    SPR_GAME_PALETTE_4_DARKER_2 = 1541,
+};
+
+/**
+ *
+ *  rct2: 0x006838BD
+ */
+void UpdatePaletteEffects()
+{
+    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
+
+    if (gClimateLightningFlash == 1)
+    {
+        // Change palette to lighter colour during lightning
+        int32_t palette = SPR_GAME_PALETTE_DEFAULT;
+
+        if (water_type != nullptr)
+        {
+            palette = water_type->image_id;
+        }
+        const G1Element* g1 = GfxGetG1Element(palette);
+        if (g1 != nullptr)
+        {
+            int32_t xoffset = g1->x_offset;
+            xoffset = xoffset * 4;
+            uint8_t* paletteOffset = gGamePalette + xoffset;
+            for (int32_t i = 0; i < g1->width; i++)
+            {
+                paletteOffset[(i * 4) + 0] = -((0xFF - g1->offset[(i * 3) + 0]) / 2) - 1;
+                paletteOffset[(i * 4) + 1] = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
+                paletteOffset[(i * 4) + 2] = -((0xFF - g1->offset[(i * 3) + 2]) / 2) - 1;
+            }
+            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+        }
+        gClimateLightningFlash++;
+    }
+    else
+    {
+        if (gClimateLightningFlash == 2)
+        {
+            // Change palette back to normal after lightning
+            int32_t palette = SPR_GAME_PALETTE_DEFAULT;
+
+            if (water_type != nullptr)
+            {
+                palette = water_type->image_id;
+            }
+
+            const G1Element* g1 = GfxGetG1Element(palette);
+            if (g1 != nullptr)
+            {
+                int32_t xoffset = g1->x_offset;
+                xoffset = xoffset * 4;
+                uint8_t* paletteOffset = gGamePalette + xoffset;
+                for (int32_t i = 0; i < g1->width; i++)
+                {
+                    paletteOffset[(i * 4) + 0] = g1->offset[(i * 3) + 0];
+                    paletteOffset[(i * 4) + 1] = g1->offset[(i * 3) + 1];
+                    paletteOffset[(i * 4) + 2] = g1->offset[(i * 3) + 2];
+                }
+            }
+        }
+
+        // Animate the water/lava/chain movement palette
+        uint32_t shade = 0;
+        if (gConfigGeneral.RenderWeatherGloom)
+        {
+            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
+            if (paletteId != FilterPaletteID::PaletteNull)
+            {
+                shade = 1;
+                if (paletteId != FilterPaletteID::PaletteDarken1)
+                {
+                    shade = 2;
+                }
+            }
+        }
+        uint32_t j = gPaletteEffectFrame;
+        j = ((static_cast<uint16_t>((~j / 2) * 128) * 15) >> 16);
+        uint32_t waterId = SPR_GAME_PALETTE_WATER;
+        if (water_type != nullptr)
+        {
+            waterId = water_type->palette_index_1;
+        }
+        const G1Element* g1 = GfxGetG1Element(shade + waterId);
+        if (g1 != nullptr)
+        {
+            uint8_t* vs = &g1->offset[j * 3];
+            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_WAVES * 4];
+            int32_t n = PALETTE_LENGTH_WATER_WAVES;
+            for (int32_t i = 0; i < n; i++)
+            {
+                vd[0] = vs[0];
+                vd[1] = vs[1];
+                vd[2] = vs[2];
+                vs += 9;
+                if (vs >= &g1->offset[9 * n])
+                {
+                    vs -= 9 * n;
+                }
+                vd += 4;
+            }
+        }
+
+        waterId = SPR_GAME_PALETTE_3;
+        if (water_type != nullptr)
+        {
+            waterId = water_type->palette_index_2;
+        }
+        g1 = GfxGetG1Element(shade + waterId);
+        if (g1 != nullptr)
+        {
+            uint8_t* vs = &g1->offset[j * 3];
+            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_SPARKLES * 4];
+            int32_t n = PALETTE_LENGTH_WATER_SPARKLES;
+            for (int32_t i = 0; i < n; i++)
+            {
+                vd[0] = vs[0];
+                vd[1] = vs[1];
+                vd[2] = vs[2];
+                vs += 9;
+                if (vs >= &g1->offset[9 * n])
+                {
+                    vs -= 9 * n;
+                }
+                vd += 4;
+            }
+        }
+
+        j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
+        waterId = SPR_GAME_PALETTE_4;
+        g1 = GfxGetG1Element(shade + waterId);
+        if (g1 != nullptr)
+        {
+            uint8_t* vs = &g1->offset[j * 3];
+            uint8_t* vd = &gGamePalette[PALETTE_INDEX_243 * 4];
+            int32_t n = 3;
+            for (int32_t i = 0; i < n; i++)
+            {
+                vd[0] = vs[0];
+                vd[1] = vs[1];
+                vd[2] = vs[2];
+                vs += 3;
+                if (vs >= &g1->offset[3 * n])
+                {
+                    vs -= 3 * n;
+                }
+                vd += 4;
+            }
+        }
+
+        UpdatePalette(gGamePalette, PALETTE_OFFSET_ANIMATED, PALETTE_LENGTH_ANIMATED);
+        if (gClimateLightningFlash == 2)
+        {
+            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            gClimateLightningFlash = 0;
+        }
     }
 }
 
