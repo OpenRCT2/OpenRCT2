@@ -515,9 +515,7 @@ constexpr uint8_t kPaletteTotalOffsets = 192;
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
-extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
-extern thread_local uint8_t gPeepPalette[256];
-extern thread_local uint8_t gOtherPalette[256];
+
 extern uint8_t gTextPalette[];
 extern const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT];
 
@@ -630,6 +628,7 @@ void MaskFn(
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
+void UpdatePaletteEffects();
 
 void RefreshVideo(bool recreateWindow);
 void ToggleWindowedMode();
