@@ -198,7 +198,6 @@ static Widget _staffListWidgets[] = {
                 // Enable highlighting of these staff members in map window
                 if (WindowFindByClass(WindowClass::Map) != nullptr)
                 {
-                    gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
                     for (auto peep : EntityList<Staff>())
                     {
                         EntitySetFlashing(peep, false);

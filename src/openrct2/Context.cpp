@@ -1561,12 +1561,6 @@ WindowBase* ContextShowError(StringId title, StringId message, const Formatter& 
     return windowManager->ShowError(title, message, args);
 }
 
-void ContextUpdateMapTooltip()
-{
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    windowManager->UpdateMapTooltip();
-}
-
 void ContextHandleInput()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

@@ -275,8 +275,6 @@ static Widget window_guest_list_widgets[] = {
             if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24uL : 32uL))
                 _tabAnimationIndex = 0;
             InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab));
-
-            gWindowMapFlashingFlags |= MapFlashingFlags::GuestListOpen;
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override

@@ -225,7 +225,6 @@ WindowBase* ContextShowError(StringId title, StringId message, const class Forma
 WindowBase* ContextOpenIntent(Intent* intent);
 void ContextBroadcastIntent(Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);
-void ContextUpdateMapTooltip();
 void ContextHandleInput();
 void ContextInputHandleKeyboard(bool isTitle);
 void ContextQuit();

@@ -140,6 +140,10 @@ public:
     void Tick() override
     {
         _inGameConsole.Update();
+
+        _windowManager->UpdateMapTooltip();
+
+        WindowDispatchUpdateAll();
     }
 
     void Draw(DrawPixelInfo& dpi) override
