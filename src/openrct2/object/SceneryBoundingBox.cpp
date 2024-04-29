@@ -9,7 +9,7 @@
 
 #include "SceneryBoundingBox.h"
 
-constexpr std::array<CoordsXYZ, DefaultSpriteOffsetType::CountOffset> DefaultSpriteOffsets = {
+static constexpr std::array<CoordsXYZ, DefaultSpriteOffsetType::CountOffset> DefaultSpriteOffsets = {
     CoordsXYZ(7, 7, 0),   // quarter tile
     CoordsXYZ(15, 15, 0), // small scenery full tile w/o VOFFSET_CENTRE
     CoordsXYZ(3, 3, 0),   // small scenery halftile/VOFFSET_CENTRE
@@ -17,14 +17,14 @@ constexpr std::array<CoordsXYZ, DefaultSpriteOffsetType::CountOffset> DefaultSpr
     CoordsXYZ(0, 0, 0),   // large scenery
 };
 
-constexpr SceneryBoundBoxes QuarterTile = {
+static constexpr SceneryBoundBoxes QuarterTile = {
     BoundBoxXYZ({ 7, 7, 0 }, { 2, 2, 0 }),
     BoundBoxXYZ({ 7, 7, 0 }, { 2, 2, 0 }),
     BoundBoxXYZ({ 7, 7, 0 }, { 2, 2, 0 }),
     BoundBoxXYZ({ 7, 7, 0 }, { 2, 2, 0 }),
 };
 
-constexpr SceneryBoundBoxes HalfTile = {
+static constexpr SceneryBoundBoxes HalfTile = {
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 26, 0 }),
     BoundBoxXYZ({ 3, 17, 0 }, { 26, 12, 0 }),
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 26, 0 }),
@@ -32,49 +32,49 @@ constexpr SceneryBoundBoxes HalfTile = {
 };
 
 // LargeSpecial corner/side match sub-fulltile large scenery boundboxes
-constexpr SceneryBoundBoxes FullTileNorthQuadrant = {
+static constexpr SceneryBoundBoxes FullTileNorthQuadrant = {
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 3, 17, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 17, 17, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 12, 0 }),
 };
-constexpr SceneryBoundBoxes FullTileNortheastSide = {
+static constexpr SceneryBoundBoxes FullTileNortheastSide = {
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 28, 0 }),
     BoundBoxXYZ({ 3, 17, 0 }, { 26, 12, 0 }),
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 26, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 28, 12, 0 }),
 };
-constexpr SceneryBoundBoxes FullTileEastQuadrant = {
+static constexpr SceneryBoundBoxes FullTileEastQuadrant = {
     BoundBoxXYZ({ 3, 17, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 17, 17, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 12, 0 }),
 };
-constexpr SceneryBoundBoxes FullTileSoutheastSide = {
+static constexpr SceneryBoundBoxes FullTileSoutheastSide = {
     BoundBoxXYZ({ 3, 17, 0 }, { 26, 12, 0 }),
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 26, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 28, 12, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 28, 0 }),
 };
-constexpr SceneryBoundBoxes FullTileSouthQuadrant = {
+static constexpr SceneryBoundBoxes FullTileSouthQuadrant = {
     BoundBoxXYZ({ 17, 17, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 3, 17, 0 }, { 12, 12, 0 }),
 };
-constexpr SceneryBoundBoxes FullTileSouthwestSide = {
+static constexpr SceneryBoundBoxes FullTileSouthwestSide = {
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 26, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 28, 12, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 28, 0 }),
     BoundBoxXYZ({ 3, 17, 0 }, { 26, 12, 0 }),
 };
-constexpr SceneryBoundBoxes FullTileWestQuadrant = {
+static constexpr SceneryBoundBoxes FullTileWestQuadrant = {
     BoundBoxXYZ({ 17, 3, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 3, 17, 0 }, { 12, 12, 0 }),
     BoundBoxXYZ({ 17, 17, 0 }, { 12, 12, 0 }),
 };
-constexpr SceneryBoundBoxes FullTileNorthwestSide = {
+static constexpr SceneryBoundBoxes FullTileNorthwestSide = {
     BoundBoxXYZ({ 3, 3, 0 }, { 28, 12, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 12, 28, 0 }),
     BoundBoxXYZ({ 3, 17, 0 }, { 26, 12, 0 }),
@@ -82,7 +82,7 @@ constexpr SceneryBoundBoxes FullTileNorthwestSide = {
 };
 
 // LargeSpecialCenter matches large scenery with allowed walls and small scenery with SMALL_SCENERY_FLAG_VOFFSET_CENTRE
-constexpr SceneryBoundBoxes FullTile = {
+static constexpr SceneryBoundBoxes FullTile = {
     BoundBoxXYZ({ 3, 3, 0 }, { 26, 26, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 26, 26, 0 }),
     BoundBoxXYZ({ 3, 3, 0 }, { 26, 26, 0 }),
@@ -90,7 +90,7 @@ constexpr SceneryBoundBoxes FullTile = {
 };
 
 // Large matches large scenery and small scenery that do not allow walls.
-constexpr SceneryBoundBoxes FullTileLarge = {
+static constexpr SceneryBoundBoxes FullTileLarge = {
     BoundBoxXYZ({ 1, 1, 0 }, { 30, 30, 0 }),
     BoundBoxXYZ({ 1, 1, 0 }, { 30, 30, 0 }),
     BoundBoxXYZ({ 1, 1, 0 }, { 30, 30, 0 }),
@@ -98,14 +98,14 @@ constexpr SceneryBoundBoxes FullTileLarge = {
 };
 
 // Small Scenery without VOFFSET_CENTRE flag set
-constexpr SceneryBoundBoxes FullTileThin = {
+static constexpr SceneryBoundBoxes FullTileThin = {
     BoundBoxXYZ({ 15, 15, 0 }, { 2, 2, 0 }),
     BoundBoxXYZ({ 15, 15, 0 }, { 2, 2, 0 }),
     BoundBoxXYZ({ 15, 15, 0 }, { 2, 2, 0 }),
     BoundBoxXYZ({ 15, 15, 0 }, { 2, 2, 0 }),
 };
 
-static const std::array<SceneryBoundBoxes, DefaultBoundingBoxType::CountBox> boundBoxes = {
+static constexpr std::array<SceneryBoundBoxes, DefaultBoundingBoxType::CountBox> boundBoxes = {
     QuarterTile,
     HalfTile,
     FullTileNorthQuadrant,
@@ -123,7 +123,7 @@ static const std::array<SceneryBoundBoxes, DefaultBoundingBoxType::CountBox> bou
 
 #pragma endregion
 
-static const EnumMap<DefaultBoundingBoxType> BBoxTypeLookup{
+static const EnumMap<DefaultBoundingBoxType> BBoxTypeLookup = {
     { "quarterTile", DefaultBoundingBoxType::QuarterTileBox },
     { "halfTile", DefaultBoundingBoxType::HalfTileBox },
     { "cornerNorth", DefaultBoundingBoxType::FullTileNorthQuadrantBox },
@@ -223,7 +223,7 @@ SceneryBoundBoxes ReadBoundBoxes(json_t& jBBox, int32_t defaultHeight, bool full
     return boxes;
 }
 
-static const EnumMap<DefaultSpriteOffsetType> SpriteOffsetLookup{
+static const EnumMap<DefaultSpriteOffsetType> SpriteOffsetLookup = {
     { "quarterTile", DefaultSpriteOffsetType::QuarterTileOffset },
     { "fullTileThin", DefaultSpriteOffsetType::FullTileThinOffset },
     { "halfTile", DefaultSpriteOffsetType::FullTileOffset },
