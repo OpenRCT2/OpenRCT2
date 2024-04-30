@@ -16,6 +16,7 @@
     "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // Then the rest
+#include <algorithm>
 #include <iterator>
 #include <openrct2-ui/Ui.h>
 #include <openrct2/core/String.hpp>
