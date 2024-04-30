@@ -295,7 +295,12 @@ enum
     MAZE_ENTRY_FLAG_15 = (1 << 15),
 };
 
-extern const uint32_t floorSpritesCork[];
+constexpr uint32_t kFloorSpritesCork[] = {
+    SPR_FLOOR_CORK_SE_SW,
+    SPR_FLOOR_CORK_SW,
+    SPR_FLOOR_CORK_SE,
+    SPR_FLOOR_CORK,
+};
 extern const uint32_t floorSpritesMetal[];
 extern const uint32_t floorSpritesMetalB[];
 

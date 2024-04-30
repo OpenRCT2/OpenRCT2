@@ -64,7 +64,7 @@ static void Paint3dCinema(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, stationColour, height, fenceSpritesRope,
