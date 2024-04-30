@@ -531,12 +531,6 @@ namespace OpenRCT2::Scripting
         guest->TimeLost = 0;
         guest->ResetPathfindGoal();
         guest->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
-
-        // Make peep look at their map if they have one
-        if (guest->HasItem(ShopItem::Map))
-        {
-            guest->ReadMap();
-        }
     }
 
     DukValue ScGuest::thoughts_get() const
