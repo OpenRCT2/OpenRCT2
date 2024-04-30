@@ -253,7 +253,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours,
-        trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
+        kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TUNNEL_0, direction, trackSequence);
 
     switch (trackSequence)
