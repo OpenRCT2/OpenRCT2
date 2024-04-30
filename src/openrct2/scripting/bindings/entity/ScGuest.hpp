@@ -166,7 +166,7 @@ namespace OpenRCT2::Scripting
         uint8_t lostCountdown_get() const;
         void lostCountdown_set(uint8_t value);
 
-        int16_t rideHeadedTo_get() const;
+        std::shared_ptr<ScRide> rideHeadedTo_get() const;
         void rideHeadedTo_set(uint16_t rideId);
 
         DukValue thoughts_get() const;
