@@ -477,7 +477,6 @@ namespace OpenRCT2::Scripting
 
     std::shared_ptr<ScRide> ScGuest::rideHeadedTo_get() const
     {
-        ThrowIfGameStateNotMutable();
         auto peep = GetGuest();
         if (peep != nullptr)
         {
