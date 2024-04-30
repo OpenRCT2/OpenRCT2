@@ -314,7 +314,12 @@ constexpr uint32_t kFloorSpritesMetalB[] = {
     SPR_FLOOR_METAL_B,
 };
 
-extern const uint32_t fenceSpritesRope[];
+constexpr uint32_t kFenceSpritesRope[] = {
+    SPR_FENCE_ROPE_NE,
+    SPR_FENCE_ROPE_SE,
+    SPR_FENCE_ROPE_SW,
+    SPR_FENCE_ROPE_NW,
+};
 extern const uint32_t fenceSpritesMetal[];
 extern const uint32_t fenceSpritesMetalB[];
 

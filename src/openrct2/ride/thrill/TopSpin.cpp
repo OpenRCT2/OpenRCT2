@@ -197,7 +197,7 @@ static void PaintTopSpin(
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, stationColour, height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, stationColour, height, kFenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)

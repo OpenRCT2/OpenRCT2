@@ -121,7 +121,7 @@ static void PaintMerryGoRound(
 
     TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-        fenceSpritesRope, session.CurrentRotation);
+        kFenceSpritesRope, session.CurrentRotation);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)

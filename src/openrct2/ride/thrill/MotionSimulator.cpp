@@ -119,7 +119,7 @@ static void PaintMotionSimulator(
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, kFenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)

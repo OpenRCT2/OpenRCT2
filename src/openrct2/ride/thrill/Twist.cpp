@@ -117,7 +117,7 @@ static void PaintTwist(
         default:
             TrackPaintUtilPaintFences(
                 session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-                fenceSpritesRope, session.CurrentRotation);
+                kFenceSpritesRope, session.CurrentRotation);
             break;
     }
 
