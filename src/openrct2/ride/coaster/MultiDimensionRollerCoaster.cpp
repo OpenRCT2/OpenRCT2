@@ -7663,7 +7663,7 @@ static void MultiDimensionRCTrackDiagBrakes(
         if (trackSequence == 3)
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 36,
+                session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height + 36,
                 session.SupportColours);
         }
     }
@@ -7676,7 +7676,7 @@ static void MultiDimensionRCTrackDiagBrakes(
         if (trackSequence == 3)
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+                session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
         }
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -7701,7 +7701,7 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
         if (trackSequence == 3)
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 36,
+                session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height + 36,
                 session.SupportColours);
         }
     }
@@ -7714,7 +7714,7 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
         if (trackSequence == 3)
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+                session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
         }
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);

@@ -1167,7 +1167,7 @@ static void PaintMonorailTrackDiagFlat(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -1189,7 +1189,7 @@ static void PaintMonorailTrackDiag25DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 8, height, session.SupportColours);
+            session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 8, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -1211,7 +1211,7 @@ static void PaintMonorailTrackDiagFlatTo25DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -1233,7 +1233,7 @@ static void PaintMonorailTrackDiag25DegUpToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 4, height, session.SupportColours);
+            session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 4, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -1255,7 +1255,7 @@ static void PaintMonorailTrackDiag25DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 8, height, session.SupportColours);
+            session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 8, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -1277,7 +1277,7 @@ static void PaintMonorailTrackDiagFlatTo25DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 4, height, session.SupportColours);
+            session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 4, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -1299,7 +1299,7 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, MetalSupportType::Boxed, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];

@@ -14495,7 +14495,7 @@ static void BolligerMabillardTrackDiagBrakes(
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(session, supportType, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -14514,7 +14514,7 @@ static void BolligerMabillardTrackDiagBlockBrakes(
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(session, supportType, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];

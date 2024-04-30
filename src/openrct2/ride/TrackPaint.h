@@ -84,7 +84,12 @@ constexpr uint8_t kTrackMap1x4[][4] = {
     { 0, 1, 2, 3 },
 };
 
-extern const MetalSupportPlace DiagSupportPlacement[];
+constexpr MetalSupportPlace kDiagSupportPlacement[] = {
+    MetalSupportPlace::LeftCorner,
+    MetalSupportPlace::TopCorner,
+    MetalSupportPlace::RightCorner,
+    MetalSupportPlace::BottomCorner,
+};
 
 enum
 {

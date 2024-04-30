@@ -51,13 +51,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const MetalSupportPlace DiagSupportPlacement[] = {
-    MetalSupportPlace::LeftCorner,
-    MetalSupportPlace::TopCorner,
-    MetalSupportPlace::RightCorner,
-    MetalSupportPlace::BottomCorner,
-};
-
 const uint32_t floorSpritesCork[] = {
     SPR_FLOOR_CORK_SE_SW,
     SPR_FLOOR_CORK_SW,
