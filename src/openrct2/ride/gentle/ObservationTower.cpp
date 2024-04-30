@@ -96,7 +96,7 @@ static void PaintObservationTowerBase(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, floorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetalB, stationObject);
 
     TrackPaintUtilPaintFences(
         session, edges, position, trackElement, ride, session.TrackColours, height, fenceSpritesMetalB,
