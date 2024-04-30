@@ -6685,7 +6685,7 @@ inline void CompactInvertedRCTrackDiagFlatBase(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 38, session.SupportColours);
+            session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height + 38, session.SupportColours);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
