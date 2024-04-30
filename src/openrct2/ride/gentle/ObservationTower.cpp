@@ -99,7 +99,7 @@ static void PaintObservationTowerBase(
     TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetalB, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, position, trackElement, ride, session.TrackColours, height, fenceSpritesMetalB,
+        session, edges, position, trackElement, ride, session.TrackColours, height, kFenceSpritesMetalB,
         session.CurrentRotation);
 
     if (trackSequence == 0)

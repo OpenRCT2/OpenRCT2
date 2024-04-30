@@ -51,13 +51,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const uint32_t fenceSpritesMetalB[] = {
-    SPR_FENCE_METAL_B_NE,
-    SPR_FENCE_METAL_B_SE,
-    SPR_FENCE_METAL_B_SW,
-    SPR_FENCE_METAL_B_NW,
-};
-
 const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3] = {
     {
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,

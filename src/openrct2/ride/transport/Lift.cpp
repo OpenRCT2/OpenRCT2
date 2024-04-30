@@ -76,7 +76,7 @@ static void PaintLiftBase(
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesMetalB,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesMetalB,
         session.CurrentRotation);
 
     int32_t blockedSegments = 0;
