@@ -1050,9 +1050,9 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     if (ride.ratings.Excitement != -1)
     {
         // Address underflows allowed by original RCT2 code
-        ride.ratings.Excitement = std::max(0, (int)ride.ratings.Excitement);
-        ride.ratings.Intensity = std::max(0, (int)ride.ratings.Intensity);
-        ride.ratings.Nausea = std::max(0, (int)ride.ratings.Nausea);
+        ride.ratings.Excitement = std::max<uint16_t>(0, ride.ratings.Excitement);
+        ride.ratings.Intensity = std::max<uint16_t>(0, ride.ratings.Intensity);
+        ride.ratings.Nausea = std::max<uint16_t>(0, ride.ratings.Nausea);
     }
 #endif
 
