@@ -320,7 +320,12 @@ constexpr uint32_t kFenceSpritesRope[] = {
     SPR_FENCE_ROPE_SW,
     SPR_FENCE_ROPE_NW,
 };
-extern const uint32_t fenceSpritesMetal[];
+constexpr uint32_t kFenceSpritesMetal[] = {
+    SPR_FENCE_METAL_NE,
+    SPR_FENCE_METAL_SE,
+    SPR_FENCE_METAL_SW,
+    SPR_FENCE_METAL_NW,
+};
 extern const uint32_t fenceSpritesMetalB[];
 
 extern const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3];

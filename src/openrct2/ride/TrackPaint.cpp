@@ -51,13 +51,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const uint32_t fenceSpritesMetal[] = {
-    SPR_FENCE_METAL_NE,
-    SPR_FENCE_METAL_SE,
-    SPR_FENCE_METAL_SW,
-    SPR_FENCE_METAL_NW,
-};
-
 const uint32_t fenceSpritesMetalB[] = {
     SPR_FENCE_METAL_B_NE,
     SPR_FENCE_METAL_B_SE,
