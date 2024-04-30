@@ -2357,14 +2357,6 @@ static Widget _rideConstructionWidgets[] = {
                 const PreviewTrack* trackBlock = ted.Block;
                 newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
                 _gotoStartPlacementMode = true;
-
-                // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
-                auto currentRide = GetRide(_currentRideIndex);
-                const auto& rtd = currentRide->GetRideTypeDescriptor();
-                if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
-                {
-                    RideInitialiseConstructionWindow(*currentRide);
-                }
             }
 
             auto trackRemoveAction = TrackRemoveAction(
@@ -2381,6 +2373,13 @@ static Widget _rideConstructionWidgets[] = {
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
+                        // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
+                        const auto& rtd = currentRide->GetRideTypeDescriptor();
+                        if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+                        {
+                            RideInitialiseConstructionWindow(*currentRide);
+                        }
+
                         WindowRideConstructionMouseUpDemolishNextPiece({ *newCoords, static_cast<Direction>(direction) }, type);
                     }
                 }
