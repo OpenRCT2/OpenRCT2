@@ -102,7 +102,7 @@ static void PaintLaunchedFreefallBase(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, floorSpritesMetal, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetal, stationObject);
 
     TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesMetal,

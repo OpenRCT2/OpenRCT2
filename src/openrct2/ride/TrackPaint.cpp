@@ -51,13 +51,6 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const uint32_t floorSpritesMetal[] = {
-    SPR_FLOOR_METAL,
-    SPR_FLOOR_METAL,
-    SPR_FLOOR_METAL,
-    SPR_FLOOR_METAL,
-};
-
 const uint32_t floorSpritesMetalB[] = {
     SPR_FLOOR_METAL_B,
     SPR_FLOOR_METAL_B,
