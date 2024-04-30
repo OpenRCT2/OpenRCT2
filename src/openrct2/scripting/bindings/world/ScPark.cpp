@@ -24,8 +24,6 @@
 #    include "../../ScriptEngine.h"
 #    include "ScParkMessage.hpp"
 
-#    include <algorithm>
-
 namespace OpenRCT2::Scripting
 {
     static const DukEnumMap<uint64_t> ParkFlagMap({

@@ -75,8 +75,6 @@
 #include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 namespace RCT2

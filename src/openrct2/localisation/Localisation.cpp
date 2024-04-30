@@ -30,7 +30,6 @@
 #include "Formatting.h"
 #include "Localisation.h"
 
-#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <ctype.h>

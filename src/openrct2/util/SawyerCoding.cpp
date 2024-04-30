@@ -14,7 +14,6 @@
 #include "../scenario/Scenario.h"
 #include "Util.h"
 
-#include <algorithm>
 #include <cstring>
 #include <stdexcept>
 

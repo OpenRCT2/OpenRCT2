@@ -19,8 +19,6 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-#include <algorithm>
-
 enum class JuniorRCSubType : uint8_t
 {
     Junior = 1,

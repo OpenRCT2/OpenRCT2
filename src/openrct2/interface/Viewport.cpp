@@ -41,7 +41,6 @@
 #include "Window.h"
 #include "Window_internal.h"
 
-#include <algorithm>
 #include <cstring>
 #include <list>
 #include <unordered_map>

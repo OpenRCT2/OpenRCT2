@@ -33,7 +33,6 @@
 #include "../world/Surface.h"
 #include "Viewport.h"
 
-#include <algorithm>
 #include <cctype>
 #include <chrono>
 #include <cstdlib>

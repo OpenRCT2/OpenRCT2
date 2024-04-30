@@ -25,7 +25,6 @@
 #include "../world/Map.h"
 #include "Drawing.h"
 
-#include <algorithm>
 #include <cmath>
 #include <cstring>
 

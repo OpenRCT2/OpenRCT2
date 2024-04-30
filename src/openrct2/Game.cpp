@@ -70,7 +70,6 @@
 #include "world/Scenery.h"
 #include "world/Surface.h"
 
-#include <algorithm>
 #include <cstdio>
 #include <iterator>
 #include <memory>

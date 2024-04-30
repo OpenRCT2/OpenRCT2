@@ -18,7 +18,6 @@
 #include "../scenes/title/TitleScene.h"
 #include "zlib.h"
 
-#include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <ctime>

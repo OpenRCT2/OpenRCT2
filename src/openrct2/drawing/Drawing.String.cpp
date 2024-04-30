@@ -23,8 +23,6 @@
 #include "../sprites.h"
 #include "TTF.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting);

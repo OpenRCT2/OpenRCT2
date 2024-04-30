@@ -24,7 +24,6 @@
 #include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
 
-#include <algorithm>
 #include <limits>
 
 using namespace OpenRCT2;

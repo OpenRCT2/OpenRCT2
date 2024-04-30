@@ -34,7 +34,6 @@
 #include "Widget.h"
 #include "Window_internal.h"
 
-#include <algorithm>
 #include <cmath>
 #include <functional>
 #include <iterator>

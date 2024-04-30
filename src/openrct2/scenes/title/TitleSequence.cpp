@@ -26,7 +26,6 @@
 #include "../../scenario/ScenarioSources.h"
 #include "../../util/Util.h"
 
-#include <algorithm>
 #include <array>
 #include <memory>
 #include <optional>

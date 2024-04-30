@@ -12,7 +12,6 @@
 #include "../interface/Window.h"
 #include "Window.h"
 
-#include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>

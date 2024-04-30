@@ -41,7 +41,6 @@
 #include "Map.h"
 #include "Surface.h"
 
-#include <algorithm>
 #include <limits>
 #include <type_traits>
 

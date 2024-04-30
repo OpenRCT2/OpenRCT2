@@ -25,7 +25,6 @@
 #include "../util/Util.h"
 #include "TrackDesign.h"
 
-#include <algorithm>
 #include <memory>
 #include <vector>
 

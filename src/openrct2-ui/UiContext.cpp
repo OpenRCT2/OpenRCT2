@@ -21,7 +21,6 @@
 #include "title/TitleSequencePlayer.h"
 
 #include <SDL.h>
-#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdlib>

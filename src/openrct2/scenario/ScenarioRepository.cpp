@@ -32,7 +32,6 @@
 #include "Scenario.h"
 #include "ScenarioSources.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>

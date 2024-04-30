@@ -76,7 +76,6 @@
 #include "util/Util.h"
 #include "world/Park.h"
 
-#include <algorithm>
 #include <cmath>
 #include <exception>
 #include <future>

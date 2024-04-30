@@ -36,7 +36,6 @@
 #include "../world/Location.hpp"
 #include "network.h"
 
-#include <algorithm>
 #include <iterator>
 #include <stdexcept>
 
@@ -92,7 +91,6 @@ static constexpr uint32_t MaxPacketsPerUpdate = 100;
 #    include "NetworkUser.h"
 #    include "Socket.h"
 
-#    include <algorithm>
 #    include <array>
 #    include <cerrno>
 #    include <cmath>

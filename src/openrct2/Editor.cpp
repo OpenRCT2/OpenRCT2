@@ -48,7 +48,6 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 
-#include <algorithm>
 #include <array>
 #include <vector>
 

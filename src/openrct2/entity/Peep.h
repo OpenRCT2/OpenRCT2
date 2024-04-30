@@ -17,7 +17,6 @@
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 
-#include <algorithm>
 #include <array>
 #include <optional>
 

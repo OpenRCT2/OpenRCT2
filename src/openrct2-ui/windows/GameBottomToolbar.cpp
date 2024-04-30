@@ -9,7 +9,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>

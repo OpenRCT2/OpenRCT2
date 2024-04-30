@@ -66,7 +66,6 @@
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 

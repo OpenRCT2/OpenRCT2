@@ -31,7 +31,6 @@
 #include "../ride/Vehicle.h"
 #include "ObjectRepository.h"
 
-#include <algorithm>
 #include <iterator>
 #include <unordered_map>
 

@@ -33,7 +33,6 @@
 #include "AudioContext.h"
 #include "AudioMixer.h"
 
-#include <algorithm>
 #include <cmath>
 #include <memory>
 #include <vector>

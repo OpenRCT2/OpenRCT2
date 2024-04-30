@@ -47,7 +47,6 @@
 #include "PatrolArea.h"
 #include "Peep.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;

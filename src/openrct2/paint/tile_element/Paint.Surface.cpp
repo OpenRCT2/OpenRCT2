@@ -32,7 +32,6 @@
 #include "../Paint.SessionFlags.h"
 #include "Paint.TileElement.h"
 
-#include <algorithm>
 #include <cstring>
 #include <iterator>
 

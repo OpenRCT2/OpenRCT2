@@ -9,7 +9,6 @@
 
 #include "Drawing.h"
 
-#include <algorithm>
 #include <cstring>
 
 template<DrawBlendOp TBlendOp, size_t TZoom>

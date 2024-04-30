@@ -12,8 +12,6 @@
 #include "../util/Util.h"
 #include "Object.h"
 
-#include <algorithm>
-
 constexpr std::array kAllObjectTypes = {
     ObjectType::Ride,
     ObjectType::SmallScenery,

@@ -14,7 +14,6 @@
 #include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
-#include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>

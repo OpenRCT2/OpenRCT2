@@ -12,6 +12,7 @@
 #    include "UiContext.h"
 
 #    include <SDL.h>
+#    include <algorithm>
 #    include <dlfcn.h>
 #    include <openrct2/common.h>
 #    include <openrct2/core/Path.hpp>
