@@ -50,7 +50,7 @@ static void PaintLiftBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = track_map_3x3[direction][trackSequence];
+    trackSequence = kTrackMap3x3[direction][trackSequence];
 
     if (trackSequence == 0)
     {
@@ -68,7 +68,7 @@ static void PaintLiftBase(
         return;
     }
 
-    int32_t edges = edges_3x3[trackSequence];
+    int32_t edges = kEdges3x3[trackSequence];
 
     auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL_B);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });

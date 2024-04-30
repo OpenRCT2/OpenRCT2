@@ -7710,7 +7710,7 @@ static void MultiDimensionRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     if (trackElement.IsInverted())
     {
         TrackPaintUtilDiagTilesPaint(
@@ -7748,7 +7748,7 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     if (trackElement.IsInverted())
     {
         TrackPaintUtilDiagTilesPaint(

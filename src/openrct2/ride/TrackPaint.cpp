@@ -50,88 +50,11 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const uint8_t track_map_2x2[][4] = {
-    { 0, 1, 2, 3 },
-    { 1, 3, 0, 2 },
-    { 3, 2, 1, 0 },
-    { 2, 0, 3, 1 },
-};
-
-const uint8_t edges_2x2[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE | EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-};
-
-const uint8_t track_map_3x3[][9] = {
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8 },
-    { 0, 3, 5, 7, 2, 8, 1, 6, 4 },
-    { 0, 7, 8, 6, 5, 4, 3, 1, 2 },
-    { 0, 6, 4, 1, 8, 2, 7, 3, 5 },
-};
-
-// clang-format off
-const uint8_t edges_3x3[] = {
-    0,
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-    EDGE_SW,
-};
-// clang-format on
-
-const uint8_t track_map_4x4[][16] = {
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
-    { 3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12 },
-    { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
-    { 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 },
-};
-
-// clang-format off
-const uint8_t edges_4x4[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW | EDGE_SW,
-    EDGE_SW,
-    EDGE_SW,
-    EDGE_SW | EDGE_SE,
-};
-// clang-format on
-
-const int32_t DiagBlockedSegments[] = {
-    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
-    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
-    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
-    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
-};
-
 const MetalSupportPlace DiagSupportPlacement[] = {
     MetalSupportPlace::LeftCorner,
     MetalSupportPlace::TopCorner,
     MetalSupportPlace::RightCorner,
     MetalSupportPlace::BottomCorner,
-};
-
-const uint8_t track_map_1x4[][4] = {
-    { 0, 1, 2, 3 },
-    { 2, 3, 0, 1 },
-    { 2, 3, 0, 1 },
-    { 0, 1, 2, 3 },
 };
 
 const uint32_t floorSpritesCork[] = {

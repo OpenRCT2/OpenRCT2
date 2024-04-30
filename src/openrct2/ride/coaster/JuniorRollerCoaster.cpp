@@ -4642,7 +4642,7 @@ static void JuniorRCPaintTrackDiagFlat(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -4662,7 +4662,7 @@ static void JuniorRCTrackDiagBrakes(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -4683,7 +4683,7 @@ static void JuniorRCTrackDiagBlockBrakes(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -4705,7 +4705,7 @@ static void JuniorRCPaintTrackDiag25DegUp(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -4727,7 +4727,7 @@ static void JuniorRCPaintTrackDiagFlatTo25DegUp(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -4750,7 +4750,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegUp(
             height + 6, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
@@ -4772,7 +4772,7 @@ static void JuniorRCPaintTrackDiag25DegUpToFlat(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -4795,7 +4795,7 @@ static void JuniorRCPaintTrackDiag60DegUpToFlat(
             height + 13, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
@@ -4817,7 +4817,7 @@ static void JuniorRCPaintTrackDiag25DegDown(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -4840,7 +4840,7 @@ static void JuniorRCPaintTrackDiagFlatTo25DegDown(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -4864,7 +4864,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegDown(
             height + 7, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -4887,7 +4887,7 @@ static void JuniorRCPaintTrackDiag25DegDownToFlat(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -4911,7 +4911,7 @@ static void JuniorRCPaintTrackDiag60DegDownToFlat(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -4938,7 +4938,7 @@ static void JuniorRCDiagFlatToLeftBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -4965,7 +4965,7 @@ static void JuniorRCDiagFlatToRightBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -4992,7 +4992,7 @@ static void JuniorRCDiagLeftBankToFlatPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -5019,7 +5019,7 @@ static void JuniorRCDiagRightBankToFlatPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -5046,7 +5046,7 @@ static void JuniorRCDiagLeftBankTo25DegUpPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -5073,7 +5073,7 @@ static void JuniorRCDiagRightBankTo25DegUpPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -5100,7 +5100,7 @@ static void JuniorRCDiag25DegUpToLeftBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -5127,7 +5127,7 @@ static void JuniorRCDiag25DegUpToRightBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -5154,7 +5154,7 @@ static void JuniorRCDiagLeftBankTo25DegDownPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -5181,7 +5181,7 @@ static void JuniorRCDiagRightBankTo25DegDownPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
@@ -5208,7 +5208,7 @@ static void JuniorRCDiag25DegDownToLeftBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -5235,7 +5235,7 @@ static void JuniorRCDiag25DegDownToRightBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
@@ -5271,7 +5271,7 @@ static void JuniorRCDiagLeftBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -5293,7 +5293,7 @@ static void JuniorRCDiagRightBankPaintSetup(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -5547,7 +5547,7 @@ static void JuniorRCPaintTrackDiag60DegUp(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
@@ -5570,7 +5570,7 @@ static void JuniorRCPaintTrackDiag60DegDown(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
@@ -5594,7 +5594,7 @@ static void JuniorRCPaintTrackDiag25DegUpTo60DegUp(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
@@ -5628,7 +5628,7 @@ static void JuniorRCPaintTrackDiag60DegUpTo25DegUp(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
@@ -5662,7 +5662,7 @@ static void JuniorRCPaintTrackDiag25DegDownTo60DegDown(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
@@ -5686,7 +5686,7 @@ static void JuniorRCPaintTrackDiag60DegDownTo25DegDown(
             height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
