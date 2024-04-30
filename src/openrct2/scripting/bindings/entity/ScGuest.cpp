@@ -537,7 +537,6 @@ namespace OpenRCT2::Scripting
 
     void ScGuest::favouriteRide_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
         auto peep = GetGuest();
         if (peep != nullptr)
         {
