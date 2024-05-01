@@ -321,6 +321,16 @@ namespace Platform
         return {};
     }
 
+    u8string GetRCT1SteamDir()
+    {
+        return u8"Rollercoaster Tycoon Deluxe";
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return u8"Rollercoaster Tycoon 2";
+    }
+
 #    ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {

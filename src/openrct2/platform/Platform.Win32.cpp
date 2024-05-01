@@ -791,6 +791,16 @@ namespace Platform
         return GetLogicalDrives();
     }
 
+    u8string GetRCT1SteamDir()
+    {
+        return u8"Rollercoaster Tycoon Deluxe";
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return u8"Rollercoaster Tycoon 2";
+    }
+
     time_t FileGetModifiedTime(u8string_view path)
     {
         WIN32_FILE_ATTRIBUTE_DATA data{};
