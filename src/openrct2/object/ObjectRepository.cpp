@@ -41,7 +41,6 @@
 #include "ObjectManager.h"
 #include "RideObject.h"
 
-#include <algorithm>
 #include <memory>
 #include <unordered_map>
 #include <vector>

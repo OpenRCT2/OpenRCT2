@@ -64,7 +64,6 @@
 #include "../world/Scenery.h"
 #include "Viewport.h"
 
-#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdarg>

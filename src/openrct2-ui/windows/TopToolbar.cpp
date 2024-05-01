@@ -11,7 +11,6 @@
 #include "../interface/InGameConsole.h"
 #include "../scripting/CustomMenu.h"
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>

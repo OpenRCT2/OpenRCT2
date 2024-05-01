@@ -27,7 +27,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 

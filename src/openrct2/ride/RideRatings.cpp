@@ -25,7 +25,6 @@
 #include "Station.h"
 #include "Track.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;

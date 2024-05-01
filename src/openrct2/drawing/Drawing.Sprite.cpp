@@ -22,7 +22,6 @@
 #include "../util/Util.h"
 #include "ScrollingText.h"
 
-#include <algorithm>
 #include <memory>
 #include <stdexcept>
 #include <vector>

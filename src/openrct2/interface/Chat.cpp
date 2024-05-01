@@ -21,8 +21,6 @@
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 

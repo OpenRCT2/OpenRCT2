@@ -55,7 +55,6 @@
 #include "VehicleData.h"
 #include "VehicleSubpositionData.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;

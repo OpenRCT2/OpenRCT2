@@ -71,7 +71,6 @@
 #include "RCT1.h"
 #include "Tables.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 #include <vector>

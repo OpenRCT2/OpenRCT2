@@ -2,6 +2,8 @@
 
 #include "../localisation/Localisation.h"
 
+#include <algorithm>
+
 namespace GameActions
 {
     Result::Result(GameActions::Status error, StringId title, StringId message, uint8_t* args /*= nullptr*/)

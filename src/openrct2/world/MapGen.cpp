@@ -31,7 +31,6 @@
 #include "Scenery.h"
 #include "Surface.h"
 
-#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <iterator>

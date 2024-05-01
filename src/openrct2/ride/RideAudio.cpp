@@ -23,7 +23,6 @@
 #include "Ride.h"
 #include "RideData.h"
 
-#include <algorithm>
 #include <vector>
 
 using namespace OpenRCT2;

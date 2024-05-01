@@ -22,8 +22,6 @@
 #include "../world/Park.h"
 #include "NewsItem.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 constexpr uint8_t NEGATIVE = 0;

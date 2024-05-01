@@ -25,7 +25,6 @@
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
-#include <algorithm>
 #include <array>
 
 using namespace OpenRCT2;

@@ -13,7 +13,6 @@
 #include "OpenGLAPI.h"
 
 #include <SDL_pixels.h>
-#include <algorithm>
 #include <array>
 #include <mutex>
 #include <openrct2/common.h>

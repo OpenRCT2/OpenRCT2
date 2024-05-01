@@ -18,8 +18,6 @@
 #include "../util/Util.h"
 #include "../world/Park.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 void ScenarioSetSettingAction::Serialise(DataSerialiser& stream)

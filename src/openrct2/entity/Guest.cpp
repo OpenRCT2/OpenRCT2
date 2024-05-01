@@ -61,7 +61,6 @@
 #include "Peep.h"
 #include "Staff.h"
 
-#include <algorithm>
 #include <functional>
 #include <iterator>
 

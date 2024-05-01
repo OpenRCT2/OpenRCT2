@@ -39,7 +39,6 @@
 #include "Finance.h"
 #include "NewsItem.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;

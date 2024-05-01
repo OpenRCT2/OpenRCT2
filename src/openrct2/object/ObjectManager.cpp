@@ -30,7 +30,6 @@
 #include "SmallSceneryObject.h"
 #include "WallObject.h"
 
-#include <algorithm>
 #include <array>
 #include <memory>
 #include <mutex>

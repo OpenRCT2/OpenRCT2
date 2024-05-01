@@ -54,7 +54,6 @@
 #include "TileInspector.h"
 #include "Wall.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 

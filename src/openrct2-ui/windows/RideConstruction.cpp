@@ -9,7 +9,6 @@
 
 #include "../ride/Construction.h"
 
-#include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>

@@ -44,7 +44,6 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
-#include <algorithm>
 #include <memory>
 #include <unordered_map>
 

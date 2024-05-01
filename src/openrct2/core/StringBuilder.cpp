@@ -11,7 +11,6 @@
 
 #include "String.hpp"
 
-#include <algorithm>
 #include <iterator>
 
 StringBuilder::StringBuilder(size_t capacity)

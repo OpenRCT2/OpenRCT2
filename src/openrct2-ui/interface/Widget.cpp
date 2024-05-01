@@ -11,7 +11,6 @@
 
 #include "Window.h"
 
-#include <algorithm>
 #include <cmath>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>

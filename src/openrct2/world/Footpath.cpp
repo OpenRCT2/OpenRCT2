@@ -44,7 +44,6 @@
 #include "Surface.h"
 #include "TileElement.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2::TrackMetaData;

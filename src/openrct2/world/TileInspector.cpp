@@ -32,7 +32,6 @@
 #include "Scenery.h"
 #include "Surface.h"
 
-#include <algorithm>
 #include <optional>
 
 TileCoordsXY windowTileInspectorTile;

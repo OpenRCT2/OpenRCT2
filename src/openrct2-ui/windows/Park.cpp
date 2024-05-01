@@ -9,7 +9,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <array>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>

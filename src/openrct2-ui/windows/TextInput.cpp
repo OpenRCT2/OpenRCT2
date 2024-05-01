@@ -9,7 +9,6 @@
 
 #include <SDL.h>
 #include <SDL_keycode.h>
-#include <algorithm>
 #include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>

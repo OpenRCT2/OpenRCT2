@@ -14,7 +14,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>

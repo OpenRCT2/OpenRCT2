@@ -13,7 +13,6 @@
 #include "interface/InGameConsole.h"
 
 #include <SDL.h>
-#include <algorithm>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/core/Memory.hpp>

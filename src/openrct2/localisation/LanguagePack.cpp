@@ -21,7 +21,6 @@
 #include "Localisation.h"
 #include "LocalisationService.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>

@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Widget.h>

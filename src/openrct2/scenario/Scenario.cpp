@@ -58,8 +58,6 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {

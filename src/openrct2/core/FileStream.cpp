@@ -12,7 +12,6 @@
 #include "Path.hpp"
 #include "String.hpp"
 
-#include <algorithm>
 #include <string_view>
 
 #ifndef _WIN32
