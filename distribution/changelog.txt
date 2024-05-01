@@ -7,7 +7,7 @@
 - Improved: [#21855] Add a separator between “Load Game” and “Save Game”, to avoid accidental overwriting.
 - Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Change: [#21855] Cheats menu dropdown no longer requires dragging.
-- Fix: [#866] Boat Hire boats get stuck entering track.
+- Fix: [#866] Boat Hire boats get stuck entering track (original bug).
 - Fix: [#10701] No reason specified when placing door over unsuitable track.
 - Fix: [#18723, #21870] Attempting to demolish a flat ride in pause mode allows you to place multiple copies.
 - Fix: [#19559] Custom rides with long descriptions extend into lower widgets.
