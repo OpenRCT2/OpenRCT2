@@ -978,11 +978,6 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_PREVIOUS_SECTION:
                     RideSelectPreviousSection();
                     break;
-                case WIDX_CONSTRUCT:
-                    Construct();
-                    // Force any footpath construction to recheck the area.
-                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
-                    break;
                 case WIDX_DEMOLISH:
                     MouseUpDemolish();
                     break;
@@ -1021,6 +1016,13 @@ static Widget _rideConstructionWidgets[] = {
             WindowRideConstructionUpdateEnabledTrackPieces();
             switch (widgetIndex)
             {
+                case WIDX_CONSTRUCT:
+                {
+                    Construct();
+                    // Force any footpath construction to recheck the area.
+                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
+                    break;
+                }
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackCurve = EnumValue(TrackCurve::Left);
@@ -1595,7 +1597,7 @@ static Widget _rideConstructionWidgets[] = {
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = 0;
+            hold_down_widgets = (1u << WIDX_CONSTRUCT);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
@@ -3623,7 +3625,7 @@ static Widget _rideConstructionWidgets[] = {
                 break;
 
             gDisableErrorWindowSound = true;
-            w->OnMouseUp(WIDX_CONSTRUCT);
+            w->OnMouseDown(WIDX_CONSTRUCT);
             gDisableErrorWindowSound = false;
 
             if (_trackPlaceCost == kMoney64Undefined)
@@ -4532,7 +4534,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_CONSTRUCT);
+        w->OnMouseDown(WIDX_CONSTRUCT);
     }
 
     void WindowRideConstructionKeyboardShortcutDemolishCurrent()
