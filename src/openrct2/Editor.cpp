@@ -102,6 +102,10 @@ namespace Editor
      */
     void Load()
     {
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
+
         auto& gameState = GetGameState();
         Audio::StopAll();
         ObjectListLoad();
@@ -161,6 +165,10 @@ namespace Editor
      */
     void LoadTrackDesigner()
     {
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
+
         Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
         gScreenAge = 0;
@@ -182,6 +190,10 @@ namespace Editor
      */
     void LoadTrackManager()
     {
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
+
         Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
         gScreenAge = 0;
@@ -243,6 +255,10 @@ namespace Editor
     static void AfterLoadCleanup(bool loadedFromSave)
     {
         ClearMapForEditing(loadedFromSave);
+
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
 
         GetGameState().EditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
