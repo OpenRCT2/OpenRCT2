@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -29,6 +30,8 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
+#include <openrct2/object/EntranceObject.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -201,6 +204,8 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         std::vector<uint8_t> _mapImageData;
         bool _mapWidthAndHeightLinked{ true };
         bool _recalculateScrollbars = false;
+        std::vector<Dropdown::Item> _entranceTypeDropdown{};
+        ObjectEntryIndex _selectedEntranceType = 0;
         enum class ResizeDirection
         {
             Both,
@@ -245,6 +250,8 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
             // Reset land rights tool size
             _landRightsToolSize = 1;
+
+            InitParkEntranceDropdownItems();
         }
 
         void OnClose() override
@@ -309,16 +316,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                     Invalidate();
                     break;
                 case WIDX_BUILD_PARK_ENTRANCE:
-                    Invalidate();
-                    if (ToolSet(*this, widgetIndex, Tool::UpArrow))
-                        break;
-
-                    gParkEntranceGhostExists = false;
-                    InputSetFlag(INPUT_FLAG_6, true);
-
-                    ShowGridlines();
-                    ShowLandRights();
-                    ShowConstructionRights();
+                    BuildParkEntranceToggle();
                     break;
                 case WIDX_ROTATE_90:
                     gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
@@ -389,6 +387,9 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                     _landRightsToolSize = std::min<uint16_t>(kLandToolMaximumSize, _landRightsToolSize + 1);
 
                     Invalidate();
+                    break;
+                case WIDX_BUILD_PARK_ENTRANCE:
+                    ShowParkEntranceDropdown(widgets[widgetIndex]);
                     break;
             }
         }
@@ -609,7 +610,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
             ParkEntranceRemoveGhost();
 
-            auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
+            auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
             gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
             auto result = GameActions::Execute(&gameAction);
@@ -627,7 +628,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
             if (!parkEntrancePosition.IsNull())
             {
-                auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
+                auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
                 auto result = GameActions::Execute(&gameAction);
                 if (result.Error == GameActions::Status::Ok)
                 {
@@ -1013,6 +1014,22 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         {
             InitMap();
             CentreMapOnViewPoint();
+        }
+
+        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        {
+            if (selectedIndex == -1)
+            {
+                return;
+            }
+
+            switch (widgetIndex)
+            {
+                case WIDX_BUILD_PARK_ENTRANCE:
+                    BuildParkEntranceToggle();
+                    BuildParkEntranceClick(selectedIndex);
+                    break;
+            }
         }
 
     private:
@@ -1517,6 +1534,56 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             }
             width = std::max(min_width, width);
             _recalculateScrollbars = true;
+        }
+
+        void InitParkEntranceDropdownItems()
+        {
+            _entranceTypeDropdown.clear();
+            for (auto objectIndex = 0; objectIndex < OBJECT_ENTRY_INDEX_NULL; objectIndex++)
+            {
+                auto& objManager = GetContext()->GetObjectManager();
+                auto* object = static_cast<EntranceObject*>(objManager.GetLoadedObject(ObjectType::ParkEntrance, objectIndex));
+                if (object != nullptr)
+                {
+                    const auto* legacyData = reinterpret_cast<const EntranceEntry*>(object->GetLegacyData());
+                    _entranceTypeDropdown.push_back({ .Format = legacyData->string_idx, .Args = objectIndex, .Flags = 0 });
+                }
+            }
+        }
+
+        void ShowParkEntranceDropdown(Widget& widget)
+        {
+            gDropdownDefaultIndex = 0;
+            auto numItems = _entranceTypeDropdown.size();
+            for (auto dropdownIndex = 0u; dropdownIndex < numItems; dropdownIndex++)
+            {
+                gDropdownItems[dropdownIndex] = _entranceTypeDropdown[dropdownIndex];
+
+                if (gDropdownItems[dropdownIndex].Args == _selectedEntranceType)
+                    gDropdownDefaultIndex = dropdownIndex;
+            }
+
+            WindowDropdownShowText(
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1] | 0x80, 0, numItems);
+        }
+
+        void BuildParkEntranceToggle()
+        {
+            Invalidate();
+            if (ToolSet(*this, WIDX_BUILD_PARK_ENTRANCE, Tool::UpArrow))
+                return;
+
+            gParkEntranceGhostExists = false;
+            InputSetFlag(INPUT_FLAG_6, true);
+
+            ShowGridlines();
+            ShowLandRights();
+            ShowConstructionRights();
+        }
+
+        void BuildParkEntranceClick(int16_t dropdownIndex)
+        {
+            _selectedEntranceType = gDropdownItems[dropdownIndex].Args;
         }
     };
 

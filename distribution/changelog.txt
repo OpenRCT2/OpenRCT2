@@ -1,6 +1,7 @@
 0.4.11 (in development)
 ------------------------------------------------------------------------
 - Feature: [#11512] Coloured usernames by group on multiplayer servers.
+- Feature: [#15750] Allow using different types of park entrance in one park.
 - Feature: [#21734] Park admittance price can now be set via text input.
 - Improved: [#21728] “Fix all rides” cheat now also works if a mechanic is already fixing the ride.
 - Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
