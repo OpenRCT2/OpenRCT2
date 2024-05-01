@@ -135,4 +135,14 @@ namespace Platform
         return static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::milliseconds>(processTime).count());
     }
 
+    u8string GetRCT1SteamDir()
+    {
+        return u8"Rollercoaster Tycoon Deluxe";
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return u8"Rollercoaster Tycoon 2";
+    }
+
 } // namespace Platform
