@@ -4,7 +4,7 @@
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Montaña Rusa Espiral
-STR_0003    :Montaña Rusa En Pie
+STR_0003    :Montaña Rusa de pie
 STR_0004    :Montaña Rusa Colgante
 STR_0005    :Montaña Rusa Invertida
 STR_0006    :Montaña Rusa Infantil
@@ -54,7 +54,7 @@ STR_0049    :Casa Encantada
 STR_0050    :Sala de primeros auxilios
 STR_0051    :Circo
 STR_0052    :Tren fantasma
-STR_0053    :Montaña Rusa En Pie Tornado
+STR_0053    :Montaña Rusa de pie Tornado
 STR_0054    :Montaña Rusa de Madera
 STR_0055    :Montaña de fricción lateral
 STR_0056    :Ratón Loco
@@ -98,6 +98,7 @@ STR_0093    :Montaña Rusa Híbrida
 STR_0094    :Montaña Rusa de un solo carril
 STR_0095    :Montaña Rusa Alpina
 STR_0096    :Montaña Rusa de madera clásica
+STR_0097    :Montaña Rusa de pie clásica
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
@@ -181,6 +182,7 @@ STR_0603    :Una montaña rusa estilo de madera con vías de acero, lo que le pe
 STR_0604    :Los pasajeros viajan en fila india en una pista de monorraíl estrecha, mientras corren a través de inversiones estrechas y cambios de dirección.
 STR_0605    :Los pasajeros bajan por una serpenteante vía de acero, frenando para controlar su velocidad.
 STR_0606    :Una montaña rusa de madera de estilo antiguo con un recorrido rápido y bruto, con muchas caídas, algunas fuerzas G laterales, y diseñada para ofrecer una experiencia ‘fuera de control’.
+STR_0607    :Una intensa montaña rusa en espiral de acero y de estilo antiguo en la que los pasajeros viajan de pie.
 STR_0767    :Visitante {INT32}
 STR_0768    :Manitas {INT32}
 STR_0769    :Mecánico {INT32}

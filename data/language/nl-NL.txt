@@ -95,6 +95,7 @@ STR_0093    :Hybride achtbaan
 STR_0094    :Achtbaan met enkele rail
 STR_0095    :Rodelachtbaan
 STR_0096    :Klassieke houten achtbaan
+STR_0097    :Klassieke staande achtbaan
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -112,7 +113,7 @@ STR_0525    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worde
 STR_0526    :Bezoekers gaan in een roterende observatiecabine langs een toren omhoog
 STR_0527    :Een soepele stalen achtbaan die verticale loopings kan maken.
 STR_0528    :Passagiers glijden in opblaasboten door een kronkelende halfopen of compleet gesloten glijbaan.
-STR_0529    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
+STR_0529    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitzien als een oude spoorbaan.
 STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug.
 STR_0531    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_0532    :Bezoekers lopen door een doolhof van 1,8m hoge heggen of muren, en kunnen er pas uit wanneer ze de uitgang vinden.
@@ -178,6 +179,7 @@ STR_0603    :Een achtbaan met houten ondersteuningen en stalen rails, waardoor s
 STR_0604    :Passagiers zitten achter elkaar op een smalle baan met één rail, waar ze met hoge snelheid door krappe bochten en over de kop gaan.
 STR_0605    :Passagiers rodelen over een kronkelende stalen baan, waarbij ze zelf kunnen beslissen hoe snel ze gaan.
 STR_0606    :Een ouder type houten achtbaan met een snelle en ruwe loop, veel airtime, enige zijwaartse G-krachten en het gevoel van controleverlies.
+STR_0607    :Een intens ouder type achtbaan waarin de passagiers staan.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
