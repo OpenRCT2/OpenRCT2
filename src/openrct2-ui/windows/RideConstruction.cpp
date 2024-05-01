@@ -978,9 +978,6 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_PREVIOUS_SECTION:
                     RideSelectPreviousSection();
                     break;
-                case WIDX_DEMOLISH:
-                    MouseUpDemolish();
-                    break;
                 case WIDX_ROTATE:
                     Rotate();
                     break;
@@ -1023,6 +1020,9 @@ static Widget _rideConstructionWidgets[] = {
                     gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
                     break;
                 }
+                case WIDX_DEMOLISH:
+                    MouseUpDemolish();
+                    break;
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackCurve = EnumValue(TrackCurve::Left);
@@ -1597,7 +1597,7 @@ static Widget _rideConstructionWidgets[] = {
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = (1u << WIDX_CONSTRUCT);
+            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
@@ -4545,7 +4545,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_DEMOLISH);
+        w->OnMouseDown(WIDX_DEMOLISH);
     }
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type)
