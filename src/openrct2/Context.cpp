@@ -902,22 +902,8 @@ namespace OpenRCT2
             return true;
         }
 
-        /**
-         * Launches the game, after command line arguments have been parsed and processed.
-         */
-        void Launch()
+        IScene* DetermineStartUpScene()
         {
-            if (!_versionCheckFuture.valid())
-            {
-                _versionCheckFuture = std::async(std::launch::async, [this] {
-                    _newVersionInfo = GetLatestVersion();
-                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
-                    {
-                        _hasNewVersionInfo = true;
-                    }
-                });
-            }
-
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
@@ -937,11 +923,15 @@ namespace OpenRCT2
             switch (gOpenRCT2StartupAction)
             {
                 case StartupAction::Intro:
-                    SetActiveScene(GetIntroScene());
-                    break;
+                {
+                    return GetIntroScene();
+                }
+
                 case StartupAction::Title:
-                    SetActiveScene(GetTitleScene());
-                    break;
+                {
+                    return GetTitleScene();
+                }
+
                 case StartupAction::Open:
                 {
                     // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
@@ -953,16 +943,14 @@ namespace OpenRCT2
                         auto data = DownloadPark(gOpenRCT2StartupActionPath);
                         if (data.empty())
                         {
-                            SetActiveScene(GetTitleScene());
-                            break;
+                            return GetTitleScene();
                         }
 
                         auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            SetActiveScene(GetTitleScene());
-                            break;
+                            return GetTitleScene();
                         }
 #endif
                     }
@@ -972,67 +960,93 @@ namespace OpenRCT2
                         {
                             if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
                             {
-                                break;
+                                return GetTitleScene();
                             }
                         }
                         catch (const std::exception& ex)
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             Console::Error::WriteLine("%s", ex.what());
-                            SetActiveScene(GetTitleScene());
-                            break;
+                            return GetTitleScene();
                         }
                     }
 
-                    SetActiveScene(GetGameScene());
-
-#ifndef DISABLE_NETWORK
-                    if (gNetworkStart == NETWORK_MODE_SERVER)
-                    {
-                        if (gNetworkStartPort == 0)
-                        {
-                            gNetworkStartPort = gConfigNetwork.DefaultPort;
-                        }
-
-                        if (gNetworkStartAddress.empty())
-                        {
-                            gNetworkStartAddress = gConfigNetwork.ListenAddress;
-                        }
-
-                        if (gCustomPassword.empty())
-                        {
-                            _network.SetPassword(gConfigNetwork.DefaultPassword.c_str());
-                        }
-                        else
-                        {
-                            _network.SetPassword(gCustomPassword);
-                        }
-                        _network.BeginServer(gNetworkStartPort, gNetworkStartAddress);
-                    }
-                    else
-#endif // DISABLE_NETWORK
-                    {
-                        GameLoadScripts();
-                        GameNotifyMapChanged();
-                    }
-                    break;
+                    // Successfully loaded a file
+                    return GetGameScene();
                 }
                 case StartupAction::Edit:
+                {
                     if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
                     {
                         Editor::Load();
+                        return GetGameScene();
                     }
                     else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        SetActiveScene(GetTitleScene());
+                        return GetTitleScene();
                     }
-                    break;
+                }
                 default:
-                    break;
+                {
+                    return GetTitleScene();
+                }
+            }
+        }
+
+        /**
+         * Launches the game, after command line arguments have been parsed and processed.
+         */
+        void Launch()
+        {
+            if (!_versionCheckFuture.valid())
+            {
+                _versionCheckFuture = std::async(std::launch::async, [this] {
+                    _newVersionInfo = GetLatestVersion();
+                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
+                    {
+                        _hasNewVersionInfo = true;
+                    }
+                });
+            }
+
+            auto* scene = DetermineStartUpScene();
+            SetActiveScene(scene);
+
+            if (scene == GetGameScene())
+            {
+#ifndef DISABLE_NETWORK
+                if (gNetworkStart == NETWORK_MODE_SERVER)
+                {
+                    if (gNetworkStartPort == 0)
+                    {
+                        gNetworkStartPort = gConfigNetwork.DefaultPort;
+                    }
+
+                    if (gNetworkStartAddress.empty())
+                    {
+                        gNetworkStartAddress = gConfigNetwork.ListenAddress;
+                    }
+
+                    if (gCustomPassword.empty())
+                    {
+                        _network.SetPassword(gConfigNetwork.DefaultPassword.c_str());
+                    }
+                    else
+                    {
+                        _network.SetPassword(gCustomPassword);
+                    }
+                    _network.BeginServer(gNetworkStartPort, gNetworkStartAddress);
+                }
+                else
+#endif // DISABLE_NETWORK
+                {
+                    GameLoadScripts();
+                    GameNotifyMapChanged();
+                }
             }
 
 #ifndef DISABLE_NETWORK
-            if (gNetworkStart == NETWORK_MODE_CLIENT)
+            else if (gNetworkStart == NETWORK_MODE_CLIENT)
             {
                 if (gNetworkStartPort == 0)
                 {
