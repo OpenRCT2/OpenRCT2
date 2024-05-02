@@ -221,7 +221,8 @@ struct RideLegacyBoosterSettings
 {
     uint8_t PoweredLiftAcceleration = 0; // PoweredLiftAcceleration value before unified-speed update
     uint8_t BoosterAcceleration = 0;     // BoosterAcceleration value before unified-speed update
-    int8_t BoosterSpeedFactor = 0;       // The factor to shift the raw booster speed with
+    int8_t BoosterSpeedFactor = 2; // Multiplier representing how much to multiply booster speed by, scaled to 2x the final
+                                   // multiplier.
 };
 
 struct RatingsModifier
@@ -563,7 +564,7 @@ constexpr RideTypeDescriptor DummyRTD =
     .OperatingSettings = { 0, 0, 1 },
     .TrackSpeedSettings = { 30, 30 },
     .BoosterSettings = {0, 0, 12},
-    .LegacyBoosterSettings = {0, 0, 0},
+    .LegacyBoosterSettings = {0, 0, 2},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = "(INVALID)",

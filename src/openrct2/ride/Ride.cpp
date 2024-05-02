@@ -5444,19 +5444,8 @@ bool RideHasRatings(const Ride& ride)
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
 {
-    int8_t shiftFactor = GetRideTypeDescriptor(rideType).LegacyBoosterSettings.BoosterSpeedFactor;
-    if (shiftFactor == 0)
-    {
-        return rawSpeed;
-    }
-    if (shiftFactor > 0)
-    {
-        return (rawSpeed << shiftFactor);
-    }
-
-    // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
-    int8_t shiftFactorAbs = std::abs(shiftFactor);
-    return (rawSpeed >> shiftFactorAbs);
+    // BoosterSpeedFactor has valid values of 1, 2, 4 representing a 1/2, 1, and 2 multiplier.
+    return rawSpeed * GetRideTypeDescriptor(rideType).LegacyBoosterSettings.BoosterSpeedFactor / 2;
 }
 
 void FixInvalidVehicleSpriteSizes()
