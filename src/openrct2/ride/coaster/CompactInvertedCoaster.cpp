@@ -20,14 +20,19 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t CompactInvertedDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr ImageIndex kCompactInvertedDiagFlatImages[2][NumOrthogonalDirections] = {
+    { 26781, 26782, 26783, 26784 },
+    { 26809, 26810, 26811, 26812 },
+};
+
+static constexpr ImageIndex kCompactInvertedDiagBrakeImages[NumOrthogonalDirections] = {
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 1,
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t CompactInvertedDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kCompactInvertedDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
     {
         SPR_G2_SLC_DIAG_BRAKES,
         SPR_G2_SLC_DIAG_BRAKES + 1,
@@ -6668,160 +6673,45 @@ static void CompactInvertedRCTrackRightEighthBankToOrthogonal(
     CompactInvertedRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
+inline void CompactInvertedRCTrackDiagFlatBase(
+    PaintSession& session, uint8_t trackSequence, const ImageIndex* images, uint8_t direction, int32_t height)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height + 29, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 38, session.SupportColours);
+    }
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+}
+
 /** rct2: 0x008AEB80 */
 static void CompactInvertedRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26812), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26784), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 1:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26809), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26781), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 2:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26811), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26783), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 3:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26810), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26782), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            MetalASupportsPaintSetupRotated(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, direction, 0, height + 38,
-                session.SupportColours);
-
-            break;
-    }
-
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    const auto* images = kCompactInvertedDiagFlatImages[trackElement.HasChain()];
+    CompactInvertedRCTrackDiagFlatBase(session, trackSequence, images, direction, height);
 }
 
 static void CompactInvertedRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 3, height + 29, direction, trackSequence, CompactInvertedDiagBrakeImages, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-
-    if (trackSequence == 3)
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 38, session.SupportColours);
-    }
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    CompactInvertedRCTrackDiagFlatBase(session, trackSequence, kCompactInvertedDiagBrakeImages, direction, height);
 }
 
 static void CompactInvertedRCTrackDiagBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 3, height + 29, direction, trackSequence, CompactInvertedDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
-
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-
-    if (trackSequence == 3)
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 38, session.SupportColours);
-    }
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    const auto* images = kCompactInvertedDiagBlockBrakeImages[trackElement.IsBrakeClosed()];
+    CompactInvertedRCTrackDiagFlatBase(session, trackSequence, images, direction, height);
 }
 
 /** rct2: 0x008AEBB0 */

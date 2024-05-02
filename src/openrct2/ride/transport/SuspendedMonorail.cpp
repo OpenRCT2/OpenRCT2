@@ -21,6 +21,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr ImageIndex kSuspendedMonorailDiagFlatImages[NumOrthogonalDirections] = { 25935, 25936, 25935, 25936 };
+
 /** rct2: 0x008636F4 */
 static void SuspendedMonorailTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -1433,60 +1435,18 @@ static void SuspendedMonorailTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(25936), { -16, -16, height + 32 },
-                        { { -16, -16, height + 32 }, { 32, 32, 3 } });
-                    break;
-            }
-
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(25935), { -16, -16, height + 32 },
-                        { { -16, -16, height + 32 }, { 32, 32, 3 } });
-                    break;
-            }
-
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(25935), { -16, -16, height + 32 },
-                        { { -16, -16, height + 32 }, { 32, 32, 3 } });
-                    break;
-            }
-
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(25936), { -16, -16, height + 32 },
-                        { { -16, -16, height + 32 }, { 32, 32, 3 } });
-                    break;
-            }
-
-            MetalASupportsPaintSetupRotated(
-                session, MetalSupportType::Boxed, MetalSupportPlace::LeftCorner, direction, 0, height + 42,
-                session.SupportColours);
-
-            break;
-    }
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height + 32, direction, trackSequence, kSuspendedMonorailDiagFlatImages, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+
+    if (trackSequence == 3)
+
+        MetalASupportsPaintSetupRotated(
+            session, MetalSupportType::Boxed, MetalSupportPlace::LeftCorner, direction, 0, height + 42, session.SupportColours);
+
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 

@@ -20,6 +20,11 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr ImageIndex kSuspendedSwingingRCDiagFlatImages[2][NumOrthogonalDirections] = {
+    { 26183, 26184, 26185, 26186 },
+    { 26211, 26212, 26213, 26214 },
+};
+
 /** rct2: 0x008A8958 */
 static void SuspendedSwingingRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -3208,116 +3213,17 @@ static void SuspendedSwingingRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26214), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26186), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 1:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26211), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26183), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 2:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26213), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26185), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 3:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26212), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26184), { -16, -16, height + 29 },
-                            { { -16, -16, height + 29 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            MetalASupportsPaintSetupRotated(
-                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, direction, 0, height + 44,
-                session.SupportColours);
-
-            break;
-    }
+    const auto* images = kSuspendedSwingingRCDiagFlatImages[trackElement.HasChain()];
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height + 29, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+
+    if (trackSequence == 3)
+        MetalASupportsPaintSetupRotated(
+            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, direction, 0, height + 44, session.SupportColours);
+
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 

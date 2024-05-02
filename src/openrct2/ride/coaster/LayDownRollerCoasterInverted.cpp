@@ -19,14 +19,19 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
-static constexpr const uint32_t LaydownDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr ImageIndex kLaydownDiagFlatImages[2][NumOrthogonalDirections] = {
+    { 26781, 26782, 26783, 26784 },
+    { 26809, 26810, 26811, 26812 },
+};
+
+static constexpr ImageIndex kLaydownDiagBrakeImages[NumOrthogonalDirections] = {
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 2,
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 2,
 };
 
-static constexpr const uint32_t LaydownDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kLaydownDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
     {
         SPR_G2_SLC_DIAG_BRAKES,
         SPR_G2_SLC_DIAG_BRAKES + 2,
@@ -3875,116 +3880,25 @@ static void LayDownRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26812), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26784), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 1:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26809), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26781), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 2:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26811), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26783), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            break;
-        case 3:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26810), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26782), { -16, -16, height + 24 },
-                            { { -16, -16, height + 22 }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-
-            MetalASupportsPaintSetupRotated(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, direction, 0, height + 33,
-                session.SupportColours);
-
-            break;
-    }
+    constexpr CoordsXYZ boundsOffsets[NumOrthogonalDirections] = {
+        { -16, -16, -2 },
+        { -16, -16, -2 },
+        { -16, -16, -2 },
+        { -16, -16, -2 },
+    };
+    const auto* images = kLaydownDiagFlatImages[trackElement.HasChain()];
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height + 24, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths,
+        boundsOffsets);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+
+    if (trackSequence == 3)
+        MetalASupportsPaintSetupRotated(
+            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, direction, 0, height + 33,
+            session.SupportColours);
+
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -3995,7 +3909,7 @@ static void LayDownRCTrackDiagBrakes(
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
 
     TrackPaintUtilDiagTilesPaint(
-        session, -3, height + 24, direction, trackSequence, LaydownDiagBrakeImages, defaultDiagTileOffsets,
+        session, -3, height + 24, direction, trackSequence, kLaydownDiagBrakeImages, defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -4015,7 +3929,7 @@ static void LayDownRCTrackDiagBlockBrakes(
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
 
     TrackPaintUtilDiagTilesPaint(
-        session, -3, height + 24, direction, trackSequence, LaydownDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        session, -3, height + 24, direction, trackSequence, kLaydownDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
