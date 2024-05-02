@@ -11,5 +11,5 @@
 
 enum
 {
-    SUPPORTS_SLOPE_5 = 1 << 5
+    SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY = 1 << 5
 };

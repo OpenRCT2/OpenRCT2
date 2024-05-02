@@ -426,7 +426,7 @@ bool WoodenASupportsPaintSetup(
 
     // Draw base support (usually shaped to the slope)
     auto slope = session.Support.slope;
-    if (slope & SUPPORTS_SLOPE_5)
+    if (slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY)
     {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
@@ -558,7 +558,7 @@ bool WoodenBSupportsPaintSetup(
 
     // Draw base support (usually shaped to the slope)
     auto slope = session.Support.slope;
-    if (slope & SUPPORTS_SLOPE_5)
+    if (slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY)
     {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
@@ -689,7 +689,7 @@ bool PathBoxSupportsPaintSetup(
 
     int16_t heightSteps = supportLength / 16;
 
-    if (session.Support.slope & 0x20)
+    if (session.Support.slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY)
     {
         // save dx2
         PaintAddImageAsParent(

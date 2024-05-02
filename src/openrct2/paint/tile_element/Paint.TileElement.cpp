@@ -30,7 +30,7 @@
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 #include "../VirtualFloor.h"
-#include "../support/WoodenSupports.h"
+#include "../support/Generic.h"
 #include "Paint.Surface.h"
 #include "Segment.h"
 
@@ -364,7 +364,7 @@ void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
         return;
     }
 
-    PaintUtilForceSetGeneralSupportHeight(session, height, 0x20);
+    PaintUtilForceSetGeneralSupportHeight(session, height, SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY);
 }
 
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)

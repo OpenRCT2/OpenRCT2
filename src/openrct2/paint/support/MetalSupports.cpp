@@ -295,7 +295,7 @@ bool MetalASupportsPaintSetup(
         segment = newSegment;
     }
     int16_t si = height;
-    if (supportSegments[segment].slope & SUPPORTS_SLOPE_5 || height - supportSegments[segment].height < 6
+    if (supportSegments[segment].slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY || height - supportSegments[segment].height < 6
         || _97B15C[supportType].base_id == 0)
     {
         height = supportSegments[segment].height;
@@ -370,7 +370,7 @@ bool MetalASupportsPaintSetup(
     }
 
     supportSegments[segment].height = unk9E3294;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY;
 
     height = originalHeight;
     segment = originalSegment;
@@ -506,7 +506,7 @@ bool MetalBSupportsPaintSetup(
 
     int32_t si = baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20) || (baseHeight - supportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY) || (baseHeight - supportSegments[segment].height < 6)
         || (_97B15C[supportType].base_id == 0))
     {
         baseHeight = supportSegments[segment].height;
@@ -576,7 +576,7 @@ bool MetalBSupportsPaintSetup(
     }
 
     supportSegments[segment].height = _9E3294;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY;
 
     if (special != 0)
     {
@@ -674,7 +674,7 @@ bool PathPoleSupportsPaintSetup(
 
     uint16_t baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20) || (height - supportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY) || (height - supportSegments[segment].height < 6)
         || !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
     {
         baseHeight = supportSegments[segment].height;
@@ -762,7 +762,7 @@ bool PathPoleSupportsPaintSetup(
 
     // Loc6A34D8
     supportSegments[segment].height = 0xFFFF;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY;
 
     if (isSloped)
     {
