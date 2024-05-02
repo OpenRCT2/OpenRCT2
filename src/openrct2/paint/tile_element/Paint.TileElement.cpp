@@ -357,14 +357,14 @@ void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
     session.VerticalTunnelHeight = height / 16;
 }
 
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
 {
     if (session.Support.height >= height)
     {
         return;
     }
 
-    PaintUtilForceSetGeneralSupportHeight(session, height, slope);
+    PaintUtilForceSetGeneralSupportHeight(session, height, 0x20);
 }
 
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)

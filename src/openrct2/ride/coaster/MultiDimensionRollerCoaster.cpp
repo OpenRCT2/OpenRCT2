@@ -136,7 +136,7 @@ static void MultiDimensionRCTrackFlat(
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -165,7 +165,7 @@ static void MultiDimensionRCTrackFlat(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -224,7 +224,7 @@ static void MultiDimensionRCTrackStation(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x00792D98 */
@@ -305,7 +305,7 @@ static void MultiDimensionRCTrack25DegUp(
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
     else
     {
@@ -370,7 +370,7 @@ static void MultiDimensionRCTrack25DegUp(
         {
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 }
 
@@ -418,7 +418,7 @@ static void MultiDimensionRCTrack60DegUp(
             PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
     else
     {
@@ -455,7 +455,7 @@ static void MultiDimensionRCTrack60DegUp(
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
 }
 
@@ -537,7 +537,7 @@ static void MultiDimensionRCTrackFlatTo25DegUp(
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
     else
     {
@@ -602,7 +602,7 @@ static void MultiDimensionRCTrackFlatTo25DegUp(
         {
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 }
 
@@ -656,7 +656,7 @@ static void MultiDimensionRCTrack25DegUpTo60DegUp(
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
     else
     {
@@ -699,7 +699,7 @@ static void MultiDimensionRCTrack25DegUpTo60DegUp(
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 }
 
@@ -753,7 +753,7 @@ static void MultiDimensionRCTrack60DegUpTo25DegUp(
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
     else
     {
@@ -824,7 +824,7 @@ static void MultiDimensionRCTrack60DegUpTo25DegUp(
         {
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 }
 
@@ -906,7 +906,7 @@ static void MultiDimensionRCTrack25DegUpToFlat(
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
     else
     {
@@ -971,7 +971,7 @@ static void MultiDimensionRCTrack25DegUpToFlat(
         {
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 }
 
@@ -1063,10 +1063,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1100,7 +1100,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -1134,10 +1134,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -1171,7 +1171,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -1216,7 +1216,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1265,10 +1265,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1302,7 +1302,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -1336,10 +1336,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -1373,7 +1373,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -1421,7 +1421,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1479,7 +1479,7 @@ static void MultiDimensionRCTrackFlatToLeftBank(
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -1522,7 +1522,7 @@ static void MultiDimensionRCTrackFlatToLeftBank(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -1569,7 +1569,7 @@ static void MultiDimensionRCTrackFlatToRightBank(
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -1612,7 +1612,7 @@ static void MultiDimensionRCTrackFlatToRightBank(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -1659,7 +1659,7 @@ static void MultiDimensionRCTrackLeftBankToFlat(
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -1702,7 +1702,7 @@ static void MultiDimensionRCTrackLeftBankToFlat(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -1749,7 +1749,7 @@ static void MultiDimensionRCTrackRightBankToFlat(
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -1792,7 +1792,7 @@ static void MultiDimensionRCTrackRightBankToFlat(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -1839,10 +1839,10 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1876,7 +1876,7 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -1910,10 +1910,10 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -1947,7 +1947,7 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -1995,7 +1995,7 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -2044,10 +2044,10 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -2079,7 +2079,7 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -2112,10 +2112,10 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -2147,7 +2147,7 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -2195,7 +2195,7 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -2260,7 +2260,7 @@ static void MultiDimensionRCTrackLeftBankTo25DegUp(
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
     else
     {
@@ -2331,7 +2331,7 @@ static void MultiDimensionRCTrackLeftBankTo25DegUp(
         {
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 }
 
@@ -2385,7 +2385,7 @@ static void MultiDimensionRCTrackRightBankTo25DegUp(
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
     else
     {
@@ -2456,7 +2456,7 @@ static void MultiDimensionRCTrackRightBankTo25DegUp(
         {
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 }
 
@@ -2510,7 +2510,7 @@ static void MultiDimensionRCTrack25DegUpToLeftBank(
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
     else
     {
@@ -2581,7 +2581,7 @@ static void MultiDimensionRCTrack25DegUpToLeftBank(
         {
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 }
 
@@ -2635,7 +2635,7 @@ static void MultiDimensionRCTrack25DegUpToRightBank(
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
     else
     {
@@ -2706,7 +2706,7 @@ static void MultiDimensionRCTrack25DegUpToRightBank(
         {
             PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 }
 
@@ -2779,7 +2779,7 @@ static void MultiDimensionRCTrackLeftBank(
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -2822,7 +2822,7 @@ static void MultiDimensionRCTrackLeftBank(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -2874,7 +2874,7 @@ static void MultiDimensionRCTrackSBendLeft(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -2905,7 +2905,7 @@ static void MultiDimensionRCTrackSBendLeft(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -2936,7 +2936,7 @@ static void MultiDimensionRCTrackSBendLeft(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -2974,7 +2974,7 @@ static void MultiDimensionRCTrackSBendLeft(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -3023,7 +3023,7 @@ static void MultiDimensionRCTrackSBendLeft(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -3072,7 +3072,7 @@ static void MultiDimensionRCTrackSBendLeft(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -3121,7 +3121,7 @@ static void MultiDimensionRCTrackSBendLeft(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -3169,7 +3169,7 @@ static void MultiDimensionRCTrackSBendLeft(
                         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -3215,7 +3215,7 @@ static void MultiDimensionRCTrackSBendRight(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -3246,7 +3246,7 @@ static void MultiDimensionRCTrackSBendRight(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -3277,7 +3277,7 @@ static void MultiDimensionRCTrackSBendRight(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -3315,7 +3315,7 @@ static void MultiDimensionRCTrackSBendRight(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -3364,7 +3364,7 @@ static void MultiDimensionRCTrackSBendRight(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -3413,7 +3413,7 @@ static void MultiDimensionRCTrackSBendRight(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -3462,7 +3462,7 @@ static void MultiDimensionRCTrackSBendRight(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -3510,7 +3510,7 @@ static void MultiDimensionRCTrackSBendRight(
                         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -3556,10 +3556,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -3593,7 +3593,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -3638,7 +3638,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -3687,10 +3687,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -3724,7 +3724,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -3772,7 +3772,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -3830,10 +3830,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -3867,7 +3867,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -3915,7 +3915,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -3964,10 +3964,10 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -4001,7 +4001,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -4049,7 +4049,7 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -4105,10 +4105,10 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -4142,7 +4142,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -4190,7 +4190,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -4231,10 +4231,10 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -4268,7 +4268,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -4304,7 +4304,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -4350,10 +4350,10 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -4387,7 +4387,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -4428,7 +4428,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -4476,10 +4476,10 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -4513,7 +4513,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -4549,7 +4549,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -4623,10 +4623,10 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -4660,7 +4660,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -4694,10 +4694,10 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
             switch (direction)
@@ -4731,7 +4731,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -4779,7 +4779,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -4820,10 +4820,10 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 9:
             switch (direction)
@@ -4857,7 +4857,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 10:
             switch (direction)
@@ -4890,10 +4890,10 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 12:
             switch (direction)
@@ -4927,7 +4927,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 13:
             switch (direction)
@@ -4963,7 +4963,7 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -5009,10 +5009,10 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -5046,7 +5046,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -5079,10 +5079,10 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
             switch (direction)
@@ -5116,7 +5116,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -5157,7 +5157,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -5205,10 +5205,10 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 9:
             switch (direction)
@@ -5242,7 +5242,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 10:
             switch (direction)
@@ -5276,10 +5276,10 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 12:
             switch (direction)
@@ -5313,7 +5313,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 13:
             switch (direction)
@@ -5349,7 +5349,7 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -5411,7 +5411,7 @@ static void MultiDimensionRCTrackBrakes(
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -5440,7 +5440,7 @@ static void MultiDimensionRCTrackBrakes(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -5479,7 +5479,7 @@ static void MultiDimensionRCTrackOnRidePhoto(
         TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
     else
     {
@@ -5541,7 +5541,7 @@ static void MultiDimensionRCTrackOnRidePhoto(
         TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 64);
     }
 }
 
@@ -5581,7 +5581,7 @@ static void MultiDimensionRCTrack90DegUp(
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 break;
@@ -5618,7 +5618,7 @@ static void MultiDimensionRCTrack90DegUp(
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 break;
@@ -5674,7 +5674,7 @@ static void MultiDimensionRCTrack60DegUpTo90DegUp(
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 break;
@@ -5715,7 +5715,7 @@ static void MultiDimensionRCTrack60DegUpTo90DegUp(
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 break;
@@ -5772,7 +5772,7 @@ static void MultiDimensionRCTrack90DegUpTo60DegUp(
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 80);
     }
     else
     {
@@ -5810,7 +5810,7 @@ static void MultiDimensionRCTrack90DegUpTo60DegUp(
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 96);
     }
 }
 
@@ -5853,7 +5853,7 @@ static void MultiDimensionRCTrack60DegDownTo90DegDown(
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 1:
                 break;
@@ -5893,7 +5893,7 @@ static void MultiDimensionRCTrack60DegDownTo90DegDown(
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 break;
@@ -5941,7 +5941,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -5968,7 +5968,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6002,7 +6002,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6013,7 +6013,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6052,7 +6052,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6095,7 +6095,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -6129,7 +6129,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6163,7 +6163,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6174,7 +6174,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6233,7 +6233,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6279,7 +6279,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -6306,7 +6306,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6340,7 +6340,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6351,7 +6351,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6390,7 +6390,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6433,7 +6433,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -6467,7 +6467,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6501,7 +6501,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6512,7 +6512,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6571,7 +6571,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6635,7 +6635,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -6662,7 +6662,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6696,7 +6696,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6707,7 +6707,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6746,7 +6746,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6795,7 +6795,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -6829,7 +6829,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6863,7 +6863,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6874,7 +6874,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6934,7 +6934,7 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6980,7 +6980,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -7007,7 +7007,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -7041,7 +7041,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -7052,7 +7052,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -7091,7 +7091,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -7140,7 +7140,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -7174,7 +7174,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -7208,7 +7208,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -7219,7 +7219,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -7278,7 +7278,7 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -7342,7 +7342,7 @@ static void MultiDimensionRCTrackDiagFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -7375,7 +7375,7 @@ static void MultiDimensionRCTrackDiagFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -7408,7 +7408,7 @@ static void MultiDimensionRCTrackDiagFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -7477,7 +7477,7 @@ static void MultiDimensionRCTrackDiagFlat(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -7516,7 +7516,7 @@ static void MultiDimensionRCTrackDiagFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -7549,7 +7549,7 @@ static void MultiDimensionRCTrackDiagFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -7582,7 +7582,7 @@ static void MultiDimensionRCTrackDiagFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -7640,7 +7640,7 @@ static void MultiDimensionRCTrackDiagFlat(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -7658,7 +7658,7 @@ static void MultiDimensionRCTrackDiagBrakes(
             defaultDiagBoundLengths, nullptr);
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
 
         if (trackSequence == 3)
         {
@@ -7680,7 +7680,7 @@ static void MultiDimensionRCTrackDiagBrakes(
         }
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -7696,7 +7696,7 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
             defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
 
         if (trackSequence == 3)
         {
@@ -7718,7 +7718,7 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
         }
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -7762,7 +7762,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -7795,7 +7795,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -7828,7 +7828,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -7897,7 +7897,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -7936,7 +7936,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -7969,7 +7969,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -8002,7 +8002,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -8060,7 +8060,7 @@ static void MultiDimensionRCTrackDiag25DegUp(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -8092,7 +8092,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 switch (direction)
@@ -8111,7 +8111,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 switch (direction)
@@ -8130,7 +8130,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 switch (direction)
@@ -8167,7 +8167,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -8192,7 +8192,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 switch (direction)
@@ -8211,7 +8211,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 switch (direction)
@@ -8230,7 +8230,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 switch (direction)
@@ -8274,7 +8274,7 @@ static void MultiDimensionRCTrackDiag60DegUp(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -8320,7 +8320,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -8353,7 +8353,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -8386,7 +8386,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -8455,7 +8455,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -8494,7 +8494,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -8527,7 +8527,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -8560,7 +8560,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -8618,7 +8618,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -8650,7 +8650,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -8669,7 +8669,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -8688,7 +8688,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -8725,7 +8725,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8750,7 +8750,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -8769,7 +8769,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -8788,7 +8788,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -8832,7 +8832,7 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8864,7 +8864,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -8883,7 +8883,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -8902,7 +8902,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -8939,7 +8939,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8964,7 +8964,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -8983,7 +8983,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -9002,7 +9002,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -9046,7 +9046,7 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -9092,7 +9092,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -9125,7 +9125,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -9158,7 +9158,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -9227,7 +9227,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -9266,7 +9266,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -9299,7 +9299,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -9332,7 +9332,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -9390,7 +9390,7 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -9436,7 +9436,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -9469,7 +9469,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -9502,7 +9502,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -9571,7 +9571,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -9596,7 +9596,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -9615,7 +9615,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -9634,7 +9634,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -9678,7 +9678,7 @@ static void MultiDimensionRCTrackDiag25DegDown(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -9710,7 +9710,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 switch (direction)
@@ -9729,7 +9729,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 switch (direction)
@@ -9748,7 +9748,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 switch (direction)
@@ -9785,7 +9785,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -9810,7 +9810,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 switch (direction)
@@ -9829,7 +9829,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 switch (direction)
@@ -9848,7 +9848,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 switch (direction)
@@ -9892,7 +9892,7 @@ static void MultiDimensionRCTrackDiag60DegDown(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -10094,7 +10094,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -10113,7 +10113,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -10132,7 +10132,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -10179,7 +10179,7 @@ static void MultiDimensionRCTrackDiagFlatTo25DegDown(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x007931C8 */
@@ -10208,7 +10208,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -10227,7 +10227,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -10246,7 +10246,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -10283,7 +10283,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -10308,7 +10308,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -10327,7 +10327,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -10346,7 +10346,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -10390,7 +10390,7 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -10422,7 +10422,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -10441,7 +10441,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -10460,7 +10460,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -10497,7 +10497,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -10522,7 +10522,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -10541,7 +10541,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -10560,7 +10560,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -10604,7 +10604,7 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -10650,7 +10650,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -10683,7 +10683,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -10716,7 +10716,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -10785,7 +10785,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -10810,7 +10810,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -10829,7 +10829,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -10848,7 +10848,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -10892,7 +10892,7 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -10924,7 +10924,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -10946,7 +10946,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -10965,7 +10965,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11002,7 +11002,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11027,7 +11027,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11046,7 +11046,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -11065,7 +11065,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11109,7 +11109,7 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11141,7 +11141,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11160,7 +11160,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -11182,7 +11182,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11219,7 +11219,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11244,7 +11244,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11263,7 +11263,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -11282,7 +11282,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11326,7 +11326,7 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11358,7 +11358,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11380,7 +11380,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -11399,7 +11399,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11436,7 +11436,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11461,7 +11461,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11480,7 +11480,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -11499,7 +11499,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11543,7 +11543,7 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11575,7 +11575,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11594,7 +11594,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -11616,7 +11616,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11653,7 +11653,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11678,7 +11678,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11697,7 +11697,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -11716,7 +11716,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -11760,7 +11760,7 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11792,7 +11792,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -11814,7 +11814,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -11833,7 +11833,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -11870,7 +11870,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11895,7 +11895,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -11914,7 +11914,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -11933,7 +11933,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -11977,7 +11977,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12009,7 +12009,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -12028,7 +12028,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -12050,7 +12050,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -12087,7 +12087,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12112,7 +12112,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -12131,7 +12131,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -12150,7 +12150,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -12194,7 +12194,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12226,7 +12226,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -12248,7 +12248,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -12267,7 +12267,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -12304,7 +12304,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -12329,7 +12329,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -12348,7 +12348,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -12367,7 +12367,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -12411,7 +12411,7 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -12443,7 +12443,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -12462,7 +12462,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -12484,7 +12484,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -12521,7 +12521,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -12546,7 +12546,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -12565,7 +12565,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -12584,7 +12584,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -12628,7 +12628,7 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -12841,7 +12841,7 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegDown(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x007932A8 */
@@ -13051,7 +13051,7 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegDown(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x007932B8 */
@@ -13080,7 +13080,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -13102,7 +13102,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -13121,7 +13121,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13158,7 +13158,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -13183,7 +13183,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -13202,7 +13202,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -13221,7 +13221,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13265,7 +13265,7 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -13297,7 +13297,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -13316,7 +13316,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -13338,7 +13338,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13375,7 +13375,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -13400,7 +13400,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -13419,7 +13419,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -13438,7 +13438,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13482,7 +13482,7 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -13514,7 +13514,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -13533,7 +13533,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -13552,7 +13552,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -13589,7 +13589,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -13614,7 +13614,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -13633,7 +13633,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -13652,7 +13652,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -13696,7 +13696,7 @@ static void MultiDimensionRCTrackDiagLeftBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -13728,7 +13728,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -13747,7 +13747,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -13766,7 +13766,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -13803,7 +13803,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -13828,7 +13828,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -13847,7 +13847,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -13866,7 +13866,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -13910,7 +13910,7 @@ static void MultiDimensionRCTrackDiagRightBank(
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -13957,7 +13957,7 @@ static void MultiDimensionRCTrackLeftFlyerTwistUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -13988,7 +13988,7 @@ static void MultiDimensionRCTrackLeftFlyerTwistUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -14032,7 +14032,7 @@ static void MultiDimensionRCTrackLeftFlyerTwistUp(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -14078,7 +14078,7 @@ static void MultiDimensionRCTrackRightFlyerTwistUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -14108,7 +14108,7 @@ static void MultiDimensionRCTrackRightFlyerTwistUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -14151,7 +14151,7 @@ static void MultiDimensionRCTrackRightFlyerTwistUp(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -14200,7 +14200,7 @@ static void MultiDimensionRCTrackLeftFlyerTwistDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -14231,7 +14231,7 @@ static void MultiDimensionRCTrackLeftFlyerTwistDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -14272,7 +14272,7 @@ static void MultiDimensionRCTrackLeftFlyerTwistDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -14320,7 +14320,7 @@ static void MultiDimensionRCTrackRightFlyerTwistDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -14350,7 +14350,7 @@ static void MultiDimensionRCTrackRightFlyerTwistDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -14391,7 +14391,7 @@ static void MultiDimensionRCTrackRightFlyerTwistDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -14439,7 +14439,7 @@ static void MultiDimensionRCTrackMultidimInvertedFlatTo90DegQuarterLoopDown(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
                 switch (direction)
@@ -14471,7 +14471,7 @@ static void MultiDimensionRCTrackMultidimInvertedFlatTo90DegQuarterLoopDown(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 2:
                 switch (direction)
@@ -14503,7 +14503,7 @@ static void MultiDimensionRCTrackMultidimInvertedFlatTo90DegQuarterLoopDown(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 break;
@@ -14547,7 +14547,7 @@ static void MultiDimensionRCTrackMultidimInvertedFlatTo90DegQuarterLoopDown(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -14579,7 +14579,7 @@ static void MultiDimensionRCTrackMultidimInvertedFlatTo90DegQuarterLoopDown(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 switch (direction)
@@ -14611,7 +14611,7 @@ static void MultiDimensionRCTrackMultidimInvertedFlatTo90DegQuarterLoopDown(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 3:
                 break;
@@ -14642,7 +14642,7 @@ static void MultiDimensionRCTrackBlockBrakes(
             session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
     else
     {
@@ -14666,7 +14666,7 @@ static void MultiDimensionRCTrackBlockBrakes(
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 }
 
@@ -14709,7 +14709,7 @@ static void MultiDimensionRCTrackMultidim90DegUpToInvertedFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -14741,7 +14741,7 @@ static void MultiDimensionRCTrackMultidim90DegUpToInvertedFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 switch (direction)
@@ -14777,7 +14777,7 @@ static void MultiDimensionRCTrackMultidim90DegUpToInvertedFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -14815,7 +14815,7 @@ static void MultiDimensionRCTrackMultidim90DegUpToInvertedFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -14847,7 +14847,7 @@ static void MultiDimensionRCTrackMultidim90DegUpToInvertedFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -14883,7 +14883,7 @@ static void MultiDimensionRCTrackMultidim90DegUpToInvertedFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -14932,7 +14932,7 @@ static void MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
                 switch (direction)
@@ -14964,7 +14964,7 @@ static void MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 2:
                 switch (direction)
@@ -14996,7 +14996,7 @@ static void MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 break;
@@ -15040,7 +15040,7 @@ static void MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -15072,7 +15072,7 @@ static void MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 switch (direction)
@@ -15104,7 +15104,7 @@ static void MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 3:
                 break;
@@ -15151,7 +15151,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -15183,7 +15183,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 switch (direction)
@@ -15219,7 +15219,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -15257,7 +15257,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -15289,7 +15289,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -15325,7 +15325,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }

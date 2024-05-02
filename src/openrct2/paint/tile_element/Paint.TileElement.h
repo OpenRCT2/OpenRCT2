@@ -70,7 +70,7 @@ void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t typ
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type);
 void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
 
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height);
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope);
 uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);

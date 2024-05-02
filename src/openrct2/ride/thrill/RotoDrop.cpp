@@ -138,7 +138,7 @@ static void PaintRotoDropBase(
         PaintUtilSetVerticalTunnel(session, height + 96);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
-        PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 96);
 
         return;
     }
@@ -182,7 +182,7 @@ static void PaintRotoDropBase(
     }
     PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~blockedSegments, height + 2, 0x20);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008861A4 */
@@ -216,7 +216,7 @@ static void PaintRotoDropTowerSection(
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     PaintUtilSetVerticalTunnel(session, height + 32);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /**

@@ -94,7 +94,7 @@ static void SubmarineRidePaintTrackStation(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void SubmarineRidePaintTrackFlat(
@@ -129,7 +129,7 @@ static void SubmarineRidePaintTrackFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
@@ -179,7 +179,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static constexpr uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = {
@@ -211,7 +211,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn1Tile(
                 PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomLeftSide),
             direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void SubmarineRidePaintTrackRightQuarterTurn1Tile(

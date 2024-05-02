@@ -910,7 +910,7 @@ static void PathPaintSegmentSupportHeight(
         height += 16;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height);
 
     if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
     {
