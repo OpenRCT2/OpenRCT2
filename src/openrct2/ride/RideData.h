@@ -407,6 +407,7 @@ enum ride_type_flags : uint64_t
                                                                      // coaster
     RIDE_TYPE_FLAG_NO_VEHICLES = (1uLL << 13),                       // used only by maze, spiral slide and shops
     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = (1uLL << 14),
+    RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT = (1uLL << 15),
     RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1uLL << 16), // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
     RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1uLL << 17),
