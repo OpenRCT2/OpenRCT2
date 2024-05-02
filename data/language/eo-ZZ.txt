@@ -98,6 +98,7 @@ STR_0093    :Hibrida Onda Fervojo
 STR_0094    :Onda Fervojo kun Unuopa Relo
 STR_0095    :Alpa Onda Fervojo
 STR_0096    :Klasika Ligna Onda Fervojo
+STR_0097    :Klasika Staranta Onda Fervojo
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -181,6 +182,7 @@ STR_0603    :Ligna onda fervojo kun ŝtala trako, kiu permesas krutajn malleviĝ
 STR_0604    :Rajdantoj rajdas anservice sur mallarĝa monorela trako, dum ili vetkuras tra krutaj inversigoj kaj ŝanĝoj de direkto.
 STR_0605    :Rajdantoj toboganas malsupren serpentuman ŝtalan trakon, bremsante por regi ilian rapidecon.
 STR_0606    :Maljuna-stila ligna onda fervojo kun rapida kaj malglata rajdo, kun sufiĉe da ‘en-aeraj periodoj’, kelka flanka graviteco, kaj desegnita sentiĝi ‘nedirektebla’
+STR_0607    :Intensa, malnovstila ŝtala onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -3695,6 +3697,7 @@ STR_6623    :Tajpu la komandon ‘help’ por montri liston de disponeblaj koman
 STR_6624    :Inspektilo de Bloko: Ordigi elementojn
 STR_6625    :Nevalida koloro
 STR_6626    :Animacio movas malantaŭen
+STR_6627    :Rapideco de trako estas tro alta!
 
 #############
 # Scenarios #
