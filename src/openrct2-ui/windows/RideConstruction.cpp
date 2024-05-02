@@ -1696,7 +1696,7 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     // Enable helix
                     widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-                    if (currentRide->type != RIDE_TYPE_SPLASH_BOATS && currentRide->type != RIDE_TYPE_RIVER_RAFTS)
+                    if (IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
                         widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
                 }
             }
