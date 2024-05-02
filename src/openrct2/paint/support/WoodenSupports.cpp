@@ -12,10 +12,10 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
-#include "Generic.h"
 
 constexpr auto kNumWoodenSupportTypes = 2;
 constexpr auto kNumWoodenSupportSubTypes = 6;
@@ -426,12 +426,12 @@ bool WoodenASupportsPaintSetup(
 
     // Draw base support (usually shaped to the slope)
     auto slope = session.Support.slope;
-    if (slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY)
+    if (slope & kTileSlopeAboveTrackOrScenery)
     {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
     }
-    else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+    else if (slope & kTileSlopeDiagonalFlag)
     {
         // Steep diagonal (place the correct shaped support for the slope)
         heightSteps -= 2;
@@ -447,7 +447,7 @@ bool WoodenASupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
 
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             PaintAddImageAsParent(
@@ -459,7 +459,7 @@ bool WoodenASupportsPaintSetup(
 
         baseHeight += 32;
     }
-    else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+    else if ((slope & kTileSlopeRaisedCornersMask) != 0)
     {
         // 1 to 3 quarters up
         heightSteps--;
@@ -475,7 +475,7 @@ bool WoodenASupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             hasSupports = true;
         }
@@ -558,12 +558,12 @@ bool WoodenBSupportsPaintSetup(
 
     // Draw base support (usually shaped to the slope)
     auto slope = session.Support.slope;
-    if (slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY)
+    if (slope & kTileSlopeAboveTrackOrScenery)
     {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
     }
-    else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+    else if (slope & kTileSlopeDiagonalFlag)
     {
         // Steep diagonal (place the correct shaped support for the slope)
         heightSteps -= 2;
@@ -579,7 +579,7 @@ bool WoodenBSupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
 
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             PaintAddImageAsParent(
@@ -591,7 +591,7 @@ bool WoodenBSupportsPaintSetup(
 
         baseHeight += 32;
     }
-    else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+    else if ((slope & kTileSlopeRaisedCornersMask) != 0)
     {
         // 1 to 3 quarters up
         heightSteps--;
@@ -607,7 +607,7 @@ bool WoodenBSupportsPaintSetup(
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileElementSurfaceSlopeMask]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 3 } });
             hasSupports = true;
         }
@@ -689,7 +689,7 @@ bool PathBoxSupportsPaintSetup(
 
     int16_t heightSteps = supportLength / 16;
 
-    if (session.Support.slope & SLOPE_FLAG_ABOVE_TRACK_OR_SCENERY)
+    if (session.Support.slope & kTileSlopeAboveTrackOrScenery)
     {
         // save dx2
         PaintAddImageAsParent(
@@ -704,7 +704,7 @@ bool PathBoxSupportsPaintSetup(
             return false;
         }
 
-        uint32_t imageId = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileElementSurfaceSlopeMask]
+        uint32_t imageId = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileSlopeMask]
             + pathPaintInfo.BridgeImageId;
 
         PaintAddImageAsParent(
@@ -725,7 +725,7 @@ bool PathBoxSupportsPaintSetup(
             return false;
         }
 
-        uint32_t ebx = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileElementSurfaceSlopeMask]
+        uint32_t ebx = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileSlopeMask]
             + pathPaintInfo.BridgeImageId;
 
         PaintAddImageAsParent(

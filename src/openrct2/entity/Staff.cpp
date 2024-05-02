@@ -43,6 +43,7 @@
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/Slope.h"
 #include "PatrolArea.h"
 #include "Peep.h"
 
@@ -412,7 +413,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
             if (surfaceElement->GetSlope() != PathSlopeToLandSlope[GetNextDirection()])
                 return INVALID_DIRECTION;
         }
-        else if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+        else if (surfaceElement->GetSlope() != kTileSlopeFlat)
             return INVALID_DIRECTION;
     }
 

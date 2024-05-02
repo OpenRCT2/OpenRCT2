@@ -20,6 +20,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/Slope.h"
 #include "RideSetSettingAction.h"
 
 using namespace OpenRCT2;
@@ -340,9 +341,9 @@ GameActions::Result TrackPlaceAction::Query() const
             waterHeight -= LAND_HEIGHT_STEP;
             if (waterHeight == surfaceElement->GetBaseZ())
             {
-                uint8_t slope = surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
-                if (slope == TILE_ELEMENT_SLOPE_W_CORNER_DN || slope == TILE_ELEMENT_SLOPE_S_CORNER_DN
-                    || slope == TILE_ELEMENT_SLOPE_E_CORNER_DN || slope == TILE_ELEMENT_SLOPE_N_CORNER_DN)
+                uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
+                if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
+                    || slope == kTileSlopeNCornerDown)
                 {
                     return GameActions::Result(
                         GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,

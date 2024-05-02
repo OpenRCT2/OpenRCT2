@@ -23,6 +23,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -170,7 +171,7 @@ GameActions::Result WallPlaceAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
             {
                 newEdge = (newEdge - 1) & 3;
 
@@ -201,7 +202,7 @@ GameActions::Result WallPlaceAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
             {
                 newEdge = (newEdge - 1) & 3;
 

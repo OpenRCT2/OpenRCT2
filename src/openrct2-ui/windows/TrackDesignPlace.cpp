@@ -31,6 +31,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/Slope.h>
 #include <vector>
 
 using namespace OpenRCT2::TrackMetaData;
@@ -416,12 +417,12 @@ static Widget _trackPlaceWidgets[] = {
             auto z = surfaceElement->GetBaseZ();
 
             // Increase Z above slope
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
                 z += 16;
 
                 // Increase Z above double slope
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     z += 16;
             }
 

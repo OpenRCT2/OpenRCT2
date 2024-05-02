@@ -18,6 +18,7 @@
 #include "../../paint/track/Segment.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
@@ -460,7 +461,7 @@ static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackE
         return true;
     }
 
-    if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+    if (surfaceElement->GetSlope() != kTileSlopeFlat)
     {
         return true;
     }

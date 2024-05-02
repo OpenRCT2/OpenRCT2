@@ -23,6 +23,7 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 
@@ -153,8 +154,8 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::R
 
     // Do not attempt to build a crossing with a queue or a sloped path.
     auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
-                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    uint8_t crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CREATE_CROSSING_MODE_NONE
+                                                                 : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
@@ -224,8 +225,8 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertExecute(GameActions:
 
     // Do not attempt to build a crossing with a queue or a sloped path.
     auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
-                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    uint8_t crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CREATE_CROSSING_MODE_NONE
+                                                                 : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)

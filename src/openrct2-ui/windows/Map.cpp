@@ -37,6 +37,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/Slope.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
@@ -584,10 +585,10 @@ static Widget window_map_widgets[] = {
             if (parkEntranceMapPosition.z == 0)
             {
                 parkEntranceMapPosition.z = surfaceElement->GetBaseZ();
-                if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+                if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
                 {
                     parkEntranceMapPosition.z += 16;
-                    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                    if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     {
                         parkEntranceMapPosition.z += 16;
                     }
@@ -672,9 +673,9 @@ static Widget window_map_widgets[] = {
             int32_t mapZ = tileElement->GetBaseZ();
             if (tileElement->GetType() == TileElementType::Surface)
             {
-                if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+                if ((tileElement->AsSurface()->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
                     mapZ += 16;
-                if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag)
                     mapZ += 16;
             }
 
