@@ -619,6 +619,10 @@ void MapAnimationAutoCreate()
 
 void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
 {
+    if (el == nullptr)
+    {
+        return;
+    }
     auto loc = CoordsXYZ{ coords.ToCoordsXY(), el->GetBaseZ() };
     switch (el->GetType())
     {

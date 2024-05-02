@@ -12,6 +12,7 @@
 - Fix: [#18723, #21870] Attempting to demolish a flat ride in pause mode allows you to place multiple copies.
 - Fix: [#19559] Custom rides with long descriptions extend into lower widgets.
 - Fix: [#21696] Fullscreen window option not correctly applied on macOS.
+- Fix: [#21749] Crash when loading park bigger than current limits.
 - Fix: [#21787] Map generator heightmap should respect increased height limits.
 - Fix: [#21829] When creating a new scenario, the default name contains formatting codes.
 - Fix: [#21937] Build errors with the ORIGINAL_RATINGS flag.
