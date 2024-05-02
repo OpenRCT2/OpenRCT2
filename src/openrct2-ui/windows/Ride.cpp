@@ -2946,7 +2946,7 @@ static_assert(std::size(RatingNames) == 6);
                     y -= (carEntry.spacing / 2) / 17432;
                 }
 
-                if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
+                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW))
                 {
                     VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
                     *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
