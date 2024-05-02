@@ -981,10 +981,11 @@ namespace OpenRCT2
                         Editor::Load();
                         return GetGameScene();
                     }
-                    else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
+                    else if (Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        return GetTitleScene();
+                        return GetGameScene();
                     }
+                    [[fallthrough]];
                 }
                 default:
                 {
