@@ -7654,8 +7654,8 @@ static void MultiDimensionRCTrackDiagBrakes(
     if (trackElement.IsInverted())
     {
         TrackPaintUtilDiagTilesPaint(
-            session, -3, height + 24, direction, trackSequence, session.TrackColours, MultidimDiagBrakeImages[1],
-            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+            session, -3, height + 24, direction, trackSequence, MultidimDiagBrakeImages[1], defaultDiagTileOffsets,
+            defaultDiagBoundLengths, nullptr);
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -7670,8 +7670,8 @@ static void MultiDimensionRCTrackDiagBrakes(
     else
     {
         TrackPaintUtilDiagTilesPaint(
-            session, 3, height, direction, trackSequence, session.TrackColours, MultidimDiagBrakeImages[0],
-            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+            session, 3, height, direction, trackSequence, MultidimDiagBrakeImages[0], defaultDiagTileOffsets,
+            defaultDiagBoundLengths, nullptr);
 
         if (trackSequence == 3)
         {
@@ -7692,9 +7692,8 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
     if (trackElement.IsInverted())
     {
         TrackPaintUtilDiagTilesPaint(
-            session, -3, height + 24, direction, trackSequence, session.TrackColours,
-            MultidimDiagBlockBrakeImages[1][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
-            nullptr);
+            session, -3, height + 24, direction, trackSequence, MultidimDiagBlockBrakeImages[1][trackElement.IsBrakeClosed()],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -7709,9 +7708,8 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
     else
     {
         TrackPaintUtilDiagTilesPaint(
-            session, 3, height, direction, trackSequence, session.TrackColours,
-            MultidimDiagBlockBrakeImages[0][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
-            nullptr);
+            session, 3, height, direction, trackSequence, MultidimDiagBlockBrakeImages[0][trackElement.IsBrakeClosed()],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
         if (trackSequence == 3)
         {

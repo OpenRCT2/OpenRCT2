@@ -450,8 +450,7 @@ void TrackPaintUtilEighthToDiagTilesPaint(
     const CoordsXYZ boundsOffsets[4][4]);
 void TrackPaintUtilDiagTilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4],
-    const CoordsXYZ boundsOffsets[4]);
+    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4]);
 
 void TrackPaintUtilLeftQuarterTurn1TileTunnel(
     PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,

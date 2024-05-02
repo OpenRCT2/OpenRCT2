@@ -3995,8 +3995,8 @@ static void LayDownRCTrackDiagBrakes(
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
 
     TrackPaintUtilDiagTilesPaint(
-        session, -3, height + 24, direction, trackSequence, session.TrackColours, LaydownDiagBrakeImages,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, -3, height + 24, direction, trackSequence, LaydownDiagBrakeImages, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
@@ -4015,8 +4015,8 @@ static void LayDownRCTrackDiagBlockBrakes(
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
 
     TrackPaintUtilDiagTilesPaint(
-        session, -3, height + 24, direction, trackSequence, session.TrackColours,
-        LaydownDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, -3, height + 24, direction, trackSequence, LaydownDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 

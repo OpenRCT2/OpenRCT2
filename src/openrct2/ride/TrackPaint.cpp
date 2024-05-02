@@ -1248,8 +1248,7 @@ static constexpr int8_t diag_sprite_map[4][4] = {
 
 void TrackPaintUtilDiagTilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4],
-    const CoordsXYZ boundsOffsets[4])
+    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4])
 {
     int32_t index = diag_sprite_map[direction][trackSequence];
     if (index < 0)
@@ -1257,7 +1256,7 @@ void TrackPaintUtilDiagTilesPaint(
         return;
     }
 
-    auto imageId = colourFlags.WithIndex(sprites[direction]);
+    auto imageId = session.TrackColours.WithIndex(sprites[direction]);
     CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction]);
     CoordsXY boundsLength = boundsLengths[direction];
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction]);

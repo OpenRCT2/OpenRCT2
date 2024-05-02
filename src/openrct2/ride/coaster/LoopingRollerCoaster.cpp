@@ -5932,12 +5932,12 @@ static void LoopingRCTrackDiagBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, LoopingRCDiagBrakeImages, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        session, 3, height, direction, trackSequence, LoopingRCDiagBrakeImages, defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, LoopingRCDiagBrakeImages + 4,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, diagBrakeBoundsOffsets);
+        session, 3, height, direction, trackSequence, LoopingRCDiagBrakeImages + 4, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, diagBrakeBoundsOffsets);
 
     if (trackSequence == 3)
     {

@@ -5510,7 +5510,7 @@ static void MineTrainRCTrackDiagBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, MinetrainRCDiagBrakeImages, defaultDiagTileOffsets,
+        session, 1, height, direction, trackSequence, MinetrainRCDiagBrakeImages, defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
@@ -5528,9 +5528,8 @@ static void MineTrainRCTrackDiagBlockBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 13, height, direction, trackSequence, session.TrackColours,
-        MinetrainRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 13, height, direction, trackSequence, MinetrainRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {

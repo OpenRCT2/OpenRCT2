@@ -18245,13 +18245,12 @@ static void GigaRCTrackDiagBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours,
-        GigaDiagBrakeImages[trackElement.IsBrakeClosed()][0], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 3, height, direction, trackSequence, GigaDiagBrakeImages[trackElement.IsBrakeClosed()][0],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours,
-        GigaDiagBrakeImages[trackElement.IsBrakeClosed()][1], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        diagBrakeBoundsOffsets);
+        session, 3, height, direction, trackSequence, GigaDiagBrakeImages[trackElement.IsBrakeClosed()][1],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, diagBrakeBoundsOffsets);
 
     if (trackSequence == 3)
     {

@@ -4634,8 +4634,8 @@ static void JuniorRCPaintTrackDiagFlat(
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_flat[subTypeOffset],
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat[subTypeOffset], defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4654,8 +4654,8 @@ static void JuniorRCTrackDiagBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_brakes,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_brakes, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4674,9 +4674,8 @@ static void JuniorRCTrackDiagBlockBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_blockbrakes[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_blockbrakes[trackElement.IsBrakeClosed()],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4697,8 +4696,8 @@ static void JuniorRCPaintTrackDiag25DegUp(
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_25_deg_up[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_up[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4719,8 +4718,8 @@ static void JuniorRCPaintTrackDiagFlatTo25DegUp(
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_flat_to_25_deg_up[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_25_deg_up[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4742,8 +4741,8 @@ static void JuniorRCPaintTrackDiagFlatTo60DegUp(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_flat_to_60_deg_up[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_60_deg_up[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4764,8 +4763,8 @@ static void JuniorRCPaintTrackDiag25DegUpToFlat(
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_25_deg_up_to_flat[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_up_to_flat[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4787,8 +4786,8 @@ static void JuniorRCPaintTrackDiag60DegUpToFlat(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_60_deg_up_to_flat[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_up_to_flat[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4809,8 +4808,8 @@ static void JuniorRCPaintTrackDiag25DegDown(
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_25_deg_down[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_down[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4831,9 +4830,8 @@ static void JuniorRCPaintTrackDiagFlatTo25DegDown(
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_flat_to_25_deg_down[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_25_deg_down[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4855,9 +4853,8 @@ static void JuniorRCPaintTrackDiagFlatTo60DegDown(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_flat_to_60_deg_down[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_60_deg_down[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4878,9 +4875,8 @@ static void JuniorRCPaintTrackDiag25DegDownToFlat(
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_25_deg_down_to_flat[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_down_to_flat[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4902,9 +4898,8 @@ static void JuniorRCPaintTrackDiag60DegDownToFlat(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_60_deg_down_to_flat[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_down_to_flat[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4924,8 +4919,8 @@ static void JuniorRCDiagFlatToLeftBankPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_flat_to_left_bank,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_left_bank, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4951,8 +4946,8 @@ static void JuniorRCDiagFlatToRightBankPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_flat_to_right_bank,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_right_bank, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4978,8 +4973,8 @@ static void JuniorRCDiagLeftBankToFlatPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_left_bank_to_flat,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_left_bank_to_flat, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -5005,8 +5000,8 @@ static void JuniorRCDiagRightBankToFlatPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_right_bank_to_flat,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_right_bank_to_flat, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5032,7 +5027,7 @@ static void JuniorRCDiagLeftBankTo25DegUpPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_left_bank_to_25_deg_up,
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_left_bank_to_25_deg_up,
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
@@ -5059,7 +5054,7 @@ static void JuniorRCDiagRightBankTo25DegUpPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_right_bank_to_25_deg_up,
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_right_bank_to_25_deg_up,
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
@@ -5086,7 +5081,7 @@ static void JuniorRCDiag25DegUpToLeftBankPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_25_deg_up_to_left_bank,
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_up_to_left_bank,
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
@@ -5113,7 +5108,7 @@ static void JuniorRCDiag25DegUpToRightBankPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_25_deg_up_to_right_bank,
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_up_to_right_bank,
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
@@ -5140,8 +5135,8 @@ static void JuniorRCDiagLeftBankTo25DegDownPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_left_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_left_bank_to_25_deg_down,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -5167,8 +5162,8 @@ static void JuniorRCDiagRightBankTo25DegDownPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_right_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_right_bank_to_25_deg_down,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5194,8 +5189,8 @@ static void JuniorRCDiag25DegDownToLeftBankPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_25_deg_down_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_down_to_left_bank,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -5221,8 +5216,8 @@ static void JuniorRCDiag25DegDownToRightBankPaintSetup(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_25_deg_down_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_down_to_right_bank,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5263,8 +5258,8 @@ static void JuniorRCDiagLeftBankPaintSetup(
 {
     uint8_t thickness = direction == 0 ? 0 : 1;
     TrackPaintUtilDiagTilesPaint(
-        session, thickness, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_left_bank,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_left_bank_bound_offsets);
+        session, thickness, height, direction, trackSequence, junior_rc_track_pieces_diag_left_bank, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, junior_rc_diag_left_bank_bound_offsets);
 
     if (trackSequence == 3)
     {
@@ -5285,8 +5280,8 @@ static void JuniorRCDiagRightBankPaintSetup(
 {
     uint8_t thickness = direction == 2 ? 0 : 1;
     TrackPaintUtilDiagTilesPaint(
-        session, thickness, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_diag_right_bank,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_right_bank_bound_offsets);
+        session, thickness, height, direction, trackSequence, junior_rc_track_pieces_diag_right_bank, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, junior_rc_diag_right_bank_bound_offsets);
 
     if (trackSequence == 3)
     {
@@ -5539,8 +5534,8 @@ static void JuniorRCPaintTrackDiag60DegUp(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_60_deg_up[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_up[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -5562,8 +5557,8 @@ static void JuniorRCPaintTrackDiag60DegDown(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_60_deg_down[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_down[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -5585,9 +5580,8 @@ static void JuniorRCPaintTrackDiag25DegUpTo60DegUp(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -5618,9 +5612,8 @@ static void JuniorRCPaintTrackDiag60DegUpTo25DegUp(
     else
     {
         TrackPaintUtilDiagTilesPaint(
-            session, 1, height, direction, trackSequence, session.TrackColours,
-            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths,
-            nullptr);
+            session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[subTypeOffset],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
     }
 
     if (trackSequence == 3)
@@ -5652,9 +5645,8 @@ static void JuniorRCPaintTrackDiag25DegDownTo60DegDown(
     else
     {
         TrackPaintUtilDiagTilesPaint(
-            session, 1, height, direction, trackSequence, session.TrackColours,
-            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[subTypeOffset], defaultDiagTileOffsets,
-            defaultDiagBoundLengths, nullptr);
+            session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[subTypeOffset],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
     }
 
     if (trackSequence == 3)
@@ -5677,9 +5669,8 @@ static void JuniorRCPaintTrackDiag60DegDownTo25DegDown(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours,
-        junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[subTypeOffset], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[subTypeOffset],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
