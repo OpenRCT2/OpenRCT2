@@ -12,3 +12,9 @@
 #include "../support/MetalSupports.h"
 
 constexpr int8_t kDefaultGeneralSupportHeight = 32;
+
+namespace SupportedSequences
+{
+    constexpr MetalSupportPlace kDiagStraightFlat[] = { MetalSupportPlace::None, MetalSupportPlace::None,
+                                                        MetalSupportPlace::None, MetalSupportPlace::LeftCorner };
+}

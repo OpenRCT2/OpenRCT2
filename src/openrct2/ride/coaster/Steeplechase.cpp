@@ -1424,17 +1424,8 @@ static void SteeplechaseTrackDiagFlat(
         { 28741, 28742, 28743, 28744 },
         { 28757, 28758, 28759, 28760 },
     };
-    TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-        MetalASupportsPaintSetupRotated(
-            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    TrackPaintUtilDiagTilesPaintExtra(
+        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], kSupportType);
 }
 
 static void SteeplechaseTrackDiagBrakes(

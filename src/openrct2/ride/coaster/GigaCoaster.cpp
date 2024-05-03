@@ -5949,17 +5949,8 @@ static void GigaRCTrackDiagFlat(
         { 18524, 18525, 18526, 18527 },
     };
 
-    TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-        MetalASupportsPaintSetupRotated(
-            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    TrackPaintUtilDiagTilesPaintExtra(
+        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], kSupportType);
 }
 
 /** rct2: 0x008ADB04 */

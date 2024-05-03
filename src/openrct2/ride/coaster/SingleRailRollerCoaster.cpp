@@ -1539,17 +1539,8 @@ namespace SingleRailRC
               SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 2, SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 3 },
         };
 
-        TrackPaintUtilDiagTilesPaint(
-            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
-            defaultDiagBoundLengths, nullptr);
-
-        if (trackSequence == 3)
-            MetalASupportsPaintSetupRotated(
-                session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+        TrackPaintUtilDiagTilesPaintExtra(
+            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], kSupportType);
     }
 
     static void TrackDiagBrakes(

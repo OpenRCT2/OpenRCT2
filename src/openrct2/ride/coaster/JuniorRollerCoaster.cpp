@@ -4628,19 +4628,8 @@ static void JuniorRCPaintTrackDiagFlat(
     const TrackElement& trackElement)
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
-    TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat[subTypeOffset], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-    {
-        MetalASupportsPaintSetupRotated(
-            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-    }
-
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    TrackPaintUtilDiagTilesPaintExtra(
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat[subTypeOffset], kSupportType);
 }
 
 static void JuniorRCTrackDiagBrakes(
