@@ -188,7 +188,7 @@ STR_0768    :Manitas {INT32}
 STR_0769    :Mecánico {INT32}
 STR_0770    :Guardia {INT32}
 STR_0771    :Animador {INT32}
-STR_0777    :Parque sin nombre{POP16}{POP16}
+STR_0777    :Parque sin nombre
 STR_0778    :Señal
 STR_0779    :1
 STR_0780    :2

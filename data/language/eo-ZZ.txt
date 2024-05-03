@@ -188,7 +188,7 @@ STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
 STR_0770    :Gardisto {INT32}
 STR_0771    :Amuzisto {INT32}
-STR_0777    :Parko sennoma{POP16}{POP16}
+STR_0777    :Parko sennoma
 STR_0778    :Afiŝo
 STR_0779    :1a
 STR_0780    :2a

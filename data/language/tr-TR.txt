@@ -180,7 +180,7 @@ STR_0768    :Temizlikci {INT32}
 STR_0769    :Mühendis {INT32}
 STR_0770    :Güvenlik {INT32}
 STR_0771    :Animatör {INT32}
-STR_0777    :Isimsiz park{POP16}{POP16}
+STR_0777    :Isimsiz park
 STR_0778    :Bir metin giriniz
 STR_0779    :1.
 STR_0780    :2.

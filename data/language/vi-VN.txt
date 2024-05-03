@@ -182,7 +182,7 @@ STR_0768    :Lao công {INT32}
 STR_0769    :Kỹ sư {INT32}
 STR_0770    :Bảo vệ {INT32}
 STR_0771    :Hoạt náo {INT32}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0777    :Unnamed park
 STR_0778    :Sign
 STR_0779    :Ngày 1
 STR_0780    :Ngày 2
