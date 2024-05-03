@@ -846,11 +846,33 @@ static std::pair<uint8_t, uint8_t> PathPaintGetRotatedEdgesAndCorners(
     const PaintSession& session, const PathElement& pathElement)
 {
     // Rol edges around rotation
-    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
+    uint8_t rawEdges = pathElement.GetEdges();
+    uint8_t edges = ((rawEdges << session.CurrentRotation) & 0xF)
+        | ((rawEdges << session.CurrentRotation) >> 4);
+    uint8_t rawCorners = pathElement.GetCorners();
+    uint8_t validCorners = 0x0;
 
-    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
+    // Only paint corners that exist between two edges
+    if ((rawEdges & EDGE_SE) && (rawEdges & EDGE_SW))
+    {
+        validCorners |= (rawCorners & FOOTPATH_CORNER_1);
+    }
+    if ((rawEdges & EDGE_NE) && (rawEdges & EDGE_NW))
+    {
+        validCorners |= (rawCorners & FOOTPATH_CORNER_3);
+    }
+    if ((rawEdges & EDGE_SW) && (rawEdges & EDGE_NW))
+    {
+        validCorners |= (rawCorners & FOOTPATH_CORNER_2);
+    }
+    if ((rawEdges & EDGE_NE) && (rawEdges & EDGE_SE))
+    {
+        validCorners |= (rawCorners & FOOTPATH_CORNER_0);
+    }
+
+    // Roll corners around rotation
+    uint8_t corners = ((validCorners << session.CurrentRotation) & 0xF)
+        | ((validCorners << session.CurrentRotation) >> 4);
 
     return std::make_pair(edges, corners);
 }
