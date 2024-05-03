@@ -283,8 +283,6 @@ static Widget _topToolbarWidgets[] = {
 };
     // clang-format on
 
-    static void ScenarioSelectCallback(const utf8* path);
-
     class TopToolbar final : public Window
     {
     private:
@@ -2625,9 +2623,9 @@ static Widget _topToolbarWidgets[] = {
                     {
                         case DDIDX_NEW_GAME:
                         {
-                            auto intent = Intent(WindowClass::ScenarioSelect);
-                            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ScenarioSelectCallback));
-                            ContextOpenIntent(&intent);
+                            auto loadOrQuitAction = LoadOrQuitAction(
+                                LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeNewGame);
+                            GameActions::Execute(&loadOrQuitAction);
                             break;
                         }
                         case DDIDX_LOAD_GAME:
@@ -3250,15 +3248,6 @@ static Widget _topToolbarWidgets[] = {
             }
         }
     };
-
-    static void ScenarioSelectCallback(const utf8* path)
-    {
-        WindowCloseByClass(WindowClass::EditorObjectSelection);
-        GameNotifyMapChange();
-        GetContext()->LoadParkFromFile(path, false, true);
-        GameLoadScripts();
-        GameNotifyMapChanged();
-    }
 
     /**
      * Creates the main game top toolbar window.
