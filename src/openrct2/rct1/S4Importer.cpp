@@ -1680,7 +1680,7 @@ namespace RCT1
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
-                    if (rideType == RIDE_TYPE_GHOST_TRAIN)
+                    if (_s4.Rides[src2->GetRideIndex()].Type == RideType::GhostTrain)
                     {
                         dst2->SetDoorAState(src2->GetDoorAState());
                         dst2->SetDoorBState(src2->GetDoorBState());
