@@ -847,8 +847,7 @@ static std::pair<uint8_t, uint8_t> PathPaintGetRotatedEdgesAndCorners(
 {
     // Rol edges around rotation
     uint8_t rawEdges = pathElement.GetEdges();
-    uint8_t edges = ((rawEdges << session.CurrentRotation) & 0xF)
-        | ((rawEdges << session.CurrentRotation) >> 4);
+    uint8_t edges = ((rawEdges << session.CurrentRotation) & 0xF) | ((rawEdges << session.CurrentRotation) >> 4);
     uint8_t rawCorners = pathElement.GetCorners();
     uint8_t validCorners = 0x0;
 
@@ -871,8 +870,7 @@ static std::pair<uint8_t, uint8_t> PathPaintGetRotatedEdgesAndCorners(
     }
 
     // Roll corners around rotation
-    uint8_t corners = ((validCorners << session.CurrentRotation) & 0xF)
-        | ((validCorners << session.CurrentRotation) >> 4);
+    uint8_t corners = ((validCorners << session.CurrentRotation) & 0xF) | ((validCorners << session.CurrentRotation) >> 4);
 
     return std::make_pair(edges, corners);
 }
