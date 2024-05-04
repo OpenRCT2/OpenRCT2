@@ -103,8 +103,22 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
+static bool ShouldShowFPS()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO && !TitleShouldHideVersionInfo())
+        return true;
+
+    if (!WindowFindByClass(WindowClass::TopToolbar))
+        return false;
+
+    return true;
+}
+
 void Painter::PaintFPS(DrawPixelInfo& dpi)
 {
+    if (!ShouldShowFPS())
+        return;
+
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
     MeasureFPS();
