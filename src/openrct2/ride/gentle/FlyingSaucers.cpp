@@ -11,6 +11,8 @@
 #include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"

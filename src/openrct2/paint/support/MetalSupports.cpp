@@ -198,6 +198,25 @@ static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][NumOrthogonal
       MetalSupportPlace::TopRightSide },
 };
 
+constexpr uint8_t MetalSupportTypeCount = 13;
+constexpr MetalSupportType kMetalSupportTypeRotated[MetalSupportTypeCount][NumOrthogonalDirections] = {
+    { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
+    { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+    { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
+    { MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed },
+    { MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt },
+    { MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick },
+    { MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt },
+    { MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred },
+    { MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick },
+    { MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred },
+    { MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss },
+    { MetalSupportType::TubesInverted, MetalSupportType::TubesInverted, MetalSupportType::TubesInverted,
+      MetalSupportType::TubesInverted },
+    { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated,
+      MetalSupportType::BoxedCoated },
+};
+
 /**
  * Metal pole supports
  * @param supportType (edi)
@@ -398,6 +417,7 @@ bool MetalASupportsPaintSetupRotated(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
     int32_t special, int32_t height, ImageId imageTemplate)
 {
+    supportTypeMember = kMetalSupportTypeRotated[EnumValue(supportTypeMember)][direction];
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
     return MetalASupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
 }
@@ -591,33 +611,15 @@ bool MetalBSupportsPaintSetupRotated(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
     int32_t special, int32_t height, ImageId imageTemplate)
 {
+    supportTypeMember = kMetalSupportTypeRotated[EnumValue(supportTypeMember)][direction];
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
     return MetalBSupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
 }
 
-constexpr uint8_t MetalSupportTypeCount = 13;
-constexpr MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
-    { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
-    { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
-    { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
-    { MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed },
-    { MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt },
-    { MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick },
-    { MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt },
-    { MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred },
-    { MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick },
-    { MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred },
-    { MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss },
-    { MetalSupportType::TubesInverted, MetalSupportType::TubesInverted, MetalSupportType::TubesInverted,
-      MetalSupportType::TubesInverted },
-    { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated,
-      MetalSupportType::BoxedCoated },
-};
-
 void DrawSupportsSideBySide(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
 {
-    type = RotatedMetalSupports[EnumValue(type)][direction];
+    type = kMetalSupportTypeRotated[EnumValue(type)][direction];
 
     if (direction & 1)
     {

@@ -32,6 +32,7 @@
 #include "../VirtualFloor.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.Surface.h"
+#include "Segment.h"
 
 static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
 static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);

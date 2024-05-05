@@ -363,6 +363,8 @@
     <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
+    <ClInclude Include="paint\tile_element\Segment.h" />
+    <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="park\Legacy.h" />

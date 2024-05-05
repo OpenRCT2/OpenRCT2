@@ -12,6 +12,8 @@
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -155,10 +157,7 @@ static void MultiDimensionRCTrackFlat(
         }
 
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
@@ -335,10 +334,7 @@ static void MultiDimensionRCTrack25DegUp(
         }
 
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
@@ -458,10 +454,7 @@ static void MultiDimensionRCTrack60DegUp(
             PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
     }
 }
@@ -573,10 +566,7 @@ static void MultiDimensionRCTrackFlatTo25DegUp(
         }
 
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
@@ -708,10 +698,7 @@ static void MultiDimensionRCTrack25DegUpTo60DegUp(
             PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
     }
 }
@@ -801,10 +788,7 @@ static void MultiDimensionRCTrack60DegUpTo25DegUp(
         }
 
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
@@ -951,10 +935,7 @@ static void MultiDimensionRCTrack25DegUpToFlat(
         }
 
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
@@ -5451,10 +5432,7 @@ static void MultiDimensionRCTrackBrakes(
         }
 
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
@@ -5602,11 +5580,7 @@ static void MultiDimensionRCTrack90DegUp(
                 }
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -5643,11 +5617,7 @@ static void MultiDimensionRCTrack90DegUp(
                 }
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
@@ -5703,11 +5673,7 @@ static void MultiDimensionRCTrack60DegUpTo90DegUp(
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
@@ -5748,11 +5714,7 @@ static void MultiDimensionRCTrack60DegUpTo90DegUp(
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
@@ -5809,10 +5771,7 @@ static void MultiDimensionRCTrack90DegUpTo60DegUp(
                 break;
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
     }
     else
@@ -5850,10 +5809,7 @@ static void MultiDimensionRCTrack90DegUpTo60DegUp(
                 break;
         }
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
     }
 }
@@ -5896,11 +5852,7 @@ static void MultiDimensionRCTrack60DegDownTo90DegDown(
                     PaintUtilPushTunnelRotated(session, direction, height + 48, TUNNEL_SQUARE_8);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
             case 1:
@@ -5940,11 +5892,7 @@ static void MultiDimensionRCTrack60DegDownTo90DegDown(
                     PaintUtilPushTunnelRotated(session, direction, height + 48, TUNNEL_INVERTED_5);
                 }
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
                 break;
             case 1:
@@ -6138,11 +6086,7 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                 }
 
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
                     session.SupportColours);
@@ -6480,11 +6424,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                 }
 
                 PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
+                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
                     session.SupportColours);
@@ -7710,12 +7650,12 @@ static void MultiDimensionRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     if (trackElement.IsInverted())
     {
         TrackPaintUtilDiagTilesPaint(
-            session, -3, height + 24, direction, trackSequence, session.TrackColours, MultidimDiagBrakeImages[1],
-            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+            session, -3, height + 24, direction, trackSequence, MultidimDiagBrakeImages[1], defaultDiagTileOffsets,
+            defaultDiagBoundLengths, nullptr);
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -7730,8 +7670,8 @@ static void MultiDimensionRCTrackDiagBrakes(
     else
     {
         TrackPaintUtilDiagTilesPaint(
-            session, 3, height, direction, trackSequence, session.TrackColours, MultidimDiagBrakeImages[0],
-            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+            session, 3, height, direction, trackSequence, MultidimDiagBrakeImages[0], defaultDiagTileOffsets,
+            defaultDiagBoundLengths, nullptr);
 
         if (trackSequence == 3)
         {
@@ -7748,13 +7688,12 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    int32_t blockedSegments = kDiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     if (trackElement.IsInverted())
     {
         TrackPaintUtilDiagTilesPaint(
-            session, -3, height + 24, direction, trackSequence, session.TrackColours,
-            MultidimDiagBlockBrakeImages[1][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
-            nullptr);
+            session, -3, height + 24, direction, trackSequence, MultidimDiagBlockBrakeImages[1][trackElement.IsBrakeClosed()],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -7769,9 +7708,8 @@ static void MultiDimensionRCTrackDiagBlockBrakes(
     else
     {
         TrackPaintUtilDiagTilesPaint(
-            session, 3, height, direction, trackSequence, session.TrackColours,
-            MultidimDiagBlockBrakeImages[0][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
-            nullptr);
+            session, 3, height, direction, trackSequence, MultidimDiagBlockBrakeImages[0][trackElement.IsBrakeClosed()],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
         if (trackSequence == 3)
         {
@@ -14720,10 +14658,7 @@ static void MultiDimensionRCTrackBlockBrakes(
             { { 0, 6, height + 24 }, { 32, 20, 3 } });
 
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-            0xFFFF, 0);
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(

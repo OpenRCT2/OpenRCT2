@@ -12,6 +12,8 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"

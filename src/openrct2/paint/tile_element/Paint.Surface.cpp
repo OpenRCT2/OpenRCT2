@@ -31,6 +31,7 @@
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
 #include <cstring>
 #include <iterator>
