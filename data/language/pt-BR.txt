@@ -188,7 +188,7 @@ STR_0768    :Faxineiro {INT32}
 STR_0769    :Mecânico {INT32}
 STR_0770    :Segurança {INT32}
 STR_0771    :Animador {INT32}
-STR_0777    :Parque Sem Nome{POP16}{POP16}
+STR_0777    :Parque Sem Nome
 STR_0778    :Entrar
 STR_0779    :1º de
 STR_0780    :2 de

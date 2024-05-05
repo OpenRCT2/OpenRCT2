@@ -2,17 +2,20 @@
 ------------------------------------------------------------------------
 - Feature: [#11512] Coloured usernames by group on multiplayer servers.
 - Feature: [#21734] Park admittance price can now be set via text input.
+- Feature: [#21957] [Plugin] Expose whether the game is paused to the plugin API.
 - Improved: [#21728] “Fix all rides” cheat now also works if a mechanic is already fixing the ride.
 - Improved: [#21769] Expose “animation is backwards” wall property in Tile Inspector.
 - Improved: [#21855] Add a separator between “Load Game” and “Save Game”, to avoid accidental overwriting.
 - Change: [#21715] [Plugin] Remove access to the internal `owner` property. Note: `ownership` is still accessible.
 - Change: [#21855] Cheats menu dropdown no longer requires dragging.
+- Change: [#21866] Hide the FPS Counter when the top toolbar/widgets have been toggled off.
 - Change: [#21950] Construction and removal buttons can now be held down for repeated placement.
 - Fix: [#866] Boat Hire boats get stuck entering track (original bug).
 - Fix: [#10701] No reason specified when placing door over unsuitable track.
 - Fix: [#18723, #21870] Attempting to demolish a flat ride in pause mode allows you to place multiple copies.
 - Fix: [#19559] Custom rides with long descriptions extend into lower widgets.
 - Fix: [#21696] Fullscreen window option not correctly applied on macOS.
+- Fix: [#21749] Crash when loading park bigger than current limits.
 - Fix: [#21787] Map generator heightmap should respect increased height limits.
 - Fix: [#21829] When creating a new scenario, the default name contains formatting codes.
 - Fix: [#21937] Build errors with the ORIGINAL_RATINGS flag.

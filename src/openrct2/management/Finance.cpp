@@ -235,7 +235,7 @@ void FinanceInit()
     gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.TotalAdmissions = 0;
     gameState.TotalIncomeFromAdmissions = 0;
-    gameState.ScenarioCompletedBy = "?";
+    gameState.ScenarioCompletedBy = std::string("?");
 }
 
 /**
