@@ -177,6 +177,8 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             InputSetFlag(INPUT_FLAG_6, true);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();
+
+            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_REMOVE);
         }
 
         void OnClose() override
@@ -269,6 +271,12 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 case WIDX_SLOPEUP:
                     WindowFootpathMousedownSlope(2);
                     break;
+                case WIDX_CONSTRUCT:
+                    WindowFootpathConstruct();
+                    break;
+                case WIDX_REMOVE:
+                    WindowFootpathRemove();
+                    break;
             }
         }
 
@@ -278,12 +286,6 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             {
                 case WIDX_CLOSE:
                     Close();
-                    break;
-                case WIDX_CONSTRUCT:
-                    WindowFootpathConstruct();
-                    break;
-                case WIDX_REMOVE:
-                    WindowFootpathRemove();
                     break;
                 case WIDX_CONSTRUCT_ON_LAND:
                     if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND)
@@ -1411,7 +1413,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 return;
             }
 
-            OnMouseUp(WIDX_CONSTRUCT);
+            OnMouseDown(WIDX_CONSTRUCT);
         }
 
         void OnResize() override
