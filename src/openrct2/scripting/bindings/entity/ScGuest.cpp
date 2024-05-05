@@ -873,6 +873,12 @@ namespace OpenRCT2::Scripting
         }
 
         std::string_view action = availableGuestAnimations[peep->ActionSpriteType];
+
+        // Special consideration for sitting peeps
+        // TODO: something funky going on in the state machine
+        if (peep->ActionSpriteType == PeepActionSpriteType::None && peep->State == PeepState::Sitting)
+            action = availableGuestAnimations[PeepActionSpriteType::SittingIdle];
+
         return std::string(action);
     }
 
