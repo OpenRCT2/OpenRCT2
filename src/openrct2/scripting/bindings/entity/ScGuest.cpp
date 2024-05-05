@@ -908,7 +908,10 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        return peep->ActionSpriteImageOffset;
+        if (peep->IsActionWalking())
+            return peep->WalkingFrameNum;
+        else
+            return peep->ActionFrame;
     }
 
     void ScGuest::animationOffset_set(uint8_t offset)
