@@ -34,7 +34,7 @@ namespace OpenRCT2::Scripting
         { "hanging", PeepActionSpriteType::Ui },
         { "staffAnswerCall", PeepActionSpriteType::StaffAnswerCall },
         { "staffAnswerCall2", PeepActionSpriteType::StaffAnswerCall2 },
-        { "staffCheckboard", PeepActionSpriteType::StaffCheckboard },
+        { "staffCheckBoard", PeepActionSpriteType::StaffCheckboard },
         { "staffFix", PeepActionSpriteType::StaffFix },
         { "staffFix2", PeepActionSpriteType::StaffFix2 },
         { "staffFixGround", PeepActionSpriteType::StaffFixGround },
