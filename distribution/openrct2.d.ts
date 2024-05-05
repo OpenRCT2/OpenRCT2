@@ -3095,6 +3095,24 @@ declare global {
         readonly item: GuestItemType;
     }
 
+    type StaffCostume =
+        "none" |
+        "handyman" |
+        "mechanic" |
+        "security1" |
+        "security2" |
+        "panda" |
+        "tiger" |
+        "elephant" |
+        "roman" |
+        "gorilla" |
+        "snowman" |
+        "knight" |
+        "astronaut" |
+        "bandit" |
+        "sheriff" |
+        "pirate";
+
     /**
      * Represents a staff member.
      */
@@ -3105,14 +3123,19 @@ declare global {
         staffType: StaffType;
 
         /**
-         * Colour of the staff member. Not applicable for entertainers.
+         * Colour of the staff member. Not applicable to entertainers.
          */
         colour: number;
 
         /**
-         * The entertainer's costume, only applicable for entertainers.
+         * Array of costumes available to this particular staff member.
          */
-        costume: number;
+        readonly availableCostumes: StaffCostume[];
+
+        /**
+         * The staff member's costume.
+         */
+        costume: StaffCostume | string | number;
 
         /**
          * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.

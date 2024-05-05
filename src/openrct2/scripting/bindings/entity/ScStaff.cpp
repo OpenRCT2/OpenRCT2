@@ -26,6 +26,7 @@ namespace OpenRCT2::Scripting
         dukglue_set_base_class<ScPeep, ScStaff>(ctx);
         dukglue_register_property(ctx, &ScStaff::staffType_get, &ScStaff::staffType_set, "staffType");
         dukglue_register_property(ctx, &ScStaff::colour_get, &ScStaff::colour_set, "colour");
+        dukglue_register_property(ctx, &ScStaff::availableCostumes_get, nullptr, "availableCostumes");
         dukglue_register_property(ctx, &ScStaff::costume_get, &ScStaff::costume_set, "costume");
         dukglue_register_property(ctx, &ScStaff::patrolArea_get, nullptr, "patrolArea");
         dukglue_register_property(ctx, &ScStaff::orders_get, &ScStaff::orders_set, "orders");
@@ -108,24 +109,117 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    uint8_t ScStaff::costume_get() const
+    static const DukEnumMap<PeepSpriteType> availableHandymanCostumes({
+        { "handyman", PeepSpriteType::Handyman },
+    });
+
+    static const DukEnumMap<PeepSpriteType> availableMechanicCostumes({
+        { "mechanic", PeepSpriteType::Mechanic },
+    });
+
+    static const DukEnumMap<PeepSpriteType> availableSecurityCostumes({
+        { "security1", PeepSpriteType::Security },
+        { "security2", PeepSpriteType::SecurityAlt },
+    });
+
+    static const DukEnumMap<PeepSpriteType> availableEntertainerCostumes({
+        { "none", PeepSpriteType::Normal },
+        { "panda", PeepSpriteType::EntertainerPanda },
+        { "tiger", PeepSpriteType::EntertainerTiger },
+        { "elephant", PeepSpriteType::EntertainerElephant },
+        { "roman", PeepSpriteType::EntertainerRoman },
+        { "gorilla", PeepSpriteType::EntertainerGorilla },
+        { "snowman", PeepSpriteType::EntertainerSnowman },
+        { "knight", PeepSpriteType::EntertainerKnight },
+        { "astronaut", PeepSpriteType::EntertainerAstronaut },
+        { "bandit", PeepSpriteType::EntertainerBandit },
+        { "sheriff", PeepSpriteType::EntertainerSheriff },
+        { "pirate", PeepSpriteType::EntertainerPirate },
+    });
+
+    static const DukEnumMap<PeepSpriteType>& costumesByStaffType(StaffType staffType)
     {
-        auto peep = GetStaff();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Entertainer)
+        switch (staffType)
         {
-            return peep->GetCostume();
+            case StaffType::Handyman:
+                return availableHandymanCostumes;
+            case StaffType::Mechanic:
+                return availableMechanicCostumes;
+            case StaffType::Security:
+                return availableSecurityCostumes;
+            case StaffType::Entertainer:
+            default:
+                return availableEntertainerCostumes;
         }
-        return 0;
     }
 
-    void ScStaff::costume_set(uint8_t value)
+    std::vector<std::string> ScStaff::availableCostumes_get() const
     {
-        ThrowIfGameStateNotMutable();
+        std::vector<std::string> availableCostumes{};
         auto peep = GetStaff();
         if (peep != nullptr)
         {
-            peep->SetCostume(value);
+            for (auto& costume : costumesByStaffType(peep->AssignedStaffType))
+            {
+                availableCostumes.push_back(std::string(costume.first));
+            }
         }
+        return availableCostumes;
+    }
+
+    std::string ScStaff::costume_get() const
+    {
+        auto peep = GetStaff();
+        if (peep == nullptr)
+        {
+            return nullptr;
+        }
+
+        auto& availableCostumes = costumesByStaffType(peep->AssignedStaffType);
+
+        auto costume = availableCostumes.find(peep->SpriteType);
+        if (costume != availableCostumes.end())
+        {
+            return std::string(costume->first);
+        }
+        else
+            return nullptr;
+    }
+
+    void ScStaff::costume_set(const DukValue& value)
+    {
+        ThrowIfGameStateNotMutable();
+
+        auto peep = GetStaff();
+        if (peep == nullptr)
+        {
+            return;
+        }
+
+        auto& availableCostumes = costumesByStaffType(peep->AssignedStaffType);
+
+        // Split by type passed so as to not break old plugins
+        if (value.type() == DukValue::Type::STRING)
+        {
+            std::string newCostume = value.as_string();
+            auto newSpriteType = availableCostumes.TryGet(newCostume);
+            if (newSpriteType != std::nullopt)
+            {
+                peep->SpriteType = *newSpriteType;
+                return;
+            }
+        }
+        else if (value.type() == DukValue::Type::NUMBER)
+        {
+            auto newSpriteType = PeepSpriteType(value.as_uint() + EnumValue(PeepSpriteType::EntertainerPanda));
+            if (availableCostumes.find(newSpriteType) != availableCostumes.end())
+            {
+                peep->SpriteType = newSpriteType;
+                return;
+            }
+        }
+
+        throw DukException() << "Invalid costume for this staff member";
     }
 
     std::shared_ptr<ScPatrolArea> ScStaff::patrolArea_get() const

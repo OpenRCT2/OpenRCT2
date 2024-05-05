@@ -56,8 +56,9 @@ namespace OpenRCT2::Scripting
         uint8_t colour_get() const;
         void colour_set(uint8_t value);
 
-        uint8_t costume_get() const;
-        void costume_set(uint8_t value);
+        std::vector<std::string> availableCostumes_get() const;
+        std::string costume_get() const;
+        void costume_set(const DukValue& value);
 
         std::shared_ptr<ScPatrolArea> patrolArea_get() const;
 

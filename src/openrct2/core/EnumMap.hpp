@@ -62,7 +62,7 @@ public:
     {
         std::sort(_map.begin(), _map.end(), [](const auto& a, const auto& b) { return a.second < b.second; });
 
-        if constexpr (ValueIndexable())
+        if (ValueIndexable() && _map.size() > 1)
         {
             _continiousValueIndex = true;
             T cur{};
