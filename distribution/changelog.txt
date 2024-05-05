@@ -1,6 +1,7 @@
 0.4.12 (in development)
 ------------------------------------------------------------------------
 - Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
+- Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
 
 0.4.11 (2024-05-05)
 ------------------------------------------------------------------------

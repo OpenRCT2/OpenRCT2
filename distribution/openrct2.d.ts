@@ -2682,6 +2682,34 @@ declare global {
      */
     type PeepType = "guest" | "staff";
 
+    type GuestAnimation =
+        "walking" |
+        "checkTime" |
+        "watchRide" |
+        "eatFood" |
+        "shakeHead" |
+        "emptyPockets" |
+        "holdMat" |
+        "sittingIdle" |
+        "sittingEatFood" |
+        "sittingLookAroundLeft" |
+        "sittingLookAroundRight" |
+        "hanging" |
+        "wow" |
+        "throwUp" |
+        "jump" |
+        "drowning" |
+        "joy" |
+        "readMap" |
+        "wave" |
+        "wave2" |
+        "takePhoto" |
+        "clap" |
+        "disgust" |
+        "drawPicture" |
+        "beingWatched" |
+        "withdrawMoney";
+
     /**
      * Represents a guest.
      */
@@ -2819,6 +2847,31 @@ declare global {
          * Removes all items from the guest's possession.
          */
         removeAllItems(): void;
+
+        /**
+         * The animations available to this guest.
+         */
+        readonly availableAnimations: GuestAnimation[];
+
+        /**
+         * Gets an array of sprite ids representing a particular guest animation.
+         */
+        getAnimationSpriteIds(animation: GuestAnimation, rotation: number): number[];
+
+        /**
+         * The animation the guest is currently exhibiting.
+         */
+        animation: GuestAnimation;
+
+        /**
+         * The frame offset in the current animation.
+         */
+        animationOffset: number;
+
+        /**
+         * The total number of frames in the current animation.
+         */
+        readonly animationLength: number;
     }
 
     /**
@@ -3113,6 +3166,26 @@ declare global {
         "sheriff" |
         "pirate";
 
+    type StaffAnimation =
+        "walking" |
+        "watchRide" |
+        "wave" |
+        "hanging" |
+        "staffMower" |
+        "staffSweep" |
+        "drowning" |
+        "staffAnswerCall" |
+        "staffAnswerCall2" |
+        "staffCheckBoard" |
+        "staffFix" |
+        "staffFix2" |
+        "staffFixGround" |
+        "staffFix3" |
+        "staffWatering" |
+        "joy" |
+        "staffEmptyBin" |
+        "wave2";
+
     /**
      * Represents a staff member.
      */
@@ -3146,6 +3219,31 @@ declare global {
          * Gets the patrol area for the staff member.
          */
         readonly patrolArea: PatrolArea;
+
+        /**
+         * The animations available to this staff member.
+         */
+        readonly availableAnimations: StaffAnimation[];
+
+        /**
+         * Gets an array of sprite ids representing a particular staff animation.
+         */
+        getAnimationSpriteIds(animation: StaffAnimation, rotation: number): number[];
+
+        /**
+         * The animation the staff member is currently exhibiting.
+         */
+        animation: StaffAnimation;
+
+        /**
+         * The frame offset in the current animation.
+         */
+        animationOffset: number;
+
+        /**
+         * The total number of frames in the current animation.
+         */
+        readonly animationLength: number;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";

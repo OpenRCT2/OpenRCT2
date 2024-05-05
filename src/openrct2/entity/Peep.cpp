@@ -344,8 +344,14 @@ void Peep::UpdateCurrentActionSpriteType()
         return;
     }
 
-    Invalidate();
     ActionSpriteType = newActionSpriteType;
+
+    UpdateSpriteBoundingBox();
+}
+
+void Peep::UpdateSpriteBoundingBox()
+{
+    Invalidate();
 
     const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
     SpriteData.Width = spriteBounds->sprite_width;
@@ -2813,7 +2819,14 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
-    uint32_t baseImageId = (imageDirection >> 3) + GetPeepAnimation(SpriteType, actionSpriteType).base_image + imageOffset * 4;
+    uint32_t baseImageId = GetPeepAnimation(SpriteType, actionSpriteType).base_image;
+
+    // Offset frame onto the base image, using rotation except for the 'picked up' state
+    if (actionSpriteType != PeepActionSpriteType::Ui)
+        baseImageId += (imageDirection >> 3) + imageOffset * 4;
+    else
+        baseImageId += imageOffset;
+
     auto imageId = ImageId(baseImageId, TshirtColour, TrousersColour);
 
     auto bb = BoundBoxXYZ{ { 0, 0, z + 5 }, { 1, 1, 11 } };
