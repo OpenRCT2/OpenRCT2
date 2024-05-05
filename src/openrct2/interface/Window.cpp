@@ -34,7 +34,6 @@
 #include "Widget.h"
 #include "Window_internal.h"
 
-#include <algorithm>
 #include <cmath>
 #include <functional>
 #include <iterator>
@@ -45,15 +44,9 @@ using namespace OpenRCT2;
 std::list<std::shared_ptr<WindowBase>> g_window_list;
 WindowBase* gWindowAudioExclusive;
 
-WidgetIdentifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
 WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
-u8string gTextBoxInput;
-int32_t gTextBoxFrameNo = 0;
-bool gUsingWidgetTextBox = false;
-TextInputSession* gTextInput;
 
 uint32_t gWindowUpdateTicks;
-uint16_t gWindowMapFlashingFlags;
 colour_t gCurrentWindowColours[4];
 
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
@@ -169,7 +162,7 @@ static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
     // find the amount of windows that are currently open
     auto count = static_cast<int32_t>(g_window_list.size());
     // difference between amount open and cap = amount to close
-    auto diff = count - WINDOW_LIMIT_RESERVED - cap;
+    auto diff = count - kWindowLimitReserved - cap;
     for (auto i = 0; i < diff; i++)
     {
         // iterates through the list until it finds the newest window, or a window that can be closed
@@ -199,7 +192,7 @@ static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
 void WindowSetWindowLimit(int32_t value)
 {
     int32_t prev = gConfigGeneral.WindowLimit;
-    int32_t val = std::clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
+    int32_t val = std::clamp<int32_t>(value, kWindowLimitMin, kWindowLimitMax);
     gConfigGeneral.WindowLimit = val;
     ConfigSaveDefault();
     // Checks if value decreases and then closes surplus
@@ -1367,7 +1360,7 @@ void WindowRelocateWindows(int32_t width, int32_t height)
 
         // Calculate the new locations
         auto newWinPos = w->windowPos;
-        w->windowPos = { new_location, new_location + TOP_TOOLBAR_HEIGHT + 1 };
+        w->windowPos = { new_location, new_location + kTopToolbarHeight + 1 };
 
         // Move the next new location so windows are not directly on top
         new_location += 8;
@@ -1612,7 +1605,7 @@ static void window_snap_bottom(WindowBase& w, int32_t proximity)
 void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
 {
     auto originalPos = w.windowPos;
-    int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
+    int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : kTopToolbarHeight + 2;
 
     newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
 
@@ -1647,70 +1640,6 @@ int32_t WindowCanResize(const WindowBase& w)
 void TextinputCancel()
 {
     WindowCloseByClass(WindowClass::Textinput);
-}
-
-void WindowStartTextbox(
-    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength)
-{
-    if (gUsingWidgetTextBox)
-        WindowCancelTextbox();
-
-    gUsingWidgetTextBox = true;
-    gCurrentTextBox.window.classification = call_w.classification;
-    gCurrentTextBox.window.number = call_w.number;
-    gCurrentTextBox.widget_index = call_widget;
-    gTextBoxFrameNo = 0;
-
-    WindowCloseByClass(WindowClass::Textinput);
-
-    // Clear the text input buffer
-    gTextBoxInput.clear();
-
-    // Enter in the text input buffer any existing
-    // text.
-    if (existing_text != STR_NONE)
-    {
-        char tempBuf[TEXT_INPUT_SIZE]{};
-        size_t len = FormatStringLegacy(tempBuf, TEXT_INPUT_SIZE, existing_text, &existing_args);
-        gTextBoxInput.assign(tempBuf, len);
-    }
-
-    gTextInput = ContextStartTextInput(gTextBoxInput, maxLength);
-}
-
-void WindowCancelTextbox()
-{
-    if (gUsingWidgetTextBox)
-    {
-        WindowBase* w = WindowFindByNumber(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        gCurrentTextBox.window.classification = WindowClass::Null;
-        gCurrentTextBox.window.number = 0;
-        ContextStopTextInput();
-        gUsingWidgetTextBox = false;
-        if (w != nullptr)
-        {
-            WidgetInvalidate(*w, gCurrentTextBox.widget_index);
-        }
-        gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
-    }
-}
-
-void WindowUpdateTextboxCaret()
-{
-    gTextBoxFrameNo++;
-    if (gTextBoxFrameNo > 30)
-        gTextBoxFrameNo = 0;
-}
-
-void WindowUpdateTextbox()
-{
-    if (gUsingWidgetTextBox)
-    {
-        gTextBoxFrameNo = 0;
-        WindowBase* w = WindowFindByNumber(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        WidgetInvalidate(*w, gCurrentTextBox.widget_index);
-        w->OnTextInput(gCurrentTextBox.widget_index, gTextBoxInput);
-    }
 }
 
 bool WindowIsVisible(WindowBase& w)

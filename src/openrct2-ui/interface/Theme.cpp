@@ -13,7 +13,6 @@
 
 #include "Window.h"
 
-#include <algorithm>
 #include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>

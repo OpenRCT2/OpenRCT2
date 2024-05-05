@@ -19,6 +19,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/object/DefaultObjects.h>
+#include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/ride/RideData.h>
@@ -82,10 +83,10 @@ static Widget _inventionListDragWidgets[] = {
     static void ResearchRidesSetup()
     {
         // Reset all objects to not required
-        for (auto objectType : TransientObjectTypes)
+        for (auto objectType : getTransientObjectTypes())
         {
-            auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
-            for (int32_t i = 0; i < maxObjects; i++)
+            auto maxObjects = getObjectEntryGroupCount(objectType);
+            for (auto i = 0u; i < maxObjects; i++)
             {
                 Editor::ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
             }
@@ -639,7 +640,7 @@ static Widget _inventionListDragWidgets[] = {
             do
             {
                 res = inventionListWindow->GetResearchItemAt(newScreenCoords);
-                newScreenCoords.y += LIST_ROW_HEIGHT;
+                newScreenCoords.y += kListRowHeight;
             } while (res.has_value() && res->research != nullptr && res->research->IsAlwaysResearched());
 
             if (res.has_value())

@@ -32,7 +32,6 @@
 #include "Park.h"
 #include "Scenery.h"
 
-#include <algorithm>
 #include <cstring>
 #include <iterator>
 #include <limits>

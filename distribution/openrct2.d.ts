@@ -217,6 +217,11 @@ declare global {
         readonly mode: GameMode;
 
         /**
+         * Whether the game is currently paused or not.
+         */
+        readonly paused: boolean;
+
+        /**
          * Render the current state of the map and save to disc.
          * Useful for server administration and timelapse creation.
          * @param options Options that control the capture and output file.
@@ -1476,7 +1481,6 @@ declare global {
         occupiedQuadrants: number;
         isGhost: boolean;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
-        owner: number;
     }
 
     interface SurfaceElement extends BaseTileElement {

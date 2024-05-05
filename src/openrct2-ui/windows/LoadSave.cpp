@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <ctime>
 #include <iterator>
 #include <memory>
@@ -31,7 +30,7 @@
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/title/TitleScreen.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -343,18 +342,20 @@ static Widget window_loadsave_widgets[] =
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
             {
                 SetAndSaveConfigPath(gConfigGeneral.LastSaveScenarioDirectory, pathBuffer);
-                int32_t parkFlagsBackup = gameState.ParkFlags;
-                gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                int32_t parkFlagsBackup = gameState.Park.Flags;
+                gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                 gameState.EditorStep = EditorStep::Invalid;
                 gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
                 int32_t success = ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
-                gameState.ParkFlags = parkFlagsBackup;
+                gameState.Park.Flags = parkFlagsBackup;
 
                 if (success)
                 {
                     WindowCloseByClass(WindowClass::Loadsave);
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                    TitleLoad();
+
+                    auto* context = OpenRCT2::GetContext();
+                    context->SetActiveScene(context->GetTitleScene());
                 }
                 else
                 {
@@ -458,8 +459,7 @@ static Widget window_loadsave_widgets[] =
             }
             else
             {
-                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                auto buffer = park.Name;
+                auto buffer = OpenRCT2::GetGameState().Park.Name;
                 if (buffer.empty())
                 {
                     buffer = LanguageGetString(STR_UNNAMED_PARK);

@@ -504,8 +504,7 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
     }
 }
 
-#define PALETTE_TO_G1_OFFSET_COUNT 144
-constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
+constexpr uint8_t kPaletteTotalOffsets = 192;
 
 #define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
@@ -516,9 +515,7 @@ constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
-extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
-extern thread_local uint8_t gPeepPalette[256];
-extern thread_local uint8_t gOtherPalette[256];
+
 extern uint8_t gTextPalette[];
 extern const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT];
 
@@ -631,6 +628,7 @@ void MaskFn(
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
+void UpdatePaletteEffects();
 
 void RefreshVideo(bool recreateWindow);
 void ToggleWindowedMode();

@@ -85,9 +85,9 @@ static void PaintTwist(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = track_map_3x3[direction][trackSequence];
+    trackSequence = kTrackMap3x3[direction][trackSequence];
 
-    const uint8_t edges = edges_3x3[trackSequence];
+    const uint8_t edges = kEdges3x3[trackSequence];
 
     ImageId imageId;
 

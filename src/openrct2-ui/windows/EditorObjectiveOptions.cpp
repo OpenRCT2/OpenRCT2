@@ -12,7 +12,6 @@
 #include "../interface/Window.h"
 #include "Window.h"
 
-#include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
@@ -446,10 +445,11 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                 if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
                     continue;
 
-                const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+                const bool objectiveAllowedByMoneyUsage = !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
                     || !ObjectiveNeedsMoney(i);
                 // This objective can only work if the player can ask money for rides.
-                const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
+                const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME)
+                    || Park::RidePricesUnlocked();
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
                     gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
@@ -662,9 +662,9 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             {
                 case WIDX_PARK_NAME:
                 {
-                    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
                     WindowTextInputRawOpen(
-                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), ParkNameMaxLength);
+                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, gameState.Park.Name.c_str(),
+                        ParkNameMaxLength);
                     break;
                 }
                 case WIDX_SCENARIO_NAME:
@@ -763,11 +763,11 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             objectiveType = GetGameState().ScenarioObjective.Type;
 
             // Check if objective is allowed by money and pay-per-ride settings.
-            const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            const bool objectiveAllowedByMoneyUsage = !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
                 || !ObjectiveNeedsMoney(objectiveType);
             // This objective can only work if the player can ask money for rides.
             const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
-                || ParkRidePricesUnlocked();
+                || Park::RidePricesUnlocked();
             if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
             {
                 // Reset objective
@@ -794,8 +794,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
                     if (gameState.ScenarioName.empty())
                     {
-                        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                        gameState.ScenarioName = park.Name;
+                        gameState.ScenarioName = gameState.Park.Name;
                     }
                     break;
                 }
@@ -972,8 +971,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             widthToSet = widgets[WIDX_PARK_NAME].left - 16;
 
             {
-                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                auto parkName = park.Name.c_str();
+                auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
                 ft = Formatter();
                 ft.Add<StringId>(STR_STRING);

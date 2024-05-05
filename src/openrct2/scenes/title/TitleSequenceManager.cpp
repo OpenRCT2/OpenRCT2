@@ -9,20 +9,19 @@
 
 #include "TitleSequenceManager.h"
 
-#include "../Context.h"
-#include "../OpenRCT2.h"
-#include "../PlatformEnvironment.h"
-#include "../core/Collections.hpp"
-#include "../core/File.h"
-#include "../core/FileScanner.h"
-#include "../core/Memory.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../localisation/Localisation.h"
-#include "../platform/Platform.h"
+#include "../../Context.h"
+#include "../../OpenRCT2.h"
+#include "../../PlatformEnvironment.h"
+#include "../../core/Collections.hpp"
+#include "../../core/File.h"
+#include "../../core/FileScanner.h"
+#include "../../core/Memory.hpp"
+#include "../../core/Path.hpp"
+#include "../../core/String.hpp"
+#include "../../localisation/Localisation.h"
+#include "../../platform/Platform.h"
 #include "TitleSequence.h"
 
-#include <algorithm>
 #include <iterator>
 #include <vector>
 

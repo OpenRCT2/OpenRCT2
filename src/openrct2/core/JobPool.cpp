@@ -9,7 +9,6 @@
 
 #include "JobPool.h"
 
-#include <algorithm>
 #include <cassert>
 
 JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> completionFn)

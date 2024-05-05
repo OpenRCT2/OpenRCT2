@@ -26,7 +26,7 @@ using namespace OpenRCT2::Ui::Windows;
 
 namespace OpenRCT2::Scripting
 {
-    constexpr size_t COLUMN_HEADER_HEIGHT = LIST_ROW_HEIGHT + 1;
+    constexpr size_t COLUMN_HEADER_HEIGHT = kListRowHeight + 1;
 
     template<> ColumnSortOrder FromDuk(const DukValue& d)
     {
@@ -416,7 +416,7 @@ ScreenSize CustomListView::GetSize()
     }
     if (Scrollbars == ScrollbarType::Vertical || Scrollbars == ScrollbarType::Both)
     {
-        result.height = static_cast<int32_t>(Items.size() * LIST_ROW_HEIGHT);
+        result.height = static_cast<int32_t>(Items.size() * kListRowHeight);
         if (ShowColumnHeaders)
         {
             result.height += COLUMN_HEADER_HEIGHT;
@@ -563,7 +563,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
             break;
         }
 
-        if (y + LIST_ROW_HEIGHT >= dpi.y)
+        if (y + kListRowHeight >= dpi.y)
         {
             const auto& itemIndex = static_cast<int32_t>(SortedItems[i]);
             const auto& item = Items[itemIndex];
@@ -571,7 +571,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
             if (item.IsSeparator)
             {
                 const auto& text = item.Cells[0];
-                ScreenSize cellSize = { LastKnownSize.width, LIST_ROW_HEIGHT };
+                ScreenSize cellSize = { LastKnownSize.width, kListRowHeight };
                 PaintSeperator(dpi, { 0, y }, cellSize, text.c_str());
             }
             else
@@ -583,19 +583,19 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
                 if (isSelected)
                 {
                     GfxFilterRect(
-                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (kListRowHeight - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isHighlighted)
                 {
                     GfxFilterRect(
-                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (kListRowHeight - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isStriped)
                 {
                     GfxFillRect(
-                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (kListRowHeight - 1) } },
                         ColourMapA[w->colours[1]].lighter | 0x1000000);
                 }
 
@@ -607,7 +607,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
                         const auto& text = item.Cells[0];
                         if (!text.empty())
                         {
-                            ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
+                            ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), kListRowHeight };
                             PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
                         }
                     }
@@ -623,7 +623,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
                             const auto& text = item.Cells[j];
                             if (!text.empty())
                             {
-                                ScreenSize cellSize = { column.Width, LIST_ROW_HEIGHT };
+                                ScreenSize cellSize = { column.Width, kListRowHeight };
                                 PaintCell(dpi, { x, y }, cellSize, text.c_str(), isHighlighted);
                             }
                         }
@@ -633,7 +633,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
             }
         }
 
-        y += LIST_ROW_HEIGHT;
+        y += kListRowHeight;
     }
 
     if (ShowColumnHeaders)
@@ -657,7 +657,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
                 }
 
                 bool isPressed = ColumnHeaderPressed == j && ColumnHeaderPressedCurrentState;
-                PaintHeading(w, dpi, { x, y }, { column.Width, LIST_ROW_HEIGHT }, column.Header, sortOrder, isPressed);
+                PaintHeading(w, dpi, { x, y }, { column.Width, kListRowHeight }, column.Header, sortOrder, isPressed);
                 x += columnWidth;
             }
         }
@@ -771,7 +771,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         // Check if we pressed the header
         auto& scroll = ParentWindow->scrolls[ScrollIndex];
         int32_t absoluteY = pos.y - scroll.v_top;
-        if (ShowColumnHeaders && absoluteY >= 0 && absoluteY < LIST_ROW_HEIGHT)
+        if (ShowColumnHeaders && absoluteY >= 0 && absoluteY < kListRowHeight)
         {
             result = RowColumn();
             result->Row = HEADER_ROW;
@@ -780,7 +780,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         {
             // Check what row we pressed
             int32_t firstY = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
-            int32_t row = (pos.y - firstY) / LIST_ROW_HEIGHT;
+            int32_t row = (pos.y - firstY) / kListRowHeight;
             if (row >= 0 && row < static_cast<int32_t>(Items.size()))
             {
                 result = RowColumn();

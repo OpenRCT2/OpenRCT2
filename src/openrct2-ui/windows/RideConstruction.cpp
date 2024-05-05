@@ -9,7 +9,6 @@
 
 #include "../ride/Construction.h"
 
-#include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -29,6 +28,7 @@
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
@@ -181,12 +181,6 @@ static Widget _rideConstructionWidgets[] = {
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type);
 
-    static int32_t RideGetAlternativeType(const Ride& ride)
-    {
-        return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride.GetRideTypeDescriptor().AlternateType
-                                                                             : ride.type;
-    }
-
     /* move to ride.c */
     static void CloseRideWindowForConstruction(RideId rideId)
     {
@@ -224,7 +218,7 @@ static Widget _rideConstructionWidgets[] = {
             ShowGridlines();
 
             _currentTrackPrice = kMoney64Undefined;
-            _currentBrakeSpeed2 = 8;
+            _currentBrakeSpeed = 8;
             _currentSeatRotationAngle = 4;
 
             _currentTrackCurve = currentRide->GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
@@ -312,8 +306,8 @@ static Widget _rideConstructionWidgets[] = {
             {
                 return;
             }
-
-            int32_t rideType = RideGetAlternativeType(*currentRide);
+            const auto& rtd = currentRide->GetRideTypeDescriptor();
+            const auto currentTrackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             uint64_t disabledWidgets = 0;
 
@@ -863,7 +857,7 @@ static Widget _rideConstructionWidgets[] = {
                     disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
                 }
             }
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+            if (currentTrackDrawerDescriptor.HasCoveredPieces())
             {
                 disabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
             }
@@ -984,14 +978,6 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_PREVIOUS_SECTION:
                     RideSelectPreviousSection();
                     break;
-                case WIDX_CONSTRUCT:
-                    Construct();
-                    // Force any footpath construction to recheck the area.
-                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
-                    break;
-                case WIDX_DEMOLISH:
-                    MouseUpDemolish();
-                    break;
                 case WIDX_ROTATE:
                     Rotate();
                     break;
@@ -1027,6 +1013,16 @@ static Widget _rideConstructionWidgets[] = {
             WindowRideConstructionUpdateEnabledTrackPieces();
             switch (widgetIndex)
             {
+                case WIDX_CONSTRUCT:
+                {
+                    Construct();
+                    // Force any footpath construction to recheck the area.
+                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
+                    break;
+                }
+                case WIDX_DEMOLISH:
+                    MouseUpDemolish();
+                    break;
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackCurve = EnumValue(TrackCurve::Left);
@@ -1340,10 +1336,9 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
-                        uint8_t maxBrakesSpeed = 30;
+                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
                         uint8_t brakesSpeed = *brakesSpeedPtr + 2;
-                        if (brakesSpeed <= maxBrakesSpeed)
+                        if (brakesSpeed <= kMaximumBrakeSpeed)
                         {
                             if (_rideConstructionState == RideConstructionState::Selected)
                             {
@@ -1367,7 +1362,7 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
+                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
                         uint8_t brakesSpeed = *brakesSpeedPtr - 2;
                         if (brakesSpeed >= 2)
                         {
@@ -1455,7 +1450,7 @@ static Widget _rideConstructionWidgets[] = {
                     break;
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
-                    _currentBrakeSpeed2 = kRCT2DefaultBlockBrakeSpeed;
+                    _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
             }
             _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
             WindowRideConstructionUpdateActiveElements();
@@ -1513,13 +1508,17 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_currentlyShowingBrakeOrBoosterSpeed)
             {
-                uint16_t brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
+                uint16_t brakeSpeed2 = ((_currentBrakeSpeed * 9) >> 2) & 0xFFFF;
                 if (TrackTypeIsBooster(_selectedTrackType)
                     || TrackTypeIsBooster(_currentTrackCurve & ~RideConstructionSpecialPieceSelected))
                 {
                     brakeSpeed2 = GetBoosterSpeed(currentRide->type, brakeSpeed2);
                 }
                 ft.Add<uint16_t>(brakeSpeed2);
+            }
+            else
+            {
+                ft.Increment(2);
             }
 
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
@@ -1542,8 +1541,6 @@ static Widget _rideConstructionWidgets[] = {
             }
 
             // Set window title arguments
-            ft = Formatter::Common();
-            ft.Increment(4);
             currentRide->FormatNameTo(ft);
         }
 
@@ -1581,7 +1578,7 @@ static Widget _rideConstructionWidgets[] = {
                 DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
             screenCoords.y += 11;
-            if (_currentTrackPrice != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (_currentTrackPrice != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);
@@ -1596,10 +1593,12 @@ static Widget _rideConstructionWidgets[] = {
             {
                 return;
             }
-            int32_t rideType = RideGetAlternativeType(*currentRide);
 
-            hold_down_widgets = 0;
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
+            const auto& rtd = GetRideTypeDescriptor(currentRide->type);
+            auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
+
+            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH);
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
                 widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -1677,7 +1676,7 @@ static Widget _rideConstructionWidgets[] = {
             widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
             widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP);
             widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-            if (GetRideTypeDescriptor(rideType).SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+            if (trackDrawerDescriptor.SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
                 widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
@@ -1699,7 +1698,7 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     // Enable helix
                     widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-                    if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+                    if (currentRide->type != RIDE_TYPE_SPLASH_BOATS && currentRide->type != RIDE_TYPE_RIVER_RAFTS)
                         widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
                 }
             }
@@ -1865,7 +1864,6 @@ static Widget _rideConstructionWidgets[] = {
                 || _selectedTrackType > TrackElemType::HighestAlias
                 || _currentTrackCurve > (RideConstructionSpecialPieceSelected | TrackElemType::HighestAlias);
 
-            const auto& rtd = GetRideTypeDescriptor(rideType);
             bool rideHasSeatRotation = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_SEAT_ROTATION);
 
             if (!trackHasSpeedSetting)
@@ -1876,33 +1874,42 @@ static Widget _rideConstructionWidgets[] = {
                     widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
                 }
-                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+                if (trackDrawerDescriptor.HasCoveredPieces())
                 {
-                    if (rideType == RIDE_TYPE_WATER_COASTER)
-                    {
-                        widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_RC_TRACK);
-                        widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_WATER_CHANNEL);
-                        widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP;
-                        widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP;
-                        if ((_currentTrackCurve < EnumValue(TrackCurve::LeftSmall)
-                             || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::SBendLeft)
-                             || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::SBendRight))
-                            && _currentTrackPitchEnd == TrackPitch::None && _currentTrackRollEnd == TrackRoll::None)
-                        {
-                            widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                            widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                            widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
-                        }
-                    }
-                    else
+                    widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
+                    widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
+                    widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+
+                    if (rtd.Category == RIDE_CATEGORY_WATER)
                     {
                         widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK);
                         widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK);
                         widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP;
                         widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP;
-                        widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                        widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                        widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+                    }
+                    else
+                    {
+                        widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_RC_TRACK);
+                        widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_WATER_CHANNEL);
+                        widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP;
+                        widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP;
+                    }
+
+                    // TODO: Read these from the TrackDrawerEntry
+                    if (currentRide->type == RIDE_TYPE_WATER_COASTER)
+                    {
+                        const bool hasCoveredVersion = (_currentTrackCurve < EnumValue(TrackCurve::LeftSmall)
+                                                        || _currentTrackCurve
+                                                            == (RideConstructionSpecialPieceSelected | TrackElemType::SBendLeft)
+                                                        || _currentTrackCurve
+                                                            == (RideConstructionSpecialPieceSelected
+                                                                | TrackElemType::SBendRight))
+                            && _currentTrackPitchEnd == TrackPitch::None && _currentTrackRollEnd == TrackRoll::None;
+                        if (!hasCoveredVersion)
+                        {
+                            widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
+                            widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
+                        }
                     }
                 }
             }
@@ -1932,7 +1939,7 @@ static Widget _rideConstructionWidgets[] = {
                 widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WindowWidgetType::Button;
                 widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
 
-                ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, 138 }, { 85, SPINNER_HEIGHT });
+                ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, 138 }, { 85, kSpinnerHeight });
 
                 hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
@@ -1986,7 +1993,7 @@ static Widget _rideConstructionWidgets[] = {
             widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
             widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
             {
                 widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
                 widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
@@ -2085,7 +2092,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (!_currentlyShowingBrakeOrBoosterSpeed)
             {
-                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+                if (trackDrawerDescriptor.HasCoveredPieces())
                 {
                     if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
                     {
@@ -2350,14 +2357,6 @@ static Widget _rideConstructionWidgets[] = {
                 const PreviewTrack* trackBlock = ted.Block;
                 newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
                 _gotoStartPlacementMode = true;
-
-                // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
-                auto currentRide = GetRide(_currentRideIndex);
-                const auto& rtd = currentRide->GetRideTypeDescriptor();
-                if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
-                {
-                    RideInitialiseConstructionWindow(*currentRide);
-                }
             }
 
             auto trackRemoveAction = TrackRemoveAction(
@@ -2374,6 +2373,13 @@ static Widget _rideConstructionWidgets[] = {
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
+                        // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
+                        const auto& rtd = currentRide->GetRideTypeDescriptor();
+                        if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+                        {
+                            RideInitialiseConstructionWindow(*currentRide);
+                        }
+
                         WindowRideConstructionMouseUpDemolishNextPiece({ *newCoords, static_cast<Direction>(direction) }, type);
                     }
                 }
@@ -3044,7 +3050,7 @@ static Widget _rideConstructionWidgets[] = {
             {
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
                 if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
-                    _currentBrakeSpeed2 = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+                    _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
                 _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
             }
         }
@@ -3067,8 +3073,8 @@ static Widget _rideConstructionWidgets[] = {
         if (rideEntry == nullptr)
             return;
 
-        int32_t rideType = RideGetAlternativeType(*ride);
-        UpdateEnabledRidePieces(rideType);
+        auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->GetRideTypeDescriptor());
+        UpdateEnabledRidePieces(trackDrawerDescriptor);
     }
 
     /**
@@ -3619,7 +3625,7 @@ static Widget _rideConstructionWidgets[] = {
                 break;
 
             gDisableErrorWindowSound = true;
-            w->OnMouseUp(WIDX_CONSTRUCT);
+            w->OnMouseDown(WIDX_CONSTRUCT);
             gDisableErrorWindowSound = false;
 
             if (_trackPlaceCost == kMoney64Undefined)
@@ -4528,7 +4534,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_CONSTRUCT);
+        w->OnMouseDown(WIDX_CONSTRUCT);
     }
 
     void WindowRideConstructionKeyboardShortcutDemolishCurrent()
@@ -4539,7 +4545,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_DEMOLISH);
+        w->OnMouseDown(WIDX_DEMOLISH);
     }
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type)

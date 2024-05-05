@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -371,7 +370,7 @@ static StringId window_cheats_page_titles[] = {
         void OnOpen() override
         {
             SetPage(WINDOW_CHEATS_PAGE_MONEY);
-            _parkRatingSpinnerValue = ParkGetForcedRating() >= 0 ? ParkGetForcedRating() : 999;
+            _parkRatingSpinnerValue = Park::GetForcedRating() >= 0 ? Park::GetForcedRating() : 999;
         }
 
         void OnUpdate() override
@@ -459,7 +458,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 case WINDOW_CHEATS_PAGE_MONEY:
                 {
-                    auto moneyDisabled = (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) != 0;
+                    auto moneyDisabled = (gameState.Park.Flags & PARK_FLAGS_NO_MONEY) != 0;
                     SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
                     SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
@@ -480,9 +479,9 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_MISC:
-                    widgets[WIDX_OPEN_CLOSE_PARK].text = (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
-                                                                                                      : STR_CHEAT_OPEN_PARK;
-                    SetCheckboxValue(WIDX_FORCE_PARK_RATING, ParkGetForcedRating() >= 0);
+                    widgets[WIDX_OPEN_CLOSE_PARK].text = (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
+                                                                                                       : STR_CHEAT_OPEN_PARK;
+                    SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
                     SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.FreezeWeather);
                     SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.NeverendingMarketing);
                     SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.Cheats.DisablePlantAging);
@@ -788,7 +787,7 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_NO_MONEY:
-                    CheatsSet(CheatType::NoMoney, GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
+                    CheatsSet(CheatType::NoMoney, GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
                     MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
@@ -814,7 +813,7 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_INCREASE_PARK_RATING:
                     _parkRatingSpinnerValue = std::min(999, 10 * (_parkRatingSpinnerValue / 10 + 1));
                     InvalidateWidget(WIDX_PARK_RATING_SPINNER);
-                    if (ParkGetForcedRating() >= 0)
+                    if (Park::GetForcedRating() >= 0)
                     {
                         auto cheatSetAction = CheatSetAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                         GameActions::Execute(&cheatSetAction);
@@ -823,7 +822,7 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_DECREASE_PARK_RATING:
                     _parkRatingSpinnerValue = std::max(0, 10 * (_parkRatingSpinnerValue / 10 - 1));
                     InvalidateWidget(WIDX_PARK_RATING_SPINNER);
-                    if (ParkGetForcedRating() >= 0)
+                    if (Park::GetForcedRating() >= 0)
                     {
                         CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                     }
@@ -913,7 +912,7 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::NeverEndingMarketing, !gameState.Cheats.NeverendingMarketing);
                     break;
                 case WIDX_FORCE_PARK_RATING:
-                    if (ParkGetForcedRating() >= 0)
+                    if (Park::GetForcedRating() >= 0)
                     {
                         CheatsSet(CheatType::SetForcedParkRating, -1);
                     }
@@ -972,31 +971,31 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_GUEST_HAPPINESS_MAX:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, PEEP_MAX_HAPPINESS);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, kPeepMaxHappiness);
                     break;
                 case WIDX_GUEST_HAPPINESS_MIN:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, 0);
                     break;
                 case WIDX_GUEST_ENERGY_MAX:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, PEEP_MAX_ENERGY);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, kPeepMaxEnergy);
                     break;
                 case WIDX_GUEST_ENERGY_MIN:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, PEEP_MIN_ENERGY);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, kPeepMinEnergy);
                     break;
                 case WIDX_GUEST_HUNGER_MAX:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, 0);
                     break;
                 case WIDX_GUEST_HUNGER_MIN:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, PEEP_MAX_HUNGER);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, kPeepMaxHunger);
                     break;
                 case WIDX_GUEST_THIRST_MAX:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, 0);
                     break;
                 case WIDX_GUEST_THIRST_MIN:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, PEEP_MAX_THIRST);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, kPeepMaxThirst);
                     break;
                 case WIDX_GUEST_NAUSEA_MAX:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, PEEP_MAX_NAUSEA);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, kPeepMaxNausea);
                     break;
                 case WIDX_GUEST_NAUSEA_MIN:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, 0);
@@ -1010,7 +1009,7 @@ static StringId window_cheats_page_titles[] = {
                         CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::None));
                     break;
                 case WIDX_GUEST_TOILET_MAX:
-                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, PEEP_MAX_TOILET);
+                    CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, kPeepMaxToilet);
                     break;
                 case WIDX_GUEST_TOILET_MIN:
                     CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, 0);

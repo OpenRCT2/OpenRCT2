@@ -60,16 +60,16 @@ GameActions::Result ParkSetParameterAction::Execute() const
     switch (_parameter)
     {
         case ParkParameter::Close:
-            if (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN)
+            if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
             {
-                gameState.ParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+                gameState.Park.Flags &= ~PARK_FLAGS_PARK_OPEN;
                 WindowInvalidateByClass(WindowClass::ParkInformation);
             }
             break;
         case ParkParameter::Open:
-            if (!(gameState.ParkFlags & PARK_FLAGS_PARK_OPEN))
+            if (!(gameState.Park.Flags & PARK_FLAGS_PARK_OPEN))
             {
-                gameState.ParkFlags |= PARK_FLAGS_PARK_OPEN;
+                gameState.Park.Flags |= PARK_FLAGS_PARK_OPEN;
                 WindowInvalidateByClass(WindowClass::ParkInformation);
             }
             break;

@@ -114,7 +114,6 @@
 #include <Availability.h>
 #endif
 
-#include <algorithm>
 #include <cctype>
 #include <chrono>
 #include <clocale>

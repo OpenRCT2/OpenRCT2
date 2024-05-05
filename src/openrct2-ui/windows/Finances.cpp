@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -230,7 +229,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
         void SetDisabledTabs()
         {
-            disabled_widgets = (GetGameState().ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            disabled_widgets = (GetGameState().Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
         }
 
     public:
@@ -368,7 +367,7 @@ static Widget _windowFinancesResearchWidgets[] =
             if (page != WINDOW_FINANCES_PAGE_SUMMARY)
                 return;
 
-            auto screenCoords = ScreenCoordsXY{ 0, TABLE_CELL_HEIGHT + 2 };
+            auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
             Widget self = widgets[WIDX_SUMMARY_SCROLL];
             int32_t row_width = std::max<uint16_t>(scrolls[0].h_right, self.width());
@@ -381,10 +380,10 @@ static Widget _windowFinancesResearchWidgets[] =
                     GfxFillRect(
                         dpi,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
-                          screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
+                          screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1]].lighter | 0x1000000);
 
-                screenCoords.y += TABLE_CELL_HEIGHT;
+                screenCoords.y += kTableCellHeight;
             }
 
             auto& gameState = GetGameState();
@@ -422,7 +421,7 @@ static Widget _windowFinancesResearchWidgets[] =
                             dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
                             { TextAlignment::RIGHT });
                     }
-                    screenCoords.y += TABLE_CELL_HEIGHT;
+                    screenCoords.y += kTableCellHeight;
                 }
                 screenCoords.y += 4;
 
@@ -554,12 +553,11 @@ static Widget _windowFinancesResearchWidgets[] =
                 if (i % 2 == 0)
                     GfxFillRect(
                         dpi,
-                        { screenCoords - ScreenCoordsXY{ 0, 1 },
-                          screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
+                        { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1]].lighter | 0x1000000);
 
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
-                screenCoords.y += TABLE_CELL_HEIGHT;
+                screenCoords.y += kTableCellHeight;
             }
 
             // Horizontal rule below expenditure / income table
@@ -569,7 +567,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // Loan and interest rate
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
-            if (!(gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST))
+            if (!(gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gameState.BankLoanInterestRate);
@@ -596,7 +594,7 @@ static Widget _windowFinancesResearchWidgets[] =
             {
                 // Park value and company value
                 ft = Formatter();
-                ft.Add<money64>(gameState.ParkValue);
+                ft.Add<money64>(gameState.Park.Value);
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
                 ft.Add<money64>(gameState.CompanyValue);
@@ -688,7 +686,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // Park value
             auto ft = Formatter();
-            ft.Add<money64>(gameState.ParkValue);
+            ft.Add<money64>(gameState.Park.Value);
             DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
             // Graph
@@ -698,7 +696,7 @@ static Widget _windowFinancesResearchWidgets[] =
             int32_t yAxisScale = 0;
             for (int32_t i = 0; i < 64; i++)
             {
-                auto balance = gameState.ParkValueHistory[i];
+                auto balance = gameState.Park.ValueHistory[i];
                 if (balance == kMoney64Undefined)
                     continue;
 
@@ -730,7 +728,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // X axis labels and values
             coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-            Graph::Draw(dpi, gameState.ParkValueHistory, 64, coords, yAxisScale, 0);
+            Graph::Draw(dpi, gameState.Park.ValueHistory, 64, coords, yAxisScale, 0);
         }
 
 #pragma endregion
@@ -809,7 +807,7 @@ static Widget _windowFinancesResearchWidgets[] =
         {
             // Count number of active campaigns
             int32_t numActiveCampaigns = static_cast<int32_t>(gMarketingCampaigns.size());
-            int32_t y = std::max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
+            int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
 
             // Update group box positions
             _windowFinancesMarketingWidgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
@@ -825,8 +823,8 @@ static Widget _windowFinancesResearchWidgets[] =
                 {
                     campaignButton->type = WindowWidgetType::Button;
                     campaignButton->top = y;
-                    campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
-                    y += BUTTON_FACE_HEIGHT + 2;
+                    campaignButton->bottom = y + kButtonFaceHeight + 1;
+                    y += kButtonFaceHeight + 2;
                 }
                 else
                 {
@@ -870,8 +868,7 @@ static Widget _windowFinancesResearchWidgets[] =
                         break;
                     default:
                     {
-                        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                        auto parkName = park.Name.c_str();
+                        auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }
@@ -887,13 +884,13 @@ static Widget _windowFinancesResearchWidgets[] =
                     dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
                     weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
 
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             if (noCampaignsActive)
             {
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 34;
 
@@ -909,7 +906,7 @@ static Widget _windowFinancesResearchWidgets[] =
                     ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
 
-                    screenCoords.y += BUTTON_FACE_HEIGHT + 2;
+                    screenCoords.y += kButtonFaceHeight + 2;
                 }
             }
         }

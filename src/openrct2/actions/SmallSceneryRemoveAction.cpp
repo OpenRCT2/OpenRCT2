@@ -79,7 +79,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
         && !GetGameState().Cheats.SandboxMode)
     {
         // Check if allowed to remove item
-        if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             {

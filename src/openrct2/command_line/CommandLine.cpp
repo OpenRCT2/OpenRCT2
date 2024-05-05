@@ -14,7 +14,6 @@
 #include "../core/String.hpp"
 #include "../platform/Platform.h"
 
-#include <algorithm>
 #include <cstring>
 
 #pragma region CommandLineArgEnumerator

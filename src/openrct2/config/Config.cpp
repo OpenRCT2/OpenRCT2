@@ -20,7 +20,6 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../interface/Window.h"
 #include "../localisation/Currency.h"
-#include "../localisation/Date.h"
 #include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -217,7 +216,7 @@ namespace Config
             model->LastSaveScenarioDirectory = reader->GetString("last_scenario_directory", "");
             model->LastSaveTrackDirectory = reader->GetString("last_track_directory", "");
             model->UseNativeBrowseDialog = reader->GetBoolean("use_native_browse_dialog", false);
-            model->WindowLimit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
+            model->WindowLimit = reader->GetInt32("window_limit", kWindowLimitMax);
             model->ZoomToCursor = reader->GetBoolean("zoom_to_cursor", true);
             model->RenderWeatherEffects = reader->GetBoolean("render_weather_effects", true);
             model->RenderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
@@ -422,7 +421,7 @@ namespace Config
 
             auto model = &gConfigNetwork;
             model->PlayerName = std::move(playerName);
-            model->DefaultPort = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
+            model->DefaultPort = reader->GetInt32("default_port", kNetworkDefaultPort);
             model->ListenAddress = reader->GetString("listen_address", "");
             model->DefaultPassword = reader->GetString("default_password", "");
             model->StayConnected = reader->GetBoolean("stay_connected", true);

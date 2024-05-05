@@ -186,7 +186,7 @@ STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
 STR_0770    :Aufseher {INT32}
 STR_0771    :Animateur {INT32}
-STR_0777    :Unbenannter Park{POP16}{POP16}
+STR_0777    :Unbenannter Park
 STR_0778    :Schild
 STR_0779    :1.
 STR_0780    :2.

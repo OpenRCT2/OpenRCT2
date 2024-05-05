@@ -220,9 +220,9 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto ft = Formatter();
-    if (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN)
+    if (GetGameState().Park.Flags & PARK_FLAGS_PARK_OPEN)
     {
-        const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        const auto& park = OpenRCT2::GetGameState().Park;
         auto name = park.Name.c_str();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);

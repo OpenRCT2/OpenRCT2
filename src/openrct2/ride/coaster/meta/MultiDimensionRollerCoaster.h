@@ -17,13 +17,18 @@
 // clang-format off
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_VERTICAL, TRACK_BLOCK_BRAKES, TRACK_INLINE_TWIST_UNINVERTED,TRACK_QUARTER_LOOP_UNINVERTED_UP, TRACK_QUARTER_LOOP_UNINVERTED_DOWN, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMultiDimensionRC),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionMultiDimensionRC,
+        .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_VERTICAL, TRACK_BLOCK_BRAKES, TRACK_INLINE_TWIST_UNINVERTED,TRACK_QUARTER_LOOP_UNINVERTED_UP, TRACK_QUARTER_LOOP_UNINVERTED_DOWN, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionMultiDimensionRC,
+        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_VERTICAL, TRACK_BLOCK_BRAKES, TRACK_INLINE_TWIST_INVERTED, TRACK_QUARTER_LOOP_INVERTED_UP, TRACK_QUARTER_LOOP_INVERTED_DOWN},
+        .ExtraTrackPieces = {},
+    }),
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
@@ -88,13 +93,18 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_NONE,
-    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_VERTICAL, TRACK_BLOCK_BRAKES, TRACK_INLINE_TWIST_INVERTED, TRACK_QUARTER_LOOP_INVERTED_UP, TRACK_QUARTER_LOOP_INVERTED_DOWN},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(nullptr),
+    .TrackPaintFunctions = TrackDrawerDescriptor({ 
+        .Drawer = nullptr,
+        .EnabledTrackPieces = {  },
+        .ExtraTrackPieces = {  },
+    }),
+    .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = nullptr,
+        .EnabledTrackPieces = {  },
+        .ExtraTrackPieces = {  },
+    }),
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAG_HAS_SEAT_ROTATION,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
@@ -150,4 +160,5 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
         },
     },
 };
+
 // clang-format on

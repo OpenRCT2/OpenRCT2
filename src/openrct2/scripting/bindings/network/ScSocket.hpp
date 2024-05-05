@@ -18,7 +18,6 @@
 #        include "../../Duktape.hpp"
 #        include "../../ScriptEngine.h"
 
-#        include <algorithm>
 #        include <memory>
 #        include <vector>
 

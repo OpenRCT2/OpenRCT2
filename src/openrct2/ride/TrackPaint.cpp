@@ -50,88 +50,11 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { -1, 0 },
 };
 
-const uint8_t track_map_2x2[][4] = {
-    { 0, 1, 2, 3 },
-    { 1, 3, 0, 2 },
-    { 3, 2, 1, 0 },
-    { 2, 0, 3, 1 },
-};
-
-const uint8_t edges_2x2[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE | EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-};
-
-const uint8_t track_map_3x3[][9] = {
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8 },
-    { 0, 3, 5, 7, 2, 8, 1, 6, 4 },
-    { 0, 7, 8, 6, 5, 4, 3, 1, 2 },
-    { 0, 6, 4, 1, 8, 2, 7, 3, 5 },
-};
-
-// clang-format off
-const uint8_t edges_3x3[] = {
-    0,
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-    EDGE_SW,
-};
-// clang-format on
-
-const uint8_t track_map_4x4[][16] = {
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
-    { 3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12 },
-    { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
-    { 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 },
-};
-
-// clang-format off
-const uint8_t edges_4x4[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW | EDGE_SW,
-    EDGE_SW,
-    EDGE_SW,
-    EDGE_SW | EDGE_SE,
-};
-// clang-format on
-
-const int32_t DiagBlockedSegments[] = {
-    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
-    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
-    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
-    EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
-};
-
 const MetalSupportPlace DiagSupportPlacement[] = {
     MetalSupportPlace::LeftCorner,
     MetalSupportPlace::TopCorner,
     MetalSupportPlace::RightCorner,
     MetalSupportPlace::BottomCorner,
-};
-
-const uint8_t track_map_1x4[][4] = {
-    { 0, 1, 2, 3 },
-    { 2, 3, 0, 1 },
-    { 2, 3, 0, 1 },
-    { 0, 1, 2, 3 },
 };
 
 const uint32_t floorSpritesCork[] = {
@@ -1625,19 +1548,12 @@ constexpr CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
     },
 };
 
-static constexpr int8_t right_quarter_turn_3_tiles_sprite_map[] = {
-    0,
-    -1,
-    1,
-    2,
-};
-
 void TrackPaintUtilRightQuarterTurn3TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
     const CoordsXYZ boundsOffsets[4][3])
 {
-    int32_t index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int32_t index = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (index < 0)
     {
         return;
@@ -1665,7 +1581,7 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint2WithHeightOffset(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
 {
-    int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int8_t sprite = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (sprite < 0)
     {
         return;
@@ -1753,7 +1669,7 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint3(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[4][3])
 {
-    int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int8_t sprite = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (sprite < 0)
     {
         return;
@@ -1770,7 +1686,7 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint4(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[4][3])
 {
-    int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+    int8_t sprite = kRightQuarterTurn3TilesSpriteMap[trackSequence];
     if (sprite < 0)
     {
         return;
@@ -2309,21 +2225,13 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        auto paintFunctions = rtd.TrackPaintFunctions;
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter;
-        if (TrackElementIsCovered(trackType))
+        bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
+        const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
+
+        if (trackDrawerEntry.Drawer != nullptr)
         {
             trackType = UncoverTrackElement(trackType);
-            paintFunctionGetter = paintFunctions.Covered;
-        }
-        else
-        {
-            paintFunctionGetter = paintFunctions.Regular;
-        }
-
-        if (paintFunctionGetter != nullptr)
-        {
-            TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
+            TRACK_PAINT_FUNCTION paintFunction = trackDrawerEntry.Drawer(trackType);
             if (paintFunction != nullptr)
             {
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement);

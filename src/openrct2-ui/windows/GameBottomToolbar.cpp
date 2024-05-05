@@ -9,7 +9,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -26,6 +25,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
@@ -92,7 +92,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
             auto& gameState = GetGameState();
 
             // Draw money
-            if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 Widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
@@ -143,7 +143,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 Widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-                DrawParkRating(dpi, colours[3], screenCoords, std::max(10, ((gameState.ParkRating / 4) * 263) / 256));
+                DrawParkRating(dpi, colours[3], screenCoords, std::max(10, ((gameState.Park.Rating / 4) * 263) / 256));
             }
         }
 
@@ -422,7 +422,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
             {
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
-                    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                    if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
                         ContextOpenWindow(WindowClass::Finances);
                     break;
                 case WIDX_GUESTS:
@@ -478,10 +478,10 @@ static Widget window_game_bottom_toolbar_widgets[] =
             {
                 case WIDX_MONEY:
                     ft.Add<money64>(gameState.CurrentProfit);
-                    ft.Add<money64>(gameState.ParkValue);
+                    ft.Add<money64>(gameState.Park.Value);
                     break;
                 case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(gameState.ParkRating);
+                    ft.Add<int16_t>(gameState.Park.Rating);
                     break;
             }
             return { fallback, ft };
@@ -504,7 +504,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 + 1;
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-            if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
                 widgets[WIDX_GUESTS].top = 1;

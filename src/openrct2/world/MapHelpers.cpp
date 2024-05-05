@@ -12,8 +12,6 @@
 #include "Map.h"
 #include "Surface.h"
 
-#include <algorithm>
-
 static uint8_t GetBaseHeightOrZero(int32_t x, int32_t y)
 {
     auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });

@@ -14,7 +14,6 @@
 #include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
-#include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -63,7 +62,7 @@ static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int3
 {
     if (loc.x < 0)
         return false;
-    if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
     if (loc.x + width > ContextGetWidth())
         return false;
@@ -84,7 +83,7 @@ static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t
     unk = screenWidth + (unk * 2);
     if (loc.x > unk)
         return false;
-    if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
     unk = screenHeight - (height / 4);
     if (loc.y > unk)
@@ -101,7 +100,7 @@ static ScreenCoordsXY ClampWindowToScreen(
     else if (screenPos.x + width > screenWidth)
         screenPos.x = screenWidth - width;
 
-    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (TOP_TOOLBAR_HEIGHT + 1);
+    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (kTopToolbarHeight + 1);
     if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
         screenPos.y = toolbarAllowance;
     else if (screenPos.y + height - toolbarAllowance > screenHeight)
@@ -205,7 +204,7 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
     auto uiContext = GetContext()->GetUiContext();
     auto screenWidth = uiContext->GetWidth();
     auto screenHeight = uiContext->GetHeight();
-    return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
+    return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
 }
 
 WindowBase* WindowCreate(
@@ -224,8 +223,8 @@ WindowBase* WindowCreate(
     }
 
     // Check if there are any window slots left
-    // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.WindowLimit + WINDOW_LIMIT_RESERVED))
+    // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
+    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.WindowLimit + kWindowLimitReserved))
     {
         // Close least recently used window
         for (auto& w : g_window_list)
@@ -835,6 +834,12 @@ ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 
 namespace OpenRCT2::Ui::Windows
 {
+    static u8string _textBoxInput;
+    static int32_t _textBoxFrameNo = 0;
+    static bool _usingWidgetTextBox = false;
+    static TextInputSession* _textInput;
+    static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+
     WindowBase* WindowGetListening()
     {
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -858,5 +863,78 @@ namespace OpenRCT2::Ui::Windows
     WindowClass WindowGetClassification(const WindowBase& window)
     {
         return window.classification;
+    }
+
+    void WindowStartTextbox(const WindowBase& callW, WidgetIndex callWidget, u8string existingText, int32_t maxLength)
+    {
+        if (_usingWidgetTextBox)
+            WindowCancelTextbox();
+
+        _usingWidgetTextBox = true;
+        _currentTextBox.window.classification = callW.classification;
+        _currentTextBox.window.number = callW.number;
+        _currentTextBox.widget_index = callWidget;
+        _textBoxFrameNo = 0;
+
+        WindowCloseByClass(WindowClass::Textinput);
+
+        _textBoxInput = existingText;
+
+        _textInput = ContextStartTextInput(_textBoxInput, maxLength);
+    }
+
+    void WindowCancelTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            _currentTextBox.window.classification = WindowClass::Null;
+            _currentTextBox.window.number = 0;
+            ContextStopTextInput();
+            _usingWidgetTextBox = false;
+            if (w != nullptr)
+            {
+                WidgetInvalidate(*w, _currentTextBox.widget_index);
+            }
+            _currentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
+        }
+    }
+
+    void WindowUpdateTextboxCaret()
+    {
+        _textBoxFrameNo++;
+        if (_textBoxFrameNo > 30)
+            _textBoxFrameNo = 0;
+    }
+
+    void WindowUpdateTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            _textBoxFrameNo = 0;
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
+        }
+    }
+    const TextInputSession* GetTextboxSession()
+    {
+        return _textInput;
+    }
+    void SetTexboxSession(TextInputSession* session)
+    {
+        _textInput = session;
+    }
+    bool IsUsingWidgetTextBox()
+    {
+        return _usingWidgetTextBox;
+    }
+    bool TextBoxCaretIsFlashed()
+    {
+        return _textBoxFrameNo <= 15;
+    }
+    const WidgetIdentifier& GetCurrentTextBox()
+    {
+        return _currentTextBox;
     }
 } // namespace OpenRCT2::Ui::Windows

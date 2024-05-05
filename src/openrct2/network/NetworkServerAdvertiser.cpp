@@ -107,7 +107,7 @@ private:
         {
             if (_lanListener->GetStatus() != SocketStatus::Listening)
             {
-                _lanListener->Listen(NETWORK_LAN_BROADCAST_PORT);
+                _lanListener->Listen(kNetworkLanBroadcastPort);
             }
             else
             {
@@ -119,7 +119,7 @@ private:
                 {
                     std::string sender = endpoint->GetHostname();
                     LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
-                    if (String::Equals(buffer, NETWORK_LAN_BROADCAST_MSG))
+                    if (String::Equals(buffer, kNetworkLanBroadcastMsg))
                     {
                         auto body = GetBroadcastJson();
                         auto bodyDump = body.dump();
@@ -309,10 +309,10 @@ private:
             { "day", date.GetMonthTicks() },
             { "month", date.GetMonthsElapsed() },
             { "guests", gameState.NumGuestsInPark },
-            { "parkValue", gameState.ParkValue },
+            { "parkValue", gameState.Park.Value },
         };
 
-        if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             gameInfo["cash"] = gameState.Cash;
         }

@@ -49,7 +49,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode
-        && GetGameState().ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+        && GetGameState().Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }

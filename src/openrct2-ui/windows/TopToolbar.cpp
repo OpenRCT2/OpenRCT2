@@ -11,7 +11,6 @@
 #include "../interface/InGameConsole.h"
 #include "../scripting/CustomMenu.h"
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -119,19 +118,20 @@ namespace OpenRCT2::Ui::Windows
     {
         DDIDX_NEW_GAME = 0,
         DDIDX_LOAD_GAME = 1,
-        DDIDX_SAVE_GAME = 2,
-        DDIDX_SAVE_GAME_AS = 3,
         // separator
-        DDIDX_ABOUT = 5,
-        DDIDX_OPTIONS = 6,
-        DDIDX_SCREENSHOT = 7,
-        DDIDX_GIANT_SCREENSHOT = 8,
+        DDIDX_SAVE_GAME = 3,
+        DDIDX_SAVE_GAME_AS = 4,
         // separator
-        DDIDX_FILE_BUG_ON_GITHUB = 10,
-        DDIDX_UPDATE_AVAILABLE = 11,
+        DDIDX_ABOUT = 6,
+        DDIDX_OPTIONS = 7,
+        DDIDX_SCREENSHOT = 8,
+        DDIDX_GIANT_SCREENSHOT = 9,
         // separator
-        DDIDX_QUIT_TO_MENU = 13,
-        DDIDX_EXIT_OPENRCT2 = 14,
+        DDIDX_FILE_BUG_ON_GITHUB = 11,
+        DDIDX_UPDATE_AVAILABLE = 12,
+        // separator
+        DDIDX_QUIT_TO_MENU = 14,
+        DDIDX_EXIT_OPENRCT2 = 15,
     };
 
     enum TopToolbarViewMenuDdidx
@@ -252,33 +252,33 @@ static constexpr int32_t right_aligned_widgets_order[] = {
 #pragma endregion
 
 static Widget _topToolbarWidgets[] = {
-    MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
-    MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
-    MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
-    MakeRemapWidget({100, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
-    MakeRemapWidget({130, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
-    MakeRemapWidget({160, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
-    MakeRemapWidget({190, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
-    MakeRemapWidget({220, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
-    MakeRemapWidget({267, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
-    MakeRemapWidget({297, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
-    MakeRemapWidget({327, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
-    MakeRemapWidget({357, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
-    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
-    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
-    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
-    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
-    MakeWidget     ({  0, 0}, {10,                      1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
+    MakeRemapWidget({  0, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
+    MakeRemapWidget({ 60, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
+    MakeRemapWidget({250, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
+    MakeRemapWidget({100, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
+    MakeRemapWidget({130, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
+    MakeRemapWidget({160, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
+    MakeRemapWidget({190, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
+    MakeRemapWidget({220, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
+    MakeRemapWidget({267, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
+    MakeRemapWidget({297, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
+    MakeRemapWidget({327, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
+    MakeRemapWidget({357, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
+    MakeRemapWidget({387, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
+    MakeRemapWidget({490, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
+    MakeRemapWidget({520, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
+    MakeRemapWidget({550, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
+    MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
+    MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
+    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
+    MakeWidget     ({  0, 0}, {10,                     1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
     kWidgetsEnd,
 };
     // clang-format on
@@ -289,6 +289,7 @@ static Widget _topToolbarWidgets[] = {
     {
     private:
         bool _landToolBlocked{ false };
+        bool _waitingForPause{ false };
         uint8_t _unkF64F0E{ 0 };
         int16_t _unkF64F0A{ 0 };
 
@@ -307,6 +308,8 @@ static Widget _topToolbarWidgets[] = {
         void InitRotateMenu(Widget& widget);
 
         void RotateMenuDropdown(int16_t dropdownIndex);
+
+        void InitFileMenu(Widget& widget);
 
         void InitCheatsMenu(Widget& widget);
 
@@ -2487,6 +2490,7 @@ static Widget _topToolbarWidgets[] = {
                     {
                         auto pauseToggleAction = PauseToggleAction();
                         GameActions::Execute(&pauseToggleAction);
+                        _waitingForPause = true;
                     }
                     break;
                 case WIDX_ZOOM_OUT:
@@ -2558,77 +2562,12 @@ static Widget _topToolbarWidgets[] = {
 
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
-            int32_t numItems = 0;
             Widget& widget = widgets[widgetIndex];
 
             switch (widgetIndex)
             {
                 case WIDX_FILE_MENU:
-                    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-                    {
-                        gDropdownItems[numItems++].Format = STR_ABOUT;
-                        gDropdownItems[numItems++].Format = STR_OPTIONS;
-                        gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
-
-                        if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                            gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
-
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-
-                        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                            gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
-                        else
-                            gDropdownItems[numItems++].Format = STR_QUIT_TRACK_DESIGNS_MANAGER;
-
-                        gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
-                    }
-                    else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-                    {
-                        gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
-                        gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_ABOUT;
-                        gDropdownItems[numItems++].Format = STR_OPTIONS;
-                        gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
-
-                        if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                            gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
-
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
-                        gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
-                    }
-                    else
-                    {
-                        gDropdownItems[numItems++].Format = STR_NEW_GAME;
-                        gDropdownItems[numItems++].Format = STR_LOAD_GAME;
-                        gDropdownItems[numItems++].Format = STR_SAVE_GAME;
-                        gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_ABOUT;
-                        gDropdownItems[numItems++].Format = STR_OPTIONS;
-                        gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
-
-                        if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                            gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
-
-                        gDropdownItems[numItems++].Format = STR_EMPTY;
-                        gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
-                        gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
-                    }
-
-                    WindowDropdownShowText(
-                        { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80,
-                        Dropdown::Flag::StayOpen, numItems);
+                    InitFileMenu(widget);
                     break;
                 case WIDX_CHEATS:
                     InitCheatsMenu(widget);
@@ -3036,7 +2975,7 @@ static Widget _topToolbarWidgets[] = {
                 widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
             }
 
-            if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
+            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
@@ -3141,8 +3080,13 @@ static Widget _topToolbarWidgets[] = {
             else
                 pressed_widgets |= (1uLL << WIDX_PATH);
 
-            if (gGamePaused & GAME_PAUSED_NORMAL)
+            bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
+            if (paused || _waitingForPause)
+            {
                 pressed_widgets |= (1uLL << WIDX_PAUSE);
+                if (paused)
+                    _waitingForPause = false;
+            }
             else
                 pressed_widgets &= ~(1uLL << WIDX_PAUSE);
 
@@ -3323,7 +3267,7 @@ static Widget _topToolbarWidgets[] = {
     WindowBase* TopToolbarOpen()
     {
         TopToolbar* window = WindowCreate<TopToolbar>(
-            WindowClass::TopToolbar, ScreenCoordsXY(0, 0), ContextGetWidth(), TOP_TOOLBAR_HEIGHT + 1,
+            WindowClass::TopToolbar, ScreenCoordsXY(0, 0), ContextGetWidth(), kTopToolbarHeight + 1,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
         window->widgets = _topToolbarWidgets;
@@ -3702,6 +3646,78 @@ static Widget _topToolbarWidgets[] = {
         }
     }
 
+    void TopToolbar::InitFileMenu(Widget& widget)
+    {
+        int32_t numItems = 0;
+        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        {
+            gDropdownItems[numItems++].Format = STR_ABOUT;
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
+            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+
+            if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+                gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
+            else
+                gDropdownItems[numItems++].Format = STR_QUIT_TRACK_DESIGNS_MANAGER;
+
+            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+        }
+        else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        {
+            gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_ABOUT;
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
+            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
+            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+        }
+        else
+        {
+            gDropdownItems[numItems++].Format = STR_NEW_GAME;
+            gDropdownItems[numItems++].Format = STR_LOAD_GAME;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_SAVE_GAME;
+            gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_ABOUT;
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
+            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+
+            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
+            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+        }
+
+        WindowDropdownShowText(
+            { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80,
+            Dropdown::Flag::StayOpen, numItems);
+    }
+
     void TopToolbar::InitCheatsMenu(Widget& widget)
     {
         using namespace Dropdown;
@@ -3723,8 +3739,8 @@ static Widget _topToolbarWidgets[] = {
         SetItems(items);
 
         WindowDropdownShowText(
-            { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80, 0,
-            TOP_TOOLBAR_CHEATS_COUNT);
+            { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[0] | 0x80,
+            Dropdown::Flag::StayOpen, TOP_TOOLBAR_CHEATS_COUNT);
 
         // Disable items that are not yet available in multiplayer
         if (NetworkGetMode() != NETWORK_MODE_NONE)

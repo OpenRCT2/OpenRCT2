@@ -98,6 +98,7 @@ STR_0093    :Hibrid hullámvasút
 STR_0094    :Egysínű hullámvasút
 STR_0095    :Alpesi hullámvasút
 STR_0096    :Klasszikus fa hullámvasút
+STR_0097    :Klasszikus álló hullámvasút
 STR_0512    :Egy kompakt hullámvasút spirális felvonószakasszal és sima, csavaros esésekkel.
 STR_0513    :Egy átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0514    :A hullámvasút pályája alatt felfüggesztett vonatok oldalt kilengenek a kanyarokban
@@ -181,12 +182,13 @@ STR_0603    :Egy fa stílusú hullámvasút acélpályával, meredek esésekkel 
 STR_0604    :Az utasok egymás mögött utaznak egy keskeny, egysínű pályán, ahogy átszáguldanak a szoros fordítókon és irányváltásokon.
 STR_0605    :Az utasok egy kanyargós acélpályán szánkóznak lefelé, fékezéssel szabályozva a sebességüket
 STR_0606    :Egy régebbi stílusú, fából készült hullámvasút gyors és durva utazással, rengeteg légi idővel, némi oldalirányú G-vel, és úgy tervezve, hogy „kontrollvesztettség” élményét nyújtsa
+STR_0607    :Egy intenzív, régebbi stílusú acél átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0767    :Vendég {INT32}
 STR_0768    :Mindenes {INT32}
 STR_0769    :Gépész {INT32}
 STR_0770    :Biztonsági őr {INT32}
 STR_0771    :Szórakoztató {INT32}
-STR_0777    :Névtelen park{POP16}{POP16}
+STR_0777    :Névtelen park
 STR_0778    :Felirat
 STR_0779    :1.
 STR_0780    :2.
@@ -2582,7 +2584,7 @@ STR_5336    :Játék kijárata
 STR_5337    :Park bejárata
 STR_5338    :Elem típusa
 STR_5339    :Alapmagasság
-STR_5340    :Űrszelvénymagasság
+STR_5340    :Teljes magasság
 STR_5343    :Alkalmazottak automatikus lerakása
 STR_5344    :Változási napló
 STR_5345    :Pénzügyi csalások
@@ -2627,7 +2629,7 @@ STR_5452    :Eszköztárak megjelenítése be/ki
 STR_5453    :Másik játék választása
 STR_5454    :Korlátlan FPS
 STR_5455    :Homokozó mód be
-STR_5456    :Űrszelvény-ellenőrzés ki
+STR_5456    :Közelség-ellenőrzés ki
 STR_5457    :Állványzatlimitek ki
 STR_5458    :Forgatás órajárás szerint
 STR_5459    :Forgatás órajárással ellentétesen
@@ -2772,7 +2774,7 @@ STR_5605    :A vendég használt egy létesítményt
 STR_5606    :A vendég meghalt
 STR_5607    :A kiválasztott térképelem kényszerített eltávolítása.
 STR_5608    :AM
-STR_5609    :ŰM
+STR_5609    :TM
 STR_5610    :A jelenleg kiválasztott térképelem eltávolítása. Erővel távolítja el, így nem kapsz/veszítesz pénzt. Óvatosan használd.
 STR_5611    :S
 STR_5612    :Szellem zászló
@@ -3093,7 +3095,7 @@ STR_5970    :Bejárat ID: {BLACK}{COMMA16}
 STR_5971    :Kijárat ID: {BLACK}{COMMA16}
 STR_5972    :Játék ID: {BLACK}{COMMA16}
 STR_5973    :Következőhöz erősítés
-STR_5974    :Megváltoztatja az alap- és az űrszelvénymagasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
+STR_5974    :Megváltoztatja az alap- és a teljes magasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
 STR_5975    :Elhajlás:
 STR_5976    :Egyenes
 STR_5977    :Jobbról felfelé
@@ -3116,9 +3118,9 @@ STR_5993    :A kiválasztott elem másolása
 STR_5994    :A másolt elem beillesztése
 STR_5995    :Gyorsító
 STR_5996    :Gyorsító sebessége
-STR_5997    :Pénz hozzáadása/beállítása
+STR_5997    :Pénz hozzáadása/átállítása
 STR_5998    :Pénz hozzáadása
-STR_5999    :Pénz beállítása
+STR_5999    :Pénz átállítása
 STR_6000    :Add meg az új értéket
 STR_6001    :Fényhatások bekapcsolása (kísérleti)
 STR_6002    :A lámpák és a játékok éjjelente világítani fognak.{NEWLINE}A grafikus motort hardveres gyorsításra kell állítani hozzá.
@@ -3292,8 +3294,8 @@ STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} vendég
 STR_6196    :{BLACK}Év:
 STR_6197    :{BLACK}Hónap:
 STR_6198    :{BLACK}Nap:
-STR_6199    :Dátum beállítása
-STR_6200    :Dátum visszaállítása
+STR_6199    :Dátum megadása
+STR_6200    :Kezdő dátum
 STR_6201    :{MONTH}
 STR_6202    :Virtuális padló stílusa:
 STR_6203    :Ha be van kapcsolva, egy virtuális padló lesz megjelenítve a Ctrl vagy a Shift lenyomásával, hogy megkönnyítse az elemek vertikális elhelyezését.
@@ -3397,8 +3399,8 @@ STR_6323    :Szimuláció folyamatban
 STR_6324    :Szimulálás
 STR_6325    :Játék/épület szimulálása
 STR_6326    :{STRINGID} nem szimulálható…
-STR_6327    :Átlátszó hátterű óriás képmentések
-STR_6328    :Ha ez az opció ki van jelölve, az óriás képmentések átlátszó hátterűek lesznek az alapértelmezett fekete szín helyett.
+STR_6327    :Átlátszó hátterű teljes térképes képmentések
+STR_6328    :Ha ez az opció ki van jelölve, a teljes térképes képmentések átlátszó hátterűek lesznek az alapértelmezett fekete szín helyett.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :[{STRING}] letöltése innen: {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Kacsák létrehozása
@@ -3442,8 +3444,8 @@ STR_6369    :Pályaépítés érvénytelen magasságokban
 STR_6370    :Lehetővé teszi, hogy bármely köztes magasságban lehessen pályarészeket elhelyezni
 STR_6371    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de a „csg1i.dat” fájl hiányzik. Ezt a fájlt át kell másolni a Loopy Landscapes vagy RCT Deluxe CD-ről a merevlemezedre telepített RollerCoaster Tycoon 1 „Data” mappájába.
 STR_6372    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de ez a verzió nem megfelelő. Az OpenRCT2-nek egy Loopy Landscapes, vagy RCT Deluxe telepítésre van szüksége a RollerCoaster Tycoon 1 fájljainak használatához.
-STR_6373    :Űrszelvény-ellenőrzés be/ki
-STR_6374    :Ű
+STR_6373    :Közelség-ellenőrzés be/ki
+STR_6374    :K
 STR_6375    :Ismeretlen játék
 STR_6376    :{WINDOW_COLOUR_2}Jármű egy játékhoz:{NEWLINE}{BLACK}{STRINGID} a(z) {STRINGID} számára
 STR_6377    :{WINDOW_COLOUR_2}Típus: {BLACK}{STRINGID} a(z) {STRINGID} számára
@@ -3458,7 +3460,7 @@ STR_6385    :Erős havazás
 STR_6386    :Hóvihar
 STR_6387    :Nem süllyeszthető itt le az elem…
 STR_6388    :Nem emelhető itt meg az elem…
-STR_6389    :Érvénytelen űrszelvény
+STR_6389    :Érvénytelen közelség
 STR_6390    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Add meg a mappát, ahova telepítetted a RollerCoaster Tycoon 2-t.
 STR_6391    :Válaszd ki az RCT2 mappádat
 STR_6392    :A(z) {STRING} nem található ezen az útvonalon.
@@ -3525,7 +3527,7 @@ STR_6452    :{WINDOW_COLOUR_2}Ezeket árulja: {BLACK}{STRING}
 STR_6453    :Verzió infó másolása
 STR_6454    :A hirdetőtábla nem nevezhető át…
 STR_6455    :A felirat nem nevezhető át…
-STR_6456    :Óriás képmentés
+STR_6456    :Képmentés a teljes térképről
 STR_6457    :Hiba jelentése a GitHubon
 STR_6458    :Követés a fő nézetben
 STR_6460    :I
@@ -3691,6 +3693,11 @@ STR_6619    :Az objektumtípus nem korlátozható!
 STR_6620    :Az objektum nem található!
 STR_6621    :Korlátozás
 STR_6622    :Objektum korlátozása a pályaszerkesztőre és a homokozó módra.
+STR_6623    :Írd be a „help” szót az elérhető parancsok listájához. A konzol elrejtéséhez írd be a „hide” parancsot.
+STR_6624    :Mezővizsgáló: Elemek rendezése
+STR_6625    :Érvénytelen szín
+STR_6626    :Az animáció tükrözött
+STR_6627    :Túl nagy a pálya sebessége!
 
 #############
 # Scenarios #
@@ -3743,8 +3750,8 @@ STR_PARK    :Parányi Park
 STR_DTLS    :Egy kis méretű, zsúfolt vidámpark, amelynek jelentős terjeszkedésre van szüksége
 
 <White Water Park>
-STR_SCNR    :Fehérvíz Park
-STR_PARK    :Fehérvíz Park
+STR_SCNR    :Vadvízi Park
+STR_PARK    :Vadvízi Park
 STR_DTLS    :Ez a park néhány igazán kiváló vízi játékkal rendelkezik, de terjeszkedésre van szüksége
 
 <Millennium Mines>

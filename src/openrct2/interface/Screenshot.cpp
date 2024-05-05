@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/CheatSetAction.h"
@@ -34,7 +33,6 @@
 #include "../world/Surface.h"
 #include "Viewport.h"
 
-#include <algorithm>
 #include <cctype>
 #include <chrono>
 #include <cstdlib>
@@ -105,7 +103,7 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return GetContext()->GetGameState()->GetPark().Name;
+    return GetGameState().Park.Name;
 }
 
 static std::string ScreenshotGetDirectory()
@@ -490,7 +488,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             throw std::runtime_error("Failed to load park.");
         }
 
-        gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
         Viewport viewport{};

@@ -7,24 +7,71 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ObjectTypes.h"
+
+#include "../util/Util.h"
 #include "Object.h"
 
-#include <algorithm>
+constexpr std::array kAllObjectTypes = {
+    ObjectType::Ride,
+    ObjectType::SmallScenery,
+    ObjectType::LargeScenery,
+    ObjectType::Walls,
+    ObjectType::Banners,
+    ObjectType::Paths,
+    ObjectType::PathAdditions,
+    ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance,
+    ObjectType::Water,
+    ObjectType::ScenarioText,
+    ObjectType::TerrainSurface,
+    ObjectType::TerrainEdge,
+    ObjectType::Station,
+    ObjectType::Music,
+    ObjectType::FootpathSurface,
+    ObjectType::FootpathRailings,
+    ObjectType::Audio,
+};
+
+static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::Count));
+
+// Object types that can be saved in a park file.
+static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransientObjectTypes = {
+    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
+    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
+    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
+};
+
+// Object types that cannot be saved in a park file.
+static constexpr std::array<const ObjectType, kNumIntransientObjectTypes> kIntransientObjectTypes = {
+    ObjectType::ScenarioText,
+    ObjectType::Audio,
+};
+
+static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_cast<size_t>(ObjectType::Count));
 
 bool ObjectTypeIsTransient(ObjectType type)
 {
-    return std::find(TransientObjectTypes.begin(), TransientObjectTypes.end(), type) != std::end(TransientObjectTypes);
+    return std::find(kTransientObjectTypes.begin(), kTransientObjectTypes.end(), type) != std::end(kTransientObjectTypes);
 }
 
 bool ObjectTypeIsIntransient(ObjectType type)
 {
-    return std::find(IntransientObjectTypes.begin(), IntransientObjectTypes.end(), type) != std::end(IntransientObjectTypes);
+    return std::find(kIntransientObjectTypes.begin(), kIntransientObjectTypes.end(), type) != std::end(kIntransientObjectTypes);
 }
 
-size_t GetObjectTypeLimit(ObjectType type)
+std::span<const ObjectType> getAllObjectTypes()
 {
-    auto index = EnumValue(type);
-    if (index >= EnumValue(ObjectType::Count))
-        return 0;
-    return static_cast<size_t>(object_entry_group_counts[index]);
+    return kAllObjectTypes;
+}
+
+std::span<const ObjectType> getTransientObjectTypes()
+{
+    return kTransientObjectTypes;
+}
+
+std::span<const ObjectType> getIntransientObjectTypes()
+{
+    return kIntransientObjectTypes;
 }

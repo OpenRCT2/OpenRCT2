@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -35,8 +34,8 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
-#include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <string>
@@ -328,7 +327,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
@@ -368,7 +367,9 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     {
                         GameNotifyMapChange();
                         GameUnloadScripts();
-                        TitleLoad();
+
+                        auto* context = OpenRCT2::GetContext();
+                        context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
                 case WIDX_FILTER_RIDE_TAB_ALL:
@@ -422,7 +423,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     break;
                 }
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+                    WindowStartTextbox(*this, widgetIndex, _filter_string, sizeof(_filter_string));
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -1048,8 +1049,8 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             {
                 auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
 
-                int32_t numSelected = _numSelectedObjectsForType[EnumValue(GetSelectedObjectType())];
-                int32_t totalSelectable = object_entry_group_counts[EnumValue(GetSelectedObjectType())];
+                auto numSelected = _numSelectedObjectsForType[EnumValue(GetSelectedObjectType())];
+                auto totalSelectable = getObjectEntryGroupCount(GetSelectedObjectType());
 
                 auto ft = Formatter();
                 ft.Add<uint16_t>(numSelected);
@@ -1241,7 +1242,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 screenPos.y += DrawTextWrapped(
                                    dpi, screenPos, _width2, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
                                    { COLOUR_BRIGHT_RED })
-                    + LIST_ROW_HEIGHT;
+                    + kListRowHeight;
             }
 
             auto description = ObjectGetDescription(_loadedObject.get());
@@ -1251,7 +1252,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(description.c_str());
 
-                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
+                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + kListRowHeight;
             }
             if (GetSelectedObjectType() == ObjectType::Ride)
             {
@@ -1305,14 +1306,14 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
         void DrawDebugData(DrawPixelInfo& dpi)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
-            auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 6) };
+            auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };
 
             // Draw fallback image warning
             if (_loadedObject && _loadedObject->UsesFallbackImages())
             {
                 DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
-            screenPos.y += LIST_ROW_HEIGHT;
+            screenPos.y += kListRowHeight;
 
             // Draw ride type.
             if (GetSelectedObjectType() == ObjectType::Ride)
@@ -1321,12 +1322,12 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
-            screenPos.y += LIST_ROW_HEIGHT;
+            screenPos.y += kListRowHeight;
 
             // Draw object source
             auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
             DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
-            screenPos.y += LIST_ROW_HEIGHT;
+            screenPos.y += kListRowHeight;
 
             // Draw object filename
             {
@@ -1337,7 +1338,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 DrawTextBasic(
                     dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
                     { COLOUR_BLACK, TextAlignment::RIGHT });
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
 
             // Draw object author (will be blank space if no author in file or a non JSON object)

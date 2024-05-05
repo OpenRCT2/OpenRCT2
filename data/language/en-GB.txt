@@ -188,7 +188,7 @@ STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
 STR_0770    :Security Guard {INT32}
 STR_0771    :Entertainer {INT32}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0777    :Unnamed park
 STR_0778    :Sign
 STR_0779    :1st
 STR_0780    :2nd
@@ -3697,6 +3697,8 @@ STR_6622    :Restrict object to the Scenario Editor and Sandbox mode.
 STR_6623    :Type ‘help’ for a list of available commands. Type ‘hide’ to hide the console.
 STR_6624    :Tile Inspector: Sort elements
 STR_6625    :Invalid colour
+STR_6626    :Animation is backwards
+STR_6627    :Track speed too high!
 
 #############
 # Scenarios #

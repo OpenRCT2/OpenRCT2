@@ -11,7 +11,6 @@
 
 #include "../Game.h"
 #include "../GameState.h"
-#include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
@@ -24,7 +23,8 @@
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
-#include "../title/TitleScreen.h"
+#include "../scenes/intro/IntroScene.h"
+#include "../scenes/title/TitleScene.h"
 #include "../ui/UiContext.h"
 #include "../world/TileInspector.h"
 
@@ -43,7 +43,8 @@ void Painter::Paint(IDrawingEngine& de)
     PROFILED_FUNCTION();
 
     auto dpi = de.GetDrawingPixelInfo();
-    if (gIntroState != IntroState::None)
+
+    if (IntroIsPlaying())
     {
         IntroDraw(*dpi);
     }
@@ -102,8 +103,22 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
+static bool ShouldShowFPS()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO && !TitleShouldHideVersionInfo())
+        return true;
+
+    if (!WindowFindByClass(WindowClass::TopToolbar))
+        return false;
+
+    return true;
+}
+
 void Painter::PaintFPS(DrawPixelInfo& dpi)
 {
+    if (!ShouldShowFPS())
+        return;
+
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
     MeasureFPS();

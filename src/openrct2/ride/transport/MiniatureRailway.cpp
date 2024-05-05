@@ -1392,9 +1392,7 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
             miniature_railway_right_quarter_turn_3_tile_track_floor, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
             miniature_railway_right_quarter_turn_3_tile_bound_offsets);
 
-        static constexpr int8_t _right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
-
-        int32_t index = _right_quarter_turn_3_tiles_sprite_map[trackSequence];
+        int32_t index = kRightQuarterTurn3TilesSpriteMap[trackSequence];
 
         auto imageId = session.TrackColours.WithIndex(
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles[direction][index]);

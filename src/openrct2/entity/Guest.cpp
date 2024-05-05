@@ -36,6 +36,7 @@
 #include "../object/PathAdditionEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
+#include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
@@ -60,7 +61,6 @@
 #include "Peep.h"
 #include "Staff.h"
 
-#include <algorithm>
 #include <functional>
 #include <iterator>
 
@@ -838,16 +838,16 @@ void Guest::Loc68FA89()
     }
     else
     {
-        newEnergy = std::min(PEEP_MAX_ENERGY_TARGET, newEnergy + 4);
+        newEnergy = std::min<uint16_t>(kPeepMaxEnergyTarget, newEnergy + 4);
         if (newEnergy > newTargetEnergy)
             newEnergy = newTargetEnergy;
     }
 
-    if (newEnergy < PEEP_MIN_ENERGY)
-        newEnergy = PEEP_MIN_ENERGY;
+    if (newEnergy < kPeepMinEnergy)
+        newEnergy = kPeepMinEnergy;
 
     /* Previous code here suggested maximum energy is 128. */
-    newEnergy = std::min(static_cast<uint8_t>(PEEP_MAX_ENERGY), newEnergy);
+    newEnergy = std::min(kPeepMaxEnergy, newEnergy);
 
     if (newEnergy != Energy)
     {
@@ -973,7 +973,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     if (thought_type != PeepThoughtType::None)
                     {
                         InsertNewThought(thought_type);
-                        HappinessTarget = std::min(PEEP_MAX_HAPPINESS, HappinessTarget + 45);
+                        HappinessTarget = std::min(kPeepMaxHappiness, HappinessTarget + 45);
                     }
                 }
             }
@@ -1075,7 +1075,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
                     }
 
-                    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105
+                    if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105
                         && Energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
@@ -1539,7 +1539,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     if (!hasVoucher)
     {
-        if (price != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (price != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             if (CashInPocket == 0)
             {
@@ -1586,7 +1586,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             itemValue -= price;
             itemValue = std::max(0.80_GBP, itemValue);
 
-            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
@@ -1596,8 +1596,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             }
 
             int32_t happinessGrowth = itemValue * 4;
-            HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
-            Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
+            HappinessTarget = std::min((HappinessTarget + happinessGrowth), kPeepMaxHappiness);
+            Happiness = std::min((Happiness + happinessGrowth), kPeepMaxHappiness);
         }
 
         // reset itemValue for satisfaction calculation
@@ -1694,7 +1694,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+    if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
         FinancePayment(shopItemDescriptor.Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
@@ -1704,7 +1704,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         RemoveItem(ShopItem::Voucher);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
-    else if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+    else if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
     {
         SpendMoney(*expend_type, price, expenditure);
     }
@@ -1744,7 +1744,7 @@ void Guest::OnEnterRide(Ride& ride)
 
     SetHasRidden(ride);
     PeepUpdateFavouriteRide(this, ride);
-    HappinessTarget = std::clamp(HappinessTarget + satisfaction, 0, PEEP_MAX_HAPPINESS);
+    HappinessTarget = std::clamp(HappinessTarget + satisfaction, 0, kPeepMaxHappiness);
     PeepUpdateRideNauseaGrowth(this, ride);
 }
 
@@ -2006,7 +2006,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
             auto& gameState = GetGameState();
             // Basic price checks
-            if (ridePrice != 0 && !PeepHasVoucherForFreeRide(this, ride) && !(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (ridePrice != 0 && !PeepHasVoucherForFreeRide(this, ride) && !(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 if (ridePrice > CashInPocket)
                 {
@@ -2155,7 +2155,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
             // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
             if (value != RIDE_VALUE_UNDEFINED && !PeepHasVoucherForFreeRide(this, ride)
-                && !(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+                && !(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
                 if (PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
@@ -2181,7 +2181,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
                 if (ridePrice <= (value / 2) && peepAtRide)
                 {
-                    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+                    if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
                     {
                         if (!(PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY))
                         {
@@ -2300,7 +2300,7 @@ void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
  */
 void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
 {
-    assert(!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY));
+    assert(!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY));
 
     CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
     CashSpent += amount;
@@ -2615,7 +2615,7 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
-    if (peep->CashInPocket <= 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+    if (peep->CashInPocket <= 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
     {
         peep->InsertNewThought(PeepThoughtType::SpentMoney);
         PeepUpdateRideAtEntranceTryLeave(peep);
@@ -2695,7 +2695,7 @@ static int16_t PeepCalculateRideSatisfaction(Guest* peep, const Ride& ride)
 static void PeepUpdateFavouriteRide(Guest* peep, const Ride& ride)
 {
     peep->PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-    uint8_t peepRideRating = std::clamp((ride.excitement / 4) + peep->Happiness, 0, PEEP_MAX_HAPPINESS);
+    uint8_t peepRideRating = std::clamp((ride.excitement / 4) + peep->Happiness, 0, kPeepMaxHappiness);
     if (peepRideRating >= peep->FavouriteRideRating)
     {
         if (peep->Happiness >= 160 && peep->HappinessTarget >= 160)
@@ -2709,7 +2709,7 @@ static void PeepUpdateFavouriteRide(Guest* peep, const Ride& ride)
 /* rct2: 0x00695555 */
 static int16_t PeepCalculateRideValueSatisfaction(Guest* peep, const Ride& ride)
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
     {
         return -30;
     }
@@ -2883,7 +2883,7 @@ static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
 
 static bool PeepShouldPreferredIntensityIncrease(Guest* peep)
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+    if (GetGameState().Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
         return false;
     if (peep->Happiness < 200)
         return false;
@@ -3035,7 +3035,7 @@ static void PeepUpdateHunger(Guest* peep)
     {
         peep->Hunger -= 2;
 
-        peep->EnergyTarget = std::min(peep->EnergyTarget + 2, PEEP_MAX_ENERGY_TARGET);
+        peep->EnergyTarget = std::min<uint16_t>(peep->EnergyTarget + 2, kPeepMaxEnergyTarget);
         peep->Toilet = std::min(peep->Toilet + 1, 255);
     }
 }
@@ -3068,7 +3068,7 @@ static void PeepDecideWhetherToLeavePark(Guest* peep)
      * in the park. */
     if (!(peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
     {
-        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
         {
             if (peep->Energy >= 70 && peep->Happiness >= 60)
             {
@@ -3270,7 +3270,7 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
     }
 
     // Remove the related thought
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
     {
         PeepThought* thought = &Thoughts[i];
 
@@ -3280,12 +3280,12 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
         if (thought->type != thoughtType)
             continue;
 
-        if (i < PEEP_MAX_THOUGHTS - 1)
+        if (i < kPeepMaxThoughts - 1)
         {
-            memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
+            memmove(thought, thought + 1, sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
         }
 
-        Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
+        Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
 
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
@@ -3298,7 +3298,7 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
  */
 static bool PeepShouldUseCashMachine(Guest* peep, RideId rideIndex)
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
         return false;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return false;
@@ -5098,7 +5098,7 @@ void Guest::UpdateRideShopInteract()
             RideSubState = PeepRideSubState::LeaveShop;
 
             SetDestination({ tileCentreX, tileCentreY }, 3);
-            HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
+            HappinessTarget = std::min(HappinessTarget + 30, kPeepMaxHappiness);
             Happiness = HappinessTarget;
         }
         else
@@ -5125,7 +5125,7 @@ void Guest::UpdateRideShopInteract()
 
     SetDestination({ tileCentreX, tileCentreY }, 3);
 
-    HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
+    HappinessTarget = std::min(HappinessTarget + 30, kPeepMaxHappiness);
     Happiness = HappinessTarget;
     StopPurchaseThought(ride->type);
 }
@@ -6963,7 +6963,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
         UpdateCurrentActionSpriteType();
     }
 
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
     {
         PeepThought* thought = &Thoughts[i];
         // Remove the oldest thought by setting it to NONE.
@@ -6975,15 +6975,15 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
             // If the thought type has not changed then we need to move
             // it to the top of the thought list. This is done by first removing the
             // existing thought and placing it at the top.
-            if (i < PEEP_MAX_THOUGHTS - 2)
+            if (i < kPeepMaxThoughts - 2)
             {
-                memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
+                memmove(thought, thought + 1, sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
             }
             break;
         }
     }
 
-    memmove(&std::get<1>(Thoughts), &std::get<0>(Thoughts), sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - 1));
+    memmove(&std::get<1>(Thoughts), &std::get<0>(Thoughts), sizeof(PeepThought) * (kPeepMaxThoughts - 1));
 
     auto& thought = std::get<0>(Thoughts);
     thought.type = thoughtType;
@@ -7141,9 +7141,9 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     /* Check which intensity boxes are enabled
      * and apply the appropriate intensity settings. */
-    if (gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+    if (gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
     {
-        if (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+        if (gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
         {
             intensityLowest = 0;
             intensityHighest = 15;
@@ -7154,7 +7154,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
             intensityHighest = 4;
         }
     }
-    else if (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+    else if (gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
         intensityLowest = 9;
         intensityHighest = 15;
@@ -7163,7 +7163,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->Intensity = IntensityRange(intensityLowest, intensityHighest);
 
     uint8_t nauseaTolerance = ScenarioRand() & 0x7;
-    if (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+    if (gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
         nauseaTolerance += 4;
     }
@@ -7181,7 +7181,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Initial value will vary by -15..16 */
     int8_t happinessDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
+    peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, kPeepMaxHappiness);
     peep->HappinessTarget = peep->Happiness;
     peep->Nausea = 0;
     peep->NauseaTarget = 0;
@@ -7193,7 +7193,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Initial value will vary by -15..16 */
     int8_t hungerDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
+    peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, kPeepMaxHunger);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
@@ -7202,7 +7202,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Initial value will vary by -15..16 */
     int8_t thirstDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, PEEP_MAX_THIRST);
+    peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, kPeepMaxThirst);
 
     peep->Toilet = 0;
     peep->TimeToConsume = 0;
@@ -7220,7 +7220,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
         cash = 500;
     }
 
-    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
     {
         cash = 0;
     }

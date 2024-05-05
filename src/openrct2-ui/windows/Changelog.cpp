@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <fstream>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -225,7 +224,7 @@ static Widget _windowChangelogWidgets[] = {
             auto uiContext = GetContext()->GetUiContext();
             auto screenWidth = uiContext->GetWidth();
             auto screenHeight = uiContext->GetHeight();
-            return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
+            return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
         }
 
     private:

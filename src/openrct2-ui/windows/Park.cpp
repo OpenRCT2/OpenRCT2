@@ -9,7 +9,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <array>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -30,6 +29,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Award.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/util/Util.h>
@@ -334,6 +334,9 @@ static constexpr WindowParkAward _parkAwards[] = {
                 case WINDOW_PARK_PAGE_OBJECTIVE:
                     OnTextInputObjective(widgetIndex, text);
                     break;
+                case WINDOW_PARK_PAGE_PRICE:
+                    OnTextInputPrice(widgetIndex, text);
+                    break;
             }
         }
 
@@ -397,13 +400,12 @@ static constexpr WindowParkAward _parkAwards[] = {
         void SetDisabledTabs()
         {
             // Disable price tab if money is disabled
-            disabled_widgets = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
+            disabled_widgets = (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
         }
 
         void PrepareWindowTitleText()
         {
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            auto parkName = park.Name.c_str();
+            auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
             auto ft = Formatter::Common();
             ft.Add<StringId>(STR_STRING);
@@ -423,16 +425,16 @@ static constexpr WindowParkAward _parkAwards[] = {
                     break;
                 case WIDX_RENAME:
                 {
-                    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                    auto& park = OpenRCT2::GetGameState().Park;
                     WindowTextInputRawOpen(
                         this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), USER_STRING_MAX_LENGTH);
                     break;
                 }
                 case WIDX_CLOSE_LIGHT:
-                    ParkSetOpen(false);
+                    Park::SetOpen(false);
                     break;
                 case WIDX_OPEN_LIGHT:
-                    ParkSetOpen(true);
+                    Park::SetOpen(true);
                     break;
             }
         }
@@ -456,7 +458,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
-                if (ParkIsOpen())
+                if (GetGameState().Park.IsOpen())
                 {
                     gDropdownDefaultIndex = 0;
                     Dropdown::SetChecked(1, true);
@@ -478,11 +480,11 @@ static constexpr WindowParkAward _parkAwards[] = {
 
                 if (dropdownIndex != 0)
                 {
-                    ParkSetOpen(true);
+                    Park::SetOpen(true);
                 }
                 else
                 {
-                    ParkSetOpen(false);
+                    Park::SetOpen(false);
                 }
             }
         }
@@ -512,18 +514,18 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Set open / close park button state
             {
-                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                auto parkName = park.Name.c_str();
+                auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
                 auto ft = Formatter::Common();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(parkName);
             }
-            widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(ParkIsOpen() ? SPR_OPEN : SPR_CLOSED);
-            const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !ParkIsOpen() * 2
+            const bool parkIsOpen = gameState.Park.IsOpen();
+            widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(parkIsOpen ? SPR_OPEN : SPR_CLOSED);
+            const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !parkIsOpen * 2
                 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
-            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + ParkIsOpen() * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + parkIsOpen * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // Only allow closing of park for guest / rating objective
@@ -533,7 +535,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
             // Only allow purchase of land when there is money
-            if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
             else
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
@@ -605,7 +607,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Draw park closed / open label
             auto ft = Formatter();
-            ft.Add<StringId>(ParkIsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+            ft.Add<StringId>(GetGameState().Park.IsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(
@@ -621,9 +623,9 @@ static constexpr WindowParkAward _parkAwards[] = {
             const auto& gameState = GetGameState();
 
             std::optional<Focus> newFocus = std::nullopt;
-            if (!gameState.ParkEntrances.empty())
+            if (!gameState.Park.Entrances.empty())
             {
-                const auto& entrance = gameState.ParkEntrances[0];
+                const auto& entrance = gameState.Park.Entrances[0];
                 newFocus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
             }
 
@@ -702,7 +704,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Current value
             auto ft = Formatter();
-            ft.Add<uint16_t>(GetGameState().ParkRating);
+            ft.Add<uint16_t>(GetGameState().Park.Rating);
             DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
@@ -731,7 +733,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             // Graph
             screenPos = windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-            Graph::Draw(dpi, GetGameState().ParkRatingHistory, kParkRatingHistorySize, screenPos);
+            Graph::Draw(dpi, GetGameState().Park.RatingHistory, kParkRatingHistorySize, screenPos);
         }
 
 #pragma endregion
@@ -837,17 +839,25 @@ static constexpr WindowParkAward _parkAwards[] = {
             {
                 case WIDX_INCREASE_PRICE:
                 {
-                    const auto newFee = std::min(MAX_ENTRANCE_FEE, gameState.ParkEntranceFee + 1.00_GBP);
+                    const auto newFee = std::min(MAX_ENTRANCE_FEE, gameState.Park.EntranceFee + 1.00_GBP);
                     auto gameAction = ParkSetEntranceFeeAction(newFee);
                     GameActions::Execute(&gameAction);
                     break;
                 }
                 case WIDX_DECREASE_PRICE:
                 {
-                    const auto newFee = std::max(0.00_GBP, gameState.ParkEntranceFee - 1.00_GBP);
+                    const auto newFee = std::max(0.00_GBP, gameState.Park.EntranceFee - 1.00_GBP);
                     auto gameAction = ParkSetEntranceFeeAction(newFee);
                     GameActions::Execute(&gameAction);
                     break;
+                }
+                case WIDX_PRICE:
+                {
+                    utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
+                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, MONEY_STRING_MAXLENGTH, false);
+                    WindowTextInputRawOpen(
+                        this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
+                        MONEY_STRING_MAXLENGTH);
                 }
             }
         }
@@ -874,14 +884,14 @@ static constexpr WindowParkAward _parkAwards[] = {
             widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
             widgets[WIDX_PRICE].tooltip = STR_NONE;
 
-            if (!ParkEntranceFeeUnlocked())
+            if (!Park::EntranceFeeUnlocked())
             {
                 widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
                 widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
             }
 
             // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-            if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
+            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
             {
                 widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
                 widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
@@ -909,7 +919,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             ft.Add<money64>(GetGameState().TotalIncomeFromAdmissions);
             DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
-            money64 parkEntranceFee = ParkGetEntranceFee();
+            money64 parkEntranceFee = Park::GetEntranceFee();
             auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
             ft = Formatter();
@@ -972,7 +982,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             auto& gameState = GetGameState();
             // Draw park size
-            auto parkSize = gameState.ParkSize * 10;
+            auto parkSize = gameState.Park.Size * 10;
             auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
             if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
             {
@@ -982,7 +992,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             auto ft = Formatter();
             ft.Add<uint32_t>(parkSize);
             DrawTextBasic(dpi, screenCoords, stringIndex, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Draw number of rides / attractions
             if (_numberOfRides != -1)
@@ -991,7 +1001,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 ft.Add<uint32_t>(_numberOfRides);
                 DrawTextBasic(dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Draw number of staff
             if (_numberOfStaff != -1)
@@ -1000,13 +1010,13 @@ static constexpr WindowParkAward _parkAwards[] = {
                 ft.Add<uint32_t>(_numberOfStaff);
                 DrawTextBasic(dpi, screenCoords, STR_STAFF_LABEL, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Draw number of guests in park
             ft = Formatter();
             ft.Add<uint32_t>(gameState.NumGuestsInPark);
             DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<uint32_t>(gameState.TotalAdmissions);
@@ -1053,13 +1063,30 @@ static constexpr WindowParkAward _parkAwards[] = {
             }
         }
 
+        void OnTextInputPrice(WidgetIndex widgetIndex, std::string_view text)
+        {
+            if (widgetIndex == WIDX_PRICE && !text.empty())
+            {
+                std::string strText(text);
+                auto money = StringToMoney(strText.c_str());
+                if (money == kMoney64Undefined)
+                {
+                    return;
+                }
+
+                money = std::clamp(money, 0.00_GBP, MAX_ENTRANCE_FEE);
+                auto gameAction = ParkSetEntranceFeeAction(money);
+                GameActions::Execute(&gameAction);
+            }
+        }
+
         void OnPrepareDrawObjective()
         {
             SetPressedTab();
             PrepareWindowTitleText();
 
             // Show name input button on scenario completion.
-            if (GetGameState().ParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+            if (GetGameState().Park.Flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
             {
                 widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
                 widgets[WIDX_ENTER_NAME].top = height - 19;
@@ -1089,7 +1116,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Your objective:
             DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Objective
             ft = Formatter();

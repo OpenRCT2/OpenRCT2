@@ -91,9 +91,9 @@ static void PaintEnterprise(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = track_map_4x4[direction][trackSequence];
+    trackSequence = kTrackMap4x4[direction][trackSequence];
 
-    int32_t edges = edges_4x4[trackSequence];
+    int32_t edges = kEdges4x4[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,

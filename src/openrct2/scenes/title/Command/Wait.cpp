@@ -7,23 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "Wait.h"
 
-#include "../../core/String.hpp"
-
-#include <cstdint>
-
-constexpr uint8_t kTitleCommandScenarioLength = 64;
+#include "../../../Context.h"
 
 namespace OpenRCT2::Title
 {
-    struct LoadScenarioCommand
+    int16_t WaitCommand::operator()(int16_t timer)
     {
-        static constexpr const char* Name = "Load Scenario Command";
-        static constexpr const char* ScriptingName = "loadsc";
-
-        utf8 Scenario[kTitleCommandScenarioLength]{};
-
-        int16_t operator()(int16_t timer);
-    };
+        // Return number of game ticks this wait command lasts
+        return std::max<int16_t>(1, kGameUpdateFPS * Milliseconds / 1000);
+    }
 } // namespace OpenRCT2::Title

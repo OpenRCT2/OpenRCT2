@@ -11,7 +11,6 @@
 #include "Viewport.h"
 #include "Window.h"
 
-#include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
@@ -134,8 +133,8 @@ static InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& scre
             break;
         case ViewportInteractionItem::ParkEntrance:
         {
-            auto& park = GetContext()->GetGameState()->GetPark();
-            auto parkName = park.Name.c_str();
+            auto& gameState = GetGameState();
+            auto parkName = gameState.Park.Name.c_str();
 
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);

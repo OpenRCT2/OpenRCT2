@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -35,6 +34,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
+#include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -158,6 +158,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WALL_SPINNER_ANIMATION_FRAME,
         WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE,
         WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE,
+        WIDX_WALL_ANIMATION_IS_BACKWARDS,
 
         // Large
         WIDX_LARGE_SCENERY_SPINNER_HEIGHT = PAGE_WIDGETS,
@@ -358,7 +359,7 @@ static Widget EntranceWidgets[] = {
     kWidgetsEnd,
 };
 
-constexpr int32_t NumWallProperties = 3;
+constexpr int32_t NumWallProperties = 4;
 constexpr int32_t NumWallDetails = 2;
 constexpr int32_t WallPropertiesHeight = 16 + NumWallProperties * 21;
 constexpr int32_t WallDetailsHeight = 20 + NumWallDetails * 11;
@@ -368,6 +369,7 @@ static Widget WallWidgets[] = {
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                         PropertyButtonSize, WindowWidgetType::DropdownMenu, WindowColour::Secondary), // WIDX_WALL_DROPDOWN_SLOPE
     MakeWidget(PropertyRowCol({ 12 + PropertyButtonSize.width - 12, 0 }, 1, 1), { 11,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH), // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                 PropertyButtonSize, WindowWidgetType::Spinner,      WindowColour::Secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
+    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 0),                         PropertyFullWidth,  WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS), // WIDX_WALL_ANIMATION_IS_BACKWARDS
     kWidgetsEnd,
 };
 
@@ -705,6 +707,13 @@ static uint64_t PageDisabledWidgets[] = {
 
                 case TileElementType::LargeScenery:
                 case TileElementType::Wall:
+                    switch (widgetIndex)
+                    {
+                        case WIDX_WALL_ANIMATION_IS_BACKWARDS:
+                            WallSetAnimationIsBackwards(
+                                windowTileInspectorSelectedIndex, !tileElement->AsWall()->AnimationIsBackwards());
+                            break;
+                    }
                 default:
                     break;
             }
@@ -2022,6 +2031,12 @@ static uint64_t PageDisabledWidgets[] = {
             GameActions::Execute(&modifyTile);
         }
 
+        void WallSetAnimationIsBackwards(int32_t elementIndex, bool backwards)
+        {
+            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::WallSetAnimationIsBackwards, elementIndex, backwards);
+            GameActions::Execute(&modifyTile);
+        }
+
         void OnPrepareDraw() override
         {
             const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
@@ -2332,6 +2347,8 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
                     widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].top = GBBT(propertiesAnchor, 2) + 4;
                     widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
+                    widgets[WIDX_WALL_ANIMATION_IS_BACKWARDS].top = GBBT(propertiesAnchor, 3);
+                    widgets[WIDX_WALL_ANIMATION_IS_BACKWARDS].bottom = GBBB(propertiesAnchor, 3);
 
                     // Wall slope dropdown
                     SetWidgetDisabled(WIDX_WALL_DROPDOWN_SLOPE, !canBeSloped);
@@ -2342,6 +2359,9 @@ static uint64_t PageDisabledWidgets[] = {
                     SetWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME, !hasAnimation);
                     SetWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, !hasAnimation);
                     SetWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, !hasAnimation);
+
+                    SetCheckboxValue(WIDX_WALL_ANIMATION_IS_BACKWARDS, tileElement->AsWall()->AnimationIsBackwards());
+                    SetWidgetDisabled(WIDX_WALL_ANIMATION_IS_BACKWARDS, !hasAnimation);
                     break;
                 }
 

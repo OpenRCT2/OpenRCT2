@@ -81,10 +81,10 @@ class NetworkBase;
 namespace OpenRCT2
 {
     class AssetPackManager;
-    class GameState;
 
     struct IPlatformEnvironment;
     struct IReplayManager;
+    struct IScene;
 
     namespace Audio
     {
@@ -125,7 +125,6 @@ namespace OpenRCT2
 
         [[nodiscard]] virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
         [[nodiscard]] virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
-        virtual GameState* GetGameState() abstract;
         [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;
@@ -144,6 +143,16 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         virtual NetworkBase& GetNetwork() abstract;
 #endif
+
+        virtual IScene* GetLoadingScene() abstract;
+        virtual IScene* GetIntroScene() abstract;
+        virtual IScene* GetTitleScene() abstract;
+        virtual IScene* GetGameScene() abstract;
+        virtual IScene* GetEditorScene() abstract;
+
+        virtual IScene* GetActiveScene() abstract;
+        virtual void SetActiveScene(IScene* screen) abstract;
+
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
         virtual bool Initialise() abstract;
@@ -216,7 +225,6 @@ WindowBase* ContextShowError(StringId title, StringId message, const class Forma
 WindowBase* ContextOpenIntent(Intent* intent);
 void ContextBroadcastIntent(Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);
-void ContextUpdateMapTooltip();
 void ContextHandleInput();
 void ContextInputHandleKeyboard(bool isTitle);
 void ContextQuit();

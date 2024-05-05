@@ -7,20 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FollowEntity.h"
+#include "Scene.h"
 
-#include "../../interface/Window.h"
+#include "../Context.h"
+#include "../GameState.h"
 
-namespace OpenRCT2::Title
+using namespace OpenRCT2;
+
+Scene::Scene(IContext& context)
+    : _context(context)
 {
-    int16_t FollowEntityCommand::operator()(int16_t timer)
-    {
-        auto* w = WindowGetMain();
-        if (w != nullptr)
-        {
-            WindowFollowSprite(*w, Follow.SpriteIndex);
-        }
+}
 
-        return 0;
-    }
-} // namespace OpenRCT2::Title
+IContext& Scene::GetContext()
+{
+    return _context;
+}
+
+GameState_t& Scene::GetGameState()
+{
+    return OpenRCT2::GetGameState();
+}

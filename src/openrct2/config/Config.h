@@ -9,11 +9,11 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Currency.h"
 
+#include <atomic>
 #include <string>
 
 enum class MeasurementFormat : int32_t;
@@ -42,7 +42,7 @@ struct GeneralConfiguration
     bool UncapFPS;
     bool UseVSync;
     bool ShowFPS;
-    bool MultiThreading;
+    std::atomic_uint8_t MultiThreading;
     bool MinimizeFullscreenFocusLoss;
     bool DisableScreensaver;
 

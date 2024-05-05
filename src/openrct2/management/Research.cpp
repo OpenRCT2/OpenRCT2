@@ -39,7 +39,6 @@
 #include "Finance.h"
 #include "NewsItem.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -315,7 +314,7 @@ void ResearchUpdate()
         return;
     }
 
-    if ((gameState.ParkFlags & PARK_FLAGS_NO_MONEY) && gameState.ResearchFundingLevel == RESEARCH_FUNDING_NONE)
+    if ((gameState.Park.Flags & PARK_FLAGS_NO_MONEY) && gameState.ResearchFundingLevel == RESEARCH_FUNDING_NONE)
     {
         researchLevel = RESEARCH_FUNDING_NORMAL;
     }

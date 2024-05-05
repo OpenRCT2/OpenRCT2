@@ -21,7 +21,6 @@
 #include "title/TitleSequencePlayer.h"
 
 #include <SDL.h>
-#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
@@ -41,8 +40,8 @@
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
+#include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/scripting/ScriptEngine.h>
-#include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
@@ -140,6 +139,10 @@ public:
     void Tick() override
     {
         _inGameConsole.Update();
+
+        _windowManager->UpdateMapTooltip();
+
+        WindowDispatchUpdateAll();
     }
 
     void Draw(DrawPixelInfo& dpi) override
@@ -714,9 +717,7 @@ public:
     {
         if (_titleSequencePlayer == nullptr)
         {
-            auto context = GetContext();
-            auto gameState = context->GetGameState();
-            _titleSequencePlayer = OpenRCT2::Title::CreateTitleSequencePlayer(*gameState);
+            _titleSequencePlayer = OpenRCT2::Title::CreateTitleSequencePlayer();
         }
         return _titleSequencePlayer.get();
     }
@@ -764,12 +765,7 @@ private:
 
         UpdateFullscreenResolutions();
 
-        // Fix #4022: Force Mac to windowed to avoid cursor offset on launch issue
-#ifdef __MACOSX__
-        gConfigGeneral.FullscreenMode = static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::WINDOWED);
-#else
         SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.FullscreenMode));
-#endif
         TriggerResize();
     }
 

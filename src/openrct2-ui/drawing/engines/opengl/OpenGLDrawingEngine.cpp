@@ -22,10 +22,8 @@
 #    include "TransparencyDepth.h"
 
 #    include <SDL.h>
-#    include <algorithm>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>
-#    include <openrct2/Intro.h>
 #    include <openrct2/config/Config.h>
 #    include <openrct2/core/Console.hpp>
 #    include <openrct2/drawing/Drawing.h>

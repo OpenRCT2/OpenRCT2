@@ -104,7 +104,7 @@ static void PaintFerrisWheel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
+    uint8_t relativeTrackSequence = kTrackMap1x4[direction][trackSequence];
 
     int32_t edges;
     if (direction & 1)

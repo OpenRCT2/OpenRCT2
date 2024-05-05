@@ -19,7 +19,6 @@
 #include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
-#include "Intro.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
@@ -46,6 +45,7 @@
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
 #include "interface/InteractiveConsole.h"
+#include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Date.h"
 #include "localisation/Formatter.h"
@@ -66,16 +66,17 @@
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
+#include "scenes/game/GameScene.h"
+#include "scenes/intro/IntroScene.h"
+#include "scenes/title/TitleScene.h"
+#include "scenes/title/TitleSequenceManager.h"
 #include "scripting/HookEngine.h"
 #include "scripting/ScriptEngine.h"
-#include "title/TitleScreen.h"
-#include "title/TitleSequenceManager.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
 #include "world/Park.h"
 
-#include <algorithm>
 #include <cmath>
 #include <exception>
 #include <future>
@@ -84,12 +85,13 @@
 #include <string>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Localisation;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
+
+using OpenRCT2::Audio::IAudioContext;
 
 namespace OpenRCT2
 {
@@ -121,9 +123,11 @@ namespace OpenRCT2
         NetworkBase _network;
 #endif
 
-        // Game states
-        std::unique_ptr<TitleScreen> _titleScreen;
-        std::unique_ptr<GameState> _gameState;
+        // Scenes
+        std::unique_ptr<IntroScene> _introScene;
+        std::unique_ptr<TitleScene> _titleScene;
+        std::unique_ptr<GameScene> _gameScene;
+        IScene* _activeScene = nullptr;
 
         DrawingEngine _drawingEngineType = DrawingEngine::Software;
         std::unique_ptr<IDrawingEngine> _drawingEngine;
@@ -159,12 +163,21 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+            , _objectRepository(CreateObjectRepository(_env))
+            , _objectManager(CreateObjectManager(*_objectRepository))
+            , _trackDesignRepository(CreateTrackDesignRepository(_env))
+            , _scenarioRepository(CreateScenarioRepository(_env))
+            , _replayManager(CreateReplayManager())
+            , _gameStateSnapshots(CreateGameStateSnapshots())
 #ifdef ENABLE_SCRIPTING
             , _scriptEngine(_stdInOutConsole, *env)
 #endif
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
+            , _introScene(std::make_unique<IntroScene>(*this))
+            , _titleScene(std::make_unique<TitleScene>(*this))
+            , _gameScene(std::make_unique<GameScene>(*this))
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -220,11 +233,6 @@ namespace OpenRCT2
             return _scriptEngine;
         }
 #endif
-
-        GameState* GetGameState() override
-        {
-            return _gameState.get();
-        }
 
         std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
         {
@@ -301,6 +309,47 @@ namespace OpenRCT2
                 return EXIT_SUCCESS;
             }
             return EXIT_FAILURE;
+        }
+
+        IScene* GetLoadingScene() override
+        {
+            // TODO: Implement me.
+            return nullptr;
+        }
+
+        IScene* GetIntroScene() override
+        {
+            return _introScene.get();
+        }
+
+        IScene* GetTitleScene() override
+        {
+            return _titleScene.get();
+        }
+
+        IScene* GetGameScene() override
+        {
+            return _gameScene.get();
+        }
+
+        IScene* GetEditorScene() override
+        {
+            // TODO: Implement me.
+            return nullptr;
+        }
+
+        IScene* GetActiveScene() override
+        {
+            return _activeScene;
+        }
+
+        void SetActiveScene(IScene* screen) override
+        {
+            if (_activeScene != nullptr)
+                _activeScene->Stop();
+            _activeScene = screen;
+            if (_activeScene)
+                _activeScene->Load();
         }
 
         void WriteLine(const std::string& s) override
@@ -384,12 +433,6 @@ namespace OpenRCT2
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
 
-            _objectRepository = CreateObjectRepository(_env);
-            _objectManager = CreateObjectManager(*_objectRepository);
-            _trackDesignRepository = CreateTrackDesignRepository(_env);
-            _scenarioRepository = CreateScenarioRepository(_env);
-            _replayManager = CreateReplayManager();
-            _gameStateSnapshots = CreateGameStateSnapshots();
             if (!gOpenRCT2Headless)
             {
                 _assetPackManager = std::make_unique<AssetPackManager>();
@@ -456,10 +499,10 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                Init();
-                PopulateDevices();
-                InitRideSoundsAndInfo();
-                gGameSoundsOff = !gConfigSound.MasterSoundEnabled;
+                Audio::Init();
+                Audio::PopulateDevices();
+                Audio::InitRideSoundsAndInfo();
+                Audio::gGameSoundsOff = !gConfigSound.MasterSoundEnabled;
             }
 
             ChatInit();
@@ -477,14 +520,12 @@ namespace OpenRCT2
             InputResetPlaceObjModifier();
             ViewportInitAll();
 
-            _gameState = std::make_unique<GameState>();
-            _gameState->InitAll(DEFAULT_MAP_SIZE);
+            gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
 
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Initialise();
 #endif
 
-            _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();
 
             return true;
@@ -598,7 +639,7 @@ namespace OpenRCT2
                 Console::Error::WriteLine(e.what());
                 if (loadTitleScreenOnFail)
                 {
-                    TitleLoad();
+                    SetActiveScene(GetTitleScene());
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
@@ -734,7 +775,7 @@ namespace OpenRCT2
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
-                    TitleLoad();
+                    SetActiveScene(GetTitleScene());
                 }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
@@ -753,7 +794,7 @@ namespace OpenRCT2
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
-                    TitleLoad();
+                    SetActiveScene(GetTitleScene());
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
@@ -764,7 +805,7 @@ namespace OpenRCT2
 
                 if (loadTitleScreenFirstOnFail)
                 {
-                    TitleLoad();
+                    SetActiveScene(GetTitleScene());
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 Formatter ft;
@@ -795,7 +836,7 @@ namespace OpenRCT2
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
-                    TitleLoad();
+                    SetActiveScene(GetTitleScene());
                 }
                 Console::Error::WriteLine(e.what());
             }
@@ -806,9 +847,9 @@ namespace OpenRCT2
     private:
         bool HasObjectsThatUseFallbackImages()
         {
-            for (auto objectType : ObjectTypes)
+            for (auto objectType : getAllObjectTypes())
             {
-                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(getObjectEntryGroupCount(objectType));
                 for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
                 {
                     auto obj = _objectManager->GetLoadedObject(objectType, i);
@@ -877,7 +918,6 @@ namespace OpenRCT2
                 });
             }
 
-            gIntroState = IntroState::None;
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
@@ -897,11 +937,10 @@ namespace OpenRCT2
             switch (gOpenRCT2StartupAction)
             {
                 case StartupAction::Intro:
-                    gIntroState = IntroState::PublisherBegin;
-                    TitleLoad();
+                    SetActiveScene(GetIntroScene());
                     break;
                 case StartupAction::Title:
-                    TitleLoad();
+                    SetActiveScene(GetTitleScene());
                     break;
                 case StartupAction::Open:
                 {
@@ -914,7 +953,7 @@ namespace OpenRCT2
                         auto data = DownloadPark(gOpenRCT2StartupActionPath);
                         if (data.empty())
                         {
-                            TitleLoad();
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
 
@@ -922,7 +961,7 @@ namespace OpenRCT2
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            TitleLoad();
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
 #endif
@@ -940,12 +979,12 @@ namespace OpenRCT2
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             Console::Error::WriteLine("%s", ex.what());
-                            TitleLoad();
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
                     }
 
-                    gScreenFlags = SCREEN_FLAGS_PLAYING;
+                    SetActiveScene(GetGameScene());
 
 #ifndef DISABLE_NETWORK
                     if (gNetworkStart == NETWORK_MODE_SERVER)
@@ -985,7 +1024,7 @@ namespace OpenRCT2
                     }
                     else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        TitleLoad();
+                        SetActiveScene(GetTitleScene());
                     }
                     break;
                 default:
@@ -1189,18 +1228,8 @@ namespace OpenRCT2
 
             DateUpdateRealTimeOfDay();
 
-            if (gIntroState != IntroState::None)
-            {
-                IntroUpdate();
-            }
-            else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
-            {
-                _titleScreen->Tick();
-            }
-            else
-            {
-                _gameState->Tick();
-            }
+            if (_activeScene)
+                _activeScene->Tick();
 
 #ifdef __ENABLE_DISCORD__
             if (_discordService != nullptr)
@@ -1350,7 +1379,7 @@ namespace OpenRCT2
 
     std::unique_ptr<IContext> CreateContext()
     {
-        return CreateContext(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext());
+        return CreateContext(CreatePlatformEnvironment(), Audio::CreateDummyAudioContext(), CreateDummyUiContext());
     }
 
     std::unique_ptr<IContext> CreateContext(
@@ -1530,12 +1559,6 @@ WindowBase* ContextShowError(StringId title, StringId message, const Formatter& 
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message, args);
-}
-
-void ContextUpdateMapTooltip()
-{
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    windowManager->UpdateMapTooltip();
 }
 
 void ContextHandleInput()

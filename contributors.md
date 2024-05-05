@@ -237,6 +237,8 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Harry Hopkinson (Harry-Hopkinson)
 * Jan Kelemen (jan-kelemen)
 * Cory Ye (CoryfY)
+* Karsten Van Fossan (karstenvanf)
+* Kaavya Ramachandhran (ayvaak)
 
 ## Toolchain
 * (Balletie) - macOS

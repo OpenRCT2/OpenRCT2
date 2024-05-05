@@ -21,7 +21,6 @@
 #include "Drawing.h"
 #include "TTF.h"
 
-#include <algorithm>
 #include <mutex>
 
 using namespace OpenRCT2;

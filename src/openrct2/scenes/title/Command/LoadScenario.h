@@ -9,27 +9,21 @@
 
 #pragma once
 
-#include "common.h"
+#include "../../../core/String.hpp"
 
-struct DrawPixelInfo;
+#include <cstdint>
 
-enum class IntroState : uint8_t
+constexpr uint8_t kTitleCommandScenarioLength = 64;
+
+namespace OpenRCT2::Title
 {
-    None,
-    PublisherBegin,
-    PublisherScroll,
-    DeveloperBegin,
-    DeveloperScroll,
-    LogoFadeIn,
-    LogoWait,
-    LogoFadeOut,
-    Disclaimer1,
-    Disclaimer2,
-    Clear = 254,
-    Finish = 255,
-};
+    struct LoadScenarioCommand
+    {
+        static constexpr const char* Name = "Load Scenario Command";
+        static constexpr const char* ScriptingName = "loadsc";
 
-extern IntroState gIntroState;
+        utf8 Scenario[kTitleCommandScenarioLength]{};
 
-void IntroUpdate();
-void IntroDraw(DrawPixelInfo& dpi);
+        int16_t operator()(int16_t timer);
+    };
+} // namespace OpenRCT2::Title

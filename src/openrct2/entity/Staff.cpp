@@ -47,7 +47,6 @@
 #include "PatrolArea.h"
 #include "Peep.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -896,12 +895,12 @@ void Staff::EntertainerUpdateNearbyPeeps() const
 
         if (guest->State == PeepState::Walking)
         {
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
         }
         else if (guest->State == PeepState::Queuing)
         {
             guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
         }
     }
 }
@@ -957,6 +956,7 @@ void Staff::SetCostume(uint8_t value)
 {
     auto costume = static_cast<EntertainerCostume>(value);
     SpriteType = EntertainerCostumeToSprite(costume);
+    UpdateAction();
 }
 
 void Staff::SetHireDate(int32_t hireDate)

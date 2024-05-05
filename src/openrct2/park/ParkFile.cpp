@@ -382,8 +382,8 @@ namespace OpenRCT2
                     auto objectList = objManager.GetLoadedObjects();
 
                     // Write number of object sub lists
-                    cs.Write(static_cast<uint16_t>(TransientObjectTypes.size()));
-                    for (auto objectType : TransientObjectTypes)
+                    cs.Write(static_cast<uint16_t>(getTransientObjectTypes().size()));
+                    for (auto objectType : getTransientObjectTypes())
                     {
                         // Write sub list
                         const auto& list = objectList.GetList(objectType);
@@ -420,11 +420,7 @@ namespace OpenRCT2
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gameState.ScenarioCategory);
                 ReadWriteStringTable(cs, gameState.ScenarioName, "en-GB");
-
-                // TODO: Use the passed gameState instead of the global one.
-                auto& park = GetContext()->GetGameState()->GetPark();
-                ReadWriteStringTable(cs, park.Name, "en-GB");
-
+                ReadWriteStringTable(cs, gameState.Park.Name, "en-GB");
                 ReadWriteStringTable(cs, gameState.ScenarioDetails, "en-GB");
 
                 cs.ReadWrite(gameState.ScenarioObjective.Type);
@@ -488,8 +484,7 @@ namespace OpenRCT2
                     uint32_t monthsElapsed;
                     cs.ReadWrite(monthTicks);
                     cs.ReadWrite(monthsElapsed);
-                    // TODO: Use the passed gameState instead of the global one.
-                    GetContext()->GetGameState()->SetDate(Date(monthsElapsed, monthTicks));
+                    gameState.Date = Date{ monthsElapsed, monthTicks };
                 }
                 else
                 {
@@ -654,30 +649,29 @@ namespace OpenRCT2
 
         void ReadWritePluginStorageChunk(GameState_t& gameState, OrcaStream& os)
         {
-            // TODO: Use the passed gameState instead of the global one.
-            auto& park = GetContext()->GetGameState()->GetPark();
             if (os.GetMode() == OrcaStream::Mode::WRITING)
             {
 #ifdef ENABLE_SCRIPTING
                 // Dump the plugin storage to JSON (stored in park)
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                park.PluginStorage = scriptEngine.GetParkStorageAsJSON();
+                gameState.PluginStorage = scriptEngine.GetParkStorageAsJSON();
 #endif
-                if (park.PluginStorage.empty() || park.PluginStorage == "{}")
+                if (gameState.PluginStorage.empty() || gameState.PluginStorage == "{}")
                 {
                     // Don't write the chunk if there is no plugin storage
                     return;
                 }
             }
 
-            os.ReadWriteChunk(
-                ParkFileChunkType::PLUGIN_STORAGE, [&park](OrcaStream::ChunkStream& cs) { cs.ReadWrite(park.PluginStorage); });
+            os.ReadWriteChunk(ParkFileChunkType::PLUGIN_STORAGE, [&gameState](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(gameState.PluginStorage);
+            });
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
 #ifdef ENABLE_SCRIPTING
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.SetParkStorageFromJSON(park.PluginStorage);
+                scriptEngine.SetParkStorageFromJSON(gameState.PluginStorage);
 #endif
             }
         }
@@ -799,23 +793,21 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(
                 ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion, &gameState](OrcaStream::ChunkStream& cs) {
-                    // TODO: Use the passed gameState instead of the global one.
-                    auto& park = GetContext()->GetGameState()->GetPark();
-                    cs.ReadWrite(park.Name);
+                    cs.ReadWrite(gameState.Park.Name);
                     cs.ReadWrite(gameState.Cash);
                     cs.ReadWrite(gameState.BankLoan);
                     cs.ReadWrite(gameState.MaxBankLoan);
                     cs.ReadWrite(gameState.BankLoanInterestRate);
-                    cs.ReadWrite(gameState.ParkFlags);
+                    cs.ReadWrite(gameState.Park.Flags);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
                         cs.ReadWrite(tempParkEntranceFee);
-                        gameState.ParkEntranceFee = ToMoney64(tempParkEntranceFee);
+                        gameState.Park.EntranceFee = ToMoney64(tempParkEntranceFee);
                     }
                     else
                     {
-                        cs.ReadWrite(gameState.ParkEntranceFee);
+                        cs.ReadWrite(gameState.Park.EntranceFee);
                     }
 
                     cs.ReadWrite(gameState.StaffHandymanColour);
@@ -885,13 +877,13 @@ namespace OpenRCT2
                             cs.ReadWrite(award.Type);
                         });
                     }
-                    cs.ReadWrite(gameState.ParkValue);
+                    cs.ReadWrite(gameState.Park.Value);
                     cs.ReadWrite(gameState.CompanyValue);
-                    cs.ReadWrite(gameState.ParkSize);
+                    cs.ReadWrite(gameState.Park.Size);
                     cs.ReadWrite(gameState.NumGuestsInPark);
                     cs.ReadWrite(gameState.NumGuestsHeadingForPark);
-                    cs.ReadWrite(gameState.ParkRating);
-                    cs.ReadWrite(gameState.ParkRatingCasualtyPenalty);
+                    cs.ReadWrite(gameState.Park.Rating);
+                    cs.ReadWrite(gameState.Park.RatingCasualtyPenalty);
                     cs.ReadWrite(gameState.CurrentExpenditure);
                     cs.ReadWrite(gameState.CurrentProfit);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
@@ -918,7 +910,7 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWriteArray(gameState.ParkRatingHistory, [&cs](uint8_t& value) {
+                    cs.ReadWriteArray(gameState.Park.RatingHistory, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
@@ -936,7 +928,7 @@ namespace OpenRCT2
                         cs.ReadWrite(value);
                         return true;
                     });
-                    cs.ReadWriteArray(gameState.ParkValueHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.Park.ValueHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
@@ -1071,8 +1063,7 @@ namespace OpenRCT2
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
-                        // TODO: Use the passed gameState instead of the global one.
-                        OpenRCT2::GetContext()->GetGameState()->InitAll(gameState.MapSize);
+                        gameStateInitAll(gameState, gameState.MapSize);
 
                         auto numElements = cs.Read<uint32_t>();
 

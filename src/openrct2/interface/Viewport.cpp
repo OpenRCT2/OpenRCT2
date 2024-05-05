@@ -41,7 +41,6 @@
 #include "Window.h"
 #include "Window_internal.h"
 
-#include <algorithm>
 #include <cstring>
 #include <list>
 #include <unordered_map>
@@ -177,7 +176,7 @@ CoordsXYZ Focus::GetPos() const
 void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
 {
     Viewport* viewport = nullptr;
-    if (_viewports.size() >= MAX_VIEWPORT_COUNT)
+    if (_viewports.size() >= kMaxViewportCount)
     {
         LOG_ERROR("No more viewport slots left to allocate.");
         return;
@@ -2154,6 +2153,13 @@ std::optional<CoordsXY> ScreenGetMapXYSideWithZ(const ScreenCoordsXY& screenCoor
 
     *side = MapGetTileSide(*mapCoords);
     return mapCoords->ToTileStart();
+}
+
+ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos)
+{
+    auto rotated = pos.Rotate(rotation);
+    // Use right shift to avoid issues like #9301
+    return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
 }
 
 /**

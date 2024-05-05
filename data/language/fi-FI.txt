@@ -187,7 +187,7 @@ STR_0768    :Yleismies {INT32}
 STR_0769    :Mekaanikko {INT32}
 STR_0770    :Vartija {INT32}
 STR_0771    :Viihdyttäjä {INT32}
-STR_0777    :Nimetön puisto{POP16}{POP16}
+STR_0777    :Nimetön puisto
 STR_0778    :Kyltti
 STR_0779    :1.
 STR_0780    :2.

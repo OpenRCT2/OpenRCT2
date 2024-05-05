@@ -20,11 +20,11 @@
 #include "../paint/Painter.h"
 #include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
+#include "../util/Prefetch.h"
 #include "Boundbox.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
-#include <algorithm>
 #include <array>
 
 using namespace OpenRCT2;
@@ -391,6 +391,7 @@ template<uint8_t TRotation> static void PaintStructsSortQuadrant(PaintStruct* pa
         auto* ps = child;
         child = child->NextQuadrantEntry;
 
+        PREFETCH(&child->Bounds);
         if (child == nullptr || child->SortFlags & PaintSortFlags::OutsideQuadrant)
         {
             break;

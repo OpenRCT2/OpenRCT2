@@ -11,7 +11,6 @@
 
 #include "IStream.hpp"
 
-#include <algorithm>
 #ifndef __ANDROID__
 #    include <zip.h>
 #endif

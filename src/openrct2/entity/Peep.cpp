@@ -35,6 +35,8 @@
 #include "../network/network.h"
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
+#include "../peep/PeepAnimationData.h"
+#include "../peep/PeepSpriteIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -56,7 +58,6 @@
 #include "PatrolArea.h"
 #include "Staff.h"
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 #include <map>
@@ -333,7 +334,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
  */
 void Peep::UpdateCurrentActionSpriteType()
 {
-    if (EnumValue(SpriteType) >= std::size(g_peep_animation_entries))
+    if (EnumValue(SpriteType) >= EnumValue(PeepSpriteType::Count))
     {
         return;
     }
@@ -415,64 +416,89 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
+    // We're taking an easier route if we're just walking
     if (IsActionWalking())
     {
-        if (xy_distance <= DestinationTolerance)
-        {
-            return std::nullopt;
-        }
-        int32_t nextDirection = 0;
-        if (x_delta < y_delta)
-        {
-            nextDirection = 8;
-            if (differenceLoc.y >= 0)
-            {
-                nextDirection = 24;
-            }
-        }
-        else
-        {
-            nextDirection = 16;
-            if (differenceLoc.x >= 0)
-            {
-                nextDirection = 0;
-            }
-        }
-        Orientation = nextDirection;
-        CoordsXY loc = { x, y };
-        loc += word_981D7C[nextDirection / 8];
-        WalkingFrameNum++;
-        const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
-        const uint8_t* imageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets;
-        if (WalkingFrameNum >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
-        {
-            WalkingFrameNum = 0;
-        }
-        ActionSpriteImageOffset = imageOffset[WalkingFrameNum];
-        return loc;
+        return UpdateWalkingAction(differenceLoc, xy_distance);
     }
 
-    const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
+    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
     ActionFrame++;
 
     // If last frame of action
-    if (ActionFrame >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
+    if (ActionFrame >= peepAnimation.frame_offsets.size())
     {
         ActionSpriteImageOffset = 0;
         Action = PeepActionType::Walking;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    ActionSpriteImageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets[ActionFrame];
+    ActionSpriteImageOffset = peepAnimation.frame_offsets[ActionFrame];
 
+    // Should we throw up, and are we at the frame where sick appears?
     auto* guest = As<Guest>();
-    // If not throwing up and not at the frame where sick appears.
-    if (Action != PeepActionType::ThrowUp || ActionFrame != 15 || guest == nullptr)
+    if (Action == PeepActionType::ThrowUp && ActionFrame == 15 && guest != nullptr)
     {
-        return { { x, y } };
+        ThrowUp();
     }
 
-    // We are throwing up
+    return { { x, y } };
+}
+
+std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance)
+{
+    if (!IsActionWalking())
+    {
+        return std::nullopt;
+    }
+
+    if (xy_distance <= DestinationTolerance)
+    {
+        return std::nullopt;
+    }
+
+    int32_t x_delta = abs(differenceLoc.x);
+    int32_t y_delta = abs(differenceLoc.y);
+
+    int32_t nextDirection = 0;
+    if (x_delta < y_delta)
+    {
+        nextDirection = 8;
+        if (differenceLoc.y >= 0)
+        {
+            nextDirection = 24;
+        }
+    }
+    else
+    {
+        nextDirection = 16;
+        if (differenceLoc.x >= 0)
+        {
+            nextDirection = 0;
+        }
+    }
+
+    Orientation = nextDirection;
+    CoordsXY loc = { x, y };
+    loc += word_981D7C[nextDirection / 8];
+
+    WalkingFrameNum++;
+    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
+    if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
+    {
+        WalkingFrameNum = 0;
+    }
+    ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingFrameNum];
+
+    return loc;
+}
+
+void Peep::ThrowUp()
+{
+    auto* guest = As<Guest>();
+    if (guest == nullptr)
+        return;
+
     guest->Hunger /= 2;
     guest->NauseaTarget /= 2;
 
@@ -494,8 +520,6 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     };
     auto soundId = coughs[ScenarioRand() & 3];
     OpenRCT2::Audio::Play3D(soundId, curLoc);
-
-    return { { x, y } };
 }
 
 /**
@@ -718,7 +742,7 @@ void Peep::UpdateFalling()
         }
 
         auto& gameState = GetGameState();
-        gameState.ParkRatingCasualtyPenalty = std::min(gameState.ParkRatingCasualtyPenalty + 25, 1000);
+        gameState.Park.RatingCasualtyPenalty = std::min(gameState.Park.RatingCasualtyPenalty + 25, 1000);
         Remove();
         return;
     }
@@ -868,7 +892,7 @@ static void GuestUpdateThoughts(Guest* peep)
     // a holding zone. Before it becomes fresh.
     int32_t add_fresh = 1;
     int32_t fresh_thought = -1;
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
+    for (int32_t i = 0; i < kPeepMaxThoughts; i++)
     {
         if (peep->Thoughts[i].type == PeepThoughtType::None)
             break;
@@ -896,11 +920,11 @@ static void GuestUpdateThoughts(Guest* peep)
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 
                     // Clear top thought, push others up
-                    if (i < PEEP_MAX_THOUGHTS - 2)
+                    if (i < kPeepMaxThoughts - 2)
                     {
-                        memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
+                        memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
                     }
-                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
+                    peep->Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
                 }
             }
         }
@@ -1093,7 +1117,7 @@ void PeepProblemWarningsUpdate()
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warningThrottle[0])
         --warningThrottle[0];
-    else if (hungerCounter >= PEEP_HUNGER_WARNING_THRESHOLD && hungerCounter >= gameState.NumGuestsInPark / 16)
+    else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[0] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1105,7 +1129,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[1])
         --warningThrottle[1];
-    else if (thirstCounter >= PEEP_THIRST_WARNING_THRESHOLD && thirstCounter >= gameState.NumGuestsInPark / 16)
+    else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[1] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1117,7 +1141,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[2])
         --warningThrottle[2];
-    else if (toiletCounter >= PEEP_TOILET_WARNING_THRESHOLD && toiletCounter >= gameState.NumGuestsInPark / 16)
+    else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[2] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1129,7 +1153,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[3])
         --warningThrottle[3];
-    else if (litterCounter >= PEEP_LITTER_WARNING_THRESHOLD && litterCounter >= gameState.NumGuestsInPark / 32)
+    else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[3] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1141,7 +1165,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[4])
         --warningThrottle[4];
-    else if (disgustCounter >= PEEP_DISGUST_WARNING_THRESHOLD && disgustCounter >= gameState.NumGuestsInPark / 32)
+    else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[4] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1153,7 +1177,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[5])
         --warningThrottle[5];
-    else if (vandalismCounter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalismCounter >= gameState.NumGuestsInPark / 32)
+    else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[5] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1165,7 +1189,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[6])
         --warningThrottle[6];
-    else if (noexitCounter >= PEEP_NOEXIT_WARNING_THRESHOLD)
+    else if (noexitCounter >= kPeepNoExitWarningThreshold)
     {
         warningThrottle[6] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1174,7 +1198,7 @@ void PeepProblemWarningsUpdate()
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
         }
     }
-    else if (lostCounter >= PEEP_LOST_WARNING_THRESHOLD)
+    else if (lostCounter >= kPeepLostWarningThreshold)
     {
         warningThrottle[6] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1186,7 +1210,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[7])
         --warningThrottle[7];
-    else if (tooLongQueueCounter > PEEP_TOO_LONG_QUEUE_THRESHOLD && tooLongQueueCounter > inQueueCounter / 20)
+    else if (tooLongQueueCounter > kPeepTooLongQueueThreshold && tooLongQueueCounter > inQueueCounter / 20)
     { // The amount of guests complaining about queue duration is at least 5% of the amount of queuing guests.
       // This includes guests who are no longer queuing.
         warningThrottle[7] = 4;
@@ -1538,7 +1562,7 @@ void Peep::FormatNameTo(Formatter& ft) const
             ft.Add<StringId>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(PeepId);
         }
-        else if (GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        else if (GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
             ft.Add<StringId>(realNameStringId);
@@ -1805,7 +1829,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             if (!(guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
-                if (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN)
+                if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
                 {
                     PeepReturnToCentreOfTile(guest);
                     return true;
@@ -1838,7 +1862,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        if (!(gameState.ParkFlags & PARK_FLAGS_PARK_OPEN))
+        if (!(gameState.Park.Flags & PARK_FLAGS_PARK_OPEN))
         {
             guest->State = PeepState::LeavingPark;
             guest->Var37 = 1;
@@ -1849,10 +1873,10 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         bool found = false;
-        auto entrance = std::find_if(gameState.ParkEntrances.begin(), gameState.ParkEntrances.end(), [coords](const auto& e) {
+        auto entrance = std::find_if(gameState.Park.Entrances.begin(), gameState.Park.Entrances.end(), [coords](const auto& e) {
             return coords.ToTileStart() == e;
         });
-        if (entrance != gameState.ParkEntrances.end())
+        if (entrance != gameState.Park.Entrances.end())
         {
             int16_t z = entrance->z / 8;
             entranceDirection = entrance->direction;
@@ -1911,7 +1935,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        auto entranceFee = ParkGetEntranceFee();
+        auto entranceFee = Park::GetEntranceFee();
         if (entranceFee != 0)
         {
             if (guest->HasItem(ShopItem::Voucher))
@@ -2287,7 +2311,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         }
 
         auto cost = ride->price[0];
-        if (cost != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (cost != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             ride->total_profit += cost;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -2552,7 +2576,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
 
     if (peep_a->Name == nullptr && peep_b->Name == nullptr)
     {
-        if (GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        if (GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             // Potentially could find a more optional way of sorting dynamic real names
         }
@@ -2585,12 +2609,12 @@ void PeepUpdateNames(bool realNames)
     auto& gameState = GetGameState();
     if (realNames)
     {
-        gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         // Peep names are now dynamic
     }
     else
     {
-        gameState.ParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.Park.Flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         // Peep names are now dynamic
     }
 
@@ -2799,21 +2823,21 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     auto* guest = As<Guest>();
     if (guest != nullptr)
     {
-        if (baseImageId >= 10717 && baseImageId < 10749)
+        if (baseImageId >= kPeepSpriteHatStateWatchRideId && baseImageId < (kPeepSpriteHatStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->HatColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
-        if (baseImageId >= 10781 && baseImageId < 10813)
+        if (baseImageId >= kPeepSpriteBalloonStateWatchRideId && baseImageId < (kPeepSpriteBalloonStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->BalloonColour);
             PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
-        if (baseImageId >= 11197 && baseImageId < 11229)
+        if (baseImageId >= kPeepSpriteUmbrellaStateNoneId && baseImageId < (kPeepSpriteUmbrellaStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
             PaintAddImageAsChild(session, imageId, offset, bb);

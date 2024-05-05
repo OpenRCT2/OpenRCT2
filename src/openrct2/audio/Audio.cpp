@@ -10,7 +10,6 @@
 #include "audio.h"
 
 #include "../Context.h"
-#include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
@@ -26,6 +25,7 @@
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
+#include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
@@ -33,7 +33,6 @@
 #include "AudioContext.h"
 #include "AudioMixer.h"
 
-#include <algorithm>
 #include <cmath>
 #include <memory>
 #include <vector>
@@ -58,7 +57,7 @@ namespace OpenRCT2::Audio
 
     static std::shared_ptr<IAudioChannel> _titleMusicChannel = nullptr;
 
-    VehicleSound gVehicleSoundList[MaxVehicleSounds];
+    VehicleSound gVehicleSoundList[kMaxVehicleSounds];
 
     bool IsAvailable()
     {
@@ -101,16 +100,16 @@ namespace OpenRCT2::Audio
     {
         auto& objManager = GetContext()->GetObjectManager();
 
-        Object* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCT2);
+        Object* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::kRCT2);
         if (baseAudio != nullptr)
         {
             _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
         }
 
-        objManager.LoadObject(AudioObjectIdentifiers::OpenRCT2Additional);
+        objManager.LoadObject(AudioObjectIdentifiers::kOpenRCT2Additional);
         _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(
-            AudioObjectIdentifiers::OpenRCT2Additional);
-        objManager.LoadObject(AudioObjectIdentifiers::RCT2Circus);
+            AudioObjectIdentifiers::kOpenRCT2Additional);
+        objManager.LoadObject(AudioObjectIdentifiers::kRCT2Circus);
     }
 
     void PopulateDevices()
@@ -262,13 +261,13 @@ namespace OpenRCT2::Audio
     static std::map<TitleMusicKind, std::string_view> GetAvailableMusicMap()
     {
         auto musicMap = std::map<TitleMusicKind, std::string_view>{
-            { TitleMusicKind::OpenRCT2, AudioObjectIdentifiers::OpenRCT2Title },
-            { TitleMusicKind::RCT2, AudioObjectIdentifiers::RCT2Title },
+            { TitleMusicKind::OpenRCT2, AudioObjectIdentifiers::kOpenRCT2Title },
+            { TitleMusicKind::RCT2, AudioObjectIdentifiers::kRCT2Title },
         };
 
         if (IsRCT1TitleMusicAvailable())
         {
-            musicMap.emplace(TitleMusicKind::RCT1, AudioObjectIdentifiers::RCT1Title);
+            musicMap.emplace(TitleMusicKind::RCT1, AudioObjectIdentifiers::kRCT1Title);
         }
 
         return musicMap;
@@ -294,7 +293,7 @@ namespace OpenRCT2::Audio
 
     void PlayTitleMusic()
     {
-        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != IntroState::None)
+        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || IntroIsPlaying())
         {
             StopTitleMusic();
             return;
@@ -382,7 +381,7 @@ namespace OpenRCT2::Audio
         Close();
         for (auto& vehicleSound : gVehicleSoundList)
         {
-            vehicleSound.id = SoundIdNull;
+            vehicleSound.id = kSoundIdNull;
         }
 
         _currentAudioDevice = device;
@@ -436,9 +435,9 @@ namespace OpenRCT2::Audio
 
         for (auto& vehicleSound : gVehicleSoundList)
         {
-            if (vehicleSound.id != SoundIdNull)
+            if (vehicleSound.id != kSoundIdNull)
             {
-                vehicleSound.id = SoundIdNull;
+                vehicleSound.id = kSoundIdNull;
                 if (vehicleSound.TrackSound.Id != SoundId::Null)
                 {
                     vehicleSound.TrackSound.Channel->Stop();

@@ -11,7 +11,6 @@
 
 #include "Window.h"
 
-#include <algorithm>
 #include <cmath>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -1137,8 +1136,9 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     // Get the colour
     uint8_t colour = w.colours[widget.colour];
 
-    bool active = w.classification == gCurrentTextBox.window.classification && w.number == gCurrentTextBox.window.number
-        && widgetIndex == gCurrentTextBox.widget_index;
+    auto& tbIdent = OpenRCT2::Ui::Windows::GetCurrentTextBox();
+    bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
+        && widgetIndex == tbIdent.widget_index;
 
     // GfxFillRectInset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
     GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
@@ -1146,7 +1146,8 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     // Figure out where the text should be positioned vertically.
     topLeft.y = w.windowPos.y + widget.textTop();
 
-    if (!active || gTextInput == nullptr)
+    auto* textInput = OpenRCT2::Ui::Windows::GetTextboxSession();
+    if (!active || textInput == nullptr)
     {
         if (widget.text != 0)
         {
@@ -1160,27 +1161,27 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
     u8string wrappedString;
-    GfxWrapString(gTextBoxInput, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
+    GfxWrapString(*textInput->Buffer, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
 
     DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
 
     // Make a trimmed view of the string for measuring the width.
     int32_t curX = topLeft.x
         + GfxGetStringWidthNoFormatting(
-                       u8string_view{ wrappedString.c_str(), std::min(wrappedString.length(), gTextInput->SelectionStart) },
+                       u8string_view{ wrappedString.c_str(), std::min(wrappedString.length(), textInput->SelectionStart) },
                        FontStyle::Medium)
         + 3;
 
     int32_t width = 6;
-    if (static_cast<uint32_t>(gTextInput->SelectionStart) < gTextBoxInput.size())
+    if (static_cast<uint32_t>(textInput->SelectionStart) < textInput->Buffer->size())
     {
         // Make a new 1 character wide string for measuring the width
-        // of the character that the cursor is under.
+        // of the character that the cursor is under. (NOTE: this is broken for multi byte utf8 codepoints)
         width = std::max(
-            GfxGetStringWidthNoFormatting(u8string{ gTextBoxInput[gTextInput->SelectionStart] }, FontStyle::Medium) - 2, 4);
+            GfxGetStringWidthNoFormatting(u8string{ textInput->Buffer[textInput->SelectionStart] }, FontStyle::Medium) - 2, 4);
     }
 
-    if (gTextBoxFrameNo <= 15)
+    if (OpenRCT2::Ui::Windows::TextBoxCaretIsFlashed())
     {
         colour = ColourMapA[w.colours[1]].mid_light;
         auto y = topLeft.y + (widget.height() - 1);

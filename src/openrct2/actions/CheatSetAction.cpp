@@ -222,13 +222,13 @@ GameActions::Result CheatSetAction::Execute() const
             GetGameState().Cheats.NeverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!ParkIsOpen());
+            ParkSetOpen(!GetGameState().Park.IsOpen());
             break;
         case CheatType::HaveFun:
             gameState.ScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
-            ParkSetForcedRating(_param1);
+            Park::SetForcedRating(_param1);
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
             GetGameState().Cheats.AllowArbitraryRideTypeChanges = _param1 != 0;
@@ -350,21 +350,21 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             {
                 case GUEST_PARAMETER_HAPPINESS:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                             { 0, PEEP_MAX_HAPPINESS } };
+                             { 0, kPeepMaxHappiness } };
                 case GUEST_PARAMETER_ENERGY:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                             { PEEP_MIN_ENERGY, PEEP_MAX_ENERGY } };
+                             { kPeepMinEnergy, kPeepMaxEnergy } };
                 case GUEST_PARAMETER_HUNGER:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_HUNGER } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxHunger } };
                 case GUEST_PARAMETER_THIRST:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_THIRST } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxThirst } };
                 case GUEST_PARAMETER_NAUSEA:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_NAUSEA } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxNausea } };
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                              { EnumValue(PeepNauseaTolerance::None), EnumValue(PeepNauseaTolerance::High) } };
                 case GUEST_PARAMETER_TOILET:
-                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, PEEP_MAX_TOILET } };
+                    return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, kPeepMaxToilet } };
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
                     return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, 255 } };
                 default:
@@ -512,13 +512,22 @@ void CheatSetAction::FixBrokenRides() const
 {
     for (auto& ride : GetRideManager())
     {
-        if ((ride.mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
-            && (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+        if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             auto mechanic = RideGetAssignedMechanic(ride);
+
             if (mechanic != nullptr)
             {
-                mechanic->RemoveFromRide();
+                if (ride.mechanic_status == RIDE_MECHANIC_STATUS_FIXING)
+                {
+                    mechanic->RideSubState = PeepRideSubState::ApproachExit;
+                }
+                else if (
+                    ride.mechanic_status == RIDE_MECHANIC_STATUS_CALLING
+                    || ride.mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
+                {
+                    mechanic->RemoveFromRide();
+                }
             }
 
             RideFixBreakdown(ride, 0);
@@ -562,11 +571,11 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
     auto& gameState = GetGameState();
     if (enabled)
     {
-        gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
+        gameState.Park.Flags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
+        gameState.Park.Flags &= ~PARK_FLAGS_NO_MONEY;
     }
 
     // Invalidate all windows that have anything to do with finance
@@ -607,10 +616,9 @@ void CheatSetAction::ClearLoan() const
 
 void CheatSetAction::GenerateGuests(int32_t count) const
 {
-    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     for (int32_t i = 0; i < count; i++)
     {
-        park.GenerateGuest();
+        Park::GenerateGuest();
     }
     WindowInvalidateByClass(WindowClass::BottomToolbar);
 }
@@ -767,7 +775,7 @@ void CheatSetAction::OwnAllLand() const
             if (destOwnership != OWNERSHIP_UNOWNED)
             {
                 surfaceElement->SetOwnership(destOwnership);
-                ParkUpdateFencesAroundTile(coords);
+                Park::UpdateFencesAroundTile(coords);
                 MapInvalidateTile({ coords, baseZ, baseZ + 16 });
             }
         }
@@ -780,7 +788,7 @@ void CheatSetAction::OwnAllLand() const
         if (surfaceElement != nullptr)
         {
             surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-            ParkUpdateFencesAroundTile(spawn);
+            Park::UpdateFencesAroundTile(spawn);
             uint16_t baseZ = surfaceElement->GetBaseZ();
             MapInvalidateTile({ spawn, baseZ, baseZ + 16 });
         }

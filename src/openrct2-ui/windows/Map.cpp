@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -184,6 +183,13 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
     };
 
+    namespace MapFlashingFlags
+    {
+        constexpr uint16_t FlashGuests = (1 << 1);
+        constexpr uint16_t FlashStaff = (1 << 3);
+        constexpr uint16_t SwitchColour = (1 << 15); // Every couple ticks the colour switches
+    }                                                // namespace MapFlashingFlags
+
     class MapWindow final : public Window
     {
         uint8_t _rotation;
@@ -200,6 +206,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             X,
             Y,
         } _resizeDirection{ ResizeDirection::Both };
+        uint16_t _flashingFlags = 0;
 
     public:
         MapWindow()
@@ -387,6 +394,22 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
         void OnUpdate() override
         {
+            // the flickering frequency is reduced by 4, compared to the original
+            // it was done due to inability to reproduce original frequency
+            // and decision that the original one looks too fast
+            if (gCurrentRealTimeTicks % 4 == 0)
+                _flashingFlags ^= MapFlashingFlags::SwitchColour;
+
+            // Handle guest map flashing
+            _flashingFlags &= ~MapFlashingFlags::FlashGuests;
+            if (WindowFindByClass(WindowClass::GuestList) != nullptr)
+                _flashingFlags |= MapFlashingFlags::FlashGuests;
+
+            // Handle staff map flashing
+            _flashingFlags &= ~MapFlashingFlags::FlashStaff;
+            if (WindowFindByClass(WindowClass::StaffList) != nullptr)
+                _flashingFlags |= MapFlashingFlags::FlashStaff;
+
             if (GetCurrentRotation() != _rotation)
             {
                 _rotation = GetCurrentRotation();
@@ -963,11 +986,11 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                         GfxFillRect(
                             dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                             RideKeyColours[i]);
-                        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, MapLabels[i], {});
-                        screenCoords.y += LIST_ROW_HEIGHT;
+                        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ kListRowHeight, 0 }, MapLabels[i], {});
+                        screenCoords.y += kListRowHeight;
                         if (i == 3)
                         {
-                            screenCoords += { _firstColumnWidth, -(LIST_ROW_HEIGHT * 4) };
+                            screenCoords += { _firstColumnWidth, -(kListRowHeight * 4) };
                         }
                     }
                 }
@@ -1269,25 +1292,25 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             GfxFillRect(dpi, { leftTop, rightBottom }, colour);
         }
 
-        static uint8_t GetGuestFlashColour()
+        uint8_t GetGuestFlashColour() const
         {
             uint8_t colour = DefaultPeepMapColour;
-            if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashGuests) != 0)
+            if ((_flashingFlags & MapFlashingFlags::FlashGuests) != 0)
             {
                 colour = GuestMapColour;
-                if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+                if ((_flashingFlags & MapFlashingFlags::SwitchColour) == 0)
                     colour = GuestMapColourAlternate;
             }
             return colour;
         }
 
-        static uint8_t GetStaffFlashColour()
+        uint8_t GetStaffFlashColour() const
         {
             uint8_t colour = DefaultPeepMapColour;
-            if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashStaff) != 0)
+            if ((_flashingFlags & MapFlashingFlags::FlashStaff) != 0)
             {
                 colour = StaffMapColour;
-                if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+                if ((_flashingFlags & MapFlashingFlags::SwitchColour) == 0)
                     colour = StaffMapColourAlternate;
             }
             return colour;
@@ -1468,14 +1491,14 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
                 widgets[WIDX_MAP].bottom = height - 1 - 72;
             else if (selected_tab == PAGE_RIDES)
-                widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
+                widgets[WIDX_MAP].bottom = height - 1 - (4 * kListRowHeight + 4);
             else
                 widgets[WIDX_MAP].bottom = height - 1 - 14;
         }
 
         void CalculateTextLayout()
         {
-            int32_t textOffset = 4 + LIST_ROW_HEIGHT;
+            int32_t textOffset = 4 + kListRowHeight;
             _firstColumnWidth = 118;
             for (uint32_t i = 0; i < 4; i++)
             {

@@ -356,7 +356,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, RejoinQueueTimeout);
         COMPARE_FIELD(Guest, PreviousRide);
         COMPARE_FIELD(Guest, PreviousRideTimeOut);
-        for (std::size_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        for (std::size_t i = 0; i < kPeepMaxThoughts; i++)
         {
             COMPARE_FIELD(Guest, Thoughts[i].type);
             COMPARE_FIELD(Guest, Thoughts[i].item);

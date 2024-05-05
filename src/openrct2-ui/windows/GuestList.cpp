@@ -21,6 +21,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -274,8 +275,6 @@ static Widget window_guest_list_widgets[] = {
             if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24uL : 32uL))
                 _tabAnimationIndex = 0;
             InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab));
-
-            gWindowMapFlashingFlags |= MapFlashingFlags::GuestListOpen;
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -960,8 +959,8 @@ static Widget window_guest_list_widgets[] = {
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
-                                                                               : CompareGuestItem<false>;
+            return GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
+                                                                                : CompareGuestItem<false>;
         }
     };
 
