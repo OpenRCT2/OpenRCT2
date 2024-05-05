@@ -10,17 +10,14 @@
 #pragma once
 
 #include "GLSLTypes.h"
-#include "OpenGLAPI.h"
 
 #include <SDL_pixels.h>
 #include <array>
-#include <mutex>
 #include <openrct2/common.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/DrawingLock.hpp>
 #include <openrct2/sprites.h>
-#ifndef __MACOSX__
-#    include <shared_mutex>
-#endif
+#include <shared_mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -209,15 +206,9 @@ namespace OpenRCT2::Ui
         GLuint _paletteTexture = 0;
         GLuint _blendPaletteTexture = 0;
 
-#ifndef __MACOSX__
         std::shared_mutex _mutex;
-        using shared_lock = std::shared_lock<std::shared_mutex>;
-        using unique_lock = std::unique_lock<std::shared_mutex>;
-#else
-        std::mutex _mutex;
-        using shared_lock = std::unique_lock<std::mutex>;
-        using unique_lock = std::unique_lock<std::mutex>;
-#endif
+        using shared_lock = DrawingSharedLock<std::shared_mutex>;
+        using unique_lock = DrawingUniqueLock<std::shared_mutex>;
 
     public:
         TextureCache();

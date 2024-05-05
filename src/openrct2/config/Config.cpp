@@ -20,7 +20,6 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../interface/Window.h"
 #include "../localisation/Currency.h"
-#include "../localisation/Date.h"
 #include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
