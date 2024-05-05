@@ -3176,7 +3176,7 @@ declare global {
         "drowning" |
         "staffAnswerCall" |
         "staffAnswerCall2" |
-        "staffCheckboard" |
+        "staffCheckBoard" |
         "staffFix" |
         "staffFix2" |
         "staffFixGround" |
