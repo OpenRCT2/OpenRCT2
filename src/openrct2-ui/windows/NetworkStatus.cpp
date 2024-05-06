@@ -133,8 +133,17 @@ static Widget window_network_status_widgets[] = {
 
     WindowBase* NetworkStatusOpen(const std::string& text, close_callback onClose)
     {
-        auto window = WindowFocusOrCreate<NetworkStatusWindow>(
-            WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+        NetworkStatusWindow* window;
+        if ((window = static_cast<NetworkStatusWindow*>(WindowFindByClass(WindowClass::NetworkStatus))) != nullptr)
+        {
+            WindowBringToFront(*window);
+        }
+        else
+        {
+            window = WindowCreate<NetworkStatusWindow>(
+                WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+        }
+
         window->SetCloseCallBack(onClose);
         window->SetWindowNetworkStatusText(text);
         return window;
