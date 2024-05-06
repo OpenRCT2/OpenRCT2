@@ -42,7 +42,7 @@ std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen);
 
 template<typename T> constexpr T AddClamp(T value, T valueToAdd)
 {
-    if(std::is_same_v<decltype(value), money64>)
+    if (std::is_same_v<decltype(value), money64>)
     {
         assert_struct_size(money64, sizeof(int64_t));
     }
