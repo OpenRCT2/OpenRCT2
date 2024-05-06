@@ -78,7 +78,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
     auto& gameState = GetGameState();
-    gameState.Cash = AddClamp_money64(gameState.Cash, -amount);
+    gameState.Cash = AddClamp<money64>(gameState.Cash, -amount);
 
     gameState.ExpenditureTable[0][EnumValue(type)] -= amount;
     if (dword_988E60[EnumValue(type)] & 1)
