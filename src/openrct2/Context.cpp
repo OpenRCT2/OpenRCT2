@@ -177,10 +177,6 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
-            , _preloaderScene(std::make_unique<PreloaderScene>(*this))
-            , _introScene(std::make_unique<IntroScene>(*this))
-            , _titleScene(std::make_unique<TitleScene>(*this))
-            , _gameScene(std::make_unique<GameScene>(*this))
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -314,23 +310,41 @@ namespace OpenRCT2
             return EXIT_FAILURE;
         }
 
-        IScene* GetPreloaderScene() override
+        // NB: This takes some liberty in returning PreloaderScene* instead of IScene*.
+        // PreloaderScene adds some methods to Scene, which are used internally by Context.
+        PreloaderScene* GetPreloaderScene() override
         {
+            if (auto* scene = _preloaderScene.get())
+                return scene;
+
+            _preloaderScene = std::make_unique<PreloaderScene>(*this);
             return _preloaderScene.get();
         }
 
         IScene* GetIntroScene() override
         {
+            if (auto* scene = _introScene.get())
+                return scene;
+
+            _introScene = std::make_unique<IntroScene>(*this);
             return _introScene.get();
         }
 
         IScene* GetTitleScene() override
         {
+            if (auto* scene = _titleScene.get())
+                return scene;
+
+            _titleScene = std::make_unique<TitleScene>(*this);
             return _titleScene.get();
         }
 
         IScene* GetGameScene() override
         {
+            if (auto* scene = _gameScene.get())
+                return scene;
+
+            _gameScene = std::make_unique<GameScene>(*this);
             return _gameScene.get();
         }
 
@@ -508,10 +522,11 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                _preloaderScene->AddJob([this]() { InitialiseRepositories(); });
+                auto* preloaderScene = GetPreloaderScene();
+                preloaderScene->AddJob([this]() { InitialiseRepositories(); });
 
                 // TODO: preload the title scene in another (parallel) job.
-                SetActiveScene(_preloaderScene.get());
+                SetActiveScene(preloaderScene);
             }
             else
             {
@@ -536,25 +551,26 @@ namespace OpenRCT2
             }
 
             auto currentLanguage = _localisationService->GetCurrentLanguage();
+            auto* preloaderScene = GetPreloaderScene();
 
-            _preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
+            preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
             _objectRepository->LoadOrConstruct(currentLanguage);
 
             if (!gOpenRCT2Headless)
             {
-                _preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);
+                preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);
                 _assetPackManager->Scan();
                 _assetPackManager->LoadEnabledAssetPacks();
                 _assetPackManager->Reload();
             }
 
-            _preloaderScene->UpdateCaption(STR_CHECKING_TRACK_DESIGN_FILES);
+            preloaderScene->UpdateCaption(STR_CHECKING_TRACK_DESIGN_FILES);
             _trackDesignRepository->Scan(currentLanguage);
 
-            _preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
+            preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
             _scenarioRepository->Scan(currentLanguage);
 
-            _preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
+            preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
         }
 
     public:
