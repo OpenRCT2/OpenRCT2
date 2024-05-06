@@ -518,8 +518,6 @@ namespace OpenRCT2
 
             ContextInit();
 
-            TitleSequenceManager::Scan();
-
             if (!gOpenRCT2Headless)
             {
                 auto* preloaderScene = GetPreloaderScene();
@@ -570,7 +568,13 @@ namespace OpenRCT2
             preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
             _scenarioRepository->Scan(currentLanguage);
 
-            preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
+            preloaderScene->UpdateCaption(STR_CHECKING_TITLE_SEQUENCES);
+            TitleSequenceManager::Scan();
+
+            if (preloaderScene->GetCompletionScene() == GetTitleScene())
+                preloaderScene->UpdateCaption(STR_LOADING_TITLE_SEQUENCE);
+            else
+                preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
         }
 
     public:

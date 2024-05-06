@@ -3860,6 +3860,8 @@ enum : uint16_t
     STR_CHECKING_SCENARIO_FILES = 6633,
     STR_CHECKING_TRACK_DESIGN_FILES = 6634,
     STR_CHECKING_ASSET_PACKS = 6635,
+    STR_CHECKING_TITLE_SEQUENCES = 6636,
+    STR_LOADING_TITLE_SEQUENCE = 6637,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
