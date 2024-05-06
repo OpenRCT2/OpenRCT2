@@ -22,11 +22,14 @@
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
 
+#include <sstream>
+
 using namespace OpenRCT2;
 
 PreloaderScene::PreloaderScene(IContext& context)
     : Scene(context)
     , _jobs(1)
+    , _captionId(STR_LOADING_GENERIC)
 {
 }
 
@@ -45,7 +48,7 @@ void PreloaderScene::Load()
     auto* drawingContext = engine->GetDrawingContext();
     drawingContext->Clear(*engine->GetDrawingPixelInfo(), PALETTE_INDEX_10);
 
-    UpdateCaption(STR_LOADING_GENERIC);
+    UpdateCaption(_captionId);
 
     LOG_VERBOSE("PreloaderScene::Load() finished");
 }
@@ -70,12 +73,23 @@ void PreloaderScene::Tick()
 
 void PreloaderScene::UpdateCaption(StringId stringId)
 {
-    LOG_VERBOSE("PreloaderScene::UpdateCaption()");
+    _captionId = stringId;
 
     auto intent = Intent(WindowClass::NetworkStatus);
     intent.PutExtra(INTENT_EXTRA_MESSAGE, GetContext().GetLocalisationService().GetString(stringId));
     ContextOpenIntent(&intent);
 };
+
+void PreloaderScene::SetProgress(size_t currentProgress, size_t totalCount)
+{
+    std::stringstream caption;
+    caption << GetContext().GetLocalisationService().GetString(_captionId);
+    caption << " (" << currentProgress << " / " << totalCount << ")";
+
+    auto intent = Intent(WindowClass::NetworkStatus);
+    intent.PutExtra(INTENT_EXTRA_MESSAGE, caption.str());
+    ContextOpenIntent(&intent);
+}
 
 void PreloaderScene::Stop()
 {

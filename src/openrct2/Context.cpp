@@ -643,6 +643,14 @@ namespace OpenRCT2
             _drawingEngine = nullptr;
         }
 
+        void SetProgress(size_t currentProgress, size_t totalCount) override
+        {
+            if (GetActiveScene() != GetPreloaderScene())
+                return;
+
+            GetPreloaderScene()->SetProgress(currentProgress, totalCount);
+        }
+
         bool LoadParkFromFile(const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
             LOG_VERBOSE("Context::LoadParkFromFile(%s)", path.c_str());

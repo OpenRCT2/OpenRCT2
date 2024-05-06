@@ -24,6 +24,7 @@ namespace OpenRCT2
         void Tick() override;
         void Stop() override;
         void UpdateCaption(StringId stringId);
+        void SetProgress(size_t currentProgress, size_t totalCount);
         void AddJob(const std::function<void()>& fn)
         {
             _jobs.AddTask(fn);
@@ -31,5 +32,6 @@ namespace OpenRCT2
 
     private:
         JobPool _jobs;
+        StringId _captionId;
     };
 } // namespace OpenRCT2
