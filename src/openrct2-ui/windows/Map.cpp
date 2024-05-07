@@ -818,8 +818,6 @@ static Widget window_map_widgets[] = {
             g1temp.offset = _mapImageData.data();
             g1temp.width = getMiniMapWidth();
             g1temp.height = getMiniMapWidth();
-            g1temp.x_offset = -8;
-            g1temp.y_offset = -8;
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
             GfxDrawSprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
@@ -1050,7 +1048,7 @@ static Widget window_map_widgets[] = {
 
             cx = ((mainWindow->viewport->view_width >> 1) + mainWindow->viewport->viewPos.x) >> 5;
             dx = ((mainWindow->viewport->view_height >> 1) + mainWindow->viewport->viewPos.y) >> 4;
-            cx += offset.x * getTechnicalMapSize() - 8;
+            cx += offset.x * getTechnicalMapSize();
             dx += offset.y * getTechnicalMapSize();
 
             // calculate width and height of minimap
@@ -1361,11 +1359,14 @@ static Widget window_map_widgets[] = {
                 return;
 
             auto offset = MiniMapOffsetFactors[GetCurrentRotation()];
-            auto leftTop = ScreenCoordsXY{ (mainViewport->viewPos.x >> 5) + offset.x * getTechnicalMapSize() - 8,
-                                           (mainViewport->viewPos.y >> 4) + offset.y * getTechnicalMapSize() };
+            offset.x *= getTechnicalMapSize();
+            offset.y *= getTechnicalMapSize();
+
+            auto leftTop = ScreenCoordsXY{ (mainViewport->viewPos.x >> 5) + offset.x,
+                                           (mainViewport->viewPos.y >> 4) + offset.y };
             auto rightBottom = ScreenCoordsXY{
-                ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x * getTechnicalMapSize() - 8,
-                ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y * getTechnicalMapSize()
+                ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x,
+                ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y
             };
             auto rightTop = ScreenCoordsXY{ rightBottom.x, leftTop.y };
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
@@ -1497,7 +1498,7 @@ static Widget window_map_widgets[] = {
             x /= 32;
             y /= 32;
 
-            return { -x + y + getTechnicalMapSize() - 8, x + y - 8 };
+            return { -x + y + getTechnicalMapSize(), x + y };
         }
 
         void ResizeMap()
