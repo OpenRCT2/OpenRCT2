@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
 - Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
+- Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
 
 0.4.11 (2024-05-05)
 ------------------------------------------------------------------------
