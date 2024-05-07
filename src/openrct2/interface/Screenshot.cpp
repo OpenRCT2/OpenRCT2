@@ -91,6 +91,13 @@ void ScreenshotCheck()
             if (!screenshotPath.empty())
             {
                 OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, ContextGetWidth() / 2);
+
+                // Show user that screenshot saved successfully
+                const auto filename = Path::GetFileName(screenshotPath);
+                Formatter ft;
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const utf8*>(filename.c_str());
+                ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
             }
             else
             {
