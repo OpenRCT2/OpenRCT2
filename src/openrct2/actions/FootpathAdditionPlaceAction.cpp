@@ -121,7 +121,9 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     if (!(sceneryFlags & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
         && (pathElement->GetEdges()) == 0x0F)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
+            STR_CANNOT_PLACE_NO_UNCONNECTED_EDGES_AVAILABLE);
     }
 
     if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
