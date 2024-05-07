@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#622] Add option to align the top toolbar buttons horizontally centred (off by default).
 - Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
+- Feature: [#21893] On launch, the game now indicates what system is being initialised.
 - Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
 - Improved: [#21981] Rendering performance of the map window has been improved considerably.
 - Improved: [#21981] The map window now defaults to showing as much of the map as fits the screen.
