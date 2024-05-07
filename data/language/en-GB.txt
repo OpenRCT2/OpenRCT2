@@ -3699,7 +3699,7 @@ STR_6624    :Tile Inspector: Sort elements
 STR_6625    :Invalid colour
 STR_6626    :Animation is backwards
 STR_6627    :Track speed too high!
-STR_6628    :No unconnected edges available!
+STR_6628    :Can only be placed on path edges!
 
 #############
 # Scenarios #
