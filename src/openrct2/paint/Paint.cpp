@@ -391,7 +391,10 @@ template<uint8_t TRotation> static void PaintStructsSortQuadrant(PaintStruct* pa
         auto* ps = child;
         child = child->NextQuadrantEntry;
 
-        PREFETCH(&child->Bounds);
+        if (child != nullptr)
+        {
+            PREFETCH(&child->Bounds);
+        }
         if (child == nullptr || child->SortFlags & PaintSortFlags::OutsideQuadrant)
         {
             break;
