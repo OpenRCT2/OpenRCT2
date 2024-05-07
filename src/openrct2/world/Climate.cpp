@@ -234,25 +234,22 @@ void ClimateUpdateSound()
 bool ClimateIsRaining()
 {
     auto& gameState = GetGameState();
-    if (gameState.ClimateCurrent.Weather == WeatherType::Rain || gameState.ClimateCurrent.Weather == WeatherType::HeavyRain
-        || gameState.ClimateCurrent.Weather == WeatherType::Thunder)
-    {
-        return true;
-    }
-
-    return false;
+    return gameState.ClimateCurrent.Weather == WeatherType::Rain || gameState.ClimateCurrent.Weather == WeatherType::HeavyRain
+        || gameState.ClimateCurrent.Weather == WeatherType::Thunder;
 }
 
 bool ClimateIsSnowing()
 {
     auto& gameState = GetGameState();
-    if (gameState.ClimateCurrent.Weather == WeatherType::Snow || gameState.ClimateCurrent.Weather == WeatherType::HeavySnow
-        || gameState.ClimateCurrent.Weather == WeatherType::Blizzard)
-    {
-        return true;
-    }
+    return gameState.ClimateCurrent.Weather == WeatherType::Snow || gameState.ClimateCurrent.Weather == WeatherType::HeavySnow
+        || gameState.ClimateCurrent.Weather == WeatherType::Blizzard;
+}
 
-    return false;
+bool ClimateIsSnowingHeavily()
+{
+    auto& gameState = GetGameState();
+    return gameState.ClimateCurrent.Weather == WeatherType::HeavySnow
+        || gameState.ClimateCurrent.Weather == WeatherType::Blizzard;
 }
 
 bool WeatherIsDry(WeatherType weatherType)
