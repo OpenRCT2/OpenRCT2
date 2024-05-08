@@ -209,45 +209,45 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Toolbar_widget_ordering
 
     // clang-format off
-// from left to right
-static constexpr int32_t left_aligned_widgets_order[] = {
-    WIDX_PAUSE,
-    WIDX_FASTFORWARD,
-    WIDX_FILE_MENU,
-    WIDX_MUTE,
-    WIDX_NETWORK,
-    WIDX_CHAT,
-    WIDX_CHEATS,
-    WIDX_DEBUG,
+    // from left to right
+    static constexpr std::array kWidgetOrderLeftGroup = {
+        WIDX_PAUSE,
+        WIDX_FASTFORWARD,
+        WIDX_FILE_MENU,
+        WIDX_MUTE,
+        WIDX_NETWORK,
+        WIDX_CHAT,
+        WIDX_CHEATS,
+        WIDX_DEBUG,
 
-    WIDX_SEPARATOR,
+        WIDX_SEPARATOR,
 
-    WIDX_ZOOM_OUT,
-    WIDX_ZOOM_IN,
-    WIDX_ROTATE,
-    WIDX_VIEW_MENU,
-    WIDX_MAP,
-};
+        WIDX_ZOOM_OUT,
+        WIDX_ZOOM_IN,
+        WIDX_ROTATE,
+        WIDX_VIEW_MENU,
+        WIDX_MAP,
+    };
 
-// from right to left
-static constexpr int32_t right_aligned_widgets_order[] = {
-    WIDX_NEWS,
-    WIDX_GUESTS,
-    WIDX_STAFF,
-    WIDX_PARK,
-    WIDX_RIDES,
-    WIDX_RESEARCH,
-    WIDX_FINANCES,
+    // from right to left
+    static constexpr std::array kWidgetOrderRightGroup = {
+        WIDX_NEWS,
+        WIDX_GUESTS,
+        WIDX_STAFF,
+        WIDX_PARK,
+        WIDX_RIDES,
+        WIDX_RESEARCH,
+        WIDX_FINANCES,
 
-    WIDX_SEPARATOR,
+        WIDX_SEPARATOR,
 
-    WIDX_CONSTRUCT_RIDE,
-    WIDX_PATH,
-    WIDX_SCENERY,
-    WIDX_WATER,
-    WIDX_LAND,
-    WIDX_CLEAR_SCENERY,
-};
+        WIDX_CONSTRUCT_RIDE,
+        WIDX_PATH,
+        WIDX_SCENERY,
+        WIDX_WATER,
+        WIDX_LAND,
+        WIDX_CLEAR_SCENERY,
+    };
 
 #pragma endregion
 
@@ -3120,9 +3120,9 @@ static Widget _topToolbarWidgets[] = {
             // Align left hand side toolbar buttons
             firstAlignment = 1;
             x = 0;
-            for (size_t i = 0; i < std::size(left_aligned_widgets_order); ++i)
+            for (size_t i = 0; i < std::size(kWidgetOrderLeftGroup); ++i)
             {
-                widgetIndex = left_aligned_widgets_order[i];
+                widgetIndex = kWidgetOrderLeftGroup[i];
                 widget = &widgets[widgetIndex];
                 if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
                     continue;
@@ -3142,9 +3142,9 @@ static Widget _topToolbarWidgets[] = {
             int32_t screenWidth = ContextGetWidth();
             firstAlignment = 1;
             x = std::max(640, screenWidth);
-            for (size_t i = 0; i < std::size(right_aligned_widgets_order); ++i)
+            for (size_t i = 0; i < std::size(kWidgetOrderRightGroup); ++i)
             {
-                widgetIndex = right_aligned_widgets_order[i];
+                widgetIndex = kWidgetOrderRightGroup[i];
                 widget = &widgets[widgetIndex];
                 if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
                     continue;
