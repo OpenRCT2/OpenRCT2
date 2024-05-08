@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../../common.h"
-#include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"

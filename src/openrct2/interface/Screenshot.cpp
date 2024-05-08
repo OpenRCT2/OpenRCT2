@@ -16,6 +16,7 @@
 #include "../PlatformEnvironment.h"
 #include "../actions/CheatSetAction.h"
 #include "../audio/audio.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/Imaging.h"

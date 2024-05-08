@@ -26,6 +26,7 @@
 #include "../management/Marketing.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
+#include "Currency.h"
 #include "Date.h"
 #include "Formatting.h"
 #include "Localisation.h"

@@ -14,7 +14,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
-#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"

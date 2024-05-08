@@ -11,6 +11,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../config/ConfigTypes.h"
 #include "../core/Console.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../network/network.h"

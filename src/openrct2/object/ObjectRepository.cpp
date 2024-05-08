@@ -13,7 +13,6 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../common.h"
-#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
 #include "../core/FileIndex.hpp"

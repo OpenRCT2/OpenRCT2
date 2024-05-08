@@ -18,7 +18,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/core/Crypt.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/MemoryStream.h>

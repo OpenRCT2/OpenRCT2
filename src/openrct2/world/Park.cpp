@@ -16,7 +16,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkSetParameterAction.h"
-#include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../entity/Litter.h"
