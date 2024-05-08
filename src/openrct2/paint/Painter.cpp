@@ -119,16 +119,23 @@ void Painter::PaintFPS(DrawPixelInfo& dpi)
     if (!ShouldShowFPS())
         return;
 
-    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
-
     MeasureFPS();
 
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
+    const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
 
-    // Draw Text
-    int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
+    // Figure out where counter should be rendered
+    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
     screenCoords.x = screenCoords.x - (stringWidth / 2);
+
+    // Move counter below toolbar if buttons are centred
+    const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
+    if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
+    {
+        screenCoords.y = 30; // kTopToolbarHeight; don't want to include Window.h here
+    }
+
     DrawText(dpi, screenCoords, { COLOUR_WHITE }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
