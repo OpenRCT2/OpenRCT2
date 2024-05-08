@@ -81,6 +81,11 @@ namespace OpenRCT2::Ui::Windows
     static constexpr uint16_t kRidesTabReservedSpace = 4 * kListRowHeight + 4;
     static constexpr uint16_t kDefaultReservedSpace = 14;
 
+    static int32_t getMapOffset(int16_t width)
+    {
+        return (width - getMiniMapWidth() - kReservedHSpace - SCROLLBAR_SIZE) / 2;
+    }
+
     // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
     // minimap. In order to distinguish those from actual coordinates, we use a separate name.
     using MapCoordsXY = TileCoordsXY;
@@ -757,7 +762,15 @@ static Widget window_map_widgets[] = {
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            CoordsXY c = ScreenToMap(screenCoords);
+            // Adjust coordinates for any map offset to centre
+            auto adjCoords = screenCoords;
+            auto mapOffset = getMapOffset(width);
+            if (mapOffset > 0)
+            {
+                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset);
+            }
+
+            CoordsXY c = ScreenToMap(adjCoords);
             auto mapCoords = CoordsXY{ std::clamp(c.x, 0, getTechnicalMapSizeBig() - 1),
                                        std::clamp(c.y, 0, getTechnicalMapSizeBig() - 1) };
             auto mapZ = TileElementHeight(mapCoords);
@@ -819,23 +832,32 @@ static Widget window_map_widgets[] = {
         {
             GfxClear(dpi, PALETTE_INDEX_10);
 
+            // Ensure small maps are centred
+            DrawPixelInfo clipDPI = dpi;
+            auto mapOffset = getMapOffset(width);
+            if (mapOffset > 0)
+            {
+                auto screenOffset = ScreenCoordsXY(mapOffset, mapOffset);
+                ClipDrawPixelInfo(clipDPI, dpi, screenOffset, dpi.width, dpi.height);
+            }
+
             G1Element g1temp = {};
             g1temp.offset = _mapImageData.data();
             g1temp.width = getMiniMapWidth();
             g1temp.height = getMiniMapWidth();
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
+            GfxDrawSprite(clipDPI, ImageId(SPR_TEMP), { 0, 0 });
 
             if (selected_tab == PAGE_PEEPS)
             {
-                PaintPeepOverlay(dpi);
+                PaintPeepOverlay(clipDPI);
             }
             else
             {
-                PaintTrainOverlay(dpi);
+                PaintTrainOverlay(clipDPI);
             }
-            PaintHudRectangle(dpi);
+            PaintHudRectangle(clipDPI);
         }
 
         void OnPrepareDraw() override
