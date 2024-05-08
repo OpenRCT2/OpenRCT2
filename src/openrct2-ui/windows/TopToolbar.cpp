@@ -2916,11 +2916,8 @@ static Widget _topToolbarWidgets[] = {
             }
         }
 
-        void OnPrepareDraw() override
+        void ResetWidgetToDefaultState()
         {
-            int32_t x, widgetIndex, widgetWidth, firstAlignment;
-            Widget* widget;
-
             // Enable / disable buttons
             widgets[WIDX_PAUSE].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_FILE_MENU].type = WindowWidgetType::TrnBtn;
@@ -2949,7 +2946,10 @@ static Widget _topToolbarWidgets[] = {
                                                                             : WindowWidgetType::Empty;
             widgets[WIDX_NEWS].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
+        }
 
+        void HideDisabledButtons()
+        {
             if (!Config::Get().interface.ToolbarShowMute)
                 widgets[WIDX_MUTE].type = WindowWidgetType::Empty;
 
@@ -2978,46 +2978,54 @@ static Widget _topToolbarWidgets[] = {
 
             if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
+        }
 
-            if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+        void ApplyEditorMode()
+        {
+            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) == 0)
             {
-                widgets[WIDX_PARK].type = WindowWidgetType::Empty;
-                widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
-                widgets[WIDX_GUESTS].type = WindowWidgetType::Empty;
-                widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
-                widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
-                widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
-                widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
-
-                auto& gameState = GetGameState();
-                if (gameState.EditorStep != EditorStep::LandscapeEditor)
-                {
-                    widgets[WIDX_LAND].type = WindowWidgetType::Empty;
-                    widgets[WIDX_WATER].type = WindowWidgetType::Empty;
-                }
-
-                if (gameState.EditorStep != EditorStep::RollercoasterDesigner)
-                {
-                    widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
-                }
-
-                if (gameState.EditorStep != EditorStep::LandscapeEditor
-                    && gameState.EditorStep != EditorStep::RollercoasterDesigner)
-                {
-                    widgets[WIDX_MAP].type = WindowWidgetType::Empty;
-                    widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
-                    widgets[WIDX_PATH].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::Empty;
-
-                    widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
-                }
+                return;
             }
 
+            widgets[WIDX_PARK].type = WindowWidgetType::Empty;
+            widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
+            widgets[WIDX_GUESTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
+            widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
+            widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
+            widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
+
+            auto& gameState = GetGameState();
+            if (gameState.EditorStep != EditorStep::LandscapeEditor)
+            {
+                widgets[WIDX_LAND].type = WindowWidgetType::Empty;
+                widgets[WIDX_WATER].type = WindowWidgetType::Empty;
+            }
+
+            if (gameState.EditorStep != EditorStep::RollercoasterDesigner)
+            {
+                widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
+                widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
+                widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
+            }
+
+            if (gameState.EditorStep != EditorStep::LandscapeEditor
+                && gameState.EditorStep != EditorStep::RollercoasterDesigner)
+            {
+                widgets[WIDX_MAP].type = WindowWidgetType::Empty;
+                widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
+                widgets[WIDX_PATH].type = WindowWidgetType::Empty;
+                widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::Empty;
+
+                widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
+                widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
+                widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+                widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
+            }
+        }
+
+        void ApplyNetworkMode()
+        {
             switch (NetworkGetMode())
             {
                 case NETWORK_MODE_NONE:
@@ -3031,6 +3039,83 @@ static Widget _topToolbarWidgets[] = {
                     widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
                     break;
             }
+        }
+
+        void ApplyZoomState()
+        {
+            // Zoomed out/in disable. Not sure where this code is in the original.
+            const auto* mainWindow = WindowGetMain();
+            if (mainWindow == nullptr || mainWindow->viewport == nullptr)
+            {
+                LOG_ERROR("mainWindow or mainWindow->viewport is null!");
+                return;
+            }
+
+            if (mainWindow->viewport->zoom == ZoomLevel::min())
+            {
+                disabled_widgets |= (1uLL << WIDX_ZOOM_IN);
+            }
+            else if (mainWindow->viewport->zoom >= ZoomLevel::max())
+            {
+                disabled_widgets |= (1uLL << WIDX_ZOOM_OUT);
+            }
+            else
+            {
+                disabled_widgets &= ~((1uLL << WIDX_ZOOM_IN) | (1uLL << WIDX_ZOOM_OUT));
+            }
+        }
+
+        void ApplyPausedState()
+        {
+            bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
+            if (paused || _waitingForPause)
+            {
+                pressed_widgets |= (1uLL << WIDX_PAUSE);
+                if (paused)
+                    _waitingForPause = false;
+            }
+            else
+                pressed_widgets &= ~(1uLL << WIDX_PAUSE);
+        }
+
+        void ApplyMapRotation()
+        {
+            // Set map button to the right image.
+            if (widgets[WIDX_MAP].type != WindowWidgetType::Empty)
+            {
+                static constexpr uint32_t _imageIdByRotation[] = {
+                    SPR_G2_MAP_NORTH,
+                    SPR_G2_MAP_WEST,
+                    SPR_G2_MAP_SOUTH,
+                    SPR_G2_MAP_EAST,
+                };
+
+                uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
+                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
+            }
+        }
+
+        void ApplyAudioState()
+        {
+            if (!OpenRCT2::Audio::gGameSoundsOff)
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::PaletteNull);
+            else
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::PaletteNull);
+        }
+
+        void ApplyFootpathPressed()
+        {
+            // Footpath button pressed down
+            if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+                pressed_widgets &= ~(1uLL << WIDX_PATH);
+            else
+                pressed_widgets |= (1uLL << WIDX_PATH);
+        }
+
+        void AlignButtonsLeftRight()
+        {
+            int32_t x, widgetIndex, widgetWidth, firstAlignment;
+            Widget* widget;
 
             // Align left hand side toolbar buttons
             firstAlignment = 1;
@@ -3074,62 +3159,23 @@ static Widget _topToolbarWidgets[] = {
                 widget->left = x;
                 firstAlignment = 0;
             }
+        }
 
-            // Footpath button pressed down
-            if (WindowFindByClass(WindowClass::Footpath) == nullptr)
-                pressed_widgets &= ~(1uLL << WIDX_PATH);
-            else
-                pressed_widgets |= (1uLL << WIDX_PATH);
+        void OnPrepareDraw() override
+        {
+            ResetWidgetToDefaultState();
+            HideDisabledButtons();
+            ApplyEditorMode();
 
-            bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
-            if (paused || _waitingForPause)
-            {
-                pressed_widgets |= (1uLL << WIDX_PAUSE);
-                if (paused)
-                    _waitingForPause = false;
-            }
-            else
-                pressed_widgets &= ~(1uLL << WIDX_PAUSE);
+            ApplyPausedState();
+            ApplyAudioState();
+            ApplyNetworkMode();
 
-            if (!OpenRCT2::Audio::gGameSoundsOff)
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::PaletteNull);
-            else
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::PaletteNull);
+            ApplyZoomState();
+            ApplyMapRotation();
+            ApplyFootpathPressed();
 
-            // Set map button to the right image.
-            if (widgets[WIDX_MAP].type != WindowWidgetType::Empty)
-            {
-                static constexpr uint32_t _imageIdByRotation[] = {
-                    SPR_G2_MAP_NORTH,
-                    SPR_G2_MAP_WEST,
-                    SPR_G2_MAP_SOUTH,
-                    SPR_G2_MAP_EAST,
-                };
-
-                uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
-                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
-            }
-
-            // Zoomed out/in disable. Not sure where this code is in the original.
-            const auto* mainWindow = WindowGetMain();
-            if (mainWindow == nullptr || mainWindow->viewport == nullptr)
-            {
-                LOG_ERROR("mainWindow or mainWindow->viewport is null!");
-                return;
-            }
-
-            if (mainWindow->viewport->zoom == ZoomLevel::min())
-            {
-                disabled_widgets |= (1uLL << WIDX_ZOOM_IN);
-            }
-            else if (mainWindow->viewport->zoom >= ZoomLevel::max())
-            {
-                disabled_widgets |= (1uLL << WIDX_ZOOM_OUT);
-            }
-            else
-            {
-                disabled_widgets &= ~((1uLL << WIDX_ZOOM_IN) | (1uLL << WIDX_ZOOM_OUT));
-            }
+            AlignButtonsLeftRight();
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
