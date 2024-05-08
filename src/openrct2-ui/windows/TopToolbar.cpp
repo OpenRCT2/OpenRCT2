@@ -3216,7 +3216,7 @@ namespace OpenRCT2::Ui::Windows
             ApplyMapRotation();
             ApplyFootpathPressed();
 
-            if (false)
+            if (!Config::Get().interface.ToolbarButtonsCentred)
                 AlignButtonsLeftRight();
             else
                 AlignButtonsCentre();

@@ -335,6 +335,7 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("interface"))
         {
             auto model = &_config.interface;
+            model->ToolbarButtonsCentred = reader->GetBoolean("toolbar_buttons_centred", false);
             model->ToolbarShowFinances = reader->GetBoolean("toolbar_show_finances", true);
             model->ToolbarShowResearch = reader->GetBoolean("toolbar_show_research", true);
             model->ToolbarShowCheats = reader->GetBoolean("toolbar_show_cheats", false);
@@ -357,6 +358,7 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.interface;
         writer->WriteSection("interface");
+        writer->WriteBoolean("toolbar_buttons_centred", model->ToolbarButtonsCentred);
         writer->WriteBoolean("toolbar_show_finances", model->ToolbarShowFinances);
         writer->WriteBoolean("toolbar_show_research", model->ToolbarShowResearch);
         writer->WriteBoolean("toolbar_show_cheats", model->ToolbarShowCheats);

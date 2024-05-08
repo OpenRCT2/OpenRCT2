@@ -119,6 +119,7 @@ namespace OpenRCT2::Config
 
     struct Interface
     {
+        bool ToolbarButtonsCentred;
         bool ToolbarShowFinances;
         bool ToolbarShowResearch;
         bool ToolbarShowCheats;
