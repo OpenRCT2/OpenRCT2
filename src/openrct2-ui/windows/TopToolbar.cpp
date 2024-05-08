@@ -70,7 +70,6 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
-#include <ranges>
 #include <string>
 
 namespace OpenRCT2::Ui::Windows
@@ -229,23 +228,24 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAP,
     };
 
+    // NB: this array in reverse order!
     static constexpr std::array kWidgetOrderRightGroup = {
-        WIDX_CLEAR_SCENERY,
-        WIDX_LAND,
-        WIDX_WATER,
-        WIDX_SCENERY,
-        WIDX_PATH,
-        WIDX_CONSTRUCT_RIDE,
+        WIDX_NEWS,
+        WIDX_GUESTS,
+        WIDX_STAFF,
+        WIDX_PARK,
+        WIDX_RIDES,
+        WIDX_RESEARCH,
+        WIDX_FINANCES,
 
         WIDX_SEPARATOR,
 
-        WIDX_FINANCES,
-        WIDX_RESEARCH,
-        WIDX_RIDES,
-        WIDX_PARK,
-        WIDX_STAFF,
-        WIDX_GUESTS,
-        WIDX_NEWS,
+        WIDX_CONSTRUCT_RIDE,
+        WIDX_PATH,
+        WIDX_SCENERY,
+        WIDX_WATER,
+        WIDX_LAND,
+        WIDX_CLEAR_SCENERY,
     };
 
     static constexpr size_t _totalToolbarElements = kWidgetOrderLeftGroup.size() + kWidgetOrderRightGroup.size();
@@ -256,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto halfWayPoint = std::copy(kWidgetOrderLeftGroup.begin(), kWidgetOrderLeftGroup.end(), combined.begin());
         *halfWayPoint = WIDX_SEPARATOR;
-        std::copy(kWidgetOrderRightGroup.begin(), kWidgetOrderRightGroup.end(), halfWayPoint + 1);
+        std::reverse_copy(kWidgetOrderRightGroup.begin(), kWidgetOrderRightGroup.end(), halfWayPoint + 1);
 
         return combined;
     }();
@@ -3153,7 +3153,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t screenWidth = ContextGetWidth();
             firstAlignment = true;
             x = std::max(640, screenWidth);
-            for (auto widgetIndex : std::ranges::reverse_view(kWidgetOrderRightGroup))
+            for (auto widgetIndex : kWidgetOrderRightGroup)
             {
                 auto* widget = &widgets[widgetIndex];
                 if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
