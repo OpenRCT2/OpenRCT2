@@ -16,7 +16,6 @@
 
 #include "../Context.h"
 #include "../Game.h"
-#include "../config/Config.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
 #include "../localisation/Localisation.h"

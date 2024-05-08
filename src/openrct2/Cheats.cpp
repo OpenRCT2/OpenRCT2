@@ -12,7 +12,6 @@
 #include "GameState.h"
 #include "actions/CheatSetAction.h"
 #include "actions/ParkSetLoanAction.h"
-#include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "localisation/Localisation.h"
 #include "network/network.h"

@@ -12,17 +12,10 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Currency.h"
+#include "ConfigTypes.h"
 
 #include <atomic>
 #include <string>
-
-enum class MeasurementFormat : int32_t;
-enum class TemperatureUnit : int32_t;
-enum class ScaleQuality : int32_t;
-enum class Sort : int32_t;
-enum class VirtualFloorStyles : int32_t;
-enum class DrawingEngine : int32_t;
-enum class TitleMusicKind : int32_t;
 
 struct GeneralConfiguration
 {
@@ -219,43 +212,6 @@ struct PluginConfiguration
 {
     bool EnableHotReloading;
     u8string AllowedHosts;
-};
-
-enum class Sort : int32_t
-{
-    NameAscending,
-    NameDescending,
-    DateAscending,
-    DateDescending,
-};
-
-enum class TemperatureUnit : int32_t
-{
-    Celsius,
-    Fahrenheit
-};
-
-enum class ScaleQuality : int32_t
-{
-    NearestNeighbour,
-    Linear,
-    SmoothNearestNeighbour
-};
-
-enum class MeasurementFormat : int32_t
-{
-    Imperial,
-    Metric,
-    SI
-};
-
-enum class TitleMusicKind : int32_t
-{
-    None,
-    Random,
-    OpenRCT2,
-    RCT1,
-    RCT2,
 };
 
 extern GeneralConfiguration gConfigGeneral;

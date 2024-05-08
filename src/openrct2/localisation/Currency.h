@@ -12,32 +12,7 @@
 #include "../common.h"
 #include "../core/String.hpp"
 #include "../util/Util.h"
-
-// List of currencies
-enum class CurrencyType : uint8_t
-{
-    Pounds,       // British Pound
-    Dollars,      // US Dollar
-    Franc,        // French Franc
-    DeutscheMark, // Deutsche Mark
-    Yen,          // Japanese Yen
-    Peseta,       // Spanish Peseta
-    Lira,         // Italian Lira
-    Guilders,     // Dutch Gilder
-    Krona,        // Swedish Krona
-    Euros,        // Euro
-    Won,          // South Korean Won
-    Rouble,       // Russian Rouble
-    CzechKoruna,  // Czech koruna
-    HKD,          // Hong Kong Dollar
-    TWD,          // New Taiwan Dollar
-    Yuan,         // Chinese Yuan
-    Forint,       // Hungarian Forint
-
-    Custom, // Custom currency
-
-    Count // Last item
-};
+#include "CurrencyType.h"
 
 enum class CurrencyAffix
 {
@@ -62,6 +37,7 @@ struct CurrencyDescriptor
 };
 
 // List of currency formats
+// TODO: refactor into getter
 extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)];
 
 /**

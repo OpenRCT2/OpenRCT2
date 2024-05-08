@@ -20,7 +20,6 @@
 #include "../actions/ParkEntranceRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
 #include "../audio/audio.h"
-#include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../interface/Cursors.h"
 #include "../interface/Viewport.h"

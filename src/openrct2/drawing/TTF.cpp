@@ -19,6 +19,7 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Numerics.hpp"
 #    include "../core/String.hpp"
+#    include "../drawing/Font.h"
 #    include "../localisation/LocalisationService.h"
 #    include "../platform/Platform.h"
 #    include "DrawingLock.hpp"
