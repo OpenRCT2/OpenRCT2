@@ -70,6 +70,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
+#include <ranges>
 #include <string>
 
 namespace OpenRCT2::Ui::Windows
@@ -209,7 +210,6 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Toolbar_widget_ordering
 
     // clang-format off
-    // from left to right
     static constexpr std::array kWidgetOrderLeftGroup = {
         WIDX_PAUSE,
         WIDX_FASTFORWARD,
@@ -229,24 +229,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAP,
     };
 
-    // from right to left
     static constexpr std::array kWidgetOrderRightGroup = {
-        WIDX_NEWS,
-        WIDX_GUESTS,
-        WIDX_STAFF,
-        WIDX_PARK,
-        WIDX_RIDES,
-        WIDX_RESEARCH,
-        WIDX_FINANCES,
+        WIDX_CLEAR_SCENERY,
+        WIDX_LAND,
+        WIDX_WATER,
+        WIDX_SCENERY,
+        WIDX_PATH,
+        WIDX_CONSTRUCT_RIDE,
 
         WIDX_SEPARATOR,
 
-        WIDX_CONSTRUCT_RIDE,
-        WIDX_PATH,
-        WIDX_SCENERY,
-        WIDX_WATER,
-        WIDX_LAND,
-        WIDX_CLEAR_SCENERY,
+        WIDX_FINANCES,
+        WIDX_RESEARCH,
+        WIDX_RIDES,
+        WIDX_PARK,
+        WIDX_STAFF,
+        WIDX_GUESTS,
+        WIDX_NEWS,
     };
 
 #pragma endregion
@@ -3114,50 +3113,49 @@ namespace OpenRCT2::Ui::Windows
 
         void AlignButtonsLeftRight()
         {
-            int32_t x, widgetIndex, widgetWidth, firstAlignment;
-            Widget* widget;
+            // TODO: make a function that handles both loops
 
             // Align left hand side toolbar buttons
-            firstAlignment = 1;
-            x = 0;
-            for (size_t i = 0; i < std::size(kWidgetOrderLeftGroup); ++i)
+            bool firstAlignment = true;
+            auto x = 0;
+            for (auto widgetIndex : kWidgetOrderLeftGroup)
             {
-                widgetIndex = kWidgetOrderLeftGroup[i];
-                widget = &widgets[widgetIndex];
+                auto* widget = &widgets[widgetIndex];
                 if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
                     continue;
 
                 if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
-                widgetWidth = widget->width();
+                auto widgetWidth = widget->width();
                 widget->left = x;
                 x += widgetWidth;
                 widget->right = x;
                 x += 1;
-                firstAlignment = 0;
+
+                firstAlignment = false;
             }
 
             // Align right hand side toolbar buttons if necessary
             int32_t screenWidth = ContextGetWidth();
-            firstAlignment = 1;
+            firstAlignment = true;
             x = std::max(640, screenWidth);
-            for (size_t i = 0; i < std::size(kWidgetOrderRightGroup); ++i)
+            for (auto widgetIndex : std::ranges::reverse_view(kWidgetOrderRightGroup))
             {
-                widgetIndex = kWidgetOrderRightGroup[i];
-                widget = &widgets[widgetIndex];
+                auto* widget = &widgets[widgetIndex];
                 if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
                     continue;
 
                 if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
-                widgetWidth = widget->width();
+                auto widgetWidth = widget->width();
                 x -= 1;
                 widget->right = x;
                 x -= widgetWidth;
                 widget->left = x;
-                firstAlignment = 0;
+
+                firstAlignment = false;
             }
         }
 
