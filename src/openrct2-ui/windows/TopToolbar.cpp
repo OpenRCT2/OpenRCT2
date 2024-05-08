@@ -248,6 +248,19 @@ namespace OpenRCT2::Ui::Windows
         WIDX_NEWS,
     };
 
+    static constexpr size_t _totalToolbarElements = kWidgetOrderLeftGroup.size() + kWidgetOrderRightGroup.size();
+
+    // Make a combined version of both halves of the toolbar, with a separator halfway.
+    static constexpr std::array<int, _totalToolbarElements + 1> kWidgetOrderCombined = []() {
+        std::array<int, _totalToolbarElements + 1> combined;
+
+        auto halfWayPoint = std::copy(kWidgetOrderLeftGroup.begin(), kWidgetOrderLeftGroup.end(), combined.begin());
+        *halfWayPoint = WIDX_SEPARATOR;
+        std::copy(kWidgetOrderRightGroup.begin(), kWidgetOrderRightGroup.end(), halfWayPoint + 1);
+
+        return combined;
+    }();
+
 #pragma endregion
 
     static Widget _topToolbarWidgets[] = {
@@ -3159,6 +3172,36 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void AlignButtonsCentre()
+        {
+            // First, we figure out how much space we'll be needing
+            auto totalWidth = 0;
+            for (auto widgetIndex : kWidgetOrderCombined)
+            {
+                auto* widget = &widgets[widgetIndex];
+                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
+                    continue;
+
+                totalWidth += widget->width();
+            }
+
+            // We'll start from the centre of the UI...
+            auto xPos = (ContextGetWidth() - totalWidth) / 2;
+
+            for (auto widgetIndex : kWidgetOrderCombined)
+            {
+                auto* widget = &widgets[widgetIndex];
+                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
+                    continue;
+
+                auto widgetWidth = widget->width();
+                widget->left = xPos;
+                xPos += widgetWidth;
+                widget->right = xPos;
+                xPos += 1;
+            }
+        }
+
         void OnPrepareDraw() override
         {
             ResetWidgetToDefaultState();
@@ -3173,7 +3216,10 @@ namespace OpenRCT2::Ui::Windows
             ApplyMapRotation();
             ApplyFootpathPressed();
 
-            AlignButtonsLeftRight();
+            if (false)
+                AlignButtonsLeftRight();
+            else
+                AlignButtonsCentre();
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
