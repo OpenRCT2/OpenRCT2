@@ -233,29 +233,25 @@ void ClimateUpdateSound()
 
 bool ClimateIsRaining()
 {
-    auto& gameState = GetGameState();
-    return gameState.ClimateCurrent.Weather == WeatherType::Rain || gameState.ClimateCurrent.Weather == WeatherType::HeavyRain
-        || gameState.ClimateCurrent.Weather == WeatherType::Thunder;
+    auto& weather = GetGameState().ClimateCurrent.Weather;
+    return weather == WeatherType::Rain || weather == WeatherType::HeavyRain || weather == WeatherType::Thunder;
 }
 
 bool ClimateIsSnowing()
 {
-    auto& gameState = GetGameState();
-    return gameState.ClimateCurrent.Weather == WeatherType::Snow || gameState.ClimateCurrent.Weather == WeatherType::HeavySnow
-        || gameState.ClimateCurrent.Weather == WeatherType::Blizzard;
+    auto& weather = GetGameState().ClimateCurrent.Weather;
+    return weather == WeatherType::Snow || weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
 }
 
 bool ClimateIsSnowingHeavily()
 {
-    auto& gameState = GetGameState();
-    return gameState.ClimateCurrent.Weather == WeatherType::HeavySnow
-        || gameState.ClimateCurrent.Weather == WeatherType::Blizzard;
+    auto& weather = GetGameState().ClimateCurrent.Weather;
+    return weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
 }
 
-bool WeatherIsDry(WeatherType weatherType)
+bool WeatherIsDry(WeatherType weather)
 {
-    return weatherType == WeatherType::Sunny || weatherType == WeatherType::PartiallyCloudy
-        || weatherType == WeatherType::Cloudy;
+    return weather == WeatherType::Sunny || weather == WeatherType::PartiallyCloudy || weather == WeatherType::Cloudy;
 }
 
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state)
