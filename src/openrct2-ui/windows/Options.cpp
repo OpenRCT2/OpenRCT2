@@ -1538,6 +1538,14 @@ static Widget *window_options_page_widgets[] = {
 #pragma endregion
 
 #pragma region Controls tab events
+        void ToggleToolbarSetting(bool& setting)
+        {
+            setting ^= true;
+            Config::Save();
+            Invalidate();
+            WindowInvalidateByClass(WindowClass::TopToolbar);
+        }
+
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
@@ -1562,52 +1570,28 @@ static Widget *window_options_page_widgets[] = {
                     Invalidate();
                     break;
                 case WIDX_TOOLBAR_BUTTONS_CENTRED:
-                    Config::Get().interface.ToolbarButtonsCentred ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarButtonsCentred);
                     break;
                 case WIDX_TOOLBAR_SHOW_FINANCES:
-                    Config::Get().interface.ToolbarShowFinances ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowFinances);
                     break;
                 case WIDX_TOOLBAR_SHOW_RESEARCH:
-                    Config::Get().interface.ToolbarShowResearch ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowResearch);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHEATS:
-                    Config::Get().interface.ToolbarShowCheats ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowCheats);
                     break;
                 case WIDX_TOOLBAR_SHOW_NEWS:
-                    Config::Get().interface.ToolbarShowNews ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowNews);
                     break;
                 case WIDX_TOOLBAR_SHOW_MUTE:
-                    Config::Get().interface.ToolbarShowMute ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowMute);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHAT:
-                    Config::Get().interface.ToolbarShowChat ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowChat);
                     break;
                 case WIDX_TOOLBAR_SHOW_ZOOM:
-                    Config::Get().interface.ToolbarShowZoom ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
                     break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
                     Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
