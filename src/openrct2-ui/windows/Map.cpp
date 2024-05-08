@@ -75,6 +75,12 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 259;
     static constexpr int32_t WW = 245;
 
+    static constexpr uint16_t kReservedHSpace = 6;
+    static constexpr uint16_t kReservedTopSpace = 46;
+    static constexpr uint16_t kScenarioEditorReservedSpace = 72;
+    static constexpr uint16_t kRidesTabReservedSpace = 4 * kListRowHeight + 4;
+    static constexpr uint16_t kDefaultReservedSpace = 14;
+
     // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
     // minimap. In order to distinguish those from actual coordinates, we use a separate name.
     using MapCoordsXY = TileCoordsXY;
@@ -237,11 +243,9 @@ static Widget window_map_widgets[] = {
             min_width = WW;
             min_height = WH;
 
-            // TODO: use actual constants
-            max_width = getMapWindowSize() + 20;
-            max_height = getMapWindowSize() + 100;
-
-            ResizeMap();
+            SetInitialWindowDimensions();
+            ResetMaxWindowDimensions();
+            ResizeMiniMap();
             InitScrollWidgets();
             CalculateTextLayout();
 
@@ -366,6 +370,7 @@ static Widget window_map_widgets[] = {
                         selected_tab = widgetIndex;
                         list_information_type = 0;
                         _recalculateScrollbars = true;
+                        ResetMaxWindowDimensions();
                     }
             }
         }
@@ -859,7 +864,7 @@ static Widget window_map_widgets[] = {
 
             // Resize widgets to window size
             ResizeFrameWithPage();
-            ResizeMap();
+            ResizeMiniMap();
 
             widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
             widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height - 4;
@@ -1364,10 +1369,8 @@ static Widget window_map_widgets[] = {
 
             auto leftTop = ScreenCoordsXY{ (mainViewport->viewPos.x >> 5) + offset.x,
                                            (mainViewport->viewPos.y >> 4) + offset.y };
-            auto rightBottom = ScreenCoordsXY{
-                ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x,
-                ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y
-            };
+            auto rightBottom = ScreenCoordsXY{ ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x,
+                                               ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y };
             auto rightTop = ScreenCoordsXY{ rightBottom.x, leftTop.y };
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
@@ -1501,16 +1504,39 @@ static Widget window_map_widgets[] = {
             return { -x + y + getTechnicalMapSize(), x + y };
         }
 
-        void ResizeMap()
+        uint16_t GetReservedBottomSpace()
+        {
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+                return kScenarioEditorReservedSpace;
+            else if (selected_tab == PAGE_RIDES)
+                return kRidesTabReservedSpace;
+            else
+                return kDefaultReservedSpace;
+        }
+
+        void SetInitialWindowDimensions()
+        {
+            // The initial mini map size should be able to show a reasonably sized map
+            auto initSize = std::clamp(getTechnicalMapSize(), 100, 254) * 2;
+            width = initSize + kReservedHSpace + SCROLLBAR_SIZE;
+            height = initSize + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE;
+
+            auto maxWindowHeight = ContextGetHeight() - 68;
+            width = std::min<int16_t>(width, ContextGetWidth());
+            height = std::min<int16_t>(height, maxWindowHeight);
+        }
+
+        void ResetMaxWindowDimensions()
+        {
+            max_width = std::clamp(getMiniMapWidth() + kReservedHSpace + SCROLLBAR_SIZE, WW, ContextGetWidth());
+            max_height = std::clamp(
+                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE, WH, ContextGetHeight() - 68);
+        }
+
+        void ResizeMiniMap()
         {
             widgets[WIDX_MAP].right = width - 4;
-
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
-                widgets[WIDX_MAP].bottom = height - 1 - 72;
-            else if (selected_tab == PAGE_RIDES)
-                widgets[WIDX_MAP].bottom = height - 1 - (4 * kListRowHeight + 4);
-            else
-                widgets[WIDX_MAP].bottom = height - 1 - 14;
+            widgets[WIDX_MAP].bottom = height - 1 - GetReservedBottomSpace();
         }
 
         void CalculateTextLayout()
