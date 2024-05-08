@@ -14,6 +14,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
