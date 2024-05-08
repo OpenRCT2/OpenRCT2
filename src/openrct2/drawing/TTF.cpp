@@ -22,6 +22,7 @@
 #    include "../drawing/Font.h"
 #    include "../localisation/LocalisationService.h"
 #    include "../platform/Platform.h"
+#    include "../util/Util.h"
 #    include "DrawingLock.hpp"
 #    include "TTF.h"
 

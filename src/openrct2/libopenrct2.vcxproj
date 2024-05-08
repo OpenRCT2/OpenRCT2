@@ -279,7 +279,7 @@
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\ConversionTables.h" />
     <ClInclude Include="localisation\Currency.h" />
-    <ClInclude Include="localisation\CurrencyType.h" />
+    <ClInclude Include="localisation\CurrencyTypes.h" />
     <ClInclude Include="localisation\Date.h" />
     <ClInclude Include="localisation\FormatCodes.h" />
     <ClInclude Include="localisation\Formatter.h" />

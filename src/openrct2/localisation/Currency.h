@@ -12,13 +12,7 @@
 #include "../common.h"
 #include "../core/String.hpp"
 #include "../util/Util.h"
-#include "CurrencyType.h"
-
-enum class CurrencyAffix
-{
-    Prefix,
-    Suffix
-};
+#include "CurrencyTypes.h"
 
 #define CURRENCY_SYMBOL_MAX_SIZE 8
 #define CURRENCY_RATE_MAX_NUM_DIGITS 9

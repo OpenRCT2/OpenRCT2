@@ -10,12 +10,13 @@
 #pragma once
 
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
-#include "../localisation/Currency.h"
+#include "../localisation/CurrencyTypes.h"
 #include "ConfigTypes.h"
 
 #include <atomic>
 #include <string>
+
+struct Gx;
 
 struct GeneralConfiguration
 {

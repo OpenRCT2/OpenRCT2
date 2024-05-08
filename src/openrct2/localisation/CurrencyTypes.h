@@ -36,3 +36,9 @@ enum class CurrencyType : uint8_t
 
     Count // Last item
 };
+
+enum class CurrencyAffix
+{
+    Prefix,
+    Suffix
+};

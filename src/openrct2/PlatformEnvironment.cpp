@@ -15,6 +15,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "platform/Platform.h"
+#include "util/Util.h"
 
 using namespace OpenRCT2;
 
