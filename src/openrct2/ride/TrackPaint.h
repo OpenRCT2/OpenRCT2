@@ -84,7 +84,12 @@ constexpr uint8_t kTrackMap1x4[][4] = {
     { 0, 1, 2, 3 },
 };
 
-extern const MetalSupportPlace DiagSupportPlacement[];
+constexpr MetalSupportPlace kDiagSupportPlacement[] = {
+    MetalSupportPlace::LeftCorner,
+    MetalSupportPlace::TopCorner,
+    MetalSupportPlace::RightCorner,
+    MetalSupportPlace::BottomCorner,
+};
 
 enum
 {
@@ -290,16 +295,72 @@ enum
     MAZE_ENTRY_FLAG_15 = (1 << 15),
 };
 
-extern const uint32_t floorSpritesCork[];
-extern const uint32_t floorSpritesMetal[];
-extern const uint32_t floorSpritesMetalB[];
+constexpr uint32_t kFloorSpritesCork[] = {
+    SPR_FLOOR_CORK_SE_SW,
+    SPR_FLOOR_CORK_SW,
+    SPR_FLOOR_CORK_SE,
+    SPR_FLOOR_CORK,
+};
+constexpr uint32_t kFloorSpritesMetal[] = {
+    SPR_FLOOR_METAL,
+    SPR_FLOOR_METAL,
+    SPR_FLOOR_METAL,
+    SPR_FLOOR_METAL,
+};
+constexpr uint32_t kFloorSpritesMetalB[] = {
+    SPR_FLOOR_METAL_B,
+    SPR_FLOOR_METAL_B,
+    SPR_FLOOR_METAL_B,
+    SPR_FLOOR_METAL_B,
+};
 
-extern const uint32_t fenceSpritesRope[];
-extern const uint32_t fenceSpritesMetal[];
-extern const uint32_t fenceSpritesMetalB[];
+constexpr uint32_t kFenceSpritesRope[] = {
+    SPR_FENCE_ROPE_NE,
+    SPR_FENCE_ROPE_SE,
+    SPR_FENCE_ROPE_SW,
+    SPR_FENCE_ROPE_NW,
+};
+constexpr uint32_t kFenceSpritesMetal[] = {
+    SPR_FENCE_METAL_NE,
+    SPR_FENCE_METAL_SE,
+    SPR_FENCE_METAL_SW,
+    SPR_FENCE_METAL_NW,
+};
+constexpr uint32_t kFenceSpritesMetalB[] = {
+    SPR_FENCE_METAL_B_NE,
+    SPR_FENCE_METAL_B_SE,
+    SPR_FENCE_METAL_B_SW,
+    SPR_FENCE_METAL_B_NW,
+};
 
-extern const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3];
-extern const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4];
+constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3] = {
+    {
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2,
+    },
+    {
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2,
+    },
+    {
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2,
+    },
+    {
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2,
+    }
+};
+constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] = {
+    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SW_NW,
+    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NW_NE,
+    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE,
+    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
+};
 
 extern const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[];
 extern const Direction mapReversedDiagonalStraight[];

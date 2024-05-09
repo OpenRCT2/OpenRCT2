@@ -14,7 +14,6 @@
 #    include "../Date.h"
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
-#    include "../core/String.hpp"
 #    include "../util/Util.h"
 
 #    include <cerrno>

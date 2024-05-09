@@ -27,6 +27,8 @@
 #include "../world/TileElementsView.h"
 #include "../world/Wall.h"
 
+#include <algorithm>
+
 using namespace OpenRCT2;
 
 FootpathPlaceAction::FootpathPlaceAction(

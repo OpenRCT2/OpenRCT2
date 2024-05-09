@@ -176,6 +176,7 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\ConfigEnum.hpp" />
+    <ClInclude Include="config\ConfigTypes.h" />
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
@@ -278,6 +279,7 @@
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\ConversionTables.h" />
     <ClInclude Include="localisation\Currency.h" />
+    <ClInclude Include="localisation\CurrencyTypes.h" />
     <ClInclude Include="localisation\Date.h" />
     <ClInclude Include="localisation\FormatCodes.h" />
     <ClInclude Include="localisation\Formatter.h" />

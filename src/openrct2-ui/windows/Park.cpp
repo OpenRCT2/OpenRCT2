@@ -427,7 +427,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 {
                     auto& park = OpenRCT2::GetGameState().Park;
                     WindowTextInputRawOpen(
-                        this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), USER_STRING_MAX_LENGTH);
+                        this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), kUserStringMaxLength);
                     break;
                 }
                 case WIDX_CLOSE_LIGHT:
@@ -853,11 +853,10 @@ static constexpr WindowParkAward _parkAwards[] = {
                 }
                 case WIDX_PRICE:
                 {
-                    utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
-                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, MONEY_STRING_MAXLENGTH, false);
+                    utf8 _moneyInputText[kMoneyStringMaxlength] = {};
+                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
-                        this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                        MONEY_STRING_MAXLENGTH);
+                        this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, kMoneyStringMaxlength);
                 }
             }
         }

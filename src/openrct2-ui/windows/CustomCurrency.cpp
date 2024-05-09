@@ -14,6 +14,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
@@ -109,7 +110,7 @@ static Widget window_custom_currency_widgets[] = {
                 case WIDX_SYMBOL_TEXT:
                     WindowTextInputRawOpen(
                         this, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
-                        {}, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
+                        {}, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, kCurrencySymbolMaxSize);
                     break;
             }
         }
@@ -122,7 +123,7 @@ static Widget window_custom_currency_widgets[] = {
                     WindowTextInputOpen(
                         this, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, {}, STR_FORMAT_INTEGER,
                         static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate),
-                        CURRENCY_RATE_MAX_NUM_DIGITS);
+                        kCurrencyRateMaxNumDigits);
                     break;
             }
         }
@@ -164,7 +165,7 @@ static Widget window_custom_currency_widgets[] = {
                 case WIDX_SYMBOL_TEXT:
                     SafeStrCpy(
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
-                        CURRENCY_SYMBOL_MAX_SIZE);
+                        kCurrencySymbolMaxSize);
 
                     gConfigGeneral.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode;
 

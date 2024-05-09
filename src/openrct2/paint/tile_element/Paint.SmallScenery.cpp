@@ -11,7 +11,6 @@
 
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
 #include "../../object/SmallSceneryEntry.h"

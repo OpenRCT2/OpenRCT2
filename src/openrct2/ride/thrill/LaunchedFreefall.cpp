@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../../common.h"
-#include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
@@ -103,10 +102,10 @@ static void PaintLaunchedFreefallBase(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, floorSpritesMetal, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetal, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesMetal,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesMetal,
         session.CurrentRotation);
 
     if (trackSequence == 0)

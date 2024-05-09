@@ -26,6 +26,7 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
@@ -296,15 +297,18 @@ static Widget window_game_bottom_toolbar_widgets[] =
                     auto* guest = peep->As<Guest>();
                     if (guest != nullptr)
                     {
-                        if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
+                        if (image_id_base >= kPeepSpriteBalloonStateWatchRideId
+                            && image_id_base < kPeepSpriteBalloonStateSittingIdleId + 4)
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
                         }
-                        else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
+                        if (image_id_base >= kPeepSpriteUmbrellaStateNoneId
+                            && image_id_base < kPeepSpriteUmbrellaStateSittingIdleId + 4)
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
                         }
-                        else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
+                        if (image_id_base >= kPeepSpriteHatStateWatchRideId
+                            && image_id_base < kPeepSpriteHatStateSittingIdleId + 4)
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
                         }

@@ -30,9 +30,6 @@ extern TTFFontSetDescriptor TTFFontNanum;
 extern TTFFontSetDescriptor TTFFontArial;
 extern TTFFontSetDescriptor TTFFontArialUnicode;
 extern TTFFontSetDescriptor TTFFontMicroHei;
-#    define FONT(x) x
-#else
-#    define FONT(x) FONT_OPENRCT2_SPRITE
 #endif // NO_TTF
 
 void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);

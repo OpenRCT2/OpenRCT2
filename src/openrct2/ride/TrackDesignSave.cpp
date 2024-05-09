@@ -10,7 +10,6 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../audio/audio.h"
-#include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"

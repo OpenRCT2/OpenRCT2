@@ -584,7 +584,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
          */
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            const auto newHeight = static_cast<int32_t>(_listItems.size() * SCROLLABLE_ROW_HEIGHT);
+            const auto newHeight = static_cast<int32_t>(_listItems.size() * kScrollableRowHeight);
             return { 0, newHeight };
         }
 
@@ -729,7 +729,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             for (size_t i = 0; i < _listItems.size(); i++)
             {
                 const auto& listItem = _listItems[i];
-                if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
+                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
                 {
                     // Draw checkbox
                     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
@@ -741,7 +741,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         && !(*listItem.flags & ObjectSelectionFlags::Flag6);
                     if (highlighted)
                     {
-                        auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
+                        auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
                         GfxFilterRect(dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                     }
 
@@ -800,7 +800,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     ft.Add<const char*>(gCommonStringFormatBuffer);
                     DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                 }
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
             }
         }
 
@@ -1538,7 +1538,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
          */
         int32_t GetObjectFromObjectSelection(ObjectType object_type, int32_t y)
         {
-            int32_t listItemIndex = y / SCROLLABLE_ROW_HEIGHT;
+            int32_t listItemIndex = y / kScrollableRowHeight;
             if (listItemIndex < 0 || static_cast<size_t>(listItemIndex) >= _listItems.size())
                 return -1;
 

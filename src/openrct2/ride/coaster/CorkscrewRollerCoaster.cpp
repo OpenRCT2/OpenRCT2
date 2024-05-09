@@ -6526,7 +6526,7 @@ static void CorkscrewRCTrackDiagBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, MetalSupportType::Tubes, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -6545,7 +6545,7 @@ static void CorkscrewRCTrackDiagBlockBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, MetalSupportType::Tubes, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];

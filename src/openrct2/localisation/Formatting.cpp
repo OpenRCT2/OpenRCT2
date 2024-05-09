@@ -11,6 +11,7 @@
 
 #include "../config/Config.h"
 #include "../util/Util.h"
+#include "Currency.h"
 #include "Formatter.h"
 #include "Localisation.h"
 #include "StringIds.h"
@@ -284,7 +285,7 @@ namespace OpenRCT2
     {
         if (IsRealNameStringId(id))
         {
-            auto realNameIndex = id - REAL_NAME_START;
+            auto realNameIndex = id - kRealNameStart;
             ss << real_names[realNameIndex % std::size(real_names)];
             ss << ' ';
             ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
@@ -624,7 +625,7 @@ namespace OpenRCT2
 
     bool IsRealNameStringId(StringId id)
     {
-        return id >= REAL_NAME_START && id <= REAL_NAME_END;
+        return id >= kRealNameStart && id <= kRealNameEnd;
     }
 
     FmtString GetFmtStringById(StringId id)

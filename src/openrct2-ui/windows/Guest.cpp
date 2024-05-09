@@ -28,6 +28,7 @@
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
 #include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
@@ -561,19 +562,21 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             if (guest != nullptr)
             {
                 // If holding a balloon
-                if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
+                if (animationFrame >= kPeepSpriteBalloonStateWatchRideId
+                    && animationFrame < kPeepSpriteBalloonStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
                 }
 
                 // If holding umbrella
-                if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
+                if (animationFrame >= kPeepSpriteUmbrellaStateNoneId
+                    && animationFrame < kPeepSpriteUmbrellaStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
                 }
 
                 // If wearing hat
-                if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
+                if (animationFrame >= kPeepSpriteHatStateWatchRideId && animationFrame < kPeepSpriteHatStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
                 }

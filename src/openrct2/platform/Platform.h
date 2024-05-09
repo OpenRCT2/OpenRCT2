@@ -10,7 +10,8 @@
 #pragma once
 
 #include "../common.h"
-#include "../config/Config.h"
+#include "../config/ConfigTypes.h"
+#include "../core/String.hpp"
 
 #include <ctime>
 #include <string>
@@ -42,6 +43,7 @@ enum class SPECIAL_FOLDER
 
 struct RealWorldDate;
 struct RealWorldTime;
+struct TTFFontDescriptor;
 
 namespace Platform
 {

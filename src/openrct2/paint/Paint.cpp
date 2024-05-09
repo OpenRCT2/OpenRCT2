@@ -14,6 +14,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
@@ -391,7 +392,10 @@ template<uint8_t TRotation> static void PaintStructsSortQuadrant(PaintStruct* pa
         auto* ps = child;
         child = child->NextQuadrantEntry;
 
-        PREFETCH(&child->Bounds);
+        if (child != nullptr)
+        {
+            PREFETCH(&child->Bounds);
+        }
         if (child == nullptr || child->SortFlags & PaintSortFlags::OutsideQuadrant)
         {
             break;

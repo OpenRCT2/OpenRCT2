@@ -2,6 +2,10 @@
 ------------------------------------------------------------------------
 - Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
 - Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
+- Improved: [#21981] Rendering performance of the map window has been improved considerably.
+- Improved: [#21981] The map window now defaults to showing as much of the map as fits the screen.
+- Change: [#7248] Small mini-maps are now centred in the map window.
+- Fix: [#13294] Map corners are cut off in some directions (original bug).
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
 
 0.4.11 (2024-05-05)

@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../GameState.h"
-#include "../config/Config.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
