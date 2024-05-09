@@ -194,7 +194,15 @@ static Widget _trackPlaceWidgets[] = {
                         }
                     });
                     res = GameActions::Execute(&tdAction);
-                    cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                    if (res.Error != GameActions::Status::Ok)
+                    {
+                        cost = kMoney64Undefined;
+                    }
+                    else
+                    {
+                        auto modifiedCost = FinanceGetModifiedCost(res.Cost,ExpenditureType::RideConstruction);
+                        cost = modifiedCost;
+                    }
                 }
             }
 
