@@ -803,8 +803,6 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
 {
     CalculcateClipping(dpi);
 
-    assert((colour & 0xFF) > 0u);
-
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
