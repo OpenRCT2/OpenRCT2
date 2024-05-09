@@ -4047,7 +4047,7 @@ enum : uint16_t
 
     STR_SPEED_TOO_HIGH = 6627,
 
-    STR_CANNOT_PLACE_NO_UNCONNECTED_EDGES_AVAILABLE = 6628,
+    STR_CAN_ONLY_BE_PLACED_ON_PATH_EDGES = 6628,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
