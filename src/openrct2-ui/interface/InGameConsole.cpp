@@ -11,6 +11,7 @@
 
 #include "Theme.h"
 
+#include <algorithm>
 #include <cstring>
 #include <openrct2/Context.h>
 #include <openrct2/Version.h>
