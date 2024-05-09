@@ -463,7 +463,12 @@ constexpr CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     },
 };
 
-extern const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
+constexpr uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
+    3,
+    1,
+    2,
+    0,
+};
 extern const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3];
 extern const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3];
 extern const CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3];

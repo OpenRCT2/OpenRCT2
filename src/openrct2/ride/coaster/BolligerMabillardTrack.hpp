@@ -2980,7 +2980,7 @@ static void BolligerMabillardTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn3<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -3126,7 +3126,7 @@ static void BolligerMabillardTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn3Bank<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -3325,7 +3325,7 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackRightQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -3335,7 +3335,7 @@ static void BolligerMabillardTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -3874,7 +3874,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixDownSmall(
         trackSequence -= 4;
         direction = (direction - 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackRightHalfBankedHelixUpSmall<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -3889,7 +3889,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixDownSmall(
         trackSequence -= 4;
         direction = (direction + 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftHalfBankedHelixUpSmall<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -10785,7 +10785,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackRightBankedQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -10795,7 +10795,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftBankedQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }

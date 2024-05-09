@@ -4339,7 +4339,7 @@ static void WoodenRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackLeftQuarterTurn3<isClassic>(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
@@ -4570,7 +4570,7 @@ static void WoodenRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackLeftQuarterTurn3Bank<isClassic>(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
@@ -4904,7 +4904,7 @@ static void WoodenRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackRightQuarterTurn325DegUp<isClassic>(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
@@ -4914,7 +4914,7 @@ static void WoodenRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackLeftQuarterTurn325DegUp<isClassic>(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
@@ -5986,7 +5986,7 @@ static void WoodenRCTrackLeftHalfBankedHelixDownSmall(
         trackSequence -= 4;
         direction = (direction - 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackRightHalfBankedHelixUpSmall<isClassic>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -6002,7 +6002,7 @@ static void WoodenRCTrackRightHalfBankedHelixDownSmall(
         trackSequence -= 4;
         direction = (direction + 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackLeftHalfBankedHelixUpSmall<isClassic>(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
@@ -14350,7 +14350,7 @@ static void WoodenRCTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackRightBankedQuarterTurn325DegUp<isClassic>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -14361,7 +14361,7 @@ static void WoodenRCTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     WoodenRCTrackLeftBankedQuarterTurn325DegUp<isClassic>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }

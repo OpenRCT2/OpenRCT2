@@ -1289,13 +1289,6 @@ void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
     }
 }
 
-const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
-    3,
-    1,
-    2,
-    0,
-};
-
 constexpr CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3] = {
     {
         { 0, 6 },
