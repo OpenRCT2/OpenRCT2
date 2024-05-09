@@ -1102,7 +1102,7 @@ static void classicStandUpRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
     return classicStandUpRCTrackDiagFlatToRightBank(
         session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
 }
@@ -1111,7 +1111,7 @@ static void classicStandUpRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
     return classicStandUpRCTrackDiagFlatToLeftBank(
         session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
 }
@@ -1130,7 +1130,7 @@ static void classicStandUpRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
     return classicStandUpRCTrackDiagLeftBank(
         session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
 }
@@ -1244,7 +1244,7 @@ static void classicStandUpRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
     direction = (direction + 2) % NumOrthogonalDirections;
     classicStandUpRCTrackDiagRightBankTo25DegUp(session, ride, trackSequence, direction, height, trackElement);
 }
@@ -1253,7 +1253,7 @@ static void classicStandUpRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
     direction = (direction + 2) % NumOrthogonalDirections;
     classicStandUpRCTrackDiagLeftBankTo25DegUp(session, ride, trackSequence, direction, height, trackElement);
 }
@@ -1367,7 +1367,7 @@ static void classicStandUpRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
     direction = (direction + 2) % NumOrthogonalDirections;
     classicStandUpRCTrackDiag25DegUpToRightBank(session, ride, trackSequence, direction, height, trackElement);
 }
@@ -1376,7 +1376,7 @@ static void classicStandUpRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapReversedDiagonalStraight[trackSequence];
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
     direction = (direction + 2) % NumOrthogonalDirections;
     classicStandUpRCTrackDiag25DegUpToLeftBank(session, ride, trackSequence, direction, height, trackElement);
 }

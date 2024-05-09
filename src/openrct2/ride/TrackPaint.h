@@ -365,7 +365,12 @@ constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] 
 constexpr uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
     6, 4, 5, 3, 1, 2, 0,
 };
-extern const Direction mapReversedDiagonalStraight[];
+constexpr uint8_t kMapReversedDiagonalStraight[4] = {
+    3,
+    2,
+    1,
+    0,
+};
 
 extern const CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5];
 extern const CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5];

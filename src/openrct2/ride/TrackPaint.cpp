@@ -1187,13 +1187,6 @@ void TrackPaintUtilDiagTilesPaint(
         { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
 }
 
-const uint8_t mapReversedDiagonalStraight[4] = {
-    3,
-    2,
-    1,
-    0,
-};
-
 constexpr CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
     {
         { 0, 6 },
