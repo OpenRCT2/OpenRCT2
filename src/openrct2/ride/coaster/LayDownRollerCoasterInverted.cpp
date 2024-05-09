@@ -3917,7 +3917,7 @@ static void LayDownRCTrackDiagBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 33, session.SupportColours);
+            session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height + 33, session.SupportColours);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -3937,7 +3937,7 @@ static void LayDownRCTrackDiagBlockBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 33, session.SupportColours);
+            session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height + 33, session.SupportColours);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 33, 0x20);
 }

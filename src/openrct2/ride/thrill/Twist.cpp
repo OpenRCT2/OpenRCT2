@@ -98,7 +98,7 @@ static void PaintTwist(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, stationColour, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, stationColour, height, kFloorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
@@ -117,7 +117,7 @@ static void PaintTwist(
         default:
             TrackPaintUtilPaintFences(
                 session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-                fenceSpritesRope, session.CurrentRotation);
+                kFenceSpritesRope, session.CurrentRotation);
             break;
     }
 

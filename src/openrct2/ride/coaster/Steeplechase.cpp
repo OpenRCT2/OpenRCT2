@@ -1556,7 +1556,7 @@ static void SteeplechaseTrackDiagBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Stick, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, MetalSupportType::Stick, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
