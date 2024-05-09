@@ -551,7 +551,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 
 void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* scroll) const
 {
-    auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
+    auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
     GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
@@ -596,7 +596,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
                 {
                     GfxFillRect(
                         dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (kListRowHeight - 1) } },
-                        ColourMapA[w->colours[1]].lighter | 0x1000000);
+                        ColourMapA[w->colours[1].colour].lighter | 0x1000000);
                 }
 
                 // Columns
@@ -640,7 +640,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
     {
         y = scroll->v_top;
 
-        auto bgColour = ColourMapA[w->colours[1]].mid_light;
+        auto bgColour = ColourMapA[w->colours[1].colour].mid_light;
         GfxFillRect(dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
@@ -704,8 +704,8 @@ void CustomListView::PaintSeperator(
     auto lineY1 = lineY0 + 1;
 
     auto baseColour = ParentWindow->colours[1];
-    auto lightColour = ColourMapA[baseColour].lighter;
-    auto darkColour = ColourMapA[baseColour].mid_dark;
+    auto lightColour = ColourMapA[baseColour.colour].lighter;
+    auto darkColour = ColourMapA[baseColour.colour].mid_dark;
 
     if (hasText)
     {

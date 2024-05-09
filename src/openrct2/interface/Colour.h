@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 
 #include <string_view>
 
@@ -209,34 +210,48 @@ constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
 constexpr uint8_t COLOUR_NUM_NORMAL = 54;
 
+static constexpr uint8_t kLegacyColourFlagTranslucent = (1 << 7);
+
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)
 
-enum : colour_t
+enum class ColourFlag : uint8_t
 {
-    COLOUR_FLAG_OUTLINE = (1 << 5),
-    COLOUR_FLAG_INSET = (1 << 6), // 64, 0x40
-    COLOUR_FLAG_TRANSLUCENT = (1 << 7),
+    translucent,
+    inset,
+    withOutline,
 };
 
-#define TRANSLUCENT(x) ((x) | static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
-#define NOT_TRANSLUCENT(x) ((x) & ~static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
-#define BASE_COLOUR(x) ((x)&0x1F)
+struct ColourWithFlags
+{
+    colour_t colour{};
+    uint8_t flags{};
+
+    bool hasFlag(ColourFlag flag) const;
+
+    void setFlag(ColourFlag flag, bool on);
+
+    ColourWithFlags withFlag(ColourFlag flag, bool on) const;
+
+    static ColourWithFlags fromLegacy(uint8_t legacy);
+
+    ColourWithFlags& operator=(colour_t rhs);
+};
 
 struct ColourShadeMap
 {
-    uint8_t colour_0;
-    uint8_t colour_1;
-    uint8_t darkest;
-    uint8_t darker;
-    uint8_t dark;
-    uint8_t mid_dark;
-    uint8_t mid_light;
-    uint8_t light;
-    uint8_t lighter;
-    uint8_t lightest;
-    uint8_t colour_10;
-    uint8_t colour_11;
+    PaletteIndex colour_0;
+    PaletteIndex colour_1;
+    PaletteIndex darkest;
+    PaletteIndex darker;
+    PaletteIndex dark;
+    PaletteIndex mid_dark;
+    PaletteIndex mid_light;
+    PaletteIndex light;
+    PaletteIndex lighter;
+    PaletteIndex lightest;
+    PaletteIndex colour_10;
+    PaletteIndex colour_11;
 };
 
 extern ColourShadeMap ColourMapA[COLOUR_COUNT];
@@ -246,7 +261,8 @@ void ColoursInitMaps();
 namespace Colour
 {
     colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);
-}
+    u8string ToString(colour_t colour);
+} // namespace Colour
 
 #ifndef NO_TTF
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);

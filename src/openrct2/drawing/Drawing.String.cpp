@@ -257,7 +257,8 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
 /**
  * Draws text that is left aligned and vertically centred.
  */
-void GfxDrawStringLeftCentred(DrawPixelInfo& dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
+void GfxDrawStringLeftCentred(
+    DrawPixelInfo& dpi, StringId format, void* args, ColourWithFlags colour, const ScreenCoordsXY& coords)
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
@@ -294,11 +295,10 @@ static void ColourCharacter(uint8_t colour, const uint16_t* current_font_flags, 
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void ColourCharacterWindow(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacterWindow(colour_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
 {
     int32_t eax;
 
-    colour = NOT_TRANSLUCENT(colour);
     eax = ColourMapA[colour].colour_11;
     if (*current_font_flags & TEXT_DRAW_FLAG_OUTLINE)
     {
@@ -746,50 +746,48 @@ static void TTFProcessString(DrawPixelInfo& dpi, std::string_view text, TextDraw
     }
 }
 
-static void TTFProcessInitialColour(int32_t colour, TextDrawInfo* info)
+static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
 {
-    if (colour != TEXT_COLOUR_254 && colour != TEXT_COLOUR_255)
+    if (colour.colour != TEXT_COLOUR_254 && colour.colour != TEXT_COLOUR_255)
     {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE);
-        if (colour & COLOUR_FLAG_OUTLINE)
+        if (colour.hasFlag(ColourFlag::withOutline))
         {
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
         }
-        colour &= ~COLOUR_FLAG_OUTLINE;
-        if (!(colour & COLOUR_FLAG_INSET))
+        if (!colour.hasFlag(ColourFlag::inset))
         {
             if (!(info->flags & TEXT_DRAW_FLAG_INSET))
             {
                 uint16_t flags = info->flags;
-                ColourCharacterWindow(colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
+                ColourCharacterWindow(colour.colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
             }
         }
         else
         {
             info->flags |= TEXT_DRAW_FLAG_INSET;
-            colour &= ~COLOUR_FLAG_INSET;
 
             uint32_t eax;
             if (info->flags & TEXT_DRAW_FLAG_DARK)
             {
                 if (info->flags & TEXT_DRAW_FLAG_EXTRA_DARK)
                 {
-                    eax = ColourMapA[colour].mid_light;
+                    eax = ColourMapA[colour.colour].mid_light;
                     eax = eax << 16;
-                    eax = eax | ColourMapA[colour].dark;
+                    eax = eax | ColourMapA[colour.colour].dark;
                 }
                 else
                 {
-                    eax = ColourMapA[colour].light;
+                    eax = ColourMapA[colour.colour].light;
                     eax = eax << 16;
-                    eax = eax | ColourMapA[colour].mid_dark;
+                    eax = eax | ColourMapA[colour.colour].mid_dark;
                 }
             }
             else
             {
-                eax = ColourMapA[colour].lighter;
+                eax = ColourMapA[colour.colour].lighter;
                 eax = eax << 16;
-                eax = eax | ColourMapA[colour].mid_light;
+                eax = eax | ColourMapA[colour.colour].mid_light;
             }
 
             // Adjust text palette. Store current colour? ;
@@ -802,7 +800,7 @@ static void TTFProcessInitialColour(int32_t colour, TextDrawInfo* info)
 }
 
 void TTFDrawString(
-    DrawPixelInfo& dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
+    DrawPixelInfo& dpi, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness)
 {
     if (text == nullptr)
@@ -877,7 +875,7 @@ static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, boo
  *  rct2: 0x00682F28
  */
 void GfxDrawStringWithYOffsets(
-    DrawPixelInfo& dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
+    DrawPixelInfo& dpi, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle)
 {
     TextDrawInfo info;

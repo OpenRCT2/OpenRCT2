@@ -196,7 +196,7 @@ static Widget WindowAssetPacksWidgets[] = {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
                 dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
-                ColourMapA[colours[1]].mid_light);
+                ColourMapA[colours[1].colour].mid_light);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
             if (assetPackManager == nullptr)
@@ -243,12 +243,12 @@ static Widget WindowAssetPacksWidgets[] = {
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else if (isHighlighted)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
             }
 
             DrawTextEllipsised(dpi, { 16, y + 1 }, listWidth, stringId, ft);

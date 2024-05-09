@@ -238,7 +238,7 @@ static Widget _serverListWidgets[] = {
                 }
                 auto dropdownPos = ScreenCoordsXY{ windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].h_left,
                                                    windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].v_top };
-                WindowDropdownShowText(dropdownPos, 0, COLOUR_GREY, 0, 2);
+                WindowDropdownShowText(dropdownPos, 0, { COLOUR_GREY }, 0, 2);
             }
         }
 
@@ -334,7 +334,7 @@ static Widget _serverListWidgets[] = {
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];
@@ -359,7 +359,7 @@ static Widget _serverListWidgets[] = {
                     _version = serverDetails.Version;
                 }
 
-                colour_t colour = colours[1];
+                auto colour = colours[1];
                 if (serverDetails.Favourite)
                 {
                     colour = COLOUR_YELLOW;

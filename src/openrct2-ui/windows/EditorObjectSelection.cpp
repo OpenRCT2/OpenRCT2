@@ -722,7 +722,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
 
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             screenCoords.y = 0;
@@ -750,12 +750,12 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     {
                         screenCoords.x = 2;
                         auto darkness = highlighted ? TextDarkness::ExtraDark : TextDarkness::Dark;
-                        colour_t colour2 = NOT_TRANSLUCENT(colours[1]);
+                        auto colour2 = colours[1].withFlag(ColourFlag::translucent, false);
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
-                            colour2 |= COLOUR_FLAG_INSET;
+                            colour2.setFlag(ColourFlag::inset, true);
 
                         DrawText(
-                            dpi, screenCoords, { static_cast<colour_t>(colour2), FontStyle::Medium, darkness },
+                            dpi, screenCoords, { colour2, FontStyle::Medium, darkness },
                             static_cast<const char*>(CheckBoxMarkString));
                     }
 
@@ -768,7 +768,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     auto darkness = TextDarkness::Regular;
                     if (*listItem.flags & ObjectSelectionFlags::Flag6)
                     {
-                        colour = colours[1] & 0x7F;
+                        colour = colours[1].colour;
                         darkness = TextDarkness::Dark;
                     }
 
@@ -1032,7 +1032,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
                     auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                    GfxDrawSprite(dpi, ImageId(spriteIndex, colours[1]), screenPos);
+                    GfxDrawSprite(dpi, ImageId(spriteIndex, colours[1].colour), screenPos);
                 }
             }
 
@@ -1042,7 +1042,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 dpi,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                ColourMapA[colours[1]].darkest);
+                ColourMapA[colours[1].colour].darkest);
 
             // Draw number of selected items
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))

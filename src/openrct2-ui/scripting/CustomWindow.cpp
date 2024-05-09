@@ -250,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Title;
         std::optional<int32_t> Id;
         std::vector<CustomWidgetDesc> Widgets;
-        std::vector<colour_t> Colours;
+        std::vector<ColourWithFlags> Colours;
         std::vector<CustomTabDesc> Tabs;
         std::optional<int32_t> TabIndex;
 
@@ -302,14 +302,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto dukColours = desc["colours"].as_array();
                 std::transform(dukColours.begin(), dukColours.end(), std::back_inserter(result.Colours), [](const DukValue& w) {
-                    colour_t c = COLOUR_BLACK;
+                    ColourWithFlags c = { COLOUR_BLACK };
                     if (w.type() == DukValue::Type::NUMBER)
                     {
-                        c = std::clamp<int32_t>(BASE_COLOUR(w.as_int()), COLOUR_BLACK, COLOUR_COUNT - 1);
-                        if (w.as_int() & COLOUR_FLAG_TRANSLUCENT)
-                        {
-                            c = TRANSLUCENT(c);
-                        }
+                        colour_t colour = w.as_int() & ~kLegacyColourFlagTranslucent;
+                        auto isTranslucent = (w.as_int() & kLegacyColourFlagTranslucent);
+                        c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
+                        c.flags = (isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0);
                     }
                     return c;
                 });
@@ -476,7 +475,7 @@ namespace OpenRCT2::Ui::Windows
             // This has to be called to ensure the window frame is correctly initialised - not doing this will
             // cause an assertion to be hit.
             ResizeFrameWithPage();
-            widgets[WIDX_CLOSE].text = (colours[0] & COLOUR_FLAG_TRANSLUCENT) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
+            widgets[WIDX_CLOSE].text = colours[0].hasFlag(ColourFlag::translucent) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
             // For now just hide it if there are no tabs and the window is not resizable

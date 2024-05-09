@@ -40,9 +40,9 @@ static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
 static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetHScrollbarDraw(
-    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
 static void WidgetVScrollbarDraw(
-    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
 static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 
 /**
@@ -135,8 +135,7 @@ static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widge
     //
     uint8_t press = ((w.flags & WF_10) ? INSET_RECT_FLAG_FILL_MID_LIGHT : 0);
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     // Draw the frame
     GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, press);
@@ -149,7 +148,7 @@ static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widge
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour.colour), leftTop);
 }
 
 /**
@@ -166,8 +165,7 @@ static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widg
     int32_t r = w.windowPos.x + widget.right;
     int32_t b = w.windowPos.y + widget.bottom;
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     // Draw the panel
     GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, 0);
@@ -180,7 +178,7 @@ static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widg
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour.colour), leftTop);
 }
 
 /**
@@ -199,8 +197,7 @@ static void WidgetButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widg
     // Check if the button is pressed down
     uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
     {
@@ -256,7 +253,7 @@ static void WidgetTabDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetI
     auto leftTop = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     // Get the colour and disabled image
-    auto colour = w.colours[widget.colour] & 0x7F;
+    auto colour = w.colours[widget.colour].colour;
     const auto newIndex = widget.image.GetIndex() + 2;
     auto image = widget.image.WithIndex(newIndex).WithPrimary(colour);
 
@@ -283,8 +280,7 @@ static void WidgetFlatButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex 
     ScreenRect rect{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top },
                      w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     // Check if the button is pressed down
     if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
@@ -317,8 +313,7 @@ static void WidgetTextButton(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widg
     ScreenRect rect{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top },
                      w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     // Border
     uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
@@ -347,11 +342,10 @@ static void WidgetTextCentred(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     if (widget.text == STR_NONE)
         return;
 
-    // Get the colour
-    colour_t colour = w.colours[widget.colour];
-    colour &= ~(COLOUR_FLAG_TRANSLUCENT);
+    auto colour = w.colours[widget.colour];
+    colour.setFlag(ColourFlag::translucent, false);
     if (WidgetIsDisabled(w, widgetIndex))
-        colour |= COLOUR_FLAG_INSET;
+        colour.setFlag(ColourFlag::inset, true);
 
     // Resolve the absolute ltrb
     auto topLeft = w.windowPos + ScreenCoordsXY{ widget.left, 0 };
@@ -393,10 +387,9 @@ static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetInde
     if (widget.text == STR_NONE || widget.content == kWidgetContentEmpty)
         return;
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
     if (WidgetIsDisabled(w, widgetIndex))
-        colour |= COLOUR_FLAG_INSET;
+        colour.setFlag(ColourFlag::inset, true);
 
     // Resolve the absolute ltrb
     int32_t l = w.windowPos.x + widget.left;
@@ -443,8 +436,7 @@ static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widge
     ScreenRect rect{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top },
                      w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     GfxFillRectInset(dpi, rect, colour, INSET_RECT_F_60);
     WidgetText(dpi, w, widgetIndex);
@@ -488,9 +480,9 @@ static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
     auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
     if (stringId != STR_NONE)
     {
-        uint8_t colour = w.colours[widget.colour] & 0x7F;
+        auto colour = w.colours[widget.colour].withFlag(ColourFlag::translucent, false);
         if (WidgetIsDisabled(w, widgetIndex))
-            colour |= COLOUR_FLAG_INSET;
+            colour.setFlag(ColourFlag::inset, true);
 
         utf8 buffer[512] = { 0 };
         OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, formatArgs);
@@ -507,8 +499,7 @@ static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
     const auto r = w.windowPos.x + widget.right;
     const auto b = w.windowPos.y + widget.bottom;
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour] & 0x7F;
+    uint8_t colour = w.colours[widget.colour].colour;
 
     // Border left of text
     GfxFillRect(dpi, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
@@ -544,8 +535,7 @@ static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     auto topLeft = w.windowPos + ScreenCoordsXY{ widget->left, widget->top };
     auto bottomRight = w.windowPos + ScreenCoordsXY{ widget->right, widget->bottom };
 
-    // Get the colour
-    uint8_t colour = w.colours[widget->colour];
+    auto colour = w.colours[widget->colour];
 
     uint8_t press = INSET_RECT_F_60;
     if (w.flags & WF_10)
@@ -554,9 +544,10 @@ static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
     // Black caption bars look slightly green, this fixes that
-    if (colour == 0)
+    if (colour.colour == COLOUR_BLACK)
         GfxFillRect(
-            dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, ColourMapA[colour].dark);
+            dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
+            ColourMapA[colour.colour].dark);
     else
         GfxFilterRect(
             dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
@@ -580,7 +571,7 @@ static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
 
     DrawTextEllipsised(
         dpi, topLeft, width, widget->text, Formatter::Common(),
-        { COLOUR_WHITE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
+        { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
 }
 
 /**
@@ -603,8 +594,7 @@ static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
     if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
         press |= INSET_RECT_FLAG_BORDER_INSET;
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     // Draw the button
     GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
@@ -615,7 +605,8 @@ static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
     topLeft = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 5) };
 
     if (WidgetIsDisabled(w, widgetIndex))
-        colour |= COLOUR_FLAG_INSET;
+        colour.setFlag(ColourFlag::inset, true);
+    ;
 
     DrawTextEllipsised(dpi, topLeft, widget.width() - 2, widget.text, Formatter::Common(), { colour, TextAlignment::CENTRE });
 }
@@ -634,22 +625,21 @@ static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
     ScreenCoordsXY bottomRight = w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom };
     ScreenCoordsXY midLeft = { topLeft.x, (topLeft.y + bottomRight.y) / 2 };
 
-    // Get the colour
-    colour_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     // checkbox
     GfxFillRectInset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
     if (WidgetIsDisabled(w, widgetIndex))
     {
-        colour |= COLOUR_FLAG_INSET;
+        colour.setFlag(ColourFlag::inset, true);
     }
 
     // fill it when checkbox is pressed
     if (WidgetIsPressed(w, widgetIndex))
     {
         DrawText(
-            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) },
+            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, { colour.withFlag(ColourFlag::translucent, false) },
             static_cast<const char*>(CheckBoxMarkString));
     }
 
@@ -676,8 +666,7 @@ static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widg
     ScreenCoordsXY topLeft = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
     ScreenCoordsXY bottomRight = w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom };
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
+    auto colour = w.colours[widget.colour];
 
     // Draw the border
     GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
@@ -734,16 +723,18 @@ static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widg
 }
 
 static void WidgetHScrollbarDraw(
-    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
 {
-    colour &= 0x7F;
+    colour.setFlag(ColourFlag::translucent, false);
+
     // Trough
-    GfxFillRect(dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
+    GfxFillRect(
+        dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour.colour].lighter);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour.colour].mid_dark);
+    GfxFillRect(dpi, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour.colour].lighter);
 
     // Left button
     {
@@ -772,16 +763,18 @@ static void WidgetHScrollbarDraw(
 }
 
 static void WidgetVScrollbarDraw(
-    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
 {
-    colour &= 0x7F;
+    colour.setFlag(ColourFlag::translucent, false);
+
     // Trough
-    GfxFillRect(dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour].lighter);
-    GfxFillRect(dpi, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour].mid_dark);
-    GfxFillRect(dpi, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+    GfxFillRect(
+        dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+    GfxFillRect(dpi, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+    GfxFillRect(dpi, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+    GfxFillRect(dpi, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+    GfxFillRect(dpi, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
 
     // Up button
     GfxFillRectInset(
@@ -794,7 +787,7 @@ static void WidgetVScrollbarDraw(
         dpi,
         { { l, std::max(t + kScrollBarWidth, t + scroll.v_thumb_top - 1) },
           { r, std::min(b - kScrollBarWidth, t + scroll.v_thumb_bottom - 1) } },
-        colour, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+        { colour }, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
     GfxFillRectInset(
@@ -820,25 +813,21 @@ static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widge
     // Resolve the absolute ltrb
     auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
-    // Get the colour
-    uint8_t colour = NOT_TRANSLUCENT(w.colours[widget.colour]);
-
     if (widget.type == WindowWidgetType::ColourBtn || widget.type == WindowWidgetType::TrnBtn
         || widget.type == WindowWidgetType::Tab)
         if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
             image = image.WithIndexOffset(1);
 
+    const auto colour = w.colours[widget.colour].colour;
     if (WidgetIsDisabled(w, widgetIndex))
     {
         // Draw greyed out (light border bottom right shadow)
-        colour = w.colours[widget.colour];
-        colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        GfxDrawSpriteSolid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
+        auto mappedColour = ColourMapA[colour].lighter;
+        GfxDrawSpriteSolid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, mappedColour);
 
         // Draw greyed out (dark)
-        colour = w.colours[widget.colour];
-        colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        GfxDrawSpriteSolid(dpi, image, screenCoords, colour);
+        mappedColour = ColourMapA[colour].mid_light;
+        GfxDrawSpriteSolid(dpi, image, screenCoords, mappedColour);
     }
     else
     {
@@ -1138,15 +1127,12 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
     ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-    // Get the colour
-    uint8_t colour = w.colours[widget.colour];
-
     auto& tbIdent = OpenRCT2::Ui::Windows::GetCurrentTextBox();
     bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
         && widgetIndex == tbIdent.widget_index;
 
     // GfxFillRectInset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
-    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, w.colours[widget.colour], INSET_RECT_F_60);
 
     // Figure out where the text should be positioned vertically.
     topLeft.y = w.windowPos.y + widget.textTop();
@@ -1188,7 +1174,7 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
 
     if (OpenRCT2::Ui::Windows::TextBoxCaretIsFlashed())
     {
-        colour = ColourMapA[w.colours[1]].mid_light;
+        auto colour = ColourMapA[w.colours[1].colour].mid_light;
         auto y = topLeft.y + (widget.height() - 1);
         GfxFillRect(dpi, { { curX, y }, { curX + width, y } }, colour + 5);
     }
@@ -1221,7 +1207,7 @@ static void WidgetProgressBarDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex
     {
         GfxFillRectInset(
             dpi, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 1 } },
-            widget.colour, 0);
+            { widget.colour }, 0);
     }
 }
 

@@ -508,7 +508,7 @@ static Widget window_object_load_error_widgets[] = {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
                 dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
-                ColourMapA[colours[1]].mid_light);
+                ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
             for (int32_t i = 0; i < no_list_items; i++)
@@ -525,11 +525,11 @@ static Widget window_object_load_error_widgets[] = {
                                                     { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 // If hovering over item, change the color and fill the backdrop.
                 if (i == selected_list_item)
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].darker);
+                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].darker);
                 else if (i == _highlightedIndex)
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].mid_dark);
+                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].mid_dark);
                 else if ((i & 1) != 0) // odd / even check
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].light);
+                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].light);
 
                 // Draw the actual object entry's name...
                 screenCoords.x = NAME_COL_LEFT - 3;

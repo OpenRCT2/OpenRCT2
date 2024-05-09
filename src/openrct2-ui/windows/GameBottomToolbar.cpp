@@ -76,6 +76,14 @@ static Widget window_game_bottom_toolbar_widgets[] =
     class GameBottomToolbar final : public Window
     {
     private:
+        colour_t GetHoverWidgetColour(WidgetIndex index)
+        {
+            return (
+                gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == index
+                    ? static_cast<colour_t>(COLOUR_WHITE)
+                    : colours[0].colour);
+        }
+
         void DrawLeftPanel(DrawPixelInfo& dpi)
         {
             const auto topLeft = windowPos
@@ -99,11 +107,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
-                colour_t colour
-                    = (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                               && gHoverWidget.widget_index == WIDX_MONEY
-                           ? COLOUR_WHITE
-                           : NOT_TRANSLUCENT(colours[0]));
+                auto colour = GetHoverWidgetColour(WIDX_MONEY);
                 StringId stringId = gameState.Cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.Cash);
@@ -129,11 +133,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
 
                 StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.GuestChangeModifier]
                                                                    : _guestCountFormats[gameState.GuestChangeModifier];
-                colour_t colour
-                    = (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                               && gHoverWidget.widget_index == WIDX_GUESTS
-                           ? COLOUR_WHITE
-                           : NOT_TRANSLUCENT(colours[0]));
+                auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.NumGuestsInPark);
                 DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
@@ -144,7 +144,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 Widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-                DrawParkRating(dpi, colours[3], screenCoords, std::max(10, ((gameState.Park.Rating / 4) * 263) / 256));
+                DrawParkRating(dpi, colours[3].colour, screenCoords, std::max(10, ((gameState.Park.Rating / 4) * 263) / 256));
             }
         }
 
@@ -158,7 +158,8 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 if (bar_width > 2)
                 {
                     GfxFillRectInset(
-                        dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
+                        dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } },
+                        ColourWithFlags{ static_cast<uint8_t>(colour) }, 0);
                 }
             }
 
@@ -190,10 +191,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
             int32_t month = date.GetMonth();
             int32_t day = date.GetDay();
 
-            colour_t colour
-                = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
-                       ? COLOUR_WHITE
-                       : NOT_TRANSLUCENT(colours[0]));
+            auto colour = GetHoverWidgetColour(WIDX_DATE);
             StringId stringId = DateFormatStringFormatIds[Config::Get().general.DateFormat];
             auto ft = Formatter();
             ft.Add<StringId>(DateDayNames[day]);
