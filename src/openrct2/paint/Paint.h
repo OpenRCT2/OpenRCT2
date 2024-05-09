@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/FixedVector.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
