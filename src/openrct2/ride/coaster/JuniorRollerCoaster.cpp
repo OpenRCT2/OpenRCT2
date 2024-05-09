@@ -2054,7 +2054,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_flat_quarter_turn_5_tiles,
-        kDefaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths,
+        kDefaultRightQuarterTurn5TilesOffsets, kDefaultRightQuarterTurn5TilesBoundLengths,
         kDefaultRightQuarterTurn5TilesBoundOffsets);
 
     int32_t supportHeight = height + junior_rc_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
@@ -2828,7 +2828,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[subTypeOffset],
-        junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
+        junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, kDefaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     static constexpr uint8_t supportSpecial[4] = { 8, 8, 8, 3 };
     switch (trackSequence)
@@ -2933,7 +2933,7 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[subTypeOffset], kDefaultRightQuarterTurn5TilesOffsets,
-        defaultRightQuarterTurn5TilesBoundLengths, nullptr);
+        kDefaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     static constexpr uint8_t supportSpecial[4] = { 11, 8, 8, 7 };
     switch (trackSequence)
