@@ -644,7 +644,7 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_5_tiles,
-        defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
+        kDefaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     switch (trackSequence)
     {

@@ -372,7 +372,36 @@ constexpr uint8_t kMapReversedDiagonalStraight[4] = {
     0,
 };
 
-extern const CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5];
+constexpr CoordsXY kDefaultRightQuarterTurn5TilesOffsets[4][5] = {
+    {
+        { 0, 6 },
+        { 0, 16 },
+        { 0, 0 },
+        { 16, 0 },
+        { 6, 0 },
+    },
+    {
+        { 6, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 0 },
+        { 0, 6 },
+    },
+    {
+        { 0, 6 },
+        { 0, 0 },
+        { 16, 16 },
+        { 0, 0 },
+        { 6, 0 },
+    },
+    {
+        { 6, 0 },
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 6 },
+    },
+};
 extern const CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5];
 extern const CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5];
 
