@@ -1187,37 +1187,6 @@ void TrackPaintUtilDiagTilesPaint(
         { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
 }
 
-constexpr CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
-    {
-        { 0, 6, 0 },
-        { 0, 16, 0 },
-        { 0, 0, 0 },
-        { 16, 0, 0 },
-        { 6, 0, 0 },
-    },
-    {
-        { 6, 0, 0 },
-        { 16, 0, 0 },
-        { 0, 16, 0 },
-        { 0, 0, 0 },
-        { 0, 6, 0 },
-    },
-    {
-        { 0, 6, 0 },
-        { 0, 0, 0 },
-        { 16, 16, 0 },
-        { 0, 0, 0 },
-        { 6, 0, 0 },
-    },
-    {
-        { 6, 0, 0 },
-        { 0, 0, 0 },
-        { 16, 0, 0 },
-        { 0, 16, 0 },
-        { 0, 6, 0 },
-    },
-};
-
 constexpr CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     {
         { 32, 20 },

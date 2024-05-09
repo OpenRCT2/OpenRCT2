@@ -2055,7 +2055,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_flat_quarter_turn_5_tiles,
         kDefaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths,
-        defaultRightQuarterTurn5TilesBoundOffsets);
+        kDefaultRightQuarterTurn5TilesBoundOffsets);
 
     int32_t supportHeight = height + junior_rc_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
     switch (trackSequence)
