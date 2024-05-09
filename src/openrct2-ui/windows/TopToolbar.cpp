@@ -228,24 +228,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAP,
     };
 
-    // NB: this array in reverse order!
     static constexpr std::array kWidgetOrderRightGroup = {
-        WIDX_NEWS,
-        WIDX_GUESTS,
-        WIDX_STAFF,
-        WIDX_PARK,
-        WIDX_RIDES,
-        WIDX_RESEARCH,
-        WIDX_FINANCES,
+        WIDX_CLEAR_SCENERY,
+        WIDX_LAND,
+        WIDX_WATER,
+        WIDX_SCENERY,
+        WIDX_PATH,
+        WIDX_CONSTRUCT_RIDE,
 
         WIDX_SEPARATOR,
 
-        WIDX_CONSTRUCT_RIDE,
-        WIDX_PATH,
-        WIDX_SCENERY,
-        WIDX_WATER,
-        WIDX_LAND,
-        WIDX_CLEAR_SCENERY,
+        WIDX_FINANCES,
+        WIDX_RESEARCH,
+        WIDX_RIDES,
+        WIDX_PARK,
+        WIDX_STAFF,
+        WIDX_GUESTS,
+        WIDX_NEWS,
     };
 
     static constexpr size_t _totalToolbarElements = kWidgetOrderLeftGroup.size() + kWidgetOrderRightGroup.size();
@@ -256,7 +255,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto halfWayPoint = std::copy(kWidgetOrderLeftGroup.begin(), kWidgetOrderLeftGroup.end(), combined.begin());
         *halfWayPoint = WIDX_SEPARATOR;
-        std::reverse_copy(kWidgetOrderRightGroup.begin(), kWidgetOrderRightGroup.end(), halfWayPoint + 1);
+        std::copy(kWidgetOrderRightGroup.begin(), kWidgetOrderRightGroup.end(), halfWayPoint + 1);
 
         return combined;
     }();
@@ -3124,74 +3123,37 @@ namespace OpenRCT2::Ui::Windows
                 pressed_widgets |= (1uLL << WIDX_PATH);
         }
 
-        void AlignButtonsLeftRight()
+        // TODO: look into using std::span
+        template<typename T> uint16_t GetToolbarWidth(T toolbarItems)
         {
-            // TODO: make a function that handles both loops
-
-            // Align left hand side toolbar buttons
-            bool firstAlignment = true;
-            auto x = 0;
-            for (auto widgetIndex : kWidgetOrderLeftGroup)
+            bool firstItem = true;
+            auto totalWidth = 0;
+            for (auto widgetIndex : toolbarItems)
             {
                 auto* widget = &widgets[widgetIndex];
                 if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
                     continue;
 
-                if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
+                if (firstItem && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
-                auto widgetWidth = widget->width();
-                widget->left = x;
-                x += widgetWidth;
-                widget->right = x;
-                x += 1;
-
-                firstAlignment = false;
+                totalWidth += widget->width() + 1;
+                firstItem = false;
             }
-
-            // Align right hand side toolbar buttons if necessary
-            int32_t screenWidth = ContextGetWidth();
-            firstAlignment = true;
-            x = std::max(640, screenWidth);
-            for (auto widgetIndex : kWidgetOrderRightGroup)
-            {
-                auto* widget = &widgets[widgetIndex];
-                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
-                    continue;
-
-                if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
-                    continue;
-
-                auto widgetWidth = widget->width();
-                x -= 1;
-                widget->right = x;
-                x -= widgetWidth;
-                widget->left = x;
-
-                firstAlignment = false;
-            }
+            return totalWidth;
         }
 
-        void AlignButtonsCentre()
+        // TODO: look into using std::span
+        template<typename T> void AlignButtons(T toolbarItems, uint16_t xPos)
         {
-            // First, we figure out how much space we'll be needing
-            auto totalWidth = 0;
-            for (auto widgetIndex : kWidgetOrderCombined)
+            bool firstItem = true;
+            for (auto widgetIndex : toolbarItems)
             {
                 auto* widget = &widgets[widgetIndex];
                 if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
                     continue;
 
-                totalWidth += widget->width();
-            }
-
-            // We'll start from the centre of the UI...
-            auto xPos = (ContextGetWidth() - totalWidth) / 2;
-
-            for (auto widgetIndex : kWidgetOrderCombined)
-            {
-                auto* widget = &widgets[widgetIndex];
-                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
+                if (firstItem && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
                 auto widgetWidth = widget->width();
@@ -3199,7 +3161,32 @@ namespace OpenRCT2::Ui::Windows
                 xPos += widgetWidth;
                 widget->right = xPos;
                 xPos += 1;
+
+                firstItem = false;
             }
+        }
+
+        void AlignButtonsLeftRight()
+        {
+            // Align left hand side toolbar buttons
+            AlignButtons(kWidgetOrderLeftGroup, 0);
+
+            // Align right hand side toolbar buttons
+            auto totalWidth = GetToolbarWidth(kWidgetOrderRightGroup);
+            auto xPos = ContextGetWidth() - totalWidth;
+            AlignButtons(kWidgetOrderRightGroup, xPos);
+        }
+
+        void AlignButtonsCentre()
+        {
+            // First, we figure out how much space we'll be needing
+            auto totalWidth = GetToolbarWidth(kWidgetOrderCombined);
+
+            // We'll start from the centre of the UI...
+            auto xPos = (ContextGetWidth() - totalWidth) / 2;
+
+            // And finally, align the buttons in the centre
+            AlignButtons(kWidgetOrderCombined, xPos);
         }
 
         void OnPrepareDraw() override
