@@ -1187,10 +1187,6 @@ void TrackPaintUtilDiagTilesPaint(
         { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
 }
 
-const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
-    6, 4, 5, 3, 1, 2, 0,
-};
-
 const uint8_t mapReversedDiagonalStraight[4] = {
     3,
     2,
