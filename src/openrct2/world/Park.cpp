@@ -514,7 +514,7 @@ namespace OpenRCT2::Park
         auto result = gameState.Park.Value - gameState.BankLoan;
 
         // Clamp addition to prevent overflow
-        result = AddClamp_money64(result, FinanceGetCurrentCash());
+        result = AddClamp<money64>(result, FinanceGetCurrentCash());
 
         return result;
     }

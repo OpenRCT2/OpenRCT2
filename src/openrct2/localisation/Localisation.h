@@ -34,16 +34,14 @@ utf8* GetStringEnd(const utf8* text);
 size_t GetStringSize(const utf8* text);
 
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
-#define MONEY_STRING_MAXLENGTH 14
+constexpr size_t kMoneyStringMaxlength = 14;
 money64 StringToMoney(const char* string_to_monetise);
 void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
 
-#define MAX_USER_STRINGS 1024
-#define USER_STRING_MAX_LENGTH 32
+constexpr size_t kUserStringMaxLength = 32;
 
-#define USER_STRING_END 0x8FFF
-#define REAL_NAME_START 0xA000
-#define REAL_NAME_END 0xDFFF
+constexpr uint16_t kRealNameStart = 0xA000;
+constexpr uint16_t kRealNameEnd = 0xDFFF;
 
 constexpr size_t CommonTextBufferSize = 512;
 

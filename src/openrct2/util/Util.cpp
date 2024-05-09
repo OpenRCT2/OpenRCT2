@@ -501,55 +501,6 @@ std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen)
     return output;
 }
 
-// Type-independent code left as macro to reduce duplicate code.
-#define ADD_CLAMP_BODY(value, value_to_add, min_cap, max_cap)                                                                  \
-    if ((value_to_add > 0) && (value > (max_cap - (value_to_add))))                                                            \
-    {                                                                                                                          \
-        value = max_cap;                                                                                                       \
-    }                                                                                                                          \
-    else if ((value_to_add < 0) && (value < (min_cap - (value_to_add))))                                                       \
-    {                                                                                                                          \
-        value = min_cap;                                                                                                       \
-    }                                                                                                                          \
-    else                                                                                                                       \
-    {                                                                                                                          \
-        value += value_to_add;                                                                                                 \
-    }
-
-int8_t AddClamp_int8_t(int8_t value, int8_t value_to_add)
-{
-    ADD_CLAMP_BODY(value, value_to_add, INT8_MIN, INT8_MAX);
-    return value;
-}
-
-int16_t AddClamp_int16_t(int16_t value, int16_t value_to_add)
-{
-    ADD_CLAMP_BODY(value, value_to_add, INT16_MIN, INT16_MAX);
-    return value;
-}
-
-int32_t AddClamp_int32_t(int32_t value, int32_t value_to_add)
-{
-    ADD_CLAMP_BODY(value, value_to_add, INT32_MIN, INT32_MAX);
-    return value;
-}
-
-int64_t AddClamp_int64_t(int64_t value, int64_t value_to_add)
-{
-    ADD_CLAMP_BODY(value, value_to_add, INT64_MIN, INT64_MAX);
-    return value;
-}
-
-money64 AddClamp_money64(money64 value, money64 value_to_add)
-{
-    // This function is intended only for clarity, as money64
-    // is technically the same as int64_t
-    assert_struct_size(money64, sizeof(int64_t));
-    return AddClamp_int64_t(value, value_to_add);
-}
-
-#undef add_clamp_body
-
 uint8_t Lerp(uint8_t a, uint8_t b, float t)
 {
     if (t <= 0)

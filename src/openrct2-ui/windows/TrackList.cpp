@@ -74,7 +74,7 @@ static Widget _trackListWidgets[] = {
     {
     private:
         std::vector<TrackDesignFileRef> _trackDesigns;
-        utf8 _filterString[USER_STRING_MAX_LENGTH]{};
+        utf8 _filterString[kUserStringMaxLength]{};
         std::vector<uint16_t> _filteredTrackIds;
         uint16_t _loadedTrackDesignIndex;
         std::unique_ptr<TrackDesign> _loadedTrackDesign;
@@ -172,7 +172,7 @@ static Widget _trackListWidgets[] = {
                 maxItems++;
             }
 
-            int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            int32_t index = screenCoords.y / kScrollableRowHeight;
             if (index < 0 || static_cast<uint32_t>(index) >= maxItems)
             {
                 index = -1;
@@ -328,7 +328,7 @@ static Widget _trackListWidgets[] = {
                 // Extra item: custom design
                 numItems++;
             }
-            int32_t scrollHeight = static_cast<int32_t>(numItems * SCROLLABLE_ROW_HEIGHT);
+            int32_t scrollHeight = static_cast<int32_t>(numItems * kScrollableRowHeight);
 
             return { width, scrollHeight };
         }
@@ -519,7 +519,7 @@ static Widget _trackListWidgets[] = {
             {
                 // Vehicle design not available
                 DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::CENTRE });
-                screenPos.y -= SCROLLABLE_ROW_HEIGHT;
+                screenPos.y -= kScrollableRowHeight;
             }
 
             if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
@@ -529,7 +529,7 @@ static Widget _trackListWidgets[] = {
                     // Scenery not available
                     DrawTextEllipsised(
                         dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
-                    screenPos.y -= SCROLLABLE_ROW_HEIGHT;
+                    screenPos.y -= kScrollableRowHeight;
                 }
             }
 
@@ -696,7 +696,7 @@ static Widget _trackListWidgets[] = {
                 {
                     // Highlight
                     GfxFilterRect(
-                        dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                        dpi, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                         FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
@@ -708,20 +708,20 @@ static Widget _trackListWidgets[] = {
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_BUILD_CUSTOM_DESIGN);
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
                 listIndex++;
             }
 
             for (auto i : _filteredTrackIds)
             {
-                if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y < dpi.y + dpi.height)
+                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y < dpi.y + dpi.height)
                 {
                     StringId stringId;
                     if (listIndex == static_cast<size_t>(selected_list_item))
                     {
                         // Highlight
                         GfxFilterRect(
-                            dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                            dpi, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                             FilterPaletteID::PaletteDarken1);
                         stringId = STR_WINDOW_COLOUR_2_STRINGID;
                     }
@@ -737,7 +737,7 @@ static Widget _trackListWidgets[] = {
                     DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
                 }
 
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
                 listIndex++;
             }
         }

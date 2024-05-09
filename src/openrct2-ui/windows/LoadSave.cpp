@@ -904,14 +904,14 @@ static Widget window_loadsave_widgets[] =
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return { 0, no_list_items * SCROLLABLE_ROW_HEIGHT };
+            return { 0, no_list_items * kScrollableRowHeight };
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t selectedItem;
 
-            selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem >= no_list_items)
                 return;
 
@@ -924,7 +924,7 @@ static Widget window_loadsave_widgets[] =
         {
             int32_t selectedItem;
 
-            selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem >= no_list_items)
                 return;
 
@@ -965,11 +965,11 @@ static Widget window_loadsave_widgets[] =
 
             for (int32_t i = 0; i < no_list_items; i++)
             {
-                int32_t y = i * SCROLLABLE_ROW_HEIGHT;
+                int32_t y = i * kScrollableRowHeight;
                 if (y > dpi.y + dpi.height)
                     break;
 
-                if (y + SCROLLABLE_ROW_HEIGHT < dpi.y)
+                if (y + kScrollableRowHeight < dpi.y)
                     continue;
 
                 StringId stringId = STR_BLACK_STRING;
@@ -978,7 +978,7 @@ static Widget window_loadsave_widgets[] =
                 if (i == selected_list_item)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::PaletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)

@@ -44,6 +44,6 @@ void CurrencyLoadCustomCurrencyConfig()
     {
         SafeStrCpy(
             CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol.c_str(),
-            CURRENCY_SYMBOL_MAX_SIZE);
+            kCurrencySymbolMaxSize);
     }
 }

@@ -6110,7 +6110,7 @@ static_assert(std::size(RatingNames) == 6);
 
         void IncomeOnMouseUp(WidgetIndex widgetIndex)
         {
-            utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
+            utf8 _moneyInputText[kMoneyStringMaxlength] = {};
 
             switch (widgetIndex)
             {
@@ -6137,10 +6137,10 @@ static_assert(std::size(RatingNames) == 6);
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
-                        MoneyToString(ride->price[0], _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                        MoneyToString(ride->price[0], _moneyInputText, kMoneyStringMaxlength, true);
                         WindowTextInputRawOpen(
                             this, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                            MONEY_STRING_MAXLENGTH);
+                            kMoneyStringMaxlength);
                     }
                     break;
                 }
@@ -6151,10 +6151,10 @@ static_assert(std::size(RatingNames) == 6);
                 {
                     auto price64 = IncomeGetSecondaryPrice();
 
-                    MoneyToString(price64, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                    MoneyToString(price64, _moneyInputText, kMoneyStringMaxlength, true);
                     WindowTextInputRawOpen(
                         this, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                        MONEY_STRING_MAXLENGTH);
+                        kMoneyStringMaxlength);
                 }
                 break;
                 case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:
