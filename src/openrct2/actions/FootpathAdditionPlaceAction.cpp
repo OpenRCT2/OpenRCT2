@@ -122,8 +122,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         && (pathElement->GetEdges()) == 0x0F)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
-            STR_CAN_ONLY_BE_PLACED_ON_PATH_EDGES);
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_PLACED_ON_PATH_EDGES);
     }
 
     if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
