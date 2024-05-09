@@ -811,8 +811,8 @@ struct MapRange : public RectRange<CoordsXY>
         // Don't use std::min/max, as they require <algorithm>, one of C++'s heaviest
         // in this very common header.
         auto result = MapRange(
-            GetLeft() > GetRight() ? GetRight() : GetLeft(), // min
-            GetTop() > GetBottom() ? GetBottom() : GetTop(), // min
+            GetLeft() < GetRight() ? GetLeft() : GetRight(), // min
+            GetTop() < GetBottom() ? GetTop() : GetBottom(), // min
             GetLeft() > GetRight() ? GetLeft() : GetRight(), // max
             GetTop() > GetBottom() ? GetTop() : GetBottom()  // max
         );
