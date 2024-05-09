@@ -140,11 +140,6 @@ void DrawTextEllipsised(
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-void GfxDrawString(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
-{
-    DrawText(dpi, coords, textPaint, buffer);
-}
-
 int32_t DrawTextWrapped(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
 {
     Formatter ft{};

@@ -323,7 +323,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = _colourFormatStr + _consoleLines[index];
-        GfxDrawString(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
+        DrawText(dpi, screenCoords, { textColour, InGameConsoleGetFontStyle() }, lineBuffer.c_str());
         screenCoords.y += lineHeight;
     }
 

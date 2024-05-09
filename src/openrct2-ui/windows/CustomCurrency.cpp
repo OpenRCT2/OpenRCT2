@@ -12,7 +12,6 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
@@ -211,8 +210,7 @@ static Widget window_custom_currency_widgets[] = {
                 + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
                                   window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
 
-            GfxDrawString(
-                dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
+            DrawText(dpi, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode);
 
             auto drawPos = windowPos
                 + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,

@@ -22,7 +22,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/MusicObject.h>
@@ -754,9 +754,9 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                             colour2 |= COLOUR_FLAG_INSET;
 
-                        GfxDrawString(
-                            dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
-                            { static_cast<colour_t>(colour2), FontStyle::Medium, darkness });
+                        DrawText(
+                            dpi, screenCoords, { static_cast<colour_t>(colour2), FontStyle::Medium, darkness },
+                            static_cast<const char*>(CheckBoxMarkString));
                     }
 
                     screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;

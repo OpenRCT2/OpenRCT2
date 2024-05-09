@@ -1865,7 +1865,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
                     SafeStrCat(buffer, buffer2, sizeof(buffer));
                 }
-                GfxDrawString(dpi, screenCoords, buffer, {});
+                DrawText(dpi, screenCoords, {}, buffer);
             }
             screenCoords.y += kListRowHeight;
             {

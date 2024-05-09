@@ -14,7 +14,6 @@
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
@@ -781,7 +780,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 }
                 screenCoords.x = 0;
                 GfxClipString(_buffer.data(), 230, FontStyle::Medium);
-                GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+                DrawText(dpi, screenCoords, { colour }, _buffer.c_str());
 
                 // Draw group name
                 _buffer.resize(0);
@@ -792,7 +791,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     screenCoords.x = 173;
                     _buffer += NetworkGetGroupName(group);
                     GfxClipString(_buffer.data(), 80, FontStyle::Medium);
-                    GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+                    DrawText(dpi, screenCoords, { colour }, _buffer.c_str());
                 }
 
                 // Draw last action
@@ -829,7 +828,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 _buffer += pingBuffer;
 
                 screenCoords.x = 356;
-                GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+                DrawText(dpi, screenCoords, { colour }, _buffer.c_str());
             }
             screenCoords.y += kScrollableRowHeight;
             listPosition++;
@@ -909,7 +908,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     if (NetworkCanPerformAction(groupindex, static_cast<NetworkPermission>(i)))
                     {
                         screenCoords.x = 0;
-                        GfxDrawString(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
+                        DrawText(dpi, screenCoords, {}, u8"{WINDOW_COLOUR_2}✓");
                     }
                 }
 

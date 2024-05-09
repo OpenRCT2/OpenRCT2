@@ -18,7 +18,6 @@
 #include "../../audio/audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
@@ -442,7 +441,7 @@ void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
     // Write name and version information
     buffer += gVersionInfoFull;
 
-    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
+    DrawText(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), { COLOUR_BLACK }, buffer.c_str());
     int16_t width = static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium));
 
     // Write platform information
@@ -452,7 +451,7 @@ void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
     buffer.append(OPENRCT2_ARCHITECTURE);
     buffer.append(")");
 
-    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
+    DrawText(dpi, screenCoords + ScreenCoordsXY(5, 5), { COLOUR_BLACK }, buffer.c_str());
     width = std::max(width, static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium)));
 
     // Invalidate screen area

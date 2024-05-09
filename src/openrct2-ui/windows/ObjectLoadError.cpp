@@ -15,6 +15,7 @@
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
@@ -538,7 +539,7 @@ static Widget window_object_load_error_widgets[] = {
                 auto name = entry.GetName();
                 char buffer[256];
                 String::Set(buffer, sizeof(buffer), name.data(), name.size());
-                GfxDrawString(dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+                DrawText(dpi, screenCoords, { COLOUR_DARK_GREEN }, buffer);
 
                 if (entry.Generation == ObjectGeneration::DAT)
                 {
