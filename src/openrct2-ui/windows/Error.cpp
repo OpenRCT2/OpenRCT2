@@ -15,6 +15,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
@@ -109,9 +110,19 @@ static Widget window_error_widgets[] = {
                 Close();
             }
         }
+
+        void OnUpdate() override
+        {
+            // Automatically close previous screenshot messages before new screenshot is taken
+            if (number == 1 && gScreenshotCountdown > 0)
+            {
+                GetContext()->WriteLine("Closing error window");
+                Close();
+            }
+        }
     };
 
-    WindowBase* ErrorOpen(std::string_view title, std::string_view message)
+    WindowBase* ErrorOpen(std::string_view title, std::string_view message, bool autoClose)
     {
         std::string buffer = "{BLACK}";
         buffer.append(title);
@@ -161,15 +172,17 @@ static Widget window_error_widgets[] = {
         }
 
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines);
+        errorWindow->number = autoClose ? 1 : 0;
+
         return WindowCreate(
             std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     }
 
-    WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args)
+    WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args, bool autoClose)
     {
         auto titlez = FormatStringIDLegacy(title, args.Data());
         auto messagez = FormatStringIDLegacy(message, args.Data());
-        return ErrorOpen(titlez, messagez);
+        return ErrorOpen(titlez, messagez, autoClose);
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -1570,10 +1570,10 @@ void ContextForceCloseWindowByClass(WindowClass windowClass)
     windowManager->ForceClose(windowClass);
 }
 
-WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args)
+WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args, const bool autoClose /* = false */)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    return windowManager->ShowError(title, message, args);
+    return windowManager->ShowError(title, message, args, autoClose);
 }
 
 void ContextHandleInput()

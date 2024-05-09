@@ -221,7 +221,7 @@ void ContextSetCursorTrap(bool value);
 WindowBase* ContextOpenWindow(WindowClass wc);
 WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
 WindowBase* ContextOpenWindowView(uint8_t view);
-WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args);
+WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args, bool autoClose = false);
 WindowBase* ContextOpenIntent(Intent* intent);
 void ContextBroadcastIntent(Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);

@@ -26,6 +26,7 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
+#include "../paint/Painter.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
@@ -97,11 +98,11 @@ void ScreenshotCheck()
                 Formatter ft;
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const utf8*>(filename.c_str());
-                ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
+                ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
             }
             else
             {
-                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
+                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
             }
 
             // redraw_weather();
@@ -391,12 +392,12 @@ void ScreenshotGiant()
         Formatter ft;
         ft.Add<StringId>(STR_STRING);
         ft.Add<const utf8*>(filename.c_str());
-        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
+        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
     }
     catch (const std::exception& e)
     {
         LOG_ERROR("%s", e.what());
-        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
+        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
     }
 
     ReleaseDPI(dpi);
