@@ -10,10 +10,6 @@
 #pragma once
 
 #include "../management/Marketing.h"
-#include "Date.h"
-#include "FormatCodes.h"
-#include "Language.h"
-#include "StringIds.h"
 
 #include <string>
 

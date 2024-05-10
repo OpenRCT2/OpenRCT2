@@ -13,6 +13,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Window.h"
+#include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../platform/Platform.h"
 #include "../scenes/title/TitleScene.h"

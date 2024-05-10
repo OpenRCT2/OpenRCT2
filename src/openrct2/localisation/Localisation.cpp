@@ -23,12 +23,13 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "../management/Marketing.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "Currency.h"
 #include "Date.h"
+#include "FormatCodes.h"
 #include "Formatting.h"
+#include "Language.h"
 #include "Localisation.h"
 
 #include <cmath>

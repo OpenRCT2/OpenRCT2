@@ -12,6 +12,8 @@
 #include "../config/Config.h"
 #include "../util/Util.h"
 #include "Currency.h"
+#include "Date.h"
+#include "FormatCodes.h"
 #include "Formatter.h"
 #include "Localisation.h"
 #include "StringIds.h"

@@ -15,6 +15,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../interface/Window.h"
+#include "../localisation/FormatCodes.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
