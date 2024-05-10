@@ -466,6 +466,7 @@
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideEntry.h" />
     <ClInclude Include="ride\RideRatings.h" />
+    <ClInclude Include="ride\RideStringIds.h" />
     <ClInclude Include="ride\RideTypes.h" />
     <ClInclude Include="ride\ShopItem.h" />
     <ClInclude Include="ride\shops\meta\CashMachine.h" />
