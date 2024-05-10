@@ -16,6 +16,8 @@
 #include <limits>
 #include <string>
 
+// test
+
 class IniReaderTest : public testing::Test
 {
 protected:
