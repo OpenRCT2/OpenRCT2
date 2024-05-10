@@ -1187,6 +1187,110 @@ void TrackPaintUtilDiagTilesPaint(
         { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
 }
 
+const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
+    6, 4, 5, 3, 1, 2, 0,
+};
+
+const uint8_t kMapReversedDiagonalStraight[4] = {
+    3,
+    2,
+    1,
+    0,
+};
+
+constexpr CoordsXY kDefaultRightQuarterTurn5TilesOffsets[4][5] = {
+    {
+        { 0, 6 },
+        { 0, 16 },
+        { 0, 0 },
+        { 16, 0 },
+        { 6, 0 },
+    },
+    {
+        { 6, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 0 },
+        { 0, 6 },
+    },
+    {
+        { 0, 6 },
+        { 0, 0 },
+        { 16, 16 },
+        { 0, 0 },
+        { 6, 0 },
+    },
+    {
+        { 6, 0 },
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 6 },
+    },
+};
+
+constexpr CoordsXYZ kDefaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
+    {
+        { 0, 6, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 6, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 0, 6, 0 },
+    },
+    {
+        { 0, 6, 0 },
+        { 0, 0, 0 },
+        { 16, 16, 0 },
+        { 0, 0, 0 },
+        { 6, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 6, 0 },
+    },
+};
+
+constexpr CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5] = {
+    {
+        { 32, 20 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 20, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
+    },
+    {
+        { 32, 20 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 20, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
+    },
+};
+
 static constexpr int8_t right_quarter_turn_5_tiles_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };

@@ -362,113 +362,15 @@ constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] 
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-constexpr uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
-    6, 4, 5, 3, 1, 2, 0,
-};
-constexpr uint8_t kMapReversedDiagonalStraight[4] = {
-    3,
-    2,
-    1,
-    0,
-};
+extern const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[];
+extern const Direction kMapReversedDiagonalStraight[];
 
-constexpr CoordsXY kDefaultRightQuarterTurn5TilesOffsets[4][5] = {
-    {
-        { 0, 6 },
-        { 0, 16 },
-        { 0, 0 },
-        { 16, 0 },
-        { 6, 0 },
-    },
-    {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 16 },
-        { 0, 0 },
-        { 0, 6 },
-    },
-    {
-        { 0, 6 },
-        { 0, 0 },
-        { 16, 16 },
-        { 0, 0 },
-        { 6, 0 },
-    },
-    {
-        { 6, 0 },
-        { 0, 0 },
-        { 16, 0 },
-        { 0, 16 },
-        { 0, 6 },
-    },
-};
-constexpr CoordsXYZ kDefaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
-    {
-        { 0, 6, 0 },
-        { 0, 16, 0 },
-        { 0, 0, 0 },
-        { 16, 0, 0 },
-        { 6, 0, 0 },
-    },
-    {
-        { 6, 0, 0 },
-        { 16, 0, 0 },
-        { 0, 16, 0 },
-        { 0, 0, 0 },
-        { 0, 6, 0 },
-    },
-    {
-        { 0, 6, 0 },
-        { 0, 0, 0 },
-        { 16, 16, 0 },
-        { 0, 0, 0 },
-        { 6, 0, 0 },
-    },
-    {
-        { 6, 0, 0 },
-        { 0, 0, 0 },
-        { 16, 0, 0 },
-        { 0, 16, 0 },
-        { 0, 6, 0 },
-    },
-};
-constexpr CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5] = {
-    {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 32 },
-        { 20, 32 },
-    },
-    {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 32, 16 },
-        { 32, 20 },
-    },
-    {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 32 },
-        { 20, 32 },
-    },
-    {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 32, 16 },
-        { 32, 20 },
-    },
-};
+extern const CoordsXY kDefaultRightQuarterTurn5TilesOffsets[4][5];
+extern const CoordsXYZ kDefaultRightQuarterTurn5TilesBoundOffsets[4][5];
+extern const CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5];
 
-constexpr uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
-    3,
-    1,
-    2,
-    0,
-};
+extern const uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
+
 extern const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3];
 extern const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3];
 extern const CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3];
