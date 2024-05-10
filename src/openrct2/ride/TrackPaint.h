@@ -362,14 +362,14 @@ constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] 
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-extern const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[];
-extern const Direction mapReversedDiagonalStraight[];
+extern const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[];
+extern const Direction kMapReversedDiagonalStraight[];
 
-extern const CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5];
-extern const CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5];
-extern const CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5];
+extern const CoordsXY kDefaultRightQuarterTurn5TilesOffsets[4][5];
+extern const CoordsXYZ kDefaultRightQuarterTurn5TilesBoundOffsets[4][5];
+extern const CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5];
 
-extern const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
+extern const uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
 extern const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3];
 extern const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3];
 extern const CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3];

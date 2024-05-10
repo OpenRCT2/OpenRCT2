@@ -644,7 +644,7 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_5_tiles,
-        defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
+        kDefaultRightQuarterTurn5TilesOffsets, kDefaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     switch (trackSequence)
     {
@@ -712,7 +712,7 @@ static void PaintMonorailTrackLeftQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     PaintMonorailTrackRightQuarterTurn5Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
@@ -964,7 +964,7 @@ static void PaintMonorailTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     PaintMonorailTrackRightQuarterTurn3Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 

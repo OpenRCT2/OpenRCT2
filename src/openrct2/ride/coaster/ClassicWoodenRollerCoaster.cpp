@@ -808,7 +808,7 @@ static void ClassicWoodenRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     ClassicWoodenRCTrackBankedRightQuarterTurn5(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
@@ -972,7 +972,7 @@ static void ClassicWoodenRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     ClassicWoodenRCTrackRightQuarterTurn3Bank(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 

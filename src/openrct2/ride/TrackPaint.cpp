@@ -1187,18 +1187,18 @@ void TrackPaintUtilDiagTilesPaint(
         { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
 }
 
-const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
+const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
     6, 4, 5, 3, 1, 2, 0,
 };
 
-const uint8_t mapReversedDiagonalStraight[4] = {
+const uint8_t kMapReversedDiagonalStraight[4] = {
     3,
     2,
     1,
     0,
 };
 
-constexpr CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
+constexpr CoordsXY kDefaultRightQuarterTurn5TilesOffsets[4][5] = {
     {
         { 0, 6 },
         { 0, 16 },
@@ -1229,7 +1229,7 @@ constexpr CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
     },
 };
 
-constexpr CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
+constexpr CoordsXYZ kDefaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
     {
         { 0, 6, 0 },
         { 0, 16, 0 },
@@ -1260,7 +1260,7 @@ constexpr CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
     },
 };
 
-constexpr CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
+constexpr CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -1393,7 +1393,7 @@ void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
     }
 }
 
-const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
+const uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
     3,
     1,
     2,
