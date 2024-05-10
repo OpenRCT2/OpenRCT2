@@ -23,6 +23,16 @@
 #include <ctime>
 #include <random>
 
+#ifdef _WIN32
+#    ifndef NOMINMAX
+#        define NOMINMAX
+#    endif
+#    ifndef WIN32_LEAN_AND_MEAN
+#        define WIN32_LEAN_AND_MEAN
+#    endif
+#    include <windows.h>
+#endif // _WIN32
+
 int32_t SquaredMetresToSquaredFeet(int32_t squaredMetres)
 {
     // 1 metre squared = 10.7639104 feet squared
