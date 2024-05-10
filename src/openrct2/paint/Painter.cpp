@@ -15,6 +15,7 @@
 #include "../ReplayManager.h"
 #include "../config/Config.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/Text.h"
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
 #include "../localisation/FormatCodes.h"

@@ -17,6 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
