@@ -3701,6 +3701,7 @@ STR_6623    :Escribe ‘help’ para ver la lista de comandos disponibles. Escri
 STR_6624    :Inspector de cuadrícula: Ordernar elementos
 STR_6625    :Color no válido
 STR_6626    :La animación está reflejada
+STR_6627    :¡Velocidad de vía demasiado alta!
 
 ##############
 # Escenarios #
