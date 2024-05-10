@@ -38,11 +38,13 @@ static Widget window_error_widgets[] = {
         std::string _text;
         uint16_t _numLines;
         uint8_t _staleCount;
+        bool _autoClose;
 
     public:
-        ErrorWindow(std::string text, uint16_t numLines)
+        ErrorWindow(std::string text, uint16_t numLines, bool autoClose)
             : _text(std::move(text))
             , _numLines(numLines)
+            , _autoClose(autoClose)
         {
         }
 
@@ -114,9 +116,8 @@ static Widget window_error_widgets[] = {
         void OnUpdate() override
         {
             // Automatically close previous screenshot messages before new screenshot is taken
-            if (number == 1 && gScreenshotCountdown > 0)
+            if (_autoClose && gScreenshotCountdown > 0)
             {
-                GetContext()->WriteLine("Closing error window");
                 Close();
             }
         }
@@ -171,9 +172,7 @@ static Widget window_error_widgets[] = {
             windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
         }
 
-        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines);
-        errorWindow->number = autoClose ? 1 : 0;
-
+        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
         return WindowCreate(
             std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
