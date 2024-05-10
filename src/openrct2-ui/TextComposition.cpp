@@ -10,6 +10,7 @@
 #include "TextComposition.h"
 
 #include "UiContext.h"
+#include "UiStringIds.h"
 #include "interface/InGameConsole.h"
 
 #include <SDL.h>
@@ -19,6 +20,8 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/Language.h>
+
+// TODO: only because of STR_NONE. We can do better.
 #include <openrct2/localisation/StringIds.h>
 
 #ifdef __MACOSX__

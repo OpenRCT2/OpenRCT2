@@ -11,6 +11,7 @@
 
 #include "Theme.h"
 
+#include "../UiStringIds.h"
 #include "Window.h"
 
 #include <memory>

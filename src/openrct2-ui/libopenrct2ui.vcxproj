@@ -94,6 +94,7 @@
     <ClInclude Include="title\TitleSequencePlayer.h" />
     <ClInclude Include="Ui.h" />
     <ClInclude Include="UiContext.h" />
+    <ClInclude Include="UiStringIds.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="windows\Window.h" />
   </ItemGroup>

@@ -9,6 +9,7 @@
 
 #include "InGameConsole.h"
 
+#include "../UiStringIds.h"
 #include "Theme.h"
 
 #include <algorithm>
@@ -21,7 +22,6 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
-#include <openrct2/localisation/StringIds.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

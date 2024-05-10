@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <cmath>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
