@@ -21,6 +21,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 
@@ -374,10 +375,10 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(LargeSceneryTile* tiles) co
         int32_t baseZ = surfaceElement->GetBaseZ();
         int32_t slope = surfaceElement->GetSlope();
 
-        if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
+        if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
         {
             baseZ += LAND_HEIGHT_STEP;
-            if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (slope & kTileSlopeDiagonalFlag)
             {
                 baseZ += LAND_HEIGHT_STEP;
             }

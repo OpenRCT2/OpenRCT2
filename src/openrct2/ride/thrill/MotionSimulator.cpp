@@ -136,7 +136,7 @@ static void PaintMotionSimulator(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 /**

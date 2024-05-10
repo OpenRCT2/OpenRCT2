@@ -187,7 +187,7 @@ static void AirPoweredVerticalRCTrackFlat(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackStation(
@@ -216,7 +216,7 @@ static void AirPoweredVerticalRCTrackStation(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackRightQuarterTurn5(
@@ -313,7 +313,7 @@ static void AirPoweredVerticalRCTrackRightQuarterTurn5(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackLeftQuarterTurn5(
@@ -351,7 +351,7 @@ static void AirPoweredVerticalRCTrackFlatToLeftBank(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008AFB84 */
@@ -381,7 +381,7 @@ static void AirPoweredVerticalRCTrackFlatToRightBank(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackLeftBankToFlat(
@@ -505,7 +505,7 @@ static void AirPoweredVerticalRCTrackBankedRightQuarterTurn5(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackBankedLeftQuarterTurn5(
@@ -544,7 +544,7 @@ static void AirPoweredVerticalRCTrackLeftBank(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackRightBank(
@@ -574,7 +574,7 @@ static void AirPoweredVerticalRCTrackBrakes(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackVerticalSlopeUp(
@@ -695,7 +695,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
         case 1:
         case 2:
@@ -727,7 +727,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             }
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
         case 4:
             if (isDirection03)
@@ -750,7 +750,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             WoodenASupportsPaintSetupRotated(
                 session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
         case 5:
             if (WoodenASupportsPaintSetupRotated(
@@ -775,7 +775,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                     session, direction, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
         case 6:
             if (isDirection03)
@@ -798,7 +798,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             PaintUtilSetVerticalTunnel(session, height + 240);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
     }
 }
@@ -839,7 +839,7 @@ static void AirPoweredVerticalRCTrackVerticalUp(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 80);
 }
 
 static void AirPoweredVerticalRCTrackVerticalTop(
@@ -941,7 +941,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 80);
 }
 
 static void AirPoweredVerticalRCTrackVerticalDown(
@@ -986,7 +986,7 @@ static void AirPoweredVerticalRCTrackBooster(
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void AirPoweredVerticalRCTrackOnridePhoto(
@@ -1010,7 +1010,7 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(int32_t trackType)

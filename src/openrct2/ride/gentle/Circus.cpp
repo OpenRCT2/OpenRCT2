@@ -115,7 +115,7 @@ static void PaintCircus(
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCircus(int32_t trackType)

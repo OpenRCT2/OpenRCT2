@@ -13,9 +13,9 @@
 #include "../../interface/Viewport.h"
 #include "../../util/Util.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
-#include "Generic.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 // clang-format off
@@ -295,7 +295,7 @@ bool MetalASupportsPaintSetup(
         segment = newSegment;
     }
     int16_t si = height;
-    if (supportSegments[segment].slope & SUPPORTS_SLOPE_5 || height - supportSegments[segment].height < 6
+    if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || height - supportSegments[segment].height < 6
         || _97B15C[supportType].base_id == 0)
     {
         height = supportSegments[segment].height;
@@ -306,7 +306,7 @@ bool MetalASupportsPaintSetup(
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
         uint32_t imageIndex = _97B15C[supportType].base_id;
-        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
+        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & kTileSlopeMask];
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, supportSegments[segment].height }, { 0, 0, 5 });
@@ -370,7 +370,7 @@ bool MetalASupportsPaintSetup(
     }
 
     supportSegments[segment].height = unk9E3294;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     height = originalHeight;
     segment = originalSegment;
@@ -506,14 +506,14 @@ bool MetalBSupportsPaintSetup(
 
     int32_t si = baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20) || (baseHeight - supportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (baseHeight - supportSegments[segment].height < 6)
         || (_97B15C[supportType].base_id == 0))
     {
         baseHeight = supportSegments[segment].height;
     }
     else
     {
-        uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
+        uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileSlopeMask];
         uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
 
         PaintAddImageAsParent(
@@ -576,7 +576,7 @@ bool MetalBSupportsPaintSetup(
     }
 
     supportSegments[segment].height = _9E3294;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     if (special != 0)
     {
@@ -674,14 +674,14 @@ bool PathPoleSupportsPaintSetup(
 
     uint16_t baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20) || (height - supportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (height - supportSegments[segment].height < 6)
         || !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
     {
         baseHeight = supportSegments[segment].height;
     }
     else
     {
-        uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
+        uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileSlopeMask];
         baseHeight = supportSegments[segment].height;
 
         PaintAddImageAsParent(
@@ -762,7 +762,7 @@ bool PathPoleSupportsPaintSetup(
 
     // Loc6A34D8
     supportSegments[segment].height = 0xFFFF;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     if (isSloped)
     {

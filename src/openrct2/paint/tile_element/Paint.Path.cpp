@@ -33,6 +33,7 @@
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "../support/MetalSupports.h"
@@ -47,10 +48,10 @@ using namespace OpenRCT2;
 bool gPaintWidePathsAsGhost = false;
 
 const uint8_t PathSlopeToLandSlope[] = {
-    TILE_ELEMENT_SLOPE_SW_SIDE_UP,
-    TILE_ELEMENT_SLOPE_NW_SIDE_UP,
-    TILE_ELEMENT_SLOPE_NE_SIDE_UP,
-    TILE_ELEMENT_SLOPE_SE_SIDE_UP,
+    kTileSlopeSWSideUp,
+    kTileSlopeNWSideUp,
+    kTileSlopeNESideUp,
+    kTileSlopeSESideUp,
 };
 
 static constexpr uint8_t Byte98D6E0[] = {
@@ -723,7 +724,7 @@ static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl,
             return true;
         }
     }
-    else if (surface->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+    else if (surface->GetSlope() != kTileSlopeFlat)
     {
         return true;
     }
@@ -910,7 +911,7 @@ static void PathPaintSegmentSupportHeight(
         height += 16;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height);
 
     if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
     {

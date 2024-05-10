@@ -63,7 +63,7 @@ static void PaintBoatHireTrackFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /** rct2: 0x008B0E50 */
@@ -87,7 +87,7 @@ static void PaintBoatHireStation(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008B0E80 */
@@ -134,7 +134,7 @@ static void PaintBoatHireTrackLeftQuarterTurn1Tile(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topLeftSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /** rct2: 0x008B0E90 */

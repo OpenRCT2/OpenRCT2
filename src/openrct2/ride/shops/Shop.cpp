@@ -55,7 +55,7 @@ static void PaintShop(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 
     if (direction == 1 || direction == 2)
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

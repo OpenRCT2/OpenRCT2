@@ -187,7 +187,7 @@ static void WildMouseTrackFlat(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void WildMouseTrackStation(
@@ -222,7 +222,7 @@ static void WildMouseTrackStation(
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x0078B1F4 */
@@ -254,7 +254,7 @@ static void WildMouseTrack25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x0078B204 */
@@ -301,7 +301,7 @@ static void WildMouseTrack60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x0078B214 */
@@ -333,7 +333,7 @@ static void WildMouseTrackFlatTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x0078B224 */
@@ -380,7 +380,7 @@ static void WildMouseTrack25DegUpTo60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x0078B234 */
@@ -427,7 +427,7 @@ static void WildMouseTrack60DegUpTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x0078B244 */
@@ -459,7 +459,7 @@ static void WildMouseTrack25DegUpToFlat(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x0078B254 */
@@ -566,7 +566,7 @@ static void WildMouseTrackRightQuarterTurn3(
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void WildMouseTrackRightQuarterTurn325DegDown(
@@ -626,7 +626,7 @@ static void WildMouseTrackRightQuarterTurn325DegDown(
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence], 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
 }
 
 static void WildMouseTrackLeftQuarterTurn325DegUp(
@@ -706,7 +706,7 @@ static void WildMouseTrackRightQuarterTurn325DegUp(
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence], 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
 }
 
 /** rct2: 0x0078B324 */
@@ -763,7 +763,7 @@ static void WildMouseTrackLeftQuarterTurn1(
                 PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomLeftSide),
             direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x0078B3A4 */
@@ -818,7 +818,7 @@ static void WildMouseTrackFlatTo60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x0078B364 */
@@ -873,7 +873,7 @@ static void WildMouseTrack60DegUpToFlat(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_0);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x0078B374 */
@@ -906,7 +906,7 @@ static void WildMouseTrackBrakes(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x0078B3C4 */
@@ -930,7 +930,7 @@ static void WildMouseTrackRotationControlToggle(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x0078B3B4 */
@@ -948,7 +948,7 @@ static void WildMouseTrackBlockBrakes(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(int32_t trackType)

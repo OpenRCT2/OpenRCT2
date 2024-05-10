@@ -85,7 +85,7 @@ static void PaintLargeScenerySupports(
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     }
-    PaintUtilSetGeneralSupportHeight(session, clearanceHeight, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, clearanceHeight);
 }
 
 static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText& text, std::string_view s, bool height)

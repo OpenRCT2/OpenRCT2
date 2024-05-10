@@ -115,7 +115,7 @@ static void CorkscrewRCTrackFlat(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7D68, 0x008A7D78, 0x008A7D88 */
@@ -150,7 +150,7 @@ static void CorkscrewRCTrackStation(
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7B08 */
@@ -229,7 +229,7 @@ static void CorkscrewRCTrack25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A7B18 */
@@ -308,7 +308,7 @@ static void CorkscrewRCTrack60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008A7B28 */
@@ -387,7 +387,7 @@ static void CorkscrewRCTrackFlatTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A7B38 */
@@ -478,7 +478,7 @@ static void CorkscrewRCTrack25DegUpTo60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A7B48 */
@@ -569,7 +569,7 @@ static void CorkscrewRCTrack60DegUpTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A7B58 */
@@ -648,7 +648,7 @@ static void CorkscrewRCTrack25DegUpToFlat(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008A7B68 */
@@ -744,10 +744,10 @@ static void CorkscrewRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -781,7 +781,7 @@ static void CorkscrewRCTrackLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -815,10 +815,10 @@ static void CorkscrewRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
             switch (direction)
@@ -852,7 +852,7 @@ static void CorkscrewRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -897,7 +897,7 @@ static void CorkscrewRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -952,7 +952,7 @@ static void CorkscrewRCTrackFlatToLeftBank(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7BF8 */
@@ -996,7 +996,7 @@ static void CorkscrewRCTrackFlatToRightBank(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7C08 */
@@ -1040,7 +1040,7 @@ static void CorkscrewRCTrackLeftBankToFlat(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7C18 */
@@ -1084,7 +1084,7 @@ static void CorkscrewRCTrackRightBankToFlat(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7C28 */
@@ -1135,10 +1135,10 @@ static void CorkscrewRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -1172,7 +1172,7 @@ static void CorkscrewRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -1206,10 +1206,10 @@ static void CorkscrewRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
             switch (direction)
@@ -1243,7 +1243,7 @@ static void CorkscrewRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -1291,7 +1291,7 @@ static void CorkscrewRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -1353,7 +1353,7 @@ static void CorkscrewRCTrackLeftBankTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A7C58 */
@@ -1404,7 +1404,7 @@ static void CorkscrewRCTrackRightBankTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A7C68 */
@@ -1455,7 +1455,7 @@ static void CorkscrewRCTrack25DegUpToLeftBank(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008A7C78 */
@@ -1506,7 +1506,7 @@ static void CorkscrewRCTrack25DegUpToRightBank(
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008A7C88 */
@@ -1576,7 +1576,7 @@ static void CorkscrewRCTrackLeftBank(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7CD8 */
@@ -1632,10 +1632,10 @@ static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -1667,7 +1667,7 @@ static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -1700,10 +1700,10 @@ static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -1735,7 +1735,7 @@ static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -1780,7 +1780,7 @@ static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -1830,10 +1830,10 @@ static void CorkscrewRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -1865,7 +1865,7 @@ static void CorkscrewRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -1897,10 +1897,10 @@ static void CorkscrewRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -1932,7 +1932,7 @@ static void CorkscrewRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -1977,7 +1977,7 @@ static void CorkscrewRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -2045,7 +2045,7 @@ static void CorkscrewRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -2081,7 +2081,7 @@ static void CorkscrewRCTrackSBendLeft(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -2117,7 +2117,7 @@ static void CorkscrewRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -2162,7 +2162,7 @@ static void CorkscrewRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -2212,7 +2212,7 @@ static void CorkscrewRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -2249,7 +2249,7 @@ static void CorkscrewRCTrackSBendRight(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -2286,7 +2286,7 @@ static void CorkscrewRCTrackSBendRight(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -2331,7 +2331,7 @@ static void CorkscrewRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -2383,7 +2383,7 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -2421,7 +2421,7 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -2455,7 +2455,7 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -2485,13 +2485,13 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -2521,7 +2521,7 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -2555,7 +2555,7 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -2593,7 +2593,7 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -2640,7 +2640,7 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -2678,7 +2678,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -2708,7 +2708,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                         session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -2734,7 +2734,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                         { { 16, 0, height }, { 2, 16, 119 } });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -2756,13 +2756,13 @@ static void CorkscrewRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(16581), { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -2784,7 +2784,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(16582), { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -2810,7 +2810,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                         { { 10, 16, height }, { 4, 16, 119 } });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -2840,7 +2840,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                         session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -2873,7 +2873,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 
@@ -2925,10 +2925,10 @@ static void CorkscrewRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -2962,7 +2962,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -3007,7 +3007,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -3069,10 +3069,10 @@ static void CorkscrewRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -3106,7 +3106,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -3154,7 +3154,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -3209,13 +3209,13 @@ static void CorkscrewRCTrackLeftQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -3256,7 +3256,7 @@ static void CorkscrewRCTrackLeftQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3302,13 +3302,13 @@ static void CorkscrewRCTrackRightQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -3355,7 +3355,7 @@ static void CorkscrewRCTrackRightQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3413,7 +3413,7 @@ static void CorkscrewRCTrackHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -3447,7 +3447,7 @@ static void CorkscrewRCTrackHalfLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -3479,7 +3479,7 @@ static void CorkscrewRCTrackHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -3507,7 +3507,7 @@ static void CorkscrewRCTrackHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3558,7 +3558,7 @@ static void CorkscrewRCTrackLeftCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -3585,7 +3585,7 @@ static void CorkscrewRCTrackLeftCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -3632,7 +3632,7 @@ static void CorkscrewRCTrackLeftCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3682,7 +3682,7 @@ static void CorkscrewRCTrackRightCorkscrewUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -3709,7 +3709,7 @@ static void CorkscrewRCTrackRightCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -3756,7 +3756,7 @@ static void CorkscrewRCTrackRightCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3825,10 +3825,10 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -3862,7 +3862,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -3910,7 +3910,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -3958,10 +3958,10 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -3995,7 +3995,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -4038,7 +4038,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -4091,10 +4091,10 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -4128,7 +4128,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -4176,7 +4176,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -4224,10 +4224,10 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -4261,7 +4261,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -4304,7 +4304,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -4385,10 +4385,10 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -4422,7 +4422,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -4456,10 +4456,10 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
             switch (direction)
@@ -4493,7 +4493,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -4541,7 +4541,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -4589,10 +4589,10 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 9:
             switch (direction)
@@ -4626,7 +4626,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 10:
             switch (direction)
@@ -4659,10 +4659,10 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 12:
             switch (direction)
@@ -4696,7 +4696,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 13:
             switch (direction)
@@ -4739,7 +4739,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -4792,10 +4792,10 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -4829,7 +4829,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -4862,10 +4862,10 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 5:
             switch (direction)
@@ -4899,7 +4899,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 6:
             switch (direction)
@@ -4947,7 +4947,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 7:
             switch (direction)
@@ -4995,10 +4995,10 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 9:
             switch (direction)
@@ -5032,7 +5032,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 10:
             switch (direction)
@@ -5066,10 +5066,10 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 12:
             switch (direction)
@@ -5103,7 +5103,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 13:
             switch (direction)
@@ -5146,7 +5146,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -5221,7 +5221,7 @@ static void CorkscrewRCTrackLeftQuarterTurn160DegUp(
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008A7EF8 */
@@ -5266,7 +5266,7 @@ static void CorkscrewRCTrackRightQuarterTurn160DegUp(
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008A7F08 */
@@ -5312,7 +5312,7 @@ static void CorkscrewRCTrackBrakes(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A7F48 */
@@ -5348,7 +5348,7 @@ static void CorkscrewRCTrackOnRidePhoto(
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A8198 */
@@ -5393,7 +5393,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -5426,7 +5426,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -5459,7 +5459,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -5501,7 +5501,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
     }
 }
@@ -5548,7 +5548,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
             switch (direction)
@@ -5581,7 +5581,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 2:
             switch (direction)
@@ -5614,7 +5614,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -5656,7 +5656,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -5716,7 +5716,7 @@ static void CorkscrewRCTrackLeftEighthToDiag(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -5750,7 +5750,7 @@ static void CorkscrewRCTrackLeftEighthToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -5784,7 +5784,7 @@ static void CorkscrewRCTrackLeftEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5795,7 +5795,7 @@ static void CorkscrewRCTrackLeftEighthToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -5837,7 +5837,7 @@ static void CorkscrewRCTrackLeftEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -5881,7 +5881,7 @@ static void CorkscrewRCTrackRightEighthToDiag(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -5915,7 +5915,7 @@ static void CorkscrewRCTrackRightEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -5949,7 +5949,7 @@ static void CorkscrewRCTrackRightEighthToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5960,7 +5960,7 @@ static void CorkscrewRCTrackRightEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -6002,7 +6002,7 @@ static void CorkscrewRCTrackRightEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -6064,7 +6064,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiag(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -6098,7 +6098,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -6132,7 +6132,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -6143,7 +6143,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -6185,7 +6185,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -6229,7 +6229,7 @@ static void CorkscrewRCTrackRightEighthBankToDiag(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -6263,7 +6263,7 @@ static void CorkscrewRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -6297,7 +6297,7 @@ static void CorkscrewRCTrackRightEighthBankToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -6308,7 +6308,7 @@ static void CorkscrewRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 4:
             switch (direction)
@@ -6350,7 +6350,7 @@ static void CorkscrewRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -6512,7 +6512,7 @@ static void CorkscrewRCTrackDiagFlat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void CorkscrewRCTrackDiagBrakes(
@@ -6531,7 +6531,7 @@ static void CorkscrewRCTrackDiagBrakes(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void CorkscrewRCTrackDiagBlockBrakes(
@@ -6550,7 +6550,7 @@ static void CorkscrewRCTrackDiagBlockBrakes(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x008A8008 */
@@ -6591,7 +6591,7 @@ static void CorkscrewRCTrackDiag25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6623,7 +6623,7 @@ static void CorkscrewRCTrackDiag25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6656,7 +6656,7 @@ static void CorkscrewRCTrackDiag25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6721,7 +6721,7 @@ static void CorkscrewRCTrackDiag25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -6764,7 +6764,7 @@ static void CorkscrewRCTrackDiag60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6796,7 +6796,7 @@ static void CorkscrewRCTrackDiag60DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6829,7 +6829,7 @@ static void CorkscrewRCTrackDiag60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6896,7 +6896,7 @@ static void CorkscrewRCTrackDiag60DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -6939,7 +6939,7 @@ static void CorkscrewRCTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6971,7 +6971,7 @@ static void CorkscrewRCTrackDiagFlatTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7004,7 +7004,7 @@ static void CorkscrewRCTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7069,7 +7069,7 @@ static void CorkscrewRCTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -7112,7 +7112,7 @@ static void CorkscrewRCTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7144,7 +7144,7 @@ static void CorkscrewRCTrackDiag25DegUpTo60DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7177,7 +7177,7 @@ static void CorkscrewRCTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7244,7 +7244,7 @@ static void CorkscrewRCTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7287,7 +7287,7 @@ static void CorkscrewRCTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7319,7 +7319,7 @@ static void CorkscrewRCTrackDiag60DegUpTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7352,7 +7352,7 @@ static void CorkscrewRCTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7419,7 +7419,7 @@ static void CorkscrewRCTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7462,7 +7462,7 @@ static void CorkscrewRCTrackDiag25DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7494,7 +7494,7 @@ static void CorkscrewRCTrackDiag25DegUpToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7527,7 +7527,7 @@ static void CorkscrewRCTrackDiag25DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7592,7 +7592,7 @@ static void CorkscrewRCTrackDiag25DegUpToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -7635,7 +7635,7 @@ static void CorkscrewRCTrackDiag25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7667,7 +7667,7 @@ static void CorkscrewRCTrackDiag25DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7700,7 +7700,7 @@ static void CorkscrewRCTrackDiag25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7765,7 +7765,7 @@ static void CorkscrewRCTrackDiag25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -7808,7 +7808,7 @@ static void CorkscrewRCTrackDiag60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7840,7 +7840,7 @@ static void CorkscrewRCTrackDiag60DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7873,7 +7873,7 @@ static void CorkscrewRCTrackDiag60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7940,7 +7940,7 @@ static void CorkscrewRCTrackDiag60DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -8113,7 +8113,7 @@ static void CorkscrewRCTrackDiagFlatTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A8078 */
@@ -8154,7 +8154,7 @@ static void CorkscrewRCTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8186,7 +8186,7 @@ static void CorkscrewRCTrackDiag25DegDownTo60DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8219,7 +8219,7 @@ static void CorkscrewRCTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8286,7 +8286,7 @@ static void CorkscrewRCTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8329,7 +8329,7 @@ static void CorkscrewRCTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8361,7 +8361,7 @@ static void CorkscrewRCTrackDiag60DegDownTo25DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8394,7 +8394,7 @@ static void CorkscrewRCTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8459,7 +8459,7 @@ static void CorkscrewRCTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8502,7 +8502,7 @@ static void CorkscrewRCTrackDiag25DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8534,7 +8534,7 @@ static void CorkscrewRCTrackDiag25DegDownToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8567,7 +8567,7 @@ static void CorkscrewRCTrackDiag25DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8632,7 +8632,7 @@ static void CorkscrewRCTrackDiag25DegDownToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8661,7 +8661,7 @@ static void CorkscrewRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -8682,7 +8682,7 @@ static void CorkscrewRCTrackDiagFlatToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -8701,7 +8701,7 @@ static void CorkscrewRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -8734,7 +8734,7 @@ static void CorkscrewRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -8763,7 +8763,7 @@ static void CorkscrewRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -8781,7 +8781,7 @@ static void CorkscrewRCTrackDiagFlatToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -8803,7 +8803,7 @@ static void CorkscrewRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -8836,7 +8836,7 @@ static void CorkscrewRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -8865,7 +8865,7 @@ static void CorkscrewRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -8886,7 +8886,7 @@ static void CorkscrewRCTrackDiagLeftBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -8905,7 +8905,7 @@ static void CorkscrewRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -8938,7 +8938,7 @@ static void CorkscrewRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -8967,7 +8967,7 @@ static void CorkscrewRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -8985,7 +8985,7 @@ static void CorkscrewRCTrackDiagRightBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -9007,7 +9007,7 @@ static void CorkscrewRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -9040,7 +9040,7 @@ static void CorkscrewRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -9069,7 +9069,7 @@ static void CorkscrewRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9090,7 +9090,7 @@ static void CorkscrewRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9109,7 +9109,7 @@ static void CorkscrewRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9142,7 +9142,7 @@ static void CorkscrewRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9171,7 +9171,7 @@ static void CorkscrewRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9189,7 +9189,7 @@ static void CorkscrewRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9211,7 +9211,7 @@ static void CorkscrewRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9244,7 +9244,7 @@ static void CorkscrewRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9273,7 +9273,7 @@ static void CorkscrewRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -9294,7 +9294,7 @@ static void CorkscrewRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -9313,7 +9313,7 @@ static void CorkscrewRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -9346,7 +9346,7 @@ static void CorkscrewRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -9375,7 +9375,7 @@ static void CorkscrewRCTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -9393,7 +9393,7 @@ static void CorkscrewRCTrackDiag25DegUpToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -9415,7 +9415,7 @@ static void CorkscrewRCTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -9448,7 +9448,7 @@ static void CorkscrewRCTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -9550,7 +9550,7 @@ static void CorkscrewRCTrackDiagLeftBankTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A8158 */
@@ -9650,7 +9650,7 @@ static void CorkscrewRCTrackDiagRightBankTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A8168 */
@@ -9677,7 +9677,7 @@ static void CorkscrewRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9698,7 +9698,7 @@ static void CorkscrewRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9717,7 +9717,7 @@ static void CorkscrewRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9750,7 +9750,7 @@ static void CorkscrewRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9779,7 +9779,7 @@ static void CorkscrewRCTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9797,7 +9797,7 @@ static void CorkscrewRCTrackDiag25DegDownToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9819,7 +9819,7 @@ static void CorkscrewRCTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9852,7 +9852,7 @@ static void CorkscrewRCTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9881,7 +9881,7 @@ static void CorkscrewRCTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -9899,7 +9899,7 @@ static void CorkscrewRCTrackDiagLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -9918,7 +9918,7 @@ static void CorkscrewRCTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -9951,7 +9951,7 @@ static void CorkscrewRCTrackDiagLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -9980,7 +9980,7 @@ static void CorkscrewRCTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -9998,7 +9998,7 @@ static void CorkscrewRCTrackDiagRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -10017,7 +10017,7 @@ static void CorkscrewRCTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 3:
             switch (direction)
@@ -10050,7 +10050,7 @@ static void CorkscrewRCTrackDiagRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -10067,7 +10067,7 @@ static void CorkscrewRCTrackBlockBrakes(
     MetalASupportsPaintSetup(session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void CorkscrewRCTrackBooster(
@@ -10113,7 +10113,7 @@ static void CorkscrewRCTrackBooster(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void CorkscrewRCTrackLeftTwistDownToUp(
@@ -10156,7 +10156,7 @@ static void CorkscrewRCTrackLeftTwistDownToUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -10186,7 +10186,7 @@ static void CorkscrewRCTrackLeftTwistDownToUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -10228,7 +10228,7 @@ static void CorkscrewRCTrackLeftTwistDownToUp(
                     PaintUtilPushTunnelLeft(session, height - 26, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -10273,7 +10273,7 @@ static void CorkscrewRCTrackRightTwistDownToUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -10303,7 +10303,7 @@ static void CorkscrewRCTrackRightTwistDownToUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -10345,7 +10345,7 @@ static void CorkscrewRCTrackRightTwistDownToUp(
                     PaintUtilPushTunnelLeft(session, height - 26, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -10391,7 +10391,7 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -10421,7 +10421,7 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -10462,7 +10462,7 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -10508,7 +10508,7 @@ static void CorkscrewRCTrackRightTwistUpToDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -10538,7 +10538,7 @@ static void CorkscrewRCTrackRightTwistUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -10579,7 +10579,7 @@ static void CorkscrewRCTrackRightTwistUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -10625,7 +10625,7 @@ static void LayDownRCTrackLeftFlyerTwistUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -10656,7 +10656,7 @@ static void LayDownRCTrackLeftFlyerTwistUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -10700,7 +10700,7 @@ static void LayDownRCTrackLeftFlyerTwistUp(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -10746,7 +10746,7 @@ static void LayDownRCTrackRightFlyerTwistUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -10776,7 +10776,7 @@ static void LayDownRCTrackRightFlyerTwistUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
             switch (direction)
@@ -10819,7 +10819,7 @@ static void LayDownRCTrackRightFlyerTwistUp(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -10859,7 +10859,7 @@ static void LayDownRCTrackFlyerHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -10897,7 +10897,7 @@ static void LayDownRCTrackFlyerHalfLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -10929,7 +10929,7 @@ static void LayDownRCTrackFlyerHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -10957,7 +10957,7 @@ static void LayDownRCTrackFlyerHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -11023,7 +11023,7 @@ static void LayDownRCTrackLeftFlyerCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -11050,7 +11050,7 @@ static void LayDownRCTrackLeftFlyerCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11097,7 +11097,7 @@ static void LayDownRCTrackLeftFlyerCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -11147,7 +11147,7 @@ static void LayDownRCTrackRightFlyerCorkscrewUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -11174,7 +11174,7 @@ static void LayDownRCTrackRightFlyerCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11221,7 +11221,7 @@ static void LayDownRCTrackRightFlyerCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }

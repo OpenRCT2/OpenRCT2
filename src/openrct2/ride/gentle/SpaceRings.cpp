@@ -181,7 +181,7 @@ static void PaintSpaceRings(
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /**

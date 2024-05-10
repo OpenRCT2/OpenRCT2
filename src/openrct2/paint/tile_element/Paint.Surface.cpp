@@ -28,6 +28,7 @@
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "Paint.TileElement.h"
@@ -384,8 +385,8 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, uint8_t type,
 static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& surfaceElement, int32_t rotation)
 {
     const uint8_t slope = surfaceElement.GetSlope();
-    const uint8_t slopeHeight = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-    uint16_t slopeCorners = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
+    const uint8_t slopeHeight = slope & kTileSlopeDiagonalFlag;
+    uint16_t slopeCorners = (slope & kTileSlopeRaisedCornersMask) << rotation;
     slopeCorners = ((slopeCorners >> 4) | slopeCorners) & 0x0F;
     return slopeHeight | slopeCorners;
 }
@@ -865,14 +866,14 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
         {
             localHeight += LAND_HEIGHT_STEP;
 
-            if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileElementSurfaceDiagonalFlag)))
+            if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileSlopeDiagonalFlag)))
             {
                 localHeight = waterHeight;
-                localSurfaceShape = TILE_ELEMENT_SLOPE_FLAT;
+                localSurfaceShape = kTileSlopeFlat;
             }
             else
             {
-                localSurfaceShape = Numerics::ror4(surfaceShape ^ static_cast<int8_t>(kTileElementSurfaceRaisedCornersMask), 2);
+                localSurfaceShape = Numerics::ror4(surfaceShape ^ static_cast<int8_t>(kTileSlopeRaisedCornersMask), 2);
             }
         }
     }

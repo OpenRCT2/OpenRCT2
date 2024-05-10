@@ -27,10 +27,10 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 #include "../VirtualFloor.h"
-#include "../support/WoodenSupports.h"
 #include "Paint.Surface.h"
 #include "Segment.h"
 
@@ -357,14 +357,14 @@ void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
     session.VerticalTunnelHeight = height / 16;
 }
 
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
 {
     if (session.Support.height >= height)
     {
         return;
     }
 
-    PaintUtilForceSetGeneralSupportHeight(session, height, slope);
+    PaintUtilForceSetGeneralSupportHeight(session, height, kTileSlopeAboveTrackOrScenery);
 }
 
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)

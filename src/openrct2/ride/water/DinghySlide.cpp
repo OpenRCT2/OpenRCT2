@@ -244,7 +244,7 @@ static void DinghySlideTrackFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackStation(
@@ -272,7 +272,7 @@ static void DinghySlideTrackStation(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrack25DegUp(
@@ -321,7 +321,7 @@ static void DinghySlideTrack25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void DinghySlideTrack60DegUp(
@@ -361,7 +361,7 @@ static void DinghySlideTrack60DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 static void DinghySlideTrackFlatTo25DegUp(
@@ -410,7 +410,7 @@ static void DinghySlideTrackFlatTo25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 static void DinghySlideTrack25DegUpTo60DegUp(
@@ -450,7 +450,7 @@ static void DinghySlideTrack25DegUpTo60DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void DinghySlideTrack60DegUpTo25DegUp(
@@ -490,7 +490,7 @@ static void DinghySlideTrack60DegUpTo25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void DinghySlideTrack25DegUpToFlat(
@@ -539,7 +539,7 @@ static void DinghySlideTrack25DegUpToFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void DinghySlideTrack25DegDown(
@@ -724,7 +724,7 @@ static void DinghySlideTrackRightQuarterTurn5(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackLeftQuarterTurn5(
@@ -866,7 +866,7 @@ static void DinghySlideTrackSBendLeft(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackSBendRight(
@@ -993,7 +993,7 @@ static void DinghySlideTrackSBendRight(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackRightQuarterTurn3(
@@ -1076,7 +1076,7 @@ static void DinghySlideTrackRightQuarterTurn3(
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackLeftQuarterTurn3(

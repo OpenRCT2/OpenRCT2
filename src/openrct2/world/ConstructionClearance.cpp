@@ -18,6 +18,7 @@
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../world/tile_element/Slope.h"
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
@@ -202,8 +203,8 @@ GameActions::Result MapCanConstructWithClearAt(
         }
 
         // Only allow building crossings directly on a flat surface tile.
-        if (tileElement->GetType() == TileElementType::Surface
-            && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT && tileElement->GetBaseZ() == pos.baseZ)
+        if (tileElement->GetType() == TileElementType::Surface && (tileElement->AsSurface()->GetSlope()) == kTileSlopeFlat
+            && tileElement->GetBaseZ() == pos.baseZ)
         {
             canBuildCrossing = true;
         }
@@ -223,28 +224,28 @@ GameActions::Result MapCanConstructWithClearAt(
                 auto southZ = northZ;
                 auto westZ = northZ;
                 const auto slope = tileElement->AsSurface()->GetSlope();
-                if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
+                if (slope & kTileSlopeNCornerUp)
                 {
                     northZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeSCornerDown | kTileSlopeDiagonalFlag))
                         northZ += LAND_HEIGHT_STEP;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP)
+                if (slope & kTileSlopeECornerUp)
                 {
                     eastZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_W_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeWCornerDown | kTileSlopeDiagonalFlag))
                         eastZ += LAND_HEIGHT_STEP;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
+                if (slope & kTileSlopeSCornerUp)
                 {
                     southZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeNCornerDown | kTileSlopeDiagonalFlag))
                         southZ += LAND_HEIGHT_STEP;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
+                if (slope & kTileSlopeWCornerUp)
                 {
                     westZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
                         westZ += LAND_HEIGHT_STEP;
                 }
                 const auto baseHeight = pos.baseZ + (4 * COORDS_Z_STEP);

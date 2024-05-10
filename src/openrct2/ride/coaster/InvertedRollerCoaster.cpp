@@ -82,7 +82,7 @@ static void InvertedRCTrackFlat(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A9558, 0x008A9568, 0x008A9578 */
@@ -110,7 +110,7 @@ static void InvertedRCTrackStation(
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A92F8 */
@@ -205,7 +205,7 @@ static void InvertedRCTrack25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9308 */
@@ -245,7 +245,7 @@ static void InvertedRCTrack60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_INVERTED_5);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 120);
 }
 
 /** rct2: 0x008A9318 */
@@ -340,7 +340,7 @@ static void InvertedRCTrackFlatTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A9328 */
@@ -386,7 +386,7 @@ static void InvertedRCTrack25DegUpTo60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_INVERTED_5);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 88);
 }
 
 /** rct2: 0x008A9338 */
@@ -458,7 +458,7 @@ static void InvertedRCTrack60DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 88);
 }
 
 /** rct2: 0x008A9348 */
@@ -553,7 +553,7 @@ static void InvertedRCTrack25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_13);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A9358 */
@@ -651,10 +651,10 @@ static void InvertedRCTrackLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -686,7 +686,7 @@ static void InvertedRCTrackLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -719,10 +719,10 @@ static void InvertedRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
@@ -754,7 +754,7 @@ static void InvertedRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -801,7 +801,7 @@ static void InvertedRCTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -859,7 +859,7 @@ static void InvertedRCTrackFlatToLeftBank(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A93E8 */
@@ -906,7 +906,7 @@ static void InvertedRCTrackFlatToRightBank(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A93F8 */
@@ -953,7 +953,7 @@ static void InvertedRCTrackLeftBankToFlat(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A9408 */
@@ -1000,7 +1000,7 @@ static void InvertedRCTrackRightBankToFlat(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A9418 */
@@ -1050,10 +1050,10 @@ static void InvertedRCTrackBankedLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -1085,7 +1085,7 @@ static void InvertedRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -1118,10 +1118,10 @@ static void InvertedRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
@@ -1153,7 +1153,7 @@ static void InvertedRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -1200,7 +1200,7 @@ static void InvertedRCTrackBankedLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -1284,7 +1284,7 @@ static void InvertedRCTrackLeftBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A9448 */
@@ -1357,7 +1357,7 @@ static void InvertedRCTrackRightBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A9458 */
@@ -1430,7 +1430,7 @@ static void InvertedRCTrack25DegUpToLeftBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_13);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A9468 */
@@ -1503,7 +1503,7 @@ static void InvertedRCTrack25DegUpToRightBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_13);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A9478 */
@@ -1582,7 +1582,7 @@ static void InvertedRCTrackLeftBank(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A94C8 */
@@ -1636,10 +1636,10 @@ static void InvertedRCTrackLeftQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -1669,7 +1669,7 @@ static void InvertedRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -1699,10 +1699,10 @@ static void InvertedRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 5:
             switch (direction)
@@ -1732,7 +1732,7 @@ static void InvertedRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 6:
             switch (direction)
@@ -1775,7 +1775,7 @@ static void InvertedRCTrackLeftQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -1823,10 +1823,10 @@ static void InvertedRCTrackRightQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -1856,7 +1856,7 @@ static void InvertedRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -1885,10 +1885,10 @@ static void InvertedRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 5:
             switch (direction)
@@ -1918,7 +1918,7 @@ static void InvertedRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 6:
             switch (direction)
@@ -1961,7 +1961,7 @@ static void InvertedRCTrackRightQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -2031,7 +2031,7 @@ static void InvertedRCTrackSBendLeft(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -2078,7 +2078,7 @@ static void InvertedRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -2125,7 +2125,7 @@ static void InvertedRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -2172,7 +2172,7 @@ static void InvertedRCTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -2224,7 +2224,7 @@ static void InvertedRCTrackSBendRight(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -2271,7 +2271,7 @@ static void InvertedRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -2318,7 +2318,7 @@ static void InvertedRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -2365,7 +2365,7 @@ static void InvertedRCTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -2439,7 +2439,7 @@ static void InvertedRCTrackLeftVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -2466,7 +2466,7 @@ static void InvertedRCTrackLeftVerticalLoop(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -2500,7 +2500,7 @@ static void InvertedRCTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -2534,13 +2534,13 @@ static void InvertedRCTrackLeftVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 6:
             switch (direction)
@@ -2574,7 +2574,7 @@ static void InvertedRCTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 7:
             switch (direction)
@@ -2608,7 +2608,7 @@ static void InvertedRCTrackLeftVerticalLoop(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -2635,7 +2635,7 @@ static void InvertedRCTrackLeftVerticalLoop(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 9:
             switch (direction)
@@ -2704,7 +2704,7 @@ static void InvertedRCTrackLeftVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_INVERTED_4);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -2778,7 +2778,7 @@ static void InvertedRCTrackRightVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -2805,7 +2805,7 @@ static void InvertedRCTrackRightVerticalLoop(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -2839,7 +2839,7 @@ static void InvertedRCTrackRightVerticalLoop(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -2873,13 +2873,13 @@ static void InvertedRCTrackRightVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 6:
             switch (direction)
@@ -2913,7 +2913,7 @@ static void InvertedRCTrackRightVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 7:
             switch (direction)
@@ -2946,7 +2946,7 @@ static void InvertedRCTrackRightVerticalLoop(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -2973,7 +2973,7 @@ static void InvertedRCTrackRightVerticalLoop(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 9:
             switch (direction)
@@ -3042,7 +3042,7 @@ static void InvertedRCTrackRightVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_INVERTED_4);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3094,10 +3094,10 @@ static void InvertedRCTrackLeftQuarterTurn3(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -3130,7 +3130,7 @@ static void InvertedRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -3177,7 +3177,7 @@ static void InvertedRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3238,10 +3238,10 @@ static void InvertedRCTrackLeftQuarterTurn3Bank(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -3275,7 +3275,7 @@ static void InvertedRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -3322,7 +3322,7 @@ static void InvertedRCTrackLeftQuarterTurn3Bank(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3379,13 +3379,13 @@ static void InvertedRCTrackLeftQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -3428,7 +3428,7 @@ static void InvertedRCTrackLeftQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -3476,13 +3476,13 @@ static void InvertedRCTrackRightQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -3525,7 +3525,7 @@ static void InvertedRCTrackRightQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -3591,7 +3591,7 @@ static void InvertedRCTrackLeftTwistDownToUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -3621,7 +3621,7 @@ static void InvertedRCTrackLeftTwistDownToUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -3662,7 +3662,7 @@ static void InvertedRCTrackLeftTwistDownToUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3710,7 +3710,7 @@ static void InvertedRCTrackRightTwistDownToUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -3740,7 +3740,7 @@ static void InvertedRCTrackRightTwistDownToUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -3781,7 +3781,7 @@ static void InvertedRCTrackRightTwistDownToUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3827,7 +3827,7 @@ static void InvertedRCTrackLeftTwistUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -3857,7 +3857,7 @@ static void InvertedRCTrackLeftTwistUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -3900,7 +3900,7 @@ static void InvertedRCTrackLeftTwistUpToDown(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3946,7 +3946,7 @@ static void InvertedRCTrackRightTwistUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -3976,7 +3976,7 @@ static void InvertedRCTrackRightTwistUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -4019,7 +4019,7 @@ static void InvertedRCTrackRightTwistUpToDown(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -4086,7 +4086,7 @@ static void InvertedRCTrackHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -4113,7 +4113,7 @@ static void InvertedRCTrackHalfLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -4147,7 +4147,7 @@ static void InvertedRCTrackHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -4179,7 +4179,7 @@ static void InvertedRCTrackHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -4239,7 +4239,7 @@ static void InvertedRCTrackLeftCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -4266,7 +4266,7 @@ static void InvertedRCTrackLeftCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -4311,7 +4311,7 @@ static void InvertedRCTrackLeftCorkscrewUp(
                         PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -4363,7 +4363,7 @@ static void InvertedRCTrackRightCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -4390,7 +4390,7 @@ static void InvertedRCTrackRightCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -4435,7 +4435,7 @@ static void InvertedRCTrackRightCorkscrewUp(
                         PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -4498,7 +4498,7 @@ static void InvertedRCTrackLeftQuarterTurn160DegUp(
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_INVERTED_4, +56, TUNNEL_INVERTED_5);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008A96B8 */
@@ -4543,7 +4543,7 @@ static void InvertedRCTrackRightQuarterTurn160DegUp(
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_INVERTED_4, +56, TUNNEL_INVERTED_5);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008A96C8 */
@@ -4591,7 +4591,7 @@ static void InvertedRCTrackBrakes(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A96F8 */
@@ -4641,10 +4641,10 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -4678,7 +4678,7 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -4712,10 +4712,10 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
@@ -4749,7 +4749,7 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -4796,7 +4796,7 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeUp(
                     PaintUtilPushTunnelLeft(session, height + 16, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -4848,10 +4848,10 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -4885,7 +4885,7 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -4918,10 +4918,10 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
@@ -4955,7 +4955,7 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -5002,7 +5002,7 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeUp(
                     PaintUtilPushTunnelLeft(session, height + 16, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5054,10 +5054,10 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -5091,7 +5091,7 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -5125,10 +5125,10 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
@@ -5162,7 +5162,7 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -5209,7 +5209,7 @@ static void InvertedRCTrackLeftQuarterBankedHelixLargeDown(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5261,10 +5261,10 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -5298,7 +5298,7 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -5331,10 +5331,10 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
@@ -5368,7 +5368,7 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -5415,7 +5415,7 @@ static void InvertedRCTrackRightQuarterBankedHelixLargeDown(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5483,7 +5483,7 @@ static void InvertedRCTrack25DegUpLeftBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9A48 */
@@ -5549,7 +5549,7 @@ static void InvertedRCTrack25DegUpRightBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9738 */
@@ -5585,7 +5585,7 @@ static void InvertedRCTrackOnRidePhoto(
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A9A58 */
@@ -5645,7 +5645,7 @@ static void InvertedRCTrackLeftEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -5679,7 +5679,7 @@ static void InvertedRCTrackLeftEighthToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -5713,7 +5713,7 @@ static void InvertedRCTrackLeftEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5724,7 +5724,7 @@ static void InvertedRCTrackLeftEighthToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
@@ -5782,7 +5782,7 @@ static void InvertedRCTrackLeftEighthToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5828,7 +5828,7 @@ static void InvertedRCTrackRightEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -5862,7 +5862,7 @@ static void InvertedRCTrackRightEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -5896,7 +5896,7 @@ static void InvertedRCTrackRightEighthToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5907,7 +5907,7 @@ static void InvertedRCTrackRightEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
@@ -5965,7 +5965,7 @@ static void InvertedRCTrackRightEighthToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6035,7 +6035,7 @@ static void InvertedRCTrackLeftEighthBankToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -6069,7 +6069,7 @@ static void InvertedRCTrackLeftEighthBankToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -6103,7 +6103,7 @@ static void InvertedRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -6114,7 +6114,7 @@ static void InvertedRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
@@ -6172,7 +6172,7 @@ static void InvertedRCTrackLeftEighthBankToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6224,7 +6224,7 @@ static void InvertedRCTrackRightEighthBankToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -6258,7 +6258,7 @@ static void InvertedRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -6292,7 +6292,7 @@ static void InvertedRCTrackRightEighthBankToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -6303,7 +6303,7 @@ static void InvertedRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
@@ -6361,7 +6361,7 @@ static void InvertedRCTrackRightEighthBankToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6398,7 +6398,7 @@ inline void InvertedRCTrackDiagFlatBase(
         MetalASupportsPaintSetup(
             session, MetalSupportType::Boxed, kDiagSupportPlacement[direction], 0, height + 44, session.SupportColours);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A9788 */
@@ -6455,7 +6455,7 @@ static void InvertedRCTrackDiag25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6487,7 +6487,7 @@ static void InvertedRCTrackDiag25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6520,7 +6520,7 @@ static void InvertedRCTrackDiag25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6577,7 +6577,7 @@ static void InvertedRCTrackDiag25DegUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -6606,7 +6606,7 @@ static void InvertedRCTrackDiag60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 1:
             switch (direction)
@@ -6624,7 +6624,7 @@ static void InvertedRCTrackDiag60DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 2:
             switch (direction)
@@ -6643,7 +6643,7 @@ static void InvertedRCTrackDiag60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 3:
             switch (direction)
@@ -6687,7 +6687,7 @@ static void InvertedRCTrackDiag60DegUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
     }
 }
@@ -6730,7 +6730,7 @@ static void InvertedRCTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6762,7 +6762,7 @@ static void InvertedRCTrackDiagFlatTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6795,7 +6795,7 @@ static void InvertedRCTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6852,7 +6852,7 @@ static void InvertedRCTrackDiagFlatTo25DegUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -6881,7 +6881,7 @@ static void InvertedRCTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -6899,7 +6899,7 @@ static void InvertedRCTrackDiag25DegUpTo60DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -6918,7 +6918,7 @@ static void InvertedRCTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -6962,7 +6962,7 @@ static void InvertedRCTrackDiag25DegUpTo60DegUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -6991,7 +6991,7 @@ static void InvertedRCTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -7009,7 +7009,7 @@ static void InvertedRCTrackDiag60DegUpTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -7028,7 +7028,7 @@ static void InvertedRCTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -7072,7 +7072,7 @@ static void InvertedRCTrackDiag60DegUpTo25DegUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -7115,7 +7115,7 @@ static void InvertedRCTrackDiag25DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7147,7 +7147,7 @@ static void InvertedRCTrackDiag25DegUpToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7180,7 +7180,7 @@ static void InvertedRCTrackDiag25DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7237,7 +7237,7 @@ static void InvertedRCTrackDiag25DegUpToFlat(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7280,7 +7280,7 @@ static void InvertedRCTrackDiag25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7312,7 +7312,7 @@ static void InvertedRCTrackDiag25DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7345,7 +7345,7 @@ static void InvertedRCTrackDiag25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7402,7 +7402,7 @@ static void InvertedRCTrackDiag25DegDown(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7431,7 +7431,7 @@ static void InvertedRCTrackDiag60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 1:
             switch (direction)
@@ -7449,7 +7449,7 @@ static void InvertedRCTrackDiag60DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 2:
             switch (direction)
@@ -7468,7 +7468,7 @@ static void InvertedRCTrackDiag60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 3:
             switch (direction)
@@ -7512,7 +7512,7 @@ static void InvertedRCTrackDiag60DegDown(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 120, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 120);
             break;
     }
 }
@@ -7676,7 +7676,7 @@ static void InvertedRCTrackDiagFlatTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9828 */
@@ -7703,7 +7703,7 @@ static void InvertedRCTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -7721,7 +7721,7 @@ static void InvertedRCTrackDiag25DegDownTo60DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -7740,7 +7740,7 @@ static void InvertedRCTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -7784,7 +7784,7 @@ static void InvertedRCTrackDiag25DegDownTo60DegDown(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -7813,7 +7813,7 @@ static void InvertedRCTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -7831,7 +7831,7 @@ static void InvertedRCTrackDiag60DegDownTo25DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -7850,7 +7850,7 @@ static void InvertedRCTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -7893,7 +7893,7 @@ static void InvertedRCTrackDiag60DegDownTo25DegDown(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -7936,7 +7936,7 @@ static void InvertedRCTrackDiag25DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7968,7 +7968,7 @@ static void InvertedRCTrackDiag25DegDownToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8001,7 +8001,7 @@ static void InvertedRCTrackDiag25DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8058,7 +8058,7 @@ static void InvertedRCTrackDiag25DegDownToFlat(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8087,7 +8087,7 @@ static void InvertedRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -8105,7 +8105,7 @@ static void InvertedRCTrackDiagFlatToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -8124,7 +8124,7 @@ static void InvertedRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -8167,7 +8167,7 @@ static void InvertedRCTrackDiagFlatToLeftBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8196,7 +8196,7 @@ static void InvertedRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -8214,7 +8214,7 @@ static void InvertedRCTrackDiagFlatToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -8233,7 +8233,7 @@ static void InvertedRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -8276,7 +8276,7 @@ static void InvertedRCTrackDiagFlatToRightBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8305,7 +8305,7 @@ static void InvertedRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -8323,7 +8323,7 @@ static void InvertedRCTrackDiagLeftBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -8342,7 +8342,7 @@ static void InvertedRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -8385,7 +8385,7 @@ static void InvertedRCTrackDiagLeftBankToFlat(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8414,7 +8414,7 @@ static void InvertedRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -8432,7 +8432,7 @@ static void InvertedRCTrackDiagRightBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -8451,7 +8451,7 @@ static void InvertedRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -8494,7 +8494,7 @@ static void InvertedRCTrackDiagRightBankToFlat(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8523,7 +8523,7 @@ static void InvertedRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -8541,7 +8541,7 @@ static void InvertedRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -8560,7 +8560,7 @@ static void InvertedRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -8603,7 +8603,7 @@ static void InvertedRCTrackDiagLeftBankTo25DegUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8632,7 +8632,7 @@ static void InvertedRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -8650,7 +8650,7 @@ static void InvertedRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -8669,7 +8669,7 @@ static void InvertedRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -8712,7 +8712,7 @@ static void InvertedRCTrackDiagRightBankTo25DegUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8741,7 +8741,7 @@ static void InvertedRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -8759,7 +8759,7 @@ static void InvertedRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -8778,7 +8778,7 @@ static void InvertedRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -8821,7 +8821,7 @@ static void InvertedRCTrackDiag25DegUpToLeftBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8850,7 +8850,7 @@ static void InvertedRCTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -8868,7 +8868,7 @@ static void InvertedRCTrackDiag25DegUpToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -8887,7 +8887,7 @@ static void InvertedRCTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -8930,7 +8930,7 @@ static void InvertedRCTrackDiag25DegUpToRightBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -9038,7 +9038,7 @@ static void InvertedRCTrackDiagLeftBankTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9908 */
@@ -9144,7 +9144,7 @@ static void InvertedRCTrackDiagRightBankTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9918 */
@@ -9171,7 +9171,7 @@ static void InvertedRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -9189,7 +9189,7 @@ static void InvertedRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -9208,7 +9208,7 @@ static void InvertedRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -9251,7 +9251,7 @@ static void InvertedRCTrackDiag25DegDownToLeftBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -9280,7 +9280,7 @@ static void InvertedRCTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -9298,7 +9298,7 @@ static void InvertedRCTrackDiag25DegDownToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -9317,7 +9317,7 @@ static void InvertedRCTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -9360,7 +9360,7 @@ static void InvertedRCTrackDiag25DegDownToRightBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -9389,7 +9389,7 @@ static void InvertedRCTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9407,7 +9407,7 @@ static void InvertedRCTrackDiagLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9426,7 +9426,7 @@ static void InvertedRCTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9469,7 +9469,7 @@ static void InvertedRCTrackDiagLeftBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9498,7 +9498,7 @@ static void InvertedRCTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9516,7 +9516,7 @@ static void InvertedRCTrackDiagRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9535,7 +9535,7 @@ static void InvertedRCTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9578,7 +9578,7 @@ static void InvertedRCTrackDiagRightBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9620,7 +9620,7 @@ static void InvertedRCTrackLeftLargeHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -9648,7 +9648,7 @@ static void InvertedRCTrackLeftLargeHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -9682,7 +9682,7 @@ static void InvertedRCTrackLeftLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -9716,7 +9716,7 @@ static void InvertedRCTrackLeftLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -9750,7 +9750,7 @@ static void InvertedRCTrackLeftLargeHalfLoopUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -9784,7 +9784,7 @@ static void InvertedRCTrackLeftLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -9830,7 +9830,7 @@ static void InvertedRCTrackLeftLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -9872,7 +9872,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -9900,7 +9900,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -9934,7 +9934,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -9968,7 +9968,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -10002,7 +10002,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -10036,7 +10036,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -10082,7 +10082,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -10132,7 +10132,7 @@ static void InvertedRCTrackBlockBrakes(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008A9A78 */
@@ -10178,13 +10178,13 @@ static void InvertedRCTrackLeftBankedQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -10227,7 +10227,7 @@ static void InvertedRCTrackLeftBankedQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -10275,13 +10275,13 @@ static void InvertedRCTrackRightBankedQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -10324,7 +10324,7 @@ static void InvertedRCTrackRightBankedQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -10390,10 +10390,10 @@ static void InvertedRCTrackLeftBankedQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -10423,7 +10423,7 @@ static void InvertedRCTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -10453,10 +10453,10 @@ static void InvertedRCTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 5:
             switch (direction)
@@ -10486,7 +10486,7 @@ static void InvertedRCTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 6:
             switch (direction)
@@ -10529,7 +10529,7 @@ static void InvertedRCTrackLeftBankedQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -10577,10 +10577,10 @@ static void InvertedRCTrackRightBankedQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
@@ -10610,7 +10610,7 @@ static void InvertedRCTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -10639,10 +10639,10 @@ static void InvertedRCTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 5:
             switch (direction)
@@ -10672,7 +10672,7 @@ static void InvertedRCTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 6:
             switch (direction)
@@ -10715,7 +10715,7 @@ static void InvertedRCTrackRightBankedQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_INVERTED_5);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -10801,7 +10801,7 @@ static void InvertedRCTrack25DegUpToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9AC8 */
@@ -10867,7 +10867,7 @@ static void InvertedRCTrack25DegUpToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9AD8 */
@@ -10933,7 +10933,7 @@ static void InvertedRCTrackLeftBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9AE8 */
@@ -10999,7 +10999,7 @@ static void InvertedRCTrackRightBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008A9AF8 */
@@ -11097,7 +11097,7 @@ static void InvertedRCTrackLeftBankedFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A9B48 */
@@ -11163,7 +11163,7 @@ static void InvertedRCTrackRightBankedFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A9B58 */
@@ -11229,7 +11229,7 @@ static void InvertedRCTrackLeftBanked25DegUpToLeftBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_13);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A9B68 */
@@ -11295,7 +11295,7 @@ static void InvertedRCTrackRightBanked25DegUpToRightBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_13);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A9B78 */
@@ -11393,7 +11393,7 @@ static void InvertedRCTrackFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A99C8 */
@@ -11459,7 +11459,7 @@ static void InvertedRCTrackFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_5);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008A99D8 */
@@ -11525,7 +11525,7 @@ static void InvertedRCTrackLeftBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_13);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A99E8 */
@@ -11591,7 +11591,7 @@ static void InvertedRCTrackRightBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_13);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008A99F8 */
@@ -11645,7 +11645,7 @@ static void InvertedRCTrackBooster(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedRC(int32_t trackType)

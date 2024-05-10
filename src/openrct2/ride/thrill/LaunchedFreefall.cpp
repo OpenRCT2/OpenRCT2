@@ -168,7 +168,7 @@ static void PaintLaunchedFreefallBase(
     }
     PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~blockedSegments, height + 2, 0x20);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x006FD208 */
@@ -194,7 +194,7 @@ static void PaintLaunchedFreefallTowerSection(
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     PaintUtilSetVerticalTunnel(session, height + 32);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /**

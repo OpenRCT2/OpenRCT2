@@ -40,6 +40,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
+#include <openrct2/world/tile_element/Slope.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -2177,7 +2178,7 @@ static uint64_t PageDisabledWidgets[] = {
                         WIDX_SURFACE_CHECK_CORNER_W,
                         tileElement->AsSurface()->GetSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     SetCheckboxValue(
-                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
+                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag);
                     break;
 
                 case TileElementType::Path:

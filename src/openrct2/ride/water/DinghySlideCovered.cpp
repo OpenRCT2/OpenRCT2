@@ -200,7 +200,7 @@ static void DinghySlideTrackCoveredFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackCovered25DegUp(
@@ -240,7 +240,7 @@ static void DinghySlideTrackCovered25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void DinghySlideTrackCovered60DegUp(
@@ -280,7 +280,7 @@ static void DinghySlideTrackCovered60DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 static void DinghySlideTrackCoveredFlatTo25DegUp(
@@ -320,7 +320,7 @@ static void DinghySlideTrackCoveredFlatTo25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 static void DinghySlideTrackCovered25DegUpTo60DegUp(
@@ -360,7 +360,7 @@ static void DinghySlideTrackCovered25DegUpTo60DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void DinghySlideTrackCovered60DegUpTo25DegUp(
@@ -400,7 +400,7 @@ static void DinghySlideTrackCovered60DegUpTo25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void DinghySlideTrackCovered25DegUpToFlat(
@@ -440,7 +440,7 @@ static void DinghySlideTrackCovered25DegUpToFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void DinghySlideTrackCovered25DegDown(
@@ -625,7 +625,7 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackCoveredLeftQuarterTurn5(
@@ -760,7 +760,7 @@ static void DinghySlideTrackCoveredSBendLeft(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackCoveredSBendRight(
@@ -887,7 +887,7 @@ static void DinghySlideTrackCoveredSBendRight(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackCoveredRightQuarterTurn3(
@@ -970,7 +970,7 @@ static void DinghySlideTrackCoveredRightQuarterTurn3(
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void DinghySlideTrackCoveredLeftQuarterTurn3(

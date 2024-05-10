@@ -89,7 +89,7 @@ namespace SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void TrackStation(
@@ -122,7 +122,7 @@ namespace SingleRailRC
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void Track25DegUp(
@@ -201,7 +201,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track60DegUp(
@@ -280,7 +280,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
 
     static void TrackFlatTo25DegUp(
@@ -359,7 +359,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void Track25DegUpTo60DegUp(
@@ -450,7 +450,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 
     static void Track60DegUpTo25DegUp(
@@ -541,7 +541,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 
     static void Track25DegUpToFlat(
@@ -620,7 +620,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void Track25DegDown(
@@ -698,7 +698,7 @@ namespace SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 break;
@@ -754,7 +754,7 @@ namespace SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 break;
@@ -806,7 +806,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 80);
     }
 
     static void Track60DegDownTo90DegDown(
@@ -845,7 +845,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 1:
                 break;
@@ -896,10 +896,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -933,7 +933,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -978,7 +978,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1035,10 +1035,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1072,7 +1072,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -1106,10 +1106,10 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -1143,7 +1143,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -1188,7 +1188,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1239,7 +1239,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -1273,7 +1273,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1307,7 +1307,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -1318,7 +1318,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -1362,7 +1362,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1405,7 +1405,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -1439,7 +1439,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1473,7 +1473,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -1484,7 +1484,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -1528,7 +1528,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1588,7 +1588,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1623,7 +1623,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1658,7 +1658,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1729,7 +1729,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1757,7 +1757,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -1776,7 +1776,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1795,7 +1795,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -1830,7 +1830,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1859,7 +1859,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -1879,7 +1879,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -1899,7 +1899,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -1935,7 +1935,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -1979,7 +1979,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2014,7 +2014,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2049,7 +2049,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2120,7 +2120,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -2164,7 +2164,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2199,7 +2199,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2234,7 +2234,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2305,7 +2305,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -2349,7 +2349,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2384,7 +2384,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2419,7 +2419,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2490,7 +2490,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -2534,7 +2534,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2569,7 +2569,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2604,7 +2604,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2675,7 +2675,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -2860,7 +2860,7 @@ namespace SingleRailRC
                 break;
         }
 
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiag25DegDownToFlat(
@@ -2902,7 +2902,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2937,7 +2937,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2972,7 +2972,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3043,7 +3043,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -3087,7 +3087,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3122,7 +3122,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3157,7 +3157,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3228,7 +3228,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -3272,7 +3272,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3307,7 +3307,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3342,7 +3342,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3413,7 +3413,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -3457,7 +3457,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3492,7 +3492,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3527,7 +3527,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3598,7 +3598,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -3642,7 +3642,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3677,7 +3677,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3712,7 +3712,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3783,7 +3783,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -3827,7 +3827,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3862,7 +3862,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3897,7 +3897,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3968,7 +3968,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -4012,7 +4012,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -4047,7 +4047,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -4082,7 +4082,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -4153,7 +4153,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -4199,7 +4199,7 @@ namespace SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void TrackFlatToRightBank(
@@ -4243,7 +4243,7 @@ namespace SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void TrackLeftBankToFlat(
@@ -4308,7 +4308,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackRightBankTo25DegUp(
@@ -4359,7 +4359,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void Track25DegUpToLeftBank(
@@ -4410,7 +4410,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void Track25DegUpToRightBank(
@@ -4461,7 +4461,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackLeftBankTo25DegDown(
@@ -4527,7 +4527,7 @@ namespace SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void TrackRightBank(
@@ -4561,7 +4561,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -4585,7 +4585,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -4605,7 +4605,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -4641,7 +4641,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -4670,7 +4670,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -4690,7 +4690,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -4714,7 +4714,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -4750,7 +4750,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -4779,7 +4779,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -4803,7 +4803,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -4823,7 +4823,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -4859,7 +4859,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -4888,7 +4888,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -4908,7 +4908,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -4932,7 +4932,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -4968,7 +4968,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -4997,7 +4997,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -5021,7 +5021,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -5041,7 +5041,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -5077,7 +5077,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -5106,7 +5106,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -5126,7 +5126,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -5150,7 +5150,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -5186,7 +5186,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -5215,7 +5215,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -5239,7 +5239,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -5259,7 +5259,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -5295,7 +5295,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -5324,7 +5324,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -5344,7 +5344,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -5368,7 +5368,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -5404,7 +5404,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -5513,7 +5513,7 @@ namespace SingleRailRC
                 break;
         }
 
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiagRightBankTo25DegDown(
@@ -5620,7 +5620,7 @@ namespace SingleRailRC
                 break;
         }
 
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiag25DegDownToLeftBank(
@@ -5647,7 +5647,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -5671,7 +5671,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -5691,7 +5691,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -5727,7 +5727,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -5756,7 +5756,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -5776,7 +5776,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -5800,7 +5800,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -5836,7 +5836,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -5865,7 +5865,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -5885,7 +5885,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -5905,7 +5905,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -5941,7 +5941,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -5970,7 +5970,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -5990,7 +5990,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6010,7 +6010,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -6046,7 +6046,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6103,10 +6103,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6144,7 +6144,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -6197,7 +6197,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6262,10 +6262,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6303,7 +6303,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -6341,10 +6341,10 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -6382,7 +6382,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -6435,7 +6435,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6490,7 +6490,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -6528,7 +6528,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6566,7 +6566,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6577,7 +6577,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6625,7 +6625,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6672,7 +6672,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -6710,7 +6710,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -6748,7 +6748,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6759,7 +6759,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -6807,7 +6807,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -6876,13 +6876,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -6931,7 +6931,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -6984,13 +6984,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -7045,7 +7045,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -7114,10 +7114,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -7155,7 +7155,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -7193,10 +7193,10 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -7234,7 +7234,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -7283,7 +7283,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -7336,10 +7336,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -7377,7 +7377,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -7415,10 +7415,10 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -7456,7 +7456,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -7505,7 +7505,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -7567,7 +7567,7 @@ namespace SingleRailRC
         }
         TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
 
     static void TrackRightQuarterTurn160DegUp(
@@ -7611,7 +7611,7 @@ namespace SingleRailRC
         }
         TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
 
     static void TrackLeftQuarterTurn160DegDown(
@@ -7667,7 +7667,7 @@ namespace SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 break;
@@ -7713,7 +7713,7 @@ namespace SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 break;
@@ -7779,7 +7779,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track25DegUpToRightBanked25DegUp(
@@ -7827,7 +7827,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackLeftBanked25DegUpTo25DegUp(
@@ -7875,7 +7875,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackRightBanked25DegUpTo25DegUp(
@@ -7923,7 +7923,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackLeftBanked25DegDownTo25DegDown(
@@ -7996,7 +7996,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackRightBankedFlatToRightBanked25DegUp(
@@ -8041,7 +8041,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackLeftBanked25DegUpToLeftBankedFlat(
@@ -8086,7 +8086,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackRightBanked25DegUpToRightBankedFlat(
@@ -8131,7 +8131,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackLeftBankedFlatToLeftBanked25DegDown(
@@ -8204,7 +8204,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track25DegUpRightBanked(
@@ -8249,7 +8249,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track25DegDownLeftBanked(
@@ -8311,7 +8311,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackFlatToRightBanked25DegUp(
@@ -8359,7 +8359,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackLeftBanked25DegUpToFlat(
@@ -8407,7 +8407,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackRightBanked25DegUpToFlat(
@@ -8455,7 +8455,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackFlatToLeftBanked25DegDown(
@@ -8534,13 +8534,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -8589,7 +8589,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8642,13 +8642,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -8703,7 +8703,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8772,10 +8772,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -8813,7 +8813,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -8851,10 +8851,10 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -8892,7 +8892,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -8941,7 +8941,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8994,10 +8994,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -9035,7 +9035,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -9073,10 +9073,10 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -9114,7 +9114,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -9163,7 +9163,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -9228,7 +9228,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -9268,7 +9268,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -9308,7 +9308,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -9353,7 +9353,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -9402,7 +9402,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -9442,7 +9442,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -9482,7 +9482,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -9527,7 +9527,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -9579,10 +9579,10 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -9616,7 +9616,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -9664,7 +9664,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -9712,10 +9712,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -9749,7 +9749,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 7:
                 switch (direction)
@@ -9792,7 +9792,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -9844,10 +9844,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -9881,7 +9881,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -9929,7 +9929,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
                 switch (direction)
@@ -9977,10 +9977,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -10014,7 +10014,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 7:
                 switch (direction)
@@ -10057,7 +10057,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -10135,10 +10135,10 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -10172,7 +10172,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -10206,10 +10206,10 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -10243,7 +10243,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -10291,7 +10291,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 7:
                 switch (direction)
@@ -10339,10 +10339,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 8:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 9:
                 switch (direction)
@@ -10376,7 +10376,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 10:
                 switch (direction)
@@ -10410,10 +10410,10 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 11:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 12:
                 switch (direction)
@@ -10447,7 +10447,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 13:
                 switch (direction)
@@ -10490,7 +10490,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -10541,10 +10541,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 2:
                 switch (direction)
@@ -10578,7 +10578,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
                 switch (direction)
@@ -10612,10 +10612,10 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 5:
                 switch (direction)
@@ -10649,7 +10649,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 6:
                 switch (direction)
@@ -10703,7 +10703,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 7:
                 switch (direction)
@@ -10751,10 +10751,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 8:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 9:
                 switch (direction)
@@ -10788,7 +10788,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 10:
                 switch (direction)
@@ -10822,10 +10822,10 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 11:
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 12:
                 switch (direction)
@@ -10859,7 +10859,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 13:
                 switch (direction)
@@ -10908,7 +10908,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -11004,7 +11004,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11050,7 +11050,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -11105,7 +11105,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11175,7 +11175,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -11221,7 +11221,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -11276,7 +11276,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11333,7 +11333,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -11368,7 +11368,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -11402,7 +11402,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 168);
                 break;
             case 3:
                 switch (direction)
@@ -11434,7 +11434,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11473,7 +11473,7 @@ namespace SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void TrackOnRidePhoto(
@@ -11508,7 +11508,7 @@ namespace SingleRailRC
         TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackFlatTo60DegUpLongBase(
@@ -11552,7 +11552,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -11585,7 +11585,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -11618,7 +11618,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 switch (direction)
@@ -11660,7 +11660,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
         }
     }
@@ -11705,7 +11705,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 1:
                 switch (direction)
@@ -11738,7 +11738,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 2:
                 switch (direction)
@@ -11771,7 +11771,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -11813,7 +11813,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -11859,7 +11859,7 @@ namespace SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void TrackLeftCorkscrewUp(
@@ -11908,7 +11908,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -11935,7 +11935,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -11982,7 +11982,7 @@ namespace SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12031,7 +12031,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -12058,7 +12058,7 @@ namespace SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -12105,7 +12105,7 @@ namespace SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12170,7 +12170,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -12216,7 +12216,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -12250,10 +12250,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -12300,7 +12300,7 @@ namespace SingleRailRC
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 5:
                 switch (direction)
@@ -12344,7 +12344,7 @@ namespace SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12395,7 +12395,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -12441,7 +12441,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -12475,10 +12475,10 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -12524,7 +12524,7 @@ namespace SingleRailRC
                             session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 5:
                 switch (direction)
@@ -12568,7 +12568,7 @@ namespace SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12629,7 +12629,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -12666,7 +12666,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::topCorner),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -12714,7 +12714,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 3:
                 switch (direction)
@@ -12750,7 +12750,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 4:
                 switch (direction)
@@ -12792,7 +12792,7 @@ namespace SingleRailRC
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_0);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12841,7 +12841,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -12880,7 +12880,7 @@ namespace SingleRailRC
                             PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -12930,7 +12930,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 3:
                 switch (direction)
@@ -12969,7 +12969,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 4:
                 switch (direction)
@@ -13012,7 +13012,7 @@ namespace SingleRailRC
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_0);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -13082,7 +13082,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -13116,7 +13116,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -13167,7 +13167,7 @@ namespace SingleRailRC
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -13222,7 +13222,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -13256,7 +13256,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -13307,7 +13307,7 @@ namespace SingleRailRC
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -13372,7 +13372,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -13408,7 +13408,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -13450,7 +13450,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -13513,7 +13513,7 @@ namespace SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -13564,7 +13564,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -13600,7 +13600,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -13643,7 +13643,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -13706,7 +13706,7 @@ namespace SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -13761,7 +13761,7 @@ namespace SingleRailRC
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -13793,7 +13793,7 @@ namespace SingleRailRC
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 switch (direction)
@@ -13829,7 +13829,7 @@ namespace SingleRailRC
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -13893,13 +13893,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13948,7 +13948,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -14005,13 +14005,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -14060,7 +14060,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -14113,13 +14113,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -14172,7 +14172,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -14225,13 +14225,13 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -14284,7 +14284,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -14327,7 +14327,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -14363,7 +14363,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -14397,7 +14397,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 3:
                 switch (direction)
@@ -14443,7 +14443,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 4:
                 switch (direction)
@@ -14477,7 +14477,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 128);
                 break;
             case 5:
                 switch (direction)
@@ -14511,7 +14511,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 6:
                 switch (direction)
@@ -14549,7 +14549,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -14592,7 +14592,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -14628,7 +14628,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -14662,7 +14662,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 3:
                 switch (direction)
@@ -14708,7 +14708,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 4:
                 switch (direction)
@@ -14742,7 +14742,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 128);
                 break;
             case 5:
                 switch (direction)
@@ -14776,7 +14776,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 6:
                 switch (direction)
@@ -14814,7 +14814,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -14933,7 +14933,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 64);
     }
 
     static void Track60DegUpToFlat(
@@ -15024,7 +15024,7 @@ namespace SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 
     static void TrackFlatTo60DegDown(
@@ -15080,7 +15080,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -15115,7 +15115,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -15150,7 +15150,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -15221,7 +15221,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -15265,7 +15265,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -15300,7 +15300,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -15335,7 +15335,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -15406,7 +15406,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -15450,7 +15450,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -15485,7 +15485,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -15520,7 +15520,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -15591,7 +15591,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -15635,7 +15635,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -15670,7 +15670,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -15705,7 +15705,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -15776,7 +15776,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -15841,7 +15841,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -15879,7 +15879,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -15917,7 +15917,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -15928,7 +15928,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -15976,7 +15976,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16023,7 +16023,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16061,7 +16061,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -16099,7 +16099,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -16110,7 +16110,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -16158,7 +16158,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16215,7 +16215,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16253,7 +16253,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -16264,7 +16264,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -16302,7 +16302,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -16342,7 +16342,7 @@ namespace SingleRailRC
 
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16399,7 +16399,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16437,7 +16437,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -16448,7 +16448,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -16486,7 +16486,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -16528,7 +16528,7 @@ namespace SingleRailRC
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16591,7 +16591,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16615,7 +16615,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -16635,7 +16635,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -16671,7 +16671,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16700,7 +16700,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16720,7 +16720,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -16744,7 +16744,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -16780,7 +16780,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16809,7 +16809,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -16833,7 +16833,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -16853,7 +16853,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -16889,7 +16889,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -16918,7 +16918,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -16938,7 +16938,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -16962,7 +16962,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -16998,7 +16998,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17055,7 +17055,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -17075,7 +17075,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -17095,7 +17095,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -17131,7 +17131,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -17160,7 +17160,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -17180,7 +17180,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -17200,7 +17200,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -17236,7 +17236,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -17265,7 +17265,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17285,7 +17285,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17305,7 +17305,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17341,7 +17341,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17370,7 +17370,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17390,7 +17390,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17410,7 +17410,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17446,7 +17446,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17503,7 +17503,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17523,7 +17523,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17543,7 +17543,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17580,7 +17580,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17609,7 +17609,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17629,7 +17629,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17649,7 +17649,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17686,7 +17686,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17729,7 +17729,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -17753,7 +17753,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -17773,7 +17773,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -17809,7 +17809,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -17838,7 +17838,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -17858,7 +17858,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -17882,7 +17882,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -17918,7 +17918,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -17947,7 +17947,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17971,7 +17971,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17991,7 +17991,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -18027,7 +18027,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -18056,7 +18056,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -18076,7 +18076,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -18100,7 +18100,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -18136,7 +18136,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -18211,7 +18211,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -18249,7 +18249,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -18287,7 +18287,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -18298,7 +18298,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -18346,7 +18346,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -18393,7 +18393,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -18431,7 +18431,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -18469,7 +18469,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -18480,7 +18480,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -18528,7 +18528,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -18585,7 +18585,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -18623,7 +18623,7 @@ namespace SingleRailRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -18634,7 +18634,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -18672,7 +18672,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -18710,7 +18710,7 @@ namespace SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -18767,7 +18767,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -18805,7 +18805,7 @@ namespace SingleRailRC
                             PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -18816,7 +18816,7 @@ namespace SingleRailRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -18854,7 +18854,7 @@ namespace SingleRailRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -18896,7 +18896,7 @@ namespace SingleRailRC
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }

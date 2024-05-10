@@ -183,7 +183,7 @@ static void MazePaintSetup(
         PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), height + 12, 0x20);
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /**

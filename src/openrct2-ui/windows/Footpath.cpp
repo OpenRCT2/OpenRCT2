@@ -33,6 +33,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/Slope.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -446,11 +447,11 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 uint8_t slope = 0;
                 if (gFootpathConstructSlope == 2)
                 {
-                    slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                    slope = kTileSlopeNCornerUp;
                 }
                 else if (gFootpathConstructSlope == 6)
                 {
-                    slope = TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                    slope = kTileSlopeECornerUp;
                 }
 
                 std::optional<uint32_t> baseImage;
@@ -817,7 +818,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                         auto surfaceElement = info.Element->AsSurface();
                         if (surfaceElement != nullptr)
                         {
-                            slope = DefaultPathSlope[surfaceElement->GetSlope() & kTileElementSurfaceRaisedCornersMask];
+                            slope = DefaultPathSlope[surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask];
                         }
                         break;
                     }
@@ -882,11 +883,11 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             if (tileElement->GetType() == TileElementType::Surface)
             {
                 uint8_t slope = tileElement->AsSurface()->GetSlope();
-                if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                if (slope & kTileSlopeRaisedCornersMask)
                 {
                     z += PATH_HEIGHT_STEP;
                 } // Add 2 for a slope
-                if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (slope & kTileSlopeDiagonalFlag)
                     z += PATH_HEIGHT_STEP; // Add another 2 for a steep slope
             }
 
@@ -922,7 +923,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             switch (info.SpriteType)
             {
                 case ViewportInteractionItem::Terrain:
-                    slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & kTileElementSurfaceRaisedCornersMask];
+                    slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & kTileSlopeRaisedCornersMask];
                     break;
                 case ViewportInteractionItem::Footpath:
                     slope = info.Element->AsPath()->GetSlopeDirection();
@@ -985,12 +986,12 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 // expect the path to be slightly raised as well.
                 uint8_t slope = tileElement->AsSurface()->GetSlope();
                 z = tileElement->GetBaseZ();
-                if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (slope & kTileSlopeDiagonalFlag)
                 {
                     // Steep diagonal slope
                     z += 2 * PATH_HEIGHT_STEP;
                 }
-                else if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                else if (slope & kTileSlopeRaisedCornersMask)
                 {
                     // Normal slope
                     z += PATH_HEIGHT_STEP;
@@ -1237,11 +1238,11 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
 
                 // Set pressed slope widget
                 int32_t slope = gFootpathConstructSlope;
-                if (slope == TILE_ELEMENT_SLOPE_SE_SIDE_UP)
+                if (slope == kTileSlopeSESideUp)
                 {
                     pressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
                 }
-                else if (slope == TILE_ELEMENT_SLOPE_FLAT)
+                else if (slope == kTileSlopeFlat)
                 {
                     pressedWidgets |= (1uLL << WIDX_LEVEL);
                 }
@@ -1289,14 +1290,14 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             {
                 *type = gFootpathSelection.GetSelectedSurface();
             }
-            *slope = TILE_ELEMENT_SLOPE_FLAT;
+            *slope = kTileSlopeFlat;
             if (gFootpathConstructSlope != 0)
             {
-                *slope = _footpathConstructDirection | TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                *slope = _footpathConstructDirection | kTileSlopeSCornerUp;
                 if (gFootpathConstructSlope != 2)
                 {
                     footpathLoc.z -= PATH_HEIGHT_STEP;
-                    *slope ^= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                    *slope ^= kTileSlopeECornerUp;
                 }
             }
         }

@@ -24,6 +24,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 
@@ -127,10 +128,10 @@ GameActions::Result LandSetHeightAction::Query() const
     if (!GetGameState().Cheats.DisableClearanceChecks)
     {
         uint8_t zCorner = _height;
-        if (_style & kTileElementSurfaceRaisedCornersMask)
+        if (_style & kTileSlopeRaisedCornersMask)
         {
             zCorner += 2;
-            if (_style & kTileElementSurfaceDiagonalFlag)
+            if (_style & kTileSlopeDiagonalFlag)
             {
                 zCorner += 2;
             }
@@ -197,12 +198,12 @@ StringId LandSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    if (_height > kMaximumLandHeight - 2 && (_style & kTileElementSurfaceSlopeMask) != 0)
+    if (_height > kMaximumLandHeight - 2 && (_style & kTileSlopeMask) != 0)
     {
         return STR_TOO_HIGH;
     }
 
-    if (_height == kMaximumLandHeight - 2 && (_style & kTileElementSurfaceDiagonalFlag))
+    if (_height == kMaximumLandHeight - 2 && (_style & kTileSlopeDiagonalFlag))
     {
         return STR_TOO_HIGH;
     }
@@ -302,10 +303,10 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
         uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
         if (waterHeight != 0)
         {
-            if (_style & kTileElementSurfaceSlopeMask)
+            if (_style & kTileSlopeMask)
             {
                 zCorner += 2;
-                if (_style & kTileElementSurfaceDiagonalFlag)
+                if (_style & kTileSlopeDiagonalFlag)
                 {
                     zCorner += 2;
                 }
@@ -325,7 +326,7 @@ money64 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     for (Direction i : ALL_DIRECTIONS)
     {
         int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
-        cornerHeight -= MapGetCornerHeight(_height, _style & kTileElementSurfaceSlopeMask, i);
+        cornerHeight -= MapGetCornerHeight(_height, _style & kTileSlopeMask, i);
         cost += 2.50_GBP * abs(cornerHeight);
     }
     return cost;

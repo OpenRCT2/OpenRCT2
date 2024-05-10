@@ -25,6 +25,7 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 #include "EntryList.h"
 
 using namespace OpenRCT2;
@@ -74,7 +75,7 @@ bool RCT12TileElementBase::IsGhost() const
 
 uint8_t RCT12SurfaceElement::GetSlope() const
 {
-    return (Slope & kTileElementSurfaceSlopeMask);
+    return (Slope & kTileSlopeMask);
 }
 
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
