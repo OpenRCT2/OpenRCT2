@@ -8,9 +8,9 @@
  *****************************************************************************/
 
 #include "helpers/StringHelpers.hpp"
-#include "openrct2/localisation/Language.h"
 
 #include <gtest/gtest.h>
+#include <openrct2/localisation/Language.h>
 
 class Localisation : public testing::Test
 {
