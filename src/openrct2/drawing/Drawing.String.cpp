@@ -7,14 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../drawing/Drawing.h"
-
 #include "../Context.h"
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/Text.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
@@ -264,7 +263,7 @@ void GfxDrawStringLeftCentred(DrawPixelInfo& dpi, StringId format, void* args, c
     auto bufferPtr = buffer;
     FormatStringLegacy(bufferPtr, sizeof(buffer), format, args);
     int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::Medium);
-    GfxDrawString(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, bufferPtr, { colour });
+    DrawText(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, { colour }, bufferPtr);
 }
 
 /**
@@ -326,13 +325,13 @@ void DrawStringCentredRaw(
     DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
 {
     ScreenCoordsXY screenCoords(dpi.x, dpi.y);
-    GfxDrawString(dpi, screenCoords, "", { COLOUR_BLACK, fontStyle });
+    DrawText(dpi, screenCoords, { COLOUR_BLACK, fontStyle }, "");
     screenCoords = coords;
 
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = GfxGetStringWidth(text, fontStyle);
-        GfxDrawString(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, text, { TEXT_COLOUR_254, fontStyle });
+        DrawText(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { TEXT_COLOUR_254, fontStyle }, text);
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -424,7 +423,7 @@ void DrawNewsTicker(
     int32_t numLines, lineHeight, lineY;
     ScreenCoordsXY screenCoords(dpi.x, dpi.y);
 
-    GfxDrawString(dpi, screenCoords, "", { colour });
+    DrawText(dpi, screenCoords, { colour }, "");
 
     u8string wrappedString;
     GfxWrapString(FormatStringID(format, args), width, FontStyle::Small, &wrappedString, &numLines);
@@ -463,7 +462,7 @@ void DrawNewsTicker(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        GfxDrawString(dpi, screenCoords, buffer, { TEXT_COLOUR_254, FontStyle::Small });
+        DrawText(dpi, screenCoords, { TEXT_COLOUR_254, FontStyle::Small }, buffer);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {

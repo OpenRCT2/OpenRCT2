@@ -14,8 +14,8 @@
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
-#include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/Text.h"
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
 #include "../localisation/FormatCodes.h"
@@ -97,7 +97,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((GetGameState().CurrentTicks >> 1) & 0xF) > 4)
-        GfxDrawString(dpi, screenCoords, buffer, { COLOUR_SATURATED_RED });
+        DrawText(dpi, screenCoords, { COLOUR_SATURATED_RED }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
@@ -129,7 +129,7 @@ void Painter::PaintFPS(DrawPixelInfo& dpi)
     // Draw Text
     int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - (stringWidth / 2);
-    GfxDrawString(dpi, screenCoords, buffer);
+    DrawText(dpi, screenCoords, { COLOUR_WHITE }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi.lastStringPos.x + 16, 16 } });

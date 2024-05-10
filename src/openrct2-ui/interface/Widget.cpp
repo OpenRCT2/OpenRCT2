@@ -15,7 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
@@ -643,9 +643,9 @@ static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
     // fill it when checkbox is pressed
     if (WidgetIsPressed(w, widgetIndex))
     {
-        GfxDrawString(
-            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
-            { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
+        DrawText(
+            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) },
+            static_cast<const char*>(CheckBoxMarkString));
     }
 
     // draw the text
@@ -745,7 +745,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, flags);
-        GfxDrawString(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
+        DrawText(dpi, { l + 1, t }, {}, static_cast<const char*>(BlackLeftArrowString));
     }
 
     // Thumb
@@ -762,7 +762,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, flags);
-        GfxDrawString(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
+        DrawText(dpi, { r - 6, t }, {}, static_cast<const char*>(BlackRightArrowString));
     }
 }
 
@@ -782,7 +782,7 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, t }, { r, t + (kScrollBarWidth - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    GfxDrawString(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
+    DrawText(dpi, { l + 1, t - 1 }, {}, static_cast<const char*>(BlackUpArrowString));
 
     // Thumb
     GfxFillRectInset(
@@ -795,7 +795,7 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, b - (kScrollBarWidth - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    GfxDrawString(dpi, { l + 1, b - (kScrollBarWidth - 1) }, static_cast<const char*>(BlackDownArrowString), {});
+    DrawText(dpi, { l + 1, b - (kScrollBarWidth - 1) }, {}, static_cast<const char*>(BlackDownArrowString));
 }
 
 /**

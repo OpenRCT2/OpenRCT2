@@ -1031,8 +1031,8 @@ static uint64_t PageDisabledWidgets[] = {
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
 
             // Draw coordinates
-            GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 24), "X:", { colours[1] });
-            GfxDrawString(dpi, screenCoords + ScreenCoordsXY(74, 24), "Y:", { colours[1] });
+            DrawText(dpi, screenCoords + ScreenCoordsXY(5, 24), { colours[1] }, "X:");
+            DrawText(dpi, screenCoords + ScreenCoordsXY(74, 24), { colours[1] }, "Y:");
             if (_tileSelected)
             {
                 auto tileCoords = TileCoordsXY{ _toolMap };
@@ -1048,8 +1048,8 @@ static uint64_t PageDisabledWidgets[] = {
             }
             else
             {
-                GfxDrawString(dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), "-", { colours[1] });
-                GfxDrawString(dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), "-", { colours[1] });
+                DrawText(dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), { colours[1] }, "-");
+                DrawText(dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), { colours[1] }, "-");
             }
 
             if (windowTileInspectorSelectedIndex != -1)
