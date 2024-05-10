@@ -11,6 +11,9 @@
 
 // Windows.h needs to be included first
 // clang-format off
+#    ifndef WIN32_LEAN_AND_MEAN
+#        define WIN32_LEAN_AND_MEAN
+#    endif
 #    include <windows.h>
 #    include <shellapi.h>
 // clang-format on
