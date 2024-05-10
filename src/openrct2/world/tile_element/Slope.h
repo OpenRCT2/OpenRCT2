@@ -19,7 +19,6 @@ constexpr uint8_t kTileSlopeWCornerUp = 0b00001000;
 constexpr uint8_t kTileSlopeRaisedCornersMask = 0b00001111;
 constexpr uint8_t kTileSlopeDiagonalFlag = 0b00010000;
 constexpr uint8_t kTileSlopeMask = (kTileSlopeDiagonalFlag | kTileSlopeRaisedCornersMask);
-constexpr uint8_t kTileSlopeAboveTrackOrScenery = 0b00100000;
 
 constexpr uint8_t kTileSlopeWCornerDown = kTileSlopeRaisedCornersMask & ~kTileSlopeWCornerUp;
 constexpr uint8_t kTileSlopeSCornerDown = kTileSlopeRaisedCornersMask & ~kTileSlopeSCornerUp;
@@ -33,3 +32,8 @@ constexpr uint8_t kTileSlopeSWSideUp = kTileSlopeSCornerUp | kTileSlopeWCornerUp
 
 constexpr uint8_t kTileSlopeWEValley = kTileSlopeECornerUp | kTileSlopeWCornerUp;
 constexpr uint8_t kTileSlopeNSValley = kTileSlopeNCornerUp | kTileSlopeSCornerUp;
+
+// Special value, used for support drawing
+constexpr uint8_t kTileSlopeAboveTrackOrScenery = 0b00100000;
+// Special value, used when raising/lowering land corners/tiles
+constexpr uint8_t kTileSlopeRaiseOrLowerBaseHeight = 0b00100000;
