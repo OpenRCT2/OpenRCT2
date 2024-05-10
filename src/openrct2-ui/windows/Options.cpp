@@ -37,6 +37,7 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/Platform.h>
+#include <openrct2/rct1/Csg.h>
 #include <openrct2/ride/RideAudio.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
@@ -45,7 +46,9 @@
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
