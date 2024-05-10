@@ -18,7 +18,7 @@
 #include "../../core/Memory.hpp"
 #include "../../core/Path.hpp"
 #include "../../core/String.hpp"
-#include "../../localisation/Localisation.h"
+#include "../../localisation/StringIds.h"
 #include "../../platform/Platform.h"
 #include "TitleSequence.h"
 

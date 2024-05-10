@@ -10,6 +10,7 @@
 #include "Config.h"
 
 #include "../Context.h"
+#include "../Date.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"

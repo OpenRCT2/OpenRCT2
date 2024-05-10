@@ -14,8 +14,6 @@
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 

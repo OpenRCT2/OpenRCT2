@@ -12,7 +12,7 @@
 #include <openrct2/Date.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 
 namespace Graph
 {
