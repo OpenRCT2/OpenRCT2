@@ -22,6 +22,7 @@
 #include "../../platform/Platform.h"
 #include "TitleSequence.h"
 
+#include <algorithm>
 #include <iterator>
 #include <vector>
 
