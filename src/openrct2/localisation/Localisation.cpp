@@ -7,16 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef _WIN32
-#    include <windows.h>
-#elif defined(__ANDROID__)
-#    include <SDL.h>
-#    include <jni.h>
-
-#else
-#    include <errno.h>
-#    include <iconv.h>
-#endif // _WIN32
+#include "Localisation.h"
 
 #include "../Game.h"
 #include "../common.h"
@@ -29,14 +20,8 @@
 #include "Date.h"
 #include "FormatCodes.h"
 #include "Formatting.h"
-#include "Language.h"
-#include "Localisation.h"
 
-#include <cmath>
 #include <cstring>
-#include <ctype.h>
-#include <iterator>
-#include <limits.h>
 
 using namespace OpenRCT2;
 
