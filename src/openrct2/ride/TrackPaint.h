@@ -370,7 +370,6 @@ extern const CoordsXYZ kDefaultRightQuarterTurn5TilesBoundOffsets[4][5];
 extern const CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5];
 
 extern const uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
-
 extern const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3];
 extern const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3];
 extern const CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3];
