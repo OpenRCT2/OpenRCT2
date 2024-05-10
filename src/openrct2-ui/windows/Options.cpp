@@ -169,6 +169,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_THEMES_DROPDOWN,
     WIDX_THEMES_BUTTON,
     WIDX_TOOLBAR_BUTTONS_GROUP,
+    WIDX_TOOLBAR_BUTTONS_CENTRED,
     WIDX_TOOLBAR_BUTTONS_SHOW_FOR_LABEL,
     WIDX_TOOLBAR_SHOW_FINANCES,
     WIDX_TOOLBAR_SHOW_RESEARCH,
@@ -337,15 +338,18 @@ static Widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
 #define TOOLBAR_GROUP_START 215
-    MakeWidget({  5, TOOLBAR_GROUP_START +  0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
-    MakeWidget({ 10, TOOLBAR_GROUP_START + 14}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
-    MakeWidget({155, TOOLBAR_GROUP_START + 31}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
-    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
-    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
+
+
+    MakeWidget({  5, TOOLBAR_GROUP_START +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
+    MakeWidget({ 10, TOOLBAR_GROUP_START + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP),
+    MakeWidget({ 10, TOOLBAR_GROUP_START + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
+    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
+    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
+    MakeWidget({155, TOOLBAR_GROUP_START + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
     kWidgetsEnd,
 #undef TOOLBAR_GROUP_START
 };
@@ -1534,6 +1538,14 @@ static Widget *window_options_page_widgets[] = {
 #pragma endregion
 
 #pragma region Controls tab events
+        void ToggleToolbarSetting(bool& setting)
+        {
+            setting ^= true;
+            Config::Save();
+            Invalidate();
+            WindowInvalidateByClass(WindowClass::TopToolbar);
+        }
+
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
@@ -1557,47 +1569,29 @@ static Widget *window_options_page_widgets[] = {
                     Config::Save();
                     Invalidate();
                     break;
+                case WIDX_TOOLBAR_BUTTONS_CENTRED:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarButtonsCentred);
+                    break;
                 case WIDX_TOOLBAR_SHOW_FINANCES:
-                    Config::Get().interface.ToolbarShowFinances ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowFinances);
                     break;
                 case WIDX_TOOLBAR_SHOW_RESEARCH:
-                    Config::Get().interface.ToolbarShowResearch ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowResearch);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHEATS:
-                    Config::Get().interface.ToolbarShowCheats ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowCheats);
                     break;
                 case WIDX_TOOLBAR_SHOW_NEWS:
-                    Config::Get().interface.ToolbarShowNews ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowNews);
                     break;
                 case WIDX_TOOLBAR_SHOW_MUTE:
-                    Config::Get().interface.ToolbarShowMute ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowMute);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHAT:
-                    Config::Get().interface.ToolbarShowChat ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowChat);
                     break;
                 case WIDX_TOOLBAR_SHOW_ZOOM:
-                    Config::Get().interface.ToolbarShowZoom ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
                     break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
                     Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
@@ -1662,6 +1656,7 @@ static Widget *window_options_page_widgets[] = {
             SetCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
             SetCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
             SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.ZoomToCursor);
+            SetCheckboxValue(WIDX_TOOLBAR_BUTTONS_CENTRED, Config::Get().interface.ToolbarButtonsCentred);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, Config::Get().interface.ToolbarShowFinances);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, Config::Get().interface.ToolbarShowResearch);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, Config::Get().interface.ToolbarShowCheats);
