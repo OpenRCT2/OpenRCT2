@@ -18,6 +18,7 @@
 #include "../drawing/Text.h"
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
+#include "../interface/Widget.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
@@ -133,7 +134,7 @@ void Painter::PaintFPS(DrawPixelInfo& dpi)
     const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
     if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
     {
-        screenCoords.y = 30; // kTopToolbarHeight; don't want to include Window.h here
+        screenCoords.y = kTopToolbarHeight + 3;
     }
 
     DrawText(dpi, screenCoords, { COLOUR_WHITE }, buffer);

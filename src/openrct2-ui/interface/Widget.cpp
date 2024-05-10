@@ -9,8 +9,6 @@
 
 #include "Widget.h"
 
-#include "Window.h"
-
 #include <cmath>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -567,13 +565,13 @@ static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     int32_t width = widget->width() - 4;
     if ((widget + 1)->type == WindowWidgetType::CloseBox)
     {
-        width -= CloseButtonWidth;
+        width -= kCloseButtonWidth;
         if ((widget + 2)->type == WindowWidgetType::CloseBox)
-            width -= CloseButtonWidth;
+            width -= kCloseButtonWidth;
     }
     topLeft.x += width / 2;
     if (Config::Get().interface.WindowButtonsOnTheLeft)
-        topLeft.x += CloseButtonWidth;
+        topLeft.x += kCloseButtonWidth;
 
     DrawTextEllipsised(
         dpi, topLeft, width, widget->text, Formatter::Common(),

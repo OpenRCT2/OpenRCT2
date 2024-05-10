@@ -1849,11 +1849,11 @@ void WindowBase::ResizeFrame()
     if (Config::Get().interface.WindowButtonsOnTheLeft)
     {
         widgets[2].left = 2;
-        widgets[2].right = 2 + CloseButtonWidth;
+        widgets[2].right = 2 + kCloseButtonWidth;
     }
     else
     {
-        widgets[2].left = width - 3 - CloseButtonWidth;
+        widgets[2].left = width - 3 - kCloseButtonWidth;
         widgets[2].right = width - 3;
     }
 }

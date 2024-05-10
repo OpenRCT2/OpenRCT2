@@ -828,7 +828,7 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
 
 ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 {
-    const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? CloseButtonWidth + 2 : 0;
+    const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
     return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
 }
 
