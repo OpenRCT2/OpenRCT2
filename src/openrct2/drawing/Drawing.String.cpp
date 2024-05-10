@@ -532,7 +532,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     {
         int32_t drawX = info->x + fontDesc->offset_x;
         int32_t drawY = info->y + fontDesc->offset_y;
-        uint8_t hintThresh = gConfigFonts.EnableHinting ? fontDesc->hinting_threshold : 0;
+        uint8_t hintThresh = Config::Get().fonts.EnableHinting ? fontDesc->hinting_threshold : 0;
         OpenRCT2::Drawing::IDrawingContext* dc = drawingEngine->GetDrawingContext();
         dc->DrawTTFBitmap(dpi, info, surface, drawX, drawY, hintThresh);
     }

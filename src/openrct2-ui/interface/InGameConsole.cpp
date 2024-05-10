@@ -23,13 +23,14 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/localisation/StringIds.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 static InGameConsole _inGameConsole;
 
 static FontStyle InGameConsoleGetFontStyle()
 {
-    return (gConfigInterface.ConsoleSmallFont ? FontStyle::Small : FontStyle::Medium);
+    return (Config::Get().interface.ConsoleSmallFont ? FontStyle::Small : FontStyle::Medium);
 }
 
 static int32_t InGameConsoleGetLineHeight()

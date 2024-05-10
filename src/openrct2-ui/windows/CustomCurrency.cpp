@@ -73,16 +73,16 @@ static Widget window_custom_currency_widgets[] = {
                     break;
                 case WIDX_RATE_UP:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
-                    gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                    ConfigSaveDefault();
+                    Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    Config::Save();
                     WindowInvalidateAll();
                     break;
                 case WIDX_RATE_DOWN:
                     if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
                     {
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
-                        gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                        ConfigSaveDefault();
+                        Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        Config::Save();
                         WindowInvalidateAll();
                     }
                     break;
@@ -146,8 +146,8 @@ static Widget window_custom_currency_widgets[] = {
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = CurrencyAffix::Suffix;
                 }
 
-                gConfigGeneral.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
-                ConfigSaveDefault();
+                Config::Get().general.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
+                Config::Save();
 
                 WindowInvalidateAll();
             }
@@ -167,9 +167,10 @@ static Widget window_custom_currency_widgets[] = {
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                         kCurrencySymbolMaxSize);
 
-                    gConfigGeneral.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode;
+                    Config::Get().general.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
+                                                                     .symbol_unicode;
 
-                    ConfigSaveDefault();
+                    Config::Save();
                     WindowInvalidateAll();
                     break;
 
@@ -179,8 +180,8 @@ static Widget window_custom_currency_widgets[] = {
                     {
                         rate = res.value();
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
-                        gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                        ConfigSaveDefault();
+                        Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        Config::Save();
                         WindowInvalidateAll();
                     }
                     break;

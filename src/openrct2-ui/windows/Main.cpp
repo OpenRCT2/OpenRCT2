@@ -54,17 +54,17 @@ static Widget _mainWidgets[] = {
         void SetViewportFlags()
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-            if (gConfigGeneral.InvisibleRides)
+            if (Config::Get().general.InvisibleRides)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_RIDES;
-            if (gConfigGeneral.InvisibleVehicles)
+            if (Config::Get().general.InvisibleVehicles)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-            if (gConfigGeneral.InvisibleTrees)
+            if (Config::Get().general.InvisibleTrees)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-            if (gConfigGeneral.InvisibleScenery)
+            if (Config::Get().general.InvisibleScenery)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SCENERY;
-            if (gConfigGeneral.InvisiblePaths)
+            if (Config::Get().general.InvisiblePaths)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_PATHS;
-            if (gConfigGeneral.InvisibleSupports)
+            if (Config::Get().general.InvisibleSupports)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
         }
     };

@@ -79,7 +79,7 @@ void Painter::Paint(IDrawingEngine& de)
     if (text != nullptr)
         PaintReplayNotice(*dpi, text);
 
-    if (gConfigGeneral.ShowFPS)
+    if (Config::Get().general.ShowFPS)
     {
         PaintFPS(*dpi);
     }

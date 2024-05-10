@@ -11,6 +11,8 @@
 
 #include "../config/Config.h"
 
+using namespace OpenRCT2;
+
 GameSetSpeedAction::GameSetSpeedAction(int32_t speed)
     : _speed(speed)
 {
@@ -66,5 +68,5 @@ GameActions::Result GameSetSpeedAction::Execute() const
 
 bool GameSetSpeedAction::IsValidSpeed(int32_t speed) const
 {
-    return (speed >= 1 && speed <= 4) || (gConfigGeneral.DebuggingTools && speed == 8);
+    return (speed >= 1 && speed <= 4) || (Config::Get().general.DebuggingTools && speed == 8);
 }

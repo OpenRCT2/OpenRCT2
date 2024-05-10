@@ -862,7 +862,7 @@ static Widget _topToolbarWidgets[] = {
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorInvalidate();
             }
@@ -1795,7 +1795,7 @@ static Widget _topToolbarWidgets[] = {
                 rotation -= GetCurrentRotation();
                 rotation &= 0x3;
 
-                if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+                if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
                 {
                     VirtualFloorSetHeight(gSceneryPlaceZ);
                 }
@@ -1879,7 +1879,7 @@ static Widget _topToolbarWidgets[] = {
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -1913,7 +1913,7 @@ static Widget _topToolbarWidgets[] = {
                 return;
             }
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2003,7 +2003,7 @@ static Widget _topToolbarWidgets[] = {
             if (gridPos.IsNull())
                 return;
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2103,7 +2103,7 @@ static Widget _topToolbarWidgets[] = {
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2151,7 +2151,7 @@ static Widget _topToolbarWidgets[] = {
                 }
             }
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2945,26 +2945,27 @@ static Widget _topToolbarWidgets[] = {
             widgets[WIDX_RESEARCH].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_FASTFORWARD].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_CHEATS].type = WindowWidgetType::TrnBtn;
-            widgets[WIDX_DEBUG].type = gConfigGeneral.DebuggingTools ? WindowWidgetType::TrnBtn : WindowWidgetType::Empty;
+            widgets[WIDX_DEBUG].type = Config::Get().general.DebuggingTools ? WindowWidgetType::TrnBtn
+                                                                            : WindowWidgetType::Empty;
             widgets[WIDX_NEWS].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
 
-            if (!gConfigInterface.ToolbarShowMute)
+            if (!Config::Get().interface.ToolbarShowMute)
                 widgets[WIDX_MUTE].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowChat)
+            if (!Config::Get().interface.ToolbarShowChat)
                 widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowResearch)
+            if (!Config::Get().interface.ToolbarShowResearch)
                 widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowCheats)
+            if (!Config::Get().interface.ToolbarShowCheats)
                 widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowNews)
+            if (!Config::Get().interface.ToolbarShowNews)
                 widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowZoom)
+            if (!Config::Get().interface.ToolbarShowZoom)
             {
                 widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
                 widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
@@ -2975,7 +2976,7 @@ static Widget _topToolbarWidgets[] = {
                 widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
             }
 
-            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
+            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
@@ -3362,7 +3363,7 @@ static Widget _topToolbarWidgets[] = {
         auto* mainViewport = WindowGetMain()->viewport;
         if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
             Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
-        if (gConfigGeneral.TransparentWater)
+        if (Config::Get().general.TransparentWater)
             Dropdown::SetChecked(DDIDX_TRANSPARENT_WATER, true);
         if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
             Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
@@ -3415,8 +3416,8 @@ static Widget _topToolbarWidgets[] = {
                     w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                     break;
                 case DDIDX_TRANSPARENT_WATER:
-                    gConfigGeneral.TransparentWater ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.TransparentWater ^= 1;
+                    Config::Save();
                     break;
                 case DDIDX_HIDE_BASE:
                     w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
@@ -3566,7 +3567,7 @@ static Widget _topToolbarWidgets[] = {
         gDropdownItems[1].Format = STR_TOGGLE_OPTION;
         gDropdownItems[2].Format = STR_TOGGLE_OPTION;
         gDropdownItems[3].Format = STR_TOGGLE_OPTION;
-        if (gConfigGeneral.DebuggingTools)
+        if (Config::Get().general.DebuggingTools)
         {
             gDropdownItems[4].Format = STR_EMPTY;
             gDropdownItems[5].Format = STR_TOGGLE_OPTION;
@@ -3592,7 +3593,7 @@ static Widget _topToolbarWidgets[] = {
             Dropdown::SetChecked(5, true);
         }
 
-        if (gConfigGeneral.DebuggingTools)
+        if (Config::Get().general.DebuggingTools)
         {
             gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
         }

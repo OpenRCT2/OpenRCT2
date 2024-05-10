@@ -422,7 +422,8 @@ static Widget _trackListWidgets[] = {
             }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-            const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
+            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT)
+                                                                              : WINDOW_PADDING;
             widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
@@ -469,7 +470,7 @@ static Widget _trackListWidgets[] = {
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
             {
                 const auto shortPath = ShortenPath(path, width, FontStyle::Medium);
                 auto ft = Formatter();

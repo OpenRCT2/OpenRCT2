@@ -368,14 +368,14 @@ bool GfxLoadCsg()
 {
     LOG_VERBOSE("GfxLoadCsg()");
 
-    if (gConfigGeneral.RCT1Path.empty())
+    if (Config::Get().general.RCT1Path.empty())
     {
         LOG_VERBOSE("  unable to load CSG, RCT1 path not set");
         return false;
     }
 
-    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.RCT1Path);
-    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.RCT1Path);
+    auto pathHeaderPath = FindCsg1idatAtLocation(Config::Get().general.RCT1Path);
+    auto pathDataPath = FindCsg1datAtLocation(Config::Get().general.RCT1Path);
     try
     {
         auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);

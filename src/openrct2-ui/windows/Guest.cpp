@@ -474,7 +474,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
-            if (!gConfigGeneral.DebuggingTools)
+            if (!Config::Get().general.DebuggingTools)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
             }
@@ -1924,7 +1924,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
         if (window == nullptr)
         {
             int32_t windowWidth = 192;
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
             window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);

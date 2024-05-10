@@ -196,7 +196,7 @@ void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t w
     viewport->flags = 0;
     viewport->rotation = GetCurrentRotation();
 
-    if (gConfigGeneral.AlwaysShowGridlines)
+    if (Config::Get().general.AlwaysShowGridlines)
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
@@ -991,7 +991,7 @@ static void ViewportPaintColumn(PaintSession& session)
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
+    if (Config::Get().general.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         ViewportPaintWeatherGloom(session.DPI);
@@ -1055,7 +1055,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
 
     _paintColumns.clear();
 
-    bool useMultithreading = gConfigGeneral.MultiThreading;
+    bool useMultithreading = Config::Get().general.MultiThreading;
     if (useMultithreading && _paintJobs == nullptr)
     {
         _paintJobs = std::make_unique<JobPool>();
@@ -1256,7 +1256,7 @@ void HideGridlines()
         WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            if (!gConfigGeneral.AlwaysShowGridlines)
+            if (!Config::Get().general.AlwaysShowGridlines)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                 mainWindow->Invalidate();
@@ -2194,11 +2194,11 @@ uint8_t GetCurrentRotation()
 int32_t GetHeightMarkerOffset()
 {
     // Height labels in units
-    if (gConfigGeneral.ShowHeightAsUnits)
+    if (Config::Get().general.ShowHeightAsUnits)
         return 0;
 
     // Height labels in feet
-    if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
+    if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
         return 1 * 256;
 
     // Height labels in metres

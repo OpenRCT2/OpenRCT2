@@ -147,7 +147,7 @@ static int32_t ScrollingTextGetMatchingOrOldest(
 
 static void ScrollingTextFormat(utf8* dst, size_t size, DrawScrollText* scrollText)
 {
-    if (gConfigGeneral.UpperCaseBanners)
+    if (Config::Get().general.UpperCaseBanners)
     {
         FormatStringToUpper(dst, size, scrollText->string_id, scrollText->string_args);
     }
@@ -1586,7 +1586,7 @@ static void ScrollingTextSetBitmapForTTF(
     int32_t min_vpos = -fontDesc->offset_y;
     int32_t max_vpos = std::min(surface->h - 2, min_vpos + 7);
 
-    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
+    bool use_hinting = Config::Get().fonts.EnableHinting && fontDesc->hinting_threshold > 0;
 
     for (int32_t x = 0;; x++)
     {

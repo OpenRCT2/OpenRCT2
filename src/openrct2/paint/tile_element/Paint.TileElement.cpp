@@ -34,6 +34,8 @@
 #include "Paint.Surface.h"
 #include "Segment.h"
 
+using namespace OpenRCT2;
+
 static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
 static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
@@ -138,7 +140,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     bool partOfVirtualFloor = false;
 
-    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+    if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
     }
@@ -284,7 +286,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         session.MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
 
-    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
+    if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
         VirtualFloorPaint(session);
     }

@@ -22,6 +22,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 
+using namespace OpenRCT2;
+
 static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
@@ -570,7 +572,7 @@ static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
             width -= CloseButtonWidth;
     }
     topLeft.x += width / 2;
-    if (gConfigInterface.WindowButtonsOnTheLeft)
+    if (Config::Get().interface.WindowButtonsOnTheLeft)
         topLeft.x += CloseButtonWidth;
 
     DrawTextEllipsised(

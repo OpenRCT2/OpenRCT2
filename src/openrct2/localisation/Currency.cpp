@@ -13,6 +13,8 @@
 #include "../util/Util.h"
 #include "StringIds.h"
 
+using namespace OpenRCT2;
+
 // clang-format off
 CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
     {   "GBP",  10,     CurrencyAffix::Prefix,    u8"£",      CurrencyAffix::Suffix,    "GBP",  STR_POUNDS          },  // British Pound
@@ -38,12 +40,12 @@ CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
 
 void CurrencyLoadCustomCurrencyConfig()
 {
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.CustomCurrencyRate;
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;
-    if (!gConfigGeneral.CustomCurrencySymbol.empty())
+    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = Config::Get().general.CustomCurrencyRate;
+    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.CustomCurrencyAffix;
+    if (!Config::Get().general.CustomCurrencySymbol.empty())
     {
         SafeStrCpy(
-            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol.c_str(),
-            kCurrencySymbolMaxSize);
+            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
+            Config::Get().general.CustomCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
     }
 }

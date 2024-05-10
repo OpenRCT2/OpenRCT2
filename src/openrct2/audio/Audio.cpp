@@ -65,7 +65,7 @@ namespace OpenRCT2::Audio
             return false;
         if (gGameSoundsOff)
             return false;
-        if (!gConfigSound.SoundEnabled)
+        if (!Config::Get().sound.SoundEnabled)
             return false;
         if (gOpenRCT2Headless)
             return false;
@@ -75,19 +75,19 @@ namespace OpenRCT2::Audio
     void Init()
     {
         auto audioContext = GetContext()->GetAudioContext();
-        if (gConfigSound.Device.empty())
+        if (Config::Get().sound.Device.empty())
         {
             audioContext->SetOutputDevice("");
             _currentAudioDevice = 0;
         }
         else
         {
-            audioContext->SetOutputDevice(gConfigSound.Device);
+            audioContext->SetOutputDevice(Config::Get().sound.Device);
 
             PopulateDevices();
             for (int32_t i = 0; i < GetDeviceCount(); i++)
             {
-                if (_audioDevices[i] == gConfigSound.Device)
+                if (_audioDevices[i] == Config::Get().sound.Device)
                 {
                     _currentAudioDevice = i;
                 }
@@ -305,7 +305,7 @@ namespace OpenRCT2::Audio
         }
 
         // Load title sequence audio object
-        auto descriptor = GetTitleMusicDescriptor(gConfigSound.TitleMusic);
+        auto descriptor = GetTitleMusicDescriptor(Config::Get().sound.TitleMusic);
         auto& objManager = GetContext()->GetObjectManager();
         auto* audioObject = static_cast<AudioObject*>(objManager.LoadObject(descriptor));
         if (audioObject != nullptr)
@@ -385,7 +385,7 @@ namespace OpenRCT2::Audio
         }
 
         _currentAudioDevice = device;
-        ConfigSaveDefault();
+        Config::Save();
     }
 
     void Close()
@@ -399,8 +399,8 @@ namespace OpenRCT2::Audio
 
     void ToggleAllSounds()
     {
-        gConfigSound.MasterSoundEnabled = !gConfigSound.MasterSoundEnabled;
-        if (gConfigSound.MasterSoundEnabled)
+        Config::Get().sound.MasterSoundEnabled = !Config::Get().sound.MasterSoundEnabled;
+        if (Config::Get().sound.MasterSoundEnabled)
         {
             Resume();
         }
