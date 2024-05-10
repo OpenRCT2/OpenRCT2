@@ -391,9 +391,11 @@ namespace OpenRCT2::Drawing
         auto keepPalette = Json::GetString(input["palette"]) == "keep";
         auto palette = keepPalette ? Palette::KeepIndices : Palette::OpenRCT2;
         auto flags = EnumValue(ImportFlags::None);
+
         auto raw = Json::GetString(input["format"]) == "raw";
         if (raw)
             flags |= EnumValue(ImportFlags::RLE);
+
         flags |= Json::GetFlags<uint8_t>(
             input,
             {
