@@ -209,14 +209,14 @@ public:
         }
     }
 
-    WindowBase* ShowError(StringId title, StringId message, const Formatter& args) override
+    WindowBase* ShowError(StringId title, StringId message, const Formatter& args, bool autoClose /* = false */) override
     {
-        return ErrorOpen(title, message, args);
+        return ErrorOpen(title, message, args, autoClose);
     }
 
-    WindowBase* ShowError(std::string_view title, std::string_view message) override
+    WindowBase* ShowError(std::string_view title, std::string_view message, bool autoClose /* = false */) override
     {
-        return ErrorOpen(title, message);
+        return ErrorOpen(title, message, autoClose);
     }
 
     WindowBase* OpenIntent(Intent* intent) override

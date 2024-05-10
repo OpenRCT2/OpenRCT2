@@ -33,8 +33,9 @@ namespace OpenRCT2::Ui
         virtual WindowBase* OpenDetails(uint8_t type, int32_t id) abstract;
         virtual WindowBase* OpenIntent(Intent* intent) abstract;
         virtual void BroadcastIntent(const Intent& intent) abstract;
-        virtual WindowBase* ShowError(StringId title, StringId message, const Formatter& formatter) abstract;
-        virtual WindowBase* ShowError(std::string_view title, std::string_view message) abstract;
+        virtual WindowBase* ShowError(
+            StringId title, StringId message, const Formatter& formatter, bool autoClose = false) abstract;
+        virtual WindowBase* ShowError(std::string_view title, std::string_view message, bool autoClose = false) abstract;
         virtual void ForceClose(WindowClass windowClass) abstract;
         virtual void UpdateMapTooltip() abstract;
         virtual void HandleInput() abstract;
