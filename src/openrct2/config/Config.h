@@ -14,9 +14,6 @@
 #include "ConfigTypes.h"
 
 #include <atomic>
-#include <string>
-
-struct Gx;
 
 struct GeneralConfiguration
 {
@@ -229,11 +226,3 @@ u8string ConfigGetDefaultPath();
 void ConfigSetDefaults();
 bool ConfigSaveDefault();
 bool ConfigFindOrBrowseInstallDirectory();
-
-bool RCT1DataPresentAtLocation(u8string_view path);
-std::string FindCsg1datAtLocation(u8string_view path);
-bool Csg1datPresentAtLocation(u8string_view path);
-std::string FindCsg1idatAtLocation(u8string_view path);
-bool Csg1idatPresentAtLocation(u8string_view path);
-bool CsgIsUsable(const Gx& csg);
-bool CsgAtLocationIsUsable(u8string_view path);

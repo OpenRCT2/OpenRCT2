@@ -17,6 +17,7 @@
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../platform/Platform.h"
+#include "../rct1/Csg.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
