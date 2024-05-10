@@ -11,6 +11,7 @@
 
 #include "../core/Imaging.h"
 #include "../core/Json.hpp"
+#include "../util/Util.h"
 
 #include <cstring>
 #include <stdexcept>
@@ -49,6 +50,8 @@ namespace OpenRCT2::Drawing
         outElement.x_offset = meta.offset.x;
         outElement.y_offset = meta.offset.y;
         outElement.zoomed_offset = meta.zoomedOffset;
+        if (meta.importFlags & ImportFlags::NoDrawOnZoom)
+            outElement.flags |= G1_FLAG_NO_ZOOM_DRAW;
 
         ImageImporter::ImportResult result;
         result.Element = outElement;
@@ -388,17 +391,25 @@ namespace OpenRCT2::Drawing
         auto yOffset = Json::GetNumber<int16_t>(input["y"]);
         auto keepPalette = Json::GetString(input["palette"]) == "keep";
         auto palette = keepPalette ? Palette::KeepIndices : Palette::OpenRCT2;
+        auto flags = EnumValue(ImportFlags::None);
 
         auto raw = Json::GetString(input["format"]) == "raw";
-        auto flags = raw ? ImportFlags::None : ImportFlags::RLE;
+        if (!raw)
+            flags |= EnumValue(ImportFlags::RLE);
 
+        flags |= Json::GetFlags<uint8_t>(
+            input,
+            {
+                { "noDrawOnZoom", ImportFlags::NoDrawOnZoom },
+            });
         auto srcX = Json::GetNumber<int16_t>(input["srcX"]);
         auto srcY = Json::GetNumber<int16_t>(input["srcY"]);
         auto srcWidth = Json::GetNumber<int16_t>(input["srcWidth"]);
         auto srcHeight = Json::GetNumber<int16_t>(input["srcHeight"]);
         auto zoomedOffset = Json::GetNumber<int32_t>(input["zoom"]);
 
-        return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::Default, { srcX, srcY },
-                                { srcWidth, srcHeight }, zoomedOffset };
+        return ImageImportMeta{ { xOffset, yOffset }, palette,        static_cast<ImportFlags>(flags),
+                                ImportMode::Default,  { srcX, srcY }, { srcWidth, srcHeight },
+                                zoomedOffset };
     };
 } // namespace OpenRCT2::Drawing

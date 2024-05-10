@@ -31,6 +31,7 @@ namespace OpenRCT2::Drawing
     {
         None = 0,
         RLE = 1 << 1,
+        NoDrawOnZoom = 1 << 2,
     };
 
     enum class Palette : uint8_t
