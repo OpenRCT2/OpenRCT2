@@ -1468,7 +1468,7 @@ static_assert(std::size(RatingNames) == 6);
                 newViewportFlags = viewport->flags;
                 RemoveViewport();
             }
-            else if (gConfigGeneral.AlwaysShowGridlines)
+            else if (Config::Get().general.AlwaysShowGridlines)
             {
                 newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
             }
@@ -3940,7 +3940,7 @@ static_assert(std::size(RatingNames) == 6);
             AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (gConfigGeneral.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (Config::Get().general.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 widgets[WIDX_FORCE_BREAKDOWN].type = WindowWidgetType::FlatBtn;
             }

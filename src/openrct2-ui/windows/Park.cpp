@@ -632,7 +632,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             int32_t viewportFlags{};
             if (viewport == nullptr)
             {
-                viewportFlags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
+                viewportFlags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
             }
             else
             {
@@ -983,7 +983,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             // Draw park size
             auto parkSize = gameState.Park.Size * 10;
             auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-            if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
+            if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
             {
                 stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
                 parkSize = SquaredMetresToSquaredFeet(parkSize);

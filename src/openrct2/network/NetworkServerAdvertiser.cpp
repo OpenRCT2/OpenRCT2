@@ -92,7 +92,7 @@ public:
     {
         UpdateLAN();
 #    ifndef DISABLE_HTTP
-        if (gConfigNetwork.Advertise)
+        if (Config::Get().network.Advertise)
         {
             UpdateWAN();
         }
@@ -182,9 +182,9 @@ private:
             { "port", _port },
         };
 
-        if (!gConfigNetwork.AdvertiseAddress.empty())
+        if (!Config::Get().network.AdvertiseAddress.empty())
         {
-            body["address"] = gConfigNetwork.AdvertiseAddress;
+            body["address"] = Config::Get().network.AdvertiseAddress;
         }
 
         request.body = body.dump();
@@ -345,9 +345,9 @@ private:
     static std::string GetMasterServerUrl()
     {
         std::string result = OPENRCT2_MASTER_SERVER_URL;
-        if (!gConfigNetwork.MasterServerUrl.empty())
+        if (!Config::Get().network.MasterServerUrl.empty())
         {
-            result = gConfigNetwork.MasterServerUrl;
+            result = Config::Get().network.MasterServerUrl;
         }
         return result;
     }

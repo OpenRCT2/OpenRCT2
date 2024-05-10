@@ -194,7 +194,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
                        ? COLOUR_WHITE
                        : NOT_TRANSLUCENT(colours[0]));
-            StringId stringId = DateFormatStringFormatIds[gConfigGeneral.DateFormat];
+            StringId stringId = DateFormatStringFormatIds[Config::Get().general.DateFormat];
             auto ft = Formatter();
             ft.Add<StringId>(DateDayNames[day]);
             ft.Add<int16_t>(month);
@@ -210,7 +210,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
 
             int32_t temperature = OpenRCT2::GetGameState().ClimateCurrent.Temperature;
             StringId format = STR_CELSIUS_VALUE;
-            if (gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit)
+            if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
             {
                 temperature = ClimateCelsiusToFahrenheit(temperature);
                 format = STR_FAHRENHEIT_VALUE;

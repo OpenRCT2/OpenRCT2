@@ -28,6 +28,7 @@
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
 
@@ -161,7 +162,7 @@ public:
             case WV_FINANCES_RESEARCH:
                 return FinancesResearchOpen();
             case WV_RIDE_RESEARCH:
-                if (gConfigInterface.ToolbarShowResearch)
+                if (Config::Get().interface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::Research);
                 }

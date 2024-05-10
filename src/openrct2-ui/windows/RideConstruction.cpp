@@ -270,7 +270,7 @@ static Widget _rideConstructionWidgets[] = {
             if (RideTryGetOriginElement(*currentRide, nullptr))
             {
                 // Auto open shops if required.
-                if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.AutoOpenShops)
+                if (currentRide->mode == RideMode::ShopStall && Config::Get().general.AutoOpenShops)
                 {
                     // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                     //       from getting stuck in an infinite loop as opening the currentRide will try to close this window

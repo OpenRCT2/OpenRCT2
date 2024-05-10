@@ -44,8 +44,15 @@ static constexpr bool WindowButtonsOnTheLeftDefault = true;
 static constexpr bool WindowButtonsOnTheLeftDefault = false;
 #endif
 
-namespace Config
+namespace OpenRCT2::Config
 {
+    static Config _config{};
+
+    Config& Get()
+    {
+        return _config;
+    }
+
 #pragma region Enums
 
     static const auto Enum_MeasurementFormat = ConfigEnum<MeasurementFormat>({
@@ -143,7 +150,7 @@ namespace Config
     {
         if (reader->ReadSection("general"))
         {
-            auto model = &gConfigGeneral;
+            auto model = &_config.general;
             model->AlwaysShowGridlines = reader->GetBoolean("always_show_gridlines", false);
             model->AutosaveFrequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
             model->AutosaveAmount = reader->GetInt32("autosave_amount", kDefaultNumAutosavesToKeep);
@@ -242,7 +249,7 @@ namespace Config
 
     static void WriteGeneral(IIniWriter* writer)
     {
-        auto model = &gConfigGeneral;
+        auto model = &_config.general;
         writer->WriteSection("general");
         writer->WriteBoolean("always_show_gridlines", model->AlwaysShowGridlines);
         writer->WriteInt32("autosave", model->AutosaveFrequency);
@@ -327,7 +334,7 @@ namespace Config
     {
         if (reader->ReadSection("interface"))
         {
-            auto model = &gConfigInterface;
+            auto model = &_config.interface;
             model->ToolbarShowFinances = reader->GetBoolean("toolbar_show_finances", true);
             model->ToolbarShowResearch = reader->GetBoolean("toolbar_show_research", true);
             model->ToolbarShowCheats = reader->GetBoolean("toolbar_show_cheats", false);
@@ -348,7 +355,7 @@ namespace Config
 
     static void WriteInterface(IIniWriter* writer)
     {
-        auto model = &gConfigInterface;
+        auto model = &_config.interface;
         writer->WriteSection("interface");
         writer->WriteBoolean("toolbar_show_finances", model->ToolbarShowFinances);
         writer->WriteBoolean("toolbar_show_research", model->ToolbarShowResearch);
@@ -371,7 +378,7 @@ namespace Config
     {
         if (reader->ReadSection("sound"))
         {
-            auto model = &gConfigSound;
+            auto model = &_config.sound;
             model->Device = reader->GetString("audio_device", "");
             model->MasterSoundEnabled = reader->GetBoolean("master_sound", true);
             model->MasterVolume = reader->GetInt32("master_volume", 100);
@@ -387,7 +394,7 @@ namespace Config
 
     static void WriteSound(IIniWriter* writer)
     {
-        auto model = &gConfigSound;
+        auto model = &_config.sound;
         writer->WriteSection("sound");
         writer->WriteString("audio_device", model->Device);
         writer->WriteBoolean("master_sound", model->MasterSoundEnabled);
@@ -420,7 +427,7 @@ namespace Config
             // to avoid people pretending to be someone else
             playerName = String::Trim(playerName);
 
-            auto model = &gConfigNetwork;
+            auto model = &_config.network;
             model->PlayerName = std::move(playerName);
             model->DefaultPort = reader->GetInt32("default_port", kNetworkDefaultPort);
             model->ListenAddress = reader->GetString("listen_address", "");
@@ -446,7 +453,7 @@ namespace Config
 
     static void WriteNetwork(IIniWriter* writer)
     {
-        auto model = &gConfigNetwork;
+        auto model = &_config.network;
         writer->WriteSection("network");
         writer->WriteString("player_name", model->PlayerName);
         writer->WriteInt32("default_port", model->DefaultPort);
@@ -474,7 +481,7 @@ namespace Config
     {
         if (reader->ReadSection("notifications"))
         {
-            auto model = &gConfigNotifications;
+            auto model = &_config.notifications;
             model->ParkAward = reader->GetBoolean("park_award", true);
             model->ParkMarketingCampaignFinished = reader->GetBoolean("park_marketing_campaign_finished", true);
             model->ParkWarnings = reader->GetBoolean("park_warnings", true);
@@ -498,7 +505,7 @@ namespace Config
 
     static void WriteNotifications(IIniWriter* writer)
     {
-        auto model = &gConfigNotifications;
+        auto model = &_config.notifications;
         writer->WriteSection("notifications");
         writer->WriteBoolean("park_award", model->ParkAward);
         writer->WriteBoolean("park_marketing_campaign_finished", model->ParkMarketingCampaignFinished);
@@ -524,7 +531,7 @@ namespace Config
     {
         if (reader->ReadSection("font"))
         {
-            auto model = &gConfigFonts;
+            auto model = &_config.fonts;
             model->FileName = reader->GetString("file_name", "");
             model->FontName = reader->GetString("font_name", "");
             model->OffsetX = reader->GetInt32("x_offset", false);
@@ -544,7 +551,7 @@ namespace Config
 
     static void WriteFont(IIniWriter* writer)
     {
-        auto model = &gConfigFonts;
+        auto model = &_config.fonts;
         writer->WriteSection("font");
         writer->WriteString("file_name", model->FileName);
         writer->WriteString("font_name", model->FontName);
@@ -566,7 +573,7 @@ namespace Config
     {
         if (reader->ReadSection("plugin"))
         {
-            auto model = &gConfigPlugin;
+            auto model = &_config.plugin;
             model->EnableHotReloading = reader->GetBoolean("enable_hot_reloading", false);
             model->AllowedHosts = reader->GetString("allowed_hosts", "");
         }
@@ -574,13 +581,13 @@ namespace Config
 
     static void WritePlugin(IIniWriter* writer)
     {
-        auto model = &gConfigPlugin;
+        auto model = &_config.plugin;
         writer->WriteSection("plugin");
         writer->WriteBoolean("enable_hot_reloading", model->EnableHotReloading);
         writer->WriteString("allowed_hosts", model->AllowedHosts);
     }
 
-    static bool SetDefaults()
+    bool SetDefaults()
     {
         try
         {
@@ -777,171 +784,158 @@ namespace Config
         LOG_INFO("Exit status %d", exit_status);
         return exit_status == 0;
     }
-} // namespace Config
 
-GeneralConfiguration gConfigGeneral;
-InterfaceConfiguration gConfigInterface;
-SoundConfiguration gConfigSound;
-NetworkConfiguration gConfigNetwork;
-NotificationConfiguration gConfigNotifications;
-FontConfiguration gConfigFonts;
-PluginConfiguration gConfigPlugin;
-
-void ConfigSetDefaults()
-{
-    Config::SetDefaults();
-}
-
-bool ConfigOpen(u8string_view path)
-{
-    if (!File::Exists(path))
+    bool OpenFromPath(u8string_view path)
     {
-        return false;
-    }
-
-    auto result = Config::ReadFile(path);
-    if (result)
-    {
-        CurrencyLoadCustomCurrencyConfig();
-    }
-    return result;
-}
-
-bool ConfigSave(u8string_view path)
-{
-    return Config::WriteFile(path);
-}
-
-u8string ConfigGetDefaultPath()
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
-}
-
-bool ConfigSaveDefault()
-{
-    auto path = ConfigGetDefaultPath();
-    return ConfigSave(path);
-}
-
-bool ConfigFindOrBrowseInstallDirectory()
-{
-    std::string path = Config::FindRCT2Path();
-    if (!path.empty())
-    {
-        gConfigGeneral.RCT2Path = path;
-    }
-    else
-    {
-        if (gOpenRCT2Headless)
+        if (!File::Exists(path))
         {
             return false;
         }
 
-        auto uiContext = GetContext()->GetUiContext();
-        if (!uiContext->HasFilePicker())
+        auto result = ReadFile(path);
+        if (result)
         {
-            uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES_MANUAL));
-            return false;
+            CurrencyLoadCustomCurrencyConfig();
         }
+        return result;
+    }
 
-        try
+    u8string GetDefaultPath()
+    {
+        auto env = GetContext()->GetPlatformEnvironment();
+        return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
+    }
+
+    bool SaveToPath(u8string_view path)
+    {
+        return WriteFile(path);
+    }
+
+    bool Save()
+    {
+        auto path = GetDefaultPath();
+        return SaveToPath(path);
+    }
+
+    bool FindOrBrowseInstallDirectory()
+    {
+        std::string path = FindRCT2Path();
+        if (!path.empty())
         {
-            const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
-            while (true)
+            Get().general.RCT2Path = path;
+        }
+        else
+        {
+            if (gOpenRCT2Headless)
             {
-                uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
-                std::string gog = LanguageGetString(STR_OWN_ON_GOG);
-                std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
+                return false;
+            }
 
-                std::vector<std::string> options;
-                std::string chosenOption;
+            auto uiContext = GetContext()->GetUiContext();
+            if (!uiContext->HasFilePicker())
+            {
+                uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES_MANUAL));
+                return false;
+            }
 
-                if (uiContext->HasMenuSupport())
+            try
+            {
+                const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
+                while (true)
                 {
-                    options.push_back(hdd);
-                    options.push_back(gog);
-                    int optionIndex = uiContext->ShowMenuDialog(
-                        options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
-                    if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
+                    uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
+                    std::string gog = LanguageGetString(STR_OWN_ON_GOG);
+                    std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
+
+                    std::vector<std::string> options;
+                    std::string chosenOption;
+
+                    if (uiContext->HasMenuSupport())
                     {
-                        // graceful fallback if app errors or user exits out of window
-                        chosenOption = hdd;
+                        options.push_back(hdd);
+                        options.push_back(gog);
+                        int optionIndex = uiContext->ShowMenuDialog(
+                            options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
+                        if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
+                        {
+                            // graceful fallback if app errors or user exits out of window
+                            chosenOption = hdd;
+                        }
+                        else
+                        {
+                            chosenOption = options[optionIndex];
+                        }
                     }
                     else
                     {
-                        chosenOption = options[optionIndex];
-                    }
-                }
-                else
-                {
-                    chosenOption = hdd;
-                }
-
-                std::string installPath;
-                if (chosenOption == hdd)
-                {
-                    installPath = uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR));
-                }
-                else if (chosenOption == gog)
-                {
-                    // Check if innoextract is installed. If not, prompt the user to install it.
-                    std::string dummy;
-                    if (!Platform::FindApp("innoextract", &dummy))
-                    {
-                        uiContext->ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
-                        return false;
+                        chosenOption = hdd;
                     }
 
-                    const std::string dest = Path::Combine(
-                        GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
-
-                    while (true)
+                    std::string installPath;
+                    if (chosenOption == hdd)
                     {
-                        uiContext->ShowMessageBox(LanguageGetString(STR_PLEASE_SELECT_GOG_INSTALLER));
-                        utf8 gogPath[4096];
-                        if (!Config::SelectGogInstaller(gogPath))
+                        installPath = uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR));
+                    }
+                    else if (chosenOption == gog)
+                    {
+                        // Check if innoextract is installed. If not, prompt the user to install it.
+                        std::string dummy;
+                        if (!Platform::FindApp("innoextract", &dummy))
                         {
-                            // The user clicked "Cancel", so stop trying.
+                            uiContext->ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
                             return false;
                         }
 
-                        uiContext->ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+                        const std::string dest = Path::Combine(
+                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
 
-                        if (Config::ExtractGogInstaller(gogPath, dest))
-                            break;
+                        while (true)
+                        {
+                            uiContext->ShowMessageBox(LanguageGetString(STR_PLEASE_SELECT_GOG_INSTALLER));
+                            utf8 gogPath[4096];
+                            if (!SelectGogInstaller(gogPath))
+                            {
+                                // The user clicked "Cancel", so stop trying.
+                                return false;
+                            }
 
-                        uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
+                            uiContext->ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+
+                            if (ExtractGogInstaller(gogPath, dest))
+                                break;
+
+                            uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
+                        }
+
+                        installPath = Path::Combine(dest, u8"app");
+                    }
+                    if (installPath.empty())
+                    {
+                        return false;
+                    }
+                    Get().general.RCT2Path = installPath;
+
+                    if (Platform::OriginalGameDataExists(installPath))
+                    {
+                        return true;
                     }
 
-                    installPath = Path::Combine(dest, u8"app");
+                    uiContext->ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
                 }
-                if (installPath.empty())
-                {
-                    return false;
-                }
-                gConfigGeneral.RCT2Path = installPath;
-
-                if (Platform::OriginalGameDataExists(installPath))
-                {
-                    return true;
-                }
-
-                uiContext->ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
+            }
+            catch (const std::exception& ex)
+            {
+                Console::Error::WriteLine(ex.what());
+                return false;
             }
         }
-        catch (const std::exception& ex)
+        // While we're at it, also check if the player has RCT1
+        std::string rct1Path = FindRCT1Path();
+        if (!rct1Path.empty())
         {
-            Console::Error::WriteLine(ex.what());
-            return false;
+            Get().general.RCT1Path = std::move(rct1Path);
         }
-    }
-    // While we're at it, also check if the player has RCT1
-    std::string rct1Path = Config::FindRCT1Path();
-    if (!rct1Path.empty())
-    {
-        gConfigGeneral.RCT1Path = std::move(rct1Path);
-    }
 
-    return true;
-}
+        return true;
+    }
+} // namespace OpenRCT2::Config

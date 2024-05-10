@@ -914,7 +914,7 @@ void PaintDrawMoneyStructs(DrawPixelInfo& dpi, PaintStringStruct* ps)
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         auto forceSpriteFont = false;
-        const auto& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+        const auto& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
         if (LocalisationService_UseTrueTypeFont() && FontSupportsStringSprite(currencyDesc.symbol_unicode))
         {
             forceSpriteFont = true;

@@ -26,6 +26,8 @@
 #    include "DrawingLock.hpp"
 #    include "TTF.h"
 
+using namespace OpenRCT2;
+
 static bool _ttfInitialised = false;
 
 constexpr int32_t kTTFSurfaceCacheSize = 256;
@@ -78,7 +80,7 @@ static void TTFToggleHinting(bool)
     for (int32_t i = 0; i < FontStyleCount; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
-        bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold;
+        bool use_hinting = Config::Get().fonts.EnableHinting && fontDesc->hinting_threshold;
         TTF_SetFontHinting(fontDesc->font, use_hinting ? 1 : 0);
     }
 

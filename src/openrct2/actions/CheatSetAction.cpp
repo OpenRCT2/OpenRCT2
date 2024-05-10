@@ -274,7 +274,7 @@ GameActions::Result CheatSetAction::Execute() const
 
     if (NetworkGetMode() == NETWORK_MODE_NONE)
     {
-        ConfigSaveDefault();
+        Config::Save();
     }
 
     WindowInvalidateByClass(WindowClass::Cheats);

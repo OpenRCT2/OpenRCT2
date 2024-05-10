@@ -360,9 +360,9 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
     auto f = p->get_future();
 
     std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
-    if (!gConfigNetwork.MasterServerUrl.empty())
+    if (!Config::Get().network.MasterServerUrl.empty())
     {
-        masterServerUrl = gConfigNetwork.MasterServerUrl;
+        masterServerUrl = Config::Get().network.MasterServerUrl;
     }
 
     Http::Request request;

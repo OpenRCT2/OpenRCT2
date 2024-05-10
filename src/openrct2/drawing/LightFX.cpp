@@ -28,6 +28,8 @@
 #include <cmath>
 #include <cstring>
 
+using namespace OpenRCT2;
+
 static uint8_t _bakedLightTexture_lantern_0[32 * 32];
 static uint8_t _bakedLightTexture_lantern_1[64 * 64];
 static uint8_t _bakedLightTexture_lantern_2[128 * 128];
@@ -130,12 +132,12 @@ void LightFXSetAvailable(bool available)
 
 bool LightFXIsAvailable()
 {
-    return _lightfxAvailable && gConfigGeneral.EnableLightFx != 0;
+    return _lightfxAvailable && Config::Get().general.EnableLightFx != 0;
 }
 
 bool LightFXForVehiclesIsAvailable()
 {
-    return LightFXIsAvailable() && gConfigGeneral.EnableLightFxForVehicles != 0;
+    return LightFXIsAvailable() && Config::Get().general.EnableLightFxForVehicles != 0;
 }
 
 void LightFXInit()

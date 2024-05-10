@@ -161,7 +161,7 @@ static void PathPaintQueueBanner(
         {
             ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
         }
-        if (gConfigGeneral.UpperCaseBanners)
+        if (Config::Get().general.UpperCaseBanners)
         {
             FormatStringToUpper(
                 gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());

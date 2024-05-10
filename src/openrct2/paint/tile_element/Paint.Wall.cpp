@@ -177,7 +177,7 @@ static void PaintWallScrollingText(
     auto ft = Formatter();
     banner->FormatTextTo(ft);
     char signString[256];
-    if (gConfigGeneral.UpperCaseBanners)
+    if (Config::Get().general.UpperCaseBanners)
     {
         FormatStringToUpper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
