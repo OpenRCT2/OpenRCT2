@@ -385,7 +385,7 @@ static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetInde
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
 
-    if (widget.text == STR_NONE || widget.text == STR_VIEWPORT)
+    if (widget.text == STR_NONE || widget.content == kWidgetContentEmpty)
         return;
 
     // Get the colour
