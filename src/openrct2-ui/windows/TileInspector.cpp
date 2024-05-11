@@ -1612,7 +1612,10 @@ static uint64_t PageDisabledWidgets[] = {
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
                     GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].light | 0x1000000);
 
-                const StringId stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+                StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
+                if (selectedRow || hoveredRow)
+                    stringFormat = STR_WHITE_STRING;
+
                 auto checkboxFormatter = Formatter();
                 checkboxFormatter.Add<StringId>(STR_STRING);
                 checkboxFormatter.Add<char*>(CheckBoxMarkString);

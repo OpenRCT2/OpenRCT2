@@ -480,8 +480,10 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_MISC:
-                    widgets[WIDX_OPEN_CLOSE_PARK].text = (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
-                                                                                                       : STR_CHEAT_OPEN_PARK;
+                    widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
+                    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+                        widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
+
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
                     SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.FreezeWeather);
                     SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.NeverendingMarketing);

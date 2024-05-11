@@ -919,10 +919,14 @@ static constexpr WindowParkAward _parkAwards[] = {
             DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
             money64 parkEntranceFee = Park::GetEntranceFee();
-            auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
-            screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
             ft = Formatter();
             ft.Add<money64>(parkEntranceFee);
+
+            StringId stringId = STR_BOTTOM_TOOLBAR_CASH;
+            if (parkEntranceFee == 0)
+                stringId = STR_FREE;
+
+            screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
             DrawTextBasic(dpi, screenCoords, stringId, ft, { colours[1] });
         }
 #pragma endregion
