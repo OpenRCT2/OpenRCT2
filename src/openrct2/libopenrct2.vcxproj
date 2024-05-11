@@ -398,6 +398,7 @@
     <ClInclude Include="ReplayManager.h" />
     <ClInclude Include="ride\CableLift.h" />
     <ClInclude Include="ride\coaster\BolligerMabillardTrack.hpp" />
+    <ClInclude Include="ride\coaster\CorkscrewRollerCoaster.hpp" />
     <ClInclude Include="ride\coaster\meta\AirPoweredVerticalCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AlpineCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
@@ -917,7 +918,6 @@
     <ClCompile Include="ride\coaster\ClassicStandUpRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\ClassicWoodenRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
-    <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\GigaCoaster.cpp" />
     <ClCompile Include="ride\coaster\HeartlineTwisterCoaster.cpp" />

@@ -548,7 +548,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpiralSlide(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionGoKarts(int32_t trackType);
