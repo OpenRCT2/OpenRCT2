@@ -12,7 +12,6 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
 
 namespace OpenRCT2::Ui::Windows
