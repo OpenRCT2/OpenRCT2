@@ -139,7 +139,7 @@ GameActions::Result LandSetHeightAction::Query() const
 
         auto clearResult = MapCanConstructWithClearAt(
             { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
-            CREATE_CROSSING_MODE_NONE);
+            CreateCrossingMode::none);
         if (clearResult.Error != GameActions::Status::Ok)
         {
             clearResult.Error = GameActions::Status::Disallowed;

@@ -135,7 +135,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
-            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -273,7 +273,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
-            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             if (banner != nullptr)
