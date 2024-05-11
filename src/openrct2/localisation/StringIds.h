@@ -12,7 +12,6 @@
 #include "../common.h"
 
 constexpr StringId STR_NONE = 0xFFFF;
-constexpr StringId STR_VIEWPORT = 0xFFFE;
 
 enum : uint16_t
 {

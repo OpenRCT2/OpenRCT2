@@ -12,14 +12,13 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
 
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
 static Widget _mainWidgets[] = {
-    MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
+    MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary),
     kWidgetsEnd,
 };
     // clang-format on
