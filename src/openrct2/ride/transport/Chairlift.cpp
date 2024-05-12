@@ -21,6 +21,8 @@
 
 #include <iterator>
 
+static constexpr MetalSupportType kSupportType = MetalSupportType::Truss;
+
 enum
 {
     SPR_CHAIRLIFT_CABLE_FLAT_SW_NE = 20500,
@@ -92,7 +94,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
 
         if (MetalASupportsPaintSetup(
-                session, MetalSupportType::Truss, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
+                session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
         {
             success = true;
         }
@@ -112,8 +114,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
         uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session.Support.height;
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Truss, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
         supportSegments[s].height = temp;
     }
 }

@@ -26,6 +26,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
+
 namespace AlpineRC
 {
     static void TrackFlat(
@@ -60,8 +62,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
             }
         }
         else
@@ -84,8 +86,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
             }
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -159,8 +161,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
             }
         }
         else
@@ -191,8 +193,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -240,8 +242,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
             }
         }
         else
@@ -272,8 +274,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -321,8 +323,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 6,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
+                    session.SupportColours);
             }
         }
         else
@@ -353,8 +355,8 @@ namespace AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 6,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
+                    session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -422,8 +424,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -500,8 +502,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -563,8 +565,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -712,8 +714,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -775,8 +777,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -880,7 +882,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -895,7 +897,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -942,8 +944,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1047,7 +1049,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -1062,8 +1064,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1210,8 +1211,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1224,8 +1224,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
@@ -1240,8 +1239,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1253,8 +1251,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
@@ -1391,8 +1388,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 9, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1405,8 +1401,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 9, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1421,8 +1416,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 9, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1434,8 +1428,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 9, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1572,8 +1565,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 6, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1586,8 +1578,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 6, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1602,8 +1593,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 6, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1615,8 +1605,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 6, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1753,8 +1742,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 2,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 2, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1767,8 +1755,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 2,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 2, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1783,8 +1770,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 2, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1796,8 +1782,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 2, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1934,8 +1919,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 8, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1948,8 +1932,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 8, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1964,8 +1947,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 8, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1977,8 +1959,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 8, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -2112,8 +2093,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2126,8 +2106,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -2142,8 +2121,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2155,8 +2133,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -2294,8 +2271,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2308,8 +2284,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -2324,8 +2299,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2337,8 +2311,7 @@ namespace AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
-                                session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -2396,8 +2369,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -2441,8 +2414,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -2500,8 +2473,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2552,8 +2525,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2604,8 +2577,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 6,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
+                session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2656,8 +2629,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 6,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
+                session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2730,8 +2703,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -2821,7 +2794,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -2834,7 +2807,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -2930,7 +2903,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -2943,7 +2916,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -3039,7 +3012,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3052,7 +3025,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -3148,7 +3121,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3161,7 +3134,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -3257,7 +3230,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3270,7 +3243,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3366,7 +3339,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3379,7 +3352,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3475,7 +3448,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3488,7 +3461,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3584,7 +3557,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3597,7 +3570,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3690,7 +3663,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3703,7 +3676,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3797,7 +3770,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3810,7 +3783,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3907,7 +3880,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3920,7 +3893,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -4016,7 +3989,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4029,7 +4002,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -4121,7 +4094,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4134,7 +4107,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -4226,7 +4199,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4239,7 +4212,7 @@ namespace AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -4294,8 +4267,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 2,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 2, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -4375,8 +4348,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 2,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 2, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -4441,8 +4414,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 1,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 1, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -4593,8 +4566,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 1,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 1, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -4656,8 +4629,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -4761,7 +4734,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -4776,7 +4749,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4823,8 +4796,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -4928,7 +4901,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -4943,8 +4916,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5007,8 +4979,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -5054,8 +5026,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -5109,8 +5081,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -5146,7 +5118,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 11)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5160,7 +5132,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                         break;
                 }
                 switch (direction)
@@ -5232,8 +5204,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -5381,8 +5353,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -5436,8 +5408,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -5585,8 +5557,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -5656,8 +5628,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5680,7 +5652,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5729,7 +5701,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5775,8 +5747,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 1:
@@ -5830,8 +5802,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5854,8 +5826,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 0, height,
-                            session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5904,8 +5875,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 0, height,
-                            session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5951,8 +5921,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 1:
@@ -6009,8 +5979,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 5,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 5, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -6090,8 +6060,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -6139,8 +6109,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -6225,8 +6195,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 9,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 9, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -6278,8 +6248,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 5,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 5, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -6359,8 +6329,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -6408,8 +6378,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -6494,8 +6464,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 9,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 9, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -6573,8 +6543,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -6725,8 +6695,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -6774,8 +6744,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -6931,8 +6901,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 9,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 9, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -6983,8 +6953,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -7125,7 +7095,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7139,7 +7109,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                         break;
                 }
                 switch (direction)
@@ -7189,8 +7159,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -7329,7 +7299,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7343,7 +7313,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7418,8 +7388,8 @@ namespace AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 0,
-                height, session.SupportColours);
+                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -7461,8 +7431,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -7508,7 +7478,7 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
                     height - 6, session.SupportColours);
                 switch (direction)
                 {
@@ -7566,8 +7536,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 3,
-                    height, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -7613,7 +7583,7 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
                     height - 6, session.SupportColours);
                 switch (direction)
                 {
@@ -7668,8 +7638,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height - 6, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height - 6,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
@@ -7718,8 +7688,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -7773,8 +7743,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : MetalSupportType::Fork, MetalSupportPlace::Centre, 8,
-                    height - 6, session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height - 6,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
@@ -7823,8 +7793,8 @@ namespace AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::Fork : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
-                    height, session.SupportColours);
+                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
+                    session.SupportColours);
                 switch (direction)
                 {
                     case 0:
