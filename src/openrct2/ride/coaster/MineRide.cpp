@@ -4240,55 +4240,14 @@ static void MineRideTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19615), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
+    constexpr ImageIndex images[NumOrthogonalDirections] = { 19612, 19613, 19614, 19615 };
 
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19612), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19614), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19613), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-
-            MetalASupportsPaintSetupRotated(
-                session, kSupportType, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
-            break;
-    }
+    if (trackSequence == 3)
+        MetalASupportsPaintSetupRotated(
+            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);

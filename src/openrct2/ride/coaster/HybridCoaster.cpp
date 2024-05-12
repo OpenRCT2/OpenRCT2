@@ -1379,32 +1379,20 @@ namespace HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
+        constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+            { SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 0, SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 1,
+              SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 0, SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 1 },
+            { SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 3, SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 1,
+              SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 2, SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 3 },
+        };
+
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
+            defaultDiagBoundLengths, nullptr);
+
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 3),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 1),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1413,128 +1401,27 @@ namespace HybridRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 0),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            WoodenASupportsPaintSetup(
-                                session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 0),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                        break;
-                    case 1:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                        break;
-                    case 2:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                        break;
-                    case 3:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                        break;
-                }
+                WoodenASupportsPaintSetupRotated(
+                    session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32);
+
                 break;
             case 2:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 2),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 0),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                        break;
-                    case 1:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                        break;
-                    case 2:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                        break;
-                }
+                WoodenASupportsPaintSetupRotated(
+                    session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32);
+
                 break;
             case 3:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 1),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 1),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32);
+
                 break;
         }
     }

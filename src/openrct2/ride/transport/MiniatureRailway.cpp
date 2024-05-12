@@ -1791,13 +1791,6 @@ static void PaintMiniatureRailwayTrackRightEighthToOrthogonal(
     PaintMiniatureRailwayTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static constexpr bool miniature_railway_diag_image_segment[][4] = {
-    { false, true, false, false },
-    { false, false, false, true },
-    { false, false, true, false },
-    { true, false, false, false },
-};
-
 static constexpr WoodenSupportSubType _diagSupportTypes[NumOrthogonalDirections][4] = {
     { WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw },
     { WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, WoodenSupportSubType::NwSe },
@@ -1848,7 +1841,7 @@ static void MiniatureRailwayTrackDiagFlat(
     }
 
     uint32_t imageId = miniature_railway_track_pieces_diag_flat[direction];
-    bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
+    bool drawRail = kDiagSpriteMap[direction][trackSequence];
 
     if (isSupported)
     {
@@ -1928,7 +1921,7 @@ static void MiniatureRailwayTrackDiag25DegUp(
     };
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up[direction];
-    bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
+    bool drawRail = kDiagSpriteMap[direction][trackSequence];
     static constexpr int8_t offsetB[] = { +8, 0, +8, +8 };
     if (hasSupports)
     {
@@ -1980,7 +1973,7 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
     }
 
     uint32_t imageId = miniature_railway_track_pieces_diag_flat_to_25_deg_up[direction];
-    bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
+    bool drawRail = kDiagSpriteMap[direction][trackSequence];
 
     if (hasSupports)
     {
@@ -2054,7 +2047,7 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
     };
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up_to_flat[direction];
-    bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
+    bool drawRail = kDiagSpriteMap[direction][trackSequence];
 
     static constexpr int8_t railOffsets[] = { +8, 0, +8, +8 };
 
@@ -2124,7 +2117,7 @@ static void MiniatureRailwayTrackDiag25DegDown(
     }
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up[(direction + 2) % 4];
-    bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
+    bool drawRail = kDiagSpriteMap[direction][trackSequence];
     static constexpr int8_t railOffsets[] = { 0, +8, +8, +8 };
 
     static constexpr int8_t offsetsB[4][4][2] = {
@@ -2206,7 +2199,7 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
     };
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4];
-    bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
+    bool drawRail = kDiagSpriteMap[direction][trackSequence];
     static constexpr int8_t railOffsets[] = { 0, +8, +8, +8 };
 
     if (hasSupports)
@@ -2257,7 +2250,7 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
     }
 
     uint32_t imageId = miniature_railway_track_pieces_diag_flat_to_25_deg_up[(direction + 2) % 4];
-    bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
+    bool drawRail = kDiagSpriteMap[direction][trackSequence];
 
     if (hasSupports)
     {

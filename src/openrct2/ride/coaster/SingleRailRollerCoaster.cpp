@@ -1531,177 +1531,24 @@ namespace SingleRailRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        switch (trackSequence)
-        {
-            case 0:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 3)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
-                break;
-            case 1:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 0)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 0)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
-                break;
-            case 2:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 2)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 0)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            break;
-                    }
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
-                break;
-            case 3:
-                if (trackElement.HasChain())
-                {
-                    switch (direction)
-                    {
-                        case 0:
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                            break;
-                        case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 1)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
-                            break;
-                        case 2:
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 0:
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                            break;
-                        case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction,
-                                session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1)),
-                                { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
-                            break;
-                        case 2:
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalASupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
-                            break;
-                    }
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
-                break;
-        }
+        constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+            { SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 0, SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1,
+              SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 0, SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1 },
+            { SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 0, SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 1,
+              SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 2, SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 3 },
+        };
+
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
+            defaultDiagBoundLengths, nullptr);
+
+        if (trackSequence == 3)
+            MetalASupportsPaintSetupRotated(
+                session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
 
     static void TrackDiagBrakes(

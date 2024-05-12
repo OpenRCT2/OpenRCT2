@@ -4282,8 +4282,7 @@ static void JuniorRCLeftEighthToOrthogonalPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t map[] = { 4, 2, 3, 1, 0 };
-    trackSequence = map[trackSequence];
+    trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     JuniorRCRightEighthToDiagPaintSetup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
@@ -4292,8 +4291,7 @@ static void JuniorRCRightEighthToOrthogonalPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t map[] = { 4, 2, 3, 1, 0 };
-    trackSequence = map[trackSequence];
+    trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     JuniorRCLeftEighthToDiagPaintSetup(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
@@ -4610,8 +4608,7 @@ static void JuniorRCLeftEighthToOrthogonalBankPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
-    trackSequence = map[trackSequence];
+    trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     JuniorRCRightEighthToDiagBankPaintSetup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
@@ -4620,8 +4617,7 @@ static void JuniorRCRightEighthToOrthogonalBankPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
-    trackSequence = map[trackSequence];
+    trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     JuniorRCLeftEighthToDiagBankPaintSetup(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
@@ -4637,9 +4633,8 @@ static void JuniorRCPaintTrackDiagFlat(
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(
-            session, (direction & 1) ? MetalSupportType::ForkAlt : kSupportType, kDiagSupportPlacement[direction], 0, height,
-            session.SupportColours);
+        MetalASupportsPaintSetupRotated(
+            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];

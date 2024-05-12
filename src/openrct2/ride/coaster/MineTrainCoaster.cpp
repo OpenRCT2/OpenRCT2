@@ -5416,63 +5416,29 @@ static void MineTrainRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
+    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+        { 20386, 20387, 20388, 20389 },
+        { 20358, 20359, 20360, 20361 },
+    };
+
+    TrackPaintUtilDiagTilesPaint(
+        session, 1, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
+
     switch (trackSequence)
     {
-        case 0:
-            if (direction == 3)
-            {
-                ImageIndex imageIndex = trackElement.HasChain() ? 20389 : 20361;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
-                    { { -16, -16, height }, { 32, 32, 1 } });
-            }
-
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
-            break;
         case 1:
-            if (direction == 0)
-            {
-                ImageIndex imageIndex = trackElement.HasChain() ? 20386 : 20358;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
-                    { { -16, -16, height }, { 32, 32, 1 } });
-            }
-
             WoodenASupportsPaintSetupRotated(
                 session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
-
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 2:
-            if (direction == 2)
-            {
-                ImageIndex imageIndex = trackElement.HasChain() ? 20388 : 20360;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
-                    { { -16, -16, height }, { 32, 32, 1 } });
-            }
-
             WoodenASupportsPaintSetupRotated(
                 session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
-
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
-            break;
-        case 3:
-            if (direction == 1)
-            {
-                ImageIndex imageIndex = trackElement.HasChain() ? 20387 : 20359;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
-                    { { -16, -16, height }, { 32, 32, 1 } });
-            }
-
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
+
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void MineTrainRCTrackDiagBrakes(

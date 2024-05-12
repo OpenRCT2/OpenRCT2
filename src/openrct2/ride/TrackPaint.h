@@ -391,6 +391,13 @@ extern const int8_t defaultEighthToDiagThickness[4][4];
 extern const CoordsXY defaultDiagBoundLengths[4];
 extern const CoordsXY defaultDiagTileOffsets[4];
 
+constexpr bool kDiagSpriteMap[NumOrthogonalDirections][4] = {
+    { false, true, false, false },
+    { false, false, false, true },
+    { false, false, true, false },
+    { true, false, false, false },
+};
+
 extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 
 extern const size_t MiniGolfPeepAnimationLengths[];
