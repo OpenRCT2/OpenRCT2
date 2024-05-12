@@ -20,6 +20,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr WoodenSupportType kSupportType = WoodenSupportType::Mine;
+
 /** rct2: 0x0087694C */
 static void HeartlineTwisterRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -89,7 +91,7 @@ static void HeartlineTwisterRCTrackFlat(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -203,7 +205,7 @@ static void HeartlineTwisterRCTrack25DegUp(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25Deg);
 
     if (direction == 0 || direction == 3)
@@ -301,7 +303,7 @@ static void HeartlineTwisterRCTrack60DegUp(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up60Deg);
 
     if (direction == 0 || direction == 3)
@@ -399,7 +401,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::FlatToUp25Deg);
 
     if (direction == 0 || direction == 3)
@@ -497,7 +499,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToUp60Deg);
 
     if (direction == 0 || direction == 3)
@@ -595,7 +597,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up60DegToUp25Deg);
 
     if (direction == 0 || direction == 3)
@@ -693,7 +695,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToFlat);
 
     if (direction == 0 || direction == 3)
@@ -801,7 +803,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::FlatToUp25Deg);
 
             if (direction == 0 || direction == 3)
@@ -877,7 +879,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25DegToFlat);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -921,7 +923,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+                session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32);
@@ -1092,7 +1094,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25DegToFlat);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1136,7 +1138,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+                session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32);
@@ -1179,7 +1181,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::FlatToUp25Deg);
 
             if (direction == 0 || direction == 3)
@@ -1428,7 +1430,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1667,7 +1669,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

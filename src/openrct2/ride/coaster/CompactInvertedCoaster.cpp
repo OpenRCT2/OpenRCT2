@@ -20,6 +20,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
+
 static constexpr ImageIndex kCompactInvertedDiagFlatImages[2][NumOrthogonalDirections] = {
     { 26781, 26782, 26783, 26784 },
     { 26809, 26810, 26811, 26812 },
@@ -92,8 +94,7 @@ static void CompactInvertedRCTrackFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -121,7 +122,7 @@ static void CompactInvertedRCTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.SupportColours.WithIndex(imageIds[direction][2]), { 0, 6, height + 29 },
         { { 0, 6, height + 29 }, { 32, 20, 3 } });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::TubesInverted);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -193,23 +194,19 @@ static void CompactInvertedRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 56,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 56, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 56,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 56, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 56,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 56, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 56,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 56, session.SupportColours);
                 break;
         }
     }
@@ -359,23 +356,19 @@ static void CompactInvertedRCTrackFlatTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 48,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 48, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 48,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 48, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 48,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 48, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 48,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 48, session.SupportColours);
                 break;
         }
     }
@@ -549,23 +542,19 @@ static void CompactInvertedRCTrack60DegUpTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 70,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 70, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 70,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 70, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 70,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 70, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 70,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 70, session.SupportColours);
                 break;
         }
     }
@@ -646,23 +635,19 @@ static void CompactInvertedRCTrack25DegUpToFlat(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 46, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 46, session.SupportColours);
                 break;
         }
     }
@@ -766,8 +751,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -911,8 +895,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -976,8 +959,7 @@ static void CompactInvertedRCTrackFlatToLeftBank(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -1023,8 +1005,7 @@ static void CompactInvertedRCTrackFlatToRightBank(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -1070,8 +1051,7 @@ static void CompactInvertedRCTrackLeftBankToFlat(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -1117,8 +1097,7 @@ static void CompactInvertedRCTrackRightBankToFlat(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -1165,8 +1144,7 @@ static void CompactInvertedRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1310,8 +1288,7 @@ static void CompactInvertedRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -1379,23 +1356,19 @@ static void CompactInvertedRCTrackLeftBankTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 46, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 46, session.SupportColours);
                 break;
         }
     }
@@ -1454,23 +1427,19 @@ static void CompactInvertedRCTrackRightBankTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 46, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 46, session.SupportColours);
                 break;
         }
     }
@@ -1529,23 +1498,19 @@ static void CompactInvertedRCTrack25DegUpToLeftBank(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 46, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 46, session.SupportColours);
                 break;
         }
     }
@@ -1604,23 +1569,19 @@ static void CompactInvertedRCTrack25DegUpToRightBank(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 46, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 46, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 46,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 46, session.SupportColours);
                 break;
         }
     }
@@ -1707,8 +1668,7 @@ static void CompactInvertedRCTrackLeftBank(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -1759,8 +1719,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1893,8 +1852,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
 
             switch (direction)
             {
@@ -1946,8 +1904,7 @@ static void CompactInvertedRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2079,8 +2036,7 @@ static void CompactInvertedRCTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 48, session.SupportColours);
 
             switch (direction)
             {
@@ -2154,8 +2110,7 @@ static void CompactInvertedRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2198,13 +2153,11 @@ static void CompactInvertedRCTrackSBendLeft(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -2245,13 +2198,11 @@ static void CompactInvertedRCTrackSBendLeft(
             {
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -2290,8 +2241,7 @@ static void CompactInvertedRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -2347,8 +2297,7 @@ static void CompactInvertedRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2391,13 +2340,11 @@ static void CompactInvertedRCTrackSBendRight(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -2438,13 +2385,11 @@ static void CompactInvertedRCTrackSBendRight(
             {
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -2483,8 +2428,7 @@ static void CompactInvertedRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -2545,23 +2489,19 @@ static void CompactInvertedRCTrackLeftVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
                     break;
             }
 
@@ -2805,23 +2745,19 @@ static void CompactInvertedRCTrackLeftVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
                     break;
             }
 
@@ -2884,23 +2820,19 @@ static void CompactInvertedRCTrackRightVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
                     break;
             }
 
@@ -3143,23 +3075,19 @@ static void CompactInvertedRCTrackRightVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
                     break;
             }
 
@@ -3217,8 +3145,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3295,8 +3222,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -3361,8 +3287,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3440,8 +3365,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -3502,8 +3426,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3546,8 +3469,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
 
             switch (direction)
             {
@@ -3599,8 +3521,7 @@ static void CompactInvertedRCTrackRightQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3643,8 +3564,7 @@ static void CompactInvertedRCTrackRightQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
 
             switch (direction)
             {
@@ -3714,8 +3634,7 @@ static void CompactInvertedRCTrackLeftTwistDownToUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3773,8 +3692,7 @@ static void CompactInvertedRCTrackLeftTwistDownToUp(
                         session, direction, session.TrackColours.WithIndex(27002), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -3833,8 +3751,7 @@ static void CompactInvertedRCTrackRightTwistDownToUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3892,8 +3809,7 @@ static void CompactInvertedRCTrackRightTwistDownToUp(
                         session, direction, session.TrackColours.WithIndex(27014), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -3943,8 +3859,7 @@ static void CompactInvertedRCTrackLeftTwistUpToDown(
                         session, direction, session.TrackColours.WithIndex(27001), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -4018,8 +3933,7 @@ static void CompactInvertedRCTrackLeftTwistUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -4062,8 +3976,7 @@ static void CompactInvertedRCTrackRightTwistUpToDown(
                         session, direction, session.TrackColours.WithIndex(27013), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -4137,8 +4050,7 @@ static void CompactInvertedRCTrackRightTwistUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             switch (direction)
             {
@@ -4192,23 +4104,19 @@ static void CompactInvertedRCTrackHalfLoopUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 56,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 56, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 56,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 56, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 56,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 56, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 56,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 56, session.SupportColours);
                     break;
             }
 
@@ -4362,8 +4270,7 @@ static void CompactInvertedRCTrackLeftCorkscrewUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -4422,8 +4329,7 @@ static void CompactInvertedRCTrackLeftCorkscrewUp(
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 28, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 28, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -4486,8 +4392,7 @@ static void CompactInvertedRCTrackRightCorkscrewUp(
                         PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -4546,8 +4451,7 @@ static void CompactInvertedRCTrackRightCorkscrewUp(
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 28, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 28, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -4716,8 +4620,7 @@ static void CompactInvertedRCTrackBrakes(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -4764,8 +4667,7 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -4914,8 +4816,7 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
 
             switch (direction)
             {
@@ -4971,8 +4872,7 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -5120,8 +5020,7 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
 
             switch (direction)
             {
@@ -5177,8 +5076,7 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -5327,8 +5225,7 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
 
             switch (direction)
             {
@@ -5384,8 +5281,7 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 56, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -5533,8 +5429,7 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
 
             switch (direction)
             {
@@ -5555,7 +5450,7 @@ static void CompactInvertedRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::TubesInverted);
+    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, kSupportType);
 
     switch (direction)
     {
@@ -5923,8 +5818,7 @@ static void CompactInvertedRCTrackLeftEighthToDiag(
 
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -6048,23 +5942,19 @@ static void CompactInvertedRCTrackLeftEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -6107,8 +5997,7 @@ static void CompactInvertedRCTrackRightEighthToDiag(
 
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -6232,23 +6121,19 @@ static void CompactInvertedRCTrackRightEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -6315,8 +6200,7 @@ static void CompactInvertedRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -6440,23 +6324,19 @@ static void CompactInvertedRCTrackLeftEighthBankToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -6505,8 +6385,7 @@ static void CompactInvertedRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -6630,23 +6509,19 @@ static void CompactInvertedRCTrackRightEighthBankToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -6685,7 +6560,7 @@ inline void CompactInvertedRCTrackDiagFlatBase(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, kDiagSupportPlacement[direction], 0, height + 38, session.SupportColours);
+            session, kSupportType, kDiagSupportPlacement[direction], 0, height + 38, session.SupportColours);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -6855,23 +6730,19 @@ static void CompactInvertedRCTrackDiag25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 50, session.SupportColours);
                     break;
             }
 
@@ -6965,23 +6836,19 @@ static void CompactInvertedRCTrackDiag60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 32, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 32, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 36, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 36, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 32, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 32, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 36, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 36, height + 38, session.SupportColours);
                     break;
             }
 
@@ -7131,23 +6998,19 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -7241,23 +7104,19 @@ static void CompactInvertedRCTrackDiag25DegUpTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 16, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 16, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 16, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 16, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 16, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 16, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 16, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 16, height + 38, session.SupportColours);
                     break;
             }
 
@@ -7351,23 +7210,19 @@ static void CompactInvertedRCTrackDiag60DegUpTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 21, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 21, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 21, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 21, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 21, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 21, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 21, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 21, height + 38, session.SupportColours);
                     break;
             }
 
@@ -7517,23 +7372,19 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
                     break;
             }
 
@@ -7683,23 +7534,19 @@ static void CompactInvertedRCTrackDiag25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 50,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 50, session.SupportColours);
                     break;
             }
 
@@ -7793,23 +7640,19 @@ static void CompactInvertedRCTrackDiag60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 24, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 24, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 28, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 28, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 24, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 24, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 28, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 28, height + 38, session.SupportColours);
                     break;
             }
 
@@ -7956,23 +7799,19 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
                     break;
             }
             break;
@@ -8066,23 +7905,19 @@ static void CompactInvertedRCTrackDiag25DegDownTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 17, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 17, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 17, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 17, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 17, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 17, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 17, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 17, height + 38, session.SupportColours);
                     break;
             }
 
@@ -8176,23 +8011,19 @@ static void CompactInvertedRCTrackDiag60DegDownTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 8, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 8, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 8, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 8, height + 38, session.SupportColours);
                     break;
             }
 
@@ -8342,23 +8173,19 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -8452,23 +8279,19 @@ static void CompactInvertedRCTrackDiagFlatToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -8562,23 +8385,19 @@ static void CompactInvertedRCTrackDiagFlatToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -8672,23 +8491,19 @@ static void CompactInvertedRCTrackDiagLeftBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -8782,23 +8597,19 @@ static void CompactInvertedRCTrackDiagRightBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -8892,23 +8703,19 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -9002,23 +8809,19 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -9112,23 +8915,19 @@ static void CompactInvertedRCTrackDiag25DegUpToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
                     break;
             }
 
@@ -9222,23 +9021,19 @@ static void CompactInvertedRCTrackDiag25DegUpToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
                     break;
             }
 
@@ -9329,23 +9124,19 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
                     break;
             }
             break;
@@ -9436,23 +9227,19 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 44,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
                     break;
             }
             break;
@@ -9546,23 +9333,19 @@ static void CompactInvertedRCTrackDiag25DegDownToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -9656,23 +9439,19 @@ static void CompactInvertedRCTrackDiag25DegDownToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -9766,23 +9545,19 @@ static void CompactInvertedRCTrackDiagLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -9876,23 +9651,19 @@ static void CompactInvertedRCTrackDiagRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 38, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 38,
-                        session.SupportColours);
+                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height + 38, session.SupportColours);
                     break;
             }
 
@@ -9925,8 +9696,7 @@ static void CompactInvertedRCTrackBlockBrakes(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);

@@ -20,6 +20,8 @@
 #include "../TrackPaint.h"
 #include "../VehiclePaint.h"
 
+static constexpr MetalSupportType kSupportType = MetalSupportType::Boxed;
+
 enum
 {
     SprCarRideFlatSwNe = 28773,
@@ -183,7 +185,7 @@ static void PaintCarRideTrackFlat(
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -224,7 +226,7 @@ static void PaintCarRideTrack25DegUp(
             break;
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -265,7 +267,7 @@ static void PaintCarRideTrackFlatTo25DegUp(
             break;
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -306,7 +308,7 @@ static void PaintCarRideTrack25DegUpToFlat(
             break;
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -376,7 +378,7 @@ static void PaintCarRideStation(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
@@ -398,8 +400,7 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 
@@ -459,7 +460,7 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
@@ -551,8 +552,7 @@ static void PaintCarRideTrack60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 32, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -611,8 +611,7 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -671,8 +670,7 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -732,7 +730,7 @@ static void PaintCarRideTrackLogBumps(
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(

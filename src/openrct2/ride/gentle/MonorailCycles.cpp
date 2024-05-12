@@ -18,6 +18,8 @@
 #include "../TrackPaint.h"
 #include "../VehiclePaint.h"
 
+static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
+
 enum
 {
     SprMonorailCyclesFlatSwNe = 16820,
@@ -179,7 +181,7 @@ static void PaintMonorailCyclesTrackFlat(
     }
 
     MetalASupportsPaintSetup(
-        session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height,
+        session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::Centre, -1, height,
         session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
@@ -235,8 +237,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -257,8 +258,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -318,49 +318,49 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, MetalSupportPlace::Centre,
-                supportSpecial, supportHeight, session.SupportColours);
+                session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::Centre, supportSpecial,
+                supportHeight, session.SupportColours);
             break;
         case 2:
             if (direction == 0)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
-                    MetalSupportPlace::BottomRightSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::BottomRightSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             if (direction == 1)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
-                    MetalSupportPlace::BottomLeftSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::BottomLeftSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             if (direction == 2)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
-                    MetalSupportPlace::TopLeftSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::TopLeftSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             if (direction == 3)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
-                    MetalSupportPlace::TopRightSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::TopRightSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             break;
         case 5:
             if (direction == 0)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
-                    MetalSupportPlace::BottomLeftSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::BottomLeftSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             if (direction == 1)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
-                    MetalSupportPlace::TopLeftSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::TopLeftSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             if (direction == 2)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
-                    MetalSupportPlace::TopRightSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::TopRightSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             if (direction == 3)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
-                    MetalSupportPlace::BottomRightSide, supportSpecial, supportHeight, session.SupportColours);
+                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::BottomRightSide,
+                    supportSpecial, supportHeight, session.SupportColours);
             break;
         case 6:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt, MetalSupportPlace::Centre,
-                supportSpecial, supportHeight, session.SupportColours);
+                session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::Centre, supportSpecial,
+                supportHeight, session.SupportColours);
             break;
     }
 
@@ -486,16 +486,14 @@ static void PaintMonorailCyclesTrackSBendLeft(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Stick, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                 break;
             case 3:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -606,17 +604,14 @@ static void PaintMonorailCyclesTrackSBendRight(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Stick, MetalSupportPlace::BottomRightSide, 0, height - 2,
-                    session.SupportColours);
+                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height - 2, session.SupportColours);
                 break;
             case 3:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
         }
     }
