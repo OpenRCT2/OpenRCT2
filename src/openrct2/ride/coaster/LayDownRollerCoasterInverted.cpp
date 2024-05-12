@@ -19,6 +19,8 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "CorkscrewRollerCoaster.hpp"
+
 static constexpr ImageIndex kLaydownDiagFlatImages[2][NumOrthogonalDirections] = {
     { 26781, 26782, 26783, 26784 },
     { 26809, 26810, 26811, 26812 },
@@ -7468,7 +7470,7 @@ static void LayDownRCTrackRightFlyerCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftFlyerCorkscrewUp);
+    auto function = GetTrackPaintFunctionCorkscrewRC<MetalSupportType::TubesInverted>(TrackElemType::LeftFlyerCorkscrewUp);
     function(session, ride, 2 - trackSequence, (direction + 3) % 4, height, trackElement);
     return;
 }
