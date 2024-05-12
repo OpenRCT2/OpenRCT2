@@ -80,7 +80,7 @@ int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& 
 
 static bool MapLoc68BABCShouldContinue(
     TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money64& price,
-    uint8_t crossingMode, bool canBuildCrossing)
+    CreateCrossingMode crossingMode, bool canBuildCrossing)
 {
     if (clearFunc != nullptr)
     {
@@ -90,17 +90,16 @@ static bool MapLoc68BABCShouldContinue(
         }
     }
 
-    // Crossing mode 1: building track over path
     auto tileElement = *tileElementPtr;
-    if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TileElementType::Path
+    if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->GetType() == TileElementType::Path
         && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
     {
         return true;
     }
-    // Crossing mode 2: building path over track
     else if (
-        crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TileElementType::Track
-        && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
+        crossingMode == CreateCrossingMode::pathOverTrack && canBuildCrossing
+        && tileElement->GetType() == TileElementType::Track && tileElement->GetBaseZ() == pos.baseZ
+        && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
         if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
@@ -123,7 +122,8 @@ static bool MapLoc68BABCShouldContinue(
  *  bl = bl
  */
 GameActions::Result MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, CreateCrossingMode crossingMode,
+    bool isTree)
 {
     auto res = GameActions::Result();
 
