@@ -1402,6 +1402,14 @@ void WindowResizeGui(int32_t width, int32_t height)
         optionsWind->windowPos.x = width - 80;
     }
 
+    // Keep options window centred after a resize
+    WindowBase* optionsWindow = WindowFindByClass(WindowClass::Options);
+    if (optionsWindow != nullptr)
+    {
+        optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
+        optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
+    }
+
     GfxInvalidateScreen();
 }
 

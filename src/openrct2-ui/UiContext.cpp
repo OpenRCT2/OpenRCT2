@@ -785,14 +785,6 @@ private:
             WindowRelocateWindows(_width, _height);
         }
 
-        // Keep options window centred after a resize
-        auto* optionsWindow = WindowFindByClass(WindowClass::Options);
-        if (optionsWindow != nullptr)
-        {
-            optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
-            optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
-        }
-
         GfxInvalidateScreen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
