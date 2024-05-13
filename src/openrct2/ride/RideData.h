@@ -210,8 +210,8 @@ struct RideTrackSpeedSettings
 
 struct RideBoosterSettings
 {
-    uint8_t PoweredLiftAcceleration;
-    uint8_t BoosterAcceleration;
+    uint8_t PoweredLiftAcceleration = 0;
+    uint8_t BoosterAcceleration = 0;
     uint8_t AccelerationFactor = 12; // the amount to right-shift the launch speed for powered launch from a station
 };
 
@@ -561,10 +561,10 @@ constexpr RideTypeDescriptor DummyRTD =
     .Flags = 0,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 1 },
-    .TrackSpeedSettings = { 30, 30 },
-    .BoosterSettings = {0, 0, 12},
-    .LegacyBoosterSettings = {0, 0, 2},
+    .OperatingSettings = {},
+    .TrackSpeedSettings = {},
+    .BoosterSettings = {},
+    .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = "(INVALID)",
