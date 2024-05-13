@@ -1160,19 +1160,12 @@ constexpr CoordsXY defaultDiagBoundLengths[4] = {
     { 32, 32 },
 };
 
-static constexpr int8_t diag_sprite_map[4][4] = {
-    { -1, 0, -1, -1 },
-    { -1, -1, -1, 0 },
-    { -1, -1, 0, -1 },
-    { 0, -1, -1, -1 },
-};
-
 void TrackPaintUtilDiagTilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4])
 {
-    int32_t index = diag_sprite_map[direction][trackSequence];
-    if (index < 0)
+    auto shouldDraw = kDiagSpriteMap[direction][trackSequence];
+    if (!shouldDraw)
     {
         return;
     }

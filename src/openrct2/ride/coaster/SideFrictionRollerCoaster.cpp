@@ -1947,181 +1947,41 @@ static void SideFrictionRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
+    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+        { 21822, 21823, 21824, 21825 },
+        { 21846, 21847, 21848, 21849 },
+    };
+    const ImageIndex additionalImages[2][NumOrthogonalDirections] = {
+        { 21826, ImageIndexUndefined, 21827, ImageIndexUndefined },
+        { 21850, ImageIndexUndefined, 21851, ImageIndexUndefined },
+    };
+
+    TrackPaintUtilDiagTilesPaint(
+        session, 2, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
+
     switch (trackSequence)
     {
-        case 0:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21849), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21825), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
-            break;
         case 1:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21846), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21850), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                        break;
-                    case 1:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                        break;
-                    case 2:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                        break;
-                    case 3:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21822), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21826), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                        break;
-                    case 1:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                        break;
-                    case 2:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                        break;
-                    case 3:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
+                { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+
+            WoodenASupportsPaintSetupRotated(
+                session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
             break;
         case 2:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 0:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                        break;
-                    case 1:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                        break;
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21848), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21851), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 0:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                        break;
-                    case 1:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                        break;
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21824), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21827), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        WoodenASupportsPaintSetup(
-                            session, kSupportType, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
-            break;
-        case 3:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21847), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(21823), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 2 } });
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
+                { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+
+            WoodenASupportsPaintSetupRotated(
+                session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
             break;
     }
+
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x0077853C */
