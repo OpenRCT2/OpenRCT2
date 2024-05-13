@@ -19,6 +19,7 @@
 #include "core/String.hpp"
 #include "object/AudioSampleTable.h"
 
+#include <algorithm>
 #include <cstdio>
 
 using namespace OpenRCT2;
