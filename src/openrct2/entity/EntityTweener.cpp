@@ -14,6 +14,7 @@
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
+#include <algorithm>
 #include <cmath>
 
 void EntityTweener::AddEntity(EntityBase* entity)

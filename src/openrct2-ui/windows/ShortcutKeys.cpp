@@ -10,6 +10,7 @@
 #include "../input/ShortcutManager.h"
 #include "Window.h"
 
+#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <functional>
 
 template<class ForwardIt, class T, class Compare = std::less<>>
