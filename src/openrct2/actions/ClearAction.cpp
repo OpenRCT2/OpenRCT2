@@ -22,8 +22,6 @@
 #include "SmallSceneryRemoveAction.h"
 #include "WallRemoveAction.h"
 
-#include <algorithm>
-
 ClearAction::ClearAction(MapRange range, ClearableItems itemsToClear)
     : _range(range)
     , _itemsToClear(itemsToClear)

@@ -27,6 +27,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
+#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
@@ -472,7 +474,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
-            if (!gConfigGeneral.DebuggingTools)
+            if (!Config::Get().general.DebuggingTools)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
             }
@@ -560,19 +562,21 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             if (guest != nullptr)
             {
                 // If holding a balloon
-                if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
+                if (animationFrame >= kPeepSpriteBalloonStateWatchRideId
+                    && animationFrame < kPeepSpriteBalloonStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
                 }
 
                 // If holding umbrella
-                if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
+                if (animationFrame >= kPeepSpriteUmbrellaStateNoneId
+                    && animationFrame < kPeepSpriteUmbrellaStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
                 }
 
                 // If wearing hat
-                if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
+                if (animationFrame >= kPeepSpriteHatStateWatchRideId && animationFrame < kPeepSpriteHatStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
                 }
@@ -1861,7 +1865,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
                     SafeStrCat(buffer, buffer2, sizeof(buffer));
                 }
-                GfxDrawString(dpi, screenCoords, buffer, {});
+                DrawText(dpi, screenCoords, {}, buffer);
             }
             screenCoords.y += kListRowHeight;
             {
@@ -1920,7 +1924,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
         if (window == nullptr)
         {
             int32_t windowWidth = 192;
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
             window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);

@@ -18,6 +18,7 @@
 #include "LanguagePack.h"
 #include "Localisation.h"
 #include "LocalisationService.h"
+#include "StringIds.h"
 
 #include <stack>
 

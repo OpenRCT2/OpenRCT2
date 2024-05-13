@@ -17,7 +17,6 @@
 #    include "ScParkMessage.hpp"
 #    include "ScResearch.hpp"
 
-#    include <algorithm>
 #    include <vector>
 
 namespace OpenRCT2::Scripting

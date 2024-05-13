@@ -10,7 +10,8 @@
 #pragma once
 
 #include "../common.h"
-#include "../config/Config.h"
+#include "../config/ConfigTypes.h"
+#include "../core/String.hpp"
 
 #include <ctime>
 #include <string>
@@ -42,6 +43,7 @@ enum class SPECIAL_FOLDER
 
 struct RealWorldDate;
 struct RealWorldTime;
+struct TTFFontDescriptor;
 
 namespace Platform
 {
@@ -135,21 +137,3 @@ public:
 };
 
 #endif // __ANDROID__
-
-#ifdef _WIN32
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include <windows.h>
-#    undef CreateDirectory
-#    undef CreateWindow
-#    undef GetMessage
-
-// This function cannot be marked as 'static', even though it may seem to be,
-// as it requires external linkage, which 'static' prevents
-__declspec(dllexport) int32_t
-    StartOpenRCT2(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCommandLine, int32_t nCmdShow);
-#endif // _WIN32

@@ -217,6 +217,11 @@ declare global {
         readonly mode: GameMode;
 
         /**
+         * Whether the game is currently paused or not.
+         */
+        readonly paused: boolean;
+
+        /**
          * Render the current state of the map and save to disc.
          * Useful for server administration and timelapse creation.
          * @param options Options that control the capture and output file.
@@ -2677,6 +2682,34 @@ declare global {
      */
     type PeepType = "guest" | "staff";
 
+    type GuestAnimation =
+        "walking" |
+        "checkTime" |
+        "watchRide" |
+        "eatFood" |
+        "shakeHead" |
+        "emptyPockets" |
+        "holdMat" |
+        "sittingIdle" |
+        "sittingEatFood" |
+        "sittingLookAroundLeft" |
+        "sittingLookAroundRight" |
+        "hanging" |
+        "wow" |
+        "throwUp" |
+        "jump" |
+        "drowning" |
+        "joy" |
+        "readMap" |
+        "wave" |
+        "wave2" |
+        "takePhoto" |
+        "clap" |
+        "disgust" |
+        "drawPicture" |
+        "beingWatched" |
+        "withdrawMoney";
+
     /**
      * Represents a guest.
      */
@@ -2822,6 +2855,31 @@ declare global {
          * Removes all items from the guest's possession.
          */
         removeAllItems(): void;
+
+        /**
+         * The animations available to this guest.
+         */
+        readonly availableAnimations: GuestAnimation[];
+
+        /**
+         * Gets an array of sprite ids representing a particular guest animation.
+         */
+        getAnimationSpriteIds(animation: GuestAnimation, rotation: number): number[];
+
+        /**
+         * The animation the guest is currently exhibiting.
+         */
+        animation: GuestAnimation;
+
+        /**
+         * The frame offset in the current animation.
+         */
+        animationOffset: number;
+
+        /**
+         * The total number of frames in the current animation.
+         */
+        readonly animationLength: number;
     }
 
     /**
@@ -3098,6 +3156,44 @@ declare global {
         readonly item: GuestItemType;
     }
 
+    type StaffCostume =
+        "none" |
+        "handyman" |
+        "mechanic" |
+        "security1" |
+        "security2" |
+        "panda" |
+        "tiger" |
+        "elephant" |
+        "roman" |
+        "gorilla" |
+        "snowman" |
+        "knight" |
+        "astronaut" |
+        "bandit" |
+        "sheriff" |
+        "pirate";
+
+    type StaffAnimation =
+        "walking" |
+        "watchRide" |
+        "wave" |
+        "hanging" |
+        "staffMower" |
+        "staffSweep" |
+        "drowning" |
+        "staffAnswerCall" |
+        "staffAnswerCall2" |
+        "staffCheckBoard" |
+        "staffFix" |
+        "staffFix2" |
+        "staffFixGround" |
+        "staffFix3" |
+        "staffWatering" |
+        "joy" |
+        "staffEmptyBin" |
+        "wave2";
+
     /**
      * Represents a staff member.
      */
@@ -3108,14 +3204,19 @@ declare global {
         staffType: StaffType;
 
         /**
-         * Colour of the staff member. Not applicable for entertainers.
+         * Colour of the staff member. Not applicable to entertainers.
          */
         colour: number;
 
         /**
-         * The entertainer's costume, only applicable for entertainers.
+         * Array of costumes available to this particular staff member.
          */
-        costume: number;
+        readonly availableCostumes: StaffCostume[];
+
+        /**
+         * The staff member's costume.
+         */
+        costume: StaffCostume | string | number;
 
         /**
          * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.
@@ -3126,6 +3227,31 @@ declare global {
          * Gets the patrol area for the staff member.
          */
         readonly patrolArea: PatrolArea;
+
+        /**
+         * The animations available to this staff member.
+         */
+        readonly availableAnimations: StaffAnimation[];
+
+        /**
+         * Gets an array of sprite ids representing a particular staff animation.
+         */
+        getAnimationSpriteIds(animation: StaffAnimation, rotation: number): number[];
+
+        /**
+         * The animation the staff member is currently exhibiting.
+         */
+        animation: StaffAnimation;
+
+        /**
+         * The frame offset in the current animation.
+         */
+        animationOffset: number;
+
+        /**
+         * The total number of frames in the current animation.
+         */
+        readonly animationLength: number;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";

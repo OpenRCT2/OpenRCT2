@@ -7,21 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "SetZoom.h"
+#include "Scene.h"
 
-#include "../../interface/Window.h"
-#include "../../interface/ZoomLevel.h"
+#include "../Context.h"
+#include "../GameState.h"
 
-namespace OpenRCT2::Title
+using namespace OpenRCT2;
+
+Scene::Scene(IContext& context)
+    : _context(context)
 {
-    int16_t SetZoomCommand::operator()(int16_t timer)
-    {
-        WindowBase* w = WindowGetMain();
-        if (w != nullptr)
-        {
-            WindowZoomSet(*w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
-        }
+}
 
-        return 0;
-    }
-} // namespace OpenRCT2::Title
+IContext& Scene::GetContext()
+{
+    return _context;
+}
+
+GameState_t& Scene::GetGameState()
+{
+    return OpenRCT2::GetGameState();
+}

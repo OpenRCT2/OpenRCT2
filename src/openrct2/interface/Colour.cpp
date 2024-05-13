@@ -13,7 +13,6 @@
 #include "../drawing/Drawing.h"
 #include "../sprites.h"
 
-#include <algorithm>
 #include <cmath>
 
 ColourShadeMap ColourMapA[COLOUR_COUNT] = {};

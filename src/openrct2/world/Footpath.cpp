@@ -36,6 +36,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
+#include "../world/tile_element/Slope.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
@@ -44,7 +45,6 @@
 #include "Surface.h"
 #include "TileElement.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2::TrackMetaData;
@@ -181,8 +181,7 @@ money64 FootpathProvisionalSet(
             VirtualFloorSetHeight(0);
         }
         else if (
-            gFootpathConstructSlope == TILE_ELEMENT_SLOPE_FLAT
-            || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
+            gFootpathConstructSlope == kTileSlopeFlat || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
             VirtualFloorSetHeight(gProvisionalFootpath.Position.z);

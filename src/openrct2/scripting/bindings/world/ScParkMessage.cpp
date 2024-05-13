@@ -23,8 +23,6 @@
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 
-#    include <algorithm>
-
 namespace OpenRCT2::Scripting
 {
     ScParkMessage::ScParkMessage(size_t index)

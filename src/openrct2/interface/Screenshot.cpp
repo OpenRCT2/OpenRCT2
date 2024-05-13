@@ -12,11 +12,11 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/CheatSetAction.h"
 #include "../audio/audio.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/Imaging.h"
@@ -26,6 +26,7 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
+#include "../paint/Painter.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
@@ -34,7 +35,6 @@
 #include "../world/Surface.h"
 #include "Viewport.h"
 
-#include <algorithm>
 #include <cctype>
 #include <chrono>
 #include <cstdlib>
@@ -92,10 +92,17 @@ void ScreenshotCheck()
             if (!screenshotPath.empty())
             {
                 OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, ContextGetWidth() / 2);
+
+                // Show user that screenshot saved successfully
+                const auto filename = Path::GetFileName(screenshotPath);
+                Formatter ft;
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const utf8*>(filename.c_str());
+                ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
             }
             else
             {
-                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
+                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
             }
 
             // redraw_weather();
@@ -370,7 +377,7 @@ void ScreenshotGiant()
         {
             viewport.flags = vp->flags;
         }
-        if (gConfigGeneral.TransparentScreenshot)
+        if (Config::Get().general.TransparentScreenshot)
         {
             viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
         }
@@ -385,12 +392,12 @@ void ScreenshotGiant()
         Formatter ft;
         ft.Add<StringId>(STR_STRING);
         ft.Add<const utf8*>(filename.c_str());
-        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
+        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
     }
     catch (const std::exception& e)
     {
         LOG_ERROR("%s", e.what());
-        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
+        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
     }
 
     ReleaseDPI(dpi);
@@ -438,7 +445,7 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
         CheatsSet(CheatType::RemoveLitter);
     }
 
-    if (options->transparent || gConfigGeneral.TransparentScreenshot)
+    if (options->transparent || Config::Get().general.TransparentScreenshot)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
@@ -490,7 +497,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             throw std::runtime_error("Failed to load park.");
         }
 
-        gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
         Viewport viewport{};

@@ -38,7 +38,7 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackPaint.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/title/TitleScreen.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
@@ -475,8 +475,8 @@ static void ShortcutOpenSceneryPicker()
 
 static void ShortcutScaleUp()
 {
-    gConfigGeneral.WindowScale += 0.25f;
-    ConfigSaveDefault();
+    Config::Get().general.WindowScale += 0.25f;
+    Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
@@ -484,9 +484,9 @@ static void ShortcutScaleUp()
 
 static void ShortcutScaleDown()
 {
-    gConfigGeneral.WindowScale -= 0.25f;
-    gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
-    ConfigSaveDefault();
+    Config::Get().general.WindowScale -= 0.25f;
+    Config::Get().general.WindowScale = std::max(0.5f, Config::Get().general.WindowScale);
+    Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
@@ -634,7 +634,7 @@ static void ShortcutToggleConsole()
     {
         console.Toggle();
     }
-    else if (gConfigGeneral.DebuggingTools && !ContextIsInputActive())
+    else if (Config::Get().general.DebuggingTools && !ContextIsInputActive())
     {
         WindowCancelTextbox();
         console.Toggle();
@@ -741,8 +741,8 @@ static void ShortcutToggleTransparentWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    gConfigGeneral.TransparentWater ^= 1;
-    ConfigSaveDefault();
+    Config::Get().general.TransparentWater ^= 1;
+    Config::Save();
     GfxInvalidateScreen();
 }
 
@@ -826,7 +826,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", ShortcutOpenTransparencyWindow);
     RegisterShortcut(ShortcutId::InterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", ShortcutOpenCheatWindow);
     RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (gConfigInterface.ToolbarShowCheats)
+        if (Config::Get().interface.ToolbarShowCheats)
         {
             OpenWindow(WindowClass::TileInspector);
         }

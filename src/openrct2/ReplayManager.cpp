@@ -669,7 +669,7 @@ namespace OpenRCT2
 
             serialiser << gameState.GuestGenerationProbability;
             serialiser << gameState.SuggestedGuestMaximum;
-            serialiser << gConfigGeneral.ShowRealNamesOfGuests;
+            serialiser << Config::Get().general.ShowRealNamesOfGuests;
 
             // To make this a little bit less volatile against updates
             // we reserve some space for future additions.

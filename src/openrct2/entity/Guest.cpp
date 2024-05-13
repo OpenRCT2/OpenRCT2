@@ -36,6 +36,7 @@
 #include "../object/PathAdditionEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
+#include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
@@ -60,7 +61,6 @@
 #include "Peep.h"
 #include "Staff.h"
 
-#include <algorithm>
 #include <functional>
 #include <iterator>
 
@@ -1664,7 +1664,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         auto ft = Formatter();
         FormatNameTo(ft);
         ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
-        if (gConfigNotifications.GuestBoughtItem)
+        if (Config::Get().notifications.GuestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, Id, ft);
         }
@@ -3577,7 +3577,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& ent
 
         auto ft = Formatter();
         ride.FormatNameTo(ft);
-        if (gConfigNotifications.RideWarnings)
+        if (Config::Get().notifications.RideWarnings)
         {
             News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, peep->CurrentRide.ToUnderlying(), ft);
         }
@@ -3850,7 +3850,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         }
         else
         {
-            ride.total_profit = AddClamp_money64(ride.total_profit, ridePrice);
+            ride.total_profit = AddClamp<money64>(ride.total_profit, ridePrice);
             ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
             SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
         }
@@ -3881,7 +3881,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         else
             msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
-        if (gConfigNotifications.GuestOnRide)
+        if (Config::Get().notifications.GuestOnRide)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, Id, ft);
         }
@@ -5035,7 +5035,7 @@ void Guest::UpdateRideLeaveExit()
             FormatNameTo(ft);
             ride->FormatNameTo(ft);
 
-            if (gConfigNotifications.GuestLeftRide)
+            if (Config::Get().notifications.GuestLeftRide)
             {
                 News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
             }

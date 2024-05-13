@@ -107,8 +107,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ScenarioselectOpen(scenarioselect_callback callback);
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback);
 
-    WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter);
-    WindowBase* ErrorOpen(std::string_view title, std::string_view message);
+    WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter, bool autoClose = false);
+    WindowBase* ErrorOpen(std::string_view title, std::string_view message, bool autoClose = false);
 
     WindowBase* LoadsaveOpen(
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,

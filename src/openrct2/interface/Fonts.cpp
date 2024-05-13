@@ -17,6 +17,7 @@
 #include "../util/Util.h"
 #include "FontFamilies.h"
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Localisation;
 
 #ifndef NO_TTF
@@ -129,12 +130,15 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
 static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
-        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeTiny, gConfigFonts.OffsetX,
-          gConfigFonts.OffsetY, gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeSmall, gConfigFonts.OffsetX,
-          gConfigFonts.OffsetY, gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeMedium, gConfigFonts.OffsetX,
-          gConfigFonts.OffsetY, gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
+        { Config::Get().fonts.FileName.c_str(), Config::Get().fonts.FontName.c_str(), Config::Get().fonts.SizeTiny,
+          Config::Get().fonts.OffsetX, Config::Get().fonts.OffsetY, Config::Get().fonts.HeightTiny,
+          Config::Get().fonts.HintingThreshold, nullptr },
+        { Config::Get().fonts.FileName.c_str(), Config::Get().fonts.FontName.c_str(), Config::Get().fonts.SizeSmall,
+          Config::Get().fonts.OffsetX, Config::Get().fonts.OffsetY, Config::Get().fonts.HeightSmall,
+          Config::Get().fonts.HintingThreshold, nullptr },
+        { Config::Get().fonts.FileName.c_str(), Config::Get().fonts.FontName.c_str(), Config::Get().fonts.SizeMedium,
+          Config::Get().fonts.OffsetX, Config::Get().fonts.OffsetY, Config::Get().fonts.HeightMedium,
+          Config::Get().fonts.HintingThreshold, nullptr },
     } };
 
     TTFDispose();
@@ -154,7 +158,7 @@ void TryLoadFonts(LocalisationService& localisationService)
 
     if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
-        if (!gConfigFonts.FileName.empty())
+        if (!Config::Get().fonts.FileName.empty())
         {
             if (LoadCustomConfigFont(localisationService))
             {

@@ -10,12 +10,12 @@
 #include "X8DrawingEngine.h"
 
 #include "../Context.h"
-#include "../Intro.h"
 #include "../config/Config.h"
 #include "../core/Numerics.hpp"
 #include "../interface/Screenshot.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "Drawing.h"
@@ -24,7 +24,6 @@
 #include "LightFX.h"
 #include "Weather.h"
 
-#include <algorithm>
 #include <cstring>
 
 using namespace OpenRCT2;
@@ -121,7 +120,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
     LightFXSetAvailable(true);
-    _lastLightFXenabled = (gConfigGeneral.EnableLightFx != 0);
+    _lastLightFXenabled = (Config::Get().general.EnableLightFx != 0);
 }
 
 X8DrawingEngine::~X8DrawingEngine()
@@ -184,10 +183,10 @@ void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32
 
 void X8DrawingEngine::BeginDraw()
 {
-    if (gIntroState == IntroState::None)
+    if (!IntroIsPlaying())
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
-        if (_lastLightFXenabled != (gConfigGeneral.EnableLightFx != 0))
+        if (_lastLightFXenabled != (Config::Get().general.EnableLightFx != 0))
         {
             Resize(_width, _height);
         }

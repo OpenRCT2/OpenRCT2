@@ -7,20 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FollowEntity.h"
+#pragma once
 
-#include "../../interface/Window.h"
+#include "../core/String.hpp"
 
-namespace OpenRCT2::Title
-{
-    int16_t FollowEntityCommand::operator()(int16_t timer)
-    {
-        auto* w = WindowGetMain();
-        if (w != nullptr)
-        {
-            WindowFollowSprite(*w, Follow.SpriteIndex);
-        }
+#include <string>
 
-        return 0;
-    }
-} // namespace OpenRCT2::Title
+struct Gx;
+
+bool RCT1DataPresentAtLocation(u8string_view path);
+std::string FindCsg1datAtLocation(u8string_view path);
+bool Csg1datPresentAtLocation(u8string_view path);
+std::string FindCsg1idatAtLocation(u8string_view path);
+bool Csg1idatPresentAtLocation(u8string_view path);
+bool CsgIsUsable(const Gx& csg);
+bool CsgAtLocationIsUsable(u8string_view path);

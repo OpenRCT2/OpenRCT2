@@ -9,12 +9,10 @@
 
 #include <SDL.h>
 #include <SDL_keycode.h>
-#include <algorithm>
 #include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -114,7 +112,7 @@ namespace OpenRCT2::Ui::Windows
             text = String::UTF8TruncateCodePoints(text, maxLength);
             _buffer = u8string{ text };
             _maxInputLength = maxLength;
-            gTextInput = ContextStartTextInput(_buffer, maxLength);
+            SetTexboxSession(ContextStartTextInput(_buffer, maxLength));
         }
 
         void SetCallback(std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
@@ -238,6 +236,7 @@ namespace OpenRCT2::Ui::Windows
             size_t char_count = 0;
             uint8_t cur_drawn = 0;
 
+            auto* textInput = GetTextboxSession();
             int32_t cursorX = 0;
             int32_t cursorY = 0;
             for (int32_t line = 0; line <= no_lines; line++)
@@ -246,22 +245,21 @@ namespace OpenRCT2::Ui::Windows
                 DrawText(dpi, screenCoords, { colours[1], FontStyle::Medium, TextAlignment::LEFT }, wrapPointer, true);
 
                 size_t string_length = GetStringSize(wrapPointer) - 1;
-
-                if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length))
+                if (!cur_drawn && (textInput->SelectionStart <= char_count + string_length))
                 {
                     // Make a view of the string for measuring the width.
                     cursorX = windowPos.x + 13
                         + GfxGetStringWidthNoFormatting(
-                                  u8string_view{ wrapPointer, gTextInput->SelectionStart - char_count }, FontStyle::Medium);
+                                  u8string_view{ wrapPointer, textInput->SelectionStart - char_count }, FontStyle::Medium);
                     cursorY = screenCoords.y;
 
                     int32_t textWidth = 6;
-                    if (gTextInput->SelectionStart < strlen(_buffer.data()))
+                    if (textInput->SelectionStart < strlen(_buffer.data()))
                     {
                         // Make a 1 utf8-character wide string for measuring the width
                         // of the currently selected character.
                         utf8 tmp[5] = {}; // This is easier than setting temp_string[0..5]
-                        uint32_t codepoint = UTF8GetNext(_buffer.data() + gTextInput->SelectionStart, nullptr);
+                        uint32_t codepoint = UTF8GetNext(_buffer.data() + textInput->SelectionStart, nullptr);
                         UTF8WriteCodepoint(tmp, codepoint);
                         textWidth = std::max(GfxGetStringWidthNoFormatting(tmp, FontStyle::Medium) - 2, 4);
                     }
@@ -293,7 +291,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // IME composition
-            if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
+            if (!String::IsNullOrEmpty(textInput->ImeBuffer))
             {
                 IMEComposition(cursorX, cursorY);
             }

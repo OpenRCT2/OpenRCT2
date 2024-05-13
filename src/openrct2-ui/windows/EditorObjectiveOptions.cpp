@@ -12,13 +12,12 @@
 #include "../interface/Window.h"
 #include "Window.h"
 
-#include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
@@ -1171,9 +1170,9 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                     if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
                     {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
-                        GfxDrawString(
-                            dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
-                            { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, darkness });
+                        DrawText(
+                            dpi, { 2, y }, { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, darkness },
+                            static_cast<const char*>(CheckBoxMarkString));
                     }
 
                     // Ride name

@@ -32,12 +32,12 @@ STR_0027    :碰碰车
 STR_0028    :海盗船
 STR_0029    :摇摆海盗船
 STR_0030    :食品小站
-STR_0031    :Unknown Stall (1D)
+STR_0031    :未知店铺 (1D)
 STR_0032    :饮料铺
-STR_0033    :Unknown Stall (1F)
+STR_0033    :未知店铺 (1F)
 STR_0034    :商店
 STR_0035    :旋转木马
-STR_0036    :Unknown Stall (22)
+STR_0036    :未知店铺 (22)
 STR_0037    :信息亭
 STR_0038    :厕所
 STR_0039    :摩天轮
@@ -59,15 +59,15 @@ STR_0054    :木制过山车
 STR_0055    :侧向阻力式过山车
 STR_0056    :疯狂老鼠过山车
 STR_0057    :多维过山车
-STR_0058    :Unknown Ride (38)
+STR_0058    :未知游乐设施 (38)
 STR_0059    :飞翔过山车
-STR_0060    :Unknown Ride (3A)
+STR_0060    :未知游乐设施 (3A)
 STR_0061    :弗吉尼亚卷轴
 STR_0062    :激流勇进
 STR_0063    :迷你直升机
 STR_0064    :躺卧式过山车
 STR_0065    :悬挂式单轨电车
-STR_0066    :Unknown Ride (40)
+STR_0066    :未知游乐设施 (40)
 STR_0067    :反转过山车
 STR_0068    :心跳回旋过山车
 STR_0069    :迷你高尔夫
@@ -83,20 +83,21 @@ STR_0078    :回转发卡过山车
 STR_0079    :魔毯
 STR_0080    :迷你潜艇
 STR_0081    :水上木筏
-STR_0082    :Unknown Ride (50)
+STR_0082    :未知游乐设施 (50)
 STR_0083    :企业号
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
+STR_0084    :未知游乐设施 (52)
+STR_0085    :未知游乐设施 (53)
+STR_0086    :未知游乐设施 (54)
+STR_0087    :未知游乐设施 (55)
 STR_0088    :回转冲力过山车
 STR_0089    :迷你过山车
 STR_0090    :矿车式过山车
-STR_0091    :Unknown Ride (59)
+STR_0091    :未知游乐设施 (59)
 STR_0092    :LIM喷射过山车
 STR_0093    :混合过山车
 STR_0094    :单轨过山车
 STR_0095    :高山过山车
+STR_0097    :经典站立式过山车
 STR_0096    :经典木质过山车
 STR_0512    :一种紧凑的过山车，有着螺旋状的爬升和平滑盘旋的下坠
 STR_0513    :乘客采用站立方式乘坐的过山车，全身都能感受到翻滚时血液在体内的涌动
@@ -181,12 +182,13 @@ STR_0603    :带有钢轨的木制过山车，允许陡峭的下降和倒置
 STR_0604    :游客在狭窄的单轨轨道上单排骑行，就像他们在激烈的倒转和方向变化中进行比赛
 STR_0605    :游客在蜿蜒的钢制赛道上滑行，以控制他们的速度
 STR_0606    :一个拥有老式风格的木质过山车，它拥有快速且粗糙质感的车厢、大量的失重感以及侧向加速度，这些设计使得乘客感到“失去控制”般的刺激。
+STR_0607    :一款紧张刺激的老式钢制环形过山车，乘客以站立姿势乘坐
 STR_0767    :游客{INT32}
 STR_0768    :清洁工人{INT32}
 STR_0769    :维修人员{INT32}
 STR_0770    :安全警卫{INT32}
 STR_0771    :表演人员{INT32}
-STR_0777    :未命名游乐园{POP16}{POP16}
+STR_0777    :未命名游乐园
 STR_0778    :指示牌
 STR_0779    :1日
 STR_0780    :2日
@@ -1864,31 +1866,31 @@ STR_2521    :显示职员列表
 STR_2522    :显示最近信息
 STR_2523    :显示地图
 STR_2524    :截图
-STR_2533    :Backspace
-STR_2534    :Tab
-STR_2537    :Clear
-STR_2538    :Return
-STR_2543    :Alt/Menu
-STR_2544    :Pause
-STR_2545    :Caps
-STR_2552    :Escape
-STR_2557    :Spacebar
-STR_2558    :PgUp
-STR_2559    :PgDn
-STR_2560    :End
-STR_2561    :Home
-STR_2562    :Left
-STR_2563    :Up
-STR_2564    :Right
-STR_2565    :Down
-STR_2566    :Select
-STR_2567    :Print
-STR_2568    :Execute
-STR_2569    :Snapshot
-STR_2570    :Insert
-STR_2571    :Delete
-STR_2572    :Help
-STR_2618    :Menu
+STR_2533    :Backspace (退格)
+STR_2534    :Tab (制表)
+STR_2537    :Clear (清除)
+STR_2538    :Return (回车)
+STR_2543    :Alt/Menu (Alt/菜单)
+STR_2544    :Pause (暂停)
+STR_2545    :Caps (大写锁定)
+STR_2552    :Escape (退出)
+STR_2557    :Spacebar (空格)
+STR_2558    :PgUp (上一页)
+STR_2559    :PgDn (下一页)
+STR_2560    :End (结束)
+STR_2561    :Home (主页)
+STR_2562    :Left (左)
+STR_2563    :Up (上)
+STR_2564    :Right (右)
+STR_2565    :Down (下)
+STR_2566    :Select (选择)
+STR_2567    :Print (打印)
+STR_2568    :Execute (执行)
+STR_2569    :Snapshot (快照)
+STR_2570    :Insert (插入)
+STR_2571    :Delete (删除)
+STR_2572    :Help (帮助)
+STR_2618    :Menu (菜单)
 STR_2621    :数字小键盘 0
 STR_2622    :数字小键盘 1
 STR_2623    :数字小键盘 2
@@ -1904,8 +1906,8 @@ STR_2632    :数字小键盘 +
 STR_2634    :数字小键盘 -
 STR_2635    :数字小键盘 .
 STR_2636    :数字小键盘 /
-STR_2669    :NumLock
-STR_2670    :Scroll
+STR_2669    :NumLock (数字锁定)
+STR_2670    :Scroll (鼠标滚动)
 STR_2680    :所有项目已研发完毕
 STR_2684    :一大批游客到访
 STR_2685    :单形噪声参数
@@ -2130,7 +2132,7 @@ STR_3090    :选择入口，出口以及车站的风格
 STR_3091    :你无法删除此轨道！
 STR_3092    :你无法移动或修改这个游乐设施的车站！
 STR_3093    :{WINDOW_COLOUR_2}最爱：{BLACK}{STRINGID}
-STR_3094    :N/A
+STR_3094    :不适用
 STR_3095    :{WINDOW_COLOUR_2}提升坡的上升速度：
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :选择提升坡的链条上拉速度
@@ -2571,7 +2573,7 @@ STR_5305    :过山车大亨1（RCT1）
 STR_5306    :过山车大亨1（+资料片1——AA）
 STR_5307    :过山车大亨1（+资料片1&2——AA+LL）
 STR_5308    :过山车大亨2（RCT2）
-STR_5309    :OpenRCT2
+STR_5309    :开源过山车大亨2 (OpenRCT2)
 STR_5310    :随机
 STR_5311    :调试工具
 STR_5312    :显示控制台
@@ -2825,7 +2827,7 @@ STR_5658    :游乐园资金
 STR_5659    :踢出玩家
 STR_5660    :修改组
 STR_5661    :设置玩家组
-STR_5662    :N/A
+STR_5662    :不适用
 STR_5663    :清除景物
 STR_5664    :作弊
 STR_5665    :切换风景群集
@@ -3364,10 +3366,10 @@ STR_6281    :在工具栏中为聊天窗口显示单独的按钮
 STR_6282    :聊天室
 STR_6283    :聊天功能不可用。请检查与服务器连接
 STR_6293    :字节
-STR_6294    :KiB
-STR_6295    :MiB
-STR_6296    :GiB
-STR_6297    :TiB
+STR_6294    :千字节
+STR_6295    :兆字节
+STR_6296    :千兆字节
+STR_6297    :太子节
 STR_6298    :{STRING}/秒
 STR_6299    :下载全部
 STR_6300    :从网络上下载可下载缺失文件
@@ -3654,13 +3656,48 @@ STR_6582    :打开快捷键窗口
 STR_6583    :{WINDOW_COLOUR_2}反向列车
 STR_6584    :选择反向运行列车
 STR_6585    :无法做出更改……
-STR_6586    :OpenRCT2
+STR_6586    :开源过山车大亨2 (OpenRCT2)
 STR_6587    :OpenRCT2的标题样式由Allister Brimble设计,{NEWLINE}许可证类型 CC BY-SA 4.0.
 STR_6588    :感谢Herman Riddering允许我们录制“35er Voigt”。
 STR_6589    :在左侧显示窗口按钮
 STR_6590    :在左侧显示窗口按钮（例如关闭窗口的按钮）在标题栏左侧而不是右侧。
 STR_6591    :维修人员目前正在修理游乐设施，不能被开除。
 STR_6592    :维修人员目前正在检查游乐设施，不能被开除。
+STR_6593    :拆除公园围栏
+STR_6594    :单元检查器：切换墙面坡度
+STR_6595    :{WINDOW_COLOUR_2}作者: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}作者: {BLACK}{STRING}
+STR_6597    :参数无效
+STR_6598    :数值超出范围
+STR_6599    :未找到幽灵元素
+STR_6600    :未找到气球
+STR_6601    :未找到工作人员
+STR_6602    :未找到游乐设施
+STR_6603    :未找到游乐设施入口
+STR_6604    :未找到玩家
+STR_6605    :未找到入口
+STR_6606    :未找到地表元素
+STR_6607    :未找到单元元素
+STR_6608    :未找到轨道元素
+STR_6609    :未找到轨道块
+STR_6610    :未找到道路元素
+STR_6611    :未找到墙元素
+STR_6612    :未找到横幅元素
+STR_6613    :重新加载对象
+STR_6614    :无法更改公园门票
+STR_6615    :这个位置上的轨道下需要有水
+STR_6616    :对该工作人员类型无效
+STR_6617    :无法将单元与自身互换
+STR_6618    :无法限制或取消限制对象...
+STR_6619    :无法限制对象类型！
+STR_6620    :未找到对象！
+STR_6621    :限制
+STR_6622    :将对象限制在“场景编辑器”和“沙盒”模式中。
+STR_6623    :输入“help”查看可用命令列表。输入“hide”隐藏控制台。
+STR_6624    :单元检查器：对元素进行排序
+STR_6625    :颜色无效
+STR_6626    :动画是反向的
+STR_6627    :轨道速度过快！
 
 #############
 # Scenarios #
@@ -4324,7 +4361,7 @@ STR_DTLS    :你是在休假想要利用这段时间改造城市公园的过山�
 <South America - Inca Lost City>
 STR_SCNR    :南美洲——印加失落之城
 STR_PARK    :失落之城
-STR_DTLS    :为了进一步促进当地的旅游业，你必须建设一个公园，它与周围的环境，并有高度的限制。
+STR_DTLS    :为了进一步促进当地旅游业的发展，你需要建设一个与周围环境相协调的公园。
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :南美洲——雨林高原

@@ -66,7 +66,7 @@ namespace OpenRCT2
             std::vector<CoordsXYZD> Entrances;
             uint32_t Size;
             money64 Value;
-            money64 ValueHistory[FINANCE_GRAPH_SIZE];
+            money64 ValueHistory[kFinanceGraphSize];
 
             bool IsOpen() const;
         };

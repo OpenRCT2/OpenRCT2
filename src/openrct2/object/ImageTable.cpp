@@ -23,7 +23,6 @@
 #include "Object.h"
 #include "ObjectFactory.h"
 
-#include <algorithm>
 #include <memory>
 #include <stdexcept>
 

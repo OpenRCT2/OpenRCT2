@@ -31,8 +31,8 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
+#include "tile_element/Slope.h"
 
-#include <algorithm>
 #include <optional>
 
 TileCoordsXY windowTileInspectorTile;
@@ -524,24 +524,24 @@ namespace OpenRCT2::TileInspector
             uint8_t newSlope = surfaceElement->GetSlope() ^ (1 << cornerIndex);
 
             // All corners are raised
-            if ((newSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if ((newSlope & kTileSlopeRaisedCornersMask) == kTileSlopeRaisedCornersMask)
             {
-                newSlope = TILE_ELEMENT_SLOPE_FLAT;
-                if ((originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
+                newSlope = kTileSlopeFlat;
+                if ((originalSlope & kTileSlopeDiagonalFlag) != 0)
                 {
-                    switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                    switch (originalSlope & kTileSlopeRaisedCornersMask)
                     {
-                        case TILE_ELEMENT_SLOPE_S_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                        case kTileSlopeSCornerDown:
+                            newSlope |= kTileSlopeNCornerUp;
                             break;
-                        case TILE_ELEMENT_SLOPE_W_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                        case kTileSlopeWCornerDown:
+                            newSlope |= kTileSlopeECornerUp;
                             break;
-                        case TILE_ELEMENT_SLOPE_N_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                        case kTileSlopeNCornerDown:
+                            newSlope |= kTileSlopeSCornerUp;
                             break;
-                        case TILE_ELEMENT_SLOPE_E_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                        case kTileSlopeECornerDown:
+                            newSlope |= kTileSlopeWCornerUp;
                             break;
                     }
                 }
@@ -567,7 +567,7 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+            uint8_t newSlope = surfaceElement->GetSlope() ^ kTileSlopeDiagonalFlag;
             surfaceElement->SetSlope(newSlope);
         }
 

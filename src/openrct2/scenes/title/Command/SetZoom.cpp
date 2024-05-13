@@ -7,18 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "RotateView.h"
+#include "SetZoom.h"
 
-#include "../../interface/Viewport.h"
-#include "../../interface/Window.h"
+#include "../../../interface/Window.h"
+#include "../../../interface/ZoomLevel.h"
 
 namespace OpenRCT2::Title
 {
-    int16_t RotateViewCommand::operator()(int16_t timer)
+    int16_t SetZoomCommand::operator()(int16_t timer)
     {
-        for (uint_fast8_t i = 0; i < Rotations; i++)
+        WindowBase* w = WindowGetMain();
+        if (w != nullptr)
         {
-            ViewportRotateAll(1);
+            WindowZoomSet(*w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
         }
 
         return 0;

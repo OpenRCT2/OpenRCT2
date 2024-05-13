@@ -23,7 +23,6 @@
 #include "../common.h"
 #include "../core/BitSet.hpp"
 #include "../entity/Guest.h"
-#include "../localisation/StringIds.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
@@ -31,6 +30,7 @@
 #include "RideConstruction.h"
 #include "RideEntry.h"
 #include "RideRatings.h"
+#include "RideStringIds.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
@@ -306,45 +306,45 @@ struct TrackDrawerDescriptor
 
 struct RideTypeDescriptor
 {
-    uint8_t Category;
+    uint8_t Category{};
     /** rct2: 0x0097CC68 */
-    track_type_t StartTrackPiece;
+    track_type_t StartTrackPiece{};
     TrackDrawerDescriptor TrackPaintFunctions{};
     TrackDrawerDescriptor InvertedTrackPaintFunctions{};
-    uint64_t Flags;
+    uint64_t Flags{};
     /** rct2: 0x0097C8AC */
-    uint64_t RideModes;
-    RideMode DefaultMode;
+    uint64_t RideModes{};
+    RideMode DefaultMode{};
     /** rct2: 0x0097CF40 */
-    RideOperatingSettings OperatingSettings;
-    RideNaming Naming;
-    RideNameConvention NameConvention;
-    const char* EnumName;
-    uint8_t AvailableBreakdowns;
+    RideOperatingSettings OperatingSettings{};
+    RideNaming Naming{};
+    RideNameConvention NameConvention{};
+    const char* EnumName{};
+    uint8_t AvailableBreakdowns{};
     /** rct2: 0x0097D218 */
-    RideHeights Heights;
-    uint8_t MaxMass;
+    RideHeights Heights{};
+    uint8_t MaxMass{};
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-    RideLiftData LiftData;
+    RideLiftData LiftData{};
     // rct2: 0x0097CD1E
-    RatingTuple RatingsMultipliers;
-    UpkeepCostsDescriptor UpkeepCosts;
+    RatingTuple RatingsMultipliers{};
+    UpkeepCostsDescriptor UpkeepCosts{};
     // rct2: 0x0097DD78
-    RideBuildCost BuildCosts;
-    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
-    std::string_view DefaultMusic;
+    RideBuildCost BuildCosts{};
+    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    std::string_view DefaultMusic{};
     /** rct2: 0x0097D7CB */
-    ShopItemIndex PhotoItem;
+    ShopItemIndex PhotoItem{};
     /** rct2: 0x0097D21E */
-    uint8_t BonusValue;
-    TrackColourPresetList ColourPresets;
-    RideColourPreview ColourPreview;
-    RideColourKey ColourKey;
+    uint8_t BonusValue{};
+    TrackColourPresetList ColourPresets{};
+    RideColourPreview ColourPreview{};
+    RideColourKey ColourKey{};
 
     // json name lookup
-    std::string_view Name;
+    std::string_view Name{};
 
-    RideRatingsDescriptor RatingsData;
+    RideRatingsDescriptor RatingsData{};
 
     UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
@@ -407,6 +407,7 @@ enum ride_type_flags : uint64_t
                                                                      // coaster
     RIDE_TYPE_FLAG_NO_VEHICLES = (1uLL << 13),                       // used only by maze, spiral slide and shops
     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = (1uLL << 14),
+    RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT = (1uLL << 15),
     RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1uLL << 16), // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
     RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1uLL << 17),
@@ -425,6 +426,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_CHECK_FOR_STALLING = (1uLL << 27),
     RIDE_TYPE_FLAG_HAS_TRACK = (1uLL << 28),
     RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = (1uLL << 29), // Only set by lift
+    RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW = (1uLL << 30), // Only set by reverser coaster
     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = (1uLL << 31),
 
     RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK = (1uLL << 32),

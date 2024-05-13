@@ -22,10 +22,8 @@
 #    include "TransparencyDepth.h"
 
 #    include <SDL.h>
-#    include <algorithm>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>
-#    include <openrct2/Intro.h>
 #    include <openrct2/config/Config.h>
 #    include <openrct2/core/Console.hpp>
 #    include <openrct2/drawing/Drawing.h>
@@ -451,7 +449,7 @@ private:
         }
         if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
-            uint32_t scale = std::ceil(gConfigGeneral.WindowScale);
+            uint32_t scale = std::ceil(Config::Get().general.WindowScale);
             _smoothScaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width * scale, _height * scale, false, false);
         }
     }

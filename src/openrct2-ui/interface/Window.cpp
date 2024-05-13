@@ -14,7 +14,6 @@
 #include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
-#include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -224,8 +223,8 @@ WindowBase* WindowCreate(
     }
 
     // Check if there are any window slots left
-    // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.WindowLimit + WINDOW_LIMIT_RESERVED))
+    // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
+    if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
     {
         // Close least recently used window
         for (auto& w : g_window_list)
@@ -571,7 +570,7 @@ void WindowAllWheelInput()
 
 void ApplyScreenSaverLockSetting()
 {
-    gConfigGeneral.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+    Config::Get().general.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
 }
 
 /**
@@ -829,12 +828,18 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
 
 ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 {
-    const uint8_t buttonOffset = (gConfigInterface.WindowButtonsOnTheLeft) ? CloseButtonWidth + 2 : 0;
+    const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
     return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
 }
 
 namespace OpenRCT2::Ui::Windows
 {
+    static u8string _textBoxInput;
+    static int32_t _textBoxFrameNo = 0;
+    static bool _usingWidgetTextBox = false;
+    static TextInputSession* _textInput;
+    static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+
     WindowBase* WindowGetListening()
     {
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -858,5 +863,78 @@ namespace OpenRCT2::Ui::Windows
     WindowClass WindowGetClassification(const WindowBase& window)
     {
         return window.classification;
+    }
+
+    void WindowStartTextbox(const WindowBase& callW, WidgetIndex callWidget, u8string existingText, int32_t maxLength)
+    {
+        if (_usingWidgetTextBox)
+            WindowCancelTextbox();
+
+        _usingWidgetTextBox = true;
+        _currentTextBox.window.classification = callW.classification;
+        _currentTextBox.window.number = callW.number;
+        _currentTextBox.widget_index = callWidget;
+        _textBoxFrameNo = 0;
+
+        WindowCloseByClass(WindowClass::Textinput);
+
+        _textBoxInput = existingText;
+
+        _textInput = ContextStartTextInput(_textBoxInput, maxLength);
+    }
+
+    void WindowCancelTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            _currentTextBox.window.classification = WindowClass::Null;
+            _currentTextBox.window.number = 0;
+            ContextStopTextInput();
+            _usingWidgetTextBox = false;
+            if (w != nullptr)
+            {
+                WidgetInvalidate(*w, _currentTextBox.widget_index);
+            }
+            _currentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
+        }
+    }
+
+    void WindowUpdateTextboxCaret()
+    {
+        _textBoxFrameNo++;
+        if (_textBoxFrameNo > 30)
+            _textBoxFrameNo = 0;
+    }
+
+    void WindowUpdateTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            _textBoxFrameNo = 0;
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
+        }
+    }
+    const TextInputSession* GetTextboxSession()
+    {
+        return _textInput;
+    }
+    void SetTexboxSession(TextInputSession* session)
+    {
+        _textInput = session;
+    }
+    bool IsUsingWidgetTextBox()
+    {
+        return _usingWidgetTextBox;
+    }
+    bool TextBoxCaretIsFlashed()
+    {
+        return _textBoxFrameNo <= 15;
+    }
+    const WidgetIdentifier& GetCurrentTextBox()
+    {
+        return _currentTextBox;
     }
 } // namespace OpenRCT2::Ui::Windows

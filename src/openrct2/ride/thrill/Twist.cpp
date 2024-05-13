@@ -13,6 +13,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"
@@ -85,9 +87,9 @@ static void PaintTwist(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = track_map_3x3[direction][trackSequence];
+    trackSequence = kTrackMap3x3[direction][trackSequence];
 
-    const uint8_t edges = edges_3x3[trackSequence];
+    const uint8_t edges = kEdges3x3[trackSequence];
 
     ImageId imageId;
 
@@ -96,7 +98,7 @@ static void PaintTwist(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, stationColour, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, stationColour, height, kFloorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
@@ -115,7 +117,7 @@ static void PaintTwist(
         default:
             TrackPaintUtilPaintFences(
                 session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-                fenceSpritesRope, session.CurrentRotation);
+                kFenceSpritesRope, session.CurrentRotation);
             break;
     }
 
@@ -161,7 +163,7 @@ static void PaintTwist(
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /**

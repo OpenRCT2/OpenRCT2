@@ -20,7 +20,6 @@
 #include "../actions/ParkEntranceRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
 #include "../audio/audio.h"
-#include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../interface/Cursors.h"
 #include "../interface/Viewport.h"
@@ -43,6 +42,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/TilePointerIndex.hpp"
+#include "../world/tile_element/Slope.h"
 #include "Banner.h"
 #include "Climate.h"
 #include "Footpath.h"
@@ -54,7 +54,6 @@
 #include "TileInspector.h"
 #include "Wall.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 
@@ -165,7 +164,7 @@ static TileElement GetDefaultSurfaceElement()
     el.BaseHeight = 14;
     el.ClearanceHeight = 14;
     el.AsSurface()->SetWaterHeight(0);
-    el.AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+    el.AsSurface()->SetSlope(kTileSlopeFlat);
     el.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
     el.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
     el.AsSurface()->SetParkFences(0);
@@ -301,7 +300,7 @@ int32_t TileElementIteratorNext(TileElementIterator* it)
     if (it->element == nullptr)
     {
         it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
-        return 1;
+        return it->element == nullptr ? 0 : 1;
     }
 
     if (!it->element->IsLastForTile())
@@ -315,7 +314,7 @@ int32_t TileElementIteratorNext(TileElementIterator* it)
     {
         it->y++;
         it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
-        return 1;
+        return it->element == nullptr ? 0 : 1;
     }
 
     if (it->x < (gameState.MapSize.x - 2))
@@ -323,7 +322,7 @@ int32_t TileElementIteratorNext(TileElementIterator* it)
         it->y = 1;
         it->x++;
         it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
-        return 1;
+        return it->element == nullptr ? 0 : 1;
     }
 
     return 0;
@@ -565,9 +564,9 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
 
     auto height = loc.z;
 
-    uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
+    uint8_t extra_height = (slope & kTileSlopeDiagonalFlag) >> 4; // 0x10 is the 5th bit - sets slope to double height
     // Remove the extra height bit
-    slope &= TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
+    slope &= kTileSlopeRaisedCornersMask;
 
     int8_t quad = 0, quad_extra = 0; // which quadrant the element is in?
                                      // quad_extra is for extra height tiles
@@ -587,21 +586,21 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
     // We arbitrarily take the SW corner to be closest to the viewer
 
     // One corner up
-    if (slope == TILE_ELEMENT_SLOPE_N_CORNER_UP || slope == TILE_ELEMENT_SLOPE_E_CORNER_UP
-        || slope == TILE_ELEMENT_SLOPE_S_CORNER_UP || slope == TILE_ELEMENT_SLOPE_W_CORNER_UP)
+    if (slope == kTileSlopeNCornerUp || slope == kTileSlopeECornerUp || slope == kTileSlopeSCornerUp
+        || slope == kTileSlopeWCornerUp)
     {
         switch (slope)
         {
-            case TILE_ELEMENT_SLOPE_N_CORNER_UP:
+            case kTileSlopeNCornerUp:
                 quad = xl + yl - TILE_SIZE;
                 break;
-            case TILE_ELEMENT_SLOPE_E_CORNER_UP:
+            case kTileSlopeECornerUp:
                 quad = xl - yl;
                 break;
-            case TILE_ELEMENT_SLOPE_S_CORNER_UP:
+            case kTileSlopeSCornerUp:
                 quad = TILE_SIZE - yl - xl;
                 break;
-            case TILE_ELEMENT_SLOPE_W_CORNER_UP:
+            case kTileSlopeWCornerUp:
                 quad = yl - xl;
                 break;
         }
@@ -615,39 +614,39 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
     // One side up
     switch (slope)
     {
-        case TILE_ELEMENT_SLOPE_NE_SIDE_UP:
+        case kTileSlopeNESideUp:
             height += xl / 2;
             break;
-        case TILE_ELEMENT_SLOPE_SE_SIDE_UP:
+        case kTileSlopeSESideUp:
             height += (TILE_SIZE - yl) / 2;
             break;
-        case TILE_ELEMENT_SLOPE_NW_SIDE_UP:
+        case kTileSlopeNWSideUp:
             height += yl / 2;
             break;
-        case TILE_ELEMENT_SLOPE_SW_SIDE_UP:
+        case kTileSlopeSWSideUp:
             height += (TILE_SIZE - xl) / 2;
             break;
     }
 
     // One corner down
-    if ((slope == TILE_ELEMENT_SLOPE_W_CORNER_DN) || (slope == TILE_ELEMENT_SLOPE_S_CORNER_DN)
-        || (slope == TILE_ELEMENT_SLOPE_E_CORNER_DN) || (slope == TILE_ELEMENT_SLOPE_N_CORNER_DN))
+    if ((slope == kTileSlopeWCornerDown) || (slope == kTileSlopeSCornerDown) || (slope == kTileSlopeECornerDown)
+        || (slope == kTileSlopeNCornerDown))
     {
         switch (slope)
         {
-            case TILE_ELEMENT_SLOPE_W_CORNER_DN:
+            case kTileSlopeWCornerDown:
                 quad_extra = xl + TILE_SIZE - yl;
                 quad = xl - yl;
                 break;
-            case TILE_ELEMENT_SLOPE_S_CORNER_DN:
+            case kTileSlopeSCornerDown:
                 quad_extra = xl + yl;
                 quad = xl + yl - TILE_SIZE;
                 break;
-            case TILE_ELEMENT_SLOPE_E_CORNER_DN:
+            case kTileSlopeECornerDown:
                 quad_extra = TILE_SIZE - xl + yl;
                 quad = yl - xl;
                 break;
-            case TILE_ELEMENT_SLOPE_N_CORNER_DN:
+            case kTileSlopeNCornerDown:
                 quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
                 quad = TILE_SIZE - yl - xl;
                 break;
@@ -668,14 +667,14 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
     }
 
     // Valleys
-    if ((slope == TILE_ELEMENT_SLOPE_W_E_VALLEY) || (slope == TILE_ELEMENT_SLOPE_N_S_VALLEY))
+    if ((slope == kTileSlopeWEValley) || (slope == kTileSlopeNSValley))
     {
         switch (slope)
         {
-            case TILE_ELEMENT_SLOPE_W_E_VALLEY:
+            case kTileSlopeWEValley:
                 quad = std::abs(xl - yl);
                 break;
-            case TILE_ELEMENT_SLOPE_N_S_VALLEY:
+            case kTileSlopeNSValley:
                 quad = std::abs(xl + yl - TILE_SIZE);
                 break;
         }
@@ -888,40 +887,40 @@ int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction)
     switch (direction)
     {
         case 0:
-            if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
+            if (slope & kTileSlopeNCornerUp)
             {
                 z += 2;
-                if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                if (slope == (kTileSlopeSCornerDown | kTileSlopeDiagonalFlag))
                 {
                     z += 2;
                 }
             }
             break;
         case 1:
-            if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP)
+            if (slope & kTileSlopeECornerUp)
             {
                 z += 2;
-                if (slope == (TILE_ELEMENT_SLOPE_W_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                if (slope == (kTileSlopeWCornerDown | kTileSlopeDiagonalFlag))
                 {
                     z += 2;
                 }
             }
             break;
         case 2:
-            if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
+            if (slope & kTileSlopeSCornerUp)
             {
                 z += 2;
-                if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                if (slope == (kTileSlopeNCornerDown | kTileSlopeDiagonalFlag))
                 {
                     z += 2;
                 }
             }
             break;
         case 3:
-            if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
+            if (slope & kTileSlopeWCornerUp)
             {
                 z += 2;
-                if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
                 {
                     z += 2;
                 }
@@ -991,9 +990,9 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
                 }
 
                 uint8_t BaseHeight = surfaceElement->BaseHeight;
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
                     BaseHeight += 2;
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     BaseHeight += 2;
                 if (max_height < BaseHeight)
                     max_height = BaseHeight;
@@ -1386,28 +1385,28 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
     destTile.SetWaterHeight(sourceTile.GetWaterHeight());
 
     auto z = sourceTile.BaseHeight;
-    auto slope = sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_NW_SIDE_UP;
-    if (slope == TILE_ELEMENT_SLOPE_NW_SIDE_UP)
+    auto slope = sourceTile.GetSlope() & kTileSlopeNWSideUp;
+    if (slope == kTileSlopeNWSideUp)
     {
         z += 2;
-        slope = TILE_ELEMENT_SLOPE_FLAT;
-        if (sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        slope = kTileSlopeFlat;
+        if (sourceTile.GetSlope() & kTileSlopeDiagonalFlag)
         {
-            slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
-            if (sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_S_CORNER_UP)
+            slope = kTileSlopeNCornerUp;
+            if (sourceTile.GetSlope() & kTileSlopeSCornerUp)
             {
-                slope = TILE_ELEMENT_SLOPE_W_CORNER_UP;
-                if (sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_E_CORNER_UP)
+                slope = kTileSlopeWCornerUp;
+                if (sourceTile.GetSlope() & kTileSlopeECornerUp)
                 {
-                    slope = TILE_ELEMENT_SLOPE_FLAT;
+                    slope = kTileSlopeFlat;
                 }
             }
         }
     }
-    if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
-        slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
-    if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
-        slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+    if (slope & kTileSlopeNCornerUp)
+        slope |= kTileSlopeECornerUp;
+    if (slope & kTileSlopeWCornerUp)
+        slope |= kTileSlopeSCornerUp;
 
     destTile.SetSlope(slope);
     destTile.BaseHeight = z;
@@ -1465,7 +1464,7 @@ static void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
             element->BaseHeight = kMinimumLandHeight;
             element->ClearanceHeight = kMinimumLandHeight;
             element->Owner = 0;
-            element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+            element->AsSurface()->SetSlope(kTileSlopeFlat);
             element->AsSurface()->SetSurfaceObjectIndex(0);
             element->AsSurface()->SetEdgeObjectIndex(0);
             element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
@@ -1575,9 +1574,9 @@ int32_t MapGetHighestZ(const CoordsXY& loc)
     auto z = surfaceElement->GetBaseZ();
 
     // Raise z so that is above highest point of land and water on tile
-    if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
+    if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
         z += LAND_HEIGHT_STEP;
-    if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
+    if ((surfaceElement->GetSlope() & kTileSlopeDiagonalFlag) != 0)
         z += LAND_HEIGHT_STEP;
 
     z = std::max(z, surfaceElement->GetWaterHeight());
@@ -1875,7 +1874,7 @@ bool MapSurfaceIsBlocked(const CoordsXY& mapCoords)
 
     int16_t base_z = surfaceElement->BaseHeight;
     int16_t clear_z = surfaceElement->BaseHeight + 2;
-    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+    if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
         clear_z += 2;
 
     auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);

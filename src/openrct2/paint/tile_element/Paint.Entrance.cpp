@@ -31,6 +31,7 @@
 #include "../../world/TileInspector.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
 using namespace OpenRCT2;
 
@@ -62,7 +63,7 @@ static void PaintRideEntranceExitScrollingText(
     }
 
     char text[256];
-    if (gConfigGeneral.UpperCaseBanners)
+    if (Config::Get().general.UpperCaseBanners)
     {
         FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
@@ -204,7 +205,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     height += isExit ? 40 : 56;
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height);
 }
 
 static void PaintParkEntranceScrollingText(
@@ -234,7 +235,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     char text[256];
-    if (gConfigGeneral.UpperCaseBanners)
+    if (Config::Get().general.UpperCaseBanners)
     {
         FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
@@ -332,7 +333,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, supportsImageTemplate);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 80);
 }
 
 static void PaintHeightMarkers(PaintSession& session, const EntranceElement& entranceEl, int32_t height)

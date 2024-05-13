@@ -13,6 +13,7 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
+#include "../CorkscrewRollerCoaster.hpp"
 
 // clang-format off
 constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
@@ -21,7 +22,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         { 
-            .Drawer = GetTrackPaintFunctionCorkscrewRC,
+            .Drawer = GetTrackPaintFunctionCorkscrewRC<MetalSupportType::TubesInverted>,
             .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_INLINE_TWIST_UNINVERTED, TRACK_FLYING_HALF_LOOP_UNINVERTED_UP, TRACK_CORKSCREW_UNINVERTED, TRACK_SLOPE_STEEP_LONG, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES },
             .ExtraTrackPieces = { TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN, TRACK_BOOSTER },
         }

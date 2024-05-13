@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../openrct2/core/IStream.hpp"
+#include "../../common.h"
+#include "../../core/IStream.hpp"
 #include "Command/End.h"
 #include "Command/FollowEntity.h"
 #include "Command/LoadPark.h"

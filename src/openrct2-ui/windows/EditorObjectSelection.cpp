@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -23,7 +22,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/MusicObject.h>
@@ -35,8 +34,8 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
-#include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <string>
@@ -273,7 +272,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
             widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
-            _filter_flags = gConfigInterface.ObjectSelectionFilterFlags;
+            _filter_flags = Config::Get().interface.ObjectSelectionFilterFlags;
             std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
             WindowInitScrollWidgets(*this);
@@ -328,7 +327,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
@@ -368,13 +367,15 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     {
                         GameNotifyMapChange();
                         GameUnloadScripts();
-                        TitleLoad();
+
+                        auto* context = OpenRCT2::GetContext();
+                        context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
                 case WIDX_FILTER_RIDE_TAB_ALL:
                     _filter_flags |= FILTER_RIDES;
-                    gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
-                    ConfigSaveDefault();
+                    Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
+                    Config::Save();
 
                     FilterUpdateCounts();
                     VisibleListRefresh();
@@ -391,8 +392,8 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 case WIDX_FILTER_RIDE_TAB_STALL:
                     _filter_flags &= ~FILTER_RIDES;
                     _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + _numSourceGameItems));
-                    gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
-                    ConfigSaveDefault();
+                    Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
+                    Config::Save();
 
                     FilterUpdateCounts();
                     VisibleListRefresh();
@@ -422,7 +423,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     break;
                 }
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+                    WindowStartTextbox(*this, widgetIndex, _filter_string, sizeof(_filter_string));
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -565,8 +566,8 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     {
                         _filter_flags ^= (1 << dropdownIndex);
                     }
-                    gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
-                    ConfigSaveDefault();
+                    Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
+                    Config::Save();
 
                     FilterUpdateCounts();
                     scrolls->v_top = 0;
@@ -583,7 +584,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
          */
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            const auto newHeight = static_cast<int32_t>(_listItems.size() * SCROLLABLE_ROW_HEIGHT);
+            const auto newHeight = static_cast<int32_t>(_listItems.size() * kScrollableRowHeight);
             return { 0, newHeight };
         }
 
@@ -728,7 +729,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             for (size_t i = 0; i < _listItems.size(); i++)
             {
                 const auto& listItem = _listItems[i];
-                if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
+                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
                 {
                     // Draw checkbox
                     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
@@ -740,7 +741,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         && !(*listItem.flags & ObjectSelectionFlags::Flag6);
                     if (highlighted)
                     {
-                        auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
+                        auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
                         GfxFilterRect(dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                     }
 
@@ -753,9 +754,9 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                             colour2 |= COLOUR_FLAG_INSET;
 
-                        GfxDrawString(
-                            dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
-                            { static_cast<colour_t>(colour2), FontStyle::Medium, darkness });
+                        DrawText(
+                            dpi, screenCoords, { static_cast<colour_t>(colour2), FontStyle::Medium, darkness },
+                            static_cast<const char*>(CheckBoxMarkString));
                     }
 
                     screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
@@ -799,7 +800,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     ft.Add<const char*>(gCommonStringFormatBuffer);
                     DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                 }
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
             }
         }
 
@@ -905,7 +906,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 }
             }
 
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
                 widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::ImgBtn;
             else
                 widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::Empty;
@@ -1537,7 +1538,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
          */
         int32_t GetObjectFromObjectSelection(ObjectType object_type, int32_t y)
         {
-            int32_t listItemIndex = y / SCROLLABLE_ROW_HEIGHT;
+            int32_t listItemIndex = y / kScrollableRowHeight;
             if (listItemIndex < 0 || static_cast<size_t>(listItemIndex) >= _listItems.size())
                 return -1;
 

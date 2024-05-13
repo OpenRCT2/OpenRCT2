@@ -22,6 +22,16 @@ class QuarterTile;
 
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 
+// Used when calling MapCanConstructWithClearAt();
+// This assumes that the caller has already done the check on the element it wants to place,
+// as this function can only check the element the player wants to build through.
+enum class CreateCrossingMode
+{
+    none,
+    trackOverPath,
+    pathOverTrack,
+};
+
 int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 
@@ -32,7 +42,7 @@ struct ConstructClearResult
 
 [[nodiscard]] GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
-    uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
+    CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false);
 
 [[nodiscard]] GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 

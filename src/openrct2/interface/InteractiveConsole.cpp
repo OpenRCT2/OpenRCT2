@@ -64,7 +64,6 @@
 #include "../world/Scenery.h"
 #include "Viewport.h"
 
-#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdarg>
@@ -687,7 +686,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "console_small_font")
         {
-            console.WriteFormatLine("console_small_font %d", gConfigInterface.ConsoleSmallFont);
+            console.WriteFormatLine("console_small_font %d", Config::Get().interface.ConsoleSmallFont);
         }
         else if (argv[0] == "location")
         {
@@ -704,19 +703,19 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "window_scale")
         {
-            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.WindowScale);
+            console.WriteFormatLine("window_scale %.3f", Config::Get().general.WindowScale);
         }
         else if (argv[0] == "window_limit")
         {
-            console.WriteFormatLine("window_limit %d", gConfigGeneral.WindowLimit);
+            console.WriteFormatLine("window_limit %d", Config::Get().general.WindowLimit);
         }
         else if (argv[0] == "render_weather_effects")
         {
-            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.RenderWeatherEffects);
+            console.WriteFormatLine("render_weather_effects %d", Config::Get().general.RenderWeatherEffects);
         }
         else if (argv[0] == "render_weather_gloom")
         {
-            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.RenderWeatherGloom);
+            console.WriteFormatLine("render_weather_gloom %d", Config::Get().general.RenderWeatherGloom);
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
@@ -741,7 +740,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting")
         {
-            console.WriteFormatLine("enable_hinting %d", gConfigFonts.EnableHinting);
+            console.WriteFormatLine("enable_hinting %d", Config::Get().fonts.EnableHinting);
         }
 #endif
         else
@@ -1066,8 +1065,8 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "console_small_font" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigInterface.ConsoleSmallFont = (int_val[0] != 0);
-            ConfigSaveDefault();
+            Config::Get().interface.ConsoleSmallFont = (int_val[0] != 0);
+            Config::Save();
             console.Execute("get console_small_font");
         }
         else if (argv[0] == "location" && InvalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
@@ -1085,8 +1084,8 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "window_scale" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
-            gConfigGeneral.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
-            ConfigSaveDefault();
+            Config::Get().general.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
+            Config::Save();
             GfxInvalidateScreen();
             ContextTriggerResize();
             ContextUpdateCursorScale();
@@ -1099,14 +1098,14 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "render_weather_effects" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.RenderWeatherEffects = (int_val[0] != 0);
-            ConfigSaveDefault();
+            Config::Get().general.RenderWeatherEffects = (int_val[0] != 0);
+            Config::Save();
             console.Execute("get render_weather_effects");
         }
         else if (argv[0] == "render_weather_gloom" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.RenderWeatherGloom = (int_val[0] != 0);
-            ConfigSaveDefault();
+            Config::Get().general.RenderWeatherGloom = (int_val[0] != 0);
+            Config::Save();
             console.Execute("get render_weather_gloom");
         }
         else if (argv[0] == "cheat_sandbox_mode" && InvalidArguments(&invalidArgs, int_valid[0]))
@@ -1188,8 +1187,8 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigFonts.EnableHinting = (int_val[0] != 0);
-            ConfigSaveDefault();
+            Config::Get().fonts.EnableHinting = (int_val[0] != 0);
+            Config::Save();
             console.Execute("get enable_hinting");
             TTFToggleHinting();
         }

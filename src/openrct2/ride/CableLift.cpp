@@ -19,8 +19,6 @@
 #include "Vehicle.h"
 #include "VehicleData.h"
 
-#include <algorithm>
-
 Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
@@ -450,7 +448,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
         vehicleCount++;
 
         massTotal += vehicle->mass;
-        accelerationTotal = AddClamp_int32_t(accelerationTotal, vehicle->acceleration);
+        accelerationTotal = AddClamp<int32_t>(accelerationTotal, vehicle->acceleration);
     }
 
     int32_t newAcceleration = (accelerationTotal / vehicleCount) >> 9;

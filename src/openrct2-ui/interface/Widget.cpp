@@ -9,19 +9,18 @@
 
 #include "Widget.h"
 
-#include "Window.h"
-
-#include <algorithm>
 #include <cmath>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+
+using namespace OpenRCT2;
 
 static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
@@ -386,7 +385,7 @@ static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetInde
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
 
-    if (widget.text == STR_NONE || widget.text == STR_VIEWPORT)
+    if (widget.text == STR_NONE || widget.content == kWidgetContentEmpty)
         return;
 
     // Get the colour
@@ -566,13 +565,13 @@ static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     int32_t width = widget->width() - 4;
     if ((widget + 1)->type == WindowWidgetType::CloseBox)
     {
-        width -= CloseButtonWidth;
+        width -= kCloseButtonWidth;
         if ((widget + 2)->type == WindowWidgetType::CloseBox)
-            width -= CloseButtonWidth;
+            width -= kCloseButtonWidth;
     }
     topLeft.x += width / 2;
-    if (gConfigInterface.WindowButtonsOnTheLeft)
-        topLeft.x += CloseButtonWidth;
+    if (Config::Get().interface.WindowButtonsOnTheLeft)
+        topLeft.x += kCloseButtonWidth;
 
     DrawTextEllipsised(
         dpi, topLeft, width, widget->text, Formatter::Common(),
@@ -644,9 +643,9 @@ static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wi
     // fill it when checkbox is pressed
     if (WidgetIsPressed(w, widgetIndex))
     {
-        GfxDrawString(
-            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
-            { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
+        DrawText(
+            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) },
+            static_cast<const char*>(CheckBoxMarkString));
     }
 
     // draw the text
@@ -746,7 +745,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, flags);
-        GfxDrawString(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
+        DrawText(dpi, { l + 1, t }, {}, static_cast<const char*>(BlackLeftArrowString));
     }
 
     // Thumb
@@ -763,7 +762,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, flags);
-        GfxDrawString(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
+        DrawText(dpi, { r - 6, t }, {}, static_cast<const char*>(BlackRightArrowString));
     }
 }
 
@@ -783,7 +782,7 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, t }, { r, t + (kScrollBarWidth - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    GfxDrawString(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
+    DrawText(dpi, { l + 1, t - 1 }, {}, static_cast<const char*>(BlackUpArrowString));
 
     // Thumb
     GfxFillRectInset(
@@ -796,7 +795,7 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, b - (kScrollBarWidth - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    GfxDrawString(dpi, { l + 1, b - (kScrollBarWidth - 1) }, static_cast<const char*>(BlackDownArrowString), {});
+    DrawText(dpi, { l + 1, b - (kScrollBarWidth - 1) }, {}, static_cast<const char*>(BlackDownArrowString));
 }
 
 /**
@@ -1137,8 +1136,9 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     // Get the colour
     uint8_t colour = w.colours[widget.colour];
 
-    bool active = w.classification == gCurrentTextBox.window.classification && w.number == gCurrentTextBox.window.number
-        && widgetIndex == gCurrentTextBox.widget_index;
+    auto& tbIdent = OpenRCT2::Ui::Windows::GetCurrentTextBox();
+    bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
+        && widgetIndex == tbIdent.widget_index;
 
     // GfxFillRectInset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
     GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
@@ -1146,7 +1146,8 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     // Figure out where the text should be positioned vertically.
     topLeft.y = w.windowPos.y + widget.textTop();
 
-    if (!active || gTextInput == nullptr)
+    auto* textInput = OpenRCT2::Ui::Windows::GetTextboxSession();
+    if (!active || textInput == nullptr)
     {
         if (widget.text != 0)
         {
@@ -1160,27 +1161,27 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
     u8string wrappedString;
-    GfxWrapString(gTextBoxInput, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
+    GfxWrapString(*textInput->Buffer, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
 
     DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
 
     // Make a trimmed view of the string for measuring the width.
     int32_t curX = topLeft.x
         + GfxGetStringWidthNoFormatting(
-                       u8string_view{ wrappedString.c_str(), std::min(wrappedString.length(), gTextInput->SelectionStart) },
+                       u8string_view{ wrappedString.c_str(), std::min(wrappedString.length(), textInput->SelectionStart) },
                        FontStyle::Medium)
         + 3;
 
     int32_t width = 6;
-    if (static_cast<uint32_t>(gTextInput->SelectionStart) < gTextBoxInput.size())
+    if (static_cast<uint32_t>(textInput->SelectionStart) < textInput->Buffer->size())
     {
         // Make a new 1 character wide string for measuring the width
-        // of the character that the cursor is under.
+        // of the character that the cursor is under. (NOTE: this is broken for multi byte utf8 codepoints)
         width = std::max(
-            GfxGetStringWidthNoFormatting(u8string{ gTextBoxInput[gTextInput->SelectionStart] }, FontStyle::Medium) - 2, 4);
+            GfxGetStringWidthNoFormatting(u8string{ textInput->Buffer[textInput->SelectionStart] }, FontStyle::Medium) - 2, 4);
     }
 
-    if (gTextBoxFrameNo <= 15)
+    if (OpenRCT2::Ui::Windows::TextBoxCaretIsFlashed())
     {
         colour = ColourMapA[w.colours[1]].mid_light;
         auto y = topLeft.y + (widget.height() - 1);

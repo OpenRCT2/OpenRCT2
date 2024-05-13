@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,18 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "SetSpeed.h"
+#pragma once
 
-#include "../../Game.h"
+#include "../../common.h"
+#include "../Scene.h"
 
-#include <algorithm>
-
-namespace OpenRCT2::Title
+namespace OpenRCT2
 {
-    int16_t SetSpeedCommand::operator()(int16_t timer)
+    class GameScene final : public Scene
     {
-        gGameSpeed = std::clamp<uint8_t>(Speed, 1, 4);
+    public:
+        using Scene::Scene;
 
-        return 0;
-    }
-} // namespace OpenRCT2::Title
+        void Load() override;
+        void Tick() override;
+        void Stop() override;
+    };
+} // namespace OpenRCT2

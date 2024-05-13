@@ -11,7 +11,6 @@
 #include "../interface/InGameConsole.h"
 #include "../scripting/CustomMenu.h"
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -210,78 +209,89 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Toolbar_widget_ordering
 
     // clang-format off
-// from left to right
-static constexpr int32_t left_aligned_widgets_order[] = {
-    WIDX_PAUSE,
-    WIDX_FASTFORWARD,
-    WIDX_FILE_MENU,
-    WIDX_MUTE,
-    WIDX_NETWORK,
-    WIDX_CHAT,
-    WIDX_CHEATS,
-    WIDX_DEBUG,
+    static constexpr std::array kWidgetOrderLeftGroup = {
+        WIDX_PAUSE,
+        WIDX_FASTFORWARD,
+        WIDX_FILE_MENU,
+        WIDX_MUTE,
+        WIDX_NETWORK,
+        WIDX_CHAT,
+        WIDX_CHEATS,
+        WIDX_DEBUG,
 
-    WIDX_SEPARATOR,
+        WIDX_SEPARATOR,
 
-    WIDX_ZOOM_OUT,
-    WIDX_ZOOM_IN,
-    WIDX_ROTATE,
-    WIDX_VIEW_MENU,
-    WIDX_MAP,
-};
+        WIDX_ZOOM_OUT,
+        WIDX_ZOOM_IN,
+        WIDX_ROTATE,
+        WIDX_VIEW_MENU,
+        WIDX_MAP,
+    };
 
-// from right to left
-static constexpr int32_t right_aligned_widgets_order[] = {
-    WIDX_NEWS,
-    WIDX_GUESTS,
-    WIDX_STAFF,
-    WIDX_PARK,
-    WIDX_RIDES,
-    WIDX_RESEARCH,
-    WIDX_FINANCES,
+    static constexpr std::array kWidgetOrderRightGroup = {
+        WIDX_CLEAR_SCENERY,
+        WIDX_LAND,
+        WIDX_WATER,
+        WIDX_SCENERY,
+        WIDX_PATH,
+        WIDX_CONSTRUCT_RIDE,
 
-    WIDX_SEPARATOR,
+        WIDX_SEPARATOR,
 
-    WIDX_CONSTRUCT_RIDE,
-    WIDX_PATH,
-    WIDX_SCENERY,
-    WIDX_WATER,
-    WIDX_LAND,
-    WIDX_CLEAR_SCENERY,
-};
+        WIDX_FINANCES,
+        WIDX_RESEARCH,
+        WIDX_RIDES,
+        WIDX_PARK,
+        WIDX_STAFF,
+        WIDX_GUESTS,
+        WIDX_NEWS,
+    };
+
+    static constexpr size_t _totalToolbarElements = kWidgetOrderLeftGroup.size() + kWidgetOrderRightGroup.size();
+
+    // Make a combined version of both halves of the toolbar, with a separator halfway.
+    static constexpr std::array<int, _totalToolbarElements + 1> kWidgetOrderCombined = []() {
+        std::array<int, _totalToolbarElements + 1> combined;
+
+        auto halfWayPoint = std::copy(kWidgetOrderLeftGroup.begin(), kWidgetOrderLeftGroup.end(), combined.begin());
+        *halfWayPoint = WIDX_SEPARATOR;
+        std::copy(kWidgetOrderRightGroup.begin(), kWidgetOrderRightGroup.end(), halfWayPoint + 1);
+
+        return combined;
+    }();
 
 #pragma endregion
 
-static Widget _topToolbarWidgets[] = {
-    MakeRemapWidget({  0, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
-    MakeRemapWidget({ 60, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
-    MakeRemapWidget({250, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
-    MakeRemapWidget({100, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
-    MakeRemapWidget({130, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
-    MakeRemapWidget({160, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
-    MakeRemapWidget({190, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
-    MakeRemapWidget({220, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
-    MakeRemapWidget({267, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
-    MakeRemapWidget({297, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
-    MakeRemapWidget({327, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
-    MakeRemapWidget({357, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
-    MakeRemapWidget({387, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
-    MakeRemapWidget({490, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
-    MakeRemapWidget({520, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
-    MakeRemapWidget({550, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
-    MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
-    MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
-    MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
-    MakeWidget     ({  0, 0}, {10,                     1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
-    kWidgetsEnd,
-};
+    static Widget _topToolbarWidgets[] = {
+        MakeRemapWidget({  0, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
+        MakeRemapWidget({ 60, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
+        MakeRemapWidget({250, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
+        MakeRemapWidget({100, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
+        MakeRemapWidget({130, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
+        MakeRemapWidget({160, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
+        MakeRemapWidget({190, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
+        MakeRemapWidget({220, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
+        MakeRemapWidget({267, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
+        MakeRemapWidget({297, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
+        MakeRemapWidget({327, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
+        MakeRemapWidget({357, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
+        MakeRemapWidget({387, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
+        MakeRemapWidget({490, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
+        MakeRemapWidget({520, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
+        MakeRemapWidget({550, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
+        MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
+        MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
+        MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
+        MakeWidget     ({  0, 0}, {10,                     1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
+        kWidgetsEnd,
+    };
     // clang-format on
 
     static void ScenarioSelectCallback(const utf8* path);
@@ -863,7 +873,7 @@ static Widget _topToolbarWidgets[] = {
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorInvalidate();
             }
@@ -1796,7 +1806,7 @@ static Widget _topToolbarWidgets[] = {
                 rotation -= GetCurrentRotation();
                 rotation &= 0x3;
 
-                if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+                if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
                 {
                     VirtualFloorSetHeight(gSceneryPlaceZ);
                 }
@@ -1880,7 +1890,7 @@ static Widget _topToolbarWidgets[] = {
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -1914,7 +1924,7 @@ static Widget _topToolbarWidgets[] = {
                 return;
             }
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2004,7 +2014,7 @@ static Widget _topToolbarWidgets[] = {
             if (gridPos.IsNull())
                 return;
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2104,7 +2114,7 @@ static Widget _topToolbarWidgets[] = {
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2152,7 +2162,7 @@ static Widget _topToolbarWidgets[] = {
                 }
             }
 
-            if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2917,11 +2927,8 @@ static Widget _topToolbarWidgets[] = {
             }
         }
 
-        void OnPrepareDraw() override
+        void ResetWidgetToDefaultState()
         {
-            int32_t x, widgetIndex, widgetWidth, firstAlignment;
-            Widget* widget;
-
             // Enable / disable buttons
             widgets[WIDX_PAUSE].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_FILE_MENU].type = WindowWidgetType::TrnBtn;
@@ -2946,26 +2953,30 @@ static Widget _topToolbarWidgets[] = {
             widgets[WIDX_RESEARCH].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_FASTFORWARD].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_CHEATS].type = WindowWidgetType::TrnBtn;
-            widgets[WIDX_DEBUG].type = gConfigGeneral.DebuggingTools ? WindowWidgetType::TrnBtn : WindowWidgetType::Empty;
+            widgets[WIDX_DEBUG].type = Config::Get().general.DebuggingTools ? WindowWidgetType::TrnBtn
+                                                                            : WindowWidgetType::Empty;
             widgets[WIDX_NEWS].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
+        }
 
-            if (!gConfigInterface.ToolbarShowMute)
+        void HideDisabledButtons()
+        {
+            if (!Config::Get().interface.ToolbarShowMute)
                 widgets[WIDX_MUTE].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowChat)
+            if (!Config::Get().interface.ToolbarShowChat)
                 widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowResearch)
+            if (!Config::Get().interface.ToolbarShowResearch)
                 widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowCheats)
+            if (!Config::Get().interface.ToolbarShowCheats)
                 widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowNews)
+            if (!Config::Get().interface.ToolbarShowNews)
                 widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
 
-            if (!gConfigInterface.ToolbarShowZoom)
+            if (!Config::Get().interface.ToolbarShowZoom)
             {
                 widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
                 widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
@@ -2976,48 +2987,56 @@ static Widget _topToolbarWidgets[] = {
                 widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
             }
 
-            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
+            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
+        }
 
-            if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+        void ApplyEditorMode()
+        {
+            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) == 0)
             {
-                widgets[WIDX_PARK].type = WindowWidgetType::Empty;
-                widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
-                widgets[WIDX_GUESTS].type = WindowWidgetType::Empty;
-                widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
-                widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
-                widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
-                widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
-
-                auto& gameState = GetGameState();
-                if (gameState.EditorStep != EditorStep::LandscapeEditor)
-                {
-                    widgets[WIDX_LAND].type = WindowWidgetType::Empty;
-                    widgets[WIDX_WATER].type = WindowWidgetType::Empty;
-                }
-
-                if (gameState.EditorStep != EditorStep::RollercoasterDesigner)
-                {
-                    widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
-                }
-
-                if (gameState.EditorStep != EditorStep::LandscapeEditor
-                    && gameState.EditorStep != EditorStep::RollercoasterDesigner)
-                {
-                    widgets[WIDX_MAP].type = WindowWidgetType::Empty;
-                    widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
-                    widgets[WIDX_PATH].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::Empty;
-
-                    widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
-                }
+                return;
             }
 
+            widgets[WIDX_PARK].type = WindowWidgetType::Empty;
+            widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
+            widgets[WIDX_GUESTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
+            widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
+            widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
+            widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
+
+            auto& gameState = GetGameState();
+            if (gameState.EditorStep != EditorStep::LandscapeEditor)
+            {
+                widgets[WIDX_LAND].type = WindowWidgetType::Empty;
+                widgets[WIDX_WATER].type = WindowWidgetType::Empty;
+            }
+
+            if (gameState.EditorStep != EditorStep::RollercoasterDesigner)
+            {
+                widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
+                widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
+                widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
+            }
+
+            if (gameState.EditorStep != EditorStep::LandscapeEditor
+                && gameState.EditorStep != EditorStep::RollercoasterDesigner)
+            {
+                widgets[WIDX_MAP].type = WindowWidgetType::Empty;
+                widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
+                widgets[WIDX_PATH].type = WindowWidgetType::Empty;
+                widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::Empty;
+
+                widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
+                widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
+                widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+                widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
+            }
+        }
+
+        void ApplyNetworkMode()
+        {
             switch (NetworkGetMode())
             {
                 case NETWORK_MODE_NONE:
@@ -3031,85 +3050,10 @@ static Widget _topToolbarWidgets[] = {
                     widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
                     break;
             }
+        }
 
-            // Align left hand side toolbar buttons
-            firstAlignment = 1;
-            x = 0;
-            for (size_t i = 0; i < std::size(left_aligned_widgets_order); ++i)
-            {
-                widgetIndex = left_aligned_widgets_order[i];
-                widget = &widgets[widgetIndex];
-                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
-                    continue;
-
-                if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
-                    continue;
-
-                widgetWidth = widget->width();
-                widget->left = x;
-                x += widgetWidth;
-                widget->right = x;
-                x += 1;
-                firstAlignment = 0;
-            }
-
-            // Align right hand side toolbar buttons if necessary
-            int32_t screenWidth = ContextGetWidth();
-            firstAlignment = 1;
-            x = std::max(640, screenWidth);
-            for (size_t i = 0; i < std::size(right_aligned_widgets_order); ++i)
-            {
-                widgetIndex = right_aligned_widgets_order[i];
-                widget = &widgets[widgetIndex];
-                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
-                    continue;
-
-                if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
-                    continue;
-
-                widgetWidth = widget->width();
-                x -= 1;
-                widget->right = x;
-                x -= widgetWidth;
-                widget->left = x;
-                firstAlignment = 0;
-            }
-
-            // Footpath button pressed down
-            if (WindowFindByClass(WindowClass::Footpath) == nullptr)
-                pressed_widgets &= ~(1uLL << WIDX_PATH);
-            else
-                pressed_widgets |= (1uLL << WIDX_PATH);
-
-            bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
-            if (paused || _waitingForPause)
-            {
-                pressed_widgets |= (1uLL << WIDX_PAUSE);
-                if (paused)
-                    _waitingForPause = false;
-            }
-            else
-                pressed_widgets &= ~(1uLL << WIDX_PAUSE);
-
-            if (!OpenRCT2::Audio::gGameSoundsOff)
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::PaletteNull);
-            else
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::PaletteNull);
-
-            // Set map button to the right image.
-            if (widgets[WIDX_MAP].type != WindowWidgetType::Empty)
-            {
-                static constexpr uint32_t _imageIdByRotation[] = {
-                    SPR_G2_MAP_NORTH,
-                    SPR_G2_MAP_WEST,
-                    SPR_G2_MAP_SOUTH,
-                    SPR_G2_MAP_EAST,
-                };
-
-                uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
-                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
-            }
-
+        void ApplyZoomState()
+        {
             // Zoomed out/in disable. Not sure where this code is in the original.
             const auto* mainWindow = WindowGetMain();
             if (mainWindow == nullptr || mainWindow->viewport == nullptr)
@@ -3130,6 +3074,139 @@ static Widget _topToolbarWidgets[] = {
             {
                 disabled_widgets &= ~((1uLL << WIDX_ZOOM_IN) | (1uLL << WIDX_ZOOM_OUT));
             }
+        }
+
+        void ApplyPausedState()
+        {
+            bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
+            if (paused || _waitingForPause)
+            {
+                pressed_widgets |= (1uLL << WIDX_PAUSE);
+                if (paused)
+                    _waitingForPause = false;
+            }
+            else
+                pressed_widgets &= ~(1uLL << WIDX_PAUSE);
+        }
+
+        void ApplyMapRotation()
+        {
+            // Set map button to the right image.
+            if (widgets[WIDX_MAP].type != WindowWidgetType::Empty)
+            {
+                static constexpr uint32_t _imageIdByRotation[] = {
+                    SPR_G2_MAP_NORTH,
+                    SPR_G2_MAP_WEST,
+                    SPR_G2_MAP_SOUTH,
+                    SPR_G2_MAP_EAST,
+                };
+
+                uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
+                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
+            }
+        }
+
+        void ApplyAudioState()
+        {
+            if (!OpenRCT2::Audio::gGameSoundsOff)
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::PaletteNull);
+            else
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::PaletteNull);
+        }
+
+        void ApplyFootpathPressed()
+        {
+            // Footpath button pressed down
+            if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+                pressed_widgets &= ~(1uLL << WIDX_PATH);
+            else
+                pressed_widgets |= (1uLL << WIDX_PATH);
+        }
+
+        // TODO: look into using std::span
+        template<typename T> uint16_t GetToolbarWidth(T toolbarItems)
+        {
+            bool firstItem = true;
+            auto totalWidth = 0;
+            for (auto widgetIndex : toolbarItems)
+            {
+                auto* widget = &widgets[widgetIndex];
+                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
+                    continue;
+
+                if (firstItem && widgetIndex == WIDX_SEPARATOR)
+                    continue;
+
+                totalWidth += widget->width() + 1;
+                firstItem = false;
+            }
+            return totalWidth;
+        }
+
+        // TODO: look into using std::span
+        template<typename T> void AlignButtons(T toolbarItems, uint16_t xPos)
+        {
+            bool firstItem = true;
+            for (auto widgetIndex : toolbarItems)
+            {
+                auto* widget = &widgets[widgetIndex];
+                if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
+                    continue;
+
+                if (firstItem && widgetIndex == WIDX_SEPARATOR)
+                    continue;
+
+                auto widgetWidth = widget->width();
+                widget->left = xPos;
+                xPos += widgetWidth;
+                widget->right = xPos;
+                xPos += 1;
+
+                firstItem = false;
+            }
+        }
+
+        void AlignButtonsLeftRight()
+        {
+            // Align left hand side toolbar buttons
+            AlignButtons(kWidgetOrderLeftGroup, 0);
+
+            // Align right hand side toolbar buttons
+            auto totalWidth = GetToolbarWidth(kWidgetOrderRightGroup);
+            auto xPos = ContextGetWidth() - totalWidth;
+            AlignButtons(kWidgetOrderRightGroup, xPos);
+        }
+
+        void AlignButtonsCentre()
+        {
+            // First, we figure out how much space we'll be needing
+            auto totalWidth = GetToolbarWidth(kWidgetOrderCombined);
+
+            // We'll start from the centre of the UI...
+            auto xPos = (ContextGetWidth() - totalWidth) / 2;
+
+            // And finally, align the buttons in the centre
+            AlignButtons(kWidgetOrderCombined, xPos);
+        }
+
+        void OnPrepareDraw() override
+        {
+            ResetWidgetToDefaultState();
+            HideDisabledButtons();
+            ApplyEditorMode();
+
+            ApplyPausedState();
+            ApplyAudioState();
+            ApplyNetworkMode();
+
+            ApplyZoomState();
+            ApplyMapRotation();
+            ApplyFootpathPressed();
+
+            if (!Config::Get().interface.ToolbarButtonsCentred)
+                AlignButtonsLeftRight();
+            else
+                AlignButtonsCentre();
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -3363,7 +3440,7 @@ static Widget _topToolbarWidgets[] = {
         auto* mainViewport = WindowGetMain()->viewport;
         if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
             Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
-        if (gConfigGeneral.TransparentWater)
+        if (Config::Get().general.TransparentWater)
             Dropdown::SetChecked(DDIDX_TRANSPARENT_WATER, true);
         if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
             Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
@@ -3416,8 +3493,8 @@ static Widget _topToolbarWidgets[] = {
                     w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                     break;
                 case DDIDX_TRANSPARENT_WATER:
-                    gConfigGeneral.TransparentWater ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.TransparentWater ^= 1;
+                    Config::Save();
                     break;
                 case DDIDX_HIDE_BASE:
                     w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
@@ -3567,7 +3644,7 @@ static Widget _topToolbarWidgets[] = {
         gDropdownItems[1].Format = STR_TOGGLE_OPTION;
         gDropdownItems[2].Format = STR_TOGGLE_OPTION;
         gDropdownItems[3].Format = STR_TOGGLE_OPTION;
-        if (gConfigGeneral.DebuggingTools)
+        if (Config::Get().general.DebuggingTools)
         {
             gDropdownItems[4].Format = STR_EMPTY;
             gDropdownItems[5].Format = STR_TOGGLE_OPTION;
@@ -3593,7 +3670,7 @@ static Widget _topToolbarWidgets[] = {
             Dropdown::SetChecked(5, true);
         }
 
-        if (gConfigGeneral.DebuggingTools)
+        if (Config::Get().general.DebuggingTools)
         {
             gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
         }

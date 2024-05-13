@@ -13,7 +13,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/actions/PlayerKickAction.h>
 #include <openrct2/actions/PlayerSetGroupAction.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
@@ -456,7 +456,7 @@ static Widget *window_player_page_widgets[] = {
             DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
             char ping[64];
             snprintf(ping, 64, "%d ms", NetworkGetPlayerPing(player));
-            GfxDrawString(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { colours[2] });
+            DrawText(dpi, screenCoords + ScreenCoordsXY(30, 0), { colours[2] }, ping);
 
             // Draw last action
             screenCoords = windowPos + ScreenCoordsXY{ width / 2, height - 13 };

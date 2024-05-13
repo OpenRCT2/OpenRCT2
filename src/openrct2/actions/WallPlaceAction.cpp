@@ -23,6 +23,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -102,7 +103,7 @@ GameActions::Result WallPlaceAction::Query() const
     else if (!_trackDesignDrawingPreview && (_loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y))
     {
         LOG_ERROR("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     if (_edge > 3)
@@ -170,7 +171,7 @@ GameActions::Result WallPlaceAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
             {
                 newEdge = (newEdge - 1) & 3;
 
@@ -201,7 +202,7 @@ GameActions::Result WallPlaceAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
             {
                 newEdge = (newEdge - 1) & 3;
 
@@ -585,6 +586,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             case TileElementType::Track:
                 if (!WallCheckObstructionWithTrack(wall, z0, tileElement->AsTrack(), wallAcrossTrack))
                 {
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;

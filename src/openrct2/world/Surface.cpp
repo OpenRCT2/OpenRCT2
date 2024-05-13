@@ -16,6 +16,7 @@
 #include "../scenario/Scenario.h"
 #include "Location.hpp"
 #include "Map.h"
+#include "tile_element/Slope.h"
 
 ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
 {
@@ -135,7 +136,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
 
     int32_t baseZ = GetBaseZ();
     int32_t clearZ = GetBaseZ() + LAND_HEIGHT_STEP;
-    if (Slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+    if (Slope & kTileSlopeDiagonalFlag)
         clearZ += LAND_HEIGHT_STEP;
 
     // Check objects above grass

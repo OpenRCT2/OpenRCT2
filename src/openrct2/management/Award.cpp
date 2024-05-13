@@ -22,8 +22,6 @@
 #include "../world/Park.h"
 #include "NewsItem.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 constexpr uint8_t NEGATIVE = 0;
@@ -646,7 +644,7 @@ void AwardUpdateAll()
             {
                 // Add award
                 currentAwards.push_back(Award{ 5u, awardType });
-                if (gConfigNotifications.ParkAward)
+                if (Config::Get().notifications.ParkAward)
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }

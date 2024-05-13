@@ -11,6 +11,8 @@
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
 #include "../RideData.h"
@@ -18,6 +20,8 @@
 #include "../TrackPaint.h"
 
 #include <iterator>
+
+static constexpr MetalSupportType kSupportType = MetalSupportType::Truss;
 
 enum
 {
@@ -90,7 +94,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
 
         if (MetalASupportsPaintSetup(
-                session, MetalSupportType::Truss, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
+                session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
         {
             success = true;
         }
@@ -110,8 +114,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
         uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session.Support.height;
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Truss, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
         supportSegments[s].height = temp;
     }
 }
@@ -268,7 +271,7 @@ static void ChairliftPaintStationNeSw(
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 static void ChairliftPaintStationSeNw(
@@ -364,7 +367,7 @@ static void ChairliftPaintStationSeNw(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x00744068 */
@@ -401,7 +404,7 @@ static void ChairliftPaintFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x00743FD8 */
@@ -439,7 +442,7 @@ static void ChairliftPaint25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x00743FD8 */
@@ -494,7 +497,7 @@ static void ChairliftPaintFlatTo25DegUp(
 
     ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00743FF8 */
@@ -549,7 +552,7 @@ static void ChairliftPaint25DegUpToFlat(
 
     ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x00744008 */
@@ -642,7 +645,7 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
         height);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 }
 
 /** rct2: 0x00744048 */

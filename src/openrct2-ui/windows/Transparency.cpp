@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Theme.h>
@@ -237,13 +236,13 @@ static Widget _transparancyWidgets[] =
 
         void SaveInConfig(uint32_t wflags)
         {
-            gConfigGeneral.InvisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
-            gConfigGeneral.InvisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-            gConfigGeneral.InvisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
-            gConfigGeneral.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-            gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
-            gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-            ConfigSaveDefault();
+            Config::Get().general.InvisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
+            Config::Get().general.InvisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+            Config::Get().general.InvisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
+            Config::Get().general.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+            Config::Get().general.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
+            Config::Get().general.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+            Config::Save();
         }
 
         void OnResize() override

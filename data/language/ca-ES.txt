@@ -186,7 +186,7 @@ STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
 STR_0770    :Guarda de seguretat {INT32}
 STR_0771    :Animador {INT32}
-STR_0777    :Parc sense nom{POP16}{POP16}
+STR_0777    :Parc sense nom
 STR_0778    :Senyal
 STR_0779    :1
 STR_0780    :2

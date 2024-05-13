@@ -98,6 +98,7 @@ STR_0093    :Hibrid hullámvasút
 STR_0094    :Egysínű hullámvasút
 STR_0095    :Alpesi hullámvasút
 STR_0096    :Klasszikus fa hullámvasút
+STR_0097    :Klasszikus álló hullámvasút
 STR_0512    :Egy kompakt hullámvasút spirális felvonószakasszal és sima, csavaros esésekkel.
 STR_0513    :Egy átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0514    :A hullámvasút pályája alatt felfüggesztett vonatok oldalt kilengenek a kanyarokban
@@ -181,12 +182,13 @@ STR_0603    :Egy fa stílusú hullámvasút acélpályával, meredek esésekkel 
 STR_0604    :Az utasok egymás mögött utaznak egy keskeny, egysínű pályán, ahogy átszáguldanak a szoros fordítókon és irányváltásokon.
 STR_0605    :Az utasok egy kanyargós acélpályán szánkóznak lefelé, fékezéssel szabályozva a sebességüket
 STR_0606    :Egy régebbi stílusú, fából készült hullámvasút gyors és durva utazással, rengeteg légi idővel, némi oldalirányú G-vel, és úgy tervezve, hogy „kontrollvesztettség” élményét nyújtsa
+STR_0607    :Egy intenzív, régebbi stílusú acél átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0767    :Vendég {INT32}
 STR_0768    :Mindenes {INT32}
 STR_0769    :Gépész {INT32}
 STR_0770    :Biztonsági őr {INT32}
 STR_0771    :Szórakoztató {INT32}
-STR_0777    :Névtelen park{POP16}{POP16}
+STR_0777    :Névtelen park
 STR_0778    :Felirat
 STR_0779    :1.
 STR_0780    :2.
@@ -3695,6 +3697,7 @@ STR_6623    :Írd be a „help” szót az elérhető parancsok listájához. A 
 STR_6624    :Mezővizsgáló: Elemek rendezése
 STR_6625    :Érvénytelen szín
 STR_6626    :Az animáció tükrözött
+STR_6627    :Túl nagy a pálya sebessége!
 
 #############
 # Scenarios #

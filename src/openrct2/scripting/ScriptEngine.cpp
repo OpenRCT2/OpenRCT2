@@ -572,7 +572,7 @@ void ScriptEngine::RefreshPlugins()
     }
 
     // Turn on hot reload if not already enabled
-    if (!_hotReloadingInitialised && gConfigPlugin.EnableHotReloading && NetworkGetMode() == NETWORK_MODE_NONE)
+    if (!_hotReloadingInitialised && Config::Get().plugin.EnableHotReloading && NetworkGetMode() == NETWORK_MODE_NONE)
     {
         SetupHotReloading();
     }

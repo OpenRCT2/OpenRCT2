@@ -240,6 +240,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Cory Ye (CoryfY)
 * Karsten Van Fossan (karstenvanf)
 * Kaavya Ramachandhran (ayvaak)
+* Mike Harvey (harvito)
 
 ## Toolchain
 * (Balletie) - macOS

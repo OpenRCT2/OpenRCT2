@@ -34,9 +34,9 @@
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
+#include "scenes/title/TitleScene.h"
+#include "scenes/title/TitleSequencePlayer.h"
 #include "scripting/ScriptEngine.h"
-#include "title/TitleScreen.h"
-#include "title/TitleSequencePlayer.h"
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
@@ -44,7 +44,6 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 
-#include <algorithm>
 #include <chrono>
 
 using namespace OpenRCT2;
@@ -147,7 +146,7 @@ namespace OpenRCT2
         }
 
         bool isPaused = GameIsPaused();
-        if (NetworkGetMode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
+        if (NetworkGetMode() == NETWORK_MODE_SERVER && Config::Get().network.PauseServerIfNoClients)
         {
             // If we are headless we always have 1 player (host), pause if no one else is around.
             if (gOpenRCT2Headless && NetworkGetNumPlayers() == 1)
@@ -222,26 +221,6 @@ namespace OpenRCT2
         if (!gOpenRCT2Headless)
         {
             InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-
-            // the flickering frequency is reduced by 4, compared to the original
-            // it was done due to inability to reproduce original frequency
-            // and decision that the original one looks too fast
-            if (gCurrentRealTimeTicks % 4 == 0)
-                gWindowMapFlashingFlags ^= MapFlashingFlags::SwitchColour;
-
-            // Handle guest map flashing
-            gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashGuests;
-            if (gWindowMapFlashingFlags & MapFlashingFlags::GuestListOpen)
-                gWindowMapFlashingFlags |= MapFlashingFlags::FlashGuests;
-            gWindowMapFlashingFlags &= ~MapFlashingFlags::GuestListOpen;
-
-            // Handle staff map flashing
-            gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashStaff;
-            if (gWindowMapFlashingFlags & MapFlashingFlags::StaffListOpen)
-                gWindowMapFlashingFlags |= MapFlashingFlags::FlashStaff;
-            gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
-
-            ContextUpdateMapTooltip();
         }
 
         // Always perform autosave check, even when paused
@@ -250,8 +229,6 @@ namespace OpenRCT2
         {
             ScenarioAutosaveCheck();
         }
-
-        WindowDispatchUpdateAll();
 
         if (didRunSingleFrame && GameIsNotPaused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {

@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <cmath>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -300,7 +299,7 @@ static Widget _viewClippingWidgets[] = {
                 case DisplayType::DisplayUnits:
                 {
                     // Print the value in the configured height label type:
-                    if (gConfigGeneral.ShowHeightAsUnits)
+                    if (Config::Get().general.ShowHeightAsUnits)
                     {
                         // Height label is Units.
                         auto ft = Formatter();
@@ -313,7 +312,7 @@ static Widget _viewClippingWidgets[] = {
                     {
                         // Height label is Real Values.
                         // Print the value in the configured measurement units.
-                        switch (gConfigGeneral.MeasurementFormat)
+                        switch (Config::Get().general.MeasurementFormat)
                         {
                             case MeasurementFormat::Metric:
                             case MeasurementFormat::SI:

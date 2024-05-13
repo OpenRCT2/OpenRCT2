@@ -14,13 +14,13 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -129,9 +129,9 @@ static Widget window_guest_list_widgets[] = {
             char Name[256];
         };
 
-        static constexpr uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
+        static constexpr uint8_t SUMMARISED_GUEST_ROW_HEIGHT = kScrollableRowHeight + 11;
         static constexpr auto GUESTS_PER_PAGE = 2000;
-        static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * SCROLLABLE_ROW_HEIGHT;
+        static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * kScrollableRowHeight;
         static constexpr size_t MaxGroups = 240;
 
         TabId _selectedTab{};
@@ -274,8 +274,6 @@ static Widget window_guest_list_widgets[] = {
             if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24uL : 32uL))
                 _tabAnimationIndex = 0;
             InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab));
-
-            gWindowMapFlashingFlags |= MapFlashingFlags::GuestListOpen;
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -502,7 +500,7 @@ static Widget window_guest_list_widgets[] = {
             {
                 case TabId::Individual:
                     // Count the number of guests
-                    y = static_cast<int32_t>(_guestList.size()) * SCROLLABLE_ROW_HEIGHT;
+                    y = static_cast<int32_t>(_guestList.size()) * kScrollableRowHeight;
                     _numPages = (_guestList.size() + GUESTS_PER_PAGE - 1) / GUESTS_PER_PAGE;
                     if (_numPages == 0)
                         _selectedPage = 0;
@@ -541,7 +539,7 @@ static Widget window_guest_list_widgets[] = {
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto i = screenCoords.y / (_selectedTab == TabId::Individual ? SCROLLABLE_ROW_HEIGHT : SUMMARISED_GUEST_ROW_HEIGHT);
+            auto i = screenCoords.y / (_selectedTab == TabId::Individual ? kScrollableRowHeight : SUMMARISED_GUEST_ROW_HEIGHT);
             i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
             if (static_cast<size_t>(i) != _highlightedIndex)
             {
@@ -556,7 +554,7 @@ static Widget window_guest_list_widgets[] = {
             {
                 case TabId::Individual:
                 {
-                    auto i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+                    auto i = screenCoords.y / kScrollableRowHeight;
                     i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
                     for (const auto& guestItem : _guestList)
                     {
@@ -669,14 +667,14 @@ static Widget window_guest_list_widgets[] = {
             for (const auto& guestItem : _guestList)
             {
                 // Check if y is beyond the scroll control
-                if (y + SCROLLABLE_ROW_HEIGHT + 1 >= -0x7FFF && y + SCROLLABLE_ROW_HEIGHT + 1 > dpi.y && y < 0x7FFF
+                if (y + kScrollableRowHeight + 1 >= -0x7FFF && y + kScrollableRowHeight + 1 > dpi.y && y < 0x7FFF
                     && y < dpi.y + dpi.height)
                 {
                     // Highlight backcolour and text colour (format)
                     StringId format = STR_BLACK_STRING;
                     if (index == _highlightedIndex)
                     {
-                        GfxFilterRect(dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(dpi, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 
@@ -724,7 +722,7 @@ static Widget window_guest_list_widgets[] = {
                             break;
                     }
                 }
-                y += SCROLLABLE_ROW_HEIGHT;
+                y += kScrollableRowHeight;
                 index++;
             }
         }

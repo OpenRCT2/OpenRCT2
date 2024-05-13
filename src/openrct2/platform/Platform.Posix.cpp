@@ -14,7 +14,6 @@
 #    include "../Date.h"
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
-#    include "../core/String.hpp"
 #    include "../util/Util.h"
 
 #    include <cerrno>
@@ -369,17 +368,6 @@ namespace Platform
         datetime64 utcNow = epochAsTicks + utcEpochTicks;
         return utcNow;
     }
-
-    u8string GetRCT1SteamDir()
-    {
-        return u8"app_285310" PATH_SEPARATOR u8"depot_285311";
-    }
-
-    u8string GetRCT2SteamDir()
-    {
-        return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
-    }
-
 } // namespace Platform
 
 #endif

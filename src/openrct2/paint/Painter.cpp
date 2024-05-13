@@ -11,20 +11,21 @@
 
 #include "../Game.h"
 #include "../GameState.h"
-#include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
-#include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/Text.h"
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
+#include "../interface/Widget.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
-#include "../title/TitleScreen.h"
+#include "../scenes/intro/IntroScene.h"
+#include "../scenes/title/TitleScene.h"
 #include "../ui/UiContext.h"
 #include "../world/TileInspector.h"
 
@@ -43,7 +44,8 @@ void Painter::Paint(IDrawingEngine& de)
     PROFILED_FUNCTION();
 
     auto dpi = de.GetDrawingPixelInfo();
-    if (gIntroState != IntroState::None)
+
+    if (IntroIsPlaying())
     {
         IntroDraw(*dpi);
     }
@@ -78,7 +80,7 @@ void Painter::Paint(IDrawingEngine& de)
     if (text != nullptr)
         PaintReplayNotice(*dpi, text);
 
-    if (gConfigGeneral.ShowFPS)
+    if (Config::Get().general.ShowFPS)
     {
         PaintFPS(*dpi);
     }
@@ -96,25 +98,46 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((GetGameState().CurrentTicks >> 1) & 0xF) > 4)
-        GfxDrawString(dpi, screenCoords, buffer, { COLOUR_SATURATED_RED });
+        DrawText(dpi, screenCoords, { COLOUR_SATURATED_RED }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
+static bool ShouldShowFPS()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO && !TitleShouldHideVersionInfo())
+        return true;
+
+    if (!WindowFindByClass(WindowClass::TopToolbar))
+        return false;
+
+    return true;
+}
+
 void Painter::PaintFPS(DrawPixelInfo& dpi)
 {
-    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
+    if (!ShouldShowFPS())
+        return;
 
     MeasureFPS();
 
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
+    const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
 
-    // Draw Text
-    int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
+    // Figure out where counter should be rendered
+    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
     screenCoords.x = screenCoords.x - (stringWidth / 2);
-    GfxDrawString(dpi, screenCoords, buffer);
+
+    // Move counter below toolbar if buttons are centred
+    const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
+    if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
+    {
+        screenCoords.y = kTopToolbarHeight + 3;
+    }
+
+    DrawText(dpi, screenCoords, { COLOUR_WHITE }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi.lastStringPos.x + 16, 16 } });

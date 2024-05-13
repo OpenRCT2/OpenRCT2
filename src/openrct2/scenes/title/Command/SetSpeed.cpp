@@ -7,9 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "SetSpeed.h"
 
-enum
+#include "../../../Game.h"
+
+#include <algorithm>
+
+namespace OpenRCT2::Title
 {
-    SUPPORTS_SLOPE_5 = 1 << 5
-};
+    int16_t SetSpeedCommand::operator()(int16_t timer)
+    {
+        gGameSpeed = std::clamp<uint8_t>(Speed, 1, 4);
+
+        return 0;
+    }
+} // namespace OpenRCT2::Title
