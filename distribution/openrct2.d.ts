@@ -641,6 +641,23 @@ declare global {
         "research" |
         "interest";
 
+    enum ExpenditureTypeEnum {
+        "ride_construction",
+        "ride_runningcosts",
+        "land_purchase",
+        "landscaping",
+        "park_entrance_tickets",
+        "park_ride_tickets",
+        "shop_sales",
+        "shop_stock",
+        "food_drink_sales",
+        "food_drink_stock",
+        "wages",
+        "marketing",
+        "research",
+        "interest"
+    }
+
     type ActionType =
         "balloonpress" |
         "bannerplace" |
@@ -3687,6 +3704,23 @@ declare global {
          * drowned guests and crashed coaster cars.
          */
         casualtyPenalty: number;
+
+
+        /**
+         * Gets the current expenditure multiplier for a given expenditure type,
+         * as a pecentage point of the base cost.
+         *
+         * Default value is 100.
+         */
+        getExpenditureMultiplier(expenditureType: ExpenditureTypeEnum): number
+
+        /**
+         * Sets the current expenditure multiplier for a given expenditure type,
+         * as a pecentage point of the base cost.
+         *
+         * Default value is 100.
+         */
+        setExpenditureMultiplier(expenditureType: ExpenditureTypeEnum, value: number): void
 
         /**
          * The number of tiles on the map with park ownership or construction rights.

@@ -98,6 +98,10 @@ namespace OpenRCT2::Scripting
 
         void postMessage(DukValue message);
 
+        uint16_t expenditureMultiplier_get(uint8_t expenditureType) const;
+
+        void expenditureMultiplier_set(uint8_t expenditureType,  uint16_t value);
+
         static void Register(duk_context* ctx);
     };
 } // namespace OpenRCT2::Scripting

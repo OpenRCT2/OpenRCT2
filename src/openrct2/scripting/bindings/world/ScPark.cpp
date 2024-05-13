@@ -401,6 +401,27 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    uint16_t ScPark::expenditureMultiplier_get(uint8_t expenditureType) const
+    {
+        if (expenditureType >= EnumValue(ExpenditureType::Count))
+        {
+            duk_error(_context, DUK_ERR_RANGE_ERROR, "Invalid expenditure type.");
+        }
+        return GetGameState().CostMultiplierExpenditureTable[expenditureType];
+    }
+
+    void ScPark::expenditureMultiplier_set(uint8_t expenditureType,  uint16_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        if (expenditureType >= EnumValue(ExpenditureType::Count))
+        {
+            duk_error(_context, DUK_ERR_RANGE_ERROR, "Invalid expenditure type.");
+        }
+        GetGameState().CostMultiplierExpenditureTable[expenditureType] = value;
+        WindowInvalidateByClass(WindowClass::Ride);
+        WindowInvalidateByClass(WindowClass::RideConstruction);
+    }
+
     void ScPark::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScPark::cash_get, &ScPark::cash_set, "cash");
@@ -432,6 +453,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");
         dukglue_register_method(ctx, &ScPark::setFlag, "setFlag");
         dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
+        dukglue_register_method(ctx, &ScPark::expenditureMultiplier_get, "getExpentitureMultiplier");
+        dukglue_register_method(ctx, &ScPark::expenditureMultiplier_set, "setExpenditureMultiplier");
     }
 
 } // namespace OpenRCT2::Scripting
