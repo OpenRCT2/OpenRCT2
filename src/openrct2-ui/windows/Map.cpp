@@ -768,7 +768,7 @@ static Widget window_map_widgets[] = {
             auto mapOffset = getMapOffset(width);
             if (mapOffset > 0)
             {
-                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset);
+                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
             }
 
             CoordsXY c = ScreenToMap(adjCoords);
@@ -834,13 +834,10 @@ static Widget window_map_widgets[] = {
             GfxClear(dpi, PALETTE_INDEX_10);
 
             // Ensure small maps are centred
-            DrawPixelInfo clipDPI = dpi;
+            auto screenOffset = ScreenCoordsXY(0, 0);
             auto mapOffset = getMapOffset(width);
             if (mapOffset > 0)
-            {
-                auto screenOffset = ScreenCoordsXY(mapOffset, mapOffset);
-                ClipDrawPixelInfo(clipDPI, dpi, screenOffset, dpi.width, dpi.height);
-            }
+                screenOffset += ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
 
             G1Element g1temp = {};
             g1temp.offset = _mapImageData.data();
@@ -848,17 +845,17 @@ static Widget window_map_widgets[] = {
             g1temp.height = getMiniMapWidth();
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(clipDPI, ImageId(SPR_TEMP), { 0, 0 });
+            GfxDrawSprite(dpi, ImageId(SPR_TEMP), screenOffset);
 
             if (selected_tab == PAGE_PEEPS)
             {
-                PaintPeepOverlay(clipDPI);
+                PaintPeepOverlay(dpi, screenOffset);
             }
             else
             {
-                PaintTrainOverlay(clipDPI);
+                PaintTrainOverlay(dpi, screenOffset);
             }
-            PaintHudRectangle(clipDPI);
+            PaintHudRectangle(dpi, screenOffset);
         }
 
         void OnPrepareDraw() override
@@ -1296,27 +1293,27 @@ static Widget window_map_widgets[] = {
             return colourB;
         }
 
-        void PaintPeepOverlay(DrawPixelInfo& dpi)
+        void PaintPeepOverlay(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
         {
             auto flashColour = GetGuestFlashColour();
             for (auto guest : EntityList<Guest>())
             {
-                DrawMapPeepPixel(guest, flashColour, dpi);
+                DrawMapPeepPixel(guest, flashColour, dpi, offset);
             }
             flashColour = GetStaffFlashColour();
             for (auto staff : EntityList<Staff>())
             {
-                DrawMapPeepPixel(staff, flashColour, dpi);
+                DrawMapPeepPixel(staff, flashColour, dpi, offset);
             }
         }
 
-        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi)
+        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
         {
             if (peep->x == LOCATION_NULL)
                 return;
 
             MapCoordsXY c = TransformToMapCoords({ peep->x, peep->y });
-            auto leftTop = ScreenCoordsXY{ c.x, c.y };
+            auto leftTop = ScreenCoordsXY{ c.x, c.y } + offset;
             auto rightBottom = leftTop;
             uint8_t colour = DefaultPeepMapColour;
             if (EntityGetFlashing(peep))
@@ -1356,7 +1353,7 @@ static Widget window_map_widgets[] = {
             return colour;
         }
 
-        void PaintTrainOverlay(DrawPixelInfo& dpi)
+        void PaintTrainOverlay(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
         {
             for (auto train : TrainManager::View())
             {
@@ -1365,9 +1362,10 @@ static Widget window_map_widgets[] = {
                     if (vehicle->x == LOCATION_NULL)
                         continue;
 
-                    MapCoordsXY c = TransformToMapCoords({ vehicle->x, vehicle->y });
+                    auto mapCoord = TransformToMapCoords({ vehicle->x, vehicle->y });
+                    auto pixelCoord = ScreenCoordsXY{ mapCoord.x, mapCoord.y } + offset;
 
-                    GfxFillRect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
+                    GfxFillRect(dpi, { pixelCoord, pixelCoord }, PALETTE_INDEX_171);
                 }
             }
         }
@@ -1376,7 +1374,7 @@ static Widget window_map_widgets[] = {
          * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
          * but it doesn't look like it's ever necessary here so the call was removed.
          */
-        void PaintHudRectangle(DrawPixelInfo& dpi)
+        void PaintHudRectangle(DrawPixelInfo& dpi, const ScreenCoordsXY& widgetOffset)
         {
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -1386,14 +1384,13 @@ static Widget window_map_widgets[] = {
             if (mainViewport == nullptr)
                 return;
 
-            auto offset = MiniMapOffsetFactors[GetCurrentRotation()];
-            offset.x *= getTechnicalMapSize();
-            offset.y *= getTechnicalMapSize();
+            auto mapOffset = MiniMapOffsetFactors[GetCurrentRotation()];
+            mapOffset.x *= getTechnicalMapSize();
+            mapOffset.y *= getTechnicalMapSize();
 
-            auto leftTop = ScreenCoordsXY{ (mainViewport->viewPos.x >> 5) + offset.x,
-                                           (mainViewport->viewPos.y >> 4) + offset.y };
-            auto rightBottom = ScreenCoordsXY{ ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x,
-                                               ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y };
+            auto leftTop = widgetOffset + mapOffset
+                + ScreenCoordsXY{ (mainViewport->viewPos.x >> 5), (mainViewport->viewPos.y >> 4) };
+            auto rightBottom = leftTop + ScreenCoordsXY{ mainViewport->view_width >> 5, mainViewport->view_height >> 4 };
             auto rightTop = ScreenCoordsXY{ rightBottom.x, leftTop.y };
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
