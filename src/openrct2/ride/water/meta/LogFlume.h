@@ -33,7 +33,6 @@ constexpr RideTypeDescriptor LogFlumeRTD =
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_LOG_FLUME, STR_RIDE_DESCRIPTION_LOG_FLUME },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_LOG_FLUME),

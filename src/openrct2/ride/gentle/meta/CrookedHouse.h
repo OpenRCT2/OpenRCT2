@@ -32,7 +32,6 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::CrookedHouse),
     .DefaultMode = RideMode::CrookedHouse,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_CROOKED_HOUSE),

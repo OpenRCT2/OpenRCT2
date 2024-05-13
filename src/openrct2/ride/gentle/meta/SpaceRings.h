@@ -31,7 +31,6 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::SpaceRings),
     .DefaultMode = RideMode::SpaceRings,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS },
     .NameConvention = { RideComponentType::Ring, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_SPACE_RINGS),

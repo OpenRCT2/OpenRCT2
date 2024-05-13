@@ -2535,7 +2535,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::UpwardLaunch:
             if ((curRide->launch_speed << 16) > velocity)
             {
-                acceleration = curRide->launch_speed << rtd.OperatingSettings.AccelerationFactor;
+                acceleration = curRide->launch_speed << rtd.BoosterSettings.AccelerationFactor;
             }
             break;
         case RideMode::DownwardLaunch:
@@ -7108,7 +7108,7 @@ Loc6DAEB9:
         auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
         {
-            acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration
+            acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration
                 << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
@@ -7120,7 +7120,7 @@ Loc6DAEB9:
     if ((trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT))
         || (trackType == TrackElemType::PoweredLift))
     {
-        acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.PoweredLiftAcceleration << 16;
+        acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration << 16;
     }
     if (trackType == TrackElemType::BrakeForDrop)
     {
@@ -7490,7 +7490,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
             if (boosterSpeed < _vehicleVelocityF64E08)
             {
-                acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration << 16;
+                acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration << 16;
             }
         }
 

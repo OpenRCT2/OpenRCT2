@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
                      RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
-    .OperatingSettings = { 8, 8, 0, 0, 0, 0 },
+    .OperatingSettings = { 8, 8 },
     .Naming = { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_FIRST_AID),

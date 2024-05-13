@@ -34,7 +34,6 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
                      RIDE_TYPE_FLAG_IS_SUSPENDED,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_SUSPENDED_MONORAIL, STR_RIDE_DESCRIPTION_SUSPENDED_MONORAIL },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_SUSPENDED_MONORAIL),

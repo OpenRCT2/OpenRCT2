@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::UpwardLaunch, RideMode::DownwardLaunch),
     .DefaultMode = RideMode::UpwardLaunch,
-    .OperatingSettings = { 10, 40, 0, 0, 0, 0 },
+    .OperatingSettings = { 10, 40 },
     .Naming = { STR_RIDE_NAME_LAUNCHED_FREEFALL, STR_RIDE_DESCRIPTION_LAUNCHED_FREEFALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_LAUNCHED_FREEFALL),

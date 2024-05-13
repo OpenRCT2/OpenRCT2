@@ -31,7 +31,6 @@ constexpr RideTypeDescriptor BoatHireRTD =
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT,
     .RideModes = EnumsToFlags(RideMode::BoatHire),
     .DefaultMode = RideMode::BoatHire,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
     .EnumName = nameof(RIDE_TYPE_BOAT_HIRE),
