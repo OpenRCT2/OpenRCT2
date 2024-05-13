@@ -453,7 +453,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");
         dukglue_register_method(ctx, &ScPark::setFlag, "setFlag");
         dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
-        dukglue_register_method(ctx, &ScPark::expenditureMultiplier_get, "getExpentitureMultiplier");
+        dukglue_register_method(ctx, &ScPark::expenditureMultiplier_get, "getExpenditureMultiplier");
         dukglue_register_method(ctx, &ScPark::expenditureMultiplier_set, "setExpenditureMultiplier");
     }
 
