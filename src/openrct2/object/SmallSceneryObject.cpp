@@ -19,7 +19,7 @@
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
-#include "SceneryBoundingBox.h"
+#include "SceneryBoundbox.h"
 
 #include <algorithm>
 
@@ -297,26 +297,26 @@ static int32_t getBoundBoxHeight(uint8_t clearanceHeight)
 
 void SmallSceneryObject::SetBoundingBoxFromFlags()
 {
-    DefaultBoundingBoxType boundBoxType = DefaultBoundingBoxType::QuarterTileBox;
+    DefaultBoundBoxType boundBoxType = DefaultBoundBoxType::QuarterTileBox;
     DefaultSpriteOffsetType spriteOffsetType = DefaultSpriteOffsetType::QuarterTileOffset;
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
     {
-        boundBoxType = DefaultBoundingBoxType::FullTileThinBox;
+        boundBoxType = DefaultBoundBoxType::FullTileThinBox;
         spriteOffsetType = DefaultSpriteOffsetType::FullTileThinOffset;
         if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HALF_SPACE))
         {
             spriteOffsetType = DefaultSpriteOffsetType::FullTileOffset;
-            boundBoxType = DefaultBoundingBoxType::HalfTileBox;
+            boundBoxType = DefaultBoundBoxType::HalfTileBox;
         }
         else
         {
             if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
-                boundBoxType = DefaultBoundingBoxType::FullTileBox;
+                boundBoxType = DefaultBoundBoxType::FullTileBox;
                 spriteOffsetType = DefaultSpriteOffsetType::FullTileOffset;
                 if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
-                    boundBoxType = DefaultBoundingBoxType::FullTileLargeBox;
+                    boundBoxType = DefaultBoundBoxType::FullTileLargeBox;
                     spriteOffsetType = DefaultSpriteOffsetType::FullTileLargeOffset;
                 }
             }

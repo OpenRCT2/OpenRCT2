@@ -15,12 +15,13 @@
 #include "../paint/Boundbox.h"
 #include "../world/Scenery.h"
 
-enum DefaultBoundingBoxType : uint8_t
+enum DefaultBoundBoxType : uint8_t
 {
     QuarterTileBox,
     HalfTileBox,
     FullTileNorthQuadrantBox,
-    FullTileNortheastSideBox,
+    FullTileNortheastSideBox, // FullTileNortheastSide is not the same as HalfTile, as some BoundBoxes have different offsets
+                              // and sizes
     FullTileEastQuadrantBox,
     FullTileSoutheastSideBox,
     FullTileSouthQuadrantBox,
@@ -43,7 +44,7 @@ enum DefaultSpriteOffsetType : uint8_t
     CountOffset
 };
 
-SceneryBoundBoxes GetDefaultSceneryBoundBoxes(DefaultBoundingBoxType type);
+SceneryBoundBoxes GetDefaultSceneryBoundBoxes(DefaultBoundBoxType type);
 SceneryBoundBoxes ReadBoundBoxes(json_t& jBBox, int32_t defaultHeight, bool fullTile);
 CoordsXYZ GetDefaultSpriteOffset(DefaultSpriteOffsetType type);
 CoordsXYZ ReadSpriteOffset(json_t& jCoords);

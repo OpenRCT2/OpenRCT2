@@ -19,28 +19,28 @@
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
 #include "../world/Location.hpp"
-#include "SceneryBoundingBox.h"
+#include "SceneryBoundbox.h"
 
 #include <algorithm>
 #include <iterator>
 
-static DefaultBoundingBoxType boundBoxTypes[16] = {
-    DefaultBoundingBoxType::FullTileBox,              // 0000
-    DefaultBoundingBoxType::FullTileSouthQuadrantBox, // 0001
-    DefaultBoundingBoxType::FullTileWestQuadrantBox,  // 0010
-    DefaultBoundingBoxType::FullTileSouthwestSideBox, // 0011
-    DefaultBoundingBoxType::FullTileNorthQuadrantBox, // 0100
-    DefaultBoundingBoxType::FullTileBox,              // 0101 (diagonal of South and North corners)
-    DefaultBoundingBoxType::FullTileNorthwestSideBox, // 0110
-    DefaultBoundingBoxType::FullTileBox,              // 0111 (triangle of South, West, and North corners)
-    DefaultBoundingBoxType::FullTileEastQuadrantBox,  // 1000
-    DefaultBoundingBoxType::FullTileSoutheastSideBox, // 1001
-    DefaultBoundingBoxType::FullTileBox,              // 1010 (diagonal of East and West corners)
-    DefaultBoundingBoxType::FullTileBox,              // 1011 (triangle of South, West, and East corners)
-    DefaultBoundingBoxType::FullTileNortheastSideBox, // 1100
-    DefaultBoundingBoxType::FullTileBox,              // 1101 (triangle of South, West, and North corners)
-    DefaultBoundingBoxType::FullTileBox,              // 1110 (triangle of West, North, and East corners)
-    DefaultBoundingBoxType::FullTileBox,              // 1111
+static DefaultBoundBoxType boundBoxTypes[16] = {
+    DefaultBoundBoxType::FullTileBox,              // 0000
+    DefaultBoundBoxType::FullTileSouthQuadrantBox, // 0001
+    DefaultBoundBoxType::FullTileWestQuadrantBox,  // 0010
+    DefaultBoundBoxType::FullTileSouthwestSideBox, // 0011
+    DefaultBoundBoxType::FullTileNorthQuadrantBox, // 0100
+    DefaultBoundBoxType::FullTileBox,              // 0101 (diagonal of South and North corners)
+    DefaultBoundBoxType::FullTileNorthwestSideBox, // 0110
+    DefaultBoundBoxType::FullTileBox,              // 0111 (triangle of South, West, and North corners)
+    DefaultBoundBoxType::FullTileEastQuadrantBox,  // 1000
+    DefaultBoundBoxType::FullTileSoutheastSideBox, // 1001
+    DefaultBoundBoxType::FullTileBox,              // 1010 (diagonal of East and West corners)
+    DefaultBoundBoxType::FullTileBox,              // 1011 (triangle of South, West, and East corners)
+    DefaultBoundBoxType::FullTileNortheastSideBox, // 1100
+    DefaultBoundBoxType::FullTileBox,              // 1101 (triangle of South, West, and North corners)
+    DefaultBoundBoxType::FullTileBox,              // 1110 (triangle of West, North, and East corners)
+    DefaultBoundBoxType::FullTileBox,              // 1111
 };
 
 static int32_t getBoundBoxHeight(uint8_t clearanceHeight)
@@ -56,7 +56,7 @@ static void SetTileBoundingBox(LargeSceneryTile& tile)
     }
     else
     {
-        tile.boundBoxes = GetDefaultSceneryBoundBoxes(DefaultBoundingBoxType::FullTileLargeBox);
+        tile.boundBoxes = GetDefaultSceneryBoundBoxes(DefaultBoundBoxType::FullTileLargeBox);
     }
     tile.spriteOffset = GetDefaultSpriteOffset(DefaultSpriteOffsetType::LargeSceneryOffset);
 

@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "SceneryBoundingBox.h"
+#include "SceneryBoundbox.h"
 
 static constexpr std::array<CoordsXYZ, DefaultSpriteOffsetType::CountOffset> DefaultSpriteOffsets = {
     CoordsXYZ(7, 7, 0),   // quarter tile
@@ -105,7 +105,7 @@ static constexpr SceneryBoundBoxes FullTileThin = {
     BoundBoxXYZ({ 15, 15, 0 }, { 2, 2, 0 }),
 };
 
-static constexpr std::array<SceneryBoundBoxes, DefaultBoundingBoxType::CountBox> boundBoxes = {
+static constexpr std::array<SceneryBoundBoxes, DefaultBoundBoxType::CountBox> boundBoxes = {
     QuarterTile,
     HalfTile,
     FullTileNorthQuadrant,
@@ -123,32 +123,32 @@ static constexpr std::array<SceneryBoundBoxes, DefaultBoundingBoxType::CountBox>
 
 #pragma endregion
 
-static const EnumMap<DefaultBoundingBoxType> BBoxTypeLookup = {
-    { "quarterTile", DefaultBoundingBoxType::QuarterTileBox },
-    { "halfTile", DefaultBoundingBoxType::HalfTileBox },
-    { "cornerNorth", DefaultBoundingBoxType::FullTileNorthQuadrantBox },
-    { "sideNortheast", DefaultBoundingBoxType::FullTileNortheastSideBox },
-    { "cornerEast", DefaultBoundingBoxType::FullTileEastQuadrantBox },
-    { "sideSoutheast", DefaultBoundingBoxType::FullTileSoutheastSideBox },
-    { "cornerSouth", DefaultBoundingBoxType::FullTileSouthQuadrantBox },
-    { "sideSouthwest", DefaultBoundingBoxType::FullTileSouthwestSideBox },
-    { "cornerEast", DefaultBoundingBoxType::FullTileWestQuadrantBox },
-    { "sideNorthwest", DefaultBoundingBoxType::FullTileNorthwestSideBox },
-    { "fullTile", DefaultBoundingBoxType::FullTileBox },
-    { "fullTileLarge", DefaultBoundingBoxType::FullTileLargeBox },
-    { "fullTileThin", DefaultBoundingBoxType::FullTileThinBox }
+static const EnumMap<DefaultBoundBoxType> BoundboxTypeLookup = {
+    { "quarterTile", DefaultBoundBoxType::QuarterTileBox },
+    { "halfTile", DefaultBoundBoxType::HalfTileBox },
+    { "cornerNorth", DefaultBoundBoxType::FullTileNorthQuadrantBox },
+    { "sideNortheast", DefaultBoundBoxType::FullTileNortheastSideBox },
+    { "cornerEast", DefaultBoundBoxType::FullTileEastQuadrantBox },
+    { "sideSoutheast", DefaultBoundBoxType::FullTileSoutheastSideBox },
+    { "cornerSouth", DefaultBoundBoxType::FullTileSouthQuadrantBox },
+    { "sideSouthwest", DefaultBoundBoxType::FullTileSouthwestSideBox },
+    { "cornerEast", DefaultBoundBoxType::FullTileWestQuadrantBox },
+    { "sideNorthwest", DefaultBoundBoxType::FullTileNorthwestSideBox },
+    { "fullTile", DefaultBoundBoxType::FullTileBox },
+    { "fullTileLarge", DefaultBoundBoxType::FullTileLargeBox },
+    { "fullTileThin", DefaultBoundBoxType::FullTileThinBox }
 };
 
-static DefaultBoundingBoxType GetBoundingBoxTypeFromString(const std::string& s)
+static DefaultBoundBoxType GetBoundingBoxTypeFromString(const std::string& s)
 {
-    auto result = BBoxTypeLookup.find(s);
-    return (result != BBoxTypeLookup.end()) ? result->second : DefaultBoundingBoxType::FullTileBox;
+    auto result = BoundboxTypeLookup.find(s);
+    return (result != BoundboxTypeLookup.end()) ? result->second : DefaultBoundBoxType::FullTileBox;
 }
 
-SceneryBoundBoxes GetDefaultSceneryBoundBoxes(DefaultBoundingBoxType type)
+SceneryBoundBoxes GetDefaultSceneryBoundBoxes(DefaultBoundBoxType type)
 {
-    if (type >= DefaultBoundingBoxType::CountBox)
-        return boundBoxes[DefaultBoundingBoxType::FullTileBox];
+    if (type >= DefaultBoundBoxType::CountBox)
+        return boundBoxes[DefaultBoundBoxType::FullTileBox];
     return boundBoxes[type];
 }
 
@@ -199,14 +199,10 @@ SceneryBoundBoxes ReadBoundBoxes(json_t& jBBox, int32_t defaultHeight, bool full
     else if (jBBox.is_object())
     {
         // single box, rotated around (16, 16) if fulltile or (8,8) if quarter tile
-        CoordsXY rotationCenter = { 8, 8 };
-        if (fullTile)
-        {
-            rotationCenter = { 16, 16 };
-        }
-        auto bBox = ReadBoundBox(jBBox);
-        boxes[0] = bBox;
-        boxes[1] = RotateBoundBox(bBox, rotationCenter);
+        CoordsXY rotationCenter = fullTile ? CoordsXY(16, 16) : CoordsXY(8, 8);
+        auto boundBox = ReadBoundBox(jBBox);
+        boxes[0] = boundBox;
+        boxes[1] = RotateBoundBox(boundBox, rotationCenter);
         boxes[2] = RotateBoundBox(boxes[1], rotationCenter);
         boxes[3] = RotateBoundBox(boxes[2], rotationCenter);
     }
@@ -215,7 +211,7 @@ SceneryBoundBoxes ReadBoundBoxes(json_t& jBBox, int32_t defaultHeight, bool full
         Guard::Assert(
             jBBox.is_string(),
             "boundBox must be an array of four boundBox objects, a single boundBox object, or a string matching the "
-            "DefaultBoundingBoxType enum.");
+            "DefaultBoundBoxType enum.");
         boxes = GetDefaultSceneryBoundBoxes(GetBoundingBoxTypeFromString(Json::GetString(jBBox)));
         for (uint8_t i = 0; i < NumOrthogonalDirections; i++)
             boxes[i].length.z = defaultHeight;
