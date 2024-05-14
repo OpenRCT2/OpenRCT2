@@ -9,15 +9,9 @@
 
 #pragma once
 
-#include "../common.h"
+#include <cstdint>
 
-struct ResultWithMessage
-{
-    bool Successful{};
-    StringId Message = STR_NONE;
+using StringId = uint16_t;
 
-    bool HasMessage() const
-    {
-        return Message != STR_NONE;
-    }
-};
+constexpr StringId STR_NONE = 0xFFFF;
+constexpr StringId STR_EMPTY = 0;
