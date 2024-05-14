@@ -1479,9 +1479,9 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     bool hasVoucher = false;
 
-    const bool isPrecipitation = ClimateIsRaining() || ClimateIsSnowingHeavily();
+    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
     const bool isUmbrella = shopItem == ShopItem::Umbrella;
-    const bool isRainingAndUmbrella = isPrecipitation && isUmbrella;
+    const bool isRainingAndUmbrella = isPrecipitating && isUmbrella;
 
     if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
     {
@@ -1510,7 +1510,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     if ((shopItem == ShopItem::Balloon || shopItem == ShopItem::IceCream || shopItem == ShopItem::Candyfloss
          || shopItem == ShopItem::Sunglasses)
-        && isPrecipitation)
+        && isPrecipitating)
     {
         return false;
     }
@@ -2058,8 +2058,8 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
                 else
                 {
-                    const bool isPrecipitation = ClimateIsRaining() || ClimateIsSnowingHeavily();
-                    if (isPrecipitation && !ShouldRideWhileRaining(ride))
+                    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
+                    if (isPrecipitating && !ShouldRideWhileRaining(ride))
                     {
                         if (peepAtRide)
                         {
@@ -2075,7 +2075,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     }
                     // If it is raining and the ride provides shelter skip the
                     // ride intensity check and get me on a sheltered ride!
-                    if (!isPrecipitation || !ShouldRideWhileRaining(ride))
+                    if (!isPrecipitating || !ShouldRideWhileRaining(ride))
                     {
                         if (!GetGameState().Cheats.IgnoreRideIntensity)
                         {
@@ -6824,8 +6824,8 @@ void Guest::UpdateSpriteType()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    const bool isPrecipitation = ClimateIsRaining() || ClimateIsSnowingHeavily();
-    if (isPrecipitation && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
+    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
+    if (isPrecipitating && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (MapIsLocationValid(loc.ToTileStart()))
