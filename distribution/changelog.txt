@@ -8,6 +8,7 @@
 - Improved: [#21983] Taking a screenshot now shows a message again, closing when taking another.
 - Improved: [#22026] The options window now stays centred when window scaling is changed.
 - Change: [#7248] Small mini-maps are now centred in the map window.
+- Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
 - Fix: [#22008] Uninverted Lay-down roller coaster uses the wrong support type.
