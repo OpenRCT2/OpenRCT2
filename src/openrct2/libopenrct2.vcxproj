@@ -212,6 +212,7 @@
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
+    <ClInclude Include="core\Money.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />

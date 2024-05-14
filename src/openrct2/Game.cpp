@@ -27,6 +27,7 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
+#include "core/Money.hpp"
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"

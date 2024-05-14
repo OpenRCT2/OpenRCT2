@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../core/Money.hpp"
 #include "Research.h"
 
 enum class ExpenditureType : int32_t

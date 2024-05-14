@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../core/Money.hpp"
 #include "../interface/Cursors.h"
 #include "ObjectTypes.h"
 
