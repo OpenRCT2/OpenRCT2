@@ -20,6 +20,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
+#include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Particle.h"
 #include "../entity/Yaw.hpp"

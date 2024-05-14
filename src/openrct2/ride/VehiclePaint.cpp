@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../GameState.h"
+#include "../core/Speed.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../entity/EntityRegistry.h"
