@@ -38,25 +38,10 @@ using datetime64 = uint64_t;
 
 constexpr datetime64 DATETIME64_MIN = 0;
 
-// Represent fixed point numbers. dp = decimal point
-using fixed8_1dp = uint8_t;
-using fixed8_2dp = uint8_t;
-using fixed16_1dp = int16_t;
-using fixed16_2dp = int16_t;
-using fixed32_1dp = int32_t;
-using fixed32_2dp = int32_t;
-using fixed64_1dp = int64_t;
-
 // Money is stored as a multiple of 0.10.
 using money16 = fixed16_1dp;
 using money32 = fixed32_1dp;
 using money64 = fixed64_1dp;
-
-// Construct a fixed point number. For example, to create the value 3.65 you
-// would write FIXED_2DP(3,65)
-#define FIXED_XDP(x, whole, fraction) ((whole) * (10 * (x)) + (fraction))
-#define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
-#define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
 
 // For a user defined floating point literal, the parameter type must be a
 // `long double` which is problematic on ppc64el, as the architecture uses a
