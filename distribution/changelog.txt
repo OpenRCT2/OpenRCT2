@@ -14,6 +14,7 @@
 - Improved: [#22026] The options window now stays centred when window scaling is changed.
 - Improved: [#22060] [Plugin] The scroll wheel can now be used to modify spinner widget values in custom/script windows.
 - Improved: [#22065] Joining a network game now indicates progress using coaster trains.
+- Improved: [#22075] [Plugin] Plugins can now use G1 Icons.
 - Improved: [#22084] The game now temporarily pauses while the load/save window is open.
 - Change: [#7248] Small mini-maps are now centred in the map window.
 - Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
