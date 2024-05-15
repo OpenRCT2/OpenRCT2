@@ -13,6 +13,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
@@ -87,7 +88,7 @@ static void PaintBoatHireStation(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008B0E80 */

@@ -15,6 +15,7 @@
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../scenario/Scenario.h"
 #include "../../world/Map.h"
 #include "../Track.h"
@@ -313,7 +314,7 @@ static void PaintRiverRapidsTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x007576C0 */
@@ -323,7 +324,7 @@ static void PaintRiverRapidsStation(
 {
     PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement);
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintRiverRapidsTrack25Deg(PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
@@ -629,7 +630,7 @@ static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
     WoodenASupportsPaintSetupRotated(
         session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757700 */
@@ -687,7 +688,7 @@ static void PaintRiverRapidsTrackRightQuarterTurn1Tile(
     WoodenASupportsPaintSetupRotated(
         session, kSupportType, WoodenSupportSubType::NwSe, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757710 */
@@ -800,7 +801,7 @@ static void PaintRiverRapidsTrackRapids(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757740 */
@@ -870,7 +871,7 @@ static void PaintRiverRapidsTrackWhirlpool(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

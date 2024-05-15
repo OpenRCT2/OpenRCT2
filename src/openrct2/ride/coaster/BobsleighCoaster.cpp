@@ -14,6 +14,7 @@
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -97,7 +98,7 @@ static void BobsleighRCTrackFlat(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void BobsleighRCTrackStation(
@@ -121,7 +122,7 @@ static void BobsleighRCTrackStation(
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FE5C4 */
@@ -507,10 +508,10 @@ static void BobsleighRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -556,7 +557,7 @@ static void BobsleighRCTrackLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -602,10 +603,10 @@ static void BobsleighRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -651,7 +652,7 @@ static void BobsleighRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -707,7 +708,7 @@ static void BobsleighRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -767,7 +768,7 @@ static void BobsleighRCTrackFlatToLeftBank(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FE654 */
@@ -816,7 +817,7 @@ static void BobsleighRCTrackFlatToRightBank(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FE664 */
@@ -865,7 +866,7 @@ static void BobsleighRCTrackLeftBankToFlat(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FE674 */
@@ -914,7 +915,7 @@ static void BobsleighRCTrackRightBankToFlat(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FE684 */
@@ -973,10 +974,10 @@ static void BobsleighRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1022,7 +1023,7 @@ static void BobsleighRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -1068,10 +1069,10 @@ static void BobsleighRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -1117,7 +1118,7 @@ static void BobsleighRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -1173,7 +1174,7 @@ static void BobsleighRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1489,7 +1490,7 @@ static void BobsleighRCTrackLeftBank(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FE734 */
@@ -1556,7 +1557,7 @@ static void BobsleighRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -1606,7 +1607,7 @@ static void BobsleighRCTrackSBendLeft(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1656,7 +1657,7 @@ static void BobsleighRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -1712,7 +1713,7 @@ static void BobsleighRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1773,7 +1774,7 @@ static void BobsleighRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -1823,7 +1824,7 @@ static void BobsleighRCTrackSBendRight(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1873,7 +1874,7 @@ static void BobsleighRCTrackSBendRight(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -1929,7 +1930,7 @@ static void BobsleighRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1990,10 +1991,10 @@ static void BobsleighRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2039,7 +2040,7 @@ static void BobsleighRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2095,7 +2096,7 @@ static void BobsleighRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2165,10 +2166,10 @@ static void BobsleighRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2214,7 +2215,7 @@ static void BobsleighRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2270,7 +2271,7 @@ static void BobsleighRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2340,10 +2341,10 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2389,7 +2390,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2445,7 +2446,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -2501,10 +2502,10 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -2550,7 +2551,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -2601,7 +2602,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2662,10 +2663,10 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2711,7 +2712,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2767,7 +2768,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -2823,10 +2824,10 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -2872,7 +2873,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -2923,7 +2924,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3012,10 +3013,10 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3061,7 +3062,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3107,10 +3108,10 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -3156,7 +3157,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -3212,7 +3213,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -3268,10 +3269,10 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
             switch (direction)
@@ -3317,7 +3318,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
             switch (direction)
@@ -3362,10 +3363,10 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
             switch (direction)
@@ -3411,7 +3412,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
             switch (direction)
@@ -3462,7 +3463,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3523,10 +3524,10 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3572,7 +3573,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3617,10 +3618,10 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -3666,7 +3667,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -3722,7 +3723,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -3778,10 +3779,10 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
             switch (direction)
@@ -3827,7 +3828,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
             switch (direction)
@@ -3873,10 +3874,10 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
             switch (direction)
@@ -3922,7 +3923,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
             switch (direction)
@@ -3973,7 +3974,7 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -4038,7 +4039,7 @@ static void BobsleighRCTrackBrakes(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FE864 */
@@ -4074,7 +4075,7 @@ static void BobsleighRCTrackBlockBrakes(
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void BobsleighRCTrackOnRidePhoto(

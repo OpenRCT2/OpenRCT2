@@ -13,6 +13,7 @@
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
 #include "../Track.h"
@@ -51,7 +52,7 @@ static void PaintMiniHelicoptersTrackStation(
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0081F348 */
@@ -86,7 +87,7 @@ static void PaintMiniHelicoptersTrackFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0081F368 */
@@ -291,7 +292,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr uint8_t MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = {
@@ -326,7 +327,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
                 PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomLeftSide),
             direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0081F418 */
@@ -361,7 +362,7 @@ static void PaintMiniHelicoptersTrackSpinningTunnel(
         GetStationColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

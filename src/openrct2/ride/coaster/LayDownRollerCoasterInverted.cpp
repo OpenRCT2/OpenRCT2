@@ -14,6 +14,7 @@
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -99,7 +100,7 @@ static void LayDownRCTrackFlat(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00824B8C, 0x00824B9C, 0x00824BAC */
@@ -127,7 +128,7 @@ static void LayDownRCTrackStation(
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0082492C */
@@ -659,10 +660,10 @@ static void LayDownRCTrackLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -696,7 +697,7 @@ static void LayDownRCTrackLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -730,10 +731,10 @@ static void LayDownRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -767,7 +768,7 @@ static void LayDownRCTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -813,7 +814,7 @@ static void LayDownRCTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -870,7 +871,7 @@ static void LayDownRCTrackFlatToLeftBank(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00824A1C */
@@ -916,7 +917,7 @@ static void LayDownRCTrackFlatToRightBank(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00824A2C */
@@ -962,7 +963,7 @@ static void LayDownRCTrackLeftBankToFlat(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00824A3C */
@@ -1008,7 +1009,7 @@ static void LayDownRCTrackRightBankToFlat(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00824A4C */
@@ -1057,10 +1058,10 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1092,7 +1093,7 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -1125,10 +1126,10 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -1160,7 +1161,7 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -1206,7 +1207,7 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1579,7 +1580,7 @@ static void LayDownRCTrackLeftBank(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00824AFC */
@@ -2023,7 +2024,7 @@ static void LayDownRCTrackSBendLeft(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -2070,7 +2071,7 @@ static void LayDownRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2117,7 +2118,7 @@ static void LayDownRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2163,7 +2164,7 @@ static void LayDownRCTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2214,7 +2215,7 @@ static void LayDownRCTrackSBendRight(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -2261,7 +2262,7 @@ static void LayDownRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2308,7 +2309,7 @@ static void LayDownRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2354,7 +2355,7 @@ static void LayDownRCTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2405,10 +2406,10 @@ static void LayDownRCTrackLeftQuarterTurn3(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2442,7 +2443,7 @@ static void LayDownRCTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2488,7 +2489,7 @@ static void LayDownRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2548,10 +2549,10 @@ static void LayDownRCTrackLeftQuarterTurn3Bank(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2585,7 +2586,7 @@ static void LayDownRCTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2631,7 +2632,7 @@ static void LayDownRCTrackLeftQuarterTurn3Bank(
                     PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2989,7 +2990,7 @@ static void LayDownRCTrackBrakes(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00824D6C */
@@ -3068,7 +3069,7 @@ static void LayDownRCTrackLeftEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -3102,7 +3103,7 @@ static void LayDownRCTrackLeftEighthToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3136,7 +3137,7 @@ static void LayDownRCTrackLeftEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -3147,7 +3148,7 @@ static void LayDownRCTrackLeftEighthToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3202,7 +3203,7 @@ static void LayDownRCTrackLeftEighthToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3247,7 +3248,7 @@ static void LayDownRCTrackRightEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -3281,7 +3282,7 @@ static void LayDownRCTrackRightEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3315,7 +3316,7 @@ static void LayDownRCTrackRightEighthToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -3326,7 +3327,7 @@ static void LayDownRCTrackRightEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3381,7 +3382,7 @@ static void LayDownRCTrackRightEighthToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3450,7 +3451,7 @@ static void LayDownRCTrackLeftEighthBankToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -3484,7 +3485,7 @@ static void LayDownRCTrackLeftEighthBankToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3518,7 +3519,7 @@ static void LayDownRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -3529,7 +3530,7 @@ static void LayDownRCTrackLeftEighthBankToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3584,7 +3585,7 @@ static void LayDownRCTrackLeftEighthBankToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3635,7 +3636,7 @@ static void LayDownRCTrackRightEighthBankToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -3669,7 +3670,7 @@ static void LayDownRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3703,7 +3704,7 @@ static void LayDownRCTrackRightEighthBankToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -3714,7 +3715,7 @@ static void LayDownRCTrackRightEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3769,7 +3770,7 @@ static void LayDownRCTrackRightEighthBankToDiag(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3815,7 +3816,7 @@ static void LayDownRCTrackDiagFlat(
         MetalASupportsPaintSetupRotated(
             session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height + 33, session.SupportColours);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void LayDownRCTrackDiagBrakes(
@@ -3835,7 +3836,7 @@ static void LayDownRCTrackDiagBrakes(
         MetalASupportsPaintSetup(
             session, kSupportType, kDiagSupportPlacement[direction], 0, height + 33, session.SupportColours);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void LayDownRCTrackDiagBlockBrakes(
@@ -5319,7 +5320,7 @@ static void LayDownRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5337,7 +5338,7 @@ static void LayDownRCTrackDiagFlatToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5356,7 +5357,7 @@ static void LayDownRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -5396,7 +5397,7 @@ static void LayDownRCTrackDiagFlatToLeftBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5425,7 +5426,7 @@ static void LayDownRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5443,7 +5444,7 @@ static void LayDownRCTrackDiagFlatToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5462,7 +5463,7 @@ static void LayDownRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -5502,7 +5503,7 @@ static void LayDownRCTrackDiagFlatToRightBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5531,7 +5532,7 @@ static void LayDownRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5549,7 +5550,7 @@ static void LayDownRCTrackDiagLeftBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5568,7 +5569,7 @@ static void LayDownRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -5608,7 +5609,7 @@ static void LayDownRCTrackDiagLeftBankToFlat(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5637,7 +5638,7 @@ static void LayDownRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5655,7 +5656,7 @@ static void LayDownRCTrackDiagRightBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5674,7 +5675,7 @@ static void LayDownRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -5714,7 +5715,7 @@ static void LayDownRCTrackDiagRightBankToFlat(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -6585,7 +6586,7 @@ static void LayDownRCTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -6603,7 +6604,7 @@ static void LayDownRCTrackDiagLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -6622,7 +6623,7 @@ static void LayDownRCTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -6662,7 +6663,7 @@ static void LayDownRCTrackDiagLeftBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -6691,7 +6692,7 @@ static void LayDownRCTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -6709,7 +6710,7 @@ static void LayDownRCTrackDiagRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -6728,7 +6729,7 @@ static void LayDownRCTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -6768,7 +6769,7 @@ static void LayDownRCTrackDiagRightBank(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -6816,7 +6817,7 @@ static void LayDownRCTrackLeftFlyerTwistDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -6847,7 +6848,7 @@ static void LayDownRCTrackLeftFlyerTwistDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -6887,7 +6888,7 @@ static void LayDownRCTrackLeftFlyerTwistDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -6934,7 +6935,7 @@ static void LayDownRCTrackRightFlyerTwistDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -6964,7 +6965,7 @@ static void LayDownRCTrackRightFlyerTwistDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -7004,7 +7005,7 @@ static void LayDownRCTrackRightFlyerTwistDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -7302,7 +7303,7 @@ static void LayDownRCTrackBlockBrakes(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void LayDownRCTrackLeftQuarterBankedHelixLargeUp(

@@ -13,6 +13,7 @@
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
 #include "../Track.h"
@@ -159,7 +160,7 @@ static void PaintGoKartsTrackFlat(
         session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0074A758 */
@@ -457,7 +458,7 @@ static void PaintGoKartsStation(
         session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0074A7E8 */
@@ -528,7 +529,7 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
         session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0074A7F8 */

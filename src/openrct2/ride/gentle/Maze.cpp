@@ -16,6 +16,7 @@
 #include "../../paint/tile_element/Paint.Surface.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
@@ -183,7 +184,7 @@ static void MazePaintSetup(
         PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), height + 12, 0x20);
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**
