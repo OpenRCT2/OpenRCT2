@@ -11,11 +11,8 @@
 
 #include "../common.h"
 
-constexpr StringId STR_NONE = 0xFFFF;
-
 enum : uint16_t
 {
-    STR_EMPTY = 0,
     STR_RIDE_NAME_DEFAULT = 1,
     STR_RIDE_NAME_1D = 31,
     STR_RIDE_NAME_1F = 33,

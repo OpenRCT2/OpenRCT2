@@ -23,6 +23,7 @@
 #include "../common.h"
 #include "../core/BitSet.hpp"
 #include "../entity/Guest.h"
+#include "../localisation/StringIds.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"

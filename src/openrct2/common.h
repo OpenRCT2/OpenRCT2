@@ -21,6 +21,7 @@
 #endif
 
 #include "Diagnostic.h"
+#include "localisation/StringIdType.h"
 
 #include <cassert>
 #include <cstddef>
@@ -37,8 +38,6 @@ using colour_t = uint8_t;
 using datetime64 = uint64_t;
 
 constexpr datetime64 DATETIME64_MIN = 0;
-
-using StringId = uint16_t;
 
 #define abstract = 0
 
