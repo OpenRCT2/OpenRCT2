@@ -199,6 +199,7 @@
     <ClInclude Include="core\FileStream.h" />
     <ClInclude Include="core\FileSystem.hpp" />
     <ClInclude Include="core\FileWatcher.h" />
+    <ClInclude Include="core\FixedPoint.hpp" />
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />
     <ClInclude Include="core\Http.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
+    <ClInclude Include="core\Money.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />

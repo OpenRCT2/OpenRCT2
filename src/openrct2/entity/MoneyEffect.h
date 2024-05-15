@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/Money.hpp"
 #include "EntityBase.h"
 
 class DataSerialiser;

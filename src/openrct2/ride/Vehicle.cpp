@@ -19,6 +19,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/FixedPoint.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
