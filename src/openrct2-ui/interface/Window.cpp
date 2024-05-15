@@ -14,7 +14,6 @@
 #include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
-#include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -225,7 +224,7 @@ WindowBase* WindowCreate(
 
     // Check if there are any window slots left
     // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.WindowLimit + kWindowLimitReserved))
+    if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
     {
         // Close least recently used window
         for (auto& w : g_window_list)
@@ -571,7 +570,7 @@ void WindowAllWheelInput()
 
 void ApplyScreenSaverLockSetting()
 {
-    gConfigGeneral.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+    Config::Get().general.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
 }
 
 /**
@@ -829,7 +828,7 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
 
 ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 {
-    const uint8_t buttonOffset = (gConfigInterface.WindowButtonsOnTheLeft) ? CloseButtonWidth + 2 : 0;
+    const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
     return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
 }
 

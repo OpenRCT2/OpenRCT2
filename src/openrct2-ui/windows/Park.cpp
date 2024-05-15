@@ -9,7 +9,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <array>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -428,7 +427,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 {
                     auto& park = OpenRCT2::GetGameState().Park;
                     WindowTextInputRawOpen(
-                        this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), USER_STRING_MAX_LENGTH);
+                        this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), kUserStringMaxLength);
                     break;
                 }
                 case WIDX_CLOSE_LIGHT:
@@ -633,7 +632,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             int32_t viewportFlags{};
             if (viewport == nullptr)
             {
-                viewportFlags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
+                viewportFlags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
             }
             else
             {
@@ -854,11 +853,10 @@ static constexpr WindowParkAward _parkAwards[] = {
                 }
                 case WIDX_PRICE:
                 {
-                    utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
-                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, MONEY_STRING_MAXLENGTH, false);
+                    utf8 _moneyInputText[kMoneyStringMaxlength] = {};
+                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
-                        this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                        MONEY_STRING_MAXLENGTH);
+                        this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, kMoneyStringMaxlength);
                 }
             }
         }
@@ -985,7 +983,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             // Draw park size
             auto parkSize = gameState.Park.Size * 10;
             auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-            if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
+            if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
             {
                 stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
                 parkSize = SquaredMetresToSquaredFeet(parkSize);

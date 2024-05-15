@@ -13,7 +13,6 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../common.h"
-#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
 #include "../core/FileIndex.hpp"
@@ -41,7 +40,6 @@
 #include "ObjectManager.h"
 #include "RideObject.h"
 
-#include <algorithm>
 #include <memory>
 #include <unordered_map>
 #include <vector>

@@ -31,8 +31,6 @@
 #include "MapAnimation.h"
 #include "Park.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 bool gParkEntranceGhostExists = false;

@@ -9,7 +9,12 @@
 
 #pragma once
 
-enum
+#include <cstdint>
+
+// Note: Only valid for 5 decimal places.
+constexpr int32_t operator"" _mph(long double speedMph)
 {
-    SUPPORTS_SLOPE_5 = 1 << 5
-};
+    uint32_t wholeNumber = speedMph;
+    uint64_t fraction = (speedMph - wholeNumber) * 100000;
+    return wholeNumber << 16 | ((fraction << 16) / 100000);
+}

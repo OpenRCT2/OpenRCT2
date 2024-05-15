@@ -26,6 +26,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/SurfaceData.h"
+#include "../world/tile_element/Slope.h"
 
 LandRaiseAction::LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
     : _coords(coords)
@@ -111,7 +112,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
 
             uint8_t currentSlope = surfaceElement->GetSlope();
             uint8_t newSlope = RaiseSurfaceCornerFlags(tableRow, currentSlope);
-            if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
+            if (newSlope & kTileSlopeRaiseOrLowerBaseHeight)
             {
                 if (height + 2 > UINT8_MAX)
                 {
@@ -122,7 +123,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
                     height += 2;
                 }
             }
-            newSlope &= kTileElementSurfaceSlopeMask;
+            newSlope &= kTileSlopeMask;
 
             auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
             landSetHeightAction.SetFlags(GetFlags());

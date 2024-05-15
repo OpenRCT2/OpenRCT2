@@ -18,7 +18,7 @@
 #include "../../audio/audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
@@ -187,7 +187,7 @@ void TitleScene::ChangePresetSequence(size_t preset)
     }
 
     const utf8* configId = TitleSequenceManagerGetConfigID(preset);
-    gConfigInterface.CurrentTitleSequencePreset = configId;
+    Config::Get().interface.CurrentTitleSequencePreset = configId;
 
     if (!_previewingSequence)
         _currentSequence = preset;
@@ -214,7 +214,7 @@ void TitleScene::TitleInitialise()
     {
         _sequencePlayer = GetContext().GetUiContext()->GetTitleSequencePlayer();
     }
-    if (gConfigInterface.RandomTitleSequence)
+    if (Config::Get().interface.RandomTitleSequence)
     {
         const size_t total = TitleSequenceManager::GetCount();
         if (total > 0)
@@ -310,7 +310,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
                         const utf8* configId = TitleSequenceManagerGetConfigID(targetSequence);
-                        gConfigInterface.CurrentTitleSequencePreset = configId;
+                        Config::Get().interface.CurrentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
                     GfxInvalidateScreen();
@@ -387,7 +387,7 @@ void TitleSetHideVersionInfo(bool value)
 
 size_t TitleGetConfigSequence()
 {
-    return TitleSequenceManagerGetIndexForConfigID(gConfigInterface.CurrentTitleSequencePreset.c_str());
+    return TitleSequenceManagerGetIndexForConfigID(Config::Get().interface.CurrentTitleSequencePreset.c_str());
 }
 
 size_t TitleGetCurrentSequence()
@@ -442,7 +442,7 @@ void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
     // Write name and version information
     buffer += gVersionInfoFull;
 
-    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
+    DrawText(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), { COLOUR_BLACK }, buffer.c_str());
     int16_t width = static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium));
 
     // Write platform information
@@ -452,7 +452,7 @@ void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
     buffer.append(OPENRCT2_ARCHITECTURE);
     buffer.append(")");
 
-    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
+    DrawText(dpi, screenCoords + ScreenCoordsXY(5, 5), { COLOUR_BLACK }, buffer.c_str());
     width = std::max(width, static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium)));
 
     // Invalidate screen area

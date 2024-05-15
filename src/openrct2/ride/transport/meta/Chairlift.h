@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_IS_SUSPENDED,
     .RideModes = EnumsToFlags(RideMode::StationToStation),
     .DefaultMode = RideMode::StationToStation,
-    .OperatingSettings = { 1, 4, 0, 0, 0, 0 },
+    .OperatingSettings = { 1, 4 },
     .Naming = { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_CHAIRLIFT),

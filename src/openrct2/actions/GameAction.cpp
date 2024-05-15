@@ -30,7 +30,6 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;

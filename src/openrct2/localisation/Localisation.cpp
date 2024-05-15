@@ -7,35 +7,23 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef _WIN32
-#    include <windows.h>
-#elif defined(__ANDROID__)
-#    include <SDL.h>
-#    include <jni.h>
-
-#else
-#    include <errno.h>
-#    include <iconv.h>
-#endif // _WIN32
+#include "Localisation.h"
 
 #include "../Game.h"
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "../management/Marketing.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
+#include "Currency.h"
 #include "Date.h"
+#include "FormatCodes.h"
 #include "Formatting.h"
-#include "Localisation.h"
 
-#include <algorithm>
-#include <cmath>
 #include <cstring>
-#include <ctype.h>
-#include <iterator>
-#include <limits.h>
+
+using namespace OpenRCT2;
 
 thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 
@@ -361,7 +349,7 @@ void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytes)
 money64 StringToMoney(const char* string_to_monetise)
 {
     const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
-    const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+    const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
     char processedString[128] = {};
 
     Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -451,7 +439,7 @@ void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_l
         return;
     }
 
-    const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+    const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
 
     const char* sign = amount >= 0 ? "" : "-";
     const uint64_t a = std::abs(amount) * currencyDesc.rate;

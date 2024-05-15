@@ -502,7 +502,7 @@ namespace OpenRCT2::Scripting
         uint32_t image_get() const
         {
             auto widget = GetWidget();
-            if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
+            if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
                 if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
                 {
@@ -516,7 +516,7 @@ namespace OpenRCT2::Scripting
         void image_set(DukValue value)
         {
             auto widget = GetWidget();
-            if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
+            if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
                 widget->image = ImageId(ImageFromDuk(value));
                 Invalidate();

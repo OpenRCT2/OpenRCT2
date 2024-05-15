@@ -18,7 +18,6 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
-#include <algorithm>
 #include <array>
 #include <cstring>
 

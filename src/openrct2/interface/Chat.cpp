@@ -13,6 +13,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
@@ -20,8 +21,6 @@
 #include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
-
-#include <algorithm>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -289,7 +288,7 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const
     int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        GfxDrawString(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
+        DrawText(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, { TEXT_COLOUR_254 }, bufferPtr);
         bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }

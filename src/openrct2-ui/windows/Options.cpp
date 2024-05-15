@@ -14,7 +14,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -38,6 +37,7 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/Platform.h>
+#include <openrct2/rct1/Csg.h>
 #include <openrct2/ride/RideAudio.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
@@ -46,7 +46,9 @@
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
@@ -167,6 +169,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_THEMES_DROPDOWN,
     WIDX_THEMES_BUTTON,
     WIDX_TOOLBAR_BUTTONS_GROUP,
+    WIDX_TOOLBAR_BUTTONS_CENTRED,
     WIDX_TOOLBAR_BUTTONS_SHOW_FOR_LABEL,
     WIDX_TOOLBAR_SHOW_FINANCES,
     WIDX_TOOLBAR_SHOW_RESEARCH,
@@ -335,15 +338,18 @@ static Widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
 #define TOOLBAR_GROUP_START 215
-    MakeWidget({  5, TOOLBAR_GROUP_START +  0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
-    MakeWidget({ 10, TOOLBAR_GROUP_START + 14}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
-    MakeWidget({155, TOOLBAR_GROUP_START + 31}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
-    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
-    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
+
+
+    MakeWidget({  5, TOOLBAR_GROUP_START +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
+    MakeWidget({ 10, TOOLBAR_GROUP_START + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP),
+    MakeWidget({ 10, TOOLBAR_GROUP_START + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
+    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
+    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
+    MakeWidget({155, TOOLBAR_GROUP_START + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
     kWidgetsEnd,
 #undef TOOLBAR_GROUP_START
 };
@@ -688,42 +694,42 @@ static Widget *window_options_page_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_UNCAP_FPS_CHECKBOX:
-                    gConfigGeneral.UncapFPS ^= 1;
-                    DrawingEngineSetVSync(gConfigGeneral.UseVSync);
-                    ConfigSaveDefault();
+                    Config::Get().general.UncapFPS ^= 1;
+                    DrawingEngineSetVSync(Config::Get().general.UseVSync);
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_USE_VSYNC_CHECKBOX:
-                    gConfigGeneral.UseVSync ^= 1;
-                    DrawingEngineSetVSync(gConfigGeneral.UseVSync);
-                    ConfigSaveDefault();
+                    Config::Get().general.UseVSync ^= 1;
+                    DrawingEngineSetVSync(Config::Get().general.UseVSync);
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_SHOW_FPS_CHECKBOX:
-                    gConfigGeneral.ShowFPS ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.ShowFPS ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_MULTITHREADING_CHECKBOX:
-                    gConfigGeneral.MultiThreading ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.MultiThreading ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
-                    gConfigGeneral.MinimizeFullscreenFocusLoss ^= 1;
+                    Config::Get().general.MinimizeFullscreenFocusLoss ^= 1;
                     RefreshVideo(false);
-                    ConfigSaveDefault();
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_STEAM_OVERLAY_PAUSE:
-                    gConfigGeneral.SteamOverlayPause ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.SteamOverlayPause ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_DISABLE_SCREENSAVER_LOCK:
-                    gConfigGeneral.DisableScreensaver ^= 1;
+                    Config::Get().general.DisableScreensaver ^= 1;
                     ApplyScreenSaverLockSetting();
-                    ConfigSaveDefault();
+                    Config::Save();
                     Invalidate();
                     break;
             }
@@ -751,8 +757,8 @@ static Widget *window_options_page_widgets[] = {
                         args[1] = resolution.Width;
                         args[2] = resolution.Height;
 
-                        if (resolution.Width == gConfigGeneral.FullscreenWidth
-                            && resolution.Height == gConfigGeneral.FullscreenHeight)
+                        if (resolution.Width == Config::Get().general.FullscreenWidth
+                            && resolution.Height == Config::Get().general.FullscreenHeight)
                         {
                             selectedResolution = static_cast<int32_t>(i);
                         }
@@ -777,7 +783,7 @@ static Widget *window_options_page_widgets[] = {
 
                     ShowDropdown(widget, 3);
 
-                    Dropdown::SetChecked(gConfigGeneral.FullscreenMode, true);
+                    Dropdown::SetChecked(Config::Get().general.FullscreenMode, true);
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                 {
@@ -792,20 +798,20 @@ static Widget *window_options_page_widgets[] = {
                         gDropdownItems[i].Args = DrawingEngineStringIds[i];
                     }
                     ShowDropdown(widget, numItems);
-                    Dropdown::SetChecked(EnumValue(gConfigGeneral.DrawingEngine), true);
+                    Dropdown::SetChecked(EnumValue(Config::Get().general.DrawingEngine), true);
                     break;
                 }
                 case WIDX_SCALE_UP:
-                    gConfigGeneral.WindowScale += 0.25f;
-                    ConfigSaveDefault();
+                    Config::Get().general.WindowScale += 0.25f;
+                    Config::Save();
                     GfxInvalidateScreen();
                     ContextTriggerResize();
                     ContextUpdateCursorScale();
                     break;
                 case WIDX_SCALE_DOWN:
-                    gConfigGeneral.WindowScale -= 0.25f;
-                    gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
-                    ConfigSaveDefault();
+                    Config::Get().general.WindowScale -= 0.25f;
+                    Config::Get().general.WindowScale = std::max(0.5f, Config::Get().general.WindowScale);
+                    Config::Save();
                     GfxInvalidateScreen();
                     ContextTriggerResize();
                     ContextUpdateCursorScale();
@@ -822,40 +828,41 @@ static Widget *window_options_page_widgets[] = {
                     const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
 
                     const Resolution& resolution = resolutions[dropdownIndex];
-                    if (resolution.Width != gConfigGeneral.FullscreenWidth
-                        || resolution.Height != gConfigGeneral.FullscreenHeight)
+                    if (resolution.Width != Config::Get().general.FullscreenWidth
+                        || resolution.Height != Config::Get().general.FullscreenHeight)
                     {
-                        gConfigGeneral.FullscreenWidth = resolution.Width;
-                        gConfigGeneral.FullscreenHeight = resolution.Height;
+                        Config::Get().general.FullscreenWidth = resolution.Width;
+                        Config::Get().general.FullscreenHeight = resolution.Height;
 
-                        if (gConfigGeneral.FullscreenMode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+                        if (Config::Get().general.FullscreenMode
+                            == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
                             ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
 
-                        ConfigSaveDefault();
+                        Config::Save();
                         GfxInvalidateScreen();
                     }
                 }
                 break;
                 case WIDX_FULLSCREEN_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.FullscreenMode)
+                    if (dropdownIndex != Config::Get().general.FullscreenMode)
                     {
                         ContextSetFullscreenMode(dropdownIndex);
 
-                        gConfigGeneral.FullscreenMode = static_cast<uint8_t>(dropdownIndex);
-                        ConfigSaveDefault();
+                        Config::Get().general.FullscreenMode = static_cast<uint8_t>(dropdownIndex);
+                        Config::Save();
                         GfxInvalidateScreen();
                     }
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
-                    if (dropdownIndex != EnumValue(gConfigGeneral.DrawingEngine))
+                    if (dropdownIndex != EnumValue(Config::Get().general.DrawingEngine))
                     {
                         DrawingEngine srcEngine = drawing_engine_get_type();
                         DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
 
-                        gConfigGeneral.DrawingEngine = dstEngine;
+                        Config::Get().general.DrawingEngine = dstEngine;
                         bool recreate_window = DrawingEngineRequiresNewWindow(srcEngine, dstEngine);
                         RefreshVideo(recreate_window);
-                        ConfigSaveDefault();
+                        Config::Save();
                         Invalidate();
                     }
                     break;
@@ -867,11 +874,11 @@ static Widget *window_options_page_widgets[] = {
             // Resolution dropdown caption.
             auto ft = Formatter::Common();
             ft.Increment(16);
-            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.FullscreenWidth));
-            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.FullscreenHeight));
+            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.FullscreenWidth));
+            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.FullscreenHeight));
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (gConfigGeneral.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+            if (Config::Get().general.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
             {
                 disabled_widgets |= (1uLL << WIDX_RESOLUTION_DROPDOWN);
                 disabled_widgets |= (1uLL << WIDX_RESOLUTION);
@@ -885,8 +892,8 @@ static Widget *window_options_page_widgets[] = {
             }
 
             // Disable Steam Overlay checkbox when using software or OpenGL rendering.
-            if (gConfigGeneral.DrawingEngine == DrawingEngine::Software
-                || gConfigGeneral.DrawingEngine == DrawingEngine::OpenGL)
+            if (Config::Get().general.DrawingEngine == DrawingEngine::Software
+                || Config::Get().general.DrawingEngine == DrawingEngine::OpenGL)
             {
                 disabled_widgets |= (1uLL << WIDX_STEAM_OVERLAY_PAUSE);
             }
@@ -896,7 +903,7 @@ static Widget *window_options_page_widgets[] = {
             }
 
             // Disable changing VSync for Software engine, as we can't control its use of VSync
-            if (gConfigGeneral.DrawingEngine == DrawingEngine::Software)
+            if (Config::Get().general.DrawingEngine == DrawingEngine::Software)
             {
                 disabled_widgets |= (1uLL << WIDX_USE_VSYNC_CHECKBOX);
             }
@@ -905,23 +912,23 @@ static Widget *window_options_page_widgets[] = {
                 disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
             }
 
-            SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.UncapFPS);
-            SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.UseVSync);
-            SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.ShowFPS);
-            SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.MultiThreading);
-            SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.MinimizeFullscreenFocusLoss);
-            SetCheckboxValue(WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.SteamOverlayPause);
-            SetCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.DisableScreensaver);
+            SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, Config::Get().general.UncapFPS);
+            SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, Config::Get().general.UseVSync);
+            SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
+            SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.MultiThreading);
+            SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss);
+            SetCheckboxValue(WIDX_STEAM_OVERLAY_PAUSE, Config::Get().general.SteamOverlayPause);
+            SetCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, Config::Get().general.DisableScreensaver);
 
             // Dropdown captions for straightforward strings.
-            widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[gConfigGeneral.FullscreenMode];
-            widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
+            widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.FullscreenMode];
+            widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
         }
 
         void DisplayDraw(DrawPixelInfo& dpi)
         {
             auto ft = Formatter();
-            ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.WindowScale * 100));
+            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.WindowScale * 100));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
@@ -934,19 +941,19 @@ static Widget *window_options_page_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_TILE_SMOOTHING_CHECKBOX:
-                    gConfigGeneral.LandscapeSmoothing ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.LandscapeSmoothing ^= 1;
+                    Config::Save();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_GRIDLINES_CHECKBOX:
                 {
-                    gConfigGeneral.AlwaysShowGridlines ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.AlwaysShowGridlines ^= 1;
+                    Config::Save();
                     GfxInvalidateScreen();
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                     {
-                        if (gConfigGeneral.AlwaysShowGridlines)
+                        if (Config::Get().general.AlwaysShowGridlines)
                             mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
                         else
                             mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
@@ -954,46 +961,46 @@ static Widget *window_options_page_widgets[] = {
                     break;
                 }
                 case WIDX_DAY_NIGHT_CHECKBOX:
-                    gConfigGeneral.DayNightCycle ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.DayNightCycle ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
-                    gConfigGeneral.EnableLightFx ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.EnableLightFx ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
-                    gConfigGeneral.EnableLightFxForVehicles ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.EnableLightFxForVehicles ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
-                    gConfigGeneral.UpperCaseBanners ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.UpperCaseBanners ^= 1;
+                    Config::Save();
                     Invalidate();
                     ScrollingTextInvalidate();
                     break;
                 case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
-                    gConfigGeneral.DisableLightningEffect ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.DisableLightningEffect ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
-                    gConfigGeneral.RenderWeatherEffects ^= 1;
-                    gConfigGeneral.RenderWeatherGloom = gConfigGeneral.RenderWeatherEffects;
-                    ConfigSaveDefault();
+                    Config::Get().general.RenderWeatherEffects ^= 1;
+                    Config::Get().general.RenderWeatherGloom = Config::Get().general.RenderWeatherEffects;
+                    Config::Save();
                     Invalidate();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
-                    gConfigGeneral.ShowGuestPurchases ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.ShowGuestPurchases ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
-                    gConfigGeneral.TransparentScreenshot ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.TransparentScreenshot ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
             }
@@ -1014,7 +1021,7 @@ static Widget *window_options_page_widgets[] = {
                     Widget* widget = &widgets[widgetIndex - 1];
                     ShowDropdown(widget, 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.VirtualFloorStyle), true);
+                    Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.VirtualFloorStyle), true);
                     break;
             }
         }
@@ -1024,20 +1031,20 @@ static Widget *window_options_page_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gConfigGeneral.VirtualFloorStyle = static_cast<VirtualFloorStyles>(dropdownIndex);
-                    ConfigSaveDefault();
+                    Config::Get().general.VirtualFloorStyle = static_cast<VirtualFloorStyles>(dropdownIndex);
+                    Config::Save();
                     break;
             }
         }
 
         void RenderingPrepareDraw()
         {
-            SetCheckboxValue(WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.LandscapeSmoothing);
-            SetCheckboxValue(WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.AlwaysShowGridlines);
-            SetCheckboxValue(WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.DayNightCycle);
-            SetCheckboxValue(WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.ShowGuestPurchases);
-            SetCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.TransparentScreenshot);
-            SetCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.UpperCaseBanners);
+            SetCheckboxValue(WIDX_TILE_SMOOTHING_CHECKBOX, Config::Get().general.LandscapeSmoothing);
+            SetCheckboxValue(WIDX_GRIDLINES_CHECKBOX, Config::Get().general.AlwaysShowGridlines);
+            SetCheckboxValue(WIDX_DAY_NIGHT_CHECKBOX, Config::Get().general.DayNightCycle);
+            SetCheckboxValue(WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, Config::Get().general.ShowGuestPurchases);
+            SetCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, Config::Get().general.TransparentScreenshot);
+            SetCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, Config::Get().general.UpperCaseBanners);
 
             static constexpr StringId _virtualFloorStyleStrings[] = {
                 STR_VIRTUAL_FLOOR_STYLE_DISABLED,
@@ -1045,36 +1052,38 @@ static Widget *window_options_page_widgets[] = {
                 STR_VIRTUAL_FLOOR_STYLE_GLASSY,
             };
 
-            widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[EnumValue(gConfigGeneral.VirtualFloorStyle)];
+            widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[EnumValue(Config::Get().general.VirtualFloorStyle)];
 
-            SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.EnableLightFx);
-            if (gConfigGeneral.DayNightCycle && gConfigGeneral.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay)
+            SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, Config::Get().general.EnableLightFx);
+            if (Config::Get().general.DayNightCycle
+                && Config::Get().general.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay)
             {
                 disabled_widgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
             }
             else
             {
                 disabled_widgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-                gConfigGeneral.EnableLightFx = false;
+                Config::Get().general.EnableLightFx = false;
             }
 
-            SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.EnableLightFxForVehicles);
-            if (gConfigGeneral.DayNightCycle && gConfigGeneral.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay
-                && gConfigGeneral.EnableLightFx)
+            SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, Config::Get().general.EnableLightFxForVehicles);
+            if (Config::Get().general.DayNightCycle
+                && Config::Get().general.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay
+                && Config::Get().general.EnableLightFx)
             {
                 disabled_widgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
             }
             else
             {
                 disabled_widgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-                gConfigGeneral.EnableLightFxForVehicles = false;
+                Config::Get().general.EnableLightFxForVehicles = false;
             }
 
             WidgetSetCheckboxValue(
                 *this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
-                gConfigGeneral.RenderWeatherEffects || gConfigGeneral.RenderWeatherGloom);
-            SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.DisableLightningEffect);
-            if (!gConfigGeneral.RenderWeatherEffects && !gConfigGeneral.RenderWeatherGloom)
+                Config::Get().general.RenderWeatherEffects || Config::Get().general.RenderWeatherGloom);
+            SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, Config::Get().general.DisableLightningEffect);
+            if (!Config::Get().general.RenderWeatherEffects && !Config::Get().general.RenderWeatherGloom)
             {
                 SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
                 disabled_widgets |= (1uLL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
@@ -1102,7 +1111,7 @@ static Widget *window_options_page_widgets[] = {
 
                     ShowDropdown(widget, 2);
 
-                    Dropdown::SetChecked(gConfigGeneral.ShowHeightAsUnits ? 0 : 1, true);
+                    Dropdown::SetChecked(Config::Get().general.ShowHeightAsUnits ? 0 : 1, true);
                     break;
                 case WIDX_CURRENCY_DROPDOWN:
                 {
@@ -1126,13 +1135,13 @@ static Widget *window_options_page_widgets[] = {
 
                     ShowDropdown(widget, numItems);
 
-                    if (gConfigGeneral.CurrencyFormat == CurrencyType::Custom)
+                    if (Config::Get().general.CurrencyFormat == CurrencyType::Custom)
                     {
-                        Dropdown::SetChecked(EnumValue(gConfigGeneral.CurrencyFormat) + 1, true);
+                        Dropdown::SetChecked(EnumValue(Config::Get().general.CurrencyFormat) + 1, true);
                     }
                     else
                     {
-                        Dropdown::SetChecked(EnumValue(gConfigGeneral.CurrencyFormat), true);
+                        Dropdown::SetChecked(EnumValue(Config::Get().general.CurrencyFormat), true);
                     }
                     break;
                 }
@@ -1146,7 +1155,7 @@ static Widget *window_options_page_widgets[] = {
 
                     ShowDropdown(widget, 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.MeasurementFormat), true);
+                    Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.MeasurementFormat), true);
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
                     gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
@@ -1156,7 +1165,7 @@ static Widget *window_options_page_widgets[] = {
 
                     ShowDropdown(widget, 2);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.TemperatureFormat), true);
+                    Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.TemperatureFormat), true);
                     break;
                 case WIDX_LANGUAGE_DROPDOWN:
                     for (size_t i = 1; i < LANGUAGE_COUNT; i++)
@@ -1174,7 +1183,7 @@ static Widget *window_options_page_widgets[] = {
                         gDropdownItems[i].Args = DateFormatStringIDs[i];
                     }
                     ShowDropdown(widget, 4);
-                    Dropdown::SetChecked(gConfigGeneral.DateFormat, true);
+                    Dropdown::SetChecked(Config::Get().general.DateFormat, true);
                     break;
             }
         }
@@ -1185,38 +1194,38 @@ static Widget *window_options_page_widgets[] = {
             {
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
                     // reset flag and set it to 1 if height as units is selected
-                    gConfigGeneral.ShowHeightAsUnits = 0;
+                    Config::Get().general.ShowHeightAsUnits = 0;
 
                     if (dropdownIndex == 0)
                     {
-                        gConfigGeneral.ShowHeightAsUnits = 1;
+                        Config::Get().general.ShowHeightAsUnits = 1;
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     UpdateHeightMarkers();
                     break;
                 case WIDX_CURRENCY_DROPDOWN:
                     if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
                     { // Add 1 because the separator occupies a position
-                        gConfigGeneral.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex - 1);
+                        Config::Get().general.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex - 1);
                         ContextOpenWindow(WindowClass::CustomCurrencyConfig);
                     }
                     else
                     {
-                        gConfigGeneral.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex);
+                        Config::Get().general.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex);
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_DISTANCE_DROPDOWN:
-                    gConfigGeneral.MeasurementFormat = static_cast<MeasurementFormat>(dropdownIndex);
-                    ConfigSaveDefault();
+                    Config::Get().general.MeasurementFormat = static_cast<MeasurementFormat>(dropdownIndex);
+                    Config::Save();
                     UpdateHeightMarkers();
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
-                    if (dropdownIndex != static_cast<int32_t>(gConfigGeneral.TemperatureFormat))
+                    if (dropdownIndex != static_cast<int32_t>(Config::Get().general.TemperatureFormat))
                     {
-                        gConfigGeneral.TemperatureFormat = static_cast<TemperatureUnit>(dropdownIndex);
-                        ConfigSaveDefault();
+                        Config::Get().general.TemperatureFormat = static_cast<TemperatureUnit>(dropdownIndex);
+                        Config::Save();
                         GfxInvalidateScreen();
                     }
                     break;
@@ -1239,18 +1248,18 @@ static Widget *window_options_page_widgets[] = {
                         }
                         else
                         {
-                            gConfigGeneral.Language = dropdownIndex + 1;
-                            ConfigSaveDefault();
+                            Config::Get().general.Language = dropdownIndex + 1;
+                            Config::Save();
                             GfxInvalidateScreen();
                         }
                     }
                 }
                 break;
                 case WIDX_DATE_FORMAT_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.DateFormat)
+                    if (dropdownIndex != Config::Get().general.DateFormat)
                     {
-                        gConfigGeneral.DateFormat = static_cast<uint8_t>(dropdownIndex);
-                        ConfigSaveDefault();
+                        Config::Get().general.DateFormat = static_cast<uint8_t>(dropdownIndex);
+                        Config::Save();
                         GfxInvalidateScreen();
                     }
                     break;
@@ -1264,12 +1273,12 @@ static Widget *window_options_page_widgets[] = {
             ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
             // Currency: pounds, dollars, etc. (10 total)
-            widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)].stringId;
+            widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)].stringId;
 
             // Distance: metric / imperial / si
             {
                 StringId stringId = STR_NONE;
-                switch (gConfigGeneral.MeasurementFormat)
+                switch (Config::Get().general.MeasurementFormat)
                 {
                     case MeasurementFormat::Imperial:
                         stringId = STR_IMPERIAL;
@@ -1285,14 +1294,15 @@ static Widget *window_options_page_widgets[] = {
             }
 
             // Date format
-            widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[gConfigGeneral.DateFormat];
+            widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[Config::Get().general.DateFormat];
 
             // Temperature: celsius/fahrenheit
-            widgets[WIDX_TEMPERATURE].text = gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit ? STR_FAHRENHEIT
-                                                                                                             : STR_CELSIUS;
+            widgets[WIDX_TEMPERATURE].text = Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit
+                ? STR_FAHRENHEIT
+                : STR_CELSIUS;
 
             // Height: units/real values
-            widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.ShowHeightAsUnits ? STR_HEIGHT_IN_UNITS : STR_REAL_VALUES;
+            widgets[WIDX_HEIGHT_LABELS].text = Config::Get().general.ShowHeightAsUnits ? STR_HEIGHT_IN_UNITS : STR_REAL_VALUES;
         }
 
 #pragma endregion
@@ -1303,35 +1313,35 @@ static Widget *window_options_page_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_SOUND_CHECKBOX:
-                    gConfigSound.SoundEnabled = !gConfigSound.SoundEnabled;
-                    ConfigSaveDefault();
+                    Config::Get().sound.SoundEnabled = !Config::Get().sound.SoundEnabled;
+                    Config::Save();
                     Invalidate();
                     break;
 
                 case WIDX_MASTER_SOUND_CHECKBOX:
-                    gConfigSound.MasterSoundEnabled = !gConfigSound.MasterSoundEnabled;
-                    if (!gConfigSound.MasterSoundEnabled)
+                    Config::Get().sound.MasterSoundEnabled = !Config::Get().sound.MasterSoundEnabled;
+                    if (!Config::Get().sound.MasterSoundEnabled)
                         OpenRCT2::Audio::Pause();
                     else
                         OpenRCT2::Audio::Resume();
                     WindowInvalidateByClass(WindowClass::TopToolbar);
-                    ConfigSaveDefault();
+                    Config::Save();
                     Invalidate();
                     break;
 
                 case WIDX_MUSIC_CHECKBOX:
-                    gConfigSound.RideMusicEnabled = !gConfigSound.RideMusicEnabled;
-                    if (!gConfigSound.RideMusicEnabled)
+                    Config::Get().sound.RideMusicEnabled = !Config::Get().sound.RideMusicEnabled;
+                    if (!Config::Get().sound.RideMusicEnabled)
                     {
                         OpenRCT2::RideAudio::StopAllChannels();
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     Invalidate();
                     break;
 
                 case WIDX_AUDIO_FOCUS_CHECKBOX:
-                    gConfigSound.audio_focus = !gConfigSound.audio_focus;
-                    ConfigSaveDefault();
+                    Config::Get().sound.audio_focus = !Config::Get().sound.audio_focus;
+                    Config::Save();
                     Invalidate();
                     break;
             }
@@ -1367,7 +1377,7 @@ static Widget *window_options_page_widgets[] = {
                         if (theme.Kind == TitleMusicKind::RCT1 && !rct1MusicThemeIsAvailable)
                             continue;
 
-                        if (gConfigSound.TitleMusic == theme.Kind)
+                        if (Config::Get().sound.TitleMusic == theme.Kind)
                             checkedIndex = numItems;
 
                         gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
@@ -1392,15 +1402,15 @@ static Widget *window_options_page_widgets[] = {
                         if (dropdownIndex == 0)
                         {
                             audioContext->SetOutputDevice("");
-                            gConfigSound.Device = "";
+                            Config::Get().sound.Device = "";
                         }
                         else
                         {
                             const auto& deviceName = GetDeviceName(dropdownIndex);
                             audioContext->SetOutputDevice(deviceName);
-                            gConfigSound.Device = deviceName;
+                            Config::Get().sound.Device = deviceName;
                         }
-                        ConfigSaveDefault();
+                        Config::Save();
                         OpenRCT2::Audio::PlayTitleMusic();
                     }
                     Invalidate();
@@ -1416,12 +1426,12 @@ static Widget *window_options_page_widgets[] = {
                             dropdownIndex++;
                     }
 
-                    gConfigSound.TitleMusic = TitleThemeOptions[dropdownIndex].Kind;
-                    ConfigSaveDefault();
+                    Config::Get().sound.TitleMusic = TitleThemeOptions[dropdownIndex].Kind;
+                    Config::Save();
                     Invalidate();
 
                     OpenRCT2::Audio::StopTitleMusic();
-                    if (gConfigSound.TitleMusic != TitleMusicKind::None)
+                    if (Config::Get().sound.TitleMusic != TitleMusicKind::None)
                     {
                         OpenRCT2::Audio::PlayTitleMusic();
                     }
@@ -1435,30 +1445,30 @@ static Widget *window_options_page_widgets[] = {
             const auto& masterVolumeWidget = widgets[WIDX_MASTER_VOLUME];
             const auto& masterVolumeScroll = scrolls[0];
             uint8_t masterVolume = GetScrollPercentage(masterVolumeWidget, masterVolumeScroll);
-            if (masterVolume != gConfigSound.MasterVolume)
+            if (masterVolume != Config::Get().sound.MasterVolume)
             {
-                gConfigSound.MasterVolume = masterVolume;
-                ConfigSaveDefault();
+                Config::Get().sound.MasterVolume = masterVolume;
+                Config::Save();
                 InvalidateWidget(WIDX_MASTER_VOLUME);
             }
 
             const auto& soundVolumeWidget = widgets[WIDX_MASTER_VOLUME];
             const auto& soundVolumeScroll = scrolls[1];
             uint8_t soundVolume = GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
-            if (soundVolume != gConfigSound.SoundVolume)
+            if (soundVolume != Config::Get().sound.SoundVolume)
             {
-                gConfigSound.SoundVolume = soundVolume;
-                ConfigSaveDefault();
+                Config::Get().sound.SoundVolume = soundVolume;
+                Config::Save();
                 InvalidateWidget(WIDX_SOUND_VOLUME);
             }
 
             const auto& musicVolumeWidget = widgets[WIDX_MASTER_VOLUME];
             const auto& musicVolumeScroll = scrolls[2];
             uint8_t rideMusicVolume = GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
-            if (rideMusicVolume != gConfigSound.AudioFocus)
+            if (rideMusicVolume != Config::Get().sound.AudioFocus)
             {
-                gConfigSound.AudioFocus = rideMusicVolume;
-                ConfigSaveDefault();
+                Config::Get().sound.AudioFocus = rideMusicVolume;
+                Config::Save();
                 InvalidateWidget(WIDX_MUSIC_VOLUME);
             }
         }
@@ -1471,7 +1481,7 @@ static Widget *window_options_page_widgets[] = {
         StringId GetTitleMusicName() const
         {
             auto theme = std::find_if(std::begin(TitleThemeOptions), std::end(TitleThemeOptions), [](auto&& option) {
-                return gConfigSound.TitleMusic == option.Kind;
+                return Config::Get().sound.TitleMusic == option.Kind;
             });
             if (theme != std::end(TitleThemeOptions))
                 return theme->Name;
@@ -1509,25 +1519,33 @@ static Widget *window_options_page_widgets[] = {
 
             widgets[WIDX_TITLE_MUSIC].text = GetTitleMusicName();
 
-            SetCheckboxValue(WIDX_SOUND_CHECKBOX, gConfigSound.SoundEnabled);
-            SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.MasterSoundEnabled);
-            SetCheckboxValue(WIDX_MUSIC_CHECKBOX, gConfigSound.RideMusicEnabled);
-            SetCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-            WidgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, gConfigSound.MasterSoundEnabled);
-            WidgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, gConfigSound.MasterSoundEnabled);
+            SetCheckboxValue(WIDX_SOUND_CHECKBOX, Config::Get().sound.SoundEnabled);
+            SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
+            SetCheckboxValue(WIDX_MUSIC_CHECKBOX, Config::Get().sound.RideMusicEnabled);
+            SetCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, Config::Get().sound.audio_focus);
+            WidgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
+            WidgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
 
             // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
             if (frame_no == 0)
             {
-                InitializeScrollPosition(WIDX_MASTER_VOLUME, 0, gConfigSound.MasterVolume);
-                InitializeScrollPosition(WIDX_SOUND_VOLUME, 1, gConfigSound.SoundVolume);
-                InitializeScrollPosition(WIDX_MUSIC_VOLUME, 2, gConfigSound.AudioFocus);
+                InitializeScrollPosition(WIDX_MASTER_VOLUME, 0, Config::Get().sound.MasterVolume);
+                InitializeScrollPosition(WIDX_SOUND_VOLUME, 1, Config::Get().sound.SoundVolume);
+                InitializeScrollPosition(WIDX_MUSIC_VOLUME, 2, Config::Get().sound.AudioFocus);
             }
         }
 
 #pragma endregion
 
 #pragma region Controls tab events
+        void ToggleToolbarSetting(bool& setting)
+        {
+            setting ^= true;
+            Config::Save();
+            Invalidate();
+            WindowInvalidateByClass(WindowClass::TopToolbar);
+        }
+
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
@@ -1536,72 +1554,54 @@ static Widget *window_options_page_widgets[] = {
                     ContextOpenWindow(WindowClass::KeyboardShortcutList);
                     break;
                 case WIDX_SCREEN_EDGE_SCROLLING:
-                    gConfigGeneral.EdgeScrolling ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.EdgeScrolling ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_TRAP_CURSOR:
-                    gConfigGeneral.TrapCursor ^= 1;
-                    ConfigSaveDefault();
-                    ContextSetCursorTrap(gConfigGeneral.TrapCursor);
+                    Config::Get().general.TrapCursor ^= 1;
+                    Config::Save();
+                    ContextSetCursorTrap(Config::Get().general.TrapCursor);
                     Invalidate();
                     break;
                 case WIDX_ZOOM_TO_CURSOR:
-                    gConfigGeneral.ZoomToCursor ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.ZoomToCursor ^= 1;
+                    Config::Save();
                     Invalidate();
+                    break;
+                case WIDX_TOOLBAR_BUTTONS_CENTRED:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarButtonsCentred);
                     break;
                 case WIDX_TOOLBAR_SHOW_FINANCES:
-                    gConfigInterface.ToolbarShowFinances ^= 1;
-                    ConfigSaveDefault();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowFinances);
                     break;
                 case WIDX_TOOLBAR_SHOW_RESEARCH:
-                    gConfigInterface.ToolbarShowResearch ^= 1;
-                    ConfigSaveDefault();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowResearch);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHEATS:
-                    gConfigInterface.ToolbarShowCheats ^= 1;
-                    ConfigSaveDefault();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowCheats);
                     break;
                 case WIDX_TOOLBAR_SHOW_NEWS:
-                    gConfigInterface.ToolbarShowNews ^= 1;
-                    ConfigSaveDefault();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowNews);
                     break;
                 case WIDX_TOOLBAR_SHOW_MUTE:
-                    gConfigInterface.ToolbarShowMute ^= 1;
-                    ConfigSaveDefault();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowMute);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHAT:
-                    gConfigInterface.ToolbarShowChat ^= 1;
-                    ConfigSaveDefault();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowChat);
                     break;
                 case WIDX_TOOLBAR_SHOW_ZOOM:
-                    gConfigInterface.ToolbarShowZoom ^= 1;
-                    ConfigSaveDefault();
-                    Invalidate();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
                     break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
-                    gConfigInterface.WindowButtonsOnTheLeft ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
+                    Config::Save();
                     Invalidate();
                     WindowInvalidateAll();
                     break;
                 case WIDX_INVERT_DRAG:
-                    gConfigGeneral.InvertViewportDrag ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.InvertViewportDrag ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_THEMES_BUTTON:
@@ -1645,25 +1645,26 @@ static Widget *window_options_page_widgets[] = {
                     {
                         ThemeManagerSetActiveAvailableTheme(dropdownIndex);
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     break;
             }
         }
 
         void ControlsPrepareDraw()
         {
-            SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.EdgeScrolling);
-            SetCheckboxValue(WIDX_TRAP_CURSOR, gConfigGeneral.TrapCursor);
-            SetCheckboxValue(WIDX_INVERT_DRAG, gConfigGeneral.InvertViewportDrag);
-            SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, gConfigGeneral.ZoomToCursor);
-            SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.ToolbarShowFinances);
-            SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.ToolbarShowResearch);
-            SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.ToolbarShowCheats);
-            SetCheckboxValue(WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.ToolbarShowNews);
-            SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.ToolbarShowMute);
-            SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.ToolbarShowChat);
-            SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, gConfigInterface.ToolbarShowZoom);
-            SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, gConfigInterface.WindowButtonsOnTheLeft);
+            SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.EdgeScrolling);
+            SetCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
+            SetCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
+            SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.ZoomToCursor);
+            SetCheckboxValue(WIDX_TOOLBAR_BUTTONS_CENTRED, Config::Get().interface.ToolbarButtonsCentred);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, Config::Get().interface.ToolbarShowFinances);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, Config::Get().interface.ToolbarShowResearch);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, Config::Get().interface.ToolbarShowCheats);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_NEWS, Config::Get().interface.ToolbarShowNews);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, Config::Get().interface.ToolbarShowMute);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
+            SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -1679,37 +1680,37 @@ static Widget *window_options_page_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_REAL_NAME_CHECKBOX:
-                    gConfigGeneral.ShowRealNamesOfGuests ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.ShowRealNamesOfGuests ^= 1;
+                    Config::Save();
                     Invalidate();
-                    PeepUpdateNames(gConfigGeneral.ShowRealNamesOfGuests);
+                    PeepUpdateNames(Config::Get().general.ShowRealNamesOfGuests);
                     break;
                 case WIDX_AUTO_STAFF_PLACEMENT:
-                    gConfigGeneral.AutoStaffPlacement ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.AutoStaffPlacement ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_SCENARIO_UNLOCKING:
-                    gConfigGeneral.ScenarioUnlockingEnabled ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.ScenarioUnlockingEnabled ^= 1;
+                    Config::Save();
                     WindowCloseByClass(WindowClass::ScenarioSelect);
                     break;
                 case WIDX_AUTO_OPEN_SHOPS:
-                    gConfigGeneral.AutoOpenShops = !gConfigGeneral.AutoOpenShops;
-                    ConfigSaveDefault();
+                    Config::Get().general.AutoOpenShops = !Config::Get().general.AutoOpenShops;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_ALLOW_EARLY_COMPLETION:
-                    gConfigGeneral.AllowEarlyCompletion ^= 1;
+                    Config::Get().general.AllowEarlyCompletion ^= 1;
                     // Only the server can control this setting and needs to send the
                     // current value of allow_early_completion to all clients
                     if (NetworkGetMode() == NETWORK_MODE_SERVER)
                     {
                         auto setAllowEarlyCompletionAction = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AllowEarlyCompletion, gConfigGeneral.AllowEarlyCompletion);
+                            ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.AllowEarlyCompletion);
                         GameActions::Execute(&setAllowEarlyCompletionAction);
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     Invalidate();
                     break;
             }
@@ -1740,8 +1741,9 @@ static Widget *window_options_page_widgets[] = {
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1],
                         Dropdown::Flag::StayOpen, numItems);
 
-                    auto selectedIndex = gConfigInterface.RandomTitleSequence ? numItems - 1
-                                                                              : static_cast<int32_t>(TitleGetCurrentSequence());
+                    auto selectedIndex = Config::Get().interface.RandomTitleSequence
+                        ? numItems - 1
+                        : static_cast<int32_t>(TitleGetCurrentSequence());
                     Dropdown::SetChecked(selectedIndex, true);
                     break;
                 }
@@ -1758,7 +1760,7 @@ static Widget *window_options_page_widgets[] = {
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                    Dropdown::SetChecked(gConfigGeneral.ScenarioSelectMode, true);
+                    Dropdown::SetChecked(Config::Get().general.ScenarioSelectMode, true);
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
@@ -1769,7 +1771,7 @@ static Widget *window_options_page_widgets[] = {
                     }
 
                     ShowDropdown(widget, 7);
-                    Dropdown::SetChecked(gConfigGeneral.DefaultInspectionInterval, true);
+                    Dropdown::SetChecked(Config::Get().general.DefaultInspectionInterval, true);
                     break;
             }
         }
@@ -1783,33 +1785,33 @@ static Widget *window_options_page_widgets[] = {
                     auto numItems = static_cast<int32_t>(TitleSequenceManagerGetCount());
                     if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(TitleGetCurrentSequence()))
                     {
-                        gConfigInterface.RandomTitleSequence = false;
+                        Config::Get().interface.RandomTitleSequence = false;
                         TitleSequenceChangePreset(static_cast<size_t>(dropdownIndex));
-                        ConfigSaveDefault();
+                        Config::Save();
                         Invalidate();
                     }
                     else if (dropdownIndex == numItems + 1)
                     {
-                        gConfigInterface.RandomTitleSequence = true;
-                        ConfigSaveDefault();
+                        Config::Get().interface.RandomTitleSequence = true;
+                        Config::Save();
                         Invalidate();
                     }
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.DefaultInspectionInterval)
+                    if (dropdownIndex != Config::Get().general.DefaultInspectionInterval)
                     {
-                        gConfigGeneral.DefaultInspectionInterval = static_cast<uint8_t>(dropdownIndex);
-                        ConfigSaveDefault();
+                        Config::Get().general.DefaultInspectionInterval = static_cast<uint8_t>(dropdownIndex);
+                        Config::Save();
                         Invalidate();
                     }
                     break;
                 case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.ScenarioSelectMode)
+                    if (dropdownIndex != Config::Get().general.ScenarioSelectMode)
                     {
-                        gConfigGeneral.ScenarioSelectMode = dropdownIndex;
-                        gConfigInterface.ScenarioselectLastTab = 0;
-                        ConfigSaveDefault();
+                        Config::Get().general.ScenarioSelectMode = dropdownIndex;
+                        Config::Get().interface.ScenarioselectLastTab = 0;
+                        Config::Save();
                         Invalidate();
                         WindowCloseByClass(WindowClass::ScenarioSelect);
                     }
@@ -1820,7 +1822,7 @@ static Widget *window_options_page_widgets[] = {
         void MiscPrepareDraw()
         {
             auto ft = Formatter::Common();
-            if (gConfigInterface.RandomTitleSequence)
+            if (Config::Get().interface.RandomTitleSequence)
             {
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_RANDOM);
             }
@@ -1847,19 +1849,19 @@ static Widget *window_options_page_widgets[] = {
                 }
             }
 
-            SetCheckboxValue(WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.ShowRealNamesOfGuests);
-            SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.AutoStaffPlacement);
-            SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.AutoOpenShops);
-            SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.AllowEarlyCompletion);
+            SetCheckboxValue(WIDX_REAL_NAME_CHECKBOX, Config::Get().general.ShowRealNamesOfGuests);
+            SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, Config::Get().general.AutoStaffPlacement);
+            SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, Config::Get().general.AutoOpenShops);
+            SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, Config::Get().general.AllowEarlyCompletion);
 
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_DIFFICULTY)
+            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_DIFFICULTY)
                 widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
             else
                 widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
 
-            SetCheckboxValue(WIDX_SCENARIO_UNLOCKING, gConfigGeneral.ScenarioUnlockingEnabled);
+            SetCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.ScenarioUnlockingEnabled);
 
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
                 disabled_widgets &= ~(1uLL << WIDX_SCENARIO_UNLOCKING);
             }
@@ -1868,8 +1870,8 @@ static Widget *window_options_page_widgets[] = {
                 disabled_widgets |= (1uLL << WIDX_SCENARIO_UNLOCKING);
             }
 
-            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[gConfigGeneral
-                                                                                             .DefaultInspectionInterval];
+            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
+                [Config::Get().general.DefaultInspectionInterval];
         }
 
 #pragma endregion
@@ -1880,23 +1882,23 @@ static Widget *window_options_page_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_DEBUGGING_TOOLS:
-                    gConfigGeneral.DebuggingTools ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.DebuggingTools ^= 1;
+                    Config::Save();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
-                    gConfigGeneral.SavePluginData ^= 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.SavePluginData ^= 1;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_STAY_CONNECTED_AFTER_DESYNC:
-                    gConfigNetwork.StayConnected = !gConfigNetwork.StayConnected;
-                    ConfigSaveDefault();
+                    Config::Get().network.StayConnected = !Config::Get().network.StayConnected;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_ALWAYS_NATIVE_LOADSAVE:
-                    gConfigGeneral.UseNativeBrowseDialog = !gConfigGeneral.UseNativeBrowseDialog;
-                    ConfigSaveDefault();
+                    Config::Get().general.UseNativeBrowseDialog = !Config::Get().general.UseNativeBrowseDialog;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_PATH_TO_RCT1_BUTTON:
@@ -1912,9 +1914,9 @@ static Widget *window_options_page_widgets[] = {
                             {
                                 if (CsgAtLocationIsUsable(rct1path))
                                 {
-                                    gConfigGeneral.RCT1Path = std::move(rct1path);
-                                    gConfigInterface.ScenarioselectLastTab = 0;
-                                    ConfigSaveDefault();
+                                    Config::Get().general.RCT1Path = std::move(rct1path);
+                                    Config::Get().interface.ScenarioselectLastTab = 0;
+                                    Config::Save();
                                     ContextShowError(STR_RESTART_REQUIRED, STR_NONE, {});
                                 }
                                 else
@@ -1936,10 +1938,10 @@ static Widget *window_options_page_widgets[] = {
                     break;
                 }
                 case WIDX_PATH_TO_RCT1_CLEAR:
-                    if (!gConfigGeneral.RCT1Path.empty())
+                    if (!Config::Get().general.RCT1Path.empty())
                     {
-                        gConfigGeneral.RCT1Path.clear();
-                        ConfigSaveDefault();
+                        Config::Get().general.RCT1Path.clear();
+                        Config::Save();
                     }
                     Invalidate();
                     break;
@@ -1963,20 +1965,20 @@ static Widget *window_options_page_widgets[] = {
                     }
 
                     ShowDropdown(widget, AUTOSAVE_NEVER + 1);
-                    Dropdown::SetChecked(gConfigGeneral.AutosaveFrequency, true);
+                    Dropdown::SetChecked(Config::Get().general.AutosaveFrequency, true);
                     break;
                 case WIDX_AUTOSAVE_AMOUNT_UP:
-                    gConfigGeneral.AutosaveAmount += 1;
-                    ConfigSaveDefault();
+                    Config::Get().general.AutosaveAmount += 1;
+                    Config::Save();
                     InvalidateWidget(WIDX_AUTOSAVE_FREQUENCY);
                     InvalidateWidget(WIDX_AUTOSAVE_FREQUENCY_DROPDOWN);
                     InvalidateWidget(WIDX_AUTOSAVE_AMOUNT);
                     break;
                 case WIDX_AUTOSAVE_AMOUNT_DOWN:
-                    if (gConfigGeneral.AutosaveAmount > 1)
+                    if (Config::Get().general.AutosaveAmount > 1)
                     {
-                        gConfigGeneral.AutosaveAmount -= 1;
-                        ConfigSaveDefault();
+                        Config::Get().general.AutosaveAmount -= 1;
+                        Config::Save();
                         InvalidateWidget(WIDX_AUTOSAVE_FREQUENCY);
                         InvalidateWidget(WIDX_AUTOSAVE_FREQUENCY_DROPDOWN);
                         InvalidateWidget(WIDX_AUTOSAVE_AMOUNT);
@@ -1989,10 +1991,10 @@ static Widget *window_options_page_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_AUTOSAVE_FREQUENCY_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.AutosaveFrequency)
+                    if (dropdownIndex != Config::Get().general.AutosaveFrequency)
                     {
-                        gConfigGeneral.AutosaveFrequency = static_cast<uint8_t>(dropdownIndex);
-                        ConfigSaveDefault();
+                        Config::Get().general.AutosaveFrequency = static_cast<uint8_t>(dropdownIndex);
+                        Config::Save();
                         Invalidate();
                     }
                     break;
@@ -2001,23 +2003,23 @@ static Widget *window_options_page_widgets[] = {
 
         void AdvancedPrepareDraw()
         {
-            SetCheckboxValue(WIDX_DEBUGGING_TOOLS, gConfigGeneral.DebuggingTools);
-            SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.SavePluginData);
-            SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.StayConnected);
-            SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.UseNativeBrowseDialog);
-            widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[gConfigGeneral.AutosaveFrequency];
+            SetCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.DebuggingTools);
+            SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, Config::Get().general.SavePluginData);
+            SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
+            SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.UseNativeBrowseDialog);
+            widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.AutosaveFrequency];
         }
 
         void AdvancedDraw(DrawPixelInfo& dpi)
         {
             auto ft = Formatter();
-            ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.AutosaveAmount));
+            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.AutosaveAmount));
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
-            const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.RCT1Path);
+            const auto normalisedPath = Platform::StrDecompToPrecomp(Config::Get().general.RCT1Path);
             ft = Formatter();
             ft.Add<const utf8*>(normalisedPath.c_str());
 
@@ -2036,14 +2038,14 @@ static Widget *window_options_page_widgets[] = {
         {
             if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
             {
-                if (gConfigGeneral.RCT1Path.empty())
+                if (Config::Get().general.RCT1Path.empty())
                 {
                     // No tooltip if the path is empty
                     return { STR_NONE, {} };
                 }
 
                 auto ft = Formatter();
-                ft.Add<utf8*>(gConfigGeneral.RCT1Path.c_str());
+                ft.Add<utf8*>(Config::Get().general.RCT1Path.c_str());
                 return { fallback, ft };
             }
             return { fallback, {} };
@@ -2125,7 +2127,7 @@ static Widget *window_options_page_widgets[] = {
 
         void UpdateHeightMarkers()
         {
-            ConfigSaveDefault();
+            Config::Save();
             GfxInvalidateScreen();
         }
 

@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <fstream>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -17,7 +16,7 @@
 #include <openrct2/Version.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform.h>
@@ -203,7 +202,7 @@ static Widget _windowChangelogWidgets[] = {
                 if (screenCoords.y + lineHeight < dpi.y || screenCoords.y >= dpi.y + dpi.height)
                     continue;
 
-                GfxDrawString(dpi, screenCoords, line.c_str(), { colours[0] });
+                DrawText(dpi, screenCoords, { colours[0] }, line.c_str());
             }
         }
 

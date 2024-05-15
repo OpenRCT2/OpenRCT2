@@ -15,8 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform.h>
@@ -811,9 +810,10 @@ static WindowClass window_themes_tab_7_classes[] = {
                         GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                         if (colour & COLOUR_FLAG_TRANSLUCENT)
                         {
-                            GfxDrawString(
-                                dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
-                                { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark });
+                            DrawText(
+                                dpi, topLeft,
+                                { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark },
+                                static_cast<const char*>(CheckBoxMarkString));
                         }
                     }
                 }

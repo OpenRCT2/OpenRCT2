@@ -12,6 +12,7 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
+#include "../CorkscrewRollerCoaster.hpp"
 
 // clang-format off
 constexpr RideTypeDescriptor HypercoasterRTD =
@@ -19,7 +20,7 @@ constexpr RideTypeDescriptor HypercoasterRTD =
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionCorkscrewRC,
+        .Drawer = GetTrackPaintFunctionCorkscrewRC<MetalSupportType::Tubes>,
         .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_STEEP_LONG, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
         .ExtraTrackPieces = {TRACK_VERTICAL_LOOP, TRACK_HALF_LOOP, TRACK_CORKSCREW, TRACK_BOOSTER},
     }),
@@ -30,7 +31,10 @@ constexpr RideTypeDescriptor HypercoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch, RideMode::ReverseInclineLaunchedShuttle),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 10, 27, 30, 25, 25, 0 },
+    .OperatingSettings = { 10, 27 },
+    .TrackSpeedSettings = { 60, 60 },
+    .BoosterSettings = { 25, 25 },
+    .LegacyBoosterSettings = { 25, 25 },
     .Naming = { STR_RIDE_NAME_HYPERCOASTER, STR_RIDE_DESCRIPTION_HYPERCOASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_HYPERCOASTER),

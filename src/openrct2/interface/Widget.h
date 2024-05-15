@@ -9,7 +9,11 @@
 
 #pragma once
 
-#include "Window.h"
+#include <cstdint>
+
+struct WindowBase;
+
+using WidgetIndex = int16_t;
 
 enum class WindowWidgetType : uint8_t
 {
@@ -38,6 +42,18 @@ enum class WindowWidgetType : uint8_t
     TextBox = 27,
     Last = 26,
 };
+
+constexpr uint8_t kCloseButtonWidth = 10;
+
+constexpr int32_t kScrollableRowHeight = 12;
+constexpr uint8_t kListRowHeight = 12;
+constexpr uint8_t kTableCellHeight = 12;
+constexpr uint8_t kButtonFaceHeight = 12;
+constexpr uint8_t kSpinnerHeight = 12;
+constexpr uint8_t kDropdownHeight = 12;
+
+constexpr uint16_t kTextInputSize = 1024;
+constexpr uint16_t kTopToolbarHeight = 27;
 
 enum
 {

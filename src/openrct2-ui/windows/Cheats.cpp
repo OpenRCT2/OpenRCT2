@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -18,7 +17,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -360,7 +358,7 @@ static StringId window_cheats_page_titles[] = {
     class CheatsWindow final : public Window
     {
     private:
-        char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
+        char _moneySpinnerText[kMoneyStringMaxlength]{};
         money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
         int32_t _parkRatingSpinnerValue{};
         int32_t _yearSpinnerValue = 1;
@@ -711,13 +709,13 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_MONEY_SPINNER_INCREMENT:
-                    _moneySpinnerValue = AddClamp_money64(
+                    _moneySpinnerValue = AddClamp<money64>(
                         CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV),
                         CHEATS_MONEY_INCREMENT_DIV);
                     InvalidateWidget(WIDX_MONEY_SPINNER);
                     break;
                 case WIDX_MONEY_SPINNER_DECREMENT:
-                    _moneySpinnerValue = AddClamp_money64(
+                    _moneySpinnerValue = AddClamp<money64>(
                         CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV),
                         -CHEATS_MONEY_INCREMENT_DIV);
                     InvalidateWidget(WIDX_MONEY_SPINNER);
@@ -791,10 +789,10 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::NoMoney, GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
-                    MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
+                    MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
                         this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
-                        MONEY_STRING_MAXLENGTH);
+                        kMoneyStringMaxlength);
                     break;
                 case WIDX_SET_MONEY:
                     CheatsSet(CheatType::SetMoney, _moneySpinnerValue);

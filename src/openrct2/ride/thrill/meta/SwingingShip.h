@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::Swing),
     .DefaultMode = RideMode::Swing,
-    .OperatingSettings = { 7, 25, 0, 0, 0, 0 },
+    .OperatingSettings = { 7, 25 },
     .Naming = { STR_RIDE_NAME_SWINGING_SHIP, STR_RIDE_DESCRIPTION_SWINGING_SHIP },
     .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_SWINGING_SHIP),

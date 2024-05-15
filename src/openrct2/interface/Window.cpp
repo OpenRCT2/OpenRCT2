@@ -34,7 +34,6 @@
 #include "Widget.h"
 #include "Window_internal.h"
 
-#include <algorithm>
 #include <cmath>
 #include <functional>
 #include <iterator>
@@ -192,10 +191,10 @@ static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
  */
 void WindowSetWindowLimit(int32_t value)
 {
-    int32_t prev = gConfigGeneral.WindowLimit;
+    int32_t prev = Config::Get().general.WindowLimit;
     int32_t val = std::clamp<int32_t>(value, kWindowLimitMin, kWindowLimitMax);
-    gConfigGeneral.WindowLimit = val;
-    ConfigSaveDefault();
+    Config::Get().general.WindowLimit = val;
+    Config::Save();
     // Checks if value decreases and then closes surplus
     // windows if one sets a limit lower than the number of windows open
     if (val < prev)
@@ -967,7 +966,7 @@ void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor)
     int32_t saved_map_y = 0;
     int32_t offset_x = 0;
     int32_t offset_y = 0;
-    if (gConfigGeneral.ZoomToCursor && atCursor)
+    if (Config::Get().general.ZoomToCursor && atCursor)
     {
         WindowViewportGetMapCoordsByCursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
     }
@@ -993,7 +992,7 @@ void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor)
     }
 
     // Zooming to cursor? Centre around the tile we were hovering over just now.
-    if (gConfigGeneral.ZoomToCursor && atCursor)
+    if (Config::Get().general.ZoomToCursor && atCursor)
     {
         WindowViewportCentreTileAroundCursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
     }
@@ -1401,6 +1400,14 @@ void WindowResizeGui(int32_t width, int32_t height)
     if (optionsWind != nullptr)
     {
         optionsWind->windowPos.x = width - 80;
+    }
+
+    // Keep options window centred after a resize
+    WindowBase* optionsWindow = WindowFindByClass(WindowClass::Options);
+    if (optionsWindow != nullptr)
+    {
+        optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
+        optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
     }
 
     GfxInvalidateScreen();
@@ -1847,14 +1854,14 @@ void WindowBase::ResizeFrame()
     // Title
     widgets[1].right = width - 2;
     // Close button
-    if (gConfigInterface.WindowButtonsOnTheLeft)
+    if (Config::Get().interface.WindowButtonsOnTheLeft)
     {
         widgets[2].left = 2;
-        widgets[2].right = 2 + CloseButtonWidth;
+        widgets[2].right = 2 + kCloseButtonWidth;
     }
     else
     {
-        widgets[2].left = width - 3 - CloseButtonWidth;
+        widgets[2].left = width - 3 - kCloseButtonWidth;
         widgets[2].right = width - 3;
     }
 }

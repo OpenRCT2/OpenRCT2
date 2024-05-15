@@ -19,6 +19,7 @@
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
 #include "../common.h"
+#include "../core/FixedVector.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
@@ -74,7 +75,7 @@ TrackPitch _previousTrackPitchEnd;
 
 CoordsXYZ _previousTrackPiece;
 
-uint8_t _currentBrakeSpeed2;
+uint8_t _currentBrakeSpeed;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;

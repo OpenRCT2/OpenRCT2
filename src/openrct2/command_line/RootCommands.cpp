@@ -31,6 +31,8 @@
 #include <iterator>
 #include <string>
 
+using namespace OpenRCT2;
+
 #ifdef USE_BREAKPAD
 #    define IMPLIES_SILENT_BREAKPAD ", implies --silent-breakpad"
 #else
@@ -365,10 +367,10 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     // Update RCT2 path in config
     auto env = OpenRCT2::CreatePlatformEnvironment();
     auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
-    ConfigSetDefaults();
-    ConfigOpen(configPath);
-    gConfigGeneral.RCT2Path = path;
-    if (ConfigSave(configPath))
+    Config::SetDefaults();
+    Config::OpenFromPath(configPath);
+    Config::Get().general.RCT2Path = path;
+    if (Config::SaveToPath(configPath))
     {
         Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
         Console::WriteLine();
@@ -394,7 +396,7 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
     auto context = OpenRCT2::CreateContext();
     auto env = context->GetPlatformEnvironment();
     auto objectRepository = CreateObjectRepository(env);
-    objectRepository->Construct(gConfigGeneral.Language);
+    objectRepository->Construct(Config::Get().general.Language);
     return EXITCODE_OK;
 }
 

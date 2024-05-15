@@ -9,7 +9,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <cmath>
 #include <iterator>
 #include <limits>
@@ -243,11 +242,11 @@ constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 // 0x009ADC34
 static Widget _mainWidgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({  3,  60}, {288, 107}, WindowWidgetType::Viewport,      WindowColour::Secondary, STR_VIEWPORT                                           ),
-    MakeWidget({ 35,  46}, {222,  12}, WindowWidgetType::DropdownMenu,      WindowColour::Secondary, 0xFFFFFFFF,                 STR_VIEW_SELECTION         ),
-    MakeWidget({245,  47}, { 11,  10}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIEW_SELECTION         ),
-    MakeWidget({  3, 167}, {288,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                                         ),
-    MakeWidget({291,  46}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
+    MakeWidget({  3,  60}, {288, 107}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                  ),
+    MakeWidget({ 35,  46}, {222,  12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, kWidgetContentEmpty,                 STR_VIEW_SELECTION         ),
+    MakeWidget({245,  47}, { 11,  10}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH,                  STR_VIEW_SELECTION         ),
+    MakeWidget({  3, 167}, {288,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                  ),
+    MakeWidget({291,  46}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, kWidgetContentEmpty,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
     MakeWidget({291,  70}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),           STR_CONSTRUCTION           ),
     MakeWidget({291,  94}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_RIDE_TIP          ),
     MakeWidget({291, 118}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP     ),
@@ -1469,7 +1468,7 @@ static_assert(std::size(RatingNames) == 6);
                 newViewportFlags = viewport->flags;
                 RemoveViewport();
             }
-            else if (gConfigGeneral.AlwaysShowGridlines)
+            else if (Config::Get().general.AlwaysShowGridlines)
             {
                 newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
             }
@@ -2947,7 +2946,7 @@ static_assert(std::size(RatingNames) == 6);
                     y -= (carEntry.spacing / 2) / 17432;
                 }
 
-                if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
+                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW))
                 {
                     VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
                     *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
@@ -3941,7 +3940,7 @@ static_assert(std::size(RatingNames) == 6);
             AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (gConfigGeneral.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (Config::Get().general.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 widgets[WIDX_FORCE_BREAKDOWN].type = WindowWidgetType::FlatBtn;
             }
@@ -6111,7 +6110,7 @@ static_assert(std::size(RatingNames) == 6);
 
         void IncomeOnMouseUp(WidgetIndex widgetIndex)
         {
-            utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
+            utf8 _moneyInputText[kMoneyStringMaxlength] = {};
 
             switch (widgetIndex)
             {
@@ -6138,10 +6137,10 @@ static_assert(std::size(RatingNames) == 6);
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
-                        MoneyToString(ride->price[0], _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                        MoneyToString(ride->price[0], _moneyInputText, kMoneyStringMaxlength, true);
                         WindowTextInputRawOpen(
                             this, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                            MONEY_STRING_MAXLENGTH);
+                            kMoneyStringMaxlength);
                     }
                     break;
                 }
@@ -6152,10 +6151,10 @@ static_assert(std::size(RatingNames) == 6);
                 {
                     auto price64 = IncomeGetSecondaryPrice();
 
-                    MoneyToString(price64, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                    MoneyToString(price64, _moneyInputText, kMoneyStringMaxlength, true);
                     WindowTextInputRawOpen(
                         this, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                        MONEY_STRING_MAXLENGTH);
+                        kMoneyStringMaxlength);
                 }
                 break;
                 case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:

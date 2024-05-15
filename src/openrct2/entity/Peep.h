@@ -17,7 +17,6 @@
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 
-#include <algorithm>
 #include <array>
 #include <optional>
 
@@ -381,6 +380,7 @@ public: // Peep
     void SetState(PeepState new_state);
     void Remove();
     void UpdateCurrentActionSpriteType();
+    void UpdateSpriteBoundingBox();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
     [[nodiscard]] uint8_t GetNextDirection() const;

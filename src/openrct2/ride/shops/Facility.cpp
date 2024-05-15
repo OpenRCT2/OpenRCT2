@@ -11,6 +11,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
@@ -67,7 +69,7 @@ static void PaintFacility(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32);
 
     if (direction == 1 || direction == 2)
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

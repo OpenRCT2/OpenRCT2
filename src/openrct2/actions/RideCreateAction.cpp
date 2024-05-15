@@ -26,8 +26,6 @@
 #include "../scenario/Scenario.h"
 #include "../world/Park.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 RideCreateAction::RideCreateAction(

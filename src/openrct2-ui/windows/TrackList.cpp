@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/windows/Window.h>
@@ -75,7 +74,7 @@ static Widget _trackListWidgets[] = {
     {
     private:
         std::vector<TrackDesignFileRef> _trackDesigns;
-        utf8 _filterString[USER_STRING_MAX_LENGTH]{};
+        utf8 _filterString[kUserStringMaxLength]{};
         std::vector<uint16_t> _filteredTrackIds;
         uint16_t _loadedTrackDesignIndex;
         std::unique_ptr<TrackDesign> _loadedTrackDesign;
@@ -173,7 +172,7 @@ static Widget _trackListWidgets[] = {
                 maxItems++;
             }
 
-            int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            int32_t index = screenCoords.y / kScrollableRowHeight;
             if (index < 0 || static_cast<uint32_t>(index) >= maxItems)
             {
                 index = -1;
@@ -329,7 +328,7 @@ static Widget _trackListWidgets[] = {
                 // Extra item: custom design
                 numItems++;
             }
-            int32_t scrollHeight = static_cast<int32_t>(numItems * SCROLLABLE_ROW_HEIGHT);
+            int32_t scrollHeight = static_cast<int32_t>(numItems * kScrollableRowHeight);
 
             return { width, scrollHeight };
         }
@@ -423,7 +422,8 @@ static Widget _trackListWidgets[] = {
             }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-            const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
+            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT)
+                                                                              : WINDOW_PADDING;
             widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
@@ -470,7 +470,7 @@ static Widget _trackListWidgets[] = {
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
             {
                 const auto shortPath = ShortenPath(path, width, FontStyle::Medium);
                 auto ft = Formatter();
@@ -520,7 +520,7 @@ static Widget _trackListWidgets[] = {
             {
                 // Vehicle design not available
                 DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::CENTRE });
-                screenPos.y -= SCROLLABLE_ROW_HEIGHT;
+                screenPos.y -= kScrollableRowHeight;
             }
 
             if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
@@ -530,7 +530,7 @@ static Widget _trackListWidgets[] = {
                     // Scenery not available
                     DrawTextEllipsised(
                         dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
-                    screenPos.y -= SCROLLABLE_ROW_HEIGHT;
+                    screenPos.y -= kScrollableRowHeight;
                 }
             }
 
@@ -667,6 +667,7 @@ static Widget _trackListWidgets[] = {
 
             if (_loadedTrackDesign->cost != 0)
             {
+                // Cost
                 ft = Formatter();
                 auto modifiedCost = FinanceGetModifiedCost(_loadedTrackDesign->cost,ExpenditureType::RideConstruction);
                 ft.Add<uint32_t>(modifiedCost);
@@ -698,7 +699,7 @@ static Widget _trackListWidgets[] = {
                 {
                     // Highlight
                     GfxFilterRect(
-                        dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                        dpi, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                         FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
@@ -710,20 +711,20 @@ static Widget _trackListWidgets[] = {
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_BUILD_CUSTOM_DESIGN);
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
                 listIndex++;
             }
 
             for (auto i : _filteredTrackIds)
             {
-                if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y < dpi.y + dpi.height)
+                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y < dpi.y + dpi.height)
                 {
                     StringId stringId;
                     if (listIndex == static_cast<size_t>(selected_list_item))
                     {
                         // Highlight
                         GfxFilterRect(
-                            dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                            dpi, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                             FilterPaletteID::PaletteDarken1);
                         stringId = STR_WINDOW_COLOUR_2_STRINGID;
                     }
@@ -739,7 +740,7 @@ static Widget _trackListWidgets[] = {
                     DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
                 }
 
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
                 listIndex++;
             }
         }

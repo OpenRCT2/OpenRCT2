@@ -151,8 +151,8 @@ static Widget _scenarioSelectWidgets[] = {
             {
                 selected_tab = widgetIndex - 4;
                 _highlightedScenario = nullptr;
-                gConfigInterface.ScenarioselectLastTab = selected_tab;
-                ConfigSaveDefault();
+                Config::Get().interface.ScenarioselectLastTab = selected_tab;
+                Config::Save();
                 InitialiseListItems();
                 Invalidate();
                 OnResize();
@@ -180,7 +180,7 @@ static Widget _scenarioSelectWidgets[] = {
                     continue;
 
                 auto ft = Formatter();
-                if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
                     ft.Add<StringId>(kScenarioOriginStringIds[i]);
                 }
@@ -219,7 +219,7 @@ static Widget _scenarioSelectWidgets[] = {
             }
 
             // Scenario path
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
             {
                 const auto shortPath = ShortenPath(scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
 
@@ -282,7 +282,7 @@ static Widget _scenarioSelectWidgets[] = {
             pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
 
             ResizeFrameWithPage();
-            const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? 17 : 5;
+            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - 179;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
         }
@@ -538,7 +538,7 @@ static Widget _scenarioSelectWidgets[] = {
 
                 // Category heading
                 StringId headingStringId = STR_NONE;
-                if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
                     if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
                     {
@@ -618,7 +618,7 @@ static Widget _scenarioSelectWidgets[] = {
                 bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios)
                     != rct1RequiredCompletedScenarios;
                 _listItems[megaParkListItemIndex.value()].scenario.is_locked = megaParkLocked;
-                if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
+                if (megaParkLocked && Config::Get().general.ScenarioHideMegaPark)
                 {
                     // Remove mega park
                     _listItems.pop_back();
@@ -644,7 +644,7 @@ static Widget _scenarioSelectWidgets[] = {
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
                 if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
                 {
@@ -668,9 +668,9 @@ static Widget _scenarioSelectWidgets[] = {
 
         bool IsLockingEnabled() const
         {
-            if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
                 return false;
-            if (!gConfigGeneral.ScenarioUnlockingEnabled)
+            if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
             if (selected_tab >= 6)
                 return false;
@@ -685,7 +685,7 @@ static Widget _scenarioSelectWidgets[] = {
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-                if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
                     showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
                 }
@@ -700,9 +700,9 @@ static Widget _scenarioSelectWidgets[] = {
                 }
             }
 
-            if (showPages & (1 << gConfigInterface.ScenarioselectLastTab))
+            if (showPages & (1 << Config::Get().interface.ScenarioselectLastTab))
             {
-                selected_tab = gConfigInterface.ScenarioselectLastTab;
+                selected_tab = Config::Get().interface.ScenarioselectLastTab;
             }
             else
             {

@@ -28,11 +28,12 @@
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
-#include <algorithm>
 #include <cstring>
 #include <iterator>
 
@@ -384,8 +385,8 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, uint8_t type,
 static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& surfaceElement, int32_t rotation)
 {
     const uint8_t slope = surfaceElement.GetSlope();
-    const uint8_t slopeHeight = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-    uint16_t slopeCorners = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
+    const uint8_t slopeHeight = slope & kTileSlopeDiagonalFlag;
+    uint16_t slopeCorners = (slope & kTileSlopeRaisedCornersMask) << rotation;
     slopeCorners = ((slopeCorners >> 4) | slopeCorners) & 0x0F;
     return slopeHeight | slopeCorners;
 }
@@ -629,7 +630,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     neighbourCornerHeight1 = cornerHeight2;
 
-    for (uint32_t tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT;)
+    for (auto tunnelIndex = 0; tunnelIndex < kTunnelMaxCount;)
     {
         if (curHeight >= cornerHeight1 || curHeight >= cornerHeight2)
         {
@@ -865,14 +866,14 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
         {
             localHeight += LAND_HEIGHT_STEP;
 
-            if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileElementSurfaceDiagonalFlag)))
+            if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileSlopeDiagonalFlag)))
             {
                 localHeight = waterHeight;
-                localSurfaceShape = TILE_ELEMENT_SLOPE_FLAT;
+                localSurfaceShape = kTileSlopeFlat;
             }
             else
             {
-                localSurfaceShape = Numerics::ror4(surfaceShape ^ static_cast<int8_t>(kTileElementSurfaceRaisedCornersMask), 2);
+                localSurfaceShape = Numerics::ror4(surfaceShape ^ static_cast<int8_t>(kTileSlopeRaisedCornersMask), 2);
             }
         }
     }
@@ -1269,7 +1270,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.LandscapeSmoothing)
+        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.LandscapeSmoothing)
     {
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
@@ -1318,7 +1319,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
         PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
-        const bool transparent = gConfigGeneral.TransparentWater || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        const bool transparent = Config::Get().general.TransparentWater
+            || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
         const uint32_t overlayStart = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;
         PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
 

@@ -15,6 +15,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
@@ -37,11 +38,13 @@ static Widget window_error_widgets[] = {
         std::string _text;
         uint16_t _numLines;
         uint8_t _staleCount;
+        bool _autoClose;
 
     public:
-        ErrorWindow(std::string text, uint16_t numLines)
+        ErrorWindow(std::string text, uint16_t numLines, bool autoClose)
             : _text(std::move(text))
             , _numLines(numLines)
+            , _autoClose(autoClose)
         {
         }
 
@@ -109,9 +112,18 @@ static Widget window_error_widgets[] = {
                 Close();
             }
         }
+
+        void OnUpdate() override
+        {
+            // Automatically close previous screenshot messages before new screenshot is taken
+            if (_autoClose && gScreenshotCountdown > 0)
+            {
+                Close();
+            }
+        }
     };
 
-    WindowBase* ErrorOpen(std::string_view title, std::string_view message)
+    WindowBase* ErrorOpen(std::string_view title, std::string_view message, bool autoClose)
     {
         std::string buffer = "{BLACK}";
         buffer.append(title);
@@ -160,16 +172,16 @@ static Widget window_error_widgets[] = {
             windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
         }
 
-        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines);
+        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
         return WindowCreate(
             std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     }
 
-    WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args)
+    WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args, bool autoClose)
     {
         auto titlez = FormatStringIDLegacy(title, args.Data());
         auto messagez = FormatStringIDLegacy(message, args.Data());
-        return ErrorOpen(titlez, messagez);
+        return ErrorOpen(titlez, messagez, autoClose);
     }
 } // namespace OpenRCT2::Ui::Windows

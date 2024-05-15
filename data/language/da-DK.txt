@@ -186,7 +186,7 @@ STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
 STR_0770    :Sikkerhedsvagt {INT32}
 STR_0771    :Entertainer {INT32}
-STR_0777    :Unavngivet park{POP16}{POP16}
+STR_0777    :Unavngivet park
 STR_0778    :Skilt
 STR_0779    :1.
 STR_0780    :2.

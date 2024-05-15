@@ -11,8 +11,6 @@
 
 #include "../../../Context.h"
 
-#include <algorithm>
-
 namespace OpenRCT2::Title
 {
     int16_t WaitCommand::operator()(int16_t timer)

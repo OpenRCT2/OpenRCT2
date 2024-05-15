@@ -27,7 +27,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 
@@ -234,32 +233,25 @@ void ClimateUpdateSound()
 
 bool ClimateIsRaining()
 {
-    auto& gameState = GetGameState();
-    if (gameState.ClimateCurrent.Weather == WeatherType::Rain || gameState.ClimateCurrent.Weather == WeatherType::HeavyRain
-        || gameState.ClimateCurrent.Weather == WeatherType::Thunder)
-    {
-        return true;
-    }
-
-    return false;
+    auto& weather = GetGameState().ClimateCurrent.Weather;
+    return weather == WeatherType::Rain || weather == WeatherType::HeavyRain || weather == WeatherType::Thunder;
 }
 
 bool ClimateIsSnowing()
 {
-    auto& gameState = GetGameState();
-    if (gameState.ClimateCurrent.Weather == WeatherType::Snow || gameState.ClimateCurrent.Weather == WeatherType::HeavySnow
-        || gameState.ClimateCurrent.Weather == WeatherType::Blizzard)
-    {
-        return true;
-    }
-
-    return false;
+    auto& weather = GetGameState().ClimateCurrent.Weather;
+    return weather == WeatherType::Snow || weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
 }
 
-bool WeatherIsDry(WeatherType weatherType)
+bool ClimateIsSnowingHeavily()
 {
-    return weatherType == WeatherType::Sunny || weatherType == WeatherType::PartiallyCloudy
-        || weatherType == WeatherType::Cloudy;
+    auto& weather = GetGameState().ClimateCurrent.Weather;
+    return weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
+}
+
+bool WeatherIsDry(WeatherType weather)
+{
+    return weather == WeatherType::Sunny || weather == WeatherType::PartiallyCloudy || weather == WeatherType::Cloudy;
 }
 
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state)
@@ -399,9 +391,9 @@ static void ClimateUpdateLightning()
 {
     if (_lightningTimer == 0)
         return;
-    if (gConfigGeneral.DisableLightningEffect)
+    if (Config::Get().general.DisableLightningEffect)
         return;
-    if (!gConfigGeneral.RenderWeatherEffects && !gConfigGeneral.RenderWeatherGloom)
+    if (!Config::Get().general.RenderWeatherEffects && !Config::Get().general.RenderWeatherGloom)
         return;
 
     _lightningTimer--;

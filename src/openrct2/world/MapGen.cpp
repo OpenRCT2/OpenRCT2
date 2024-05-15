@@ -26,12 +26,12 @@
 #include "../object/TerrainSurfaceObject.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
+#include "../world/tile_element/Slope.h"
 #include "Map.h"
 #include "MapHelpers.h"
 #include "Scenery.h"
 #include "Surface.h"
 
-#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <iterator>
@@ -497,13 +497,13 @@ static void MapGenSetHeight(MapGenSettings* settings)
             uint8_t currentSlope = surfaceElement->GetSlope();
 
             if (q00 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                currentSlope |= kTileSlopeSCornerUp;
             if (q01 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                currentSlope |= kTileSlopeWCornerUp;
             if (q10 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                currentSlope |= kTileSlopeECornerUp;
             if (q11 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                currentSlope |= kTileSlopeNCornerUp;
 
             surfaceElement->SetSlope(currentSlope);
         }

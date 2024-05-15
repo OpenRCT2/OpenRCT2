@@ -11,6 +11,9 @@
 
 #include "../config/Config.h"
 #include "../util/Util.h"
+#include "Currency.h"
+#include "Date.h"
+#include "FormatCodes.h"
 #include "Formatter.h"
 #include "Localisation.h"
 #include "StringIds.h"
@@ -284,7 +287,7 @@ namespace OpenRCT2
     {
         if (IsRealNameStringId(id))
         {
-            auto realNameIndex = id - REAL_NAME_START;
+            auto realNameIndex = id - kRealNameStart;
             ss << real_names[realNameIndex % std::size(real_names)];
             ss << ' ';
             ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
@@ -383,7 +386,7 @@ namespace OpenRCT2
 
     template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(FormatBuffer& ss, T rawValue)
     {
-        auto currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+        auto currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
 
         // Negative sign
@@ -533,7 +536,7 @@ namespace OpenRCT2
             case FormatToken::Velocity:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (gConfigGeneral.MeasurementFormat)
+                    switch (Config::Get().general.MeasurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:
@@ -563,7 +566,7 @@ namespace OpenRCT2
             case FormatToken::Length:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (gConfigGeneral.MeasurementFormat)
+                    switch (Config::Get().general.MeasurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:
@@ -624,7 +627,7 @@ namespace OpenRCT2
 
     bool IsRealNameStringId(StringId id)
     {
-        return id >= REAL_NAME_START && id <= REAL_NAME_END;
+        return id >= kRealNameStart && id <= kRealNameEnd;
     }
 
     FmtString GetFmtStringById(StringId id)

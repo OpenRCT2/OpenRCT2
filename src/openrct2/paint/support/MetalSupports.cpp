@@ -13,9 +13,11 @@
 #include "../../interface/Viewport.h"
 #include "../../util/Util.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
-#include "Generic.h"
+
+constexpr auto kMetalSupportSkip = 9 * 4 * 2;
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 // clang-format off
@@ -133,48 +135,62 @@ static constexpr uint8_t supportTypeToHeight[] = {
 };
 
 struct MetalSupportsImages {
-    uint16_t base_id;
-    uint16_t beam_id;
+    ImageIndex base;
+    ImageIndex beamA;
+    ImageIndex beamB;
 };
 
-/** rct2: 0x0097B15C */
-static constexpr MetalSupportsImages _97B15C[] = {
-    { 3243, 3209 }, // MetalSupportType::Tubes
-    { 3279, 3262 }, // MetalSupportType::Fork
-    { 3298, 3262 }, // MetalSupportType::ForkAlt
-    { 3334, 3317 }, // MetalSupportType::Boxed
-    {    0, 3658 }, // MetalSupportType::Stick
-    {    0, 3658 }, // MetalSupportType::StickAlt
-    {    0, 3141 }, // MetalSupportType::ThickCentred
-    {    0, 3158 }, // MetalSupportType::Thick
-    {    0, 3175 }, // MetalSupportType::ThickAlt
-    {    0, 3192 }, // MetalSupportType::ThickAltCentred
-    {    0, 3124 }, // MetalSupportType::Truss
-    { 3243, 3209 }, // MetalSupportType::TubesInverted
-    { 3334, 3353 }, // MetalSupportType::BoxedCoated
-};
-
-/** rct2: 0x0097B190 */
-static constexpr MetalSupportsImages _97B190[] = {
-    { 3243, 3226 }, // 3209
-    { 3279, 3262 },
-    { 3298, 3262 },
-    { 3334, 3317 },
-    {    0, 3658 },
-    {    0, 3658 },
-    {    0, 3141 },
-    {    0, 3158 },
-    {    0, 3175 },
-    {    0, 3192 },
-    {    0, 3124 },
-    { 3243, 3226 }, // 3209
-    { 3334, 3353 },
+/** rct2: 0x0097B15C, 0x0097B190 */
+static constexpr MetalSupportsImages kSupportBasesAndBeams[] = {
+    { 3243, 3209, 3226 }, // MetalSupportType::Tubes
+    { 3279, 3262, 3262 }, // MetalSupportType::Fork
+    { 3298, 3262, 3262 }, // MetalSupportType::ForkAlt
+    { 3334, 3317, 3317 }, // MetalSupportType::Boxed
+    {    0, 3658, 3658 }, // MetalSupportType::Stick
+    {    0, 3658, 3658 }, // MetalSupportType::StickAlt
+    {    0, 3141, 3141 }, // MetalSupportType::ThickCentred
+    {    0, 3158, 3158 }, // MetalSupportType::Thick
+    {    0, 3175, 3175 }, // MetalSupportType::ThickAlt
+    {    0, 3192, 3192 }, // MetalSupportType::ThickAltCentred
+    {    0, 3124, 3124 }, // MetalSupportType::Truss
+    { 3243, 3209, 3226 }, // MetalSupportType::TubesInverted
+    { 3334, 3353, 3353 }, // MetalSupportType::BoxedCoated
 };
 
 /** rct2: 0x0097B404 */
-static constexpr uint8_t metal_supports_slope_image_map[] = {
-     0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14,  0,
-     0,  0,  0,  0,  0,  0,  0, 15,  0,  0,  0, 16,  0, 17, 18,  0,
+static constexpr uint8_t kMetalSupportsSlopeImageOffsetMap[] = {
+    0,  // kTileSlopeFlat
+    1,  // kTileSlopeNCornerUp
+    2,  // kTileSlopeECornerUp
+    3,  // kTileSlopeNESideUp
+    4,  // kTileSlopeSCornerUp
+    5,  // kTileSlopeNSValley
+    6,  // kTileSlopeSESideUp
+    7,  // kTileSlopeWCornerDown
+    8,  // kTileSlopeWCornerUp
+    9,  // kTileSlopeNWSideUp
+    10, // kTileSlopeWEValley
+    11, // kTileSlopeSCornerDown
+    12, // kTileSlopeSWSideUp
+    13, // kTileSlopeECornerDown
+    14, // kTileSlopeNCornerDown
+    0,  // (invalid)
+    0,  // (invalid)
+    0,  // (invalid)
+    0,  // (invalid)
+    0,  // (invalid)
+    0,  // (invalid)
+    0,  // (invalid)
+    0,  // (invalid)
+    15, // kTileSlopeDiagonalFlag | kTileSlopeWCornerDown
+    0,  // (invalid)
+    0,  // (invalid)
+    0,  // (invalid)
+    16, // kTileSlopeDiagonalFlag | kTileSlopeSCornerDown
+    0,  // (invalid)
+    17, // kTileSlopeDiagonalFlag | kTileSlopeECornerDown
+    18, // kTileSlopeDiagonalFlag | kTileSlopeNCornerDown
+    0,  // (invalid)
 };
 // clang-format on
 
@@ -198,6 +214,25 @@ static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][NumOrthogonal
       MetalSupportPlace::TopRightSide },
 };
 
+constexpr uint8_t MetalSupportTypeCount = 13;
+constexpr MetalSupportType kMetalSupportTypeRotated[MetalSupportTypeCount][NumOrthogonalDirections] = {
+    { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
+    { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+    { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
+    { MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed },
+    { MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt },
+    { MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick },
+    { MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt },
+    { MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred },
+    { MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick },
+    { MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred },
+    { MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss },
+    { MetalSupportType::TubesInverted, MetalSupportType::TubesInverted, MetalSupportType::TubesInverted,
+      MetalSupportType::TubesInverted },
+    { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated,
+      MetalSupportType::BoxedCoated },
+};
+
 /**
  * Metal pole supports
  * @param supportType (edi)
@@ -211,10 +246,6 @@ bool MetalASupportsPaintSetup(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
-    uint8_t segment = EnumValue(placement);
-    auto supportType = EnumValue(supportTypeMember);
-    SupportHeight* supportSegments = session.SupportSegments;
-
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
@@ -229,11 +260,13 @@ bool MetalASupportsPaintSetup(
         imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
+    uint8_t segment = EnumValue(placement);
+    auto supportType = EnumValue(supportTypeMember);
+    SupportHeight* supportSegments = session.SupportSegments;
     int16_t originalHeight = height;
-    int32_t originalSegment = segment;
+    const auto originalSegment = segment;
 
-    const uint8_t rotation = session.CurrentRotation;
-    int16_t unk9E3294 = -1;
+    uint16_t unk9E3294 = 0xFFFF;
     if (height < supportSegments[segment].height)
     {
         unk9E3294 = height;
@@ -242,20 +275,20 @@ bool MetalASupportsPaintSetup(
         if (height < 0)
             return false;
 
-        const uint8_t* esi = &(_97AF32[rotation * 2]);
+        const uint8_t* esi = &(_97AF32[session.CurrentRotation * 2]);
 
         uint8_t newSegment = esi[segment * 8];
         if (height <= supportSegments[newSegment].height)
         {
-            esi += 72;
+            esi += kMetalSupportSkip;
             newSegment = esi[segment * 8];
             if (height <= supportSegments[newSegment].height)
             {
-                esi += 72;
+                esi += kMetalSupportSkip;
                 newSegment = esi[segment * 8];
                 if (height <= supportSegments[newSegment].height)
                 {
-                    esi += 72;
+                    esi += kMetalSupportSkip;
                     newSegment = esi[segment * 8];
                     if (height <= supportSegments[newSegment].height)
                     {
@@ -276,8 +309,8 @@ bool MetalASupportsPaintSetup(
         segment = newSegment;
     }
     int16_t si = height;
-    if (supportSegments[segment].slope & SUPPORTS_SLOPE_5 || height - supportSegments[segment].height < 6
-        || _97B15C[supportType].base_id == 0)
+    if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || height - supportSegments[segment].height < 6
+        || kSupportBasesAndBeams[supportType].base == 0)
     {
         height = supportSegments[segment].height;
     }
@@ -286,8 +319,8 @@ bool MetalASupportsPaintSetup(
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t imageIndex = _97B15C[supportType].base_id;
-        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
+        auto imageIndex = kSupportBasesAndBeams[supportType].base;
+        imageIndex += kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, supportSegments[segment].height }, { 0, 0, 5 });
@@ -310,7 +343,7 @@ bool MetalASupportsPaintSetup(
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t imageIndex = _97B15C[supportType].beam_id;
+        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamA;
         imageIndex += heightDiff - 1;
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
@@ -325,33 +358,33 @@ bool MetalASupportsPaintSetup(
         if (count >= 4)
             count = 0;
 
-        int16_t z = height + 16;
-        if (z > si)
+        int16_t beamLength = height + 16;
+        if (beamLength > si)
         {
-            z = si;
+            beamLength = si;
         }
 
-        z -= height;
-        if (z <= 0)
+        beamLength -= height;
+        if (beamLength <= 0)
             break;
 
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t imageIndex = _97B15C[supportType].beam_id;
-        imageIndex += z - 1;
+        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamA;
+        imageIndex += beamLength - 1;
 
-        if (count == 3 && z == 0x10)
+        if (count == 3 && beamLength == 0x10)
             imageIndex++;
 
         auto image_id = imageTemplate.WithIndex(imageIndex);
-        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, z - 1 });
+        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, beamLength - 1 });
 
-        height += z;
+        height += beamLength;
     }
 
     supportSegments[segment].height = unk9E3294;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     height = originalHeight;
     segment = originalSegment;
@@ -365,30 +398,30 @@ bool MetalASupportsPaintSetup(
     }
 
     CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[segment], height);
-    si = height + special;
+    const auto combinedHeight = height + special;
 
     while (1)
     {
-        int16_t z = height + 16;
-        if (z > si)
+        int16_t beamLength = height + 16;
+        if (beamLength > combinedHeight)
         {
-            z = si;
+            beamLength = combinedHeight;
         }
 
-        z -= height;
-        if (z <= 0)
+        beamLength -= height;
+        if (beamLength <= 0)
             break;
 
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t imageIndex = _97B190[supportType].beam_id;
-        imageIndex += z - 1;
+        auto imageIndex = kSupportBasesAndBeams[supportType].beamB;
+        imageIndex += beamLength - 1;
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { boundBoxOffset, { 0, 0, 0 } });
 
-        height += z;
+        height += beamLength;
     }
 
     return true;
@@ -398,6 +431,7 @@ bool MetalASupportsPaintSetupRotated(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
     int32_t special, int32_t height, ImageId imageTemplate)
 {
+    supportTypeMember = kMetalSupportTypeRotated[EnumValue(supportTypeMember)][direction];
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
     return MetalASupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
 }
@@ -418,11 +452,6 @@ bool MetalBSupportsPaintSetup(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
-    uint8_t segment = EnumValue(placement);
-    auto supportType = EnumValue(supportTypeMember);
-    SupportHeight* supportSegments = session.SupportSegments;
-    uint8_t originalSegment = segment;
-
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false; // AND
@@ -437,12 +466,15 @@ bool MetalBSupportsPaintSetup(
         imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    uint16_t _9E3294 = 0xFFFF;
+    const uint8_t segment = EnumValue(placement);
+    auto supportType = EnumValue(supportTypeMember);
+    SupportHeight* supportSegments = session.SupportSegments;
+    uint16_t unk9E3294 = 0xFFFF;
     int32_t baseHeight = height;
 
     if (height < supportSegments[segment].height)
     {
-        _9E3294 = height;
+        unk9E3294 = height;
 
         baseHeight -= supportTypeToHeight[supportType];
         if (baseHeight < 0)
@@ -455,15 +487,15 @@ bool MetalBSupportsPaintSetup(
         uint8_t ebp = _97AF32[baseIndex + segment * 8];
         if (baseHeight <= supportSegments[ebp].height)
         {
-            baseIndex += 9 * 4 * 2; // 9 segments, 4 directions, 2 values
+            baseIndex += kMetalSupportSkip; // 9 segments, 4 directions, 2 values
             uint8_t ebp2 = _97AF32[baseIndex + segment * 8];
             if (baseHeight <= supportSegments[ebp2].height)
             {
-                baseIndex += 9 * 4 * 2;
+                baseIndex += kMetalSupportSkip;
                 uint8_t ebp3 = _97AF32[baseIndex + segment * 8];
                 if (baseHeight <= supportSegments[ebp3].height)
                 {
-                    baseIndex += 9 * 4 * 2;
+                    baseIndex += kMetalSupportSkip;
                     uint8_t ebp4 = _97AF32[baseIndex + segment * 8];
                     if (baseHeight <= supportSegments[ebp4].height)
                     {
@@ -481,20 +513,20 @@ bool MetalBSupportsPaintSetup(
 
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]),
-            { SupportBoundBoxes[originalSegment] + Loc97B052[ebp], baseHeight }, { _97B062[ebp], 1 });
+            { SupportBoundBoxes[segment] + Loc97B052[ebp], baseHeight }, { _97B062[ebp], 1 });
     }
 
     int32_t si = baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20) || (baseHeight - supportSegments[segment].height < 6)
-        || (_97B15C[supportType].base_id == 0))
+    if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (baseHeight - supportSegments[segment].height < 6)
+        || (kSupportBasesAndBeams[supportType].beamA == 0))
     {
         baseHeight = supportSegments[segment].height;
     }
     else
     {
-        uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
-        uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
+        uint32_t imageOffset = kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
+        uint32_t imageId = kSupportBasesAndBeams[supportType].base + imageOffset;
 
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[segment], supportSegments[segment].height },
@@ -513,7 +545,7 @@ bool MetalBSupportsPaintSetup(
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(_97B15C[supportType].beam_id + (heightDiff - 1)),
+            session, imageTemplate.WithIndex(kSupportBasesAndBeams[supportType].beamA + (heightDiff - 1)),
             { SupportBoundBoxes[segment], baseHeight }, { 0, 0, heightDiff - 1 });
     }
 
@@ -537,7 +569,7 @@ bool MetalBSupportsPaintSetup(
             break;
         }
 
-        uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
+        uint32_t imageId = kSupportBasesAndBeams[supportType].beamA + (beamLength - 1);
 
         if (i % 4 == 0)
         {
@@ -555,19 +587,19 @@ bool MetalBSupportsPaintSetup(
         i++;
     }
 
-    supportSegments[segment].height = _9E3294;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].height = unk9E3294;
+    supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     if (special != 0)
     {
         baseHeight = height;
-        si = height + special;
+        const auto si2 = height + special;
         while (true)
         {
             endHeight = baseHeight + 16;
-            if (endHeight > si)
+            if (endHeight > si2)
             {
-                endHeight = si;
+                endHeight = si2;
             }
 
             int16_t beamLength = endHeight - baseHeight;
@@ -576,10 +608,10 @@ bool MetalBSupportsPaintSetup(
                 break;
             }
 
-            uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
+            uint32_t imageId = kSupportBasesAndBeams[supportType].beamA + (beamLength - 1);
             PaintAddImageAsParent(
-                session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[originalSegment], baseHeight },
-                { { SupportBoundBoxes[originalSegment], height }, { 0, 0, 0 } });
+                session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[segment], baseHeight },
+                { { SupportBoundBoxes[segment], height }, { 0, 0, 0 } });
             baseHeight += beamLength;
         }
     }
@@ -591,33 +623,15 @@ bool MetalBSupportsPaintSetupRotated(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
     int32_t special, int32_t height, ImageId imageTemplate)
 {
+    supportTypeMember = kMetalSupportTypeRotated[EnumValue(supportTypeMember)][direction];
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
     return MetalBSupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
 }
 
-constexpr uint8_t MetalSupportTypeCount = 13;
-constexpr MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
-    { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
-    { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
-    { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
-    { MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed },
-    { MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt },
-    { MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick },
-    { MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt },
-    { MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred },
-    { MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick },
-    { MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred },
-    { MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss },
-    { MetalSupportType::TubesInverted, MetalSupportType::TubesInverted, MetalSupportType::TubesInverted,
-      MetalSupportType::TubesInverted },
-    { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated,
-      MetalSupportType::BoxedCoated },
-};
-
 void DrawSupportsSideBySide(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
 {
-    type = RotatedMetalSupports[EnumValue(type)][direction];
+    type = kMetalSupportTypeRotated[EnumValue(type)][direction];
 
     if (direction & 1)
     {
@@ -672,14 +686,14 @@ bool PathPoleSupportsPaintSetup(
 
     uint16_t baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20) || (height - supportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (height - supportSegments[segment].height < 6)
         || !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
     {
         baseHeight = supportSegments[segment].height;
     }
     else
     {
-        uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & kTileElementSurfaceSlopeMask];
+        uint8_t imageOffset = kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
         baseHeight = supportSegments[segment].height;
 
         PaintAddImageAsParent(
@@ -760,7 +774,7 @@ bool PathPoleSupportsPaintSetup(
 
     // Loc6A34D8
     supportSegments[segment].height = 0xFFFF;
-    supportSegments[segment].slope = 0x20;
+    supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     if (isSloped)
     {

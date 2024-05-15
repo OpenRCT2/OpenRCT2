@@ -126,7 +126,7 @@ private:
 // https://github.com/OpenRCT2/OpenRCT2/issues/21772
 #if !defined(__APPLE__)
         // Copy the surface to the window
-        if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
+        if (Config::Get().general.WindowScale == 1 || Config::Get().general.WindowScale <= 0)
         {
             SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
             if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))

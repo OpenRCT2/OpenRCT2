@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/FixedVector.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
@@ -74,7 +73,10 @@ struct PaintStringStruct
 struct PaintEntry
 {
 private:
-    std::array<uint8_t, std::max({ sizeof(PaintStruct), sizeof(AttachedPaintStruct), sizeof(PaintStringStruct) })> data;
+    // Avoid including expensive <algorithm> for std::max. Manually ensure we use the largest type.
+    static_assert(sizeof(PaintStruct) >= sizeof(AttachedPaintStruct));
+    static_assert(sizeof(PaintStruct) >= sizeof(PaintStringStruct));
+    std::array<uint8_t, sizeof(PaintStruct)> data;
 
 public:
     PaintStruct* AsBasic()
@@ -125,7 +127,7 @@ struct TunnelEntry
 // the quadrant index is based on the x and y components combined.
 static constexpr int32_t MaxPaintQuadrants = kMaximumMapSizeTechnical * 2;
 
-#define TUNNEL_MAX_COUNT 65
+constexpr uint8_t kTunnelMaxCount = 65;
 
 /**
  * A pool of PaintEntry instances that can be rented out.
@@ -202,8 +204,8 @@ struct PaintSessionCore
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
-    TunnelEntry LeftTunnels[TUNNEL_MAX_COUNT];
-    TunnelEntry RightTunnels[TUNNEL_MAX_COUNT];
+    TunnelEntry LeftTunnels[kTunnelMaxCount];
+    TunnelEntry RightTunnels[kTunnelMaxCount];
     uint8_t LeftTunnelCount;
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;

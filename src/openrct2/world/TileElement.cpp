@@ -18,6 +18,7 @@
 #include "Banner.h"
 #include "Location.hpp"
 #include "Scenery.h"
+#include "tile_element/Slope.h"
 
 bool TileElementIsUnderground(TileElement* tileElement)
 {

@@ -31,7 +31,6 @@ constexpr RideTypeDescriptor LiftRTD =
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_TRANSPORT_RIDE | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER,
     .RideModes = EnumsToFlags(RideMode::Shuttle),
     .DefaultMode = RideMode::Shuttle,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_LIFT, STR_RIDE_DESCRIPTION_LIFT },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_LIFT),

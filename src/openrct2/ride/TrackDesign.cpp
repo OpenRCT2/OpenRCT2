@@ -58,6 +58,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -66,7 +67,6 @@
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 
@@ -1525,10 +1525,10 @@ static GameActions::Result TrackDesignPlaceMaze(
             if (surfaceElement == nullptr)
                 continue;
             int16_t surfaceZ = surfaceElement->GetBaseZ();
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
                 surfaceZ += LAND_HEIGHT_STEP;
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                 {
                     surfaceZ += LAND_HEIGHT_STEP;
                 }
@@ -1691,10 +1691,10 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                     }
 
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
-                    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                    if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
                     {
                         surfaceZ += LAND_HEIGHT_STEP;
-                        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                        if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                         {
                             surfaceZ += LAND_HEIGHT_STEP;
                         }
@@ -2112,7 +2112,7 @@ static void TrackDesignPreviewClearMap()
         auto* element = &tileElements.emplace_back();
         element->ClearAs(TileElementType::Surface);
         element->SetLastForTile(true);
-        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        element->AsSurface()->SetSlope(kTileSlopeFlat);
         element->AsSurface()->SetWaterHeight(0);
         element->AsSurface()->SetSurfaceObjectIndex(0);
         element->AsSurface()->SetEdgeObjectIndex(0);

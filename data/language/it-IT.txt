@@ -186,7 +186,7 @@ STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
 STR_0770    :Vigilante {INT32}
 STR_0771    :Intrattenitore {INT32}
-STR_0777    :Parco senza nome{POP16}{POP16}
+STR_0777    :Parco senza nome
 STR_0778    :Cartello
 STR_0779    :1°
 STR_0780    :2

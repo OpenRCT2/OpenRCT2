@@ -9,7 +9,6 @@
 
 #include "../ride/Construction.h"
 
-#include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -219,7 +218,7 @@ static Widget _rideConstructionWidgets[] = {
             ShowGridlines();
 
             _currentTrackPrice = kMoney64Undefined;
-            _currentBrakeSpeed2 = 8;
+            _currentBrakeSpeed = 8;
             _currentSeatRotationAngle = 4;
 
             _currentTrackCurve = currentRide->GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
@@ -271,7 +270,7 @@ static Widget _rideConstructionWidgets[] = {
             if (RideTryGetOriginElement(*currentRide, nullptr))
             {
                 // Auto open shops if required.
-                if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.AutoOpenShops)
+                if (currentRide->mode == RideMode::ShopStall && Config::Get().general.AutoOpenShops)
                 {
                     // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                     //       from getting stuck in an infinite loop as opening the currentRide will try to close this window
@@ -979,14 +978,6 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_PREVIOUS_SECTION:
                     RideSelectPreviousSection();
                     break;
-                case WIDX_CONSTRUCT:
-                    Construct();
-                    // Force any footpath construction to recheck the area.
-                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
-                    break;
-                case WIDX_DEMOLISH:
-                    MouseUpDemolish();
-                    break;
                 case WIDX_ROTATE:
                     Rotate();
                     break;
@@ -1022,6 +1013,16 @@ static Widget _rideConstructionWidgets[] = {
             WindowRideConstructionUpdateEnabledTrackPieces();
             switch (widgetIndex)
             {
+                case WIDX_CONSTRUCT:
+                {
+                    Construct();
+                    // Force any footpath construction to recheck the area.
+                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
+                    break;
+                }
+                case WIDX_DEMOLISH:
+                    MouseUpDemolish();
+                    break;
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackCurve = EnumValue(TrackCurve::Left);
@@ -1335,10 +1336,9 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
-                        uint8_t maxBrakesSpeed = 30;
+                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
                         uint8_t brakesSpeed = *brakesSpeedPtr + 2;
-                        if (brakesSpeed <= maxBrakesSpeed)
+                        if (brakesSpeed <= kMaximumBrakeSpeed)
                         {
                             if (_rideConstructionState == RideConstructionState::Selected)
                             {
@@ -1362,7 +1362,7 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
+                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
                         uint8_t brakesSpeed = *brakesSpeedPtr - 2;
                         if (brakesSpeed >= 2)
                         {
@@ -1450,7 +1450,7 @@ static Widget _rideConstructionWidgets[] = {
                     break;
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
-                    _currentBrakeSpeed2 = kRCT2DefaultBlockBrakeSpeed;
+                    _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
             }
             _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
             WindowRideConstructionUpdateActiveElements();
@@ -1508,7 +1508,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_currentlyShowingBrakeOrBoosterSpeed)
             {
-                uint16_t brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
+                uint16_t brakeSpeed2 = ((_currentBrakeSpeed * 9) >> 2) & 0xFFFF;
                 if (TrackTypeIsBooster(_selectedTrackType)
                     || TrackTypeIsBooster(_currentTrackCurve & ~RideConstructionSpecialPieceSelected))
                 {
@@ -1597,7 +1597,7 @@ static Widget _rideConstructionWidgets[] = {
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = 0;
+            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
@@ -1698,7 +1698,7 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     // Enable helix
                     widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-                    if (currentRide->type != RIDE_TYPE_SPLASH_BOATS && currentRide->type != RIDE_TYPE_RIVER_RAFTS)
+                    if (IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
                         widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
                 }
             }
@@ -2357,14 +2357,6 @@ static Widget _rideConstructionWidgets[] = {
                 const PreviewTrack* trackBlock = ted.Block;
                 newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
                 _gotoStartPlacementMode = true;
-
-                // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
-                auto currentRide = GetRide(_currentRideIndex);
-                const auto& rtd = currentRide->GetRideTypeDescriptor();
-                if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
-                {
-                    RideInitialiseConstructionWindow(*currentRide);
-                }
             }
 
             auto trackRemoveAction = TrackRemoveAction(
@@ -2381,6 +2373,13 @@ static Widget _rideConstructionWidgets[] = {
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
+                        // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
+                        const auto& rtd = currentRide->GetRideTypeDescriptor();
+                        if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+                        {
+                            RideInitialiseConstructionWindow(*currentRide);
+                        }
+
                         WindowRideConstructionMouseUpDemolishNextPiece({ *newCoords, static_cast<Direction>(direction) }, type);
                     }
                 }
@@ -3051,7 +3050,7 @@ static Widget _rideConstructionWidgets[] = {
             {
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
                 if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
-                    _currentBrakeSpeed2 = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+                    _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
                 _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
             }
         }
@@ -3626,7 +3625,7 @@ static Widget _rideConstructionWidgets[] = {
                 break;
 
             gDisableErrorWindowSound = true;
-            w->OnMouseUp(WIDX_CONSTRUCT);
+            w->OnMouseDown(WIDX_CONSTRUCT);
             gDisableErrorWindowSound = false;
 
             if (_trackPlaceCost == kMoney64Undefined)
@@ -4535,7 +4534,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_CONSTRUCT);
+        w->OnMouseDown(WIDX_CONSTRUCT);
     }
 
     void WindowRideConstructionKeyboardShortcutDemolishCurrent()
@@ -4546,7 +4545,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_DEMOLISH);
+        w->OnMouseDown(WIDX_DEMOLISH);
     }
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type)

@@ -16,7 +16,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkSetParameterAction.h"
-#include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../entity/Litter.h"
@@ -41,7 +40,6 @@
 #include "Map.h"
 #include "Surface.h"
 
-#include <algorithm>
 #include <limits>
 #include <type_traits>
 
@@ -516,7 +514,7 @@ namespace OpenRCT2::Park
         auto result = gameState.Park.Value - gameState.BankLoan;
 
         // Clamp addition to prevent overflow
-        result = AddClamp_money64(result, FinanceGetCurrentCash());
+        result = AddClamp<money64>(result, FinanceGetCurrentCash());
 
         return result;
     }

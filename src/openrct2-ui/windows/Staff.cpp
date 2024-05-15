@@ -1158,7 +1158,7 @@ static Widget _staffOptionsWidgets[] = {
             else
             {
                 viewport_flags = 0;
-                if (gConfigGeneral.AlwaysShowGridlines)
+                if (Config::Get().general.AlwaysShowGridlines)
                     viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
             }
 

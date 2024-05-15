@@ -17,17 +17,21 @@
 #    pragma clang diagnostic pop
 
 #    include "../OpenRCT2.h"
-#    include "../config/Config.h"
 #    include "../core/Numerics.hpp"
 #    include "../core/String.hpp"
+#    include "../drawing/Font.h"
 #    include "../localisation/LocalisationService.h"
 #    include "../platform/Platform.h"
+#    include "../util/Util.h"
+#    include "DrawingLock.hpp"
 #    include "TTF.h"
+
+using namespace OpenRCT2;
 
 static bool _ttfInitialised = false;
 
-#    define TTF_SURFACE_CACHE_SIZE 256
-#    define TTF_GETWIDTH_CACHE_SIZE 1024
+constexpr int32_t kTTFSurfaceCacheSize = 256;
+constexpr int32_t kTTFGetWidthCacheSize = 1024;
 
 struct ttf_cache_entry
 {
@@ -45,12 +49,12 @@ struct ttf_getwidth_cache_entry
     uint32_t lastUseTick;
 };
 
-static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = {};
+static ttf_cache_entry _ttfSurfaceCache[kTTFSurfaceCacheSize] = {};
 static int32_t _ttfSurfaceCacheCount = 0;
 static int32_t _ttfSurfaceCacheHitCount = 0;
 static int32_t _ttfSurfaceCacheMissCount = 0;
 
-static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = {};
+static ttf_getwidth_cache_entry _ttfGetWidthCache[kTTFGetWidthCacheSize] = {};
 static int32_t _ttfGetWidthCacheCount = 0;
 static int32_t _ttfGetWidthCacheHitCount = 0;
 static int32_t _ttfGetWidthCacheMissCount = 0;
@@ -66,26 +70,6 @@ static bool TTFGetSize(TTF_Font* font, std::string_view text, int32_t* outWidth,
 static void TTFToggleHinting(bool);
 static TTFSurface* TTFRender(TTF_Font* font, std::string_view text);
 
-template<typename T> class FontLockHelper
-{
-    T& _mutex;
-    const bool _enabled;
-
-public:
-    FontLockHelper(T& mutex)
-        : _mutex(mutex)
-        , _enabled(gConfigGeneral.MultiThreading)
-    {
-        if (_enabled)
-            _mutex.lock();
-    }
-    ~FontLockHelper()
-    {
-        if (_enabled)
-            _mutex.unlock();
-    }
-};
-
 static void TTFToggleHinting(bool)
 {
     if (!LocalisationService_UseTrueTypeFont())
@@ -96,7 +80,7 @@ static void TTFToggleHinting(bool)
     for (int32_t i = 0; i < FontStyleCount; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
-        bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold;
+        bool use_hinting = Config::Get().fonts.EnableHinting && fontDesc->hinting_threshold;
         TTF_SetFontHinting(fontDesc->font, use_hinting ? 1 : 0);
     }
 
@@ -108,7 +92,7 @@ static void TTFToggleHinting(bool)
 
 bool TTFInitialise()
 {
-    FontLockHelper<std::mutex> lock(_mutex);
+    DrawingUniqueLock<std::mutex> lock(_mutex);
 
     if (_ttfInitialised)
         return true;
@@ -147,7 +131,7 @@ bool TTFInitialise()
 
 void TTFDispose()
 {
-    FontLockHelper<std::mutex> lock(_mutex);
+    DrawingUniqueLock<std::mutex> lock(_mutex);
 
     if (!_ttfInitialised)
         return;
@@ -203,7 +187,7 @@ static void TTFSurfaceCacheDispose(ttf_cache_entry* entry)
 
 static void TTFSurfaceCacheDisposeAll()
 {
-    for (int32_t i = 0; i < TTF_SURFACE_CACHE_SIZE; i++)
+    for (int32_t i = 0; i < kTTFSurfaceCacheSize; i++)
     {
         TTFSurfaceCacheDispose(&_ttfSurfaceCache[i]);
         _ttfSurfaceCacheCount--;
@@ -212,7 +196,7 @@ static void TTFSurfaceCacheDisposeAll()
 
 void TTFToggleHinting()
 {
-    FontLockHelper<std::mutex> lock(_mutex);
+    DrawingUniqueLock<std::mutex> lock(_mutex);
     TTFToggleHinting(true);
 }
 
@@ -221,11 +205,11 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
     ttf_cache_entry* entry;
 
     uint32_t hash = TTFSurfaceCacheHash(font, text);
-    int32_t index = hash % TTF_SURFACE_CACHE_SIZE;
+    int32_t index = hash % kTTFSurfaceCacheSize;
 
-    FontLockHelper<std::mutex> lock(_mutex);
+    DrawingUniqueLock<std::mutex> lock(_mutex);
 
-    for (int32_t i = 0; i < TTF_SURFACE_CACHE_SIZE; i++)
+    for (int32_t i = 0; i < kTTFSurfaceCacheSize; i++)
     {
         entry = &_ttfSurfaceCache[index];
 
@@ -246,7 +230,7 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
         }
 
         // Check if next entry is a hit
-        if (++index >= TTF_SURFACE_CACHE_SIZE)
+        if (++index >= kTTFSurfaceCacheSize)
             index = 0;
     }
 
@@ -283,7 +267,7 @@ static void TTFGetWidthCacheDispose(ttf_getwidth_cache_entry* entry)
 
 static void TTFGetWidthCacheDisposeAll()
 {
-    for (int32_t i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++)
+    for (int32_t i = 0; i < kTTFGetWidthCacheSize; i++)
     {
         TTFGetWidthCacheDispose(&_ttfGetWidthCache[i]);
         _ttfGetWidthCacheCount--;
@@ -295,11 +279,11 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
     ttf_getwidth_cache_entry* entry;
 
     uint32_t hash = TTFSurfaceCacheHash(font, text);
-    int32_t index = hash % TTF_GETWIDTH_CACHE_SIZE;
+    int32_t index = hash % kTTFGetWidthCacheSize;
 
-    FontLockHelper<std::mutex> lock(_mutex);
+    DrawingUniqueLock<std::mutex> lock(_mutex);
 
-    for (int32_t i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++)
+    for (int32_t i = 0; i < kTTFGetWidthCacheSize; i++)
     {
         entry = &_ttfGetWidthCache[index];
 
@@ -320,7 +304,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
         }
 
         // Check if next entry is a hit
-        if (++index >= TTF_GETWIDTH_CACHE_SIZE)
+        if (++index >= kTTFGetWidthCacheSize)
             index = 0;
     }
 
@@ -343,7 +327,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
 
 TTFFontDescriptor* TTFGetFontFromSpriteBase(FontStyle fontStyle)
 {
-    FontLockHelper<std::mutex> lock(_mutex);
+    DrawingUniqueLock<std::mutex> lock(_mutex);
     return &gCurrentTTFFontSet->size[EnumValue(fontStyle)];
 }
 

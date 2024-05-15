@@ -28,6 +28,7 @@
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
 
@@ -161,7 +162,7 @@ public:
             case WV_FINANCES_RESEARCH:
                 return FinancesResearchOpen();
             case WV_RIDE_RESEARCH:
-                if (gConfigInterface.ToolbarShowResearch)
+                if (Config::Get().interface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::Research);
                 }
@@ -209,14 +210,14 @@ public:
         }
     }
 
-    WindowBase* ShowError(StringId title, StringId message, const Formatter& args) override
+    WindowBase* ShowError(StringId title, StringId message, const Formatter& args, bool autoClose /* = false */) override
     {
-        return ErrorOpen(title, message, args);
+        return ErrorOpen(title, message, args, autoClose);
     }
 
-    WindowBase* ShowError(std::string_view title, std::string_view message) override
+    WindowBase* ShowError(std::string_view title, std::string_view message, bool autoClose /* = false */) override
     {
-        return ErrorOpen(title, message);
+        return ErrorOpen(title, message, autoClose);
     }
 
     WindowBase* OpenIntent(Intent* intent) override

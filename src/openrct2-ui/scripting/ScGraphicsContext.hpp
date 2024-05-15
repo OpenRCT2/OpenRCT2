@@ -13,7 +13,7 @@
 
 #    include "CustomImages.h"
 
-#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/drawing/Text.h>
 #    include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
@@ -235,7 +235,7 @@ namespace OpenRCT2::Scripting
 
         void text(const std::string& text, int32_t x, int32_t y)
         {
-            GfxDrawString(_dpi, { x, y }, text.c_str(), { _colour.value_or(0) });
+            DrawText(_dpi, { x, y }, { _colour.value_or(0) }, text.c_str());
         }
     };
 } // namespace OpenRCT2::Scripting

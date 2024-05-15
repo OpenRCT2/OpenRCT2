@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -32,6 +31,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/Slope.h>
 #include <vector>
 
 using namespace OpenRCT2::TrackMetaData;
@@ -194,7 +194,15 @@ static Widget _trackPlaceWidgets[] = {
                         }
                     });
                     res = GameActions::Execute(&tdAction);
-                    cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                    if (res.Error != GameActions::Status::Ok)
+                    {
+                        cost = kMoney64Undefined;
+                    }
+                    else
+                    {
+                        auto modifiedCost = FinanceGetModifiedCost(res.Cost,ExpenditureType::RideConstruction);
+                        cost = modifiedCost;
+                    }
                 }
             }
 
@@ -417,12 +425,12 @@ static Widget _trackPlaceWidgets[] = {
             auto z = surfaceElement->GetBaseZ();
 
             // Increase Z above slope
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
                 z += 16;
 
                 // Increase Z above double slope
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     z += 16;
             }
 

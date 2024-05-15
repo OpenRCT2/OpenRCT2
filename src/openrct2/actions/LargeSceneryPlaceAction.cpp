@@ -21,6 +21,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 
@@ -134,7 +135,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
-            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -272,7 +273,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
-            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             if (banner != nullptr)
@@ -374,10 +375,10 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(LargeSceneryTile* tiles) co
         int32_t baseZ = surfaceElement->GetBaseZ();
         int32_t slope = surfaceElement->GetSlope();
 
-        if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
+        if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
         {
             baseZ += LAND_HEIGHT_STEP;
-            if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (slope & kTileSlopeDiagonalFlag)
             {
                 baseZ += LAND_HEIGHT_STEP;
             }

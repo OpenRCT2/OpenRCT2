@@ -186,7 +186,7 @@ STR_0768    :Vaktmester {INT32}
 STR_0769    :Mekaniker {INT32}
 STR_0770    :Sikkerhetsvakt {INT32}
 STR_0771    :Underholder {INT32}
-STR_0777    :Navnløs park{POP16}{POP16}
+STR_0777    :Navnløs park
 STR_0778    :Skilt
 STR_0779    :1.
 STR_0780    :2.

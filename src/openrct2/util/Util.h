@@ -40,12 +40,27 @@ bool UtilGzipCompress(FILE* source, FILE* dest);
 std::vector<uint8_t> Gzip(const void* data, const size_t dataLen);
 std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen);
 
-// TODO: Make these specialized template functions, or when possible Concepts in C++20
-int8_t AddClamp_int8_t(int8_t value, int8_t value_to_add);
-int16_t AddClamp_int16_t(int16_t value, int16_t value_to_add);
-int32_t AddClamp_int32_t(int32_t value, int32_t value_to_add);
-int64_t AddClamp_int64_t(int64_t value, int64_t value_to_add);
-money64 AddClamp_money64(money64 value, money64 value_to_add);
+template<typename T> constexpr T AddClamp(T value, T valueToAdd)
+{
+    if (std::is_same_v<decltype(value), money64>)
+    {
+        assert_struct_size(money64, sizeof(int64_t));
+    }
+    auto maxCap = std::numeric_limits<T>::max();
+    auto minCap = std::numeric_limits<T>::lowest();
+    if ((valueToAdd > 0) && (value > (maxCap - (valueToAdd))))
+    {
+        return maxCap;
+    }
+    else if ((valueToAdd < 0) && (value < (minCap - (valueToAdd))))
+    {
+        return minCap;
+    }
+    else
+    {
+        return value + valueToAdd;
+    }
+}
 
 uint8_t Lerp(uint8_t a, uint8_t b, float t);
 float FLerp(float a, float b, float t);

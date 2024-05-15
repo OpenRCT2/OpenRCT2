@@ -58,8 +58,6 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
@@ -234,7 +232,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
 static void ScenarioCheckEntranceFeeTooHigh()
 {
     const auto& gameState = GetGameState();
-    const auto max_fee = AddClamp_money64(gameState.TotalRideValueForMoney, gameState.TotalRideValueForMoney / 2);
+    const auto max_fee = AddClamp<money64>(gameState.TotalRideValueForMoney, gameState.TotalRideValueForMoney / 2);
 
     if ((gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
     {
@@ -245,7 +243,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
             auto y = entrance.y + 16;
 
             uint32_t packed_xy = (y << 16) | x;
-            if (gConfigNotifications.ParkWarnings)
+            if (Config::Get().notifications.ParkWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
             }
@@ -262,7 +260,7 @@ void ScenarioAutosaveCheck()
     uint32_t timeSinceSave = Platform::GetTicks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
-    switch (gConfigGeneral.AutosaveFrequency)
+    switch (Config::Get().general.AutosaveFrequency)
     {
         case AUTOSAVE_EVERY_MINUTE:
             shouldSave = timeSinceSave >= 1 * 60 * 1000;
@@ -358,7 +356,7 @@ static void ScenarioUpdateDayNightCycle()
     float currentDayNightCycle = gDayNightCycle;
     gDayNightCycle = 0;
 
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
+    if (gScreenFlags == SCREEN_FLAGS_PLAYING && Config::Get().general.DayNightCycle)
     {
         float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
@@ -694,28 +692,28 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         gameState.ScenarioParkRatingWarningDays++;
         if (gameState.ScenarioParkRatingWarningDays == 1)
         {
-            if (gConfigNotifications.ParkRatingWarnings)
+            if (Config::Get().notifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gameState.ScenarioParkRatingWarningDays == 8)
         {
-            if (gConfigNotifications.ParkRatingWarnings)
+            if (Config::Get().notifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gameState.ScenarioParkRatingWarningDays == 15)
         {
-            if (gConfigNotifications.ParkRatingWarnings)
+            if (Config::Get().notifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gameState.ScenarioParkRatingWarningDays == 22)
         {
-            if (gConfigNotifications.ParkRatingWarnings)
+            if (Config::Get().notifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
             }
@@ -857,7 +855,7 @@ bool AllowEarlyCompletion()
         case NETWORK_MODE_NONE:
         case NETWORK_MODE_SERVER:
         default:
-            return gConfigGeneral.AllowEarlyCompletion;
+            return Config::Get().general.AllowEarlyCompletion;
     }
 }
 

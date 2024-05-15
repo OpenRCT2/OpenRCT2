@@ -31,8 +31,8 @@ enum class ExpenditureType : int32_t
     Count
 };
 
-#define EXPENDITURE_TABLE_MONTH_COUNT 16
-#define FINANCE_GRAPH_SIZE 128
+constexpr uint8_t kExpenditureTableMonthCount = 16;
+constexpr uint8_t kFinanceGraphSize = 128;
 
 constexpr uint8_t MaxBankLoanInterestRate = 255;
 

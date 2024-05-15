@@ -26,7 +26,6 @@
 #include "../../scenario/ScenarioSources.h"
 #include "../../util/Util.h"
 
-#include <algorithm>
 #include <array>
 #include <memory>
 #include <optional>
@@ -381,7 +380,7 @@ namespace OpenRCT2::Title
                 {
                     auto entityID = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
                     auto followCommand = FollowEntityCommand{ entityID };
-                    SafeStrCpy(followCommand.Follow.SpriteName, parts[2].data(), USER_STRING_MAX_LENGTH);
+                    SafeStrCpy(followCommand.Follow.SpriteName, parts[2].data(), kUserStringMaxLength);
                     command = followCommand;
                 }
                 else if (String::IEquals(token, "WAIT"))

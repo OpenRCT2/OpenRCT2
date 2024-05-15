@@ -1029,7 +1029,7 @@ void UpdatePaletteEffects()
 
         // Animate the water/lava/chain movement palette
         uint32_t shade = 0;
-        if (gConfigGeneral.RenderWeatherGloom)
+        if (Config::Get().general.RenderWeatherGloom)
         {
             auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
@@ -1143,8 +1143,8 @@ void RefreshVideo(bool recreateWindow)
 
 void ToggleWindowedMode()
 {
-    int32_t targetMode = gConfigGeneral.FullscreenMode == 0 ? 2 : 0;
+    int32_t targetMode = Config::Get().general.FullscreenMode == 0 ? 2 : 0;
     ContextSetFullscreenMode(targetMode);
-    gConfigGeneral.FullscreenMode = targetMode;
-    ConfigSaveDefault();
+    Config::Get().general.FullscreenMode = targetMode;
+    Config::Save();
 }

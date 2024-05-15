@@ -188,7 +188,7 @@ STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
 STR_0770    :Agent de sécurité {INT32}
 STR_0771    :Animateur {INT32}
-STR_0777    :Parc sans nom{POP16}{POP16}
+STR_0777    :Parc sans nom
 STR_0778    :Panneau
 STR_0779    :1er
 STR_0780    :2

@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::Dodgems),
     .DefaultMode = RideMode::Dodgems,
-    .OperatingSettings = { 20, 180, 0, 0, 0, 0 },
+    .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_DODGEMS),

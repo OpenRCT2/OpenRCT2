@@ -32,7 +32,6 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::HauntedHouse),
     .DefaultMode = RideMode::HauntedHouse,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_HAUNTED_HOUSE, STR_RIDE_DESCRIPTION_HAUNTED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_HAUNTED_HOUSE),
