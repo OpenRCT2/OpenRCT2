@@ -88,7 +88,7 @@ static Widget window_ride_demolish_widgets[] =
                                                                                   : STR_DEMOLISH_RIDE_ID_MONEY;
                 auto ft = Formatter();
                 currentRide->FormatNameTo(ft);
-                auto modifiedCost = FinanceGetModifiedCost(_demolishRideCost,ExpenditureType::RideConstruction);
+                auto modifiedCost = FinanceGetModifiedCost(_demolishRideCost, ExpenditureType::RideConstruction);
                 ft.Add<money64>(modifiedCost);
 
                 ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);

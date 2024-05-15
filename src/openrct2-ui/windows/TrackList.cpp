@@ -669,7 +669,7 @@ static Widget _trackListWidgets[] = {
             {
                 // Cost
                 ft = Formatter();
-                auto modifiedCost = FinanceGetModifiedCost(_loadedTrackDesign->cost,ExpenditureType::RideConstruction);
+                auto modifiedCost = FinanceGetModifiedCost(_loadedTrackDesign->cost, ExpenditureType::RideConstruction);
                 ft.Add<uint32_t>(modifiedCost);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
             }

@@ -200,7 +200,7 @@ static Widget _trackPlaceWidgets[] = {
                     }
                     else
                     {
-                        auto modifiedCost = FinanceGetModifiedCost(res.Cost,ExpenditureType::RideConstruction);
+                        auto modifiedCost = FinanceGetModifiedCost(res.Cost, ExpenditureType::RideConstruction);
                         cost = modifiedCost;
                     }
                 }

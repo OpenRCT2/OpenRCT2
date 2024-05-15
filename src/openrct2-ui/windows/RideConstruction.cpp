@@ -1581,7 +1581,7 @@ static Widget _rideConstructionWidgets[] = {
             if (_currentTrackPrice != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
-                ft.Add<money64>(FinanceGetModifiedCost(_currentTrackPrice,ExpenditureType::RideConstruction));
+                ft.Add<money64>(FinanceGetModifiedCost(_currentTrackPrice, ExpenditureType::RideConstruction));
                 DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
             }
         }

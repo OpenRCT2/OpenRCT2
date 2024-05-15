@@ -506,7 +506,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
                 {
                     auto ft = Formatter();
-                    auto updatedCost = FinanceGetModifiedCost(_windowFootpathCost,ExpenditureType::Landscaping);
+                    auto updatedCost = FinanceGetModifiedCost(_windowFootpathCost, ExpenditureType::Landscaping);
                     ft.Add<money64>(updatedCost);
                     DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
                 }

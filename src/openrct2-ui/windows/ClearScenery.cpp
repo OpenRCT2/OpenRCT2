@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
-                auto modifiedCost = FinanceGetModifiedCost(gClearSceneryCost,ExpenditureType::Landscaping);
+                auto modifiedCost = FinanceGetModifiedCost(gClearSceneryCost, ExpenditureType::Landscaping);
                 ft.Add<money64>(modifiedCost);
                 screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
                 screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
