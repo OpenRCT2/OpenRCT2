@@ -2164,7 +2164,7 @@ namespace RCT2
                     {
                         campaign.ShopItemType = ShopItem(_s6.CampaignRideIndex[i]);
                     }
-                    gMarketingCampaigns.push_back(campaign);
+                    GetGameState().MarketingCampaigns.push_back(campaign);
                 }
             }
         }

@@ -61,7 +61,6 @@ namespace MarketingCampaignFlags
 }
 
 extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
-extern std::vector<MarketingCampaign> gMarketingCampaigns;
 
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
 void MarketingUpdate();
