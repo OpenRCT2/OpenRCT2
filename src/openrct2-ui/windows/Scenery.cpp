@@ -802,7 +802,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            auto modifiedPrice = FinanceGetModifiedCost(price,ExpenditureType::Landscaping);
+            auto modifiedPrice = FinanceGetModifiedCost(price, ExpenditureType::Landscaping);
             if (modifiedPrice != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();

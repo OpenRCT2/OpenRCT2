@@ -410,7 +410,7 @@ namespace OpenRCT2::Scripting
         return GetGameState().CostMultiplierExpenditureTable[expenditureType];
     }
 
-    void ScPark::expenditureMultiplier_set(uint8_t expenditureType,  uint16_t value)
+    void ScPark::expenditureMultiplier_set(uint8_t expenditureType, uint16_t value)
     {
         ThrowIfGameStateNotMutable();
         if (expenditureType >= EnumValue(ExpenditureType::Count))

@@ -93,7 +93,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
 
 /**
  * Calculate the cost multiplier with the expenditure modifier applied.
-*/
+ */
 money64 FinanceGetModifiedCost(money64 cost, ExpenditureType type)
 {
     return cost * GetGameState().CostMultiplierExpenditureTable[EnumValue(type)] / 100;

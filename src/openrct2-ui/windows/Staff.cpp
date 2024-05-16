@@ -935,7 +935,7 @@ static Widget _staffOptionsWidgets[] = {
             if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
-                auto modifiedCost = FinanceGetModifiedCost(GetStaffWage(staff->AssignedStaffType),ExpenditureType::Wages);
+                auto modifiedCost = FinanceGetModifiedCost(GetStaffWage(staff->AssignedStaffType), ExpenditureType::Wages);
                 ft.Add<money64>(modifiedCost);
                 DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
                 screenCoords.y += kListRowHeight;

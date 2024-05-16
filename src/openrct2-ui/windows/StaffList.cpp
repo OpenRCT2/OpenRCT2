@@ -293,7 +293,7 @@ static Widget _staffListWidgets[] = {
             if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
-                auto modifiedWage = FinanceGetModifiedCost(GetStaffWage(GetSelectedStaffType()),ExpenditureType::Wages);
+                auto modifiedWage = FinanceGetModifiedCost(GetStaffWage(GetSelectedStaffType()), ExpenditureType::Wages);
                 ft.Add<money64>(modifiedWage);
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
             }
