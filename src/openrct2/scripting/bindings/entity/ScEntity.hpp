@@ -197,6 +197,22 @@ namespace OpenRCT2::Scripting
             return ::GetEntity(_id);
         }
 
+    protected:
+        uint8_t rotation_get() const
+        {
+            auto entity = GetEntity();
+            return entity != nullptr ? entity->Orientation : 0;
+        }
+        void rotation_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto entity = GetEntity();
+            if (entity != nullptr)
+            {
+                entity->Orientation = value;
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {

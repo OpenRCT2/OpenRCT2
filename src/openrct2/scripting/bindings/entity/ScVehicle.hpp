@@ -28,14 +28,13 @@ namespace OpenRCT2::Scripting
     private:
         Vehicle* GetVehicle() const;
 
+        uint16_t maxRotationFrames_get() const;
+
         ObjectEntryIndex rideObject_get() const;
         void rideObject_set(ObjectEntryIndex value);
 
         uint8_t vehicleObject_get() const;
         void vehicleObject_set(uint8_t value);
-
-        uint8_t spriteType_get() const;
-        void spriteType_set(uint8_t value);
 
         int32_t ride_get() const;
         void ride_set(int32_t value);
@@ -63,6 +62,9 @@ namespace OpenRCT2::Scripting
 
         int32_t velocity_get() const;
         void velocity_set(int32_t value);
+
+        uint8_t pitch_get() const;
+        void pitch_set(const uint8_t& value);
 
         uint8_t bankRotation_get() const;
         void bankRotation_set(uint8_t value);

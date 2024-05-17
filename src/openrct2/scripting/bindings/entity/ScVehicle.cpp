@@ -60,7 +60,6 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::ride_get, &ScVehicle::ride_set, "ride");
         dukglue_register_property(ctx, &ScVehicle::rideObject_get, &ScVehicle::rideObject_set, "rideObject");
         dukglue_register_property(ctx, &ScVehicle::vehicleObject_get, &ScVehicle::vehicleObject_set, "vehicleObject");
-        dukglue_register_property(ctx, &ScVehicle::spriteType_get, &ScVehicle::spriteType_set, "spriteType");
         dukglue_register_property(ctx, &ScVehicle::numSeats_get, &ScVehicle::numSeats_set, "numSeats");
         dukglue_register_property(ctx, &ScVehicle::nextCarOnTrain_get, &ScVehicle::nextCarOnTrain_set, "nextCarOnTrain");
         dukglue_register_property(
@@ -70,7 +69,11 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::mass_get, &ScVehicle::mass_set, "mass");
         dukglue_register_property(ctx, &ScVehicle::acceleration_get, &ScVehicle::acceleration_set, "acceleration");
         dukglue_register_property(ctx, &ScVehicle::velocity_get, &ScVehicle::velocity_set, "velocity");
+        dukglue_register_property(ctx, &ScVehicle::pitch_get, &ScVehicle::pitch_set, "spriteType");
+        dukglue_register_property(ctx, &ScVehicle::pitch_get, &ScVehicle::pitch_set, "pitchRotation");
         dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
+        dukglue_register_property<ScVehicle, uint8_t, uint8_t>(
+            ctx, &ScVehicle::rotation_get, &ScVehicle::rotation_set, "yawRotation");
         dukglue_register_property(
             ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
             "isReversed");
@@ -86,12 +89,18 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
+        dukglue_register_property(ctx, &ScVehicle::maxRotationFrames_get, nullptr, "maxRotationFrames");
         dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
     }
 
     Vehicle* ScVehicle::GetVehicle() const
     {
         return ::GetEntity<Vehicle>(_id);
+    }
+
+    uint16_t ScVehicle::maxRotationFrames_get() const
+    {
+        return Entity::Yaw::BaseRotation;
     }
 
     ObjectEntryIndex ScVehicle::rideObject_get() const
@@ -121,21 +130,6 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->vehicle_type = value;
-        }
-    }
-
-    uint8_t ScVehicle::spriteType_get() const
-    {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->Pitch : 0;
-    }
-    void ScVehicle::spriteType_set(uint8_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
-        {
-            vehicle->Pitch = value;
         }
     }
 
@@ -317,6 +311,21 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->velocity = value;
+        }
+    }
+
+    uint8_t ScVehicle::pitch_get() const
+    {
+        auto vehicle = GetVehicle();
+        return vehicle != nullptr ? vehicle->Pitch : 0;
+    }
+    void ScVehicle::pitch_set(const uint8_t& value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto vehicle = GetVehicle();
+        if (vehicle != nullptr)
+        {
+            vehicle->Pitch = value;
         }
     }
 
