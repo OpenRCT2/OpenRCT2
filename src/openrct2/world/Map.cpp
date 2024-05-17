@@ -2308,10 +2308,10 @@ void ShiftMap(const TileCoordsXY& amount)
     MapRemoveOutOfRangeElements();
 
     for (auto& spawn : gameState.PeepSpawns)
-        spawn += amountToMove;
+        shiftIfNotNull(spawn, amountToMove);
 
     for (auto& entrance : gameState.Park.Entrances)
-        entrance += amountToMove;
+        shiftIfNotNull(entrance, amountToMove);
 
     // Entities
     auto& entityTweener = EntityTweener::Get();
@@ -2327,7 +2327,7 @@ void ShiftMap(const TileCoordsXY& amount)
             entityTweener.RemoveEntity(entity);
 
             auto location = entity->GetLocation();
-            location += amountToMove;
+            shiftIfNotNull(location, amountToMove);
             entity->MoveTo(location);
 
             switch (entityType)
@@ -2338,12 +2338,12 @@ void ShiftMap(const TileCoordsXY& amount)
                     auto peep = entity->As<Peep>();
                     if (peep != nullptr)
                     {
-                        peep->NextLoc += amountToMove;
+                        shiftIfNotNull(peep->NextLoc, amountToMove);
                         peep->DestinationX += amountToMove.x;
                         peep->DestinationY += amountToMove.y;
-                        peep->PathfindGoal += amount;
+                        shiftIfNotNull(peep->PathfindGoal, amount);
                         for (auto& h : peep->PathfindHistory)
-                            h += amount;
+                            shiftIfNotNull(h, amount);
                     }
                     break;
                 }
@@ -2352,8 +2352,8 @@ void ShiftMap(const TileCoordsXY& amount)
                     auto vehicle = entity->As<Vehicle>();
                     if (vehicle != nullptr)
                     {
-                        vehicle->TrackLocation += amountToMove;
-                        vehicle->BoatLocation += amountToMove;
+                        shiftIfNotNull(vehicle->TrackLocation, amountToMove);
+                        shiftIfNotNull(vehicle->BoatLocation, amountToMove);
                     }
                     break;
                 }
@@ -2389,7 +2389,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     {
                         auto positions = patrol->ToVector();
                         for (auto& p : positions)
-                            p += amount;
+                            shiftIfNotNull(p, amount);
                         patrol->Clear();
                         patrol->Union(positions);
                     }
@@ -2426,7 +2426,7 @@ void ShiftMap(const TileCoordsXY& amount)
         auto* banner = GetBanner(id);
         if (banner != nullptr)
         {
-            banner->position += amount;
+            shiftIfNotNull(banner->position, amount);
             count++;
         }
         id = BannerIndex::FromUnderlying(id.ToUnderlying() + 1);
