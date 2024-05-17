@@ -405,12 +405,18 @@ static Widget _staffListWidgets[] = {
                     {
                         continue;
                     }
-                    int32_t format = (_quickFireMode ? STR_RED_STRINGID : STR_BLACK_STRING);
+
+                    StringId format = STR_BLACK_STRING;
+                    if (_quickFireMode)
+                        format = STR_RED_STRINGID;
 
                     if (i == _highlightedIndex)
                     {
                         GfxFilterRect(dpi, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::PaletteDarken1);
-                        format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+
+                        format = STR_WINDOW_COLOUR_2_STRINGID;
+                        if (_quickFireMode)
+                            format = STR_LIGHTPINK_STRINGID;
                     }
 
                     auto ft = Formatter();

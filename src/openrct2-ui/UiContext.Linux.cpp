@@ -11,6 +11,8 @@
 
 #    include "UiContext.h"
 
+#    include "UiStringIds.h"
+
 #    include <SDL.h>
 #    include <algorithm>
 #    include <dlfcn.h>
@@ -19,7 +21,6 @@
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/core/StringBuilder.h>
 #    include <openrct2/localisation/Language.h>
-#    include <openrct2/localisation/StringIds.h>
 #    include <openrct2/platform/Platform.h>
 #    include <openrct2/ui/UiContext.h>
 #    include <sstream>

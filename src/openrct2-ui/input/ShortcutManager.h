@@ -22,6 +22,9 @@
 #include <utility>
 #include <vector>
 
+// TODO: only because of STR_NONE. We can do better.
+#include <openrct2/localisation/StringIds.h>
+
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;

@@ -10,6 +10,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../UiContext.h"
+#    include "../UiStringIds.h"
 #    include "../interface/Dropdown.h"
 #    include "../interface/Widget.h"
 #    include "../scripting/ScGraphicsContext.hpp"
@@ -25,7 +26,6 @@
 #    include <openrct2/localisation/Formatter.h>
 #    include <openrct2/localisation/Language.h>
 #    include <openrct2/localisation/Localisation.h>
-#    include <openrct2/localisation/StringIds.h>
 #    include <openrct2/scripting/Plugin.h>
 #    include <openrct2/sprites.h>
 #    include <optional>
@@ -631,8 +631,10 @@ namespace OpenRCT2::Ui::Windows
                     const auto numItems = std::min<size_t>(items.size(), Dropdown::ItemsMaxSize);
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdownItems[i].Format = selectedIndex == static_cast<int32_t>(i) ? STR_OPTIONS_DROPDOWN_ITEM_SELECTED
-                                                                                            : STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                        if (selectedIndex == static_cast<int32_t>(i))
+                            gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
+
                         auto sz = items[i].c_str();
                         std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
                     }

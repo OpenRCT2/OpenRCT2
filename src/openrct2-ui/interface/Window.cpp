@@ -9,9 +9,9 @@
 
 #include "Window.h"
 
+#include "../UiStringIds.h"
 #include "Theme.h"
 #include "Widget.h"
-#include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
 #include <openrct2-ui/windows/Window.h>
@@ -24,9 +24,9 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/world/Location.hpp>
 
 using namespace OpenRCT2;
 

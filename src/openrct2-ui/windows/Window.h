@@ -16,6 +16,9 @@
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <string_view>
 
+// TODO: only for WINDOW_SHIM_RAW below; we can do better.
+#include "../UiStringIds.h"
+
 struct Peep;
 struct TileElement;
 struct Vehicle;

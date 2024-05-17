@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
 #include "../interface/Theme.h"
 
 #include <cmath>
@@ -41,7 +42,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectManager.h>
@@ -2039,9 +2039,9 @@ static_assert(std::size(RatingNames) == 6);
             for (size_t i = 0; i < _entranceDropdownData.size(); i++)
             {
                 gDropdownItems[i].Args = _entranceDropdownData[i].LabelId;
-                gDropdownItems[i].Format = _entranceDropdownData[i].EntranceTypeId == ride->entrance_style
-                    ? STR_DROPDOWN_MENU_LABEL_SELECTED
-                    : STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                if (_entranceDropdownData[i].EntranceTypeId == ride->entrance_style)
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL_SELECTED;
             }
 
             WindowDropdownShowTextCustomWidth(
@@ -2417,7 +2417,11 @@ static_assert(std::size(RatingNames) == 6);
             const RideComponentName stationName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station);
             ft.Add<StringId>(ride->num_stations > 1 ? stationName.number : stationName.singular);
             ft.Add<uint16_t>(vehicle->current_station.ToUnderlying() + 1);
-            return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
+
+            if (stringId != STR_CRASHING && stringId != STR_CRASHED_0)
+                return STR_BLACK_STRING;
+            else
+                return STR_RED_OUTLINED_STRING;
         }
 
         StringId GetStatusStation(Formatter& ft) const

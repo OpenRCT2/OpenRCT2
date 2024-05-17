@@ -13,6 +13,8 @@
 
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Widget.h>
+
+// TODO: only because of STR_NONE. We can do better.
 #include <openrct2/localisation/StringIds.h>
 
 ImageId GetColourButtonImage(colour_t colour);

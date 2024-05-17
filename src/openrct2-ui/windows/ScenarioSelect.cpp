@@ -164,13 +164,18 @@ static Widget _scenarioSelectWidgets[] = {
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            int32_t format;
             const ScenarioIndexEntry* scenario;
 
             DrawWidgets(dpi);
 
-            format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
-            FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
+            StringId format = STR_WINDOW_COLOUR_2_STRINGID;
+            FontStyle fontStyle = FontStyle::Medium;
+
+            if (ScenarioSelectUseSmallFont())
+            {
+                format = STR_SMALL_WINDOW_COLOUR_2_STRINGID;
+                fontStyle = FontStyle::Small;
+            }
 
             // Text for each tab
             for (uint32_t i = 0; i < std::size(kScenarioOriginStringIds); i++)
@@ -391,8 +396,13 @@ static Widget _scenarioSelectWidgets[] = {
             uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
             GfxClear(dpi, paletteIndex);
 
-            StringId highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
-            StringId unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
+            StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
+            StringId unhighlighted_format = STR_BLACK_STRING;
+            if (ScenarioSelectUseSmallFont())
+            {
+                highlighted_format = STR_WHITE_STRING;
+                unhighlighted_format = STR_WHITE_STRING;
+            }
 
             const auto& listWidget = widgets[WIDX_SCENARIOLIST];
             int32_t listWidth = listWidget.width() - 12;
