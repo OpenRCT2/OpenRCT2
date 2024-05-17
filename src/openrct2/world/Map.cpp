@@ -2397,6 +2397,7 @@ void ShiftMap(const TileCoordsXY& amount)
             }
         }
     }
+    UpdateConsolidatedPatrolAreas();
 
     // Rides
     for (auto& ride : GetRideManager())
