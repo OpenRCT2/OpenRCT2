@@ -805,7 +805,7 @@ static Widget _windowFinancesResearchWidgets[] =
         void OnPrepareDrawMarketing()
         {
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(gMarketingCampaigns.size());
+            int32_t numActiveCampaigns = static_cast<int32_t>(GetGameState().MarketingCampaigns.size());
             int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
 
             // Update group box positions

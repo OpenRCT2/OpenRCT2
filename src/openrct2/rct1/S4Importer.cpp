@@ -1477,7 +1477,7 @@ namespace RCT1
                     {
                         campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
-                    gMarketingCampaigns.push_back(campaign);
+                    gameState.MarketingCampaigns.push_back(campaign);
                 }
             }
         }
