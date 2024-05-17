@@ -19,7 +19,7 @@
 #include <iterator>
 
 // TODO: Create constants in sprites.h
-static constexpr uint32_t _VehicleCrashParticleSprites[] = {
+static constexpr uint32_t _VehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
     22577, 22589, 22601, 22613, 22625,
 };
 
@@ -47,6 +47,27 @@ template<> bool EntityBase::Is<CrashSplashParticle>() const
 {
     return Type == EntityType::CrashSplash;
 }
+
+void VehicleCrashParticle::SetSpriteData()
+{
+    SpriteData.Width = 8;
+    SpriteData.HeightMin = 8;
+    SpriteData.HeightMax = 8;
+}
+
+void VehicleCrashParticle::Launch()
+{
+    frame = (ScenarioRand() & 0xFF) * kCrashedVehicleParticleNumberSprites;
+    time_to_live = (ScenarioRand() & 0x7F) + 140;
+    crashed_sprite_base = ScenarioRandMax(kCrashedVehicleParticleNumberTypes);
+    acceleration_x = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
+    acceleration_y = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
+    acceleration_z = (ScenarioRand() & 0xFFFF) * 4 + 0x10000;
+    velocity_x = 0;
+    velocity_y = 0;
+    velocity_z = 0;
+}
+
 /**
  *
  *  rct2: 0x006735A1
@@ -56,22 +77,11 @@ void VehicleCrashParticle::Create(VehicleColour& colours, const CoordsXYZ& vehic
     VehicleCrashParticle* sprite = CreateEntity<VehicleCrashParticle>();
     if (sprite != nullptr)
     {
+        sprite->MoveTo(vehiclePos);
         sprite->colour[0] = colours.Body;
         sprite->colour[1] = colours.Trim;
-        sprite->SpriteData.Width = 8;
-        sprite->SpriteData.HeightMin = 8;
-        sprite->SpriteData.HeightMax = 8;
-        sprite->MoveTo(vehiclePos);
-
-        sprite->frame = (ScenarioRand() & 0xFF) * 12;
-        sprite->time_to_live = (ScenarioRand() & 0x7F) + 140;
-        sprite->crashed_sprite_base = ScenarioRandMax(static_cast<uint32_t>(std::size(_VehicleCrashParticleSprites)));
-        sprite->acceleration_x = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
-        sprite->acceleration_y = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
-        sprite->acceleration_z = (ScenarioRand() & 0xFFFF) * 4 + 0x10000;
-        sprite->velocity_x = 0;
-        sprite->velocity_y = 0;
-        sprite->velocity_z = 0;
+        sprite->SetSpriteData();
+        sprite->Launch();
     }
 }
 
@@ -129,8 +139,8 @@ void VehicleCrashParticle::Update()
     }
     MoveTo(newLoc);
 
-    frame += 85;
-    if (frame >= 3072)
+    frame += kCrashedVehicleParticleFrameIncrement;
+    if (frame >= kCrashedVehicleParticleNumberSprites * kCrashedVehicleParticleFrameToSprite)
     {
         frame = 0;
     }
