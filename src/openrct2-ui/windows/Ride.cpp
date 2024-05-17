@@ -2585,7 +2585,7 @@ static_assert(std::size(RatingNames) == 6);
                     ride->SetReversedTrains(!ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS));
                     break;
                 case WIDX_VEHICLE_TRAINS_INCREASE:
-                    if (ride->NumTrains < OpenRCT2::Limits::MaxTrainsPerRide)
+                    if (ride->NumTrains < OpenRCT2::Limits::kMaxTrainsPerRide)
                         ride->SetNumTrains(ride->NumTrains + 1);
                     break;
                 case WIDX_VEHICLE_TRAINS_DECREASE:
@@ -6800,7 +6800,7 @@ static_assert(std::size(RatingNames) == 6);
 
         // Get view index
         int16_t view = 1;
-        for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+        for (int32_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
         {
             if (ride->vehicles[i] == headVehicleSpriteIndex)
                 break;
