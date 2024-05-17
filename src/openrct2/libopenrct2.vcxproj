@@ -522,8 +522,9 @@
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
-    <ClInclude Include="scenes\intro\IntroScene.h" />
     <ClInclude Include="scenes\game\GameScene.h" />
+    <ClInclude Include="scenes\intro\IntroScene.h" />
+    <ClInclude Include="scenes\preloader\PreloaderScene.h" />
     <ClInclude Include="scenes\title\Command\End.h" />
     <ClInclude Include="scenes\title\Command\FollowEntity.h" />
     <ClInclude Include="scenes\title\Command\LoadPark.h" />
@@ -1015,6 +1016,7 @@
     <ClCompile Include="scenes\Scene.cpp" />
     <ClCompile Include="scenes\game\GameScene.cpp" />
     <ClCompile Include="scenes\intro\IntroScene.cpp" />
+    <ClCompile Include="scenes\preloader\PreloaderScene.cpp" />
     <ClCompile Include="scenes\title\Command\End.cpp" />
     <ClCompile Include="scenes\title\Command\FollowEntity.cpp" />
     <ClCompile Include="scenes\title\Command\LoadPark.cpp" />

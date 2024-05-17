@@ -68,6 +68,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
 #include "scenes/intro/IntroScene.h"
+#include "scenes/preloader/PreloaderScene.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequenceManager.h"
 #include "scripting/HookEngine.h"
@@ -124,6 +125,7 @@ namespace OpenRCT2
 #endif
 
         // Scenes
+        std::unique_ptr<PreloaderScene> _preloaderScene;
         std::unique_ptr<IntroScene> _introScene;
         std::unique_ptr<TitleScene> _titleScene;
         std::unique_ptr<GameScene> _gameScene;
@@ -175,9 +177,6 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
-            , _introScene(std::make_unique<IntroScene>(*this))
-            , _titleScene(std::make_unique<TitleScene>(*this))
-            , _gameScene(std::make_unique<GameScene>(*this))
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -311,24 +310,41 @@ namespace OpenRCT2
             return EXIT_FAILURE;
         }
 
-        IScene* GetLoadingScene() override
+        // NB: This takes some liberty in returning PreloaderScene* instead of IScene*.
+        // PreloaderScene adds some methods to Scene, which are used internally by Context.
+        PreloaderScene* GetPreloaderScene() override
         {
-            // TODO: Implement me.
-            return nullptr;
+            if (auto* scene = _preloaderScene.get())
+                return scene;
+
+            _preloaderScene = std::make_unique<PreloaderScene>(*this);
+            return _preloaderScene.get();
         }
 
         IScene* GetIntroScene() override
         {
+            if (auto* scene = _introScene.get())
+                return scene;
+
+            _introScene = std::make_unique<IntroScene>(*this);
             return _introScene.get();
         }
 
         IScene* GetTitleScene() override
         {
+            if (auto* scene = _titleScene.get())
+                return scene;
+
+            _titleScene = std::make_unique<TitleScene>(*this);
             return _titleScene.get();
         }
 
         IScene* GetGameScene() override
         {
+            if (auto* scene = _gameScene.get())
+                return scene;
+
+            _gameScene = std::make_unique<GameScene>(*this);
             return _gameScene.get();
         }
 
@@ -477,26 +493,6 @@ namespace OpenRCT2
 
             EnsureUserContentDirectoriesExist();
 
-            // TODO Ideally we want to delay this until we show the title so that we can
-            //      still open the game window and draw a progress screen for the creation
-            //      of the object cache.
-            _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
-
-            if (!gOpenRCT2Headless)
-            {
-                _assetPackManager->Scan();
-                _assetPackManager->LoadEnabledAssetPacks();
-                _assetPackManager->Reload();
-            }
-
-            // TODO Like objects, this can take a while if there are a lot of track designs
-            //      its also really something really we might want to do in the background
-            //      as its not required until the player wants to place a new ride.
-            _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
-
-            _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
-            TitleSequenceManager::Scan();
-
             if (!gOpenRCT2Headless)
             {
                 Audio::Init();
@@ -520,7 +516,20 @@ namespace OpenRCT2
             InputResetPlaceObjModifier();
             ViewportInitAll();
 
-            gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+            ContextInit();
+
+            if (!gOpenRCT2Headless)
+            {
+                auto* preloaderScene = GetPreloaderScene();
+                preloaderScene->AddJob([this]() { InitialiseRepositories(); });
+
+                // TODO: preload the title scene in another (parallel) job.
+                SetActiveScene(preloaderScene);
+            }
+            else
+            {
+                InitialiseRepositories();
+            }
 
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Initialise();
@@ -531,6 +540,44 @@ namespace OpenRCT2
             return true;
         }
 
+    private:
+        void InitialiseRepositories()
+        {
+            if (!_initialised)
+            {
+                throw std::runtime_error("Context needs to be initialised first.");
+            }
+
+            auto currentLanguage = _localisationService->GetCurrentLanguage();
+            auto* preloaderScene = GetPreloaderScene();
+
+            preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
+            _objectRepository->LoadOrConstruct(currentLanguage);
+
+            if (!gOpenRCT2Headless)
+            {
+                preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);
+                _assetPackManager->Scan();
+                _assetPackManager->LoadEnabledAssetPacks();
+                _assetPackManager->Reload();
+            }
+
+            preloaderScene->UpdateCaption(STR_CHECKING_TRACK_DESIGN_FILES);
+            _trackDesignRepository->Scan(currentLanguage);
+
+            preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
+            _scenarioRepository->Scan(currentLanguage);
+
+            preloaderScene->UpdateCaption(STR_CHECKING_TITLE_SEQUENCES);
+            TitleSequenceManager::Scan();
+
+            if (preloaderScene->GetCompletionScene() == GetTitleScene())
+                preloaderScene->UpdateCaption(STR_LOADING_TITLE_SEQUENCE);
+            else
+                preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
+        }
+
+    public:
         void InitialiseDrawingEngine() final override
         {
             assert(_drawingEngine == nullptr);
@@ -594,6 +641,14 @@ namespace OpenRCT2
         void DisposeDrawingEngine() final override
         {
             _drawingEngine = nullptr;
+        }
+
+        void SetProgress(size_t currentProgress, size_t totalCount) override
+        {
+            if (GetActiveScene() != GetPreloaderScene())
+                return;
+
+            GetPreloaderScene()->SetProgress(currentProgress, totalCount);
         }
 
         bool LoadParkFromFile(const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
@@ -1012,7 +1067,14 @@ namespace OpenRCT2
             }
 
             auto* scene = DetermineStartUpScene();
-            SetActiveScene(scene);
+            if (!gOpenRCT2Headless)
+            {
+                _preloaderScene->SetCompletionScene(scene);
+            }
+            else
+            {
+                SetActiveScene(scene);
+            }
 
             if (scene == GetGameScene())
             {

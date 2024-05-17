@@ -144,7 +144,7 @@ namespace OpenRCT2
         virtual NetworkBase& GetNetwork() abstract;
 #endif
 
-        virtual IScene* GetLoadingScene() abstract;
+        virtual IScene* GetPreloaderScene() abstract;
         virtual IScene* GetIntroScene() abstract;
         virtual IScene* GetTitleScene() abstract;
         virtual IScene* GetGameScene() abstract;
@@ -158,6 +158,8 @@ namespace OpenRCT2
         virtual bool Initialise() abstract;
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
+        virtual void SetProgress(size_t currentProgress, size_t totalCount) abstract;
+
         virtual bool LoadParkFromFile(
             const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
         virtual bool LoadParkFromStream(

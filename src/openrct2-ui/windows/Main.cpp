@@ -46,6 +46,10 @@ static Widget _mainWidgets[] = {
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
+            // Skip viewport render during preloader
+            if (GetContext()->GetActiveScene() == GetContext()->GetPreloaderScene())
+                return;
+
             ViewportRender(dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
         }
 
