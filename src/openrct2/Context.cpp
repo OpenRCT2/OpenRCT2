@@ -554,6 +554,9 @@ namespace OpenRCT2
             preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
             _objectRepository->LoadOrConstruct(currentLanguage);
 
+            preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
+            Audio::LoadAudioObjects();
+
             if (!gOpenRCT2Headless)
             {
                 preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);

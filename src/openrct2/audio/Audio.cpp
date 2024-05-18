@@ -93,7 +93,6 @@ namespace OpenRCT2::Audio
                 }
             }
         }
-        LoadAudioObjects();
     }
 
     void LoadAudioObjects()
