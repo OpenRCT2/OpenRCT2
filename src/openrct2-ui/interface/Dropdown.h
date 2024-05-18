@@ -62,7 +62,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownShowColourAvailable(
         WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
     uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
-    bool WindowDropDownHasMultipleColumns(size_t numItems);
 
     colour_t ColourDropDownIndexToColour(uint8_t ddidx);
 } // namespace OpenRCT2::Ui::Windows
