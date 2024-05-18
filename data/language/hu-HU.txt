@@ -3698,6 +3698,9 @@ STR_6624    :Mezővizsgáló: Elemek rendezése
 STR_6625    :Érvénytelen szín
 STR_6626    :Az animáció tükrözött
 STR_6627    :Túl nagy a pálya sebessége!
+STR_6628    :Csak az utak szélein helyezhető el!
+STR_6629    :Eszköztár gombjainak vízszintes középre igazítása
+STR_6630    :Ez a beállítás az eszköztár gombjait vízszintesen a képernyő közepére igazítja. A hagyományos elrendezés a bal és jobb sarokban helyezi el őket.
 
 #############
 # Scenarios #

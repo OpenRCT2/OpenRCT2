@@ -3698,6 +3698,9 @@ STR_6624    :Inspetor de azulejo: Ordenar elementos
 STR_6625    :Cor inválida
 STR_6626    :Animação invertida
 STR_6627    :Velocidade da pista muito alta!
+STR_6628    :Só pode ser colocado nas bordas do caminho!
+STR_6629    :Alinhar botões da barra ferramentas horizontalmente centralizados
+STR_6630    :Essa configuração irá alinhar os botões da barra de ferramentas horizontalmente no centro da tela. A maneira tradicional de alinhá-los é nos cantos esquerdo e direito.
 
 #############
 # Scenarios #

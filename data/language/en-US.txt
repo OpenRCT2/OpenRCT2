@@ -233,6 +233,9 @@ STR_6328    :With this option enabled, giant screenshots will have a transparent
 STR_6501    :Random color
 STR_6625    :Invalid color
 
+STR_6629    :Align toolbar buttons horizontally centered
+STR_6630    :This setting will align the toolbar buttons horizontally in the center of the screen. The traditional way of aligning them is in the left and right corner.
+
 #############
 # Scenarios #
 #############
