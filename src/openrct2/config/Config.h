@@ -135,6 +135,7 @@ namespace OpenRCT2::Config
         int32_t ScenarioselectLastTab;
         bool ListRideVehiclesSeparately;
         bool WindowButtonsOnTheLeft;
+        bool EnlargedUi;
     };
 
     struct Sound

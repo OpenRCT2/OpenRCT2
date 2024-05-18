@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <bitset>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -14,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -23,10 +25,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    // The maximum number of rows to list before items overflow into new columns
-    constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
-
     constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
+    constexpr int32_t DROPDOWN_ITEM_HEIGHT_TOUCH = 24;
 
     static constexpr std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
         1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
@@ -84,6 +84,16 @@ namespace OpenRCT2::Ui::Windows
             gDropdownIsColour = false;
             gDropdownDefaultIndex = -1;
             InputSetState(InputState::DropdownActive);
+        }
+
+        static int32_t GetDefaultRowHeight()
+        {
+            return Config::Get().interface.EnlargedUi ? DROPDOWN_ITEM_HEIGHT_TOUCH : DROPDOWN_ITEM_HEIGHT;
+        }
+
+        static int32_t GetAdditionalRowPadding()
+        {
+            return Config::Get().interface.EnlargedUi ? 6 : 0;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -154,11 +164,21 @@ namespace OpenRCT2::Ui::Windows
                             colour = NOT_TRANSLUCENT(colours[0]) | COLOUR_FLAG_INSET;
 
                         // Draw item string
+                        auto yOffset = GetAdditionalRowPadding();
                         Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
-                        DrawTextEllipsised(dpi, screenCoords, width - 5, item, ft, { colour });
+                        DrawTextEllipsised(dpi, { screenCoords.x, screenCoords.y + yOffset }, width - 5, item, ft, { colour });
                     }
                 }
             }
+        }
+
+        static int32_t getSpaceUntilBottom(const ScreenCoordsXY& screenPos, int32_t dropdownButtonHeight)
+        {
+            auto* mainWindow = WindowGetMain();
+            if (mainWindow == nullptr)
+                return 400;
+
+            return std::max(1, mainWindow->height - (screenPos.y + dropdownButtonHeight + 5));
         }
 
         void SetTextItems(
@@ -166,20 +186,22 @@ namespace OpenRCT2::Ui::Windows
             size_t numItems, int32_t itemWidth)
         {
             // Set and calculate num items, rows and columns
-            ItemWidth = itemWidth;
-            ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : DROPDOWN_ITEM_HEIGHT;
+            ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : GetDefaultRowHeight();
             gDropdownNumItems = static_cast<int32_t>(numItems);
             // There must always be at least one column to prevent dividing by zero
-            if (gDropdownNumItems == 0)
+            if (gDropdownNumItems <= 1)
             {
-                NumColumns = 1;
                 NumRows = 1;
+                NumColumns = 1;
             }
             else
             {
-                NumColumns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
-                NumRows = (gDropdownNumItems + NumColumns - 1) / NumColumns;
+                const int32_t numAvailableRows = std::max(1, getSpaceUntilBottom(screenPos, extraY) / ItemHeight);
+                NumRows = std::min(numAvailableRows, gDropdownNumItems);
+                NumColumns = (gDropdownNumItems + NumRows - 1) / NumRows;
             }
+
+            ItemWidth = itemWidth;
 
             // Text dropdowns are listed horizontally
             ListVertically = true;
@@ -330,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t width)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
-        if (flags & Dropdown::Flag::StayOpen)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.EnlargedUi)
             InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
         WindowDropdownClose();
@@ -362,7 +384,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t itemHeight, int32_t numColumns)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
-        if (flags & Dropdown::Flag::StayOpen)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.EnlargedUi)
             InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
         // Close existing dropdown
@@ -493,9 +515,10 @@ static constexpr colour_t kColoursDropdownOrder[] = {
         }
 
         // Show dropdown
+        auto squareSize = DropdownWindow::GetDefaultRowHeight();
         WindowDropdownShowImage(
             w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-            Dropdown::Flag::StayOpen, numColours, 12, 12,
+            Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
         gDropdownIsColour = true;
@@ -508,11 +531,6 @@ static constexpr colour_t kColoursDropdownOrder[] = {
         // If above the table size return the last element
         return _appropriateImageDropdownItemsPerRow[std::min<uint32_t>(
             numItems, static_cast<uint32_t>(std::size(_appropriateImageDropdownItemsPerRow) - 1))];
-    }
-
-    bool WindowDropDownHasMultipleColumns(size_t numItems)
-    {
-        return numItems > DROPDOWN_TEXT_MAX_ROWS;
     }
 } // namespace OpenRCT2::Ui::Windows
 
