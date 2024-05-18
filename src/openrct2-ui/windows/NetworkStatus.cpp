@@ -141,7 +141,7 @@ static Widget window_network_status_widgets[] = {
         else
         {
             window = WindowCreate<NetworkStatusWindow>(
-                WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+                WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
         window->SetCloseCallBack(onClose);
