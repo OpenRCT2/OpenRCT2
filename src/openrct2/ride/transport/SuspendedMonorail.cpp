@@ -1414,7 +1414,6 @@ static void SuspendedMonorailTrackDiagFlat(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
 
     if (trackSequence == 3)
-
         MetalASupportsPaintSetupRotated(
             session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height + 42, session.SupportColours);
 
