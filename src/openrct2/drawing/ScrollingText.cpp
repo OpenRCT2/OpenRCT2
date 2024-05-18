@@ -1381,7 +1381,7 @@ static constexpr int16_t _scrollpos37[] = {
     -1,
 };
 
-static constexpr const int16_t* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
+static constexpr const int16_t* _scrollPositions[kMaxScrollingTextModes] = {
     _scrollpos0,
     _scrollpos1,
     _scrollpos2,
@@ -1437,7 +1437,7 @@ ImageId ScrollingTextSetup(
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
 
-    assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
+    assert(scrollingMode < kMaxScrollingTextModes);
 
     if (session.DPI.zoom_level > ZoomLevel{ 0 })
         return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
