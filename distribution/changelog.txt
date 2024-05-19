@@ -45,6 +45,7 @@
 ------------------------------------------------------------------------
 - Feature: [#622] Add option to align the top toolbar buttons horizontally centred (off by default).
 - Feature: [#20263] Ability to increase the size of the map in the (0, 0) direction.
+- Feature: [#21656] Save the currently following entity into the save file.
 - Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
 - Feature: [#21853] Enlarged UI mode.
 - Feature: [#21893, #22065] On launch, the game now indicates what system is being initialised.
@@ -103,7 +104,6 @@
 0.4.11 (2024-05-05)
 ------------------------------------------------------------------------
 - Feature: [#11512] Coloured usernames by group on multiplayer servers.
-- Feature: [#21656] Save the currently following entity into the save file.
 - Feature: [#21734] Park admittance price can now be set via text input.
 - Feature: [#21957] [Plugin] Expose whether the game is paused to the plugin API.
 - Improved: [#21728] “Fix all rides” cheat now also works if a mechanic is already fixing the ride.
