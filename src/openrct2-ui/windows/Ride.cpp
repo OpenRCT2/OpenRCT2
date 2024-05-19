@@ -168,6 +168,8 @@ enum {
     WIDX_LOCATE_MECHANIC,
     WIDX_REFURBISH_RIDE,
     WIDX_FORCE_BREAKDOWN,
+    WIDX_RELIABILITY_BAR,
+    WIDX_DOWN_TIME_BAR,
 
     WIDX_TRACK_PREVIEW = 14,
     WIDX_TRACK_COLOUR_SCHEME,
@@ -303,6 +305,8 @@ static Widget _maintenanceWidgets[] = {
     MakeWidget({289, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,         STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
     MakeWidget({265, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),   STR_REFURBISH_RIDE_TIP                                ),
     MakeWidget({241, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
+    MakeProgressBar({107, 47}, { 147, 10}, COLOUR_BRIGHT_GREEN),
+    MakeProgressBar({107, 58}, { 147, 10}, COLOUR_BRIGHT_RED),
     kWidgetsEnd,
 };
 
@@ -3656,23 +3660,6 @@ static_assert(std::size(RatingNames) == 6);
             }
         }
 
-        void MaintenanceDrawBar(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour) const
-        {
-            GfxFillRectInset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, colours[1], INSET_RECT_F_30);
-            if (colour & kBarBlink)
-            {
-                colour &= ~kBarBlink;
-                if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))
-                    return;
-            }
-
-            value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
-            if (value > 2)
-            {
-                GfxFillRectInset(dpi, { coords + ScreenCoordsXY{ 2, 1 }, coords + ScreenCoordsXY{ value + 1, 7 } }, colour, 0);
-            }
-        }
-
         void MaintenanceOnMouseUp(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
@@ -3993,15 +3980,14 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter();
             ft.Add<uint16_t>(reliability);
             DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
-            MaintenanceDrawBar(
-                dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, std::max<int32_t>(10, reliability), COLOUR_BRIGHT_GREEN);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
             screenCoords.y += 11;
 
             uint16_t downTime = ride->downtime;
             ft = Formatter();
             ft.Add<uint16_t>(downTime);
             DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
-            MaintenanceDrawBar(dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, downTime, COLOUR_BRIGHT_RED);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
             screenCoords.y += 26;
 
             // Last inspection

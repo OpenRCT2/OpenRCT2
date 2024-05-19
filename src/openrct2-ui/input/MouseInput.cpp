@@ -1067,6 +1067,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
         case WindowWidgetType::LabelCentred:
         case WindowWidgetType::Label:
         case WindowWidgetType::Groupbox:
+        case WindowWidgetType::ProgressBar:
         case WindowWidgetType::Placeholder:
         case WindowWidgetType::Last:
             // Non-interactive widget type
