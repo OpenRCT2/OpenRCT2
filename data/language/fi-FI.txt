@@ -99,6 +99,7 @@ STR_0093    :Hybridivuoristorata
 STR_0094    :Yksikiskoinen vuoristorata
 STR_0095    :Alppivuoristorata
 STR_0096    :Klassinen puinen vuoristorata
+STR_0097    :Klassinen seisomavuoristorata
 STR_0512    :Kompakti vuoristorata, jossa on spiraalimainen nostomäki, ja sulavat, kaartelevat pudotukset.
 STR_0513    :Silmukoiva vuoristorata, jossa matkustajat ovat seisoma-asennossa
 STR_0514    :Junat riippuvat vuoristoradan alla, ja heilahtavat sivuttain käänteissä
@@ -182,6 +183,7 @@ STR_0603    :Puinen vuoristorata teräskiskoilla, jyrkillä pudotuksilla ja kä�
 STR_0604    :Matkustajat kulkevat peräjonossa kapealla yksittäiskiskolla, kiitäen tiukkojen käännösten ja suunnanvaihdoksien läpi
 STR_0605    :Matkustajat laskettelevat kelkalla teräsrataa pitkin alas, säätäen vauhtiansa jarrujen avulla
 STR_0606    :Vanhemman mallinen puinen vuoristorata, joka on suunniteltu hallitsemattoman tuntuiseksi - tarjoten nopeaa ja rajua kyytiä, runsaasti airtimeä, ja jonkin verran sivuttaista G-voimaa.
+STR_0607    :Hurja vanhemman mallinen teräksestä valmistettu silmukkavuoristorata, jossa matkustajat kulkevat seisoma-asennossa
 STR_0767    :Kävijä {INT32}
 STR_0768    :Yleismies {INT32}
 STR_0769    :Mekaanikko {INT32}
@@ -3690,6 +3692,30 @@ STR_6610    :Polkuelementtiä ei löytynyt
 STR_6611    :Seinäelementtiä ei löytynyt
 STR_6612    :Bannerielementtiä ei löytynyt
 STR_6613    :Päivitä esine
+STR_6614    :Sisäänpääsymaksua ei voi muuttaa
+STR_6615    :Tässä ruudussa oleva rata tarvitsee vettä
+STR_6616    :Toiminto ei sovellu tälle henkilöstötyypille
+STR_6617    :Ruutuelementtiä ei voi vaihtaa itseensä
+STR_6618    :Esineen rajoitusta ei voi muuttaa…
+STR_6619    :Tätä esinetyyppiä ei voi rajoittaa!
+STR_6620    :Esinettä ei löydy!
+STR_6621    :Rajoita
+STR_6622    :Rajoita esine käytettäväksi vain skenaariomuokkaimessa ja hiekkalaatikkotilassa.
+STR_6623    :Komento ‘help’ näyttää listan komennoista. Komennolla ‘hide’ voi piilottaa konsolin.
+STR_6624    :Ruututyökalu: Järjestä elementit
+STR_6625    :Epäkelpo väri
+STR_6626    :Animaatio on edestakaisin
+STR_6627    :Radan nopeus on liian korkea!
+STR_6628    :Voidaan sijoittaa vain polun reunalle!
+STR_6629    :Aseta työkalupalkki keskelle
+STR_6630    :Asettaa työkalupalkin painikkeet ruudun yläreunan keskiosaan. Perinteisesti painikkeet asettuvat oikeaan ja vasempaan yläkulmaan.
+STR_6631    :Ladataan…
+STR_6632    :Tarkistetaan esinetiedostoja…
+STR_6633    :Tarkistetaan skenaariotiedostoja…
+STR_6634    :Tarkistetaan ratamallitiedostoja…
+STR_6635    :Tarkistetaan resurssipaketteja…
+STR_6636    :Tarkistetaan valikkotaustoja…
+STR_6637    :Ladataan valikkotaustaa…
 
 #############
 # Scenarios #
@@ -4281,87 +4307,87 @@ STR_DTLS    :Rakenna puuttuvat Six Flags -laitteet, tai tee omat luomuksesi puis
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Afrikka - Afrikkalainen timanttikaivos
+STR_SCNR    :Afrikan kaivokset
 STR_PARK    :Afrikan kaivokset
 STR_DTLS    :Olet perinyt lopetetun timanttikaivoksen, ja löydät arvokkaan timantin. Päätät sijoittaa rahat maailmankuulun teemapuiston rakentamiseen.
 
 <Africa - Oasis>
-STR_SCNR    :Afrikka - Keidas
+STR_SCNR    :Kangastuskivaa
 STR_PARK    :Kangastuskivaa
 STR_DTLS    :Aavikosta on löydetty keidas, joka olisi loistava paikka huvipuistolle. Kuljetus keitaalle on jo hoidettu.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Afrikka - Victorian putoukset
+STR_SCNR    :Yli reunan
 STR_PARK    :Yli reunan
 STR_DTLS    :Juuri rakennettu pato tuottaa paljon halpaa vesivoimaa, jolla voi pyörittää huvipuistoa. Sinun täytyy nostaa puiston arvoa jotta voit maksaa takaisin padon rakennuslainan.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Etelämanner - Ekologinen pelastus
+STR_SCNR    :Jäinen seikkailu
 STR_PARK    :Jäinen seikkailu
 STR_DTLS    :Ympäristövirasto on kääntynyt puoleesi jotta vanhan öljynjalostamon rumilus voitaisiin muuttaa huippuluokan matkailukohteeksi. Maa on halpaa mutta lainakorot pilvissä. Voit myydä vanhat rakennukset.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Aasia - Kiinan muurin matkailuedistys
+STR_SCNR    :Kiinan muuri
 STR_PARK    :Kiinan muuri
 STR_DTLS    :Viranomaiset ovat päättäneet kehittää muurin alueen matkailua rakentamalla teemapuisto viereiselle tontille. Rahoista viis!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Aasia - Japanin rannikko
+STR_SCNR    :Okinawan ranta
 STR_PARK    :Okinawan ranta
 STR_DTLS    :Rannikon puistolta on loppunut tila. Ainoa mahdollisuutesi on rakentaa mereen, joten olet ottanut lainan. Korkeusrajoitukset ovat voimassa perustojen ja maanjäristyksien takia.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Aasia - Maharajan palatsi
+STR_SCNR    :Maharaja-puisto
 STR_PARK    :Maharaja-puisto
 STR_DTLS    :Maharaja on käskenyt sinut tuomaan hupia ja viihdettä suurelle paikallisväestölle. Rakenna puisto Maharajan palatsin innoittamana.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australaasia - Uluru
+STR_SCNR    :Uluru-seikkailu
 STR_PARK    :Uluru-seikkailu
 STR_DTLS    :Autat aboriginaaleja rakentamaan puiston osana heidän kulttuurinedistämisohjelmaa. Sinun täytyy houkutella suuri määrä kävijöitä opettaaksesi heille aboriginaalien kulttuuriperintöä.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australaasia - Rantakivaa
+STR_SCNR    :Rantakivaa
 STR_PARK    :Rantakivaa
 STR_DTLS    :Paikallisen yrittäjän akvaario on mennyt konkurssiin. Sinulla on jo pieni huvipuisto vastarannalla, ja ostat konkurssipesän rakennusyhtiöltä. Kehitä yksi yhtenäinen puisto.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Eurooppa - Euroopan kulttuurifestivaali
+STR_SCNR    :Euro-elämyksiä
 STR_PARK    :Euro-elämyksiä
 STR_DTLS    :Sinut on tuotu ottamaan haltuun yksi Euroopan kulttuurimatkakohteista, ja sinun tulee nostaa kävijämäärää jotta voit maksaa EU-tuen takaisin ennen Euroopan parlamentin vaalikauden loppua.
 
 <Europe - Renovation>
-STR_SCNR    :Eurooppa - Peruskorjaus
+STR_SCNR    :Tuhkista nousee
 STR_PARK    :Tuhkista nousee
 STR_DTLS    :Vanha puisto on päässyt ränsistymään. Saat Euroopan unionilta apurahaa tämän puutteellisen alueen kunnostamiseen! Sinun täytyy kunnostaa puisto ja maksaa apuraha takaisin.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Pohjois-Amerikka - Extreme-havaijilaissaari
+STR_SCNR    :Waikikileikki
 STR_PARK    :Waikikileikki
 STR_DTLS    :Havaijin ihmiset ovat tylsistyneitä surffaukseen, ja haluavat jotain jännittävämpää. Pidä tämä mielessä kun rakennat puistoa, joka ylläpitää alueen turistiluokitusta.
 
 <North America - Grand Canyon>
-STR_SCNR    :Pohjois-Amerikka - Grand Canyon
+STR_SCNR    :Kanjonikepposet
 STR_PARK    :Kanjonikepposet
 STR_DTLS    :Sinun tulee rakentaa puisto rajallisen kokoiselle alueelle tämän luonnon arteen molemmin puolin. Voit ostaa lisää tilaa naapurissa olevalta alkuperäiskansalta. Tavoitteen saavutus takaa paikalliskylän selviytymisen.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Pohjois-Amerikka - Vuoristoratojen mekka
+STR_SCNR    :Vuoristoratojen mekka
 STR_PARK    :Vuoristoratojen mekka
 STR_DTLS    :Olet menestyksekäs liikemies sapattivapaalla, ja haluat käyttää tämän ajan kaupunginpuiston muuttamiseksi vuoristoratojen mekaksi. Raha ei ole este!
 
 <South America - Inca Lost City>
-STR_SCNR    :Etelä-Amerikka - Inkojen kadonnut kaupunki
+STR_SCNR    :Kadonnut kaupunki
 STR_PARK    :Kadonnut kaupunki
 STR_DTLS    :Edistääksesi paikallista turismia, sinun tulee rakentaa puisto, joka on ympäristönsä kaltainen.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Etelä-Amerikka - Sademetsän tasanko
+STR_SCNR    :Sademetsän seikkailu
 STR_PARK    :Sademetsän seikkailu
 STR_DTLS    :Tila on niukassa tässä korvaamattomassa sademetsässä - sinun täytyy ahtaa mahdollisimman paljon jo raivattuun alueeseen, jotta paikalliselle puuteollisuudelle olisi kannattava vaihtoehto.
 
 <South America - Rio Carnival>
-STR_SCNR    :Etelä-Amerikka - Rion karnevaalit
+STR_SCNR    :Sokerileipärannikko
 STR_PARK    :Sokerileipärannikko
 STR_DTLS    :Johdat pientä puisto Rion läheisyydessä, mutta pankki vaatii lainan takaisinmaksua. Sinun täytyy pikaisesti nostaa tuottotasoa jotta voit maksaa tämän ennakoimattoman menoerän.
 
@@ -4369,72 +4395,72 @@ STR_DTLS    :Johdat pientä puisto Rion läheisyydessä, mutta pankki vaatii lai
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Keskiaika - Linna
+STR_SCNR    :Linnaranta
 STR_PARK    :Linnaranta
 STR_DTLS    :Paikallinen historian elävöitysryhmä ottavat harrastuksensa aika tosissaan. He ovat luottaneet tämän rannikkolinnan käsiisi, jotta voit rakentaa uuden keskiajan teemapuiston.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Keskiaika - Robin Hood
+STR_SCNR    :Sherwoodin metsä
 STR_PARK    :Sherwoodin metsä
 STR_DTLS    :Vapauttaaksesi rahat rikkailta ja jakaaksesi ne köyhille, sinä ja iloiset veikkosi olette päättäneet rakentaa huvipuiston Sherwoodin metsään.
 
 <Future - First Encounters>
-STR_SCNR    :Tulevaisuus - Ensitapaaminen
+STR_SCNR    :Avaruusolentojen aukio
 STR_PARK    :Avaruusolentojen aukio
 STR_DTLS    :Kaukaisella planeetalla on sittenkin elämää! Rakenna avaruusolio-teemapuisto lyödäksesi rahoiksi tämän ennennäkemättömän kiinnostuksen ansiosta.
 
 <Future - Future World>
-STR_SCNR    :Tulevaisuus - Tulevaisuuden maailma
+STR_SCNR    :Kaksoskaupunki
 STR_PARK    :Kaksoskaupunki
 STR_DTLS    :Näytä kekseliäs utooppinen tulevaisuuden mielikuvasi - luo futuristinen puisto, jossa on kaikki huipputekniset laitteet.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mytologia - Animatroninen filmistudio
+STR_SCNR    :Animatronian antia
 STR_PARK    :Animatronian antia
 STR_DTLS    :Sinulle on annettu tehtäväksi vanhan filmistudion paikalle rakennetun toimivan teemapuiston hoito ja laajennus. Rakenna kunnianosoitus niille stop motion -animaattoreille jotka toivat myyttiset hahmot ensi kertaa valkokankaalle.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mytologia - Sivilisaation alku
+STR_SCNR    :Mytologian magiaa
 STR_PARK    :Mytologian magiaa
 STR_DTLS    :Omistat saaren jolla on jonkinlaista arkeologista arvoa. Olet päättänyt rahoittaa tämän kulttuuriperinnön suojelua rakentamalla alueen rikkaaseen mytologiaan perustuvan teemapuiston.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Esihistoria - Asteroidin jälkeen
+STR_SCNR    :Kraaterikivaa
 STR_PARK    :Kraaterikivaa
 STR_DTLS    :Omistat pölyisen meteorikraaterin. Bisneselämän tosimiehenä olet päättänyt rakentaa asteroidin teemapuiston ja muuntaa näennäisesti arvottoman maatilkkusi mittavaksi omaisuudeksi.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Esihistoria - Jurassinen safari
+STR_SCNR    :Vuoristosaurus
 STR_PARK    :Vuoristosaurus
 STR_DTLS    :Tehtävänäsi on rakentaa jurassisen kauden teemapuisto. Jotta kävijät pääsevät helposti näkemään eksoottisia kasveja ja eläimiä, sinun tulee rakentaa laitteita joilla pääsee laakson yli ja alle.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Esihistoria - Kivikausi
+STR_SCNR    :Kivikepposet
 STR_PARK    :Kivikepposet
 STR_DTLS    :Estääksesi maantien rakennuksen ja mystisten kivirenkaiden tuhoamisen, sinun pitää rakentaa kivikauden teemapuisto ja tehdä voittoa. Kävijöiden houkutus saattaa tosin olla vaikeaa, koska maasto ei ole kovin vieraanvaraista.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Kuohuva 20-luku - Vankisaari
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :Surullisenkuuluisa Vankisaari - joka oli muinoin tupaten täynnä trokareita ja gangstereita - on nyt myynnissä. Olet päättänyt muodostaa siitä korkean luokan matkailukohteen, eikä rahalla ole niinkään väliä.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Kuohuva 20-luku - Schneider-kilvat
+STR_SCNR    :Schneiderrannat
 STR_PARK    :Schneiderrannat
 STR_DTLS    :Isoisäsi Schneider-nopeuskisan voitosta tulee kohta 75 vuotta täyteen. Kunnioita hänen saavutustaan rakentamalla teemapuisto tämän maineikkaan vesilentokonekilvan ympärille.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Kuohuva 20-luku - Pilvenpiirtäjät
+STR_SCNR    :Metropoli
 STR_PARK    :Metropoli
 STR_DTLS    :Omistat tyhjän tontin pienasutusalueen vieressä. 20-luvun art deco -arkkitehtuurin innoittamana rakenna pilvenpiirtäjien teemapuisto puristaaksesi kaupunkitontistasi viimeisetkin tuoton pisarat.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ’n’ roll - Kukkavoimaa
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Suuri vuosittainen musiikkifestivaali järjestetään maillasi. Rakenna tajuntaa laajentava huvipuisto vapaamielisen yleisön viihdyttämiseen.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ’n’ roll - Rock ’n’ roll
+STR_SCNR    :Rock ’n’ rollin kukoistus
 STR_PARK    :Rock ’n’ rollin kukoistus
 STR_DTLS    :Tämä vanha huvipuisto on nähnyt parempia päiviä. Auta sen omistajaa antamalla sille retron rock ’n’ roll -muodonmuutoksen, joka tekee puistosta menestyksekkään viihdekeskuksen.
 

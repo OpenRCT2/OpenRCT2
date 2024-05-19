@@ -271,8 +271,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}▼
 STR_0877    :太低了！
 STR_0878    :太高了！
-STR_0879    :不能在这里降低土地…
-STR_0880    :不能在这里抬升土地…
+STR_0879    :不能在这里降低土地……
+STR_0880    :不能在这里抬升土地……
 STR_0881    :被物体挡住了
 STR_0882    :加载游戏
 STR_0883    :保存游戏
@@ -316,8 +316,8 @@ STR_0922    :陡峭上坡
 STR_0923    :垂直上坡
 STR_0924    :向下螺旋
 STR_0925    :向上螺旋
-STR_0926    :不能移除此物…
-STR_0927    :不能在此建造…
+STR_0926    :不能移除此物……
+STR_0927    :不能在此建造……
 STR_0928    :牵引链，会把车厢拉上坡
 STR_0929    :“S”型弯道（向左）
 STR_0930    :“S”型弯道（向右）
@@ -377,7 +377,7 @@ STR_0984    :{WINDOW_COLOUR_2}▲{BLACK} {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK} {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :过多游乐设施/店铺
-STR_0988    :不能新建游乐设施/店铺…
+STR_0988    :不能新建游乐设施/店铺……
 STR_0989    :{STRINGID}
 STR_0990    :建造
 STR_0991    :车站站台
@@ -391,10 +391,10 @@ STR_0998    :此游乐设施的站台数量已达到上限
 STR_0999    :需要一个车站站台
 STR_1000    :轨道没有形成闭环
 STR_1001    :轨道与列车类型不符
-STR_1002    :无法开启{STRINGID}…
-STR_1003    :无法测试{STRINGID}…
-STR_1004    :无法关闭{STRINGID}…
-STR_1005    :无法开始建造{STRINGID}…
+STR_1002    :无法开启{STRINGID}……
+STR_1003    :无法测试{STRINGID}……
+STR_1004    :无法关闭{STRINGID}……
+STR_1005    :无法开始建造{STRINGID}……
 STR_1006    :关闭后才能操作
 STR_1007    :无法创建足够的车厢
 STR_1008    :开放、关闭或测试游乐设施/店铺
@@ -406,10 +406,10 @@ STR_1013    :关闭游乐园
 STR_1014    :开放游乐园
 STR_1015    :在此模式下，只能存在一个站台才能运行
 STR_1016    :在此模式下，需要至少两个站台才能运行
-STR_1017    :无法改变运行模式…
-STR_1018    :无法做出改变…
-STR_1019    :无法做出改变…
-STR_1020    :无法做出改变…
+STR_1017    :无法改变运行模式……
+STR_1018    :无法做出改变……
+STR_1019    :无法做出改变……
+STR_1020    :无法做出改变……
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16}车/列车
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16}车/列车
@@ -439,7 +439,7 @@ STR_1046    :OpenRCT2 轨道设计文件
 STR_1047    :游戏保存失败！
 STR_1048    :关卡保存失败！
 STR_1049    :地形保存失败！
-STR_1050    :加载失败…{NEWLINE}文件包含无效数据！
+STR_1050    :加载失败……{NEWLINE}文件包含无效数据！
 STR_1051    :隐藏支撑结构
 STR_1052    :隐藏游客
 STR_1053    :游乐园内的游乐设施/店铺
@@ -448,7 +448,7 @@ STR_1055    :命名游客
 STR_1056    :命名工作人员
 STR_1057    :游乐设施/店铺名称
 STR_1058    :请输入这个游乐设施/店铺的新名字：
-STR_1059    :重命名设施/店铺失败…
+STR_1059    :重命名设施/店铺失败……
 STR_1060    :无效的设施/店铺名
 STR_1061    :正常模式
 STR_1062    :连续循环模式
@@ -533,8 +533,8 @@ STR_1140    :选择车辆配色主题
 STR_1141    :选择需要魔改的车辆/列车
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
-STR_1144    :不能建造/移动这个游乐设施的入口…
-STR_1145    :不能建造/移动这个游乐设施的出口…
+STR_1144    :不能建造/移动这个游乐设施的入口……
+STR_1145    :不能建造/移动这个游乐设施的出口……
 STR_1146    :尚未建造入口
 STR_1147    :尚未建造出口
 STR_1148    :四分之一载客量
@@ -547,16 +547,16 @@ STR_1154    :土地高度标记
 STR_1155    :道路高度标记
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
-STR_1158    :不能移除此物…
+STR_1158    :不能移除此物……
 STR_1159    :放置景观，花园和其他美化物
 STR_1160    :创建/调整湖泊和水体
-STR_1161    :不能放置于此…
+STR_1161    :不能放置于此……
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}（按右键修改）
 STR_1164    :{STRINGID}{NEWLINE}（按右键移除）
 STR_1165    :{STRINGID}——{STRINGID} {COMMA16}
-STR_1166    :无法降低此处水位…
-STR_1167    :无法升高此处水位…
+STR_1166    :无法降低此处水位……
+STR_1167    :无法升高此处水位……
 STR_1168    :选项
 STR_1169    :（无）
 STR_1170    :{STRING}
@@ -565,8 +565,8 @@ STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :建造道路和队列线
 STR_1174    :被横幅挡住了
 STR_1175    :不能在倾斜的小径上建造这个
-STR_1176    :不能在此建造道路…
-STR_1177    :不能移除此处道路…
+STR_1176    :不能在此建造道路……
+STR_1177    :不能移除此处道路……
 STR_1178    :坡道坡度不合适
 STR_1179    :被道路挡住了
 STR_1180    :不能建造在水下！
@@ -728,7 +728,7 @@ STR_1335    :{STRINGID}——入口{POP16}{POP16}
 STR_1336    :{STRINGID}——车站{POP16}{COMMA16}入口
 STR_1337    :{STRINGID}——出口{POP16}{POP16}
 STR_1338    :{STRINGID}——车站{POP16}{COMMA16}出口
-STR_1339    :{BLACK}暂无测试结果…
+STR_1339    :{BLACK}暂无测试结果……
 STR_1340    :{WINDOW_COLOUR_2}最高速度：{BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}乘坐时间：{BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
@@ -750,8 +750,8 @@ STR_1357    :{WINDOW_COLOUR_2}杆洞次数：{BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}总失重时长：{BLACK}{COMMA2DP32}秒
 STR_1359    :{WINDOW_COLOUR_2}等待时长：{BLACK}{COMMA16}分钟
 STR_1360    :{WINDOW_COLOUR_2}等待时长：{BLACK}{COMMA16}分钟
-STR_1361    :不能改变速度…
-STR_1362    :不能改变发车速度…
+STR_1361    :不能改变速度……
+STR_1362    :不能改变发车速度……
 STR_1363    :太高了！无法支撑！
 STR_1364    :无法再扩展轨道支撑！
 STR_1365    :直线翻滚（向左）
@@ -775,8 +775,8 @@ STR_1382    :曲面提升坡（向右）
 STR_1383    :四分之一回环
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :其他轨道选项
-STR_1386    :特殊…
-STR_1387    :无法改变土地类型…
+STR_1386    :特殊……
+STR_1387    :无法改变土地类型……
 STR_1388    :{OUTLINE}{GREEN}+{CURRENCY}
 STR_1389    :{OUTLINE}{RED}-{CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -796,7 +796,7 @@ STR_1403    :建造或移动游乐设施出口
 STR_1404    :旋转 90°
 STR_1405    :镜像
 STR_1406    :启用/弃用 景物（如果设计附带景物）
-STR_1407    :{WINDOW_COLOUR_2}建造这个…
+STR_1407    :{WINDOW_COLOUR_2}建造这个……
 STR_1408    :{WINDOW_COLOUR_2}费用：{BLACK}{CURRENCY}
 STR_1409    :出口/入口
 STR_1410    :垂直高塔
@@ -843,7 +843,7 @@ STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}（{STRI
 STR_1451    :{STRINGID}{NEWLINE}（{STRINGID}）
 STR_1452    :游客命名
 STR_1453    :请输入这名游客的姓名:
-STR_1454    :不能命名该游客…
+STR_1454    :不能命名该游客……
 STR_1455    :无效的游客名字
 STR_1456    :{WINDOW_COLOUR_2}花费金额：{BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}钱包中金额：{BLACK}{CURRENCY2DP}
@@ -1040,7 +1040,7 @@ STR_1647    :
 STR_1648    :“救命！放我下来！”
 STR_1649    :“我没有现金了！”
 STR_1650    :“喔！一个新的设施正在建造中！”
-STR_1653    :“…现在我们在{STRINGID}上！”
+STR_1653    :“……现在我们在{STRINGID}上！”
 STR_1654    :{WINDOW_COLOUR_2}最近的想法：
 STR_1655    :在地上建造道路
 STR_1656    :建造桥梁或隧道道路
@@ -1091,7 +1091,7 @@ STR_1700    :雇佣新的清洁工人
 STR_1701    :雇佣新的维修人员
 STR_1702    :雇佣新的安保人员
 STR_1703    :雇佣新的表演人员
-STR_1704    :不能雇佣新工作人员…
+STR_1704    :不能雇佣新工作人员……
 STR_1705    :解雇该员工
 STR_1706    :移动该人物到新的位置
 STR_1707    :游戏里的员工过多
@@ -1104,18 +1104,18 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}灌溉花园
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}清空垃圾桶
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}修剪草地
 STR_1716    :无效的游乐园名称
-STR_1717    :不能重命名游乐园…
+STR_1717    :不能重命名游乐园……
 STR_1718    :游乐园名称
 STR_1719    :请输入游乐园的名称：
 STR_1720    :命名游乐园
 STR_1721    :游乐园已关闭
 STR_1722    :游乐园开放中
-STR_1723    :不能开放游乐园…
-STR_1724    :不能关闭游乐园…
-STR_1725    :不能购买地块…
+STR_1723    :不能开放游乐园……
+STR_1724    :不能关闭游乐园……
+STR_1725    :不能购买地块……
 STR_1726    :地块不供购买！
 STR_1727    :建筑权不供购买！
-STR_1728    :不能在此购买建权…
+STR_1728    :不能在此购买建权……
 STR_1729    :非游乐园所属地块！
 STR_1730    :{RED}已关闭
 STR_1731    :{WHITE}{STRINGID}——- 
@@ -1124,18 +1124,18 @@ STR_1733    :模式
 STR_1734    :{WINDOW_COLOUR_2}圈数：
 STR_1735    :每次循环的圈数
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :不能更改圈数…
+STR_1738    :不能更改圈数……
 STR_1739    :游客{INT32}赢得本比赛
 STR_1740    :{STRINGID}赢得本比赛
 STR_1741    :尚未建造！
 STR_1742    :{WINDOW_COLOUR_2}设施最大载客量：
 STR_1743    :该游乐设施同时最多可以乘坐的乘客数量
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1746    :不能更改…
+STR_1746    :不能更改……
 STR_1747    :{WINDOW_COLOUR_2}时间限制：
 STR_1748    :此游乐设施的游玩时间限制
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :不能更改此游乐设施的游玩时间限制…
+STR_1751    :不能更改此游乐设施的游玩时间限制……
 STR_1752    :显示园区内游客名单
 STR_1753    :显示园区内游客汇总名单
 STR_1754    :{BLACK}{COMMA32}名游客
@@ -1152,7 +1152,7 @@ STR_1764    :漩涡
 STR_1765    :即时拍照区域
 STR_1766    :反向转盘
 STR_1767    :旋转隧道
-STR_1768    :不能改变摇摆次数…
+STR_1768    :不能改变摇摆次数……
 STR_1769    :{WINDOW_COLOUR_2}摇摆次数：
 STR_1770    :完整摇摆次数
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1191,7 +1191,7 @@ STR_1807    :控制设备故障
 STR_1808    :{WINDOW_COLOUR_2}上次故障原因：{BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}本次故障原因：{OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}正在搬运：
-STR_1811    :不能建在这里…
+STR_1811    :不能建在这里……
 STR_1812    :{BLACK}{STRINGID}
 STR_1813    :其他物体
 STR_1814    :动作
@@ -1248,7 +1248,7 @@ STR_1864    :位维修人员
 STR_1865    :位安保警卫
 STR_1866    :位表演人员
 STR_1867    :{BLACK}{COMMA32} {STRINGID}
-STR_1868    :不能改变旋转次数…
+STR_1868    :不能改变旋转次数……
 STR_1869    :{WINDOW_COLOUR_2}旋转次数：
 STR_1870    :完整旋转次数
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1301,7 +1301,7 @@ STR_1920    :不能偿还贷款！
 STR_1921    :开始新游戏
 STR_1922    :继续已保存的游戏
 STR_1924    :退出游戏
-STR_1925    :不能放置人物于此…
+STR_1925    :不能放置人物于此……
 STR_1927    :{YELLOW}{STRINGID}发生故障了
 STR_1928    :{RED}{STRINGID}撞毁了！
 STR_1929    :{RED}{STRINGID}依然未修复好{NEWLINE}请检查维修人员位置所在，或考虑以更好的方法管理他们
@@ -1334,7 +1334,7 @@ STR_1955    :{WINDOW_COLOUR_2}圈数：
 STR_1956    :每次运转游乐设施的圈数
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :不能改变圈数…
+STR_1959    :不能改变圈数……
 STR_1960    :{WINDOW_COLOUR_2}气球价格：
 STR_1961    :{WINDOW_COLOUR_2}毛绒公仔价格：
 STR_1962    :{WINDOW_COLOUR_2}游乐园地图价格：
@@ -1608,7 +1608,7 @@ STR_2244    :9月
 STR_2245    :10月
 STR_2246    :11月
 STR_2247    :12月
-STR_2248    :不能移除游乐设施/店铺…
+STR_2248    :不能移除游乐设施/店铺……
 STR_2249    :{BABYBLUE}全新游乐设施/店铺可供使用：{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}全新景物/主题景物可供使用：{NEWLINE}{STRINGID}
 STR_2251    :只可以在道路上建造！
@@ -1830,7 +1830,7 @@ STR_2483    :{WINDOW_COLOUR_2}每周营利：{BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}每周营利：{RED}{CURRENCY2DP}
 STR_2487    :显示游客的“真实”姓名
 STR_2488    :在游客“真实”姓名和游客编号之间切换
-STR_2489    :快捷键…
+STR_2489    :快捷键……
 STR_2490    :键盘快捷键
 STR_2491    :重置快捷键
 STR_2492    :重置所有快捷键设置
@@ -2056,7 +2056,7 @@ STR_2852    :轨道设计已经安装过了
 STR_2853    :被当地政府禁止！
 STR_2854    :{RED}游客无法到达{STRINGID}的入口！{NEWLINE}请建造道路连接入口
 STR_2855    :{RED}{STRINGID}的出口没有道路连接！{NEWLINE}请建造道路连接出口
-STR_2858    :不能开始实行营销计划…
+STR_2858    :不能开始实行营销计划……
 STR_2861    :{WINDOW_COLOUR_2}授权至 Infogrames Interactive Inc.
 STR_2971    :主要配色主题
 STR_2972    :额外配色主题1
@@ -2066,12 +2066,12 @@ STR_2975    :选取游乐设施的配色选项来修改
 STR_2976    :将指定区域使用目前选择的配色主题
 STR_2977    :员工命名
 STR_2978    :请输入该员工的新名字：
-STR_2979    :不能更改该员工姓名…
+STR_2979    :不能更改该员工姓名……
 STR_2980    :游戏中有过多的横幅
 STR_2981    :{RED}-游客止步—
 STR_2982    :横幅内容
 STR_2983    :请输入新的内容：
-STR_2984    :不能设置新的横幅内容…
+STR_2984    :不能设置新的横幅内容……
 STR_2985    :横幅
 STR_2986    :修改横幅内容
 STR_2987    :设置当前横幅为“游客止步”
@@ -2097,7 +2097,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :无法加载文件…
+STR_3010    :无法加载文件……
 STR_3011    :文件包含无效数据
 STR_3045    :选择要播放的音乐风格：
 STR_3047    :当地政府禁止拆除或修改此游乐设施
@@ -2107,7 +2107,7 @@ STR_3050    :高尔夫球洞B
 STR_3051    :高尔夫球洞C
 STR_3052    :高尔夫球洞D
 STR_3053    :高尔夫球洞E
-STR_3054    :加载中…
+STR_3054    :加载中……
 STR_3058    :砖墙
 STR_3059    :树篱
 STR_3060    :冰砖墙
@@ -2140,7 +2140,7 @@ STR_3099    :选择颜色
 STR_3100    :选择第二颜色
 STR_3101    :选择第三颜色
 STR_3102    :将地形的景物重新上色
-STR_3103    :不能重新上色这个对象…
+STR_3103    :不能重新上色这个对象……
 STR_3104    :列出游乐设施
 STR_3105    :列出商店及摊贩
 STR_3106    :列出访客信息中心或其他游客设施
@@ -2154,7 +2154,7 @@ STR_3113    :选择另一个设计
 STR_3114    :返回选择设计窗口
 STR_3115    :保存轨道设计
 STR_3116    :保存轨道设计（在测试完结及测试数据生成完毕前不可用）
-STR_3117    :{BLACK}调用维修人员中…
+STR_3117    :{BLACK}调用维修人员中……
 STR_3118    :{BLACK}{STRINGID}正在前往这个游乐设施
 STR_3119    :{BLACK}{STRINGID}正在维修这个游乐设施
 STR_3120    :定位最近的空闲或正在维修的维修人员
@@ -2169,7 +2169,7 @@ STR_3128    :保存轨道设计
 STR_3129    :保存轨道设计及周边景物
 STR_3130    :保存
 STR_3131    :取消
-STR_3132    :{BLACK}点击选择景物，以便保存于轨道设计内…
+STR_3132    :{BLACK}点击选择景物，以便保存于轨道设计内……
 STR_3133    :无法于斜坡上建造此对象
 STR_3134    :{RED}（设计中含有不可用的景物）
 STR_3135    :{RED}（车辆款式不可用——游乐设施的性能可能会有影响）
@@ -2310,7 +2310,7 @@ STR_3290    :又冷又潮湿
 STR_3291    :温暖
 STR_3292    :又热又干燥
 STR_3293    :寒冷
-STR_3294    :更改…
+STR_3294    :更改……
 STR_3295    :更改游乐园名称
 STR_3296    :更改剧情名称
 STR_3297    :更改游乐园/剧情简介
@@ -2336,12 +2336,12 @@ STR_3316    :请输入游乐园/剧情简介：
 STR_3317    :暂无简介
 STR_3318    :选择这个剧情要在哪个组别中显示
 STR_3319    :{WINDOW_COLOUR_2}剧情组别：
-STR_3320    :无法保存剧情文件…
+STR_3320    :无法保存剧情文件……
 STR_3321    :成功安装新对象
 STR_3322    :{WINDOW_COLOUR_2}目标：{BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}（暂无图片）
 STR_3327    :尚未设置游客的开始步行位置
-STR_3328    :不能进行下一步编辑…
+STR_3328    :不能进行下一步编辑……
 STR_3329    :尚未建造游乐园入口
 STR_3330    :游乐园必需有一些己拥有的土地
 STR_3331    :由地图边缘到游乐园入口的道路尚未连接好，或者太复杂——这些道路必需一格宽，并尽量减少交汇或绕弯
@@ -2358,19 +2358,19 @@ STR_3342    :剧情编辑器
 STR_3343    :将游戏存档转换成剧情关卡
 STR_3344    :轨道设计工具
 STR_3345    :轨道设计管理工具
-STR_3346    :不能保存轨道设计…
+STR_3346    :不能保存轨道设计……
 STR_3347    :游乐设施过于庞大，包含太多要素或者景物过于分散
 STR_3348    :重命名
 STR_3349    :删除
 STR_3350    :轨道设计命名
 STR_3351    :请输入此轨道设计的新名称：
-STR_3352    :不能重命名此轨道设计…
+STR_3352    :不能重命名此轨道设计……
 STR_3353    :新名称包含不可用的字符
 STR_3354    :已有相同名称的文件，或文件有写入保护
 STR_3355    :文件有写入保护或被锁定
 STR_3356    :删除文件
 STR_3357    :{WINDOW_COLOUR_2}你确定要永久删除{STRING}吗？
-STR_3358    :无法删除轨道设计…
+STR_3358    :无法删除轨道设计……
 STR_3359    :{BLACK}该设施没有已设计好的轨道设计
 STR_3360    :警告！
 STR_3361    :该设施有太多设计——列表不会完全列出
@@ -2386,7 +2386,7 @@ STR_3372    :{BLACK}= 取款机
 STR_3373    :{BLACK}= 厕所
 STR_3374    :警告：选取了太多对象！
 STR_3375    :不是在此景观组别中的所有对象都能够选取
-STR_3376    :安装新的…
+STR_3376    :安装新的……
 STR_3377    :安装新的轨道设计文件
 STR_3378    :安装
 STR_3379    :取消
@@ -2395,10 +2395,10 @@ STR_3381    :不兼容的文件或含有无效数据
 STR_3382    :复制文件失败
 STR_3383    :输入这个轨道设计的新名称
 STR_3384    :已有相同名称的轨道设计——请输入这个轨道设计的新名称：
-STR_3389    :无法选择额外的景观对象…
+STR_3389    :无法选择额外的景观对象……
 STR_3390    :选取了太多对象
 STR_3437    :在地形中清理大范围内的景物
-STR_3438    :无法移除这里的所有景物…
+STR_3438    :无法移除这里的所有景物……
 STR_3439    :移除景物
 STR_3445    :设置巡逻范围
 STR_3446    :取消巡逻范围
@@ -2436,7 +2436,7 @@ STR_5149    :显示作弊选项
 STR_5150    :开启调试工具
 STR_5151    :,
 STR_5152    :.
-STR_5153    :编辑配色主题…
+STR_5153    :编辑配色主题……
 STR_5154    :使用硬件渲染
 STR_5155    :允许测试未完成的轨道设计
 STR_5156    :允许测试大多数轨道设计，即使那些轨道未完成的设计。但这不适用于区块制动模式。
@@ -2797,12 +2797,12 @@ STR_5628    :游戏出处
 STR_5629    :困难度
 STR_5630    :允许逐步解锁
 STR_5631    :原版DLC游乐园
-STR_5632    :修建你自己的…
+STR_5632    :修建你自己的……
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}花费：{BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}命令运行：{BLACK}{COMMA16}
-STR_5637    :不能做此行为…
+STR_5637    :不能做此行为……
 STR_5638    :权限不够
 STR_5639    :显示玩家列表
 STR_5640    :权限组管理
@@ -2868,9 +2868,9 @@ STR_5738    :已关闭，{COMMA16}个游客仍在此游乐设施上
 STR_5739    :{WINDOW_COLOUR_2}此游乐设施上的游客：{BLACK}{COMMA16}
 STR_5740    :永不结束的市场推广计划
 STR_5741    :推广计划将不断进行下去
-STR_5742    :认证中…
-STR_5743    :连接中…
-STR_5744    :解析中…
+STR_5742    :认证中……
+STR_5743    :连接中……
+STR_5744    :解析中……
 STR_5745    :检测到网络不同步
 STR_5746    :已断线
 STR_5747    :已断线：{STRING}
@@ -2885,7 +2885,7 @@ STR_5755    :不正确的游戏版本（服务器版本为{STRING}）
 STR_5756    :密码错误
 STR_5757    :服务器人数已满
 STR_5758    :{OUTLINE}{GREEN}{STRING}已加入游戏
-STR_5759    :下载地图中 …（{INT32} / {INT32}）KB
+STR_5759    :下载地图中 ……（{INT32} / {INT32}）KB
 STR_5760    :港币（HK$）
 STR_5761    :新台币（NT$）
 STR_5762    :人民币（CN¥）
@@ -2911,7 +2911,7 @@ STR_5781    :运营成本：未知
 STR_5782    :你已经连接到服务器，请按“{STRING}”开始聊天。
 STR_5783    :{WINDOW_COLOUR_2}剧情未解锁
 STR_5784    :{BLACK}完成稍早的剧情来解锁此剧情。
-STR_5785    :不能重命名权限组…
+STR_5785    :不能重命名权限组……
 STR_5786    :不正确的组名称
 STR_5787    :{COMMA32}玩家在线
 STR_5788    :默认检查的时间间隔：
@@ -3112,7 +3112,7 @@ STR_5987    :无法建立新文件夹
 STR_5988    :已经没有可出售的土地使用权
 STR_5989    :已经没有可出售的土地建造权
 STR_5990    :已经没有可出售的土地使用权或建造权
-STR_5991    :无法粘贴元素…
+STR_5991    :无法粘贴元素……
 STR_5992    :地图元素已达上限
 STR_5993    :复制所选元素
 STR_5994    :粘贴所选元素
@@ -3252,7 +3252,7 @@ STR_6136    :服务器发送了无效的请求
 STR_6137    :开源过山车大亨2（OpenRCT2），一款免费且开源的对于过山车大亨2再创作的重置扩展游戏。
 STR_6138    :开源过山车大亨2（OpenRCT2）是一款由许多作者共同开发的作品，完整的列表可在上方“贡献者”按钮找到。请访问 http://github.com/OpenRCT2/OpenRCT2 获取更多信息
 STR_6139    :所有的产品及公司名称均属其拥有者所有。使用那些名称并不代表本项目与其有任何联系或认可。
-STR_6140    :更新日志…
+STR_6140    :更新日志……
 STR_6141    :过山车大亨1样式的底部工具栏
 STR_6142    :{WINDOW_COLOUR_2}轨道名称：{BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}游乐设施类型：{BLACK}{STRINGID}
@@ -3260,7 +3260,7 @@ STR_6144    :显示无效块
 STR_6145    :设置加速器的速度限制
 STR_6146    :启用所有可渲染的轨道部件
 STR_6147    :在建造窗口中启用该设备类型所能使用的所有轨道部件，无论车辆是否支持这些部件。
-STR_6148    :正在连接主服务器…
+STR_6148    :正在连接主服务器……
 STR_6149    :无法连接主服务器
 STR_6150    :主服务器返回无效的响应信息（无 JSON 数字）
 STR_6151    :主服务器没能返回服务
@@ -3306,7 +3306,7 @@ STR_6218    :OpenRCT2官方
 STR_6219    :高亮道路相关物
 STR_6220    :使之可用
 STR_6221    :将游乐设施的已知入口或出口位置设置为当前选定的地块。每个站台只能拥有一个入口或出口。
-STR_6222    :无法在此放置游客入口…
+STR_6222    :无法在此放置游客入口……
 STR_6223    :必须在游乐园边界外！
 STR_6224    :{STRING}放置一个游客入口。
 STR_6225    :不支持OpenGL渲染
@@ -3328,7 +3328,7 @@ STR_6240    :纵横切割
 STR_6241    :选择面积
 STR_6242    :清空选项
 STR_6243    :翻新游乐设施，{NEWLINE}让其焕然一新
-STR_6244    :无法翻新游乐设施…
+STR_6244    :无法翻新游乐设施……
 STR_6245    :无需翻新游乐设施
 STR_6246    :翻新
 STR_6247    :翻新游乐设施/景点
@@ -3355,7 +3355,7 @@ STR_6270    :地表
 STR_6271    :地表边缘
 STR_6272    :站台
 STR_6273    :音乐
-STR_6274    :无法设置配色主题…
+STR_6274    :无法设置配色主题……
 STR_6275    :{WINDOW_COLOUR_2}车站类型：
 STR_6276    :{RED}{STRINGID}有游客被困住了，这可能是因为无效的设施类型或者运行模式
 STR_6277    :车站编号：{BLACK}{STRINGID}
@@ -3398,7 +3398,7 @@ STR_6322    :{WINDOW_COLOUR_2}实体编号：{BLACK}{INT32}
 STR_6323    :模拟中
 STR_6324    :模拟
 STR_6325    :模拟设施/景点
-STR_6326    :无法模拟{STRINGID}…
+STR_6326    :无法模拟{STRINGID}……
 STR_6327    :大型截图使用透明背景
 STR_6328    :开启此选项，大型截图将会使用透明的背景而不是默认的黑色背景
 STR_6329    :{STRING}{STRINGID}
@@ -3458,8 +3458,8 @@ STR_6383    :打开下载页
 STR_6384    :雪
 STR_6385    :大雪
 STR_6386    :大暴雪
-STR_6387    :不能更低了…
-STR_6388    :不能更高了…
+STR_6387    :不能更低了……
+STR_6388    :不能更高了……
 STR_6389    :无效的许可
 STR_6390    :OpenRCT2需要原版过山车大亨2的文件才能工作，请选择您的过山车大亨2安装目录
 STR_6391    :请选择您的过山车大亨2安装目录
@@ -3525,8 +3525,8 @@ STR_6450    :{BLACK}“{STRING}”
 STR_6451    :{BLACK}“{STRING}”——{STRING}
 STR_6452    :{WINDOW_COLOUR_2}销售：{BLACK}{STRING}
 STR_6453    :拷贝版本信息
-STR_6454    :不能重命名横幅…
-STR_6455    :不能重命名标志…
+STR_6454    :不能重命名横幅……
+STR_6455    :不能重命名标志……
 STR_6456    :大型截图
 STR_6457    :在GitHub上反馈BUG（英文）
 STR_6458    :在主屏幕跟随
@@ -3613,7 +3613,7 @@ STR_6539    :关闭制动器
 STR_6540    :{WINDOW_COLOUR_2}特别感谢以下公司允许他们的肖像：
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group，Josef Wiegand GmbH & Co. KG
 STR_6542    :贡献者
-STR_6543    :贡献者…
+STR_6543    :贡献者……
 STR_6544    :贷款不得为负！
 STR_6545    :使用RCT1的贷款汇率
 STR_6546    :使用过山车大亨1的贷款利率算法，此算法使用固定的1.33%作为贷款利率。
@@ -3688,7 +3688,7 @@ STR_6614    :无法更改公园门票
 STR_6615    :这个位置上的轨道下需要有水
 STR_6616    :对该工作人员类型无效
 STR_6617    :无法将地块与自身互换
-STR_6618    :无法限制或取消限制对象…
+STR_6618    :无法限制或取消限制对象……
 STR_6619    :无法限制对象类型！
 STR_6620    :未找到对象！
 STR_6621    :限制
@@ -3698,6 +3698,16 @@ STR_6624    :地块检查器：对元素进行排序
 STR_6625    :颜色无效
 STR_6626    :动画是反向的
 STR_6627    :轨道速度过快！
+STR_6628    :只能放置在路径边缘！
+STR_6629    :将工具栏按钮水平居中对齐
+STR_6630    :此设置将使工具栏按钮水平排列在屏幕中央。传统的对齐方式是将它们排列在左右两个角落。
+STR_6631    :加载中……
+STR_6632    :检查物品文件……
+STR_6633    :检查剧情文件……
+STR_6634    :检查轨道设计文件……
+STR_6635    :检查附加包……
+STR_6636    :检查开场动画……
+STR_6637    :加载开场动画……
 
 #############
 # Scenarios #
@@ -4290,87 +4300,87 @@ STR_DTLS    :建造遗失的六旗乐园游乐设施，或用自己的设计善�
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :非洲——非洲钻石矿
+STR_SCNR    :非洲矿山
 STR_PARK    :非洲矿山
 STR_DTLS    :你继承了一个废弃的钻石矿，并找到一个珍贵的钻石。你决定用那笔钱去建造一个世界闻名的主题乐园。
 
 <Africa - Oasis>
-STR_SCNR    :非洲——绿洲
+STR_SCNR    :海市蜃楼狂热
 STR_PARK    :海市蜃楼狂热
 STR_DTLS    :一个沙漠绿洲被发现了，它为游乐园提供了一个美丽的环境。游乐园已有绿洲运输。
 
 <Africa - Victoria Falls>
-STR_SCNR    :非洲——维多利亚瀑布
+STR_SCNR    :大河边缘
 STR_PARK    :大河边缘
 STR_DTLS    :当地建成了一个大坝，提供了丰富的，廉价的水电，用来运行一个公园。你需要用公园来获得很多的钱，用来偿还建造大坝的贷款。
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :南极——生态救援
+STR_SCNR    :冰冷冒险
 STR_PARK    :冰冷冒险
 STR_DTLS    :环境署已经把你碍眼的旧炼油厂改造成顶级生态的旅游胜地。土地便宜但贷款利息高。你可以卖掉旧建筑来赚钱。
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :亚洲——中国长城旅游业发展
+STR_SCNR    :中国长城
 STR_PARK    :中国长城
 STR_DTLS    :当局已决定在附近的土地上建造主题公园，以加强在长城周边的旅游业发展。
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :亚洲——日本填海工程
+STR_SCNR    :冲绳海岸
 STR_PARK    :冲绳海岸
 STR_DTLS    :一个现有的公园已经用完了空间。你唯一的选择是建立在海上，所以你采取了贷款。你的建筑的高度被地基和地震风险限制。
 
 <Asia - Maharaja Palace>
-STR_SCNR    :亚洲——迈索尔皇宫
+STR_SCNR    :迈索尔公园
 STR_PARK    :迈索尔公园
 STR_DTLS    :你被委托为当地人建造大型的娱乐设施。由王公的宫殿改建成一个游乐园。
 
 <Australasia - Ayers Rock>
-STR_SCNR    :大洋洲——艾尔斯岩
+STR_SCNR    :艾尔斯冒险
 STR_PARK    :艾尔斯冒险
 STR_DTLS    :作为文化意识计划的一部分，你要帮助土著人建立一个游乐园。你需要让大量的客人知道土著们具有独特的文化遗产。
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :大洋洲——海滩上的乐趣
+STR_SCNR    :海滩烧烤风
 STR_PARK    :海滩烧烤风
 STR_DTLS    :一个本地企业家的海滨游乐园已经破产。你已经经营了一个小游乐园，你要从建筑公司购买另一个游乐园。开发一个大联合游乐园。
 
 <Europe - European Cultural Festival>
-STR_SCNR    :欧洲——欧洲文化盛会
+STR_SCNR    :欧洲盛会
 STR_PARK    :欧洲盛会
 STR_DTLS    :你被安排接管一个欧洲文化游的景点，必须增加客人的数量，在目前的欧洲议会任期结束前支付加入欧盟的税款。
 
 <Europe - Renovation>
-STR_SCNR    :欧洲——翻新计划
+STR_SCNR    :来自灰烬
 STR_PARK    :来自灰烬
 STR_DTLS    :一个老公园年久失修。你获得一个欧盟的补助金，将这个被剥夺的地区归还给它昔日的荣耀！你需要整修公园并偿还补助金。
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :北美洲——极限夏威夷岛
+STR_SCNR    :积极威基基
 STR_PARK    :积极威基基
 STR_DTLS    :夏威夷的人们厌倦了冲浪，寻找更刺激的东西。你需要建立一个游乐园，以保持该地区的旅游评级。
 
 <North America - Grand Canyon>
-STR_SCNR    :北美洲——大峡谷
+STR_SCNR    :峡谷浩劫
 STR_PARK    :峡谷浩劫
 STR_DTLS    :你必须在有限的土地上建立一个游乐园，这里有自然财富——从美洲印第安人那里有机会购买邻近的土地。维持当地城镇的人口是你需要完成的目标。
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :北美——过山车天堂
+STR_SCNR    :过山车天堂
 STR_PARK    :过山车天堂
 STR_DTLS    :你是在休假想要利用这段时间改造城市公园的过山车的天堂一个成功的商业大亨。金钱是没有目标的！
 
 <South America - Inca Lost City>
-STR_SCNR    :南美洲——印加失落之城
+STR_SCNR    :失落之城
 STR_PARK    :失落之城
 STR_DTLS    :为了进一步促进当地旅游业的发展，你需要建设一个与周围环境相协调的公园。
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :南美洲——雨林高原
+STR_SCNR    :嬉闹雨林
 STR_PARK    :嬉闹雨林
 STR_DTLS    :空间是有限的宝贵的热带雨林——你必须尽可能多地塞进现有的结算，以提供一个可行的替代当地木材业。
 
 <South America - Rio Carnival>
-STR_SCNR    :南美洲——里约狂欢节
+STR_SCNR    :蜜糖面包海岸
 STR_PARK    :蜜糖面包海岸
 STR_DTLS    :你在里约附近的一个小公园，但银行已在你的贷款。你需要快速提高你的盈利能力来偿还这意想不到的债务。
 
@@ -4378,72 +4388,72 @@ STR_DTLS    :你在里约附近的一个小公园，但银行已在你的贷款�
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :黑暗时代——城堡 
+STR_SCNR    :悬崖城堡
 STR_PARK    :悬崖城堡
 STR_DTLS    :战斗的地方成员重新制定的社会是相当严重的他们的爱好。他们委托你在悬崖边的城堡的场地建设一个黑暗时代的主题公园的工作。
 
 <Dark Age - Robin Hood>
-STR_SCNR    :黑暗时代——罗宾汉
+STR_SCNR    :舍伍德森林
 STR_PARK    :舍伍德森林
 STR_DTLS    :为了把财富从富人中解放出来并分发给有需要的人，你和你的快乐的人决定在舍伍德森林里建立一个主题公园。
 
 <Future - First Encounters>
-STR_SCNR    :未来时代——邂逅
+STR_SCNR    :外星盛会
 STR_PARK    :外星盛会
 STR_DTLS    :生命在一个遥远的星球上被发现，建造一个外星人主题公园，以现金在前所未有的兴趣浪潮。
 
 <Future - Future World>
-STR_SCNR    :未来时代——未来世界
+STR_SCNR    :双子城
 STR_PARK    :双子城
 STR_DTLS    :炫耀你的创造性的，乌托邦式的未来愿景——想出一个未来的公园设计，结合国家的最先进的景点。
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :神话时代——动画电影摄影棚
+STR_SCNR    :古怪的动画电影
 STR_PARK    :古怪的动画电影
 STR_DTLS    :你已经被赋予了运行和改进现有的主题公园的任务，它是建立在一个旧的电影集上的。建立一个向创业的定格动画人第一次带来了神秘的生物生活在银幕上。
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :神话时代——文明的摇篮
+STR_SCNR    :神话狂热
 STR_PARK    :神话狂热
 STR_DTLS    :你拥有一个特定的考古价值的岛屿。你已经决定采用基于地区丰富的神话遗产建设主题公园的保护基金。
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :史前时代——小行星之后
+STR_SCNR    :陨石坑大战
 STR_PARK    :陨石坑大战
 STR_DTLS    :你拥有一个布满灰尘的老流星陨石坑。在真正的创业精神，你已经决定建造一个小行星主题公园，并转换你的看似毫无价值的土地变成一个相当大的财富。
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :史前时代——游历侏罗纪
+STR_SCNR    :过山龙
 STR_PARK    :过山龙
 STR_DTLS    :你被赋予了建设一个侏罗纪时代主题公园的任务。为了优化您的游客访问异国情调的植物和动物的展品，你将需要建立乘坐去到山谷。
 
 <Prehistoric - Stone Age>
-STR_SCNR    :史前时代——石器时代
+STR_SCNR    :洛基漫步
 STR_PARK    :洛基漫步
 STR_DTLS    :为了阻止公路的开发和维护神秘的古老的石头圈，你将需要建造一个石器时代主题公园，并把利润。然而，吸引游客可能会构成挑战，因为地形有点荒凉。
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :咆哮20年代——监狱岛
+STR_SCNR    :恶魔岛
 STR_PARK    :恶魔岛
 STR_DTLS    :臭名昭著的监狱岛的人口曾经充满了走私犯和诈骗犯——现在出售。你已经决定把它变成一个顶级的旅游景点，钱是没有对象
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :咆哮20年代——施耐德杯
+STR_SCNR    :施耐德海岸
 STR_PARK    :施耐德海岸
 STR_DTLS    :你的祖父的施耐德杯胜利第七十五周年是几年来。你要尊重自己的成就，通过构建一个基于著名的水上飞机比赛主题公园。
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :咆哮20年代——摩天大楼
+STR_SCNR    :大都会
 STR_PARK    :大都会
 STR_DTLS    :你拥有一个空的地段，靠近城镇的低矮的部分。把最贵的城市属性，建立一个主题公园的启发，摩天大楼高耸的建筑装饰艺术的年代。
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :摇滚时代——花之力
+STR_SCNR    :伍德斯托克
 STR_PARK    :伍德斯托克
 STR_DTLS    :一个大型的年度音乐节在你的土地上。打造一个主题公园，保持自由奔放的观众的娱乐。
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :摇滚时代——摇滚
+STR_SCNR    :摇滚复兴
 STR_PARK    :摇滚复兴
 STR_DTLS    :这个老龄化的主题公园已经看到了更好的日子。帮助主人给它一个复古摇滚的改造，把这个地方变成一个成功的地点。
 
@@ -4512,7 +4522,7 @@ STR_DTLS    :哇奥！看看这这个时间机器吧我们带到哪里去了！�
 <Transformation>
 STR_SCNR    :做出改变
 STR_PARK    :做出改变
-STR_DTLS    :我们会希望你可以…{NEWLINE}作者：Fossil
+STR_DTLS    :我们会希望你可以……{NEWLINE}作者：Fossil
 
 <Urbis Incognitus>
 STR_SCNR    :世外桃源
@@ -4546,7 +4556,7 @@ STR_DTLS    :妈咪！爸比！我想去呜呜小镇！{NEWLINE}作者：Fossil
 <Dragon Islands>
 STR_SCNR    :龙之岛
 STR_PARK    :龙之岛
-STR_DTLS    :龙之岛？我可不确定我会想去那…{NEWLINE}作者：Fossil
+STR_DTLS    :龙之岛？我可不确定我会想去那……{NEWLINE}作者：Fossil
 
 <Kiddy Karnival II>
 STR_SCNR    :基迪嘉年华2

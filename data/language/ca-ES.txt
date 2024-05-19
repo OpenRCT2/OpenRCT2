@@ -4280,87 +4280,87 @@ STR_DTLS    :Construïu les atraccions Six Flags que falten, o creeu els vostres
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Àfrica - Mines de diamants
+STR_SCNR    :Mines d’Àfrica
 STR_PARK    :Mines d’Àfrica
 STR_DTLS    :Heu heretat una mina de diamants que ja no s’explota, on hi heu trobat un diamant valuós. Voleu invertir els diners del diamant per tal de construir un parc temàtic conegut a tot el món.
 
 <Africa - Oasis>
-STR_SCNR    :Àfrica - Oasi
+STR_SCNR    :La follia dels miratges
 STR_PARK    :La follia dels miratges
 STR_DTLS    :S’ha descobert un oasi que seria una bona localització per a fer-hi un parc. El transport fins l’oasi ja està preparat.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Àfrica - Les cascades Victòria
+STR_SCNR    :A la vora
 STR_PARK    :A la vora
 STR_DTLS    :S’ha construït una presa que ofereix energia hidroelèctrica barata i abundant per a fer funcionar un parc. Haureu d’obtenir una valoració del parc prou alta per a poder retornar el préstec de la presa.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antàrtida - Rescat ecològic
+STR_SCNR    :Aventures gèlides
 STR_PARK    :Aventures gèlides
 STR_DTLS    :L’agència mediambiental us ha delegat la tasca de transformar aquesta monstruositat ecològica en forma de refineria de petroli en una atracció turística capdavantera. El terreny és barat però el tipus d’interès del préstec és alt. Podeu vendre els vells edificis per a treure’n profit.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Àsia - Millores turístiques a la Gran Muralla
+STR_SCNR    :La Gran Muralla xinesa
 STR_PARK    :La Gran Muralla xinesa
 STR_DTLS    :Les autoritats han decidit millorar les instal·lacions turístiques al voltant de la Gran Muralla construint-hi un parc temàtic. I no us preocupeu pels diners!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Àsia - Recuperació de la costa japonesa
+STR_SCNR    :Costa d’Okinawa
 STR_PARK    :Costa d’Okinawa
 STR_DTLS    :Un parc s’ha quedat sense espai. L’única opció és construir mar endins, i per això heu demanat un préstec. Les restriccions d’alçada dels edificis es deuen al tipus de fonaments i el risc de terratrèmols.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Àsia - Palau del maharajà
+STR_SCNR    :Parc del maharajà
 STR_PARK    :Parc del maharajà
 STR_DTLS    :El maharajà us ha destinat aquí per tal que proporcioneu entreteniment a l’enorme població local. Construïu un parc inspirat pel palau del maharajà.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Austràlia - Uluru
+STR_SCNR    :L’aventura Uluru
 STR_PARK    :L’aventura Uluru
 STR_DTLS    :Esteu ajudant els aborígens a construir un parc dins del programa de conscienciació cultural. Necessiteu un gran nombre de visitants per a instruir-los en l’herència cultural única de la població indígena.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Austràlia - Diversió a la platja
+STR_SCNR    :L’explosió de la barbacoa de la platja
 STR_PARK    :L’explosió de la barbacoa de la platja
 STR_DTLS    :El parc marítim d’un emprenedor local ha fet fallida. Ja teniu un parc petit que funciona, però ara acabeu de comprar l’altre parc. Desenvolupeu un únic parc combinat.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europa - Festival cultural europeu
+STR_SCNR    :Extravagància europea
 STR_PARK    :Extravagància europea
 STR_DTLS    :Us han dut per a dirigir una atracció cultural europea per als turistes i heu d’augmentar el nombre de visitants per tal de poder retornar la subvenció de la UE a finals de l’actual mandat del parlament europeu.
 
 <Europe - Renovation>
-STR_SCNR    :Europa - Renovació
+STR_SCNR    :Des de les cendres
 STR_PARK    :Des de les cendres
 STR_DTLS    :Aquest parc vell està en mal estat. Heu guanyat una subvenció per a retornar aquesta àrea desafavorida a la seva antiga glòria! Heu de renovar el parc i retornar la subvenció.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Nord-amèrica - Illa hawaiana llunyana
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :La gent de Hawaii s’avorreixen només fent surf i busquen alguna cosa més intensa. Heu de construir un parc amb això al cap per tal de mantenir un interès turístic a la zona prou elevat.
 
 <North America - Grand Canyon>
-STR_SCNR    :Nord-amèrica - El Gran Canyó
+STR_SCNR    :Calamitats del Canyó
 STR_PARK    :Calamitats del Canyó
 STR_DTLS    :Heu de construir un parc en el terreny limitat en les dues bandes d’aquest tresor natural. Teniu l’oportunitat de comprar terrenys adjacents dels nadius indis americans. Heu de completar l’objectiu per a alimentar els habitants de la població local.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Nord-amèrica - Rollercoaster Heaven
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :Sou un magnat de les finances competent en període sabàtic que desitja usar el seu temps en transformar el parc de la ciutat en el «Rollercoaster Heaven». I els diners no importen!
 
 <South America - Inca Lost City>
-STR_SCNR    :Sud-amèrica - La ciutat inca perduda
+STR_SCNR    :La fundació de la ciutat perduda
 STR_PARK    :La fundació de la ciutat perduda
 STR_DTLS    :Per a augmentar el turisme local heu de construir un parc que s’adigui amb els seus voltants.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Sud-amèrica - L’altiplà de la selva tropical
+STR_SCNR    :Diversió a la selva
 STR_PARK    :Diversió a la selva
 STR_DTLS    :En aquesta preciosa selva tropical, l’espai està limitat. Heu d’amuntegar tot el que pugueu en els llocs sense arbres, per tal de que la indústria local de la fusta continuï sent una alternativa viable al turisme.
 
 <South America - Rio Carnival>
-STR_SCNR    :Sud-amèrica - Carnaval de Rio
+STR_SCNR    :Costes del Pão de Açúcar
 STR_PARK    :Costes del Pão de Açúcar
 STR_DTLS    :Dirigiu un petit parc prop de Rio, però el banc demana que se li pagui el préstec. Necessiteu augmentar ràpidament la vostra capacitat recaptatòria per a retornar aquest deute inesperat.
 
@@ -4368,72 +4368,72 @@ STR_DTLS    :Dirigiu un petit parc prop de Rio, però el banc demana que se li p
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Medieval - Castell
+STR_SCNR    :Castell del penya-segat
 STR_PARK    :Castell del penya-segat
 STR_DTLS    :Els membres locals de la societat de representacions de batalles es prenen la seva afició seriosament. Us han confiat la tasca de construir un parc temàtic de l’edat mitjana on hi ha el castell de Cliffside.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Medieval - Robin Hood
+STR_SCNR    :El bosc de Sherwood
 STR_PARK    :El bosc de Sherwood
 STR_DTLS    :Amb la intenció de robar als rics i repartir el que aconseguiu entre els pobres, heu decidit que, amb l’ajuda dels vostres «homes feliços», construireu un parc temàtic al bosc de Sherwood.
 
 <Future - First Encounters>
-STR_SCNR    :Futurístic - Primers encontres
+STR_SCNR    :Extravagància Extraterrestre
 STR_PARK    :Extravagància Extraterrestre
 STR_DTLS    :S’ha descobert vida en un planeta llunyà. Construïu un parc de temàtica alienígena per a recaptar els diners d’aquesta onada d’interès sense precedent.
 
 <Future - Future World>
-STR_SCNR    :Futurístic - Món del futur
+STR_SCNR    :Ciutat Gèmini
 STR_PARK    :Ciutat Gèmini
 STR_DTLS    :Mostreu la vostra inventiva visió utòpica del futur. Aixequeu un parc amb dissenys futurístics que incorpori atraccions avantguardistes.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mitològic - Plató d’animatrònics
+STR_SCNR    :Relíquies animatròniques
 STR_PARK    :Relíquies animatròniques
 STR_DTLS    :Us han encomanat la tasca de fer funcionar i millorar un parc temàtic ja existent que s’ha construït en un vell plató de cinema. Construïu un tribut als animadors pioners de l’stop-motion que van portar per primer cop criatures mítiques a la vida a la gran pantalla.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mitològic - El bressol de la civilització
+STR_SCNR    :Bogeria mitològica
 STR_PARK    :Bogeria mitològica
 STR_DTLS    :Sou el propietari d’una illa amb un important valor arqueològic. Heu decidit finançar la seva preservació construint-hi un parc temàtic basat en la rica herència mitològica de l’àrea.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prehistòric - Després de l’asteroide
+STR_SCNR    :La matança del cràter
 STR_PARK    :La matança del cràter
 STR_DTLS    :Sou el propietari d’un vell cràter polsegós causat per un meteorit. Amb el vertader esperit emprenedor, heu decidit construir un parc amb la temàtica de l’asteroide i convertir aquestes terres aparentment poc valuoses  en una fortuna considerable.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prehistòric - Safari juràssic
+STR_SCNR    :Atracciósaurus
 STR_PARK    :Atracciósaurus
 STR_DTLS    :Us han assignat la tasca de construir un parc de l’era juràssica. Per tal d’optimitzar l’accés dels visitants a les exhibicions de plantes i animals exòtics, haureu de construir atraccions per tota la vall.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prehistòric - L’edat de pedra
+STR_SCNR    :Passeig rocós
 STR_PARK    :Passeig rocós
 STR_DTLS    :Per a frustrar els plans dels constructors d’una autopista i per a ajudar a preservar els misteriosos i antics cercles de pedra, haureu de construir un parc temàtic amb l’edat de pedra com a principal motiu i aconseguir treure’n beneficis. No obstant, atreure visitants pot suposar un repte, ja que el terreny és un poc inhòspit.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Roaring Twenties - L’illa presó
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :La infame Illa Presó, la població de la qual fa molt temps creixia gràcies a contrabandistes i estafadors, està en venda. Heu decidit convertir-la en una atracció turística de primer ordre, i no us preocupeu pels diners.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Els «Roaring Twenties» - La Copa Schneider
+STR_SCNR    :Costa Schneider
 STR_PARK    :Costa Schneider
 STR_DTLS    :El 25è aniversari de la victòria del vostre avi a la Copa Schneider serà d’aquí pocs anys. L’honorareu construint un parc on la temàtica serà la famosa cursa d’hidroavions.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Els «Roaring Twenties» - Gratacels
+STR_SCNR    :Metròpoli
 STR_PARK    :Metròpoli
 STR_DTLS    :Disposeu d’un solar buit prop de la zona pobra de la població. Per a treure profit d’aquests terrenys urbans, construïu un parc en forma de gratacels inspirat en el desorbitat art decó dels anys vint.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ’n’ Roll - Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Hi ha un gran festival anual de música als teus terrenys. Construïu-hi un parc temàtic a la moda per a mantenir els esperits lliures entretinguts.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_SCNR    :Revival del Rock ’n’ Roll
 STR_PARK    :Revival del Rock ’n’ Roll
 STR_DTLS    :Aquest parc temàtic ha vist millors dies. Ajudeu al propietari a donar-li un toc rock ’n’ roll retro i convertiu el lloc en un lloc pròsper.
 

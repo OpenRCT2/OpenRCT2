@@ -4280,87 +4280,87 @@ STR_DTLS    :Construisez les attractions Six Flags manquantes ou créez vos prop
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Afrique — La mine de diamants
+STR_SCNR    :Mines d’Afrique
 STR_PARK    :Mines d’Afrique
 STR_DTLS    :Vous héritez d’une mine de diamants désaffectée et découvrez un diamant de grande valeur. Vous décidez d’investir cet argent dans la construction d’un parc à thème de renommée mondiale.
 
 <Africa - Oasis>
-STR_SCNR    :Afrique — L’oasis
+STR_SCNR    :Mirage fou
 STR_PARK    :Mirage fou
 STR_DTLS    :Une oasis offrant le cadre idéal pour un parc a été découverte dans le désert. Des moyens de transport ont été fournis.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Afrique — Chutes Victoria
+STR_SCNR    :Amortir la chute
 STR_PARK    :Amortir la chute
 STR_DTLS    :Un barrage offrant suffisamment de puissance hydroélectrique à faible coût pour la création d’un parc a été construit. Votre but est d’obtenir une haute rentabilité pour rembourser l’emprunt du barrage.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarctique — Sauvetage écologique
+STR_SCNR    :Aventures glacées
 STR_PARK    :Aventures glacées
 STR_DTLS    :L’agence pour l’environnement vous charge de transformer une vieille raffinerie de pétrole en attraction touristique de premier ordre. Le terrain n’est pas cher mais l’intérêt sur l’emprunt est élevé. Vous pouvez vendre les équipements.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asie — Développement de la Grande Muraille
+STR_SCNR    :Grande Muraille de Chine
 STR_PARK    :Grande Muraille de Chine
 STR_DTLS    :Les autorités ont décidé d’accroître le tourisme dans les environs de la Grande Muraille en construisant un parc à thème sur les terrains environnants. Aucune restriction financière.
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asie — A la conquête de l’océan
+STR_SCNR    :Côte Okinawa
 STR_PARK    :Côte Okinawa
 STR_DTLS    :L’un de vos parcs au Japon ne peut plus s’étendre. Une seule possibilité : construire sur la mer. Vous contractez un emprunt et devez respecter des restrictions de hauteur en raison du risque de tremblement de terre.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia — Le palais du maharajah
+STR_SCNR    :Parc Maharajah
 STR_PARK    :Parc Maharajah
 STR_DTLS    :Le maharajah vous a chargé de divertir la nombreuse population locale. Construisez un parc inspiré du palais du maharajah.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Océanie — Ayers Rock
+STR_SCNR    :L’aventure aborigène
 STR_PARK    :L’aventure aborigène
 STR_DTLS    :Vous aidez les Aborigènes à construire un parc s’inscrivant dans un programme de sensibilisation culturelle. Vous devez toucher un large public et l’intéresser au patrimoine authentique des Aborigènes.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Océanie — Fun at the Beach
+STR_SCNR    :Attractions sous les tropiques
 STR_PARK    :Attractions sous les tropiques
 STR_DTLS    :Le parc maritime d’un entrepreneur local fait faillite. Vous êtes à la tête d’un petit parc et devez trouver les fonds nécessaires au rachat de l’autre parc. Vous y parviendrez en visant la création d’un immense parc combiné.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europe — Le festival culturel européen
+STR_SCNR    :L’extravagance européenne
 STR_PARK    :L’extravagance européenne
 STR_DTLS    :Vous avez été choisi pour reprendre un parc d’attractions culturel européen et devez augmenter sa fréquentation pour pouvoir rembourser les subventions européennes à la fin du mandat parlementaire européen.
 
 <Europe - Renovation>
-STR_SCNR    :Europe — Rénovation
+STR_SCNR    :La Renaissance
 STR_PARK    :La Renaissance
 STR_DTLS    :Un ancien parc est tombé en ruines. Vous recevez une subvention de l’Union Européenne pour rendre à cette zone défavorisée sa gloire passée. Vous devez rénover le parc et rembourser la subvention.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Amérique du Nord — Hawaii extrême
+STR_SCNR    :C’est parti Waikiki !
 STR_PARK    :C’est parti Waikiki !
 STR_DTLS    :Les habitants de Hawaii en ont assez de surfer et cherche des sensations plus fortes. Vous devez construire un parc qui les satisfera et qui garantira l’attrait touristique de la zone.
 
 <North America - Grand Canyon>
-STR_SCNR    :Amérique du Nord — Le Grand Canyon
+STR_SCNR    :Pas de faille possible
 STR_PARK    :Pas de faille possible
 STR_DTLS    :Vous devez construire un parc à étendue limitée de chaque côté de ce cadeau de la nature. Vous pouvez acheter les terres avoisinantes aux Indiens locaux. Vous devez remplir cet objectif pour maintenir le nombre d’habitants dans la ville.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Amérique du Nord — Le parc de vos rêves
+STR_SCNR    :Le paradis des montagnes russes
 STR_PARK    :Le paradis des montagnes russes
 STR_DTLS    :Vous êtes un businessman accompli en période sabbatique de 4 ans, désirant construire un parc sans la moindre restriction financière.
 
 <South America - Inca Lost City>
-STR_SCNR    :Amérique du Sud — La cité inca
+STR_SCNR    :Les aventuriers de la cité perdue
 STR_PARK    :Les aventuriers de la cité perdue
 STR_DTLS    :Pour dynamiser encore plus le tourisme local vous devez construire un parc en harmonie avec son environnement.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Amérique du Sud — La forêt équatoriale
+STR_SCNR    :La forêt en folie
 STR_PARK    :La forêt en folie
 STR_DTLS    :L’espace est limité dans la précieuse forêt équatoriale : vous devez entasser les éléments autant que vous pouvez dans la clairière déjà existante, de manière à fournir une alternative à l’industrie sylvestre locale.
 
 <South America - Rio Carnival>
-STR_SCNR    :Amérique du Sud — Le carnaval de Rio
+STR_SCNR    :Au pied du pain de sucre
 STR_PARK    :Au pied du pain de sucre
 STR_DTLS    :Vous dirigez un petit parc près de Rio, mais la banque a demandé le remboursement de votre prêt. Vous devez rapidement augmenter votre rentabilité pour rembourser cette dette inattendue.
 
@@ -4368,72 +4368,72 @@ STR_DTLS    :Vous dirigez un petit parc près de Rio, mais la banque a demandé 
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Moyen Âge — Château
+STR_SCNR    :Château en bord de falaise
 STR_PARK    :Château en bord de falaise
 STR_DTLS    :Les sociétaires d’une association de reconstitution de combats médiévaux prennent leur activité très au sérieux. Ils vous ont chargé de construire un parc sur le thème du Moyen Âge sur les terres d’un château en bord de falaise.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Moyen Âge — Robin des Bois
+STR_SCNR    :Forêt de Sherwood
 STR_PARK    :Forêt de Sherwood
 STR_DTLS    :Pour voler l’argent des riches et le donner aux pauvres, vos joyeux compères et vous-même avez décidé de construire un parc dans la forêt de Sherwood.
 
 <Future - First Encounters>
-STR_SCNR    :Futur — Rencontre du 3e type
+STR_SCNR    :Extravagance extraterrestre
 STR_PARK    :Extravagance extraterrestre
 STR_DTLS    :Une forme de vie a été découverte sur une autre planète. Construisez un parc sur le thème des extraterrestres pour engranger un maximum de profits.
 
 <Future - Future World>
-STR_SCNR    :Futur — Le monde du futur
+STR_SCNR    :Gemini City
 STR_PARK    :Gemini City
 STR_DTLS    :Faites preuve de créativité et laissez parler vos talents de visionnaire en construisant un parc futuriste proposant des attractions du dernier cri.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mythologique — Automates de films
+STR_SCNR    :Automates de l’Antiquité
 STR_PARK    :Automates de l’Antiquité
 STR_DTLS    :Vous êtes chargé(e) de rénover et d’exploiter un parc déjà existant, construit à partir d’un ancien décor de cinéma. Rendez hommage aux pionniers de l’animation d’automates qui ont donné vie à des créatures mythiques dans les salles obscures.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mythologique — Berceau de la civilisation
+STR_SCNR    :Folie mythologique
 STR_PARK    :Folie mythologique
 STR_DTLS    :Vous possédez une île contenant des trésors archéologiques. Vous avez décidé d’en financer la préservation en construisant un parc sur le thème des richesses mythologiques du site.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Préhistorique — Après l’astéroïde
+STR_SCNR    :Cratère en folie
 STR_PARK    :Cratère en folie
 STR_DTLS    :Vous possédez un vieux cratère météoritique poussiéreux. Avec l’esprit d’entreprise qui vous caractérise, vous avez décidé de construire un parc sur le thème des astéroïdes et de rendre cet endroit rentable.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Préhistorique — Safari jurassique
+STR_SCNR    :Le retour des dinosaures
 STR_PARK    :Le retour des dinosaures
 STR_DTLS    :Vous êtes chargé(e) de construire un parc sur le thème du jurassique. Pour optimiser l’accès des visiteurs aux plantes exotiques et aux exhibitions d’animaux, vous allez devoir construire des montagnes russes parcourant la vallée.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Préhistorique — L’âge de pierre
+STR_SCNR    :Promenade rocailleuse
 STR_PARK    :Promenade rocailleuse
 STR_DTLS    :Pour concurrencer les promoteurs d’autoroutes et préserver la beauté du site, vous devrez construire un parc sur le thème de l’âge de pierre et le rentabiliser. Attirer les visiteurs ne sera pas facile dans un contexte aussi inhospitalier.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Les années folles — Le Rocher
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :La fameuse prison, autrefois remplie de trafiquants et de racketteurs, est aujourd’hui à vendre. Vous avez décidé de la transformer en attraction touristique, sans restriction financière.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Les années folles — La Coupe Schneider
+STR_SCNR    :Course d’hydravions
 STR_PARK    :Course d’hydravions
 STR_DTLS    :Dans quelques années, ce sera le 75e anniversaire de la victoire de votre grand-père dans la Coupe Schneider. Vous allez lui rendre hommage en construisant un parc sur le thème de cette course légendaire d’hydravions.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Les années folles — Gratte-ciel
+STR_SCNR    :Métropolis
 STR_PARK    :Métropolis
 STR_DTLS    :Vous possédez un terrain nu dans les faubourgs de la ville. Pour en tirer un maximum de revenus, construisez un parc sur le thème des gratte-ciel en vous inspirant de l’architecture art déco des années folles.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock & Roll — Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Un grand festival de musique se tient sur votre terrain chaque année. Construisez un parc sur le thème du mouvement hippie qui satisfera les amateurs du genre.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock & Roll — Rock & Roll
+STR_SCNR    :La renaissance du Rock & Roll
 STR_PARK    :La renaissance du Rock & Roll
 STR_DTLS    :Ce parc sur le thème du Rock & Roll a connu son heure de gloire. Aidez son propriétaire à le réaménager et à lui donner un second souffle.
 

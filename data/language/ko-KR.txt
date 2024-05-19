@@ -3704,6 +3704,13 @@ STR_6627    :트랙 속력이 너무 높습니다!
 STR_6628    :보도 옆 가장자리에만 설치할 수 있습니다!
 STR_6629    :메인 메뉴 버튼을 가운데로 정렬
 STR_6630    :이 설정을 켜면 메인 메뉴의 버튼을 화면 가운데에 수평으로 정렬합니다. 기존 방식은 버튼을 좌측과 우측 끝에 두 그룹으로 정렬합니다.
+STR_6631    :불러오는 중…
+STR_6632    :오브젝트 파일 확인 중…
+STR_6633    :시나리오 파일 확인 중…
+STR_6634    :트랙 디자인 파일 확인 중…
+STR_6635    :에셋 팩 확인 중…
+STR_6636    :타이틀 시퀀스 확인 중…
+STR_6637    :타이틀 시퀀스 불러오는 중…
 
 #############
 # Scenarios #
@@ -4292,87 +4299,87 @@ STR_DTLS    :식스 플래그의 빠진 놀이기구를 건설해보거나, 공�
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :아프리카 - 아프리카 다이아몬드 광산
+STR_SCNR    :아프리카의 광산
 STR_PARK    :아프리카의 광산
 STR_DTLS    :다이아몬드 폐광을 물려받은 당신은 값비싼 다이아몬드를 발견했고 그 판매 수익으로 세계 일류의 테마파크를 짓기로 결심했습니다.
 
 <Africa - Oasis>
-STR_SCNR    :아프리카 - 오아시스
+STR_SCNR    :신기루의 광기
 STR_PARK    :신기루의 광기
 STR_DTLS    :사막에서 놀이공원을 짓기에 아주 적당한 오아시스를 발견했습니다. 오아시스로 가는 교통편은 이미 존재합니다.
 
 <Africa - Victoria Falls>
-STR_SCNR    :아프리카 - 빅토리아 폭포
+STR_SCNR    :폭포 너머
 STR_PARK    :폭포 너머
 STR_DTLS    :공원을 운영하기 충분하고 값싼 전기를 생산하는 수력 발전 댐이 지어졌습니다. 댐을 건설하느라 진 빚을 갚기 위해 높은 가치의 놀이공원을 지어야 합니다.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :남극 - 버려진 환경 복구
+STR_SCNR    :얼음에 뒤덮인 모험
 STR_PARK    :얼음에 뒤덮인 모험
 STR_DTLS    :환경부에서 눈꼴사납고 낡은 정유 시설을 최고의 관광 명소로 만들어달라고 합니다. 땅값은 싸지만 대출 이자는 높습니다. 오래된 건물은 고철로 팔아 버릴 수 있습니다.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :아시아 - 중국 만리장성의 관광 진흥
+STR_SCNR    :만리장성
 STR_PARK    :만리장성
 STR_DTLS    :관광 당국이 만리장성 주변의 땅에 놀이공원을 지어서 관광객 수를 늘리기로 결정했습니다. 돈이 문제가 아니군요!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :아시아 - 일본 연안 간척
+STR_SCNR    :오키나와 해변
 STR_PARK    :오키나와 해변
 STR_DTLS    :기존 공원은 이미 공간이 모자랍니다. 대출을 받아서 바다로 확장해나갈 수밖에 없습니다. 지진 우려와 약한 기반을 이유로 건설 높이가 제한됩니다.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :아시아 - 마하라자 궁전
+STR_SCNR    :마하라자 공원
 STR_PARK    :마하라자 공원
 STR_DTLS    :인도의 왕에게서 국민들에게 즐길 거리를 만들어달라는 임무를 받았습니다. 마하라자 궁전을 연상시키는 공원을 만들어보세요.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :오스트레일리아 - 에어즈 록
+STR_SCNR    :에어즈 어드벤처
 STR_PARK    :에어즈 어드벤처
 STR_DTLS    :문화 인식 프로그램의 일환으로, 오스트레일리아 원주민들을 도와서 공원을 개발하려 합니다. 원주민들의 독특한 문화유산을 알리기 위해 많은 관광객을 모아야 합니다.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :오스트레일리아 - 해변의 즐거움
+STR_SCNR    :해변의 바베큐 파티
 STR_PARK    :해변의 바베큐 파티
 STR_DTLS    :근처 지역 사업가의 해안 공원이 파산해버렸습니다. 이미 작은 공원을 운영하는 당신은 건설사로부터 그 공원을 구입하였습니다. 두 공원을 합쳐 크게 사업을 확장해보세요.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :유럽 - 유럽 문화 축제
+STR_SCNR    :유럽의 축제
 STR_PARK    :유럽의 축제
 STR_DTLS    :유럽 문화 축제의 경영권을 확보한 당신은 이제 유럽 연합의 보조금을 갚기 위해 현재의 유럽 의회 임기가 끝날 때까지 손님을 늘려야합니다.
 
 <Europe - Renovation>
-STR_SCNR    :유럽 - 혁신
+STR_SCNR    :잿더미를 딛고
 STR_PARK    :잿더미를 딛고
 STR_DTLS    :방치된 낡은 공원이 있습니다. 이 공원이 과거에 누렸던 영광을 재현하기 위해 유럽 연합의 허가를 받았습니다! 허가를 받은 만큼 공원을 혁신해서 보답하세요.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :북아메리카 - 최고의 하와이 섬
+STR_SCNR    :왁자지껄 와이키키
 STR_PARK    :왁자지껄 와이키키
 STR_DTLS    :하와이 주민들이 이제 파도타기가 지겨워져서 좀 더 자극적인 뭔가를 원하고 있습니다. 주민들도 만족시키면서 이 지역의 관광객들이 찾아오고 싶어 하는 공원을 만드세요.
 
 <North America - Grand Canyon>
-STR_SCNR    :북아메리카 - 그랜드 캐니언
+STR_SCNR    :불행의 계곡
 STR_PARK    :불행의 계곡
 STR_DTLS    :이 아름답지만 제한적인 공간에 공원을 만들어야 합니다. 미국 원주민에게서 반대편 땅을 살 수 있습니다. 줄어들고 있는 마을 인구를 유지하기 위해서라도 목표를 달성해야 합니다.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :북아메리카 - 롤러코스터 천국
+STR_SCNR    :롤러코스터 천국
 STR_PARK    :롤러코스터 천국
 STR_DTLS    :당신은 긴 휴식기를 가지는 동안 이 도시 공원을 롤러코스터 천국으로 바꾸고자 하는 성공한 사업 거물입니다. 돈은 문제가 되지 않는군요!
 
 <South America - Inca Lost City>
-STR_SCNR    :남 아메리카 - 잉카의 잊혀진 도시
+STR_SCNR    :잊혀진 도시의 발견자
 STR_PARK    :잊혀진 도시의 발견자
 STR_DTLS    :이 지역의 관광산업을 보다 활기차게 만들기 위해서는 주변 환경과 잘 어울리는 공원을 지어야 합니다.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :남 아메리카 - 열대우림 고원
+STR_SCNR    :열대우림 고원
 STR_PARK    :열대우림 고원
 STR_DTLS    :소중한 열대우림 속의 제한된 공간만을 받았습니다. 이곳의 벌목 산업을 대신할 수 있는 방법을 제공하기 위해 기존의 빈 공간을 최대한 많이 활용해야 합니다.
 
 <South America - Rio Carnival>
-STR_SCNR    :남 아메리카 - 리오 축제
+STR_SCNR    :슈거로프 해안
 STR_PARK    :슈거로프 해안
 STR_DTLS    :리오 근처의 작은 공원을 운영하고 있는데 은행이 대출금을 조기 회수하려 합니다. 때 이른 빚 독촉을 갚기 위해서 빨리 돈을 벌어야 합니다.
 
@@ -4380,72 +4387,72 @@ STR_DTLS    :리오 근처의 작은 공원을 운영하고 있는데 은행이 
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :암흑시대 - 성
+STR_SCNR    :클리프사이드 성
 STR_PARK    :클리프사이드 성
 STR_DTLS    :이 지역의 전투 재현 단체는 자신들의 취미를 진지하게 생각하고 있습니다. 그들은 당신에게 클리프사이드 성 부지에 암흑시대 테마파크를 건설해달라고 요청해왔습니다.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :암흑시대 - 로빈 후드
+STR_SCNR    :셔우드 숲
 STR_PARK    :셔우드 숲
 STR_DTLS    :부자들의 재산을 빼앗아 필요한 사람들에게 나누어주기 위해서 당신과 수하들은 셔우드 숲에 놀이공원을 만들기로 결정했습니다.
 
 <Future - First Encounters>
-STR_SCNR    :미래 - 첫 만남
+STR_SCNR    :외계인의 축제
 STR_PARK    :외계인의 축제
 STR_DTLS    :먼 행성에서 생명체가 발견되었습니다. 외계인을 주제로 한 놀이공원을 만들어서 전에 없던 관심을 받아 돈을 벌어보세요.
 
 <Future - Future World>
-STR_SCNR    :미래 - 미래 세계
+STR_SCNR    :제미니 시티
 STR_PARK    :제미니 시티
 STR_DTLS    :당신의 미래에 대한 독창적이고 이상적인 시각을 보여줄 때입니다. 첨단의 매력이 느껴지는 미래의 공원 디자인을 제안해봅시다.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :신화 - 영화 세트장
+STR_SCNR    :애니매트로닉 앤틱스
 STR_PARK    :애니매트로닉 앤틱스
 STR_DTLS    :이번 임무는 옛 영화 세트장에 설립된 기존 테마파크를 운영하고 발전시키는 것입니다. 흑백 스크린에 신화 속 인물을 옮겨놓은 스톱 모션 애니메이션의 선구자들에게 이 공원을 헌정합시다.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :신화 - 문명의 요람
+STR_SCNR    :신화의 광기
 STR_PARK    :신화의 광기
 STR_DTLS    :특별한 고고학적 가치를 가진 섬을 소유하게 되었습니다. 이 지역의 풍부한 신화적 유산을 기반으로 한 테마파크를 건설해서 유산 보존 기금을 마련하기로 결정했습니다.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :선사시대 - 소행성 충돌 후
+STR_SCNR    :크레이터 대학살
 STR_PARK    :크레이터 대학살
 STR_DTLS    :당신은 오래된 운석공을 소유하고 있습니다. 기업가 정신을 발휘한 당신은 운석 테마 파크를 건설해서 쓸모없어 보이는 이 땅을 엄청난 행운의 땅으로 바꾸기로 결심했습니다.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :선사시대 - 쥐라기 사파리
+STR_SCNR    :코스터사우르스
 STR_PARK    :코스터사우르스
 STR_DTLS    :당신은 쥐라기 시대 놀이공원을 건설하는 임무를 받았습니다. 색다른 식물과 동물 전시장에 관객이 쉽게 접근할 수 있도록 하려면, 계곡을 가로지르는 놀이기구를 만들어야 할 것입니다.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :선사시대 - 석기시대
+STR_SCNR    :돌무더기 산책
 STR_PARK    :돌무더기 산책
 STR_DTLS    :고속도로 개발자들을 막고 고대 열석을 보호하기 위해, 석기 시대 테마파크를 건설하여 수익을 내야 합니다. 하지만 사람이 살기 조금 힘든 곳인 만큼 손님을 모으기가 어려울 것입니다.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :광란의 20년대 - 감옥 섬
+STR_SCNR    :앨커트래즈
 STR_PARK    :앨커트래즈
 STR_DTLS    :주류 밀매자와 폭력범으로 득실대던 악명 높은 감옥 섬이 경매에 부쳐졌습니다. 이곳을 최고의 관광지로 바꾸기로 한 당신에게 돈은 신경 쓸 필요가 없네요.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :광란의 20년대 - 슈나이더 컵
+STR_SCNR    :슈나이더 해안
 STR_PARK    :슈나이더 해안
 STR_DTLS    :할아버지의 슈나이더 컵 우승 75주년이 얼마 남지 않았습니다. 당신은 할아버지의 업적을 기리기 위해 유명한 수상비행기 경주를 딴 놀이공원을 짓기로 했습니다.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :광란의 20년대 - 마천루
+STR_SCNR    :메트로폴리스
 STR_PARK    :메트로폴리스
 STR_DTLS    :당신은 도시 저층부 근처의 빈 공간을 갖게 되었습니다. 최대한 이익을 많이 얻기 위해, 20년대에 유행했던 아르데코식 건축물을 본딴 마천루 테마파크를 지어보세요.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :로큰롤 - 사랑과 평화
+STR_SCNR    :우드스톡
 STR_PARK    :우드스톡
 STR_DTLS    :매년 열리는 대형 음악 축제가 당신의 땅에서 열립니다. 최신 유행하는 놀이공원을 지어, 자유로운 영혼을 가진 관객들이 즐거워할 수 있게 만드세요.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :로큰롤 - 로큰롤
+STR_SCNR    :로큰롤 부흥
 STR_PARK    :로큰롤 부흥
 STR_DTLS    :이 오래된 놀이공원은 더 나은 미래를 기대하고 있습니다. 소유자를 도와 이 공원을 복고풍의 로큰롤 공원으로 바꾸어 성공적인 장소로 변모시켜보세요.
 

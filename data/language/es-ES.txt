@@ -4292,89 +4292,89 @@ STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios d
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Africa - Mina de diamantes
+STR_SCNR    :Minas de África
 STR_PARK    :Minas de África
 STR_DTLS    :Has heredado una mina de diamantes en desuso, y has encontrado un valioso diamante. Has decidido invertir ese dinero en construir un parque temático de fama mundial.
 
 <Africa - Oasis>
-STR_SCNR    :Africa - Oasis
+STR_SCNR    :Locura de espejismo
 STR_PARK    :Locura de espejismo
 STR_DTLS    :Se ha descubierto un oasis en el desierto, y constituye un hermoso lugar para un parque. También se han proporcionado los medios de transporte hasta el oasis.
 
 <Africa - Victoria Falls>
-STR_SCNR    :África - Cataratas Victoria
+STR_SCNR    :Sobre el borde
 STR_PARK    :Sobre el borde
 STR_DTLS    :Se ha construido una presa que ofrece abundante y barata energía hidroeléctrica con la que suministrar a un parque. Tendrás que alcanzar un alto valor de parque para poder devolver el dinero del préstamo para la presa.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antártico - recuperación ecológica
+STR_SCNR    :Aventuras heladas
 STR_PARK    :Aventuras heladas
 STR_DTLS    :La agencia de medio ambiente recurre a ti para transformar una vieja refinería, en una atracción turística de primera. El terreno es barato, pero los intereses son elevados. Puedes vender los viejos edificios como chatarra.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asia - Mejora turística de la Gran Muralla China
+STR_SCNR    :Gran Muralla China
 STR_PARK    :Gran Muralla China
 STR_DTLS    :Las autoridades han decidido mejorar el turismo en torno a la Gran Muralla construyendo un parque temático en el terreno adyacente. ¡El dinero no es un problema
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asia - Recuperación costera japonesa
+STR_SCNR    :Costa Okinawa
 STR_PARK    :Costa Okinawa
 STR_DTLS    :Un parque ya existente se ha quedado sin espacio. Tu única opción para seguir construyendo es ganarle terreno al mar, así que has pedido un préstamo. Las restricciones de altura de los edificios son obligatorias debido a los cimientos/rie…
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia - Palacio del Maharajá
+STR_SCNR    :Parque Maharajá
 STR_PARK    :Parque Maharajá
 STR_DTLS    :Has sido designado por el Maharajá para traer un poco de entretenimiento a la gran población local. Construye un parque inspirado en el palacio del Maharajá.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasia - Ayers Rock
+STR_SCNR    :Aventura en Ayers
 STR_PARK    :Aventura en Ayers
 STR_DTLS    :Estás ayudando al pueblo aborigen a construir un parque como parte de un programa de concienciación cultural. Necesitas a un gran número de visitantes para instruirles acerca de la herencia única del pueblo aborigen.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasia; Diversión en la playa
+STR_SCNR    :Bárbara barbacoa playera
 STR_PARK    :Bárbara barbacoa playera
 STR_DTLS    :El parque marino de un empresario local se ha arruinado. Tú ya tienes un pequeño parque y tienes que ganar suficiente dinero para comprar el otro parque a la compañía de construcción. Tendrás que desarrollar tu propio parque para crea…
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europe - Festival cultural europeo
+STR_SCNR    :Extravagancia europea
 STR_PARK    :Extravagancia europea
 STR_DTLS    :Te han traído aquí para que te ocupes de una atracción europea cultural para visitantes, y tienes que aumentar el número de asistentes para poder devolver el subsidio de la UE al final del periodo parlamentario europeo actual.
 
 <Europe - Renovation>
-STR_SCNR    :Europa - Renovación
+STR_SCNR    :Desde las cenizas
 STR_PARK    :Desde las cenizas
 STR_DTLS    :Un viejo parque se encuentra en mal estado. Has recibido una subvención de la Unión Europea para devolver a esta depauperada área a su antigua gloria. Tendrás que renovar el parque y ganar lo suficiente para pagar la subvención.
 
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :N. América - Isla hawaiana extrema
+STR_SCNR    :Waikiki Guay
 STR_PARK    :Waikiki Guay
 STR_DTLS    :Las gentes de Hawai se han aburrido de practicar surf y ahora buscan algo más intenso. Tienes que construir un parque para satisfacerlos, y conservar alto el índice de atractivo turístico del área.
 
 <North America - Grand Canyon>
-STR_SCNR    :N. América - Gran Cañón
+STR_SCNR    :Calamidades en el cañon
 STR_PARK    :Calamidades en el cañon
 STR_DTLS    :Debes construir un parque en el terreno que hay a ambos lados de este tesoro natural, aunque tienes la oportunidad de comprar las tierras vecinas a los indios nativos americanos. Tendrás que cumplir el objetivo de mantener a la población …
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :N. América - Paraíso de montañas rusas
+STR_SCNR    :Paraíso de montañas rusas
 STR_PARK    :Paraíso de montañas rusas
 STR_DTLS    :Eres un exitoso magnate de los negocios que se ha tomado cuatro años sabáticos. Tu deseo es construir un parque sin limitaciones de dinero.
 
 
 <South America - Inca Lost City>
-STR_SCNR    :Sudamérica; Ciudad perdida inca
+STR_SCNR    :Fundador de la ciudad perdida
 STR_PARK    :Fundador de la ciudad perdida
 STR_DTLS    :Para impulsar aún más el turismo local, tienes que construir un parque que esté en sintonía con el entorno que lo rodea.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Sudamérica - Meseta selvática
+STR_SCNR    :Aventuras en la selva
 STR_PARK    :Aventuras en la selva
 STR_DTLS    :En esta valiosa selva el espacio es limitado, tendrás que apretujarte tanto como puedas en el claro existente, con el fin de proporcionar una alternativa viable para la industria maderera local.
 
 <South America - Rio Carnival>
-STR_SCNR    :Sudamérica - Carnaval de Río
+STR_SCNR    :Costas de Sugarloaf
 STR_PARK    :Costas de Sugarloaf
 STR_DTLS    :Gestionas un pequeño parque cerca de Río, pero el banco te ha retirado su préstamo. Tendrás que aumentar rápidamente tu capacidad de ganancias para pagar esta deuda inesperada.
 
@@ -4383,72 +4383,72 @@ STR_DTLS    :Gestionas un pequeño parque cerca de Río, pero el banco te ha ret
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Edad media, castillo
+STR_SCNR    :El castillo en el risco
 STR_PARK    :El castillo en el risco
 STR_DTLS    :Los miembros de una asociación local de recreación de batallas históricas se toman su afición muy en serio. Te han confiado la construcción de un parque temático de la edad media en los terrenos del Castillo del risco.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Edad media, Robin Hood
+STR_SCNR    :El bosque de Sherwood
 STR_PARK    :El bosque de Sherwood
 STR_DTLS    :Para quitarles el dinero a los ricos y dárselo a los pobres, tus alegres compañeros y tú habéis decidido construir un parque temático en el bosque de Sherwood.
 
 <Future - First Encounters>
-STR_SCNR    :Futuro, primer contacto
+STR_SCNR    :Exceso extraterrestre
 STR_PARK    :Exceso extraterrestre
 STR_DTLS    :¡Se ha descubierto vida en un planeta distante Construye un parque temático basado en los extraterrestres para sacar dinero del interés sin precedentes que ha despertado el tema.
 
 <Future - Future World>
-STR_SCNR    :Futuro, el mundo futuro
+STR_SCNR    :Ciudad Géminis
 STR_PARK    :Ciudad Géminis
 STR_DTLS    :Demuestra tu inventiva y utópica visión del futuro, crea un parque de diseño futurista que incorpore atracciones de última tecnología.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mitológica, estudio de cine animatrónico
+STR_SCNR    :Animatrónica de los antiguos
 STR_PARK    :Animatrónica de los antiguos
 STR_DTLS    :Se te ha encargado dirigir y mejorar un parque temático ya existente sobre unos antiguos estudios de cine. Rinde tributo a los pioneros de las animaciones que fueron los primeros en llevar a la gran pantalla las criaturas míticas.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mitológico, cuna de la civilización
+STR_SCNR    :Locura mitológica
 STR_PARK    :Locura mitológica
 STR_DTLS    :Posees una isla de cierto valor arqueológico. Has decidido financiar su conservación construyendo un parque temático basado en la riqueza de la tradición mitológica de la zona.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prehistórica, después del asteroide
+STR_SCNR    :Carnicería en el cráter
 STR_PARK    :Carnicería en el cráter
 STR_DTLS    :Posees un antiguo cráter de meteorito. Siguiendo una clara vocación industrial, has decidido construir un parque temático de asteroides y convertir tus tierras aparentemente sin valor en una considerable fortuna.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prehistórica, safari jurásico
+STR_SCNR    :Montañasauro
 STR_PARK    :Montañasauro
 STR_DTLS    :Tu misión es construir un parque de atracciones basado en el jurásico. Para optimizar el acceso de los visitantes a las exóticas exhibiciones de plantas y animales, tendrás que construir atracciones que suban y bajen del valle.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prehistórica, edad de piedra
+STR_SCNR    :Un paseo por las piedras
 STR_PARK    :Un paseo por las piedras
 STR_DTLS    :Para combatir a los promotores de una autopista y preservar los antiguos círculos de piedra, debes construir un parque temático de la edad de piedra y hacerlo rentable. Pero atraer visitantes no es fácil por el terreno poco acogedor.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Los locos años veinte, la isla prisión
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :La infame isla prisión, antes habitada por contrabandistas y estafadores, ahora está a la venta. Has decidido convertirla en una atracción turística de primer orden ¡y el dinero no es un problema
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Los locos años veinte, la copa Schneider
+STR_SCNR    :Las costas de Schneider
 STR_PARK    :Las costas de Schneider
 STR_DTLS    :En pocos años se cumplirá el 75 aniversario de la victoria de tu abuelo en la copa Schneider. Vas a honrar su logro construyendo un parque temático basado en la famosa carrera de hidroaviones.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Los locos años veinte, rascacielos
+STR_SCNR    :Metrópolis
 STR_PARK    :Metrópolis
 STR_DTLS    :Posees una parcela vacía en la parte baja de la ciudad. Para exprimir al máximo tu propiedad, decides construir un parque temático basado en los rascacielos y la arquitectura Art Decó de los años veinte.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock & Roll - Poder florar
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :En tus tierras se desarrolla todos los años un gran festival musical. Construye un parque temático para mantener a la audiencia entretenida.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock & Roll - Rock & Roll
+STR_SCNR    :La resurrección del Rock & Roll
 STR_PARK    :La resurrección del Rock & Roll
 STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al propietario a darle un aspecto más rockanrolero y convierte el lugar en un negocio próspero.
 
