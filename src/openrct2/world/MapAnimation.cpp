@@ -709,3 +709,14 @@ void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
             break;
     }
 }
+
+void ShiftAllMapAnimations(CoordsXY amount)
+{
+    if (amount.x == 0 && amount.y == 0)
+        return;
+
+    for (auto& a : _mapAnimations)
+    {
+        a.location += amount;
+    }
+}

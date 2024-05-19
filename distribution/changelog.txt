@@ -1,6 +1,7 @@
 0.4.12 (in development)
 ------------------------------------------------------------------------
 - Feature: [#622] Add option to align the top toolbar buttons horizontally centred (off by default).
+- Feature: [#20263] Ability to increase the size of the map in the (0, 0) direction.
 - Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
 - Feature: [#21853] Enlarged UI mode.
 - Feature: [#21893] On launch, the game now indicates what system is being initialised.
