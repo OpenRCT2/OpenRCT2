@@ -130,6 +130,12 @@ struct Widget
         bottom += amount;
     }
 
+    void moveTo(ScreenCoordsXY coords)
+    {
+        moveRight(coords.x - left);
+        moveDown(coords.y - top);
+    }
+
     bool IsVisible() const
     {
         return !(flags & WIDGET_FLAGS::IS_HIDDEN);
