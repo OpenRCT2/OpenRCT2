@@ -11,6 +11,7 @@
 
 #include <cmath>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Text.h>
@@ -32,6 +33,7 @@ static void WidgetTextCentred(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
 static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetProgressBarDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
@@ -107,6 +109,9 @@ void WidgetDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
             break;
         case WindowWidgetType::TextBox:
             WidgetTextBoxDraw(dpi, w, widgetIndex);
+            break;
+        case WindowWidgetType::ProgressBar:
+            WidgetProgressBarDraw(dpi, w, widgetIndex);
             break;
         default:
             break;
@@ -1189,6 +1194,37 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     }
 }
 
+static void WidgetProgressBarDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+{
+    const auto& widget = w.widgets[widgetIndex];
+
+    ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
+    ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
+
+    auto percentage = widget.content & 0xFF;
+    auto lowerBlinkBounds = (widget.content >> 8) & 0xFF;
+    auto upperBlinkBounds = (widget.content >> 16) & 0xFF;
+
+    auto isBlinking = (lowerBlinkBounds != upperBlinkBounds) && (percentage >= lowerBlinkBounds)
+        && (percentage <= upperBlinkBounds);
+
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, w.colours[1], INSET_RECT_F_30);
+    if (isBlinking)
+    {
+        if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))
+            return;
+    }
+
+    const auto barWidth = widget.width() - 2;
+    const int32_t fillSize = (barWidth * percentage) / 100;
+    if (fillSize > 0)
+    {
+        GfxFillRectInset(
+            dpi, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 1 } },
+            widget.colour, 0);
+    }
+}
+
 ImageId GetColourButtonImage(colour_t colour)
 {
     if (colour == COLOUR_INVISIBLE)
@@ -1199,4 +1235,10 @@ ImageId GetColourButtonImage(colour_t colour)
     {
         return ImageId(SPR_PALETTE_BTN, colour).WithBlended(true);
     }
+}
+
+void WidgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage)
+{
+    widget.content &= ~0xFF;
+    widget.content |= newPercentage;
 }

@@ -112,6 +112,8 @@ namespace OpenRCT2::Scripting
                         return "empty";
                     case WindowWidgetType::Placeholder:
                         return "placeholder";
+                    case WindowWidgetType::ProgressBar:
+                        return "progress_bar";
                     case WindowWidgetType::Custom:
                         return "custom";
                     case WindowWidgetType::Last:
