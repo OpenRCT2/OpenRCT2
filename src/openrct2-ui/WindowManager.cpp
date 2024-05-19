@@ -269,6 +269,11 @@ public:
 
                 return nullptr;
             }
+            case WindowClass::ProgressWindow:
+            {
+                std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
+                return ProgressWindowOpen(message);
+            }
             case WindowClass::Ride:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));

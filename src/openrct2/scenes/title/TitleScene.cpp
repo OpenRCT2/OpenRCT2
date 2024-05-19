@@ -29,6 +29,7 @@
 #include "../../scenario/ScenarioRepository.h"
 #include "../../ui/UiContext.h"
 #include "../../util/Util.h"
+#include "../../windows/Intent.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
@@ -205,6 +206,11 @@ void TitleScene::CreateWindows()
     ContextOpenWindow(WindowClass::TitleOptions);
     ContextOpenWindow(WindowClass::TitleLogo);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
+
+    auto intent = Intent(WindowClass::ProgressWindow);
+    intent.PutExtra(INTENT_EXTRA_MESSAGE, "Important stuff is loading");
+    ContextOpenIntent(&intent);
+
     _hideVersionInfo = false;
 }
 
