@@ -14,6 +14,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
+#include <random>
 #include <sstream>
 
 namespace OpenRCT2::Ui::Windows
@@ -71,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
         std::string _currentCaption;
         uint32_t _currentProgress;
         uint32_t _totalCount;
-        uint8_t style;
+        int8_t style = -1;
 
     public:
         void OnOpen() override
@@ -103,8 +104,21 @@ namespace OpenRCT2::Ui::Windows
 
         void ApplyStyle()
         {
-            style = nextStyle++;
-            nextStyle %= std::size(kVehicleStyles);
+            if (style >= 0)
+            {
+                // Take the next available style, rotating
+                style = nextStyle++;
+                nextStyle %= std::size(kVehicleStyles);
+            }
+            else
+            {
+                // Pick a random style to start off with
+                std::random_device r;
+                auto upperBound = static_cast<int8_t>(std::size(kVehicleStyles)) - 1;
+                std::uniform_int_distribution<int> uniform_dist(0, upperBound);
+                std::default_random_engine e(r());
+                style = static_cast<int8_t>(uniform_dist(e));
+            }
         }
 
         void PrepareCaption()
@@ -164,7 +178,6 @@ namespace OpenRCT2::Ui::Windows
             _currentProgress = 0;
             _totalCount = 0;
 
-            ApplyStyle();
             Invalidate();
         }
 
