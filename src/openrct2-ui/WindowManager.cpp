@@ -269,11 +269,6 @@ public:
 
                 return nullptr;
             }
-            case WindowClass::ProgressWindow:
-            {
-                std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
-                return ProgressWindowOpen(message);
-            }
             case WindowClass::Ride:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
@@ -338,6 +333,26 @@ public:
                 // Switch to new scenery tab
                 WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
                 return window;
+            }
+
+            case INTENT_ACTION_PROGRESS_OPEN:
+            {
+                std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
+                return ProgressWindowOpen(message);
+            }
+
+            case INTENT_ACTION_PROGRESS_SET:
+            {
+                uint32_t currentProgress = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_OFFSET);
+                uint32_t totalCount = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_TOTAL);
+                ProgressWindowSet(currentProgress, totalCount);
+                return nullptr;
+            }
+
+            case INTENT_ACTION_PROGRESS_CLOSE:
+            {
+                ProgressWindowClose();
+                return nullptr;
             }
 
             case INTENT_ACTION_NULL:

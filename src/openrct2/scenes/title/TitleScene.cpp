@@ -206,11 +206,6 @@ void TitleScene::CreateWindows()
     ContextOpenWindow(WindowClass::TitleOptions);
     ContextOpenWindow(WindowClass::TitleLogo);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
-
-    auto intent = Intent(WindowClass::ProgressWindow);
-    intent.PutExtra(INTENT_EXTRA_MESSAGE, "Important stuff is loading");
-    ContextOpenIntent(&intent);
-
     _hideVersionInfo = false;
 }
 

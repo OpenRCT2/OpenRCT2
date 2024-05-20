@@ -69,6 +69,8 @@ namespace OpenRCT2::Ui::Windows
     private:
         std::string _captionTemplate;
         std::string _currentCaption;
+        uint32_t _currentProgress;
+        uint32_t _totalCount;
         uint8_t style;
 
     public:
@@ -85,35 +87,37 @@ namespace OpenRCT2::Ui::Windows
             max_width = min_width;
             max_height = min_height;
 
-            style = nextStyle++ % std::size(kVehicleStyles);
+            ApplyStyle();
         }
 
         void OnUpdate() override
         {
-            frame_no += 3;
-            if (frame_no > width)
-            {
-                frame_no = 0;
-                style++;
-                if (style >= 3)
-                    style = 0;
-            }
-
-            InvalidateWidget(WIDX_BACKGROUND);
+            Invalidate();
         }
 
         void OnPrepareDraw() override
         {
             ResizeFrame();
+            PrepareCaption();
+        }
+
+        void ApplyStyle()
+        {
+            style = nextStyle++;
+            nextStyle %= std::size(kVehicleStyles);
         }
 
         void PrepareCaption()
         {
-            std::stringstream caption;
-            caption << _captionTemplate;
-            caption << " (" << frame_no << " / " << width << ")";
-
-            _currentCaption = caption.str();
+            if (_totalCount > 0)
+            {
+                std::stringstream caption;
+                caption << _captionTemplate;
+                caption << " (" << _currentProgress << " / " << _totalCount << ")";
+                _currentCaption = caption.str();
+            }
+            else
+                _currentCaption = _captionTemplate;
 
             // Set window title
             auto ft = Formatter::Common();
@@ -123,7 +127,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            PrepareCaption();
             WindowDrawWidgets(*this, dpi);
 
             auto& widget = widgets[WIDX_TITLE];
@@ -156,6 +159,17 @@ namespace OpenRCT2::Ui::Windows
         void SetCaptionTemplate(const std::string& text)
         {
             _captionTemplate = text;
+            _currentProgress = 0;
+            _totalCount = 0;
+
+            ApplyStyle();
+            Invalidate();
+        }
+
+        void SetProgress(uint32_t currentProgress, uint32_t totalCount)
+        {
+            _currentProgress = currentProgress;
+            _totalCount = totalCount;
             Invalidate();
         }
     };
@@ -178,7 +192,17 @@ namespace OpenRCT2::Ui::Windows
         return window;
     }
 
-    // force close
+    void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount)
+    {
+        auto window = WindowFindByClass(WindowClass::ProgressWindow);
+        if (window == nullptr)
+        {
+            return;
+        }
+        auto progressWindow = static_cast<ProgressWindow*>(window);
+        progressWindow->SetProgress(currentProgress, totalCount);
+    }
+
     void ProgressWindowClose()
     {
         auto window = WindowFindByClass(WindowClass::ProgressWindow);
