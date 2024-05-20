@@ -564,6 +564,117 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScProgressBarWidget : public ScWidget
+    {
+    public:
+        ScProgressBarWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScProgressBarWidget>(ctx);
+            dukglue_register_property(ctx, &ScProgressBarWidget::colour_get, &ScProgressBarWidget::colour_set, "colour");
+            dukglue_register_property(
+                ctx, &ScProgressBarWidget::percentage_get, &ScProgressBarWidget::percentage_set, "percentage");
+            dukglue_register_property(
+                ctx, &ScProgressBarWidget::lowerBlinkBound_get, &ScProgressBarWidget::lowerBlinkBound_set, "lowerBlinkBound");
+            dukglue_register_property(
+                ctx, &ScProgressBarWidget::upperBlinkBound_get, &ScProgressBarWidget::upperBlinkBound_set, "upperBlinkBound");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScProgressBarWidget, std::string, std::string>(
+                ctx, &ScProgressBarWidget::text_get, &ScProgressBarWidget::text_set, "text");
+        }
+
+    private:
+        colour_t colour_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                return widget.colour;
+            }
+            return COLOUR_BLACK;
+        }
+        void colour_set(colour_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                widget.colour = value;
+                Invalidate();
+            }
+        }
+
+        uint8_t percentage_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                return widget.content & 0xFF;
+            }
+            return 0;
+        }
+        void percentage_set(uint8_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                WidgetProgressBarSetNewPercentage(widget, value);
+                Invalidate();
+            }
+        }
+
+        uint8_t lowerBlinkBound_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                return (widget.content >> 8) & 0xFF;
+            }
+            return 0;
+        }
+        void lowerBlinkBound_set(uint8_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                widget.content &= ~0xFF00;
+                widget.content |= (value << 8);
+                Invalidate();
+            }
+        }
+
+        uint8_t upperBlinkBound_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                return (widget.content >> 16) & 0xFF;
+            }
+            return 0;
+        }
+        void upperBlinkBound_set(uint8_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto& widget = w->widgets[_widgetIndex];
+                widget.content &= ~0xFF0000;
+                widget.content |= (value << 16);
+                Invalidate();
+            }
+        }
+    };
+
     class ScColourPickerWidget : public ScWidget
     {
     public:
@@ -1007,6 +1118,8 @@ namespace OpenRCT2::Scripting
                 return GetObjectAsDukValue(ctx, std::make_shared<ScButtonWidget>(c, n, widgetIndex));
             case WindowWidgetType::Checkbox:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
+            case WindowWidgetType::ProgressBar:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScProgressBarWidget>(c, n, widgetIndex));
             case WindowWidgetType::ColourBtn:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScColourPickerWidget>(c, n, widgetIndex));
             case WindowWidgetType::DropdownMenu:

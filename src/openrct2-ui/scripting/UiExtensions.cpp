@@ -43,6 +43,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScButtonWidget::Register(ctx);
     ScColourPickerWidget::Register(ctx);
     ScCheckBoxWidget::Register(ctx);
+    ScProgressBarWidget::Register(ctx);
     ScDropdownWidget::Register(ctx);
     ScGroupBoxWidget::Register(ctx);
     ScLabelWidget::Register(ctx);
