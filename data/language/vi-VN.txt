@@ -1085,7 +1085,7 @@ STR_1700    :Thuê thêm lao công
 STR_1701    :Thuê thêm kỹ sư
 STR_1702    :Thuê thêm bảo vệ
 STR_1703    :Thuê thêm hoạt náo
-STR_1704    :Không thể thuê thêm nhân viên...
+STR_1704    :Không thể thuê thêm nhân viên…
 STR_1705    :Sa thải nhân viên này
 STR_1706    :Di chuyển người này
 STR_1707    :Có quá nhiều nhân viên

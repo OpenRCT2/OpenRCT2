@@ -3688,7 +3688,7 @@ STR_6614    :Nem változtatható meg a park belépési díja
 STR_6615    :A pályának ezen a mezőn vízre van szüksége
 STR_6616    :Az adott személyzettípus számára érvénytelen akció
 STR_6617    :Nem lehet önmagával cserélni mezőelemet
-STR_6618    :Nem lehet korlátozni vagy feloldani az objektumot...
+STR_6618    :Nem lehet korlátozni vagy feloldani az objektumot…
 STR_6619    :Az objektumtípus nem korlátozható!
 STR_6620    :Az objektum nem található!
 STR_6621    :Korlátozás
@@ -3701,6 +3701,8 @@ STR_6627    :Túl nagy a pálya sebessége!
 STR_6628    :Csak az utak szélein helyezhető el!
 STR_6629    :Eszköztár gombjainak vízszintes középre igazítása
 STR_6630    :Ez a beállítás az eszköztár gombjait vízszintesen a képernyő közepére igazítja. A hagyományos elrendezés a bal és jobb sarokban helyezi el őket.
+STR_6638    :Nagyított felhasználói felület
+STR_6639    :Módosítja a felületet, hogy megfelelőbb legyen érintőképernyős használathoz
 
 #############
 # Scenarios #
@@ -4537,7 +4539,7 @@ STR_DTLS    :Anyu! Apu! Sihuhu városba akarok menni!{NEWLINE}Szerző: Fossil
 <Dragon Islands>
 STR_SCNR    :Sárkány-szigetek
 STR_PARK    :Sárkány-szigetek
-STR_DTLS    :Sárkány-szigetek? Nem biztos, hogy oda akarok menni...{NEWLINE}Szerző: Fossil
+STR_DTLS    :Sárkány-szigetek? Nem biztos, hogy oda akarok menni…{NEWLINE}Szerző: Fossil
 
 <Kiddy Karnival II>
 STR_SCNR    :Kölyökkarnevál II

@@ -3617,7 +3617,7 @@ STR_6539    :Bromsen stängd
 STR_6540    :{WINDOW_COLOUR_2}Särskilt tack till följande företag för att de tillåter oss att använda deras likhet:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 STR_6542    :Medverkande
-STR_6543    :Medverkande ...
+STR_6543    :Medverkande …
 STR_6544    :Lånet kan inte vara negativt!
 STR_6545    :Använd RCT1-ränteberäkning
 STR_6546    :Använd RollerCoaster Tycoon 1:s ränteberäkningsalgoritm, som använder en fast procentsats på cirka 1,33 %.
@@ -3659,7 +3659,7 @@ STR_6581    :Är du säker på att du vill återställa alla kortkommandon på d
 STR_6582    :Öppna fönstret för kortkommandon
 STR_6583    :{WINDOW_COLOUR_2}Bakvända tåg
 STR_6584    :Välj att köra tåg baklänges
-STR_6585    :Ändringar kan inte göras...
+STR_6585    :Ändringar kan inte göras…
 STR_6586    :OpenRCT2
 STR_6587    :OpenRCT2:s omslagstema är ett verk av Allister Brimble,{NEWLINE}licensierat under CC BY-SA 4.0.
 STR_6588    :Tack till Herman Riddering för att vi fick spela in 35er Voigt.

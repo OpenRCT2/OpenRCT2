@@ -98,6 +98,7 @@ STR_0093    :Ottovolante ibrido
 STR_0094    :Ottovolante a binario singolo
 STR_0095    :Ottovolante Alpino
 STR_0096    :Ottovolante di legno classico
+STR_0097    :Ottovolante in piedi classico
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l’ottovolante, durante le curve oscillano lateralmente
@@ -181,6 +182,7 @@ STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere 
 STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, attraverso strette inversioni e cambi di direzione.
 STR_0605    :I visitatori scendono lungo una rotaia piena di curve, frenando per controllare la velocità del loro vagone
 STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettato per farti sentire “fuori controllo”
+STR_0607    :Un intenso ottovolante d’acciaio vecchio stile, nel quale i passeggeri sono in posizione eretta
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -3693,6 +3695,15 @@ STR_6614    :Non è possibile modificare il prezzo di ingresso
 STR_6615    :Il tracciato su questa cella necessita acqua
 STR_6616    :Azione non valida per quel tipo di staff
 STR_6617    :Non è possibile scambiare l’elemento della cella con sé stesso
+STR_6618    :Impossibile cambiare la limitazione dell’oggetto…
+STR_6619    :Il tipo di oggetto non può essere sottoposto a limitazione!
+STR_6620    :Oggetto non trovato!
+STR_6621    :Limitato
+STR_6622    :Limita l’oggetto all’editor degli scenari e alla modalità sandbox
+STR_6623    :Digita ‘help’ per una lista dei comandi disponibili. Digita ‘hide’ per nascondere la console.
+STR_6624    :Analizzatore celle: ordina elementi
+STR_6625    :Colore non valido
+STR_6626    :L’animazione è invertita
 
 
 #############
