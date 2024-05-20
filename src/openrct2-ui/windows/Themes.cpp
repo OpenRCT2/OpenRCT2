@@ -218,6 +218,7 @@ static WindowClass window_themes_tab_7_classes[] = {
     WindowClass::FirePrompt,
     WindowClass::TrackDeletePrompt,
     WindowClass::LoadsaveOverwritePrompt,
+    WindowClass::ProgressWindow,
     WindowClass::NetworkStatus,
 };
     // clang-format on

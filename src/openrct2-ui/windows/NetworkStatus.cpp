@@ -25,9 +25,9 @@ enum WindowNetworkStatusWidgetIdx {
 };
 
 static Widget window_network_status_widgets[] = {
-    MakeWidget({  0, 0}, {441, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
-    MakeWidget({  1, 1}, {438, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
-    MakeWidget({427, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
+    MakeWidget({  0, 0}, {400, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
+    MakeWidget({  1, 1}, {397, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
+    MakeWidget({388, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
     kWidgetsEnd,
 };
 
@@ -101,7 +101,7 @@ static Widget window_network_status_widgets[] = {
         {
             WindowDrawWidgets(*this, dpi);
             thread_local std::string _buffer;
-            _buffer.assign("{BLACK}");
+            _buffer.assign("{WHITE}");
             _buffer += _windowNetworkStatusText;
             GfxClipString(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
             ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
@@ -141,7 +141,7 @@ static Widget window_network_status_widgets[] = {
         else
         {
             window = WindowCreate<NetworkStatusWindow>(
-                WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+                WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
         window->SetCloseCallBack(onClose);
@@ -165,7 +165,7 @@ static Widget window_network_status_widgets[] = {
     WindowBase* NetworkStatusOpenPassword()
     {
         auto window = WindowFocusOrCreate<NetworkStatusWindow>(
-            WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+            WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
         char password[33]{};
         WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, password, 32);
         window->SetPassword(password);

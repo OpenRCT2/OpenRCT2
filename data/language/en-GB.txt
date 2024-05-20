@@ -3712,6 +3712,7 @@ STR_6637    :Loading title sequence…
 STR_6638    :Enlarged UI
 STR_6639    :Modifies the interface to be more suitable for touch usage
 STR_6640    :Edit asset packs…
+STR_6641    :Loading/progress window
 
 #############
 # Scenarios #
