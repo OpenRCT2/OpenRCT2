@@ -4277,11 +4277,11 @@ declare global {
      */
     type WidgetType =
         "button" | "checkbox" | "colourpicker" | "custom" | "dropdown" | "groupbox" |
-        "label" | "listview" | "spinner" | "textbox" | "viewport";
+        "label" | "listview" | "spinner" | "textbox" | "viewport" | "progress_bar";
 
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
-        LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
+        LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget | ProgressBarWidget;
 
     type IconName = "arrow_down" | "arrow_up" | "chat" | "cheats" | "copy" | "empty" | "eyedropper" |
         "fast_forward" | "game_speed_indicator" | "game_speed_indicator_double" | "glassy_recolourable" |
@@ -4333,7 +4333,7 @@ declare global {
         text: string;
         isChecked: boolean;
     }
-
+    
     interface ColourPickerWidget extends WidgetBase {
         type: "colourpicker";
         colour: number;
@@ -4361,6 +4361,21 @@ declare global {
         type: "label";
         text: string;
         textAlign: TextAlignment;
+    }
+
+    interface ProgressBarWidget extends WidgetBase {
+        colour: number;
+        /**
+         * The percentage of the bar to fill, ranging from 0-100 (inclusive).
+         */
+        percentage: number;
+        /**
+         * Used to specify a range of values between which the bar will start blinking.
+         * Set both of these to the same value to disable blinking entirely.
+         * The range is inclusive.
+         */
+        lowerBlinkBound: number;
+        uppperBlinkBound: number;
     }
 
 
