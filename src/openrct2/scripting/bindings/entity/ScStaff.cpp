@@ -32,6 +32,7 @@ namespace OpenRCT2::Scripting
         { "walking", PeepActionSpriteType::None },
         { "watchRide", PeepActionSpriteType::WatchRide },
         { "hanging", PeepActionSpriteType::Ui },
+        { "drowning", PeepActionSpriteType::Drowning },
         { "staffAnswerCall", PeepActionSpriteType::StaffAnswerCall },
         { "staffAnswerCall2", PeepActionSpriteType::StaffAnswerCall2 },
         { "staffCheckBoard", PeepActionSpriteType::StaffCheckboard },
