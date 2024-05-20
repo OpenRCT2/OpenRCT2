@@ -167,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NetworkStatusOpenPassword();
     void WindowNetworkStatusClose();
 
-    WindowBase* ProgressWindowOpen(const std::string& text);
+    WindowBase* ProgressWindowOpen(const std::string& text, close_callback onClose = nullptr);
     void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount);
     void ProgressWindowClose();
 

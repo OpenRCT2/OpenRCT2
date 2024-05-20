@@ -338,7 +338,8 @@ public:
             case INTENT_ACTION_PROGRESS_OPEN:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
-                return ProgressWindowOpen(message);
+                close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
+                return ProgressWindowOpen(message, callback);
             }
 
             case INTENT_ACTION_PROGRESS_SET:
@@ -571,6 +572,10 @@ public:
         {
             case WindowClass::NetworkStatus:
                 WindowNetworkStatusClose();
+                break;
+
+            case WindowClass::ProgressWindow:
+                ProgressWindowClose();
                 break;
 
             default:

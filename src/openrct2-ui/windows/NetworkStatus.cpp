@@ -9,6 +9,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
@@ -133,6 +134,8 @@ static Widget window_network_status_widgets[] = {
 
     WindowBase* NetworkStatusOpen(const std::string& text, close_callback onClose)
     {
+        ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
+
         NetworkStatusWindow* window;
         if ((window = static_cast<NetworkStatusWindow*>(WindowFindByClass(WindowClass::NetworkStatus))) != nullptr)
         {
@@ -164,6 +167,8 @@ static Widget window_network_status_widgets[] = {
 
     WindowBase* NetworkStatusOpenPassword()
     {
+        ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
+
         auto window = WindowFocusOrCreate<NetworkStatusWindow>(
             WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
         char password[33]{};
