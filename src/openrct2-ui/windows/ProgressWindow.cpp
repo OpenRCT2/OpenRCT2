@@ -147,12 +147,14 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(clipDPI, variant.track, trackCoords);
             GfxDrawSprite(clipDPI, variant.track, trackCoords + ScreenCoordsXY(256, 0));
 
-            if (_totalCount == 0)
-                return;
-
-            // Draw vehicle to indicate progress
+            // Figure out where to position the vehicle to indicate progress
             auto* vehicle = GfxGetG1Element(variant.vehicle);
-            auto position = (-vehicle->width + 2) + (frame_no % width);
+            int32_t position;
+            if (_totalCount > 0)
+                position = (-vehicle->width + 2) + width * _currentProgress / _totalCount;
+            else
+                position = (vehicle->width + width) / 2;
+
             GfxDrawSprite(clipDPI, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
         }
 
