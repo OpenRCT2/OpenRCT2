@@ -653,11 +653,12 @@ namespace OpenRCT2
             ContextOpenIntent(&intent);
         }
 
-        void SetProgress(uint32_t currentProgress, uint32_t totalCount) override
+        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) override
         {
             auto intent = Intent(INTENT_ACTION_PROGRESS_SET);
             intent.PutExtra(INTENT_EXTRA_PROGRESS_OFFSET, currentProgress);
             intent.PutExtra(INTENT_EXTRA_PROGRESS_TOTAL, totalCount);
+            intent.PutExtra(INTENT_EXTRA_STRING_ID, format);
             ContextOpenIntent(&intent);
         }
 

@@ -346,7 +346,8 @@ public:
             {
                 uint32_t currentProgress = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_OFFSET);
                 uint32_t totalCount = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_TOTAL);
-                ProgressWindowSet(currentProgress, totalCount);
+                StringId format = intent->GetUIntExtra(INTENT_EXTRA_STRING_ID);
+                ProgressWindowSet(currentProgress, totalCount, format);
                 return nullptr;
             }
 

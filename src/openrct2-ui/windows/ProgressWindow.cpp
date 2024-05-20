@@ -14,6 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <random>
 #include <sstream>
@@ -70,8 +71,11 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         close_callback _onClose = nullptr;
-        std::string _captionTemplate;
+
+        StringId _progressFormat;
+        std::string _progressTitle;
         std::string _currentCaption;
+
         uint32_t _currentProgress;
         uint32_t _totalCount;
         int8_t style = -1;
@@ -148,18 +152,22 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_totalCount > 0)
             {
-                std::stringstream caption;
-                caption << _captionTemplate;
-                caption << " (" << _currentProgress << " / " << _totalCount << ")";
-                _currentCaption = caption.str();
+                auto ft = Formatter();
+                ft.Add<const char*>(_progressTitle.c_str());
+                ft.Add<uint32_t>(_currentProgress);
+                ft.Add<uint32_t>(_totalCount);
+
+                _currentCaption = FormatStringIDLegacy(_progressFormat, ft.Data());
             }
             else
-                _currentCaption = _captionTemplate;
+                _currentCaption = _progressTitle;
 
             // Set window title
-            auto ft = Formatter::Common();
-            ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(_currentCaption.c_str());
+            {
+                auto ft = Formatter::Common();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const char*>(_currentCaption.c_str());
+            }
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -195,9 +203,9 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(clipDPI, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
         }
 
-        void SetCaptionTemplate(const std::string& text)
+        void SetCaption(const std::string& text)
         {
-            _captionTemplate = text;
+            _progressTitle = text;
             _currentProgress = 0;
             _totalCount = 0;
 
@@ -209,8 +217,13 @@ namespace OpenRCT2::Ui::Windows
             _onClose = onClose;
         }
 
-        void SetProgress(uint32_t currentProgress, uint32_t totalCount)
+        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format)
         {
+            if (format == STR_NONE)
+                _progressFormat = STR_STRING_M_OF_N;
+            else
+                _progressFormat = format;
+
             _currentProgress = currentProgress;
             _totalCount = totalCount;
             Invalidate();
@@ -233,12 +246,12 @@ namespace OpenRCT2::Ui::Windows
                 WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
-        window->SetCaptionTemplate(text);
+        window->SetCaption(text);
         window->SetCloseCallback(onClose);
         return window;
     }
 
-    void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount)
+    void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format)
     {
         auto window = WindowFindByClass(WindowClass::ProgressWindow);
         if (window == nullptr)
@@ -246,7 +259,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
         auto progressWindow = static_cast<ProgressWindow*>(window);
-        progressWindow->SetProgress(currentProgress, totalCount);
+        progressWindow->SetProgress(currentProgress, totalCount, format);
     }
 
     // Closes the window, deliberately *without* executing the callback.

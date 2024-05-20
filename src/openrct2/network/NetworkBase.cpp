@@ -2782,8 +2782,11 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         chunk_buffer.resize(size);
     }
 
+    const auto currentProgressKiB = (offset + chunksize) / 1024;
+    const auto totalSizeKiB = size / 1024;
+
     OpenNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
-    GetContext().SetProgress((offset + chunksize) / 1024, size / 1024);
+    GetContext().SetProgress(currentProgressKiB, totalSizeKiB, STR_STRING_M_OF_N_KIB);
 
     std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);
     if (offset + chunksize == size)
