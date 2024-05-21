@@ -4281,7 +4281,7 @@ declare global {
 
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
-        LabelWidget | ListViewWidget |ProgressBarWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
+        LabelWidget | ListViewWidget | ProgressBarWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     type IconName = "arrow_down" | "arrow_up" | "chat" | "cheats" | "copy" | "empty" | "eyedropper" |
         "fast_forward" | "game_speed_indicator" | "game_speed_indicator_double" | "glassy_recolourable" |
