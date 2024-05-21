@@ -4281,7 +4281,7 @@ declare global {
 
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
-        LabelWidget | ProgressBarWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
+        LabelWidget | ListViewWidget |ProgressBarWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     type IconName = "arrow_down" | "arrow_up" | "chat" | "cheats" | "copy" | "empty" | "eyedropper" |
         "fast_forward" | "game_speed_indicator" | "game_speed_indicator_double" | "glassy_recolourable" |
@@ -4461,7 +4461,7 @@ declare global {
 
     type WidgetDesc =
         ButtonDesc | CheckboxDesc | ColourPickerDesc | CustomDesc | DropdownDesc | GroupBoxDesc |
-        LabelDesc | ListViewDesc | SpinnerDesc | TextBoxDesc | ViewportDesc;
+        LabelDesc | ListViewDesc | ProgressBarDesc | SpinnerDesc | TextBoxDesc | ViewportDesc;
 
     interface WidgetBaseDesc {
         type: WidgetType;
