@@ -20,6 +20,7 @@
 #    include "ScUi.hpp"
 #    include "ScWindow.hpp"
 
+#    include <algorithm>
 #    include <limits>
 #    include <openrct2/drawing/Drawing.h>
 #    include <openrct2/interface/Window.h>
@@ -1073,7 +1074,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget.type = WindowWidgetType::ProgressBar;
                 widget.colour = desc.Colour;
-                widget.content = desc.Percentage | (desc.LowerBlinkBound << 8) | (desc.UpperBlinkBound << 16);
+
+                auto clampedPercent = std::clamp(desc.Percentage, static_cast<uint8_t>(0), static_cast<uint8_t>(100));
+                widget.content = clampedPercent | (desc.LowerBlinkBound << 8) | (desc.UpperBlinkBound << 16);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "spinner")
