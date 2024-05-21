@@ -100,6 +100,7 @@ STR_0093    :Montagnes russes hybrides
 STR_0094    :Montagnes russes à rail unique
 STR_0095    :Montagnes russes alpines
 STR_0096    :Montagnes russes en bois classiques
+STR_0097    :Montagnes russes debout classiques
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -183,6 +184,7 @@ STR_0603    :Train de montagnes russes en bois avec des rails en acier, permetta
 STR_0604    :Les passagers parcourent une voie à rail unique dans des voitures mono-places, à travers des inversions et des virages serrés
 STR_0605    :Les passagers dévalent une voie en acier sinueuse, freinant pour contrôler leur vitesse
 STR_0606    :Une montagne russe en bois au style ancien, rapide et turbulente, avec de nombreux moments en suspension, quelques forces latérales et conçues pour paraître hors de contrôle
+STR_0607    :Les passagers parcourent debout une montagne russe en acier intense au style ancien, ponctuée d’inversions
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -2002,7 +2004,7 @@ STR_2793    :(Réussi par {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Réussi par : {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} avec une valeur de société de : {BLACK}{CURRENCY}
 STR_2795    :Trier
 STR_2796    :Trie la liste des attractions dans l’ordre avec le type d’informations affiché
-STR_2797    :Défiler la vue quand le curseur atteint le bord de l’écran
+STR_2797    :Défiler la vue quand le curseur est au bord de l’écran
 STR_2798    :Fait défiler la vue quand le curseur atteint le bord de l’écran
 STR_2799    :Voir ou modifier les touches de raccourci
 STR_2800    :{WINDOW_COLOUR_2}Nombre total d’entrées : {BLACK}{COMMA32}
@@ -3700,6 +3702,23 @@ STR_6619    :Ce type d’objet ne peut pas être restreint !
 STR_6620    :Objet introuvable !
 STR_6621    :Restreindre
 STR_6622    :Restreint l’objet à l’éditeur de scénario et au mode bac à sable
+STR_6623    :Tapez « help » pour une liste des commandes disponibles. Tapez « hide » pour cacher la console.
+STR_6624    :Inspecteur de cases : Trier les éléments
+STR_6625    :Couleur invalide
+STR_6626    :L’animation est retournée
+STR_6627    :Vitesse de voie trop élevée !
+STR_6628    :Ne peut être placé que sur le bord des allées !
+STR_6629    :Centrer les boutons de la barre d’outils
+STR_6630    :Ce réglage aligne horizontalement les boutons de la barre d’outil au centre de l’écran, au lieu de les répartir à gauche et à droite
+STR_6631    :Chargement…
+STR_6632    :Vérification des fichiers d’objet…
+STR_6633    :Vérification des fichiers de scénario…
+STR_6634    :Vérification des fichiers de conception de voie…
+STR_6635    :Vérification des packs de ressources…
+STR_6636    :Vérification des séquences titre…
+STR_6637    :Chargement de la séquence titre…
+STR_6638    :Interface agrandie
+STR_6639    :Adapte l’interface à un usage tactile
 
 #############
 # Scenarios #
