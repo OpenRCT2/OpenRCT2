@@ -66,8 +66,8 @@ namespace OpenRCT2::Ui::Windows
         TextAlignment TextAlign{};
         colour_t Colour{};
         uint8_t Percentage{};      // progress bar value
-        uint8_t LowerBlinkBound{}; // progress bar blink when below
-        uint8_t UpperBlinkBound{}; // progress bar blink when above
+        uint8_t LowerBlinkBound{}; // progress bar will blink when above the lower bound
+        uint8_t UpperBlinkBound{}; // and below upper bound
         std::string Tooltip;
         std::vector<std::string> Items;
         std::vector<ListViewItem> ListViewItems;
