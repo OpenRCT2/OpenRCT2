@@ -4363,21 +4363,6 @@ declare global {
         textAlign: TextAlignment;
     }
 
-    interface ProgressBarWidget extends WidgetBase {
-        colour: number;
-        /**
-         * The percentage of the bar to fill, ranging from 0-100 (inclusive).
-         */
-        percentage: number;
-        /**
-         * Used to specify a range of values between which the bar will start blinking.
-         * Set both of these to the same value to disable blinking entirely.
-         * The range is inclusive.
-         */
-        lowerBlinkBound: number;
-        upperBlinkBound: number;
-    }
-
     type SortOrder = "none" | "ascending" | "descending";
 
     type ScrollbarType = "none" | "horizontal" | "vertical" | "both";
@@ -4412,6 +4397,25 @@ declare global {
         canSelect: boolean;
     }
 
+    interface ProgressBarWidget extends WidgetBase {
+        colour: number;
+        /**
+         * The percentage of the bar to fill, ranging from 0-100 (inclusive).
+         */
+        percentage: number;
+        /**
+         * Used to specify a range of values between which the bar will start blinking.
+         * The bar will blink when lowerBlinkBound <= percentage <= upperBlinkBound.
+         * Set both upper and lower bounds to the same value to disable blinking.
+         */
+        lowerBlinkBound: number;
+        /**
+         * Used to specify a range of values between which the bar will start blinking.
+         * The bar will blink when lowerBlinkBound <= percentage <= upperBlinkBound.
+         * Set both upper and lower bounds to the same value to disable blinking.
+         */
+        upperBlinkBound: number;
+    }
     interface SpinnerWidget extends WidgetBase {
         type: "spinner";
         text: string;
