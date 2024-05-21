@@ -65,6 +65,9 @@ namespace OpenRCT2::Ui::Windows
         std::string Text;
         TextAlignment TextAlign{};
         colour_t Colour{};
+        uint8_t Percentage{}; // progress bar value
+        uint8_t LowerBlinkBound{}; // progress bar blink when below
+        uint8_t UpperBlinkBound{}; // progress bar blink when above
         std::string Tooltip;
         std::vector<std::string> Items;
         std::vector<ListViewItem> ListViewItems;
@@ -176,6 +179,17 @@ namespace OpenRCT2::Ui::Windows
                     result.Scrollbars = ScrollbarType::Vertical;
                 else
                     result.Scrollbars = FromDuk<ScrollbarType>(desc["scrollbars"]);
+            }
+            else if (result.Type == "progressbar")
+            {
+                result.Percentage = AsOrDefault(desc["percentage"], 0);
+                result.LowerBlinkBound = AsOrDefault(desc["lowerBlinkBound"], 0);
+                result.UpperBlinkBound = AsOrDefault(desc["upperBlinkBound"], 0);
+                auto colour = AsOrDefault(desc["colour"], 1); // use white for the
+                if (colour < COLOUR_COUNT)
+                {
+                    result.Colour = colour;
+                }
             }
             else if (result.Type == "spinner")
             {
@@ -1053,6 +1067,21 @@ namespace OpenRCT2::Ui::Windows
                     widget.content = SCROLL_VERTICAL;
                 else if (desc.Scrollbars == ScrollbarType::Both)
                     widget.content = SCROLL_BOTH;
+                widgetList.push_back(widget);
+            }
+            else if (desc.Type == "progressbar")
+            {
+                widget.type = WindowWidgetType::ProgressBar;
+                if (desc.IsDisabled)
+                {
+                    widget.colour = 1;
+                    widget.content = 100;
+                }
+                else
+                {
+                    widget.colour = desc.Colour;
+                    widget.content = desc.Percentage | (desc.LowerBlinkBound << 8) | (desc.UpperBlinkBound << 16);
+                }
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "spinner")

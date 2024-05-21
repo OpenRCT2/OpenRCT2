@@ -582,9 +582,6 @@ namespace OpenRCT2::Scripting
                 ctx, &ScProgressBarWidget::lowerBlinkBound_get, &ScProgressBarWidget::lowerBlinkBound_set, "lowerBlinkBound");
             dukglue_register_property(
                 ctx, &ScProgressBarWidget::upperBlinkBound_get, &ScProgressBarWidget::upperBlinkBound_set, "upperBlinkBound");
-            // Explicit template due to text being a base method
-            dukglue_register_property<ScProgressBarWidget, std::string, std::string>(
-                ctx, &ScProgressBarWidget::text_get, &ScProgressBarWidget::text_set, "text");
         }
 
     private:

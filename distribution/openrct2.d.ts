@@ -4277,11 +4277,11 @@ declare global {
      */
     type WidgetType =
         "button" | "checkbox" | "colourpicker" | "custom" | "dropdown" | "groupbox" |
-        "label" | "listview" | "spinner" | "textbox" | "viewport" | "progress_bar";
+        "label" | "listview" | "progressbar" | "spinner" | "textbox" | "viewport";
 
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
-        LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget | ProgressBarWidget;
+        LabelWidget | ProgressBarWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     type IconName = "arrow_down" | "arrow_up" | "chat" | "cheats" | "copy" | "empty" | "eyedropper" |
         "fast_forward" | "game_speed_indicator" | "game_speed_indicator_double" | "glassy_recolourable" |
@@ -4333,7 +4333,7 @@ declare global {
         text: string;
         isChecked: boolean;
     }
-    
+
     interface ColourPickerWidget extends WidgetBase {
         type: "colourpicker";
         colour: number;
@@ -4375,9 +4375,8 @@ declare global {
          * The range is inclusive.
          */
         lowerBlinkBound: number;
-        uppperBlinkBound: number;
+        upperBlinkBound: number;
     }
-
 
     type SortOrder = "none" | "ascending" | "descending";
 
@@ -4546,6 +4545,14 @@ declare global {
         canSelect?: boolean;
         onHighlight?: (item: number, column: number) => void;
         onClick?: (item: number, column: number) => void;
+    }
+
+    interface ProgressBarDesc extends WidgetBaseDesc {
+        type: "progressbar";
+        colour?: number;
+        percentage?: number;
+        lowerBlinkBound?: number;
+        upperBlinkBound?: number;
     }
 
     interface SpinnerDesc extends WidgetBaseDesc {
