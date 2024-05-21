@@ -12,6 +12,7 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
 * Michael Bernardi (mrmbernardi) - Programming
 * Michael Steenbeek (Gymnasiast) - Lead Localisation - Programming
+* Aaron van Geffen (AaronVanGeffen) - Programming
 
 ## Support team
 * Kenton Boadway (Krutonium) - Lead OpenScenarios
@@ -21,7 +22,6 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Marijn van der Werf (marijnvdwerf)
 * (zsilencer)
 * Richard Jenkins (rwjuk)
-* Aaron van Geffen (AaronVanGeffen)
 * Rik Smeets (rik-smeets)
 
 ## Long term contributors
