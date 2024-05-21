@@ -25,7 +25,7 @@
 
 namespace OpenRCT2
 {
-    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year);
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year, bool inSentence);
 
     static std::optional<int32_t> ParseNumericToken(std::string_view s)
     {
@@ -589,7 +589,15 @@ namespace OpenRCT2
                 {
                     auto month = DateGetMonth(arg);
                     auto year = DateGetYear(arg) + 1;
-                    FormatMonthYear(ss, month, year);
+                    FormatMonthYear(ss, month, year, false);
+                }
+                break;
+            case FormatToken::MonthYearSentence:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto month = DateGetMonth(arg);
+                    auto year = DateGetYear(arg) + 1;
+                    FormatMonthYear(ss, month, year, true);
                 }
                 break;
             case FormatToken::Month:
@@ -779,6 +787,7 @@ namespace OpenRCT2
                     break;
                 case FormatToken::UInt16:
                 case FormatToken::MonthYear:
+                case FormatToken::MonthYearSentence:
                 case FormatToken::Month:
                 case FormatToken::Velocity:
                 case FormatToken::DurationShort:
@@ -815,12 +824,13 @@ namespace OpenRCT2
         }
     }
 
-    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year)
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year, bool inSentence)
     {
         thread_local std::vector<FormatArg_t> tempArgs;
         tempArgs.clear();
 
-        auto fmt = GetFmtStringById(STR_DATE_FORMAT_MY);
+        auto stringId = inSentence ? STR_DATE_FORMAT_MY_SENTENCE : STR_DATE_FORMAT_MY;
+        auto fmt = GetFmtStringById(stringId);
         Formatter ft;
         ft.Add<uint16_t>(month);
         ft.Add<uint16_t>(year);

@@ -1739,8 +1739,8 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Your objective:
 STR_2385    :{BLACK}None
-STR_2386    :{BLACK}To have at least {COMMA32} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
-STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2386    :{BLACK}To have at least {COMMA32} guests in your park at the end of {MONTHYEAR_SENTENCE}, with a park rating of at least 600
+STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR_SENTENCE}
 STR_2388    :{BLACK}Have Fun!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
 STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
@@ -1950,6 +1950,7 @@ STR_2732    :{COMMA32} ft
 STR_2733    :{COMMA32} m
 STR_2734    :{COMMA16} mph
 STR_2735    :{COMMA16} km/h
+# Used only as part of label-value pair.
 STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
 STR_2738    :Title screen music:
@@ -3743,6 +3744,8 @@ STR_6670    :Guest behaviour
 STR_6671    :Show ‘real’ names of staff
 STR_6672    :Toggle between showing ‘real’ names of staff and staff numbers
 STR_6673    :Transparent
+# Used as part of a sentence (see https://github.com/OpenRCT2/OpenRCT2/issues/22072).
+STR_6674    :{MONTH}, Year {COMMA16}
 
 #############
 # Scenarios #
