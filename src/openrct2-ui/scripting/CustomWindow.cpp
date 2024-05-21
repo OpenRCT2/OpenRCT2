@@ -1072,16 +1072,8 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "progressbar")
             {
                 widget.type = WindowWidgetType::ProgressBar;
-                if (desc.IsDisabled)
-                {
-                    widget.colour = 1;
-                    widget.content = 100;
-                }
-                else
-                {
-                    widget.colour = desc.Colour;
-                    widget.content = desc.Percentage | (desc.LowerBlinkBound << 8) | (desc.UpperBlinkBound << 16);
-                }
+                widget.colour = desc.Colour;
+                widget.content = desc.Percentage | (desc.LowerBlinkBound << 8) | (desc.UpperBlinkBound << 16);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "spinner")
