@@ -876,7 +876,7 @@ declare global {
         x: number;
         y: number;
         height: number;
-        style: number; // see TILE_ELEMENT_SLOPE in openrct2/world/Surface.h
+        style: number; // see openrct2/world/tile_element/Slope.h
     }
 
     interface LandSetRightsArgs extends GameActionArgs {
