@@ -2874,6 +2874,11 @@ declare global {
          * The total number of frames in the current animation.
          */
         readonly animationLength: number;
+
+        /**
+         * The ride ID of the guest's favourite ride.
+         */
+        favouriteRide: number;
     }
 
     /**

@@ -202,6 +202,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
+        dukglue_register_property(ctx, &ScGuest::favouriteRide_get, &ScGuest::favouriteRide_set, "favouriteRide");
         dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
         dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
         dukglue_register_property(ctx, &ScGuest::availableAnimations_get, nullptr, "availableAnimations");
@@ -504,6 +505,22 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->GuestIsLostCountdown = value;
+        }
+    }
+
+    uint16_t ScGuest::favouriteRide_get() const
+    {
+        auto peep = GetGuest();
+        return peep != nullptr ? peep->FavouriteRide.ToUnderlying() : 0;
+    }
+
+    void ScGuest::favouriteRide_set(uint16_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            peep->FavouriteRide = RideId::FromUnderlying(value);
         }
     }
 
