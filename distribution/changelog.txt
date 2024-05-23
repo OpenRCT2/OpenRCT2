@@ -11,6 +11,7 @@
 - Improved: [#21981] The map window now defaults to showing as much of the map as fits the screen.
 - Improved: [#21983] Taking a screenshot now shows a message again, closing when taking another.
 - Improved: [#22026] The options window now stays centred when window scaling is changed.
+- Improved: [#22084] The game now temporarily pauses while the load/save window is open.
 - Change: [#7248] Small mini-maps are now centred in the map window.
 - Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
