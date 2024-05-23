@@ -385,19 +385,19 @@ static Widget window_options_misc_widgets[] = {
 
 static Widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
-    MakeWidget        ({ 10,  84}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
-    MakeWidget        ({ 10,  99}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
-    MakeWidget        ({ 10, 114}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
-    MakeWidget        ({ 24, 131}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
-    MakeWidget        ({165, 130}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
-    MakeWidget        ({288, 131}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
-    MakeWidget        ({ 24, 151}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-    MakeSpinnerWidgets({165, 150}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_NONE,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
-    MakeWidget        ({ 23, 169}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-    MakeWidget        ({ 24, 184}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
-    MakeWidget        ({289, 184}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-    MakeWidget        ({ 24, 200}, {140, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_ASSET_PACKS,                           STR_NONE                                     ), // Asset packs
+    MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
+    MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
+    MakeWidget        ({ 10,  84}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
+    MakeWidget        ({ 10,  99}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
+    MakeWidget        ({ 23, 114}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
+    MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
+    MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+    MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
+    MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_NONE,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+    MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
+    MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+    MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
+    MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               STR_NONE                                     ), // Asset packs
     kWidgetsEnd,
 };
 
