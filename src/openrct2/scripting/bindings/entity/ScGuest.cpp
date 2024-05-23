@@ -511,7 +511,7 @@ namespace OpenRCT2::Scripting
     uint16_t ScGuest::favouriteRide_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->FavouriteRide.ToUnderlying() : 0;
+        return peep != nullptr ? peep->FavouriteRide.ToUnderlying() : RideId::GetNull().ToUnderlying();
     }
 
     void ScGuest::favouriteRide_set(uint16_t value)
