@@ -15,6 +15,7 @@
 - Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
+- Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
 - Fix: [#22008] Uninverted Lay-down roller coaster uses the wrong support type.
 - Fix: [#22012] [Plugin] Images on ImgButton widgets cannot be updated.
