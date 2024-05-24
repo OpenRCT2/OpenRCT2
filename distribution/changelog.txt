@@ -14,6 +14,7 @@
 - Change: [#7248] Small mini-maps are now centred in the map window.
 - Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
+- Change: [#22057] Reorder Time Twister's scenarios and adjust their difficulty classification.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
 - Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
