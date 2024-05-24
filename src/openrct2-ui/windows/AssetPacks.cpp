@@ -238,7 +238,7 @@ static Widget WindowAssetPacksWidgets[] = {
     private:
         void PaintItem(DrawPixelInfo& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
         {
-            auto listWidth = dpi.width - 1;
+            auto listWidth = widgets[WIDX_LIST].right - widgets[WIDX_LIST].left;
             auto stringId = STR_BLACK_STRING;
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
