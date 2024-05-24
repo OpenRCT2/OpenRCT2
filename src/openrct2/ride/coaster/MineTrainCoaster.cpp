@@ -5418,8 +5418,8 @@ static void MineTrainRCTrackDiagFlat(
     const TrackElement& trackElement)
 {
     constexpr ImageIndex images[2][NumOrthogonalDirections] = {
-        { 20386, 20387, 20388, 20389 },
         { 20358, 20359, 20360, 20361 },
+        { 20386, 20387, 20388, 20389 },
     };
 
     TrackPaintUtilDiagTilesPaint(
