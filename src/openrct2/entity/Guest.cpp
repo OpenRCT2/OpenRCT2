@@ -843,11 +843,9 @@ void Guest::Loc68FA89()
             newEnergy = newTargetEnergy;
     }
 
-    if (newEnergy < kPeepMinEnergy)
-        newEnergy = kPeepMinEnergy;
-
-    /* Previous code here suggested maximum energy is 128. */
-    newEnergy = std::min(kPeepMaxEnergy, newEnergy);
+    // Keep guest energy balanced between min and max, unless it's been forced to 0
+    if (newEnergy != 0)
+        newEnergy = std::clamp(newEnergy, kPeepMinEnergy, kPeepMaxEnergy);
 
     if (newEnergy != Energy)
     {
