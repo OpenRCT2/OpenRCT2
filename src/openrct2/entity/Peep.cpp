@@ -955,6 +955,12 @@ static void GuestUpdateThoughts(Guest* peep)
  */
 void Peep::Update()
 {
+    // Leave peep alone if energy has been forced to 0
+    if (Energy == 0)
+    {
+        return;
+    }
+
     auto* guest = As<Guest>();
     if (guest != nullptr)
     {

@@ -900,6 +900,12 @@ void Guest::Loc68FA89()
 
 void Guest::Tick128UpdateGuest(uint32_t index)
 {
+    // Leave guest alone if energy has been forced to 0
+    if (Energy == 0)
+    {
+        return;
+    }
+
     const auto currentTicks = GetGameState().CurrentTicks;
 
     if ((index & 0x1FF) == (currentTicks & 0x1FF))
