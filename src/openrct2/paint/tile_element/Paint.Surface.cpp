@@ -154,63 +154,42 @@ static constexpr uint8_t Byte97B55D[] = {
     1, 5, 1, 3, 2, 3, 1, 5, 0,
 };
 
-static constexpr uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
-    { 2, 2 },
-    { 3, 3 },
-    { 3, 5 },
-    { 3, 3 },
-    { 4, 4 },
-    { 4, 6 },
-    { 2, 2 },
-    { 3, 3 },
-    { 3, 5 },
-    { 3, 3 },
-    { 2, 3 },
-    { 2, 3 },
-    { 2, 3 },
-    { 3, 4 },
-    { 2, 3 },
-    { 3, 4 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
+struct TunnelDescriptor
+{
+    uint8_t height;
+    uint8_t boundBoxLength;
+    int16_t boundBoxZOffset;
+    uint8_t lowClearanceAlternative;
+    uint8_t imageOffset;
 };
-
-static constexpr int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
-    0,
-    0,
-    -32,
-    0,
-    0,
-    -48,
-    0,
-    0,
-    -32,
-    0,
-    -16,
-    -16,
-    -16,
-    -16,
-    -16,
-    -16,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
+static constexpr TunnelDescriptor kTunnels[TUNNEL_TYPE_COUNT] = {
+    { 2, 2, 0,   TUNNEL_0,                   36 },  // TUNNEL_0
+    { 3, 3, 0,   TUNNEL_0,                   40 },  // TUNNEL_1
+    { 3, 5, -32, TUNNEL_0,                   44 },  // TUNNEL_2
+    { 3, 3, 0,   TUNNEL_INVERTED_3,          48 },  // TUNNEL_INVERTED_3
+    { 4, 4, 0,   TUNNEL_INVERTED_3,          52 },  // TUNNEL_INVERTED_4
+    { 4, 6, -48, TUNNEL_INVERTED_3,          56 },  // TUNNEL_INVERTED_5
+    { 2, 2, 0,   TUNNEL_SQUARE_FLAT,         60 },  // TUNNEL_SQUARE_FLAT
+    { 3, 3, 0,   TUNNEL_SQUARE_FLAT,         64 },  // TUNNEL_SQUARE_7
+    { 3, 5, -32, TUNNEL_SQUARE_FLAT,         68 },  // TUNNEL_SQUARE_8
+    { 3, 3, 0,   TUNNEL_SQUARE_FLAT,         72 },  // TUNNEL_SQUARE_INVERTED_9
+    { 2, 3, -16, TUNNEL_PATH_AND_MINI_GOLF,  76 },  // TUNNEL_PATH_AND_MINI_GOLF
+    { 2, 3, -16, TUNNEL_PATH_11,             80 },  // TUNNEL_PATH_11
+    { 2, 3, -16, TUNNEL_12,                  36 },  // TUNNEL_12
+    { 3, 4, -16, TUNNEL_13,                  48 },  // TUNNEL_13
+    { 2, 3, -16, TUNNEL_14,                  60 },  // TUNNEL_14
+    { 3, 4, -16, TUNNEL_14,                  72 },  // TUNNEL_15
+    { 2, 2, 0,   TUNNEL_DOORS_0,             76 },  // TUNNEL_DOORS_0
+    { 2, 2, 0,   TUNNEL_DOORS_1,             80 },  // TUNNEL_DOORS_1
+    { 2, 2, 0,   TUNNEL_DOORS_2,             84 },  // TUNNEL_DOORS_2
+    { 2, 2, 0,   TUNNEL_DOORS_3,             88 },  // TUNNEL_DOORS_3
+    { 2, 2, 0,   TUNNEL_DOORS_4,             92 },  // TUNNEL_DOORS_4
+    { 2, 2, 0,   TUNNEL_DOORS_5,             96 },  // TUNNEL_DOORS_5
+    { 2, 2, 0,   TUNNEL_DOORS_6,            100 }, // TUNNEL_DOORS_6
 };
 
 // clang-format on
 // tunnel offset
-static constexpr uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
-    0, 0, 0, 3, 3, 3, 6, 6, 6, 6, 10, 11, 12, 13, 14, 14, 16, 17, 18, 19, 20, 21, 22,
-};
 
 static constexpr uint8_t Byte97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
@@ -362,22 +341,20 @@ static ImageId GetEdgeImage(const TerrainEdgeObject* edgeObject, uint8_t type)
 
 static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, uint8_t type, edge_t edge)
 {
-    static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
-                                                             36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
-
     bool hasDoors = false;
     if (edgeObject != nullptr)
     {
         hasDoors = edgeObject->HasDoors && !edgeObject->UsesFallbackImages();
     }
 
-    if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
+    if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(kTunnels))
         type = TUNNEL_0;
 
     ImageId result;
-    if (type < std::size(offsets))
+    if (type < std::size(kTunnels))
     {
-        result = GetEdgeImageWithOffset(edgeObject, offsets[type]).WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+        result = GetEdgeImageWithOffset(edgeObject, kTunnels[type].imageOffset)
+                     .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
     }
     return result;
 }
@@ -671,18 +648,19 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         // Tunnels
         uint8_t tunnelType = tunnelArray[tunnelIndex].type;
-        uint8_t tunnelHeight = _tunnelHeights[tunnelType][0];
+        uint8_t tunnelHeight = kTunnels[tunnelType].height;
         int16_t zOffset = curHeight;
 
+        // When dealing with flat land but a sloped track, we fall back to the non-sloped variant.
         if ((zOffset + tunnelHeight) > neighbourCornerHeight1 || (zOffset + tunnelHeight) > cornerHeight1)
         {
-            tunnelType = Byte97B5B0[tunnelType];
+            tunnelType = kTunnels[tunnelType].lowClearanceAlternative;
         }
 
         zOffset *= 16;
 
-        int16_t boundBoxOffsetZ = zOffset + _boundBoxZOffsets[tunnelType];
-        int8_t boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
+        int16_t boundBoxOffsetZ = zOffset + kTunnels[tunnelType].boundBoxZOffset;
+        int8_t boundBoxLength = kTunnels[tunnelType].boundBoxLength * 16;
         if (boundBoxOffsetZ < 16)
         {
             boundBoxOffsetZ += 16;
@@ -695,8 +673,8 @@ static void ViewportSurfaceDrawTileSideBottom(
             { { 0, 0, boundBoxOffsetZ }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
 
         boundBoxOffsetZ = curHeight * COORDS_Z_PER_TINY_Z;
-        boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
-        boundBoxOffsetZ += _boundBoxZOffsets[tunnelType];
+        boundBoxLength = kTunnels[tunnelType].boundBoxLength * 16;
+        boundBoxOffsetZ += kTunnels[tunnelType].boundBoxZOffset;
         if (boundBoxOffsetZ == 0)
         {
             boundBoxOffsetZ += 16;
@@ -709,7 +687,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             { { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ },
               { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
 
-        curHeight += _tunnelHeights[tunnelType][0];
+        curHeight += kTunnels[tunnelType].height;
         tunnelIndex++;
     }
 }

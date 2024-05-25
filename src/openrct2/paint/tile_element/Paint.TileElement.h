@@ -28,15 +28,15 @@ enum edge_t
 
 enum
 {
-    TUNNEL_0 = 0,
-    TUNNEL_1 = 1,
-    TUNNEL_2 = 2,
-    TUNNEL_INVERTED_3 = 3,
-    TUNNEL_INVERTED_4 = 4,
-    TUNNEL_INVERTED_5 = 5,
-    TUNNEL_SQUARE_FLAT = 6,
-    TUNNEL_SQUARE_7 = 7,
-    TUNNEL_SQUARE_8 = 8,
+    TUNNEL_0 = 0,           // Used on flat track (or the flat part of flat-to-sloped track)
+    TUNNEL_1 = 1,           // Used on the lower end of sloped track
+    TUNNEL_2 = 2,           // Used on the upper end of sloped track
+    TUNNEL_INVERTED_3 = 3,  // Used on flat track (or the flat part of flat-to-sloped track)
+    TUNNEL_INVERTED_4 = 4,  // Used on the lower end of sloped track
+    TUNNEL_INVERTED_5 = 5,  // Used on the upper end of sloped track
+    TUNNEL_SQUARE_FLAT = 6, // Used on flat track (or the flat part of flat-to-sloped track)
+    TUNNEL_SQUARE_7 = 7,    // Used on the lower end of sloped track
+    TUNNEL_SQUARE_8 = 8,    // Used on the upper end of sloped track
     TUNNEL_SQUARE_INVERTED_9 = 9,
     TUNNEL_PATH_AND_MINI_GOLF = 0x0A,
     TUNNEL_PATH_11 = 0x0B,
