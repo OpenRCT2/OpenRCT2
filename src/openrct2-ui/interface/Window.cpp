@@ -464,6 +464,8 @@ static bool WindowOtherWheelInput(WindowBase& w, WidgetIndex widgetIndex, int32_
     }
 
     const auto entryWidgetType = w.widgets[*spinnerGroupIndex].type;
+    auto targetWidgetIndex = *spinnerGroupIndex;
+
     if (entryWidgetType == WindowWidgetType::ImgBtn)
     {
         auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
@@ -475,6 +477,9 @@ static bool WindowOtherWheelInput(WindowBase& w, WidgetIndex widgetIndex, int32_
         {
             return false;
         }
+
+        // Expected widget order: decrease, increase
+        targetWidgetIndex += wheel < 0 ? 2 : 1;
     }
     else if (entryWidgetType == WindowWidgetType::Spinner)
     {
@@ -484,9 +489,11 @@ static bool WindowOtherWheelInput(WindowBase& w, WidgetIndex widgetIndex, int32_
         {
             return false;
         }
+
+        // Expected widget order: increase, decrease
+        targetWidgetIndex += wheel < 0 ? 1 : 2;
     }
 
-    const auto targetWidgetIndex = wheel < 0 ? *spinnerGroupIndex + 1 : *spinnerGroupIndex + 2;
     if (WidgetIsDisabled(w, targetWidgetIndex))
     {
         return false;
