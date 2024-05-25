@@ -909,8 +909,8 @@ namespace OpenRCT2::Ui::Windows
                     : _info.Desc.Tabs[page].Widgets[widgetDescIndex - tabWidgetsOffset];
                 auto preWidgetSize = widgetList.size();
                 CreateWidget(widgetList, widgetDesc);
-                auto numWidetsAdded = widgetList.size() - preWidgetSize;
-                for (size_t i = 0; i < numWidetsAdded; i++)
+                auto numWidgetsAdded = widgetList.size() - preWidgetSize;
+                for (size_t i = 0; i < numWidgetsAdded; i++)
                 {
                     _info.WidgetIndexMap.push_back(widgetDescIndex);
                 }
@@ -1062,25 +1062,25 @@ namespace OpenRCT2::Ui::Windows
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 widgetList.push_back(widget);
 
-                // Add the decrement button
+                // Add the increment button
                 widget = {};
                 widget.type = WindowWidgetType::Button;
                 widget.colour = 1;
-                widget.left = desc.X + desc.Width - 26;
-                widget.right = widget.left + 12;
+                widget.left = desc.X + desc.Width - 13;
+                widget.right = widget.left + 11;
                 widget.top = desc.Y + 1;
                 widget.bottom = desc.Y + desc.Height - 2;
-                widget.text = STR_NUMERIC_DOWN;
+                widget.text = STR_NUMERIC_UP;
                 widget.tooltip = STR_NONE;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
                 widgetList.push_back(widget);
 
-                // Add the increment button
-                widget.left = desc.X + desc.Width - 13;
-                widget.right = widget.left + 11;
-                widget.text = STR_NUMERIC_UP;
+                // Add the decrement button
+                widget.left = desc.X + desc.Width - 26;
+                widget.right = widget.left + 12;
+                widget.text = STR_NUMERIC_DOWN;
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "textbox")
