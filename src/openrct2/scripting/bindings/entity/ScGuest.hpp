@@ -167,8 +167,8 @@ namespace OpenRCT2::Scripting
         uint8_t lostCountdown_get() const;
         void lostCountdown_set(uint8_t value);
 
-        uint16_t favouriteRide_get() const;
-        void favouriteRide_set(uint16_t value);
+        DukValue favouriteRide_get() const;
+        void favouriteRide_set(const DukValue& value);
 
         DukValue thoughts_get() const;
 

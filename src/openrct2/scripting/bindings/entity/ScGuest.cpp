@@ -508,19 +508,43 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    uint16_t ScGuest::favouriteRide_get() const
+    DukValue ScGuest::favouriteRide_get() const
     {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
         auto peep = GetGuest();
-        return peep != nullptr ? peep->FavouriteRide.ToUnderlying() : RideId::GetNull().ToUnderlying();
+        if (peep != nullptr)
+        {
+            if (peep->FavouriteRide != RideId::GetNull())
+            {
+                duk_push_int(ctx, peep->FavouriteRide.ToUnderlying());
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
     }
 
-    void ScGuest::favouriteRide_set(uint16_t value)
+    void ScGuest::favouriteRide_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->FavouriteRide = RideId::FromUnderlying(value);
+            if (value.type() == DukValue::Type::NUMBER)
+            {
+                peep->FavouriteRide = RideId::FromUnderlying(value.as_uint());
+            }
+            else
+            {
+                peep->FavouriteRide = RideId::GetNull();
+            }
         }
     }
 

@@ -2878,7 +2878,7 @@ declare global {
         /**
          * The ride ID of the guest's favourite ride.
          */
-        favouriteRide: number;
+        favouriteRide: number | null;
     }
 
     /**
