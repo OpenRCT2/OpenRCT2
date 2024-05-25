@@ -832,11 +832,13 @@ void Guest::Loc68FA89()
     uint8_t newTargetEnergy = EnergyTarget;
     if (newEnergy >= newTargetEnergy)
     {
-        newEnergy -= 2;
+        if (newEnergy >= kPeepMinEnergy + 2)
+            newEnergy -= 2;
+
         if (newEnergy < newTargetEnergy)
             newEnergy = newTargetEnergy;
     }
-    else
+    else if (newEnergy != 0)
     {
         newEnergy = std::min<uint16_t>(kPeepMaxEnergyTarget, newEnergy + 4);
         if (newEnergy > newTargetEnergy)
