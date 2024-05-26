@@ -2877,7 +2877,7 @@ STR_5755    :Yanlış yazılım sürümü (Serverda bu kullanılmakda: {STRING})
 STR_5756    :Şifre yanlış
 STR_5757    :Server dolu
 STR_5758    :{OUTLINE}{GREEN}{STRING} servere katıldı
-STR_5759    :Harita indiriliyor … ({INT32} / {INT32}) KiB
+STR_5759    :Harita indiriliyor …
 STR_5760    :Hong Kong Doları (HK$)
 STR_5761    :Yeni Taiwan Doları (NT$)
 STR_5762    :Çin Yuanı (CN¥)

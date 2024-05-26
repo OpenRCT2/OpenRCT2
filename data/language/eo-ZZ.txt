@@ -2885,7 +2885,7 @@ STR_5755    :Malĝusta Versio de Programo (Servilo uzas je {STRING})
 STR_5756    :Malbona Pasvorto
 STR_5757    :Servilo Plena
 STR_5758    :{OUTLINE}{GREEN}{STRING} aliĝis al la ludo
-STR_5759    :Elŝutas mapon … ({INT32} / {INT32}) KiB
+STR_5759    :Elŝutas mapon …
 STR_5760    :Honkongaj Dolaroj (HK$)
 STR_5761    :Nova Tajvana Dolaro (NT$)
 STR_5762    :Ĉina Juano (CN¥)
@@ -3449,7 +3449,7 @@ STR_6374    :I
 STR_6375    :Nekonata Atrakcio
 STR_6376    :{WINDOW_COLOUR_2}Atrakcioveturilo:{NEWLINE}{BLACK}{STRINGID} por {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} por {STRINGID}
-STR_6378    :Ricevas liston de objektoj: {INT32} / {INT32}
+STR_6378    :Ricevas liston de objektoj:
 STR_6379    :Ricevis nevalidan datumon
 STR_6380    :Ĝisdatigo disponeblas!
 STR_6381    :Aliĝi al la Diskordo de OpenRCT2!

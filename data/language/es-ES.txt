@@ -2890,7 +2890,7 @@ STR_5755    :Versión de Software Incorrecto (Versión del servidor {STRING})
 STR_5756    :Contraseña Incorrecta
 STR_5757    :Servidor Lleno
 STR_5758    :{OUTLINE}{GREEN}{STRING} se ha unido al juego
-STR_5759    :Descargando mapa … ({INT32} / {INT32}) KiB
+STR_5759    :Descargando mapa …
 STR_5760    :Dólar de Hong Kong (HK$)
 STR_5761    :Nuevo dólar de Taiwán (NT$)
 STR_5762    :Yuan Chino (CN¥)
@@ -3453,7 +3453,7 @@ STR_6374    :G
 STR_6375    :Paseo Desconocido
 STR_6376    :{WINDOW_COLOUR_2}Paseo en vehículo:{NEWLINE}{BLACK}{STRINGID} para {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} para {STRINGID}
-STR_6378    :Recepción de lista de objetos: {INT32} / {INT32}
+STR_6378    :Recepción de lista de objetos:
 STR_6379    :Se recibieron datos no válidos
 STR_6380    :¡Actualización disponible!
 STR_6381    :¡Únete al Discord de OpenRCT2!

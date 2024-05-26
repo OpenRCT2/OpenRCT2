@@ -2886,7 +2886,7 @@ STR_5755    :Incompatibele softwareversie (server gebruikt {STRING})
 STR_5756    :Ongeldig wachtwoord
 STR_5757    :Server is vol
 STR_5758    :{OUTLINE}{GREEN}Nieuwe speler: {STRING}.
-STR_5759    :Bezig met downloaden van de kaart… ({INT32} / {INT32} KiB)
+STR_5759    :Bezig met downloaden van de kaart…
 STR_5760    :Hong Kong-dollar (HK$)
 STR_5761    :Taiwanese dollar (NT$)
 STR_5762    :Chinese yuan (CN¥)
@@ -3448,7 +3448,7 @@ STR_6374    :H
 STR_6375    :Onbekende attractie
 STR_6376    :{WINDOW_COLOUR_2}Voertuig:{NEWLINE}{BLACK}{STRINGID} voor {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} voor {STRINGID}
-STR_6378    :Objectenlijst ophalen: {INT32} / {INT32}
+STR_6378    :Objectenlijst ophalen:
 STR_6379    :Ongeldige gegevens ontvangen
 STR_6380    :Update beschikbaar!
 STR_6381    :Meepraten op de OpenRCT2-Discord

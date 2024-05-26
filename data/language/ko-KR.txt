@@ -2889,7 +2889,7 @@ STR_5755    :소프트웨어 버전이 맞지 않습니다 (서버는 {STRING} �
 STR_5756    :비밀번호가 맞지 않습니다
 STR_5757    :서버 제한 인원이 꽉 찼습니다
 STR_5758    :{OUTLINE}{GREEN}{STRING} 님 입장
-STR_5759    :맵 다운로드 중 … ({INT32} / {INT32}) KiB
+STR_5759    :맵 다운로드 중 …
 STR_5760    :홍콩 달러 (HK$)
 STR_5761    :신 대만 달러 (NT$)
 STR_5762    :중국 위안 (CN¥)
@@ -3452,7 +3452,7 @@ STR_6374    :겹
 STR_6375    :알 수 없는 놀이기구
 STR_6376    :{WINDOW_COLOUR_2}놀이기구 차량:{NEWLINE}{BLACK}{POP16}{STRINGID}의 {PUSH16}{PUSH16}{STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}유형: {BLACK}{POP16}{STRINGID}의 {PUSH16}{PUSH16}{STRINGID}
-STR_6378    :오브젝트 목록 수신 중: {INT32} / {INT32}
+STR_6378    :오브젝트 목록 수신 중:
 STR_6379    :올바르지 않은 데이터 수신
 STR_6380    :업데이트 사용 가능!
 STR_6381    :OpenRCT2 디스코드에 참여하세요!

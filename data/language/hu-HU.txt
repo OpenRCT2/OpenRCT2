@@ -2885,7 +2885,7 @@ STR_5755    :Hibás szoftververzió (A szerver ezt használja: {STRING})
 STR_5756    :Hibás jelszó
 STR_5757    :A szerver megtelt
 STR_5758    :{OUTLINE}{GREEN}{STRING} csatlakozott a játékhoz
-STR_5759    :Térkép letöltése … ({INT32} / {INT32}) KiB
+STR_5759    :Térkép letöltése …
 STR_5760    :Hongkongi dollár (HK$)
 STR_5761    :Tajvani új dollár (NT$)
 STR_5762    :Kínai jüan (CN¥)
@@ -3449,7 +3449,7 @@ STR_6374    :K
 STR_6375    :Ismeretlen játék
 STR_6376    :{WINDOW_COLOUR_2}Jármű egy játékhoz:{NEWLINE}{BLACK}{STRINGID} a(z) {STRINGID} számára
 STR_6377    :{WINDOW_COLOUR_2}Típus: {BLACK}{STRINGID} a(z) {STRINGID} számára
-STR_6378    :Objektumlista fogadása: {INT32} / {INT32}
+STR_6378    :Objektumlista fogadása:
 STR_6379    :Érvénytelen adatok érkeztek
 STR_6380    :Frissítés érhető el!
 STR_6381    :Csatlakozz az OpenRCT2 Discord-hoz!
