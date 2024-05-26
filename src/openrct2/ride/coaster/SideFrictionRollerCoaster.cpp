@@ -1964,17 +1964,23 @@ static void SideFrictionRCTrackDiagFlat(
     switch (trackSequence)
     {
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
-                { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+            if (direction == 0)
+            {
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
+                    { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+            }
 
             WoodenASupportsPaintSetupRotated(
                 session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
-                { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+            if (direction == 2)
+            {
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
+                    { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+            }
 
             WoodenASupportsPaintSetupRotated(
                 session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
