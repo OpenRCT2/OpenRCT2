@@ -19,7 +19,60 @@ namespace OpenRCT2::Scripting
 {
     // When adding to this map, also add to IconName in openrct2.d.ts
 
-    static EnumMap<uint32_t> G2SpriteLookupTable = {
+    static EnumMap<uint32_t> SpriteLookupTable = {
+        // G1 Icons
+        { "previous", SPR_PREVIOUS },
+        { "next", SPR_NEXT },
+        { "chain_lift", SPR_CHAIN_LIFT },
+        { "construction", SPR_CONSTRUCTION },
+        { "demolish", SPR_DEMOLISH },
+        { "locate", SPR_LOCATE },
+        { "rename", SPR_RENAME },
+        { "rotate_arrow", SPR_ROTATE_ARROW },
+        { "scenery", SPR_SCENERY },
+        { "scenery_cluster", SPR_SCENERY_CLUSTER },
+        { "paintbrush", SPR_PAINTBRUSH },
+        { "pickup", SPR_PICKUP_BTN },
+        { "patrol", SPR_PATROL_BTN },
+        { "no_entry", SPR_NO_ENTRY },
+        { "closed", SPR_CLOSED },
+        { "open", SPR_OPEN },
+        { "testing", SPR_TESTING },
+        { "floppy_disk", SPR_FLOPPY },
+        { "ride", SPR_TAB_RIDE_0 },
+        { "new_ride", SPR_NEW_RIDE },
+        { "finance", SPR_FINANCE },
+        { "map", SPR_MAP },
+        { "guests", SPR_GUESTS },
+        { "award", SPR_AWARD },
+        { "awards", SPR_TAB_AWARDS },
+        { "graph", SPR_GRAPH },
+        { "mechanic", SPR_MECHANIC },
+        { "guest_inventory", SPR_TAB_GUEST_INVENTORY },
+        { "research", SPR_TAB_FINANCES_RESEARCH_0 },
+        { "music", SPR_TAB_MUSIC_0 },
+        { "shops_and_stalls", SPR_TAB_SHOPS_AND_STALLS_0 },
+        { "kiosks_and_facilities", SPR_TAB_KIOSKS_AND_FACILITIES_0 },
+        { "scenery_trees", SPR_TAB_SCENERY_TREES },
+        { "scenery_urban", SPR_TAB_SCENERY_URBAN },
+        { "scenery_walls", SPR_TAB_SCENERY_WALLS },
+        { "scenery_signage", SPR_TAB_SCENERY_SIGNAGE },
+        { "scenery_paths", SPR_TAB_SCENERY_PATHS },
+        { "scenery_paths_items", SPR_TAB_SCENERY_PATH_ITEMS },
+        { "scenery_statues", SPR_TAB_SCENERY_STATUES },
+        { "park", SPR_TAB_PARK },
+        { "water", SPR_TAB_WATER },
+        { "stats", SPR_TAB_STATS },
+        { "question", SPR_TAB_QUESTION },
+        { "rides_shop", SPR_TAB_RIDES_SHOP_0 },
+        { "rides_transport", SPR_TAB_RIDES_TRANSPORT_0 },
+        { "rides_gentle", SPR_TAB_RIDES_GENTLE_0 },
+        { "rides_rollercoasters", SPR_TAB_RIDES_ROLLER_COASTERS_0 },
+        { "rides_water", SPR_TAB_RIDES_WATER_0 },
+        { "rides_thrill", SPR_TAB_RIDES_THRILL_0 },
+        { "pause", SPR_TOOLBAR_PAUSE },
+
+        // G2 Icons
         { "empty", SPR_G2_EMPTY },
         { "placeholder", SPR_G2_PLACEHOLDER },
         { "logo", SPR_G2_LOGO },
@@ -213,8 +266,8 @@ namespace OpenRCT2::Scripting
 
     inline uint32_t GetIconByName(const std::string& input)
     {
-        auto result = G2SpriteLookupTable.find(input);
-        if (result != G2SpriteLookupTable.end())
+        auto result = SpriteLookupTable.find(input);
+        if (result != SpriteLookupTable.end())
             return result->second;
         return SPR_G2_EMPTY;
     }
