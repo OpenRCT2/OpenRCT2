@@ -17,19 +17,22 @@
 // clang-format off
 constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_LIFT_HILL_STEEP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_HEARTLINE_ROLL, TRACK_HEARTLINE_TRANSFER},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionHeartlineTwisterRC),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionHeartlineTwisterRC,
+        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_LIFT_HILL_STEEP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_HEARTLINE_ROLL, TRACK_HEARTLINE_TRANSFER},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 10, 27, 30, 25, 25, 0 },
+    .OperatingSettings = { 10, 27 },
+    .BoosterSettings = { 25, 25 },
+    .LegacyBoosterSettings = { 25, 25 },
     .Naming = { STR_RIDE_NAME_HEARTLINE_TWISTER_COASTER, STR_RIDE_DESCRIPTION_HEARTLINE_TWISTER_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_HEARTLINE_TWISTER_COASTER),

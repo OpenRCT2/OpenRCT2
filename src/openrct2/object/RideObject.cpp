@@ -31,7 +31,6 @@
 #include "../ride/Vehicle.h"
 #include "ObjectRepository.h"
 
-#include <algorithm>
 #include <iterator>
 #include <unordered_map>
 
@@ -714,7 +713,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     car.num_seats = Json::GetNumber<uint8_t>(jCar["numSeats"]);
     if (Json::GetBoolean(jCar["seatsInPairs"], true) && car.num_seats > 1)
     {
-        car.num_seats |= VEHICLE_SEAT_PAIR_FLAG;
+        car.num_seats |= kVehicleSeatPairFlag;
     }
 
     car.sprite_width = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);

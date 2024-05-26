@@ -24,7 +24,6 @@
 #include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
 
-#include <algorithm>
 #include <limits>
 
 using namespace OpenRCT2;
@@ -406,7 +405,7 @@ void VirtualFloorPaint(PaintSession& session)
             { { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) }, { 0, 0, 1 } });
     }
 
-    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Glassy)
+    if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Glassy)
         return;
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)

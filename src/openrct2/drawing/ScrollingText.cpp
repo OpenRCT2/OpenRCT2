@@ -21,7 +21,6 @@
 #include "Drawing.h"
 #include "TTF.h"
 
-#include <algorithm>
 #include <mutex>
 
 using namespace OpenRCT2;
@@ -148,7 +147,7 @@ static int32_t ScrollingTextGetMatchingOrOldest(
 
 static void ScrollingTextFormat(utf8* dst, size_t size, DrawScrollText* scrollText)
 {
-    if (gConfigGeneral.UpperCaseBanners)
+    if (Config::Get().general.UpperCaseBanners)
     {
         FormatStringToUpper(dst, size, scrollText->string_id, scrollText->string_args);
     }
@@ -1382,7 +1381,7 @@ static constexpr int16_t _scrollpos37[] = {
     -1,
 };
 
-static constexpr const int16_t* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
+static constexpr const int16_t* _scrollPositions[kMaxScrollingTextModes] = {
     _scrollpos0,
     _scrollpos1,
     _scrollpos2,
@@ -1438,7 +1437,7 @@ ImageId ScrollingTextSetup(
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
 
-    assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
+    assert(scrollingMode < kMaxScrollingTextModes);
 
     if (session.DPI.zoom_level > ZoomLevel{ 0 })
         return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
@@ -1577,18 +1576,17 @@ static void ScrollingTextSetBitmapForTTF(
         return;
     }
 
-    int32_t pitch = surface->pitch;
     int32_t width = surface->w;
     auto src = static_cast<const uint8_t*>(surface->pixels);
 
     // Pitch offset
-    src += 2 * pitch;
+    src += 2 * width;
 
     // Line height offset
     int32_t min_vpos = -fontDesc->offset_y;
     int32_t max_vpos = std::min(surface->h - 2, min_vpos + 7);
 
-    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
+    bool use_hinting = Config::Get().fonts.EnableHinting && fontDesc->hinting_threshold > 0;
 
     for (int32_t x = 0;; x++)
     {
@@ -1608,7 +1606,7 @@ static void ScrollingTextSetBitmapForTTF(
 
                 for (int32_t y = min_vpos; y < max_vpos; y++)
                 {
-                    uint8_t src_pixel = src[y * pitch + x];
+                    uint8_t src_pixel = src[y * width + x];
                     if ((!use_hinting && src_pixel != 0) || src_pixel > 140)
                     {
                         // Centre of the glyph: use full colour.

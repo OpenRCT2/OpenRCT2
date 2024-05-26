@@ -11,7 +11,6 @@
 #include "ConversionTables.h"
 #include "Language.h"
 
-#include <algorithm>
 #include <limits>
 #include <stdexcept>
 

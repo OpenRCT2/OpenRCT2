@@ -425,6 +425,12 @@ enum class MiniGolfAnimation : uint8_t
     Putt,
 };
 
+enum BoatHireSubState : uint8_t
+{
+    Normal,
+    EnteringReturnPosition,
+};
+
 namespace VehicleFlags
 {
     constexpr uint32_t OnLiftHill = (1 << 0);
@@ -516,8 +522,8 @@ enum
     SOUND_RANGE_NONE = 255
 };
 
-#define VEHICLE_SEAT_PAIR_FLAG 0x80
-#define VEHICLE_SEAT_NUM_MASK 0x7F
+constexpr uint8_t kVehicleSeatPairFlag = 0x80;
+constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();

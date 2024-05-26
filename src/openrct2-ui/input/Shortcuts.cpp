@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
 #include "ShortcutIds.h"
 #include "ShortcutManager.h"
 
@@ -38,7 +39,7 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackPaint.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/title/TitleScreen.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
@@ -278,7 +279,7 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::Finances);
 }
 
@@ -466,7 +467,6 @@ static void ShortcutOpenSceneryPicker()
 
     window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
-        && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WindowWidgetType::Empty
         && !gWindowSceneryEyedropperEnabled)
     {
         window_scenery->OnMouseUp(WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
@@ -476,8 +476,8 @@ static void ShortcutOpenSceneryPicker()
 
 static void ShortcutScaleUp()
 {
-    gConfigGeneral.WindowScale += 0.25f;
-    ConfigSaveDefault();
+    Config::Get().general.WindowScale += 0.25f;
+    Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
@@ -485,9 +485,9 @@ static void ShortcutScaleUp()
 
 static void ShortcutScaleDown()
 {
-    gConfigGeneral.WindowScale -= 0.25f;
-    gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
-    ConfigSaveDefault();
+    Config::Get().general.WindowScale -= 0.25f;
+    Config::Get().general.WindowScale = std::max(0.5f, Config::Get().general.WindowScale);
+    Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
@@ -635,7 +635,7 @@ static void ShortcutToggleConsole()
     {
         console.Toggle();
     }
-    else if (gConfigGeneral.DebuggingTools && !ContextIsInputActive())
+    else if (Config::Get().general.DebuggingTools && !ContextIsInputActive())
     {
         WindowCancelTextbox();
         console.Toggle();
@@ -742,8 +742,8 @@ static void ShortcutToggleTransparentWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    gConfigGeneral.TransparentWater ^= 1;
-    ConfigSaveDefault();
+    Config::Get().general.TransparentWater ^= 1;
+    Config::Save();
     GfxInvalidateScreen();
 }
 
@@ -799,7 +799,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, ShortcutOpenSceneryPicker);
     RegisterShortcut(
         ShortcutId::InterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, ShortcutToggleClearanceChecks);
-    RegisterShortcut(ShortcutId::InterfaceMultiplayerChat, STR_SEND_MESSAGE, "C", []() {
+    RegisterShortcut(ShortcutId::InterfaceMultiplayerChat, STR_SHORTCUT_SEND_MESSAGE, "C", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && ChatAvailable())
         {
             ChatToggle();
@@ -827,7 +827,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", ShortcutOpenTransparencyWindow);
     RegisterShortcut(ShortcutId::InterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", ShortcutOpenCheatWindow);
     RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (gConfigInterface.ToolbarShowCheats)
+        if (Config::Get().interface.ToolbarShowCheats)
         {
             OpenWindow(WindowClass::TileInspector);
         }
@@ -897,7 +897,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
 
     // Debug
     RegisterShortcut(ShortcutId::DebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);
-    RegisterShortcut(ShortcutId::DebugAdvanceTick, STR_ADVANCE_TO_NEXT_TICK, []() {
+    RegisterShortcut(ShortcutId::DebugAdvanceTick, STR_SHORTCUT_ADVANCE_TO_NEXT_TICK, []() {
         if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
         {
             gDoSingleUpdate = true;

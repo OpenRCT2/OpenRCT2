@@ -16,6 +16,7 @@
 #include "interface/ZoomLevel.h"
 #include "management/Award.h"
 #include "management/Finance.h"
+#include "management/Marketing.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -24,6 +25,7 @@
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
+#include "world/Park.h"
 
 #include <array>
 #include <chrono>
@@ -33,33 +35,25 @@
 
 namespace OpenRCT2
 {
-    class Park;
-
     struct GameState_t
     {
+        ::OpenRCT2::Park::ParkData Park{};
+        std::string PluginStorage;
         uint32_t CurrentTicks{};
-        uint64_t ParkFlags;
-        uint16_t ParkRating;
-        money64 ParkEntranceFee;
-        std::vector<CoordsXYZD> ParkEntrances;
-        uint32_t ParkSize;
-        int16_t ParkRatingCasualtyPenalty;
-        money64 ParkValue;
-        money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
+        ::OpenRCT2::Date Date;
         money64 CompanyValue;
         // The total profit for the entire scenario that precedes the current financial table.
         money64 HistoricalProfit;
         money64 ConstructionRightsPrice;
         money64 CurrentExpenditure;
         money64 CurrentProfit;
-        uint8_t ParkRatingHistory[32];
         uint32_t GuestsInParkHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;
         uint16_t ClimateUpdateTimer;
         money64 Cash;
-        money64 CashHistory[FINANCE_GRAPH_SIZE];
+        money64 CashHistory[kFinanceGraphSize];
         money64 InitialCash;
         money64 GuestInitialCash;
         uint8_t GuestInitialHappiness;
@@ -75,7 +69,7 @@ namespace OpenRCT2
         money64 TotalIncomeFromAdmissions;
         money64 TotalRideValueForMoney;
         uint16_t WeeklyProfitAverageDivisor;
-        money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+        money64 WeeklyProfitHistory[kFinanceGraphSize];
         Objective ScenarioObjective;
         uint16_t ScenarioParkRatingWarningDays;
         money64 ScenarioCompletedCompanyValue;
@@ -83,7 +77,7 @@ namespace OpenRCT2
         money64 BankLoan;
         uint8_t BankLoanInterestRate;
         money64 MaxBankLoan;
-        money64 ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][EnumValue(ExpenditureType::Count)];
+        money64 ExpenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
         random_engine_t ScenarioRand;
         TileCoordsXY MapSize;
         money64 LandPrice;
@@ -98,7 +92,7 @@ namespace OpenRCT2
         std::vector<Banner> Banners;
         Entity_t Entities[MAX_ENTITIES]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-        std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
+        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
         ::RideRatingUpdateStates RideRatingUpdateStates;
         std::vector<TileElement> TileElements;
 
@@ -138,6 +132,8 @@ namespace OpenRCT2
 
         std::vector<Award> CurrentAwards;
 
+        std::vector<MarketingCampaign> MarketingCampaigns;
+
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
          * new guests per second = 40 * (probability / 65535)
@@ -155,35 +151,8 @@ namespace OpenRCT2
 
     GameState_t& GetGameState();
 
-    /**
-     * Class to update the state of the map and park.
-     */
-    class GameState final
-    {
-    private:
-        std::unique_ptr<Park> _park;
-        Date _date;
+    void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize);
+    void gameStateTick();
+    void gameStateUpdateLogic();
 
-    public:
-        GameState();
-        GameState(const GameState&) = delete;
-
-        Date& GetDate()
-        {
-            return _date;
-        }
-        Park& GetPark()
-        {
-            return *_park;
-        }
-
-        void InitAll(const TileCoordsXY& mapSize);
-        void Tick();
-        void UpdateLogic();
-        void SetDate(Date newDate);
-        void ResetDate();
-
-    private:
-        void CreateStateSnapshot();
-    };
 } // namespace OpenRCT2

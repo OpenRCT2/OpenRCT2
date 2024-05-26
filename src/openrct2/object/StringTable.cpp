@@ -18,8 +18,6 @@
 #include "../localisation/LocalisationService.h"
 #include "Object.h"
 
-#include <algorithm>
-
 static constexpr uint8_t RCT2ToOpenRCT2LanguageId[] = {
     LANGUAGE_ENGLISH_UK,
     LANGUAGE_ENGLISH_US,

@@ -47,6 +47,7 @@ GameActions::Result StaffSetColourAction::Query() const
     auto staffType = static_cast<StaffType>(_staffType);
     if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
     {
+        LOG_ERROR("Staff color can't be changed for staff type %d", _staffType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
     }

@@ -8,7 +8,8 @@
  *****************************************************************************/
 
 #pragma once
-#include "../common.h"
+
+#include "../core/Money.hpp"
 #include "../interface/Cursors.h"
 #include "../world/Location.hpp"
 #include "ObjectTypes.h"

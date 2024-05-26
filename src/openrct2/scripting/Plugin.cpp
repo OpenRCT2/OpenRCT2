@@ -17,7 +17,6 @@
 #    include "Duktape.hpp"
 #    include "ScriptEngine.h"
 
-#    include <algorithm>
 #    include <fstream>
 #    include <memory>
 

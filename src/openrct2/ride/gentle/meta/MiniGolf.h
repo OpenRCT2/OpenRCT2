@@ -17,19 +17,19 @@
 // clang-format off
 constexpr RideTypeDescriptor MiniGolfRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,
-    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_MINI_GOLF_HOLE},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMiniGolf),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionMiniGolf,
+        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_MINI_GOLF_HOLE},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ONE_STATION |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
     .NameConvention = { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MINI_GOLF),

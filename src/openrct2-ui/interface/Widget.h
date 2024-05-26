@@ -13,13 +13,18 @@
 
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Widget.h>
+
+// TODO: only because of STR_NONE. We can do better.
 #include <openrct2/localisation/StringIds.h>
 
 ImageId GetColourButtonImage(colour_t colour);
 Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
 
 constexpr auto kWidgetsEnd = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
+constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
 constexpr auto kBarBlink = (1u << 31);
+constexpr uint8_t kScrollBarWidth = 10;
+constexpr ScreenSize kTabSize = { 31, 27 };
 
 enum class WindowColour : uint8_t
 {
@@ -29,13 +34,9 @@ enum class WindowColour : uint8_t
     Quaternary,
 };
 
-constexpr uint8_t kScrollBarWidth = 10;
-
-constexpr ScreenSize kTabSize = { 31, 27 };
-
 constexpr Widget MakeWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
-    uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
+    uint32_t content = kWidgetContentEmpty, StringId tooltip = STR_NONE)
 {
     Widget out = {};
     out.left = origin.x;
@@ -84,6 +85,23 @@ constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NO
     return MakeWidget(origin, size, type, colour, content, tooltip);
 }
 
+constexpr Widget MakeProgressBar(
+    const ScreenCoordsXY& origin, const ScreenSize& size, colour_t colour, uint8_t lowerBlinkBound = 0,
+    uint8_t upperBlinkBound = 0)
+{
+    Widget out = {};
+    out.left = origin.x;
+    out.right = origin.x + size.width - 1;
+    out.top = origin.y;
+    out.bottom = origin.y + size.height - 1;
+    out.type = WindowWidgetType::ProgressBar;
+    out.colour = colour;
+    out.content = 0 | (lowerBlinkBound << 8) | (upperBlinkBound << 16);
+    out.tooltip = STR_NONE;
+
+    return out;
+}
+
 // NOLINTBEGIN
 #define MakeSpinnerWidgets(...)                                                                                                \
     MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
@@ -91,7 +109,7 @@ constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NO
 
 constexpr Widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 26;
     const int16_t yPos = origin.y + 1;
@@ -103,7 +121,7 @@ constexpr Widget MakeSpinnerDecreaseWidget(
 
 constexpr Widget MakeSpinnerIncreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 13;
     const int16_t yPos = origin.y + 1;
@@ -118,14 +136,14 @@ constexpr Widget MakeSpinnerIncreaseWidget(
 
 constexpr Widget MakeDropdownBoxWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, content);
 }
 
 constexpr Widget MakeDropdownButtonWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 11;
     const int16_t yPos = origin.y + 1;
@@ -153,3 +171,5 @@ void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
 void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
 void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
 void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
+
+void WidgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);

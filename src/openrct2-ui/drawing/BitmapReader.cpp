@@ -10,7 +10,6 @@
 #include "BitmapReader.h"
 
 #include <SDL.h>
-#include <algorithm>
 #include <cstring>
 #include <openrct2/core/Imaging.h>
 #include <stdexcept>

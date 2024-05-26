@@ -23,7 +23,6 @@
 #include "Object.h"
 #include "ObjectFactory.h"
 
-#include <algorithm>
 #include <memory>
 #include <stdexcept>
 
@@ -161,9 +160,10 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         {
             auto imageData = context->GetData(s);
             auto image = Imaging::ReadFromBuffer(imageData);
+            auto meta = ImageImportMeta{};
 
             ImageImporter importer;
-            auto importResult = importer.Import(image, 0, 0, ImageImporter::Palette::OpenRCT2, ImageImporter::ImportFlags::RLE);
+            auto importResult = importer.Import(image, meta);
 
             result.push_back(std::make_unique<RequiredImage>(importResult.Element));
         }
@@ -183,30 +183,11 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     Guard::Assert(el.is_object(), "ImageTable::ParseImages expects parameter el to be object");
 
     auto path = Json::GetString(el["path"]);
-    auto x = Json::GetNumber<int16_t>(el["x"]);
-    auto y = Json::GetNumber<int16_t>(el["y"]);
-    auto srcX = Json::GetNumber<int16_t>(el["srcX"]);
-    auto srcY = Json::GetNumber<int16_t>(el["srcY"]);
-    auto srcWidth = Json::GetNumber<int16_t>(el["srcWidth"]);
-    auto srcHeight = Json::GetNumber<int16_t>(el["srcHeight"]);
-    auto raw = Json::GetString(el["format"]) == "raw";
-    auto keepPalette = Json::GetString(el["palette"]) == "keep";
-    auto zoomOffset = Json::GetNumber<int32_t>(el["zoom"]);
+    auto meta = createImageImportMetaFromJson(el);
 
     std::vector<std::unique_ptr<RequiredImage>> result;
     try
     {
-        auto flags = ImageImporter::ImportFlags::None;
-        auto palette = ImageImporter::Palette::OpenRCT2;
-        if (!raw)
-        {
-            flags = static_cast<ImageImporter::ImportFlags>(flags | ImageImporter::ImportFlags::RLE);
-        }
-        if (keepPalette)
-        {
-            palette = ImageImporter::Palette::KeepIndices;
-        }
-
         auto itSource = std::find_if(
             imageSources.begin(), imageSources.end(),
             [&path](const std::pair<std::string, Image>& item) { return item.first == path; });
@@ -216,16 +197,9 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         }
         auto& image = itSource->second;
 
-        if (srcWidth == 0)
-            srcWidth = image.Width;
-
-        if (srcHeight == 0)
-            srcHeight = image.Height;
-
         ImageImporter importer;
-        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, palette, flags);
+        auto importResult = importer.Import(image, meta);
         auto g1element = importResult.Element;
-        g1element.zoomed_offset = zoomOffset;
         result.push_back(std::make_unique<RequiredImage>(g1element));
     }
     catch (const std::exception& e)
@@ -511,7 +485,7 @@ std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObje
     std::vector<std::pair<std::string, Image>> result;
     for (auto& jsonImage : jsonImages)
     {
-        if (jsonImage.is_object())
+        if (jsonImage.is_object() && jsonImage.contains("path"))
         {
             auto path = Json::GetString(jsonImage["path"]);
             auto keepPalette = Json::GetString(jsonImage["palette"]) == "keep";
@@ -561,9 +535,36 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
             }
             else if (jsonImage.is_object())
             {
-                auto images = ParseImages(context, imageSources, jsonImage);
-                allImages.insert(
-                    allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                if (jsonImage.contains("gx"))
+                {
+                    auto xOverride = Json::GetNumber<int16_t>(jsonImage["x"], std::numeric_limits<int16_t>::max());
+                    auto yOverride = Json::GetNumber<int16_t>(jsonImage["y"], std::numeric_limits<int16_t>::max());
+                    const bool hasXOverride = xOverride != std::numeric_limits<int16_t>::max();
+                    const bool hasYOverride = yOverride != std::numeric_limits<int16_t>::max();
+
+                    auto strImage = jsonImage["gx"].get<std::string>();
+                    auto images = ParseImages(context, strImage);
+
+                    if (hasXOverride || hasYOverride)
+                    {
+                        for (auto& image : images)
+                        {
+                            if (hasXOverride)
+                                image->g1.x_offset = xOverride;
+                            if (hasYOverride)
+                                image->g1.y_offset = yOverride;
+                        }
+                    }
+
+                    allImages.insert(
+                        allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                }
+                else
+                {
+                    auto images = ParseImages(context, imageSources, jsonImage);
+                    allImages.insert(
+                        allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                }
             }
         }
 

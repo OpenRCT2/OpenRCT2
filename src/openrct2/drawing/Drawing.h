@@ -504,21 +504,18 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
     }
 }
 
-#define PALETTE_TO_G1_OFFSET_COUNT 144
-constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
+constexpr uint8_t kPaletteTotalOffsets = 192;
 
 #define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
 #define INSET_RECT_F_E0 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT)
 
-#define MAX_SCROLLING_TEXT_MODES 38
+constexpr int8_t kMaxScrollingTextModes = 38;
 
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
-extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
-extern thread_local uint8_t gPeepPalette[256];
-extern thread_local uint8_t gOtherPalette[256];
+
 extern uint8_t gTextPalette[];
 extern const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT];
 
@@ -550,7 +547,7 @@ void GfxDrawDashedLine(
 
 // rect
 void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour);
-void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
+void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, ColourWithFlags colour, uint8_t flags);
 void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
@@ -580,16 +577,15 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     DrawPixelInfo& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
 
 // string
-void GfxDrawString(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
-
-void GfxDrawStringLeftCentred(DrawPixelInfo& dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
+void GfxDrawStringLeftCentred(
+    DrawPixelInfo& dpi, StringId format, void* args, ColourWithFlags colour, const ScreenCoordsXY& coords);
 void DrawStringCentredRaw(
     DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
 void DrawNewsTicker(
     DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
     int32_t ticks);
 void GfxDrawStringWithYOffsets(
-    DrawPixelInfo& dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
+    DrawPixelInfo& dpi, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle);
 
 int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines);
@@ -600,7 +596,7 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle);
 int32_t GfxClipString(char* buffer, int32_t width, FontStyle fontStyle);
 u8string ShortenPath(const u8string& path, int32_t availableWidth, FontStyle fontStyle);
 void TTFDrawString(
-    DrawPixelInfo& dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
+    DrawPixelInfo& dpi, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);
 
 // scrolling text
@@ -631,6 +627,7 @@ void MaskFn(
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
+void UpdatePaletteEffects();
 
 void RefreshVideo(bool recreateWindow);
 void ToggleWindowedMode();

@@ -11,7 +11,6 @@
 
 #include "Memory.hpp"
 
-#include <algorithm>
 #include <cstring>
 
 namespace OpenRCT2

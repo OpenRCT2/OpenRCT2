@@ -18,20 +18,20 @@
 // clang-format off
 constexpr RideTypeDescriptor ObservationTowerRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,
-    .EnabledTrackPieces = {TRACK_TOWER_BASE},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::TowerBase,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionObservationTower),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionObservationTower,
+        .EnabledTrackPieces = {TRACK_TOWER_BASE},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::RotatingLift),
     .DefaultMode = RideMode::RotatingLift,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_OBSERVATION_TOWER),

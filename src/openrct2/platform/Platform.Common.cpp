@@ -11,14 +11,17 @@
 #include "../common.h"
 
 #ifdef _WIN32
+#    ifndef WIN32_LEAN_AND_MEAN
+#        define WIN32_LEAN_AND_MEAN
+#    endif
 #    include <windows.h>
 #endif
 
 #include "../Context.h"
 #include "../Game.h"
-#include "../config/Config.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
+#include "../localisation/Currency.h"
 #include "../localisation/Localisation.h"
 #include "Platform.h"
 

@@ -114,7 +114,7 @@ struct InteractionInfo
     ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
 };
 
-#define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
+constexpr int32_t kMaxViewportCount = kWindowLimitMax;
 
 /**
  * A reference counter for whether something is forcing the grid lines to show. When the counter
@@ -171,6 +171,8 @@ std::optional<CoordsXY> ScreenGetMapXYQuadrant(const ScreenCoordsXY& screenCoord
 std::optional<CoordsXY> ScreenGetMapXYQuadrantWithZ(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant);
 std::optional<CoordsXY> ScreenGetMapXYSide(const ScreenCoordsXY& screenCoords, uint8_t* side);
 std::optional<CoordsXY> ScreenGetMapXYSideWithZ(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side);
+
+ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos);
 
 uint8_t GetCurrentRotation();
 int32_t GetHeightMarkerOffset();

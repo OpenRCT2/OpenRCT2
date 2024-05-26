@@ -31,7 +31,6 @@
 #include "MoneyEffect.h"
 #include "Particle.h"
 
-#include <algorithm>
 #include <cmath>
 #include <iterator>
 #include <numeric>
@@ -44,7 +43,7 @@ static std::vector<EntityId> _freeIdList;
 
 static bool _entityFlashingList[MAX_ENTITIES];
 
-constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
+constexpr const uint32_t SPATIAL_INDEX_SIZE = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
 constexpr uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 static std::array<std::vector<EntityId>, SPATIAL_INDEX_SIZE> gEntitySpatialIndex;
@@ -60,10 +59,10 @@ static constexpr size_t GetSpatialIndexOffset(const CoordsXY& loc)
     const auto tileX = std::abs(loc.x) / COORDS_XY_STEP;
     const auto tileY = std::abs(loc.y) / COORDS_XY_STEP;
 
-    if (tileX >= MAXIMUM_MAP_SIZE_TECHNICAL || tileY >= MAXIMUM_MAP_SIZE_TECHNICAL)
+    if (tileX >= kMaximumMapSizeTechnical || tileY >= kMaximumMapSizeTechnical)
         return SPATIAL_INDEX_LOCATION_NULL;
 
-    return tileX * MAXIMUM_MAP_SIZE_TECHNICAL + tileY;
+    return tileX * kMaximumMapSizeTechnical + tileY;
 }
 
 constexpr bool EntityTypeIsMiscEntity(const EntityType type)

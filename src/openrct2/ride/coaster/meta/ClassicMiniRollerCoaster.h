@@ -16,20 +16,22 @@
 // clang-format off
 constexpr RideTypeDescriptor ClassicMiniRollerCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_LIFT_HILL_CURVE, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_LONG, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_BLOCK_BRAKES, TRACK_BOOSTER, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
-    .ExtraTrackPieces = {TRACK_ON_RIDE_PHOTO},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionJuniorRC),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionJuniorRC,
+        .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_LIFT_HILL_CURVE, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_LONG, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_BLOCK_BRAKES, TRACK_BOOSTER, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
+        .ExtraTrackPieces = {TRACK_ON_RIDE_PHOTO},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 17, 16, -1 },
+    .BoosterSettings = { 17, 16 },
+    .LegacyBoosterSettings = { 17, 16, 1 },
     .Naming = { STR_RIDE_NAME_CLASSIC_MINI_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_MINI_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER),

@@ -16,20 +16,20 @@
 // clang-format off
 constexpr RideTypeDescriptor InformationKioskRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_SHOP,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::FlatTrack1x1B,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionShop),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionShop,
+        .EnabledTrackPieces = {},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
                      RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
                      RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_INFORMATION_KIOSK),

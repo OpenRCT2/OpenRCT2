@@ -18,20 +18,20 @@
 #include "../core/String.hpp"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
+#include "../world/tile_element/Slope.h"
 #include "Map.h"
 #include "MapHelpers.h"
 #include "Scenery.h"
 #include "Surface.h"
 
-#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <iterator>
@@ -311,7 +311,7 @@ static void MapGenPlaceTrees()
     std::vector<int32_t> desertTreeIds;
     std::vector<int32_t> snowTreeIds;
 
-    for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
+    for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::SmallScenery); i++)
     {
         auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
         auto entry = ObjectEntryGetObject(ObjectType::SmallScenery, i);
@@ -497,13 +497,13 @@ static void MapGenSetHeight(MapGenSettings* settings)
             uint8_t currentSlope = surfaceElement->GetSlope();
 
             if (q00 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                currentSlope |= kTileSlopeSCornerUp;
             if (q01 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                currentSlope |= kTileSlopeWCornerUp;
             if (q10 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                currentSlope |= kTileSlopeECornerUp;
             if (q11 > baseHeight)
-                currentSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                currentSlope |= kTileSlopeNCornerUp;
 
             surfaceElement->SetSlope(currentSlope);
         }
@@ -693,8 +693,8 @@ bool MapGenLoadHeightmap(const utf8* path)
     try
     {
         auto image = Imaging::ReadFromFile(path, format);
-        auto width = std::min<uint32_t>(image.Width, MAXIMUM_MAP_SIZE_PRACTICAL);
-        auto height = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
+        auto width = std::min<uint32_t>(image.Width, kMaximumMapSizePractical);
+        auto height = std::min<uint32_t>(image.Height, kMaximumMapSizePractical);
         if (width != image.Width || height != image.Height)
         {
             ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});

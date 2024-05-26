@@ -20,8 +20,8 @@
 #include "Language.h"
 #include "Localisation.h"
 #include "LocalisationService.h"
+#include "StringIds.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>

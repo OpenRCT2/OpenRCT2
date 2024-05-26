@@ -19,7 +19,9 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/FixedPoint.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Particle.h"
 #include "../entity/Yaw.hpp"
@@ -55,7 +57,6 @@
 #include "VehicleData.h"
 #include "VehicleSubpositionData.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -781,7 +782,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
     {
-        if (ride.inversions < OpenRCT2::Limits::MaxInversions)
+        if (ride.inversions < OpenRCT2::Limits::kMaxInversions)
             ride.inversions++;
     }
 }
@@ -792,7 +793,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
     {
-        if (ride.holes < OpenRCT2::Limits::MaxGolfHoles)
+        if (ride.holes < OpenRCT2::Limits::kMaxGolfHoles)
             ride.holes++;
     }
 }
@@ -847,14 +848,14 @@ void Vehicle::UpdateMeasurements()
 
         if (curRide->average_speed_test_timeout == 0 && absVelocity > 0x8000)
         {
-            curRide->average_speed = AddClamp_int32_t(curRide->average_speed, absVelocity);
+            curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity);
             stationForTestSegment.SegmentTime++;
         }
 
         int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
         if (NumLaps == 0)
         {
-            stationForTestSegment.SegmentLength = AddClamp_int32_t(stationForTestSegment.SegmentLength, distance);
+            stationForTestSegment.SegmentLength = AddClamp<int32_t>(stationForTestSegment.SegmentLength, distance);
         }
 
         if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -1074,7 +1075,7 @@ void Vehicle::UpdateMeasurements()
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
             uint8_t helixes = RideGetHelixSections(*curRide);
-            if (helixes != OpenRCT2::Limits::MaxHelices)
+            if (helixes != OpenRCT2::Limits::kMaxHelices)
                 helixes++;
 
             curRide->special_track_elements &= ~0x1F;
@@ -1163,7 +1164,7 @@ void Vehicle::UpdateMeasurements()
     if (distance < 0)
         return;
 
-    curRide->sheltered_length = AddClamp_int32_t(curRide->sheltered_length, distance);
+    curRide->sheltered_length = AddClamp<int32_t>(curRide->sheltered_length, distance);
 }
 
 struct SoundIdVolume
@@ -1460,7 +1461,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         // Boat Hire with passengers on it.
         if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
         {
-            curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+            curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
             return;
         }
@@ -1471,7 +1472,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         uint8_t seat = ((-Pitch) / 8) & 0xF;
         if (!peep[seat].IsNull())
         {
-            curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+            curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
             SetState(Vehicle::Status::UnloadingPassengers);
             return;
         }
@@ -1479,7 +1480,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         if (num_peeps == 0)
             return;
 
-        curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+        curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
         sub_state = 2;
         return;
     }
@@ -1487,7 +1488,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (num_peeps_on_train == 0)
         return;
 
-    curRide->GetStation(current_station).TrainAtStation = RideStation::NO_TRAIN;
+    curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
     SetState(Vehicle::Status::WaitingForPassengers);
 }
 
@@ -1532,7 +1533,7 @@ void Vehicle::UpdateWaitingForPassengers()
         auto& station = curRide->GetStation(current_station);
         if (station.Entrance.IsNull())
         {
-            station.TrainAtStation = RideStation::NO_TRAIN;
+            station.TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
             return;
         }
@@ -1543,7 +1544,7 @@ void Vehicle::UpdateWaitingForPassengers()
             return;
         }
 
-        if (station.TrainAtStation != RideStation::NO_TRAIN)
+        if (station.TrainAtStation != RideStation::kNoTrain)
             return;
 
         station.TrainAtStation = trainIndex.value();
@@ -1795,7 +1796,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     if (!skipCheck)
     {
-        if (!(currentStation.Depart & STATION_DEPART_FLAG))
+        if (!(currentStation.Depart & kStationDepartFlag))
             return;
     }
 
@@ -2015,7 +2016,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
 
     /* Station is not ready to depart, so just return;
      * vehicle_id for this station is SPRITE_INDEX_NULL. */
-    if (!(ride->GetStation(stationIndex).Depart & STATION_DEPART_FLAG))
+    if (!(ride->GetStation(stationIndex).Depart & kStationDepartFlag))
     {
         return true;
     }
@@ -2138,7 +2139,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
             {
                 if (sv_ride->IsBlockSectioned())
                 {
-                    if (!(sv_ride->GetStation(sv->stationIndex).Depart & STATION_DEPART_FLAG))
+                    if (!(sv_ride->GetStation(sv->stationIndex).Depart & kStationDepartFlag))
                     {
                         sv = _synchronisedVehicles;
                         RideId rideId = RideId::GetNull();
@@ -2444,7 +2445,7 @@ void Vehicle::UpdateDepartingBoatHire()
         return;
 
     auto& station = curRide->GetStation(current_station);
-    station.Depart &= STATION_DEPART_FLAG;
+    station.Depart &= kStationDepartFlag;
     uint8_t waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
     station.Depart |= waitingTime;
@@ -2536,7 +2537,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::UpwardLaunch:
             if ((curRide->launch_speed << 16) > velocity)
             {
-                acceleration = curRide->launch_speed << rtd.OperatingSettings.AccelerationFactor;
+                acceleration = curRide->launch_speed << rtd.BoosterSettings.AccelerationFactor;
             }
             break;
         case RideMode::DownwardLaunch:
@@ -2717,7 +2718,7 @@ void Vehicle::FinishDeparting()
     if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
     {
         auto& currentStation = curRide->GetStation(current_station);
-        currentStation.Depart &= STATION_DEPART_FLAG;
+        currentStation.Depart &= kStationDepartFlag;
         uint8_t waitingTime = 3;
         if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -2763,7 +2764,7 @@ void Vehicle::CheckIfMissing()
 
     curRide->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
-    if (gConfigNotifications.RideStalledVehicles)
+    if (Config::Get().notifications.RideStalledVehicles)
     {
         Formatter ft;
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).number);
@@ -3562,7 +3563,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     // This is slightly different to the vanilla function
     auto& currentStation = curRide->GetStation(current_station);
-    currentStation.Depart &= STATION_DEPART_FLAG;
+    currentStation.Depart &= kStationDepartFlag;
     uint8_t waitingTime = 3;
     if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
     {
@@ -3771,7 +3772,7 @@ void Vehicle::UpdateMotionBoatHire()
                         return;
 
                     bool do_Loc6DAA97 = false;
-                    if (sub_state != 1)
+                    if (sub_state != BoatHireSubState::EnteringReturnPosition)
                     {
                         do_Loc6DAA97 = true;
                     }
@@ -3908,12 +3909,12 @@ void Vehicle::UpdateBoatLocation()
 
     if (location.ToTileStart() == returnPosition.ToCoordsXY())
     {
-        sub_state = 1;
+        sub_state = BoatHireSubState::EnteringReturnPosition;
         BoatLocation = location.ToTileStart();
         return;
     }
 
-    sub_state = 0;
+    sub_state = BoatHireSubState::Normal;
     uint8_t curDirection = ((Orientation + 19) >> 3) & 3;
     uint8_t randDirection = ScenarioRand() & 3;
 
@@ -4521,7 +4522,7 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
 
     if (numFatalities != 0)
     {
-        if (gConfigNotifications.RideCasualties)
+        if (Config::Get().notifications.RideCasualties)
         {
             ride.FormatNameTo(ft);
             News::AddItemToQueue(
@@ -4530,9 +4531,9 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         }
 
         auto& gameState = GetGameState();
-        if (gameState.ParkRatingCasualtyPenalty < 500)
+        if (gameState.Park.RatingCasualtyPenalty < 500)
         {
-            gameState.ParkRatingCasualtyPenalty += 200;
+            gameState.Park.RatingCasualtyPenalty += 200;
         }
     }
 }
@@ -5055,6 +5056,8 @@ void Vehicle::SetMapToolbar() const
     if (curRide != nullptr && curRide->type < RIDE_TYPE_COUNT)
     {
         const Vehicle* vehicle = GetHead();
+        if (vehicle == nullptr)
+            return;
 
         size_t vehicleIndex;
         for (vehicleIndex = 0; vehicleIndex < std::size(curRide->vehicles); vehicleIndex++)
@@ -5113,7 +5116,7 @@ Vehicle* Vehicle::TrainTail() const
 
 int32_t Vehicle::IsUsedInPairs() const
 {
-    return num_seats & VEHICLE_SEAT_PAIR_FLAG;
+    return num_seats & kVehicleSeatPairFlag;
 }
 
 /**
@@ -6636,9 +6639,14 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         }
     }
 
-    if (!mayCollide)
+    if (!mayCollide || collideVehicle == nullptr)
     {
         CollisionDetectionTimer = 0;
+        return false;
+    }
+
+    if (collideVehicle->status == Vehicle::Status::TravellingBoat && sub_state == BoatHireSubState::EnteringReturnPosition)
+    {
         return false;
     }
 
@@ -6650,8 +6658,6 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             *otherVehicleIndex = collideVehicle->Id;
         return true;
     }
-
-    // TODO Is it possible for collideVehicle to be NULL?
 
     if (status == Vehicle::Status::MovingToEndOfStation)
     {
@@ -7104,7 +7110,7 @@ Loc6DAEB9:
         auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
         {
-            acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration
+            acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration
                 << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
@@ -7113,10 +7119,10 @@ Loc6DAEB9:
         acceleration += CalculateRiderBraking();
     }
 
-    if ((trackType == TrackElemType::Flat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+    if ((trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT))
         || (trackType == TrackElemType::PoweredLift))
     {
-        acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.PoweredLiftAcceleration << 16;
+        acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration << 16;
     }
     if (trackType == TrackElemType::BrakeForDrop)
     {
@@ -7461,7 +7467,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::Flat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+        if (trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT))
         {
             int32_t unkVelocity = _vehicleVelocityF64E08;
             if (unkVelocity < -524288)
@@ -7486,7 +7492,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
             if (boosterSpeed < _vehicleVelocityF64E08)
             {
-                acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration << 16;
+                acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration << 16;
             }
         }
 

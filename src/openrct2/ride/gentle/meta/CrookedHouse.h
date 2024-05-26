@@ -17,13 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor CrookedHouseRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::FlatTrack3x3,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionCrookedHouse),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionCrookedHouse,
+        .EnabledTrackPieces = {},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_ALLOW_MUSIC |
@@ -31,7 +32,6 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::CrookedHouse),
     .DefaultMode = RideMode::CrookedHouse,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_CROOKED_HOUSE),

@@ -23,6 +23,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -102,7 +103,7 @@ GameActions::Result WallPlaceAction::Query() const
     else if (!_trackDesignDrawingPreview && (_loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y))
     {
         LOG_ERROR("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     if (_edge > 3)
@@ -118,7 +119,8 @@ GameActions::Result WallPlaceAction::Query() const
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         targetHeight = surfaceElement->GetBaseZ();
 
@@ -135,7 +137,8 @@ GameActions::Result WallPlaceAction::Query() const
     if (surfaceElement == nullptr)
     {
         LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     if (surfaceElement->GetWaterHeight() > 0)
@@ -168,7 +171,7 @@ GameActions::Result WallPlaceAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
             {
                 newEdge = (newEdge - 1) & 3;
 
@@ -199,7 +202,7 @@ GameActions::Result WallPlaceAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
             {
                 newEdge = (newEdge - 1) & 3;
 
@@ -299,7 +302,8 @@ GameActions::Result WallPlaceAction::Execute() const
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         targetHeight = surfaceElement->GetBaseZ();
 
@@ -412,7 +416,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     using namespace OpenRCT2::TrackMetaData;
     const auto& ted = GetTrackElementDescriptor(trackType);
     int32_t sequence = trackElement->GetSequenceIndex();
-    int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
+    int32_t direction = (_edge - trackElement->GetDirection()) & kTileElementDirectionMask;
     auto ride = GetRide(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
@@ -484,7 +488,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    direction = (trackElement->GetDirection() + ted.Coordinates.rotation_end) & TILE_ELEMENT_DIRECTION_MASK;
+    direction = (trackElement->GetDirection() + ted.Coordinates.rotation_end) & kTileElementDirectionMask;
     if (direction != _edge)
     {
         return false;
@@ -561,7 +565,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 auto sequence = largeSceneryElement->GetSequenceIndex();
                 const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
-                int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
+                int32_t direction = ((_edge - tileElement->GetDirection()) & kTileElementDirectionMask) + 8;
                 if (!(tile.flags & (1 << direction)))
                 {
                     MapGetObstructionErrorText(tileElement, res);
@@ -582,6 +586,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             case TileElementType::Track:
                 if (!WallCheckObstructionWithTrack(wall, z0, tileElement->AsTrack(), wallAcrossTrack))
                 {
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;

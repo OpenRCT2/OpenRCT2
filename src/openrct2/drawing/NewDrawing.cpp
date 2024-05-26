@@ -10,7 +10,6 @@
 #include "NewDrawing.h"
 
 #include "../Context.h"
-#include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Screenshot.h"
 #include "../localisation/StringIds.h"

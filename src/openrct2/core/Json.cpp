@@ -32,7 +32,7 @@ namespace Json
 
         try
         {
-            json = json_t::parse(fileData);
+            json = json_t::parse(fileData, /* callback */ nullptr, /* allow_exceptions */ true, /* ignore_comments */ true);
         }
         catch (const json_t::exception& e)
         {
@@ -59,7 +59,7 @@ namespace Json
 
         try
         {
-            json = json_t::parse(raw);
+            json = json_t::parse(raw, /* callback */ nullptr, /* allow_exceptions */ true, /* ignore_comments */ true);
         }
         catch (const json_t::exception& e)
         {
@@ -75,7 +75,8 @@ namespace Json
 
         try
         {
-            json = json_t::parse(vec.begin(), vec.end());
+            json = json_t::parse(
+                vec.begin(), vec.end(), /* callback */ nullptr, /* allow_exceptions */ true, /* ignore_comments */ true);
         }
         catch (const json_t::exception& e)
         {

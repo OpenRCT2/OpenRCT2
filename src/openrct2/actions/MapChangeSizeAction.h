@@ -17,6 +17,7 @@ class MapChangeSizeAction final : public GameActionBase<GameCommand::ChangeMapSi
 public:
     MapChangeSizeAction() = default;
     MapChangeSizeAction(const TileCoordsXY& targetSize);
+    MapChangeSizeAction(const TileCoordsXY& targetSize, const TileCoordsXY& shift);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
     uint16_t GetActionFlags() const override;
@@ -27,4 +28,5 @@ public:
 
 private:
     TileCoordsXY _targetSize;
+    TileCoordsXY _shift;
 };

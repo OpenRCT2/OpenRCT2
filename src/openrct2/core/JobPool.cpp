@@ -9,7 +9,6 @@
 
 #include "JobPool.h"
 
-#include <algorithm>
 #include <cassert>
 
 JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> completionFn)
@@ -94,6 +93,12 @@ size_t JobPool::CountPending()
 {
     unique_lock lock(_mutex);
     return _pending.size();
+}
+
+size_t JobPool::CountProcessing()
+{
+    unique_lock lock(_mutex);
+    return _processing;
 }
 
 void JobPool::ProcessQueue()

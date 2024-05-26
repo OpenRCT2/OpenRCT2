@@ -9,7 +9,6 @@
 
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -26,6 +25,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
@@ -75,6 +76,14 @@ static Widget window_game_bottom_toolbar_widgets[] =
     class GameBottomToolbar final : public Window
     {
     private:
+        colour_t GetHoverWidgetColour(WidgetIndex index)
+        {
+            return (
+                gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == index
+                    ? static_cast<colour_t>(COLOUR_WHITE)
+                    : colours[0].colour);
+        }
+
         void DrawLeftPanel(DrawPixelInfo& dpi)
         {
             const auto topLeft = windowPos
@@ -92,17 +101,13 @@ static Widget window_game_bottom_toolbar_widgets[] =
             auto& gameState = GetGameState();
 
             // Draw money
-            if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 Widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
-                colour_t colour
-                    = (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                               && gHoverWidget.widget_index == WIDX_MONEY
-                           ? COLOUR_WHITE
-                           : NOT_TRANSLUCENT(colours[0]));
+                auto colour = GetHoverWidgetColour(WIDX_MONEY);
                 StringId stringId = gameState.Cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.Cash);
@@ -128,11 +133,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
 
                 StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.GuestChangeModifier]
                                                                    : _guestCountFormats[gameState.GuestChangeModifier];
-                colour_t colour
-                    = (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                               && gHoverWidget.widget_index == WIDX_GUESTS
-                           ? COLOUR_WHITE
-                           : NOT_TRANSLUCENT(colours[0]));
+                auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.NumGuestsInPark);
                 DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
@@ -143,7 +144,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 Widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-                DrawParkRating(dpi, colours[3], screenCoords, std::max(10, ((gameState.ParkRating / 4) * 263) / 256));
+                DrawParkRating(dpi, colours[3].colour, screenCoords, std::max(10, ((gameState.Park.Rating / 4) * 263) / 256));
             }
         }
 
@@ -157,7 +158,8 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 if (bar_width > 2)
                 {
                     GfxFillRectInset(
-                        dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
+                        dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } },
+                        ColourWithFlags{ static_cast<uint8_t>(colour) }, 0);
                 }
             }
 
@@ -189,11 +191,8 @@ static Widget window_game_bottom_toolbar_widgets[] =
             int32_t month = date.GetMonth();
             int32_t day = date.GetDay();
 
-            colour_t colour
-                = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
-                       ? COLOUR_WHITE
-                       : NOT_TRANSLUCENT(colours[0]));
-            StringId stringId = DateFormatStringFormatIds[gConfigGeneral.DateFormat];
+            auto colour = GetHoverWidgetColour(WIDX_DATE);
+            StringId stringId = DateFormatStringFormatIds[Config::Get().general.DateFormat];
             auto ft = Formatter();
             ft.Add<StringId>(DateDayNames[day]);
             ft.Add<int16_t>(month);
@@ -209,7 +208,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
 
             int32_t temperature = OpenRCT2::GetGameState().ClimateCurrent.Temperature;
             StringId format = STR_CELSIUS_VALUE;
-            if (gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit)
+            if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
             {
                 temperature = ClimateCelsiusToFahrenheit(temperature);
                 format = STR_FAHRENHEIT_VALUE;
@@ -296,15 +295,18 @@ static Widget window_game_bottom_toolbar_widgets[] =
                     auto* guest = peep->As<Guest>();
                     if (guest != nullptr)
                     {
-                        if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
+                        if (image_id_base >= kPeepSpriteBalloonStateWatchRideId
+                            && image_id_base < kPeepSpriteBalloonStateSittingIdleId + 4)
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
                         }
-                        else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
+                        if (image_id_base >= kPeepSpriteUmbrellaStateNoneId
+                            && image_id_base < kPeepSpriteUmbrellaStateSittingIdleId + 4)
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
                         }
-                        else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
+                        if (image_id_base >= kPeepSpriteHatStateWatchRideId
+                            && image_id_base < kPeepSpriteHatStateSittingIdleId + 4)
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
                         }
@@ -422,7 +424,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
             {
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
-                    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                    if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
                         ContextOpenWindow(WindowClass::Finances);
                     break;
                 case WIDX_GUESTS:
@@ -478,10 +480,10 @@ static Widget window_game_bottom_toolbar_widgets[] =
             {
                 case WIDX_MONEY:
                     ft.Add<money64>(gameState.CurrentProfit);
-                    ft.Add<money64>(gameState.ParkValue);
+                    ft.Add<money64>(gameState.Park.Value);
                     break;
                 case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(gameState.ParkRating);
+                    ft.Add<int16_t>(gameState.Park.Rating);
                     break;
             }
             return { fallback, ft };
@@ -504,7 +506,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
                 + 1;
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-            if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
                 widgets[WIDX_GUESTS].top = 1;

@@ -10,8 +10,13 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+
+static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
 
 enum
 {
@@ -231,8 +236,7 @@ static void DinghySlideTrackFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -242,7 +246,7 @@ static void DinghySlideTrackFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void DinghySlideTrackStation(
@@ -263,14 +267,14 @@ static void DinghySlideTrackStation(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void DinghySlideTrack25DegUp(
@@ -301,8 +305,7 @@ static void DinghySlideTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -319,7 +322,7 @@ static void DinghySlideTrack25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void DinghySlideTrack60DegUp(
@@ -341,8 +344,7 @@ static void DinghySlideTrack60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 32, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -359,7 +361,7 @@ static void DinghySlideTrack60DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 static void DinghySlideTrackFlatTo25DegUp(
@@ -390,8 +392,7 @@ static void DinghySlideTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -408,7 +409,7 @@ static void DinghySlideTrackFlatTo25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 static void DinghySlideTrack25DegUpTo60DegUp(
@@ -430,8 +431,7 @@ static void DinghySlideTrack25DegUpTo60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -448,7 +448,7 @@ static void DinghySlideTrack25DegUpTo60DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void DinghySlideTrack60DegUpTo25DegUp(
@@ -470,8 +470,7 @@ static void DinghySlideTrack60DegUpTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -488,7 +487,7 @@ static void DinghySlideTrack60DegUpTo25DegUp(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void DinghySlideTrack25DegUpToFlat(
@@ -519,8 +518,7 @@ static void DinghySlideTrack25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -537,7 +535,7 @@ static void DinghySlideTrack25DegUpToFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void DinghySlideTrack25DegDown(
@@ -647,8 +645,7 @@ static void DinghySlideTrackRightQuarterTurn5(
     {
         case 0:
         case 6:
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 
@@ -722,14 +719,14 @@ static void DinghySlideTrackRightQuarterTurn5(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void DinghySlideTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     DinghySlideTrackRightQuarterTurn5(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
@@ -781,8 +778,7 @@ static void DinghySlideTrackSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -800,8 +796,7 @@ static void DinghySlideTrackSBendLeft(
             if (direction == 0 || direction == 1)
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, supportPlace, (direction & 1), height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -820,8 +815,7 @@ static void DinghySlideTrackSBendLeft(
             if (direction == 2 || direction == 3)
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, supportPlace, (direction & 1), height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -836,8 +830,7 @@ static void DinghySlideTrackSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -864,7 +857,7 @@ static void DinghySlideTrackSBendLeft(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void DinghySlideTrackSBendRight(
@@ -908,8 +901,7 @@ static void DinghySlideTrackSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -928,7 +920,7 @@ static void DinghySlideTrackSBendRight(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
                                                           : MetalSupportPlace::BottomRightSide;
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, supportPlace, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -948,7 +940,7 @@ static void DinghySlideTrackSBendRight(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
                                                           : MetalSupportPlace::BottomRightSide;
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, supportPlace, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -963,8 +955,7 @@ static void DinghySlideTrackSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -991,7 +982,7 @@ static void DinghySlideTrackSBendRight(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void DinghySlideTrackRightQuarterTurn3(
@@ -1051,8 +1042,7 @@ static void DinghySlideTrackRightQuarterTurn3(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 
@@ -1074,14 +1064,14 @@ static void DinghySlideTrackRightQuarterTurn3(
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void DinghySlideTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     DinghySlideTrackRightQuarterTurn3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 

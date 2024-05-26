@@ -151,6 +151,16 @@ namespace Platform
         return {};
     }
 
+    u8string GetRCT1SteamDir()
+    {
+        return {};
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return {};
+    }
+
 #    ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {

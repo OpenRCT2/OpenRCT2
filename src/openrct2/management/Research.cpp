@@ -39,7 +39,6 @@
 #include "Finance.h"
 #include "NewsItem.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -258,7 +257,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
 
             if (!gSilentResearch)
             {
-                if (gConfigNotifications.RideResearched)
+                if (Config::Get().notifications.RideResearched)
                 {
                     News::AddItemToQueue(News::ItemType::Research, availabilityString, researchItem.rawValue, ft);
                 }
@@ -280,7 +279,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
 
             if (!gSilentResearch)
             {
-                if (gConfigNotifications.RideResearched)
+                if (Config::Get().notifications.RideResearched)
                 {
                     News::AddItemToQueue(
                         News::ItemType::Research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem.rawValue, ft);
@@ -315,7 +314,7 @@ void ResearchUpdate()
         return;
     }
 
-    if ((gameState.ParkFlags & PARK_FLAGS_NO_MONEY) && gameState.ResearchFundingLevel == RESEARCH_FUNDING_NONE)
+    if ((gameState.Park.Flags & PARK_FLAGS_NO_MONEY) && gameState.ResearchFundingLevel == RESEARCH_FUNDING_NONE)
     {
         researchLevel = RESEARCH_FUNDING_NORMAL;
     }

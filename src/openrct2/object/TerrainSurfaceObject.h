@@ -26,17 +26,16 @@ class TerrainSurfaceObject final : public Object
 private:
     struct SpecialEntry
     {
-        uint32_t Index{};
-        int32_t Length{};
-        int32_t Rotation{};
-        int32_t Variation{};
-        bool Grid{};
-        bool Underground{};
+        uint8_t Index{};
+        uint8_t Length{};
+        uint8_t Rotation{};
+        uint8_t Variation{};
     };
 
-    static constexpr auto NUM_IMAGES_IN_ENTRY = 19;
+    static constexpr auto kNumImagesInEntry = 19;
 
 public:
+    static constexpr uint8_t kNoValue = 0xFF;
     StringId NameStringId{};
     uint32_t IconImageId{};
     uint32_t PatternBaseImageId{};
@@ -47,7 +46,8 @@ public:
     uint32_t DefaultGridEntry{};
     uint32_t DefaultUndergroundEntry{};
     std::vector<SpecialEntry> SpecialEntries;
-    std::vector<uint32_t> SpecialEntryMap;
+    std::vector<SpecialEntry> SpecialEntriesUnderground;
+    std::vector<SpecialEntry> SpecialEntriesGrid;
 
     colour_t Colour{};
     uint8_t Rotations{};
@@ -61,8 +61,8 @@ public:
 
     void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 
-    uint32_t GetImageId(
-        const CoordsXY& position, int32_t length, int32_t rotation, int32_t offset, bool grid, bool underground) const;
+    ImageId GetImageId(
+        const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground) const;
 
     static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
 };

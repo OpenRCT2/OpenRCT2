@@ -16,20 +16,20 @@
 // clang-format off
 constexpr RideTypeDescriptor FoodStallRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_SHOP,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::FlatTrack1x1A,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionShop),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionShop,
+        .EnabledTrackPieces = {},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
                      RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY |
                      RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN,
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_FOOD_STALL, STR_RIDE_DESCRIPTION_FOOD_STALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_FOOD_STALL),

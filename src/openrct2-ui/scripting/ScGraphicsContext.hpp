@@ -13,7 +13,7 @@
 
 #    include "CustomImages.h"
 
-#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/drawing/Text.h>
 #    include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
@@ -163,13 +163,13 @@ namespace OpenRCT2::Scripting
 
         void box(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            GfxFillRectInset(_dpi, { x, y, x + width - 1, y + height - 1 }, _colour.value_or(0), 0);
+            GfxFillRectInset(_dpi, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, 0);
         }
 
         void well(int32_t x, int32_t y, int32_t width, int32_t height)
         {
             GfxFillRectInset(
-                _dpi, { x, y, x + width - 1, y + height - 1 }, _colour.value_or(0),
+                _dpi, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) },
                 INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
         }
 
@@ -235,7 +235,7 @@ namespace OpenRCT2::Scripting
 
         void text(const std::string& text, int32_t x, int32_t y)
         {
-            GfxDrawString(_dpi, { x, y }, text.c_str(), { _colour.value_or(0) });
+            DrawText(_dpi, { x, y }, { _colour.value_or(0) }, text.c_str());
         }
     };
 } // namespace OpenRCT2::Scripting

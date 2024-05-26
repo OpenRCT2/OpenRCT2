@@ -11,7 +11,6 @@
 
 #include "../common.h"
 #include "Track.h"
-#include "TrackPaint.h"
 
 constexpr uint8_t MaxSequencesPerPiece = 16;
 

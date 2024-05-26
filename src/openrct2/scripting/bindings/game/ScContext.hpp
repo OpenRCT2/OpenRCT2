@@ -126,6 +126,11 @@ namespace OpenRCT2::Scripting
             return "normal";
         }
 
+        bool paused_get()
+        {
+            return GameIsPaused();
+        }
+
         void captureImage(const DukValue& options)
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
@@ -433,6 +438,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
             dukglue_register_method(ctx, &ScContext::getParkStorage, "getParkStorage");
             dukglue_register_property(ctx, &ScContext::mode_get, nullptr, "mode");
+            dukglue_register_property(ctx, &ScContext::paused_get, nullptr, "paused");
             dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");

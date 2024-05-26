@@ -23,6 +23,7 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 
@@ -135,7 +136,7 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::R
     auto zHigh = zLow + PATH_CLEARANCE;
     if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
-        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
+        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
         zHigh += PATH_HEIGHT_STEP;
     }
 
@@ -153,8 +154,7 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::R
 
     // Do not attempt to build a crossing with a queue or a sloped path.
     auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
-                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    auto crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CreateCrossingMode::none : CreateCrossingMode::pathOverTrack;
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
@@ -177,7 +177,8 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::R
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+            STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
@@ -205,7 +206,7 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertExecute(GameActions:
     auto zHigh = zLow + PATH_CLEARANCE;
     if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
-        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
+        quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
         zHigh += PATH_HEIGHT_STEP;
     }
 
@@ -223,8 +224,7 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertExecute(GameActions:
 
     // Do not attempt to build a crossing with a queue or a sloped path.
     auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
-                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    auto crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CreateCrossingMode::none : CreateCrossingMode::pathOverTrack;
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
@@ -241,7 +241,8 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertExecute(GameActions:
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+            STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;

@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
-#include "../config/Config.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/File.h"
@@ -25,7 +24,6 @@
 #include "../util/Util.h"
 #include "TrackDesign.h"
 
-#include <algorithm>
 #include <memory>
 #include <vector>
 

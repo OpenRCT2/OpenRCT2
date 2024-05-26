@@ -7,23 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
 #include "../interface/Dropdown.h"
 #include "../interface/Widget.h"
 #include "../interface/Window.h"
 #include "Window.h"
 
-#include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -446,10 +445,11 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                 if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
                     continue;
 
-                const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+                const bool objectiveAllowedByMoneyUsage = !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
                     || !ObjectiveNeedsMoney(i);
                 // This objective can only work if the player can ask money for rides.
-                const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
+                const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME)
+                    || Park::RidePricesUnlocked();
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
                     gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
@@ -662,9 +662,9 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             {
                 case WIDX_PARK_NAME:
                 {
-                    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
                     WindowTextInputRawOpen(
-                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), ParkNameMaxLength);
+                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, gameState.Park.Name.c_str(),
+                        ParkNameMaxLength);
                     break;
                 }
                 case WIDX_SCENARIO_NAME:
@@ -763,11 +763,11 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             objectiveType = GetGameState().ScenarioObjective.Type;
 
             // Check if objective is allowed by money and pay-per-ride settings.
-            const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            const bool objectiveAllowedByMoneyUsage = !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
                 || !ObjectiveNeedsMoney(objectiveType);
             // This objective can only work if the player can ask money for rides.
             const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
-                || ParkRidePricesUnlocked();
+                || Park::RidePricesUnlocked();
             if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
             {
                 // Reset objective
@@ -794,8 +794,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
                     if (gameState.ScenarioName.empty())
                     {
-                        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                        gameState.ScenarioName = park.Name;
+                        gameState.ScenarioName = gameState.Park.Name;
                     }
                     break;
                 }
@@ -950,7 +949,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                         ft.Add<money64>(gameState.ScenarioObjective.Currency);
                         break;
                 }
-                DrawTextBasic(dpi, screenCoords, stringId, ft, COLOUR_BLACK);
+                DrawTextBasic(dpi, screenCoords, stringId, ft, { COLOUR_BLACK });
             }
 
             if (widgets[WIDX_OBJECTIVE_ARG_2].type != WindowWidgetType::Empty)
@@ -972,8 +971,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             widthToSet = widgets[WIDX_PARK_NAME].left - 16;
 
             {
-                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                auto parkName = park.Name.c_str();
+                auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
                 ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
@@ -1144,7 +1142,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
          */
         void OnScrollDrawRides(DrawPixelInfo& dpi, int32_t scrollIndex)
         {
-            int32_t colour = ColourMapA[colours[1]].mid_light;
+            int32_t colour = ColourMapA[colours[1].colour].mid_light;
             GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
@@ -1172,9 +1170,9 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                     if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
                     {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
-                        GfxDrawString(
-                            dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
-                            { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, darkness });
+                        DrawText(
+                            dpi, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
+                            static_cast<const char*>(CheckBoxMarkString));
                     }
 
                     // Ride name

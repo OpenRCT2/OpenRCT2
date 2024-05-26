@@ -11,6 +11,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../config/ConfigTypes.h"
 #include "../core/Console.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../network/network.h"
@@ -59,7 +60,7 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         Console::WriteLine("Running %d ticks...", ticks);
         for (uint32_t i = 0; i < ticks; i++)
         {
-            context->GetGameState()->UpdateLogic();
+            gameStateUpdateLogic();
         }
         Console::WriteLine("Completed: %s", GetAllEntitiesChecksum().ToString().c_str());
     }

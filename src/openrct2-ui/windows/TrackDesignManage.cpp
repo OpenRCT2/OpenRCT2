@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -198,7 +197,7 @@ static Widget _trackDeletePromptWidgets[] = {
         WindowCreate(
             std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt,
             ScreenCoordsXY(
-                std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
+                std::max(kTopToolbarHeight + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
             WW_DELETE_PROMPT, WH_DELETE_PROMPT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     }
 

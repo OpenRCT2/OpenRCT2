@@ -69,7 +69,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
         if (surfaceObj != nullptr && !surfaceObj->UsesFallbackImages())
         {
             auto imageId = ImageId(surfaceObj->IconImageId);
-            if (surfaceObj->Colour != 255)
+            if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
                 imageId = imageId.WithPrimary(surfaceObj->Colour);
 
             gDropdownItems[itemIndex].Format = Dropdown::FormatLandPicker;

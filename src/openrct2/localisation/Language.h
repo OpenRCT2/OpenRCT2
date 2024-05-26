@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../drawing/Font.h"
+#include "../interface/FontFamilies.h"
 
 #include <string>
 #include <string_view>
@@ -67,10 +68,6 @@ enum class RCT2LanguageId
     Blank = 254,
     End = 255
 };
-
-#define FONT_OPENRCT2_SPRITE NULL
-
-#include "../interface/FontFamilies.h"
 
 struct LanguageDescriptor
 {

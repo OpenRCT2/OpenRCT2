@@ -21,6 +21,7 @@
 #include "BannerSceneryEntry.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
+#include "ObjectLimits.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
 #include "PathAdditionObject.h"
@@ -79,7 +80,7 @@ public:
             return nullptr;
         }
 
-        if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
+        if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
         {
 #ifdef DEBUG
             if (index != OBJECT_ENTRY_INDEX_NULL)
@@ -142,9 +143,9 @@ public:
     ObjectList GetLoadedObjects() override
     {
         ObjectList objectList;
-        for (auto objectType : ObjectTypes)
+        for (auto objectType : getAllObjectTypes())
         {
-            auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+            auto maxObjectsOfType = static_cast<ObjectEntryIndex>(getObjectEntryGroupCount(objectType));
             for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
             {
                 auto obj = GetLoadedObject(objectType, i);
@@ -311,7 +312,7 @@ private:
 
     void UnloadAll(bool onlyTransient)
     {
-        for (auto type : ObjectTypes)
+        for (auto type : getAllObjectTypes())
         {
             if (!onlyTransient || !IsIntransientObjectType(type))
             {
@@ -384,7 +385,7 @@ private:
             return static_cast<ObjectEntryIndex>(std::distance(list.begin(), it));
         }
 
-        auto maxSize = object_entry_group_counts[EnumValue(objectType)];
+        auto maxSize = getObjectEntryGroupCount(objectType);
         if (list.size() < static_cast<size_t>(maxSize))
         {
             list.emplace_back();
@@ -442,7 +443,7 @@ private:
         // Unload objects that are not in the hash set
         size_t totalObjectsLoaded = 0;
         size_t numObjectsUnloaded = 0;
-        for (auto type : ObjectTypes)
+        for (auto type : getAllObjectTypes())
         {
             if (!IsIntransientObjectType(type))
             {
@@ -521,10 +522,10 @@ private:
         std::vector<ObjectToLoad> requiredObjects;
         std::vector<ObjectEntryDescriptor> missingObjects;
 
-        for (auto objectType : ObjectTypes)
+        for (auto objectType : getAllObjectTypes())
         {
             auto& descriptors = objectList.GetList(objectType);
-            auto maxSize = static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]);
+            auto maxSize = static_cast<size_t>(getObjectEntryGroupCount(objectType));
             auto listSize = static_cast<ObjectEntryIndex>(std::min(descriptors.size(), maxSize));
             for (ObjectEntryIndex i = 0; i < listSize; i++)
             {
@@ -672,7 +673,7 @@ private:
         }
 
         // Set the new object lists
-        for (auto type : ObjectTypes)
+        for (auto type : getAllObjectTypes())
         {
             if (!IsIntransientObjectType(type))
             {
@@ -724,7 +725,7 @@ private:
         }
 
         // Build object lists
-        const auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[EnumValue(ObjectType::Ride)]);
+        const auto maxRideObjects = static_cast<size_t>(getObjectEntryGroupCount(ObjectType::Ride));
         for (size_t i = 0; i < maxRideObjects; i++)
         {
             auto* rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));

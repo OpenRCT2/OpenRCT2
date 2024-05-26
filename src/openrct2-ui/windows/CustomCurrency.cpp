@@ -12,8 +12,9 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
@@ -72,16 +73,16 @@ static Widget window_custom_currency_widgets[] = {
                     break;
                 case WIDX_RATE_UP:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
-                    gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                    ConfigSaveDefault();
+                    Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    Config::Save();
                     WindowInvalidateAll();
                     break;
                 case WIDX_RATE_DOWN:
                     if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
                     {
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
-                        gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                        ConfigSaveDefault();
+                        Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        Config::Save();
                         WindowInvalidateAll();
                     }
                     break;
@@ -109,7 +110,7 @@ static Widget window_custom_currency_widgets[] = {
                 case WIDX_SYMBOL_TEXT:
                     WindowTextInputRawOpen(
                         this, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
-                        {}, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
+                        {}, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, kCurrencySymbolMaxSize);
                     break;
             }
         }
@@ -122,7 +123,7 @@ static Widget window_custom_currency_widgets[] = {
                     WindowTextInputOpen(
                         this, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, {}, STR_FORMAT_INTEGER,
                         static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate),
-                        CURRENCY_RATE_MAX_NUM_DIGITS);
+                        kCurrencyRateMaxNumDigits);
                     break;
             }
         }
@@ -145,8 +146,8 @@ static Widget window_custom_currency_widgets[] = {
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = CurrencyAffix::Suffix;
                 }
 
-                gConfigGeneral.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
-                ConfigSaveDefault();
+                Config::Get().general.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
+                Config::Save();
 
                 WindowInvalidateAll();
             }
@@ -164,11 +165,12 @@ static Widget window_custom_currency_widgets[] = {
                 case WIDX_SYMBOL_TEXT:
                     SafeStrCpy(
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
-                        CURRENCY_SYMBOL_MAX_SIZE);
+                        kCurrencySymbolMaxSize);
 
-                    gConfigGeneral.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode;
+                    Config::Get().general.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
+                                                                     .symbol_unicode;
 
-                    ConfigSaveDefault();
+                    Config::Save();
                     WindowInvalidateAll();
                     break;
 
@@ -178,8 +180,8 @@ static Widget window_custom_currency_widgets[] = {
                     {
                         rate = res.value();
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
-                        gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                        ConfigSaveDefault();
+                        Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        Config::Save();
                         WindowInvalidateAll();
                     }
                     break;
@@ -210,8 +212,7 @@ static Widget window_custom_currency_widgets[] = {
                 + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
                                   window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
 
-            GfxDrawString(
-                dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
+            DrawText(dpi, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode);
 
             auto drawPos = windowPos
                 + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,

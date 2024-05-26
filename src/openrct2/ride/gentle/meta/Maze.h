@@ -18,19 +18,20 @@
 // clang-format off
 constexpr RideTypeDescriptor MazeRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::Maze,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMaze),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionMaze,
+        .EnabledTrackPieces = {},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA | RIDE_TYPE_FLAG_IS_MAZE,
     .RideModes = EnumsToFlags(RideMode::Maze),
     .DefaultMode = RideMode::Maze,
-    .OperatingSettings = { 1, 64, 0, 0, 0, 0 },
+    .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MAZE),

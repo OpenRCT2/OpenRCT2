@@ -19,6 +19,7 @@
 #include "core/String.hpp"
 #include "object/AudioSampleTable.h"
 
+#include <algorithm>
 #include <cstdio>
 
 using namespace OpenRCT2;
@@ -160,7 +161,7 @@ void AssetPackManager::LoadEnabledAssetPacks()
 {
     // Re-order asset packs
     std::vector<std::unique_ptr<AssetPack>> newAssetPacks;
-    EnumerateCommaSeparatedList(gConfigGeneral.AssetPackOrder, [&](std::string_view id) {
+    EnumerateCommaSeparatedList(Config::Get().general.AssetPackOrder, [&](std::string_view id) {
         auto index = GetAssetPackIndex(id);
         if (index != std::numeric_limits<size_t>::max())
         {
@@ -177,7 +178,7 @@ void AssetPackManager::LoadEnabledAssetPacks()
     _assetPacks = std::move(newAssetPacks);
 
     // Set which asset packs are enabled
-    EnumerateCommaSeparatedList(gConfigGeneral.EnabledAssetPacks, [&](std::string_view id) {
+    EnumerateCommaSeparatedList(Config::Get().general.EnabledAssetPacks, [&](std::string_view id) {
         auto assetPack = GetAssetPack(id);
         if (assetPack != nullptr)
         {
@@ -204,7 +205,7 @@ void AssetPackManager::SaveEnabledAssetPacks()
         orderList.pop_back();
     if (enabledList.size() > 0)
         enabledList.pop_back();
-    gConfigGeneral.AssetPackOrder = orderList;
-    gConfigGeneral.EnabledAssetPacks = enabledList;
-    ConfigSaveDefault();
+    Config::Get().general.AssetPackOrder = orderList;
+    Config::Get().general.EnabledAssetPacks = enabledList;
+    Config::Save();
 }

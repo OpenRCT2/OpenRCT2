@@ -17,8 +17,6 @@
 #include "localisation/LocalisationService.h"
 #include "object/Object.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 constexpr std::string_view ManifestFileName = "manifest.json";

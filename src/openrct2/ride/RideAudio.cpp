@@ -16,6 +16,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../interface/Viewport.h"
 #include "../object/AudioObject.h"
 #include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
@@ -187,7 +188,7 @@ namespace OpenRCT2::RideAudio
     void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::RCT2Circus);
+        ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::kRCT2Circus);
         auto audioObj = static_cast<AudioObject*>(objManager.GetLoadedObject(desc));
         if (audioObj != nullptr)
         {
@@ -257,7 +258,7 @@ namespace OpenRCT2::RideAudio
             return;
 
         // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-        if (gGameSoundsOff || !gConfigSound.RideMusicEnabled)
+        if (gGameSoundsOff || !Config::Get().sound.RideMusicEnabled)
             return;
 
         StopInactiveRideMusicChannels();

@@ -27,6 +27,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
+#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
@@ -68,7 +70,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_6,
         WIDX_TAB_7,
 
-        WIDX_MARQUEE = 11,
+        WIDX_TAB_CONTENT_START,
+
+        WIDX_MARQUEE = WIDX_TAB_CONTENT_START,
         WIDX_VIEWPORT,
         WIDX_ACTION_LBL,
         WIDX_PICKUP,
@@ -76,7 +80,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LOCATE,
         WIDX_TRACK,
 
-        WIDX_RIDE_SCROLL = 11
+        WIDX_HAPPINESS_BAR = WIDX_TAB_CONTENT_START,
+        WIDX_ENERGY_BAR,
+        WIDX_HUNGER_BAR,
+        WIDX_THIRST_BAR,
+        WIDX_NAUSEA_BAR,
+        WIDX_TOILET_BAR,
+
+        WIDX_RIDE_SCROLL = WIDX_TAB_CONTENT_START,
     };
 
     validate_global_widx(WC_PEEP, WIDX_PICKUP);
@@ -110,6 +121,12 @@ static Widget _guestWindowWidgetsOverview[] = {
 
     static Widget _guestWindowWidgetsStats[] = {
         MAIN_GUEST_WIDGETS,
+        MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Happiness
+        MakeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Energy
+        MakeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100), // Hunger
+        MakeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100), // Thirst
+        MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100), // Nausea
+        MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100), // Toilet
         kWidgetsEnd,
     };
 
@@ -468,11 +485,11 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                     Invalidate();
             }
-            if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
-            if (!gConfigGeneral.DebuggingTools)
+            if (!Config::Get().general.DebuggingTools)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
             }
@@ -560,19 +577,21 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             if (guest != nullptr)
             {
                 // If holding a balloon
-                if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
+                if (animationFrame >= kPeepSpriteBalloonStateWatchRideId
+                    && animationFrame < kPeepSpriteBalloonStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
                 }
 
                 // If holding umbrella
-                if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
+                if (animationFrame >= kPeepSpriteUmbrellaStateNoneId
+                    && animationFrame < kPeepSpriteUmbrellaStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
                 }
 
                 // If wearing hat
-                if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
+                if (animationFrame >= kPeepSpriteHatStateWatchRideId && animationFrame < kPeepSpriteHatStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
                 }
@@ -792,7 +811,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             }
 
             int32_t i = 0;
-            for (; i < PEEP_MAX_THOUGHTS; ++i)
+            for (; i < kPeepMaxThoughts; ++i)
             {
                 if (peep->Thoughts[i].type == PeepThoughtType::None)
                 {
@@ -804,7 +823,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                     break;
                 }
             }
-            if (i == PEEP_MAX_THOUGHTS)
+            if (i == kPeepMaxThoughts)
             {
                 _marqueePosition = 0;
                 return;
@@ -1032,38 +1051,14 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             Invalidate();
         }
 
-        void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, DrawPixelInfo& dpi, int32_t colour, bool blinkFlag)
-        {
-            auto coords = origCoords;
-            if (FontGetLineHeight(FontStyle::Medium) > 10)
-            {
-                coords.y += 1;
-            }
-
-            GfxFillRectInset(
-                dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
-
-            if (!blinkFlag || GameIsPaused() || (gCurrentRealTimeTicks & 8) == 0)
-            {
-                value *= 118;
-                value >>= 8;
-
-                if (value <= 2)
-                    return;
-
-                GfxFillRectInset(
-                    dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
-            }
-        }
-
         /**
-         * Takes a guest stat value (scaled to currMax) and adjusts it to be scaled out of 255.
-         * Then clamp the value to between newMin and 255.
+         * Takes a guest stat value (scaled to currMax) and adjusts it to be scaled out of 100.
+         * Then clamp the value to between newMin and 100.
          */
         int32_t NormalizeGuestStatValue(int32_t value, int32_t currMax, int32_t newMin) const
         {
-            int32_t newValue = (value * 255) / currMax;
-            return std::clamp(newValue, newMin, 255);
+            int32_t newValue = (value * 100) / currMax;
+            return std::clamp(newValue, newMin, 100);
         }
 
         void OnDrawStats(DrawPixelInfo& dpi)
@@ -1092,60 +1087,49 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             // Happiness
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
 
-            int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
-            int32_t barColour = COLOUR_BRIGHT_GREEN;
-            bool barBlink = happiness < 50;
-            StatsBarsDraw(happiness, screenCoords, dpi, barColour, barBlink);
+            int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 10);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
 
             // Energy
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
 
-            int32_t energy = NormalizeGuestStatValue(peep->Energy - PEEP_MIN_ENERGY, PEEP_MAX_ENERGY - PEEP_MIN_ENERGY, 10);
-            barColour = COLOUR_BRIGHT_GREEN;
-            barBlink = energy < 50;
-            StatsBarsDraw(energy, screenCoords, dpi, barColour, barBlink);
+            int32_t energyPercentage = NormalizeGuestStatValue(
+                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
 
             // Hunger
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
 
-            int32_t hunger = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
-            hunger = 255 - hunger; // the bar should be longer when peep->Hunger is low
-            barColour = COLOUR_BRIGHT_RED;
-            barBlink = hunger > 170;
-            StatsBarsDraw(hunger, screenCoords, dpi, barColour, barBlink);
+            int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
+            hungerPercentage = 100 - hungerPercentage; // the bar should be longer when peep->Hunger is low
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_HUNGER_BAR], hungerPercentage);
 
             // Thirst
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
 
-            int32_t thirst = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
-            thirst = 255 - thirst; // the bar should be longer when peep->Thirst is low
-            barColour = COLOUR_BRIGHT_RED;
-            barBlink = thirst > 170;
-            StatsBarsDraw(thirst, screenCoords, dpi, barColour, barBlink);
+            int32_t thirstPercentage = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
+            thirstPercentage = 100 - thirstPercentage; // the bar should be longer when peep->Thirst is low
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_THIRST_BAR], thirstPercentage);
 
             // Nausea
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
 
-            int32_t nausea = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
-            barColour = COLOUR_BRIGHT_RED;
-            barBlink = nausea > 120;
-            StatsBarsDraw(nausea, screenCoords, dpi, barColour, barBlink);
+            int32_t nauseaPercentage = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_NAUSEA_BAR], nauseaPercentage);
 
             // Toilet
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
 
-            int32_t toilet = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
-            barColour = COLOUR_BRIGHT_RED;
-            barBlink = toilet > 160;
-            StatsBarsDraw(toilet, screenCoords, dpi, barColour, barBlink);
+            int32_t toiletPercentage = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_TOILET_BAR], toiletPercentage);
 
             // Time in park
-            screenCoords.y += LIST_ROW_HEIGHT + 1;
+            screenCoords.y += kListRowHeight + 1;
             int32_t guestEntryTime = peep->GetParkEntryTime();
             if (guestEntryTime != -1)
             {
@@ -1155,14 +1139,14 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
             }
 
-            screenCoords.y += LIST_ROW_HEIGHT + 9;
+            screenCoords.y += kListRowHeight + 9;
             GfxFillRectInset(
                 dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
                 INSET_RECT_FLAG_BORDER_INSET);
 
             // Preferred Ride
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Intensity
             {
@@ -1193,7 +1177,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                     STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,
                     STR_PEEP_STAT_NAUSEA_TOLERANCE_HIGH,
                 };
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
                 auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
                 auto ft = Formatter();
                 ft.Add<StringId>(_nauseaTolerances[nausea_tolerance]);
@@ -1352,7 +1336,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 
         void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
         {
-            auto colour = ColourMapA[colours[1]].mid_light;
+            auto colour = ColourMapA[colours[1].colour].mid_light;
             GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)
@@ -1429,7 +1413,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 auto ft = Formatter();
                 ft.Add<money64>(peep->CashInPocket);
                 DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Cash spent
@@ -1437,7 +1421,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 auto ft = Formatter();
                 ft.Add<money64>(peep->CashSpent);
                 DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
-                screenCoords.y += LIST_ROW_HEIGHT * 2;
+                screenCoords.y += kListRowHeight * 2;
             }
 
             GfxFillRectInset(
@@ -1449,7 +1433,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 auto ft = Formatter();
                 ft.Add<money64>(peep->PaidToEnter);
                 DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             // Paid on rides
             {
@@ -1464,7 +1448,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 {
                     DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_RIDE, ft);
                 }
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             // Paid on food
             {
@@ -1479,7 +1463,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 {
                     DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_FOOD, ft);
                 }
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Paid on drinks
@@ -1495,7 +1479,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 {
                     DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_DRINK, ft);
                 }
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             // Paid on souvenirs
             {
@@ -1629,8 +1613,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 
         std::pair<StringId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            auto parkName = park.Name.c_str();
+            auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
 
             // Default arguments
             auto ft = Formatter();
@@ -1835,7 +1818,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 ft.Add<uint32_t>(peep->Id);
                 DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_SPRITE_INDEX, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(peep->x);
@@ -1843,7 +1826,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 ft.Add<int32_t>(peep->z);
                 DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_POSITION, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(peep->NextLoc.x);
@@ -1862,9 +1845,9 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
                     SafeStrCat(buffer, buffer2, sizeof(buffer));
                 }
-                GfxDrawString(dpi, screenCoords, buffer, {});
+                DrawText(dpi, screenCoords, {}, buffer);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(peep->DestinationX);
@@ -1872,7 +1855,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 ft.Add<int32_t>(peep->DestinationTolerance);
                 DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_DEST, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(peep->PathfindGoal.x);
@@ -1881,9 +1864,9 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 ft.Add<int32_t>(peep->PathfindGoal.direction);
                 DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
             }
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             screenCoords.x += 10;
             for (auto& point : peep->PathfindHistory)
@@ -1894,7 +1877,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
                 ft.Add<int32_t>(point.z);
                 ft.Add<int32_t>(point.direction);
                 DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.x -= 10;
         }
@@ -1921,7 +1904,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
         if (window == nullptr)
         {
             int32_t windowWidth = 192;
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
             window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);

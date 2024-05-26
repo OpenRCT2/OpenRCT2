@@ -17,20 +17,20 @@
 // clang-format off
 constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionMiniSuspendedRC),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionMiniSuspendedRC,
+        .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_IS_SUSPENDED,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MINI_SUSPENDED_COASTER, STR_RIDE_DESCRIPTION_MINI_SUSPENDED_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MINI_SUSPENDED_COASTER),

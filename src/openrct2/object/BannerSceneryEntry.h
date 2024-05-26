@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Money.hpp"
 #include "ObjectTypes.h"
 
 enum

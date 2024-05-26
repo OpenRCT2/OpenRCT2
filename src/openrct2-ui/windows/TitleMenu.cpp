@@ -18,7 +18,6 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
@@ -113,7 +112,7 @@ static Widget _titleMenuWidgets[] = {
             width = x;
             widgets[WIDX_NEW_VERSION].right = width;
             windowPos.x = (ContextGetWidth() - width) / 2;
-            colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
+            colours[1] = ColourWithFlags{ COLOUR_LIGHT_ORANGE }.withFlag(ColourFlag::translucent, true);
 
             InitScrollWidgets();
         }
@@ -215,7 +214,7 @@ static Widget _titleMenuWidgets[] = {
 
                 WindowDropdownShowText(
                     windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height() + 1,
-                    TRANSLUCENT(colours[0]), Dropdown::Flag::StayOpen, i);
+                    colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, i);
             }
         }
 

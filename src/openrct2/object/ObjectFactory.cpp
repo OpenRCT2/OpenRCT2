@@ -9,7 +9,9 @@
 
 #include "ObjectFactory.h"
 
+#include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
@@ -42,7 +44,6 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
-#include <algorithm>
 #include <memory>
 #include <unordered_map>
 
@@ -500,6 +501,12 @@ namespace ObjectFactory
         }
     }
 
+    static bool isUsingClassic()
+    {
+        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        return env->IsUsingClassic();
+    }
+
     std::unique_ptr<Object> CreateObjectFromJson(
         IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable)
     {
@@ -517,9 +524,13 @@ namespace ObjectFactory
         {
             auto id = Json::GetString(jRoot["id"]);
 
-            // HACK Disguise RCT Classic audio as RCT2 audio so asset packs override correctly
-            if (id == OpenRCT2::Audio::AudioObjectIdentifiers::RCTCBase)
-                id = OpenRCT2::Audio::AudioObjectIdentifiers::RCT2Base;
+            // Base audio files are renamed to a common, virtual name so asset packs can override it correctly.
+            const bool isRCT2BaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::kRCT2Base && !isUsingClassic();
+            const bool isRCTCBaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::kRCTCBase && isUsingClassic();
+            if (isRCT2BaseAudio || isRCTCBaseAudio)
+            {
+                id = OpenRCT2::Audio::AudioObjectIdentifiers::kRCT2;
+            }
 
             auto version = VersionTuple(Json::GetString(jRoot["version"]));
             ObjectEntryDescriptor descriptor;

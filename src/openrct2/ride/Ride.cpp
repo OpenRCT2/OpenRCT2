@@ -76,7 +76,6 @@
 #include "TrainManager.h"
 #include "Vehicle.h"
 
-#include <algorithm>
 #include <cassert>
 #include <climits>
 #include <cstdlib>
@@ -176,6 +175,12 @@ Ride* RideAllocateAtIndex(RideId index)
     auto result = &GetGameState().Rides[idx];
     assert(result->id == RideId::GetNull());
 
+    // Initialize the ride to all the defaults.
+    *result = Ride{};
+
+    // Because it is default initialized to zero rather than the magic constant for Null, fill the array.
+    std::fill(std::begin(result->vehicles), std::end(result->vehicles), EntityId::GetNull());
+
     result->id = index;
     return result;
 }
@@ -251,7 +256,7 @@ const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 
 std::string_view GetRideEntryName(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[EnumValue(ObjectType::Ride)])
+    if (index >= getObjectEntryGroupCount(ObjectType::Ride))
     {
         LOG_ERROR("invalid index %d for ride type", index);
         return {};
@@ -359,7 +364,7 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
 
 void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
 {
-    assert(stationIndex.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
+    assert(stationIndex.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
     assert(peep != nullptr);
 
     peep->GuestNextInQueue = EntityId::GetNull();
@@ -618,7 +623,7 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
     OriginZ -= trackBlock->z;
     OriginZ += trackCoordinate.z_end;
 
-    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & kTileElementDirectionMask)
         | (trackCoordinate.rotation_end & TRACK_BLOCK_2);
 
     return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
@@ -757,7 +762,7 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
     z -= trackBlock->z;
     z += trackCoordinate.z_begin;
 
-    rotation = ((trackCoordinate.rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+    rotation = ((trackCoordinate.rotation_begin + rotation) & kTileElementDirectionMask)
         | (trackCoordinate.rotation_begin & TRACK_BLOCK_2);
 
     return TrackBlockGetPreviousFromZero({ coords, z }, *ride, rotation, outTrackBeginEnd);
@@ -1060,12 +1065,12 @@ const RideStation& Ride::GetStation(StationIndex stationIndex) const
     return stations[stationIndex.ToUnderlying()];
 }
 
-std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& Ride::GetStations()
+std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations()
 {
     return stations;
 }
 
-const std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& Ride::GetStations() const
+const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations() const
 {
     return stations;
 }
@@ -1091,7 +1096,7 @@ void Ride::Update()
     // Update stations
     const auto& rtd = GetRideTypeDescriptor();
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             RideUpdateStation(*this, StationIndex::FromUnderlying(i));
 
     // Update financial statistics
@@ -1103,7 +1108,7 @@ void Ride::Update()
         num_customers_timeout = 0;
 
         // Shift number of customers history, start of the array is the most recent one
-        for (int32_t i = OpenRCT2::Limits::CustomerHistorySize - 1; i > 0; i--)
+        for (int32_t i = OpenRCT2::Limits::kCustomerHistorySize - 1; i > 0; i--)
         {
             num_customers[i] = num_customers[i - 1];
         }
@@ -1276,7 +1281,7 @@ void UpdateSpiralSlide(Ride& ride)
 
     const uint8_t current_rotation = GetCurrentRotation();
     // Invalidate something related to station start
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
     {
         if (ride.stations[i].Start.IsNull())
             continue;
@@ -1417,7 +1422,7 @@ static void RideBreakdownUpdate(Ride& ride)
 
     if (!ride.CanBreakDown())
     {
-        ride.reliability = RIDE_INITIAL_RELIABILITY;
+        ride.reliability = kRideInitialReliability;
         return;
     }
 
@@ -1433,7 +1438,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
     if ((ride.reliability == 0
-         || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride.reliability)
+         || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
         && !GetGameState().Cheats.DisableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
@@ -1613,7 +1618,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
  */
 void RideBreakdownAddNewsItem(const Ride& ride)
 {
-    if (gConfigNotifications.RideBrokenDown)
+    if (Config::Get().notifications.RideBrokenDown)
     {
         Formatter ft;
         ride.FormatNameTo(ft);
@@ -1640,7 +1645,7 @@ static void RideBreakdownStatusUpdate(Ride& ride)
         if (!(ride.not_fixed_timeout & 15) && ride.mechanic_status != RIDE_MECHANIC_STATUS_FIXING
             && ride.mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            if (gConfigNotifications.RideWarnings)
+            if (Config::Get().notifications.RideWarnings)
             {
                 Formatter ft;
                 ride.FormatNameTo(ft);
@@ -2321,7 +2326,7 @@ static void RideEntranceExitConnected(Ride& ride)
             // name of ride is parameter of the format string
             Formatter ft;
             ride.FormatNameTo(ft);
-            if (gConfigNotifications.RideWarnings)
+            if (Config::Get().notifications.RideWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
@@ -2333,7 +2338,7 @@ static void RideEntranceExitConnected(Ride& ride)
             // name of ride is parameter of the format string
             Formatter ft;
             ride.FormatNameTo(ft);
-            if (gConfigNotifications.RideWarnings)
+            if (Config::Get().notifications.RideWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
@@ -2398,7 +2403,7 @@ static void RideShopConnected(const Ride& ride)
     }
 
     // Name of ride is parameter of the format string
-    if (gConfigNotifications.RideWarnings)
+    if (Config::Get().notifications.RideWarnings)
     {
         Formatter ft;
         ride2->FormatNameTo(ft);
@@ -2852,7 +2857,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
 
     while (TrackCircuitIteratorNext(&it))
     {
-        auto trackType = output->element->AsTrack()->GetTrackType();
+        auto trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
         if (ted.Flags & TRACK_ELEM_FLAG_BANKED)
         {
@@ -3012,7 +3017,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
 static void RideSetMazeEntranceExitPoints(Ride& ride)
 {
     // Needs room for an entrance and an exit per station, plus one position for the list terminator.
-    TileCoordsXYZD positions[(OpenRCT2::Limits::MaxStationsPerRide * 2) + 1];
+    TileCoordsXYZD positions[(OpenRCT2::Limits::kMaxStationsPerRide * 2) + 1];
 
     // Create a list of all the entrance and exit positions
     TileCoordsXYZD* position = positions;
@@ -3489,7 +3494,7 @@ static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackEle
         }
         lastTrain = train;
 
-        for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+        for (int32_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
         {
             if (ride.vehicles[i].IsNull())
             {
@@ -3629,9 +3634,9 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     // Initialise station departs
     // 006DDDD0:
     lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
     {
-        stations[i].Depart = (stations[i].Depart & STATION_DEPART_FLAG) | 1;
+        stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
     }
 
     //
@@ -4633,7 +4638,7 @@ bool RideHasAnyTrackElements(const Ride& ride)
 void InvalidateTestResults(Ride& ride)
 {
     ride.measurement = {};
-    ride.excitement = RIDE_RATING_UNDEFINED;
+    ride.excitement = kRideRatingUndefined;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -4693,7 +4698,7 @@ void RideUpdateVehicleColours(const Ride& ride)
         GfxInvalidateScreen();
     }
 
-    for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+    for (int32_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
     {
         int32_t carIndex = 0;
         VehicleColour colours = {};
@@ -5088,7 +5093,7 @@ void Ride::UpdateMaxVehicles()
         {
             case RideMode::ContinuousCircuitBlockSectioned:
             case RideMode::PoweredLaunchBlockSectioned:
-                maxNumTrains = std::clamp<int32_t>(num_stations + num_block_brakes - 1, 1, OpenRCT2::Limits::MaxTrainsPerRide);
+                maxNumTrains = std::clamp<int32_t>(num_stations + num_block_brakes - 1, 1, OpenRCT2::Limits::kMaxTrainsPerRide);
                 break;
             case RideMode::ReverseInclineLaunchedShuttle:
             case RideMode::PoweredLaunchPasstrough:
@@ -5120,7 +5125,7 @@ void Ride::UpdateMaxVehicles()
                 if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
                     || !(rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
                 {
-                    maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::MaxTrainsPerRide));
+                    maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
                 }
                 else
                 {
@@ -5149,7 +5154,7 @@ void Ride::UpdateMaxVehicles()
                     {
                         maxNumTrains++;
                         length += totalSpacing;
-                    } while (maxNumTrains < OpenRCT2::Limits::MaxTrainsPerRide && length < trackLength);
+                    } while (maxNumTrains < OpenRCT2::Limits::kMaxTrainsPerRide && length < trackLength);
                 }
                 break;
         }
@@ -5168,7 +5173,7 @@ void Ride::UpdateMaxVehicles()
 
     if (GetGameState().Cheats.DisableTrainLengthLimit)
     {
-        maxNumTrains = OpenRCT2::Limits::MaxTrainsPerRide;
+        maxNumTrains = OpenRCT2::Limits::kMaxTrainsPerRide;
     }
     numTrains = std::min(ProposedNumTrains, static_cast<uint8_t>(maxNumTrains));
 
@@ -5216,7 +5221,7 @@ void Ride::SetReversedTrains(bool reverseTrains)
 
 void Ride::SetToDefaultInspectionInterval()
 {
-    uint8_t defaultInspectionInterval = gConfigGeneral.DefaultInspectionInterval;
+    uint8_t defaultInspectionInterval = Config::Get().general.DefaultInspectionInterval;
     if (inspection_interval != defaultInspectionInterval)
     {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
@@ -5248,7 +5253,7 @@ void Ride::Crash(uint8_t vehicleIndex)
         }
     }
 
-    if (gConfigNotifications.RideCrashed)
+    if (Config::Get().notifications.RideCrashed)
     {
         Formatter ft;
         FormatNameTo(ft);
@@ -5267,7 +5272,7 @@ uint32_t RideCustomersInLast5Minutes(const Ride& ride)
 {
     uint32_t sum = 0;
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::CustomerHistorySize; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kCustomerHistorySize; i++)
     {
         sum += ride.num_customers[i];
     }
@@ -5299,7 +5304,7 @@ void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
     build_date = GetDate().GetMonthsElapsed();
-    reliability = RIDE_INITIAL_RELIABILITY;
+    reliability = kRideInitialReliability;
 }
 
 RideClassification Ride::GetClassification() const
@@ -5315,11 +5320,11 @@ bool Ride::IsRide() const
 
 money64 RideGetPrice(const Ride& ride)
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
         return 0;
     if (ride.IsRide())
     {
-        if (!ParkRidePricesUnlocked())
+        if (!Park::RidePricesUnlocked())
         {
             return 0;
         }
@@ -5434,24 +5439,13 @@ bool RideHasStationShelter(const Ride& ride)
 
 bool RideHasRatings(const Ride& ride)
 {
-    return ride.excitement != RIDE_RATING_UNDEFINED;
+    return ride.excitement != kRideRatingUndefined;
 }
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
 {
-    int8_t shiftFactor = GetRideTypeDescriptor(rideType).OperatingSettings.BoosterSpeedFactor;
-    if (shiftFactor == 0)
-    {
-        return rawSpeed;
-    }
-    if (shiftFactor > 0)
-    {
-        return (rawSpeed << shiftFactor);
-    }
-
-    // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
-    int8_t shiftFactorAbs = std::abs(shiftFactor);
-    return (rawSpeed >> shiftFactorAbs);
+    // BoosterSpeedFactor has valid values of 1, 2, 4 representing a 1/2, 1, and 2 multiplier.
+    return rawSpeed * GetRideTypeDescriptor(rideType).LegacyBoosterSettings.BoosterSpeedFactor / 2;
 }
 
 void FixInvalidVehicleSpriteSizes()

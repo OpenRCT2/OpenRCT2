@@ -51,8 +51,6 @@ public:
     bool IsLocationInPatrol(const CoordsXY& loc) const;
     bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
     bool DoPathFinding();
-    uint8_t GetCostume() const;
-    void SetCostume(uint8_t value);
     void SetHireDate(int32_t hireDate);
     int32_t GetHireDate() const;
 

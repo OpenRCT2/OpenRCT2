@@ -41,7 +41,6 @@
 #include "Window.h"
 #include "Window_internal.h"
 
-#include <algorithm>
 #include <cstring>
 #include <list>
 #include <unordered_map>
@@ -177,7 +176,7 @@ CoordsXYZ Focus::GetPos() const
 void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
 {
     Viewport* viewport = nullptr;
-    if (_viewports.size() >= MAX_VIEWPORT_COUNT)
+    if (_viewports.size() >= kMaxViewportCount)
     {
         LOG_ERROR("No more viewport slots left to allocate.");
         return;
@@ -197,7 +196,7 @@ void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t w
     viewport->flags = 0;
     viewport->rotation = GetCurrentRotation();
 
-    if (gConfigGeneral.AlwaysShowGridlines)
+    if (Config::Get().general.AlwaysShowGridlines)
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
@@ -643,14 +642,14 @@ void ViewportUpdatePosition(WindowBase* window)
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
-    if (mapCoord.x < MAP_MINIMUM_X_Y)
+    if (mapCoord.x < kMapMinimumXY)
     {
-        mapCoord.x = MAP_MINIMUM_X_Y;
+        mapCoord.x = kMapMinimumXY;
         at_map_edge = 1;
     }
-    if (mapCoord.y < MAP_MINIMUM_X_Y)
+    if (mapCoord.y < kMapMinimumXY)
     {
-        mapCoord.y = MAP_MINIMUM_X_Y;
+        mapCoord.y = kMapMinimumXY;
         at_map_edge = 1;
     }
 
@@ -992,7 +991,7 @@ static void ViewportPaintColumn(PaintSession& session)
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
+    if (Config::Get().general.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         ViewportPaintWeatherGloom(session.DPI);
@@ -1056,7 +1055,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
 
     _paintColumns.clear();
 
-    bool useMultithreading = gConfigGeneral.MultiThreading;
+    bool useMultithreading = Config::Get().general.MultiThreading;
     if (useMultithreading && _paintJobs == nullptr)
     {
         _paintJobs = std::make_unique<JobPool>();
@@ -1257,7 +1256,7 @@ void HideGridlines()
         WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            if (!gConfigGeneral.AlwaysShowGridlines)
+            if (!Config::Get().general.AlwaysShowGridlines)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                 mainWindow->Invalidate();
@@ -2156,6 +2155,13 @@ std::optional<CoordsXY> ScreenGetMapXYSideWithZ(const ScreenCoordsXY& screenCoor
     return mapCoords->ToTileStart();
 }
 
+ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos)
+{
+    auto rotated = pos.Rotate(rotation);
+    // Use right shift to avoid issues like #9301
+    return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
+}
+
 /**
  * Get current viewport rotation.
  *
@@ -2188,11 +2194,11 @@ uint8_t GetCurrentRotation()
 int32_t GetHeightMarkerOffset()
 {
     // Height labels in units
-    if (gConfigGeneral.ShowHeightAsUnits)
+    if (Config::Get().general.ShowHeightAsUnits)
         return 0;
 
     // Height labels in feet
-    if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
+    if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
         return 1 * 256;
 
     // Height labels in metres

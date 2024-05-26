@@ -49,7 +49,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode
-        && GetGameState().ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+        && GetGameState().Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
@@ -76,7 +76,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
@@ -123,7 +123,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }

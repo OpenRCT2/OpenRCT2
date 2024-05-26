@@ -15,7 +15,6 @@
 #include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
-#include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
@@ -44,10 +43,10 @@
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/Slope.h"
 #include "PatrolArea.h"
 #include "Peep.h"
 
-#include <algorithm>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -414,7 +413,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
             if (surfaceElement->GetSlope() != PathSlopeToLandSlope[GetNextDirection()])
                 return INVALID_DIRECTION;
         }
-        else if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+        else if (surfaceElement->GetSlope() != kTileSlopeFlat)
             return INVALID_DIRECTION;
     }
 
@@ -896,12 +895,12 @@ void Staff::EntertainerUpdateNearbyPeeps() const
 
         if (guest->State == PeepState::Walking)
         {
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
         }
         else if (guest->State == PeepState::Queuing)
         {
             guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
         }
     }
 }
@@ -946,17 +945,6 @@ bool Staff::DoPathFinding()
             assert(false);
             return 0;
     }
-}
-
-uint8_t Staff::GetCostume() const
-{
-    return EnumValue(SpriteType) - EnumValue(PeepSpriteType::EntertainerPanda);
-}
-
-void Staff::SetCostume(uint8_t value)
-{
-    auto costume = static_cast<EntertainerCostume>(value);
-    SpriteType = EntertainerCostumeToSprite(costume);
 }
 
 void Staff::SetHireDate(int32_t hireDate)
@@ -1549,14 +1537,14 @@ bool Staff::UpdatePatrollingFindWatering()
                 continue;
             }
 
-            if (tile_element->AsSmallScenery()->GetAge() < SCENERY_WITHER_AGE_THRESHOLD_2)
+            if (tile_element->AsSmallScenery()->GetAge() < kSceneryWitherAgeThreshold2)
             {
                 if (chosen_position >= 4)
                 {
                     continue;
                 }
 
-                if (tile_element->AsSmallScenery()->GetAge() < SCENERY_WITHER_AGE_THRESHOLD_1)
+                if (tile_element->AsSmallScenery()->GetAge() < kSceneryWitherAgeThreshold1)
                 {
                     continue;
                 }

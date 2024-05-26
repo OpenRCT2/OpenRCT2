@@ -94,6 +94,7 @@
     <ClInclude Include="title\TitleSequencePlayer.h" />
     <ClInclude Include="Ui.h" />
     <ClInclude Include="UiContext.h" />
+    <ClInclude Include="UiStringIds.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="windows\Window.h" />
   </ItemGroup>
@@ -192,6 +193,7 @@
     <ClCompile Include="windows\Park.cpp" />
     <ClCompile Include="windows\PatrolArea.cpp" />
     <ClCompile Include="windows\Player.cpp" />
+    <ClCompile Include="windows\ProgressWindow.cpp" />
     <ClCompile Include="windows\RefurbishRidePrompt.cpp" />
     <ClCompile Include="windows\Research.cpp" />
     <ClCompile Include="windows\Ride.cpp" />

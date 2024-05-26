@@ -42,23 +42,29 @@ void ParkSetEntranceFeeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkSetEntranceFeeAction::Query() const
 {
-    bool noMoney = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) != 0;
-    bool forceFreeEntry = !ParkEntranceFeeUnlocked();
-    if (noMoney || forceFreeEntry)
+    if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
     {
+        LOG_ERROR("Can't set park entrance fee because the park has no money");
         return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, STR_NONE);
     }
-    if (_fee < 0.00_GBP || _fee > MAX_ENTRANCE_FEE)
+    else if (!Park::EntranceFeeUnlocked())
     {
+        LOG_ERROR("Park entrance fee is locked");
+        return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, STR_NONE);
+    }
+    else if (_fee < 0.00_GBP || _fee > MAX_ENTRANCE_FEE)
+    {
+        LOG_ERROR("Invalid park entrance fee %d", _fee);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
+
     return GameActions::Result();
 }
 
 GameActions::Result ParkSetEntranceFeeAction::Execute() const
 {
-    GetGameState().ParkEntranceFee = _fee;
+    GetGameState().Park.EntranceFee = _fee;
     WindowInvalidateByClass(WindowClass::ParkInformation);
     return GameActions::Result();
 }

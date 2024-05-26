@@ -20,7 +20,6 @@
 #include "../world/Banner.h"
 #include "../world/Location.hpp"
 
-#include <algorithm>
 #include <iterator>
 
 static RCTLargeSceneryText ReadLegacy3DFont(OpenRCT2::IStream& stream)

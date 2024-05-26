@@ -14,8 +14,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
+#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
@@ -547,7 +547,7 @@ static Widget *window_research_page_widgets[] = {
         const auto& gameState = GetGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-        if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || gameState.ResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || gameState.ResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
         {
             w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WindowWidgetType::Empty;
             w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WindowWidgetType::Empty;
@@ -591,7 +591,7 @@ static Widget *window_research_page_widgets[] = {
 
     void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi)
     {
-        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
             return;
 
         const auto& gameState = GetGameState();

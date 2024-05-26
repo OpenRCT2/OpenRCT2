@@ -40,8 +40,6 @@ namespace ObjectSelectionFlags
     constexpr uint8_t AllFlags = 0xFF;
 }; // namespace ObjectSelectionFlags
 
-#define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
-
 enum class ObjectSourceGame : uint8_t
 {
     Custom,
@@ -341,9 +339,6 @@ public:
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
 #    pragma GCC diagnostic pop
 #endif
-
-extern int32_t object_entry_group_counts[];
-extern int32_t object_entry_group_encoding[];
 
 int32_t ObjectCalculateChecksum(const RCTObjectEntry* entry, const void* data, size_t dataLength);
 void ObjectCreateIdentifierName(char* string_buffer, size_t size, const RCTObjectEntry* object);

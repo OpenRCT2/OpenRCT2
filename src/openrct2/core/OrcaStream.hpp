@@ -15,7 +15,6 @@
 #include "Identifier.hpp"
 #include "MemoryStream.h"
 
-#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <fstream>

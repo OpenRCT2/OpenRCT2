@@ -20,6 +20,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/Slope.h"
 #include "RideSetSettingAction.h"
 
 using namespace OpenRCT2;
@@ -72,23 +73,23 @@ GameActions::Result TrackPlaceAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Ride not found for rideIndex %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
     }
     const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
-        LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     if (!DirectionValid(_origin.direction))
     {
-        LOG_WARNING("Invalid direction for track placement, direction = %d", _origin.direction);
+        LOG_ERROR("Invalid direction for track placement, direction = %d", _origin.direction);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (_rideType != ride->type && !GetGameState().Cheats.AllowArbitraryRideTypeChanges)
@@ -99,9 +100,16 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (_rideType > RIDE_TYPE_COUNT)
     {
-        LOG_WARNING("Invalid ride type for track placement, rideType = %d", _rideType);
+        LOG_ERROR("Invalid ride type for track placement, rideType = %d", _rideType);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
+    }
+
+    if (_brakeSpeed > kMaximumBrakeSpeed)
+    {
+        LOG_WARNING("Invalid speed for track placement, speed = %d", _brakeSpeed);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_SPEED_TOO_HIGH);
     }
 
     auto res = GameActions::Result();
@@ -189,7 +197,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (!CheckMapCapacity(numElements))
     {
-        LOG_WARNING("Not enough free map elements to place track.");
+        LOG_ERROR("Not enough free map elements to place track.");
         return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
             STR_TILE_ELEMENT_LIMIT_REACHED);
@@ -253,10 +261,10 @@ GameActions::Result TrackPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
-        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                                && _trackType == TrackElemType::Flat)
-            ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
-            : CREATE_CROSSING_MODE_NONE;
+        auto crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+                             && _trackType == TrackElemType::Flat)
+            ? CreateCrossingMode::trackOverPath
+            : CreateCrossingMode::none;
         auto canBuild = MapCanConstructWithClearAt(
             { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
@@ -312,7 +320,8 @@ GameActions::Result TrackPlaceAction::Query() const
             if (surfaceElement == nullptr)
             {
                 return GameActions::Result(
-                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
 
             auto waterHeight = surfaceElement->GetWaterHeight();
@@ -332,9 +341,9 @@ GameActions::Result TrackPlaceAction::Query() const
             waterHeight -= LAND_HEIGHT_STEP;
             if (waterHeight == surfaceElement->GetBaseZ())
             {
-                uint8_t slope = surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
-                if (slope == TILE_ELEMENT_SLOPE_W_CORNER_DN || slope == TILE_ELEMENT_SLOPE_S_CORNER_DN
-                    || slope == TILE_ELEMENT_SLOPE_E_CORNER_DN || slope == TILE_ELEMENT_SLOPE_N_CORNER_DN)
+                uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
+                if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
+                    || slope == kTileSlopeNCornerDown)
                 {
                     return GameActions::Result(
                         GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -359,7 +368,9 @@ GameActions::Result TrackPlaceAction::Query() const
         auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         if (!GetGameState().Cheats.DisableSupportLimits)
@@ -413,15 +424,15 @@ GameActions::Result TrackPlaceAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        LOG_WARNING("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
     }
 
     const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
-        LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
+        LOG_ERROR("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -466,10 +477,10 @@ GameActions::Result TrackPlaceAction::Execute() const
         clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
-        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                                && _trackType == TrackElemType::Flat)
-            ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
-            : CREATE_CROSSING_MODE_NONE;
+        auto crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+                             && _trackType == TrackElemType::Flat)
+            ? CreateCrossingMode::trackOverPath
+            : CreateCrossingMode::none;
         auto canBuild = MapCanConstructWithClearAt(
             mapLocWithClearance, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
@@ -480,7 +491,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         costs += canBuild.Cost;
 
         // When building a level crossing, remove any pre-existing path furniture.
-        if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (crossingMode == CreateCrossingMode::trackOverPath && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             auto footpathElement = MapGetFootpathElement(mapLoc);
             if (footpathElement != nullptr && footpathElement->HasAddition())
@@ -530,7 +541,9 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
-            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
@@ -558,7 +571,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
         if (trackElement == nullptr)
         {
-            LOG_WARNING("Cannot create track element for ride = %d", _rideIndex.ToUnderlying());
+            LOG_ERROR("Cannot create track element for ride = %d", _rideIndex.ToUnderlying());
             return GameActions::Result(
                 GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                 STR_TILE_ELEMENT_LIMIT_REACHED);

@@ -24,6 +24,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;
 
@@ -56,7 +57,7 @@ void LandSetHeightAction::Serialise(DataSerialiser& stream)
 GameActions::Result LandSetHeightAction::Query() const
 {
     auto& gameState = GetGameState();
-    if (gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    if (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
     }
@@ -78,7 +79,7 @@ GameActions::Result LandSetHeightAction::Query() const
     money64 sceneryRemovalCost = 0;
     if (!GetGameState().Cheats.DisableClearanceChecks)
     {
-        if (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             // Check for obstructing large trees
             TileElement* tileElement = CheckTreeObstructions();
@@ -127,10 +128,10 @@ GameActions::Result LandSetHeightAction::Query() const
     if (!GetGameState().Cheats.DisableClearanceChecks)
     {
         uint8_t zCorner = _height;
-        if (_style & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
+        if (_style & kTileSlopeRaisedCornersMask)
         {
             zCorner += 2;
-            if (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
+            if (_style & kTileSlopeDiagonalFlag)
             {
                 zCorner += 2;
             }
@@ -138,7 +139,7 @@ GameActions::Result LandSetHeightAction::Query() const
 
         auto clearResult = MapCanConstructWithClearAt(
             { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
-            CREATE_CROSSING_MODE_NONE);
+            CreateCrossingMode::none);
         if (clearResult.Error != GameActions::Status::Ok)
         {
             clearResult.Error = GameActions::Status::Disallowed;
@@ -197,12 +198,12 @@ StringId LandSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    if (_height > kMaximumLandHeight - 2 && (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
+    if (_height > kMaximumLandHeight - 2 && (_style & kTileSlopeMask) != 0)
     {
         return STR_TOO_HIGH;
     }
 
-    if (_height == kMaximumLandHeight - 2 && (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
+    if (_height == kMaximumLandHeight - 2 && (_style & kTileSlopeDiagonalFlag))
     {
         return STR_TOO_HIGH;
     }
@@ -302,10 +303,10 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
         uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
         if (waterHeight != 0)
         {
-            if (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK)
+            if (_style & kTileSlopeMask)
             {
                 zCorner += 2;
-                if (_style & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
+                if (_style & kTileSlopeDiagonalFlag)
                 {
                     zCorner += 2;
                 }
@@ -325,7 +326,7 @@ money64 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     for (Direction i : ALL_DIRECTIONS)
     {
         int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
-        cornerHeight -= MapGetCornerHeight(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
+        cornerHeight -= MapGetCornerHeight(_height, _style & kTileSlopeMask, i);
         cost += 2.50_GBP * abs(cornerHeight);
     }
     return cost;

@@ -46,6 +46,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/EntryList.h"
 #include "../ride/RideData.h"
@@ -70,7 +71,6 @@
 #include "RCT1.h"
 #include "Tables.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 #include <vector>
@@ -275,8 +275,7 @@ namespace RCT1
                 {
                     // Use the ratio between the old and new park value to calcute the ratio to
                     // use for the park value history and the goal.
-                    auto& park = GetContext()->GetGameState()->GetPark();
-                    _parkValueConversionFactor = (park.CalculateParkValue() * 10) / _s4.ParkValue;
+                    _parkValueConversionFactor = (Park::CalculateParkValue() * 10) / _s4.ParkValue;
                 }
                 else
                 {
@@ -326,10 +325,9 @@ namespace RCT1
             gScenarioFileName = GetRCT1ScenarioName();
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
-            auto context = OpenRCT2::GetContext();
-            context->GetGameState()->InitAll({ mapSize, mapSize });
+            gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.EditorStep = EditorStep::ObjectSelection;
-            gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         }
 
@@ -570,7 +568,7 @@ namespace RCT1
                                 RCT12::EntryList* entries = GetEntryList(objectType);
 
                                 // Check if there are spare entries available
-                                size_t maxEntries = static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]);
+                                size_t maxEntries = static_cast<size_t>(getObjectEntryGroupCount(objectType));
                                 if (entries != nullptr && entries->GetCount() < maxEntries)
                                 {
                                     entries->GetOrAddEntry(objectName);
@@ -800,7 +798,7 @@ namespace RCT1
 
         void ImportRides()
         {
-            for (int32_t i = 0; i < Limits::MaxRidesInPark; i++)
+            for (int32_t i = 0; i < Limits::kMaxRidesInPark; i++)
             {
                 if (_s4.Rides[i].Type != RideType::Null)
                 {
@@ -875,7 +873,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->OverallView.x, src->OverallView.y }.ToCoordsXY();
             }
 
-            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 if (src->StationStarts[i].IsNull())
@@ -912,11 +910,11 @@ namespace RCT1
                 dstStation.SegmentLength = src->Length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 dstStation.Start.SetNull();
-                dstStation.TrainAtStation = RideStation::NO_TRAIN;
+                dstStation.TrainAtStation = RideStation::kNoTrain;
                 dstStation.Entrance.SetNull();
                 dstStation.Exit.SetNull();
                 dstStation.LastPeepInQueue = EntityId::GetNull();
@@ -925,11 +923,11 @@ namespace RCT1
             dst->num_stations = src->NumStations;
 
             // Vehicle links (indexes converted later)
-            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::FromUnderlying(src->Vehicles[i]);
             }
-            for (int32_t i = Limits::MaxTrainsPerRide; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = Limits::kMaxTrainsPerRide; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::GetNull();
             }
@@ -1141,7 +1139,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::MaxTrainsPerRide; i++)
+                for (int i = 0; i < Limits::kMaxTrainsPerRide; i++)
                 {
                     // RCT1 had no third colour
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->VehicleType);
@@ -1425,7 +1423,7 @@ namespace RCT1
 
         void ImportFinance(GameState_t& gameState)
         {
-            gameState.ParkEntranceFee = _s4.ParkEntranceFee;
+            gameState.Park.EntranceFee = _s4.ParkEntranceFee;
             gameState.LandPrice = ToMoney64(_s4.LandPrice);
             gameState.ConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
@@ -1437,13 +1435,13 @@ namespace RCT1
             gameState.InitialCash = ToMoney64(_s4.Cash);
 
             gameState.CompanyValue = ToMoney64(_s4.CompanyValue);
-            gameState.ParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
+            gameState.Park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.CurrentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
-                gameState.ParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
+                gameState.Park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
@@ -1479,7 +1477,7 @@ namespace RCT1
                     {
                         campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
-                    gMarketingCampaigns.push_back(campaign);
+                    gameState.MarketingCampaigns.push_back(campaign);
                 }
             }
         }
@@ -1528,9 +1526,9 @@ namespace RCT1
 
             std::vector<TileElement> tileElements;
             const auto maxSize = _s4.MapSize == 0 ? Limits::MaxMapSize : _s4.MapSize;
-            for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
+            for (TileCoordsXY coords = { 0, 0 }; coords.y < kMaximumMapSizeTechnical; coords.y++)
             {
-                for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
+                for (coords.x = 0; coords.x < kMaximumMapSizeTechnical; coords.x++)
                 {
                     auto tileAdded = false;
                     if (coords.x < maxSize && coords.y < maxSize)
@@ -1670,6 +1668,7 @@ namespace RCT1
                     auto src2 = src->AsTrack();
                     const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
+                    auto rct1RideType = _s4.Rides[src2->GetRideIndex()].Type;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
                     dst2->SetRideType(rideType);
@@ -1682,7 +1681,7 @@ namespace RCT1
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
-                    if (rideType == RIDE_TYPE_GHOST_TRAIN)
+                    if (rct1RideType == RideType::GhostTrain)
                     {
                         dst2->SetDoorAState(src2->GetDoorAState());
                         dst2->SetDoorBState(src2->GetDoorBState());
@@ -1706,8 +1705,7 @@ namespace RCT1
                     }
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                    const auto& rtd = GetRideTypeDescriptor(rideType);
-                    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                    if (rct1RideType == RideType::HedgeMaze)
                     {
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
@@ -2136,7 +2134,7 @@ namespace RCT1
                 }
             }
 
-            auto& park = GetContext()->GetGameState()->GetPark();
+            auto& park = GetGameState().Park;
             park.Name = std::move(parkName);
         }
 
@@ -2145,14 +2143,13 @@ namespace RCT1
             // Date and srand
             gameState.CurrentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
-            GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
+            gameState.Date = Date{ _s4.Month, _s4.Day };
 
             // Park rating
-            gameState.ParkRating = _s4.ParkRating;
+            gameState.Park.Rating = _s4.ParkRating;
 
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            park.ResetHistories();
-            std::copy(std::begin(_s4.ParkRatingHistory), std::end(_s4.ParkRatingHistory), gameState.ParkRatingHistory);
+            Park::ResetHistories(gameState);
+            std::copy(std::begin(_s4.ParkRatingHistory), std::end(_s4.ParkRatingHistory), gameState.Park.RatingHistory);
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
@@ -2225,17 +2222,17 @@ namespace RCT1
             gameState.StaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            gameState.ParkFlags = _s4.ParkFlags;
-            gameState.ParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            gameState.ParkFlags |= PARK_FLAGS_RCT1_INTEREST;
+            gameState.Park.Flags = _s4.ParkFlags;
+            gameState.Park.Flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gameState.Park.Flags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
-                gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            gameState.ParkSize = _s4.ParkSize;
+            gameState.Park.Size = _s4.ParkSize;
             gameState.TotalRideValueForMoney = _s4.TotalRideValueForMoney;
             gameState.SamePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2351,7 +2348,7 @@ namespace RCT1
             gameState.ScenarioDetails = std::move(details);
             if (_isScenario && !parkName.empty())
             {
-                auto& park = GetContext()->GetGameState()->GetPark();
+                auto& park = GetGameState().Park;
                 park.Name = std::move(parkName);
             }
         }
@@ -2447,10 +2444,10 @@ namespace RCT1
         void FixEntrancePositions()
         {
             auto& gameState = GetGameState();
-            gameState.ParkEntrances.clear();
+            gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.ParkEntrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2462,7 +2459,7 @@ namespace RCT1
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
-                gameState.ParkEntrances.push_back(entrance);
+                gameState.Park.Entrances.push_back(entrance);
             }
         }
 
@@ -2512,7 +2509,7 @@ namespace RCT1
         {
             const auto originalString = _s4.StringTable[stringId % 1024];
             auto originalStringView = std::string_view(
-                originalString, RCT12::GetRCTStringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT12::GetRCTStringBufferLen(originalString, kUserStringMaxLength));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();

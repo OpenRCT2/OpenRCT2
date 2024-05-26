@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -59,7 +58,7 @@ static Widget window_debug_paint_widgets[] = {
             InitScrollWidgets();
             WindowPushOthersBelow(*this);
 
-            colours[0] = TRANSLUCENT(COLOUR_BLACK);
+            colours[0] = ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::translucent, true);
             colours[1] = COLOUR_GREY;
 
             ResizeLanguage = LANGUAGE_UNDEFINED;

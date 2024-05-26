@@ -16,6 +16,8 @@
 
 #include <chrono>
 
+using namespace OpenRCT2;
+
 #ifdef OPENRCT2_BUILD_INFO_HEADER
 #    include OPENRCT2_BUILD_INFO_HEADER
 #endif
@@ -61,7 +63,7 @@ NewVersionInfo GetLatestVersion()
     NewVersionInfo verinfo{ tag, "", "", "" };
 #ifndef DISABLE_HTTP
     auto now = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    auto then = gConfigGeneral.LastVersionCheckTime;
+    auto then = Config::Get().general.LastVersionCheckTime;
     if (then < now - 24 * 60 * 60)
     {
         Http::Request request;
@@ -88,8 +90,8 @@ NewVersionInfo GetLatestVersion()
         verinfo.changelog = Json::GetString(root["body"]);
         verinfo.url = Json::GetString(root["html_url"]);
 
-        gConfigGeneral.LastVersionCheckTime = now;
-        ConfigSaveDefault();
+        Config::Get().general.LastVersionCheckTime = now;
+        Config::Save();
     }
 #endif
     return verinfo;

@@ -18,7 +18,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
@@ -211,7 +210,7 @@ static Widget _rideListWidgets[] = {
             widgets[WIDX_SORT].left = width - 60;
             widgets[WIDX_SORT].right = width - 60 + 54;
 
-            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, 46 }, { width - 216, DROPDOWN_HEIGHT });
+            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, 46 }, { width - 216, kDropdownHeight });
 
             // Refreshing the list can be a very intensive operation
             // owing to its use of ride_has_any_track_elements().
@@ -301,7 +300,7 @@ static Widget _rideListWidgets[] = {
                 int32_t selectedIndex = -1;
                 for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
                 {
-                    if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                    if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
                     {
                         if (ride_info_type_money_mapping[type])
                         {
@@ -386,7 +385,7 @@ static Widget _rideListWidgets[] = {
          */
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            const auto newHeight = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
+            const auto newHeight = static_cast<int32_t>(_rideList.size() * kScrollableRowHeight);
             if (selected_list_item != -1)
             {
                 selected_list_item = -1;
@@ -411,7 +410,7 @@ static Widget _rideListWidgets[] = {
          */
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            const auto index = screenCoords.y / kScrollableRowHeight;
             if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
                 return;
 
@@ -437,7 +436,7 @@ static Widget _rideListWidgets[] = {
          */
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            const auto index = screenCoords.y / kScrollableRowHeight;
             if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
                 return;
 
@@ -543,17 +542,23 @@ static Widget _rideListWidgets[] = {
         {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
+                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } },
+                ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
             {
-                StringId format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
+                StringId format = STR_BLACK_STRING;
+                if (_quickDemolishMode)
+                    format = STR_RED_STRINGID;
+
                 if (i == static_cast<size_t>(selected_list_item))
                 {
                     // Background highlight
-                    GfxFilterRect(dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
-                    format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+                    GfxFilterRect(dpi, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    format = STR_WINDOW_COLOUR_2_STRINGID;
+                    if (_quickDemolishMode)
+                        format = STR_LIGHTPINK_STRINGID;
                 }
 
                 // Get ride
@@ -742,7 +747,7 @@ static Widget _rideListWidgets[] = {
                     ft.Add<StringId>(formatSecondary);
                 }
                 DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
-                y += SCROLLABLE_ROW_HEIGHT;
+                y += kScrollableRowHeight;
             }
         }
 

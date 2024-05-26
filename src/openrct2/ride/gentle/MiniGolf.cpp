@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../config/Config.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
@@ -15,8 +14,12 @@
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
@@ -24,6 +27,8 @@
 #include "../VehiclePaint.h"
 
 #include <iterator>
+
+static constexpr MetalSupportType kSupportType = MetalSupportType::Boxed;
 
 enum
 {
@@ -459,7 +464,7 @@ static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackE
         return true;
     }
 
-    if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+    if (surfaceElement->GetSlope() != kTileSlopeFlat)
     {
         return true;
     }
@@ -487,7 +492,7 @@ static void PaintMiniGolfTrackFlat(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -514,7 +519,7 @@ static void PaintMiniGolfTrackFlat(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0087F11C */
@@ -527,7 +532,7 @@ static void PaintMiniGolfTrack25DegUp(
     imageId = session.TrackColours.WithIndex(MiniGolfTrackSprites25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 1 });
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -556,7 +561,7 @@ static void PaintMiniGolfTrack25DegUp(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x0087F12C */
@@ -569,7 +574,7 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
     imageId = session.TrackColours.WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -598,7 +603,7 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x0087F13C */
@@ -611,7 +616,7 @@ static void PaintMiniGolfTrack25DegUpToFlat(
     imageId = session.TrackColours.WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -640,7 +645,7 @@ static void PaintMiniGolfTrack25DegUpToFlat(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x0087F14C */
@@ -729,7 +734,7 @@ static void PaintMiniGolfStation(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0087F1AC */
@@ -742,7 +747,7 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 1, height, 0, direction, session.TrackColours, MiniGolfTrackSpritesQuarterTurn1Tile);
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -814,7 +819,7 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0087F1BC */
@@ -835,7 +840,7 @@ static void PaintMiniGolfHoleAb(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
@@ -908,7 +913,7 @@ static void PaintMiniGolfHoleC(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
@@ -980,7 +985,7 @@ static void PaintMiniGolfHoleD(
         session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     switch ((direction << 4) | trackSequence)
     {
@@ -1074,7 +1079,7 @@ static void PaintMiniGolfHoleE(
         session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     switch ((direction << 4) | trackSequence)
     {

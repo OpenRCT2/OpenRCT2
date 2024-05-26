@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -192,7 +191,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw cost amount
             if (gClearSceneryCost != kMoney64Undefined && gClearSceneryCost != 0
-                && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gClearSceneryCost);

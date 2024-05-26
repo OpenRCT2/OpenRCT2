@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <cctype>
 #include <cwctype>
 #include <iomanip>

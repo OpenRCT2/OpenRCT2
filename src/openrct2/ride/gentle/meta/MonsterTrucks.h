@@ -17,13 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor MonsterTrucksRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,
-    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL, TRACK_RAPIDS},
-    .ExtraTrackPieces = {TRACK_SPINNING_TUNNEL},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionCarRide),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionCarRide,
+        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL, TRACK_RAPIDS},
+        .ExtraTrackPieces = {TRACK_SPINNING_TUNNEL},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN |
                      RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
@@ -32,8 +33,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = (1uLL << static_cast<uint8_t>(RideMode::ContinuousCircuit)),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
-    .Naming = { STR_RIDE_NAME_MONSTER_TRUCKS, STR_RIDE_DESCRIPTION_MONSTER_TRUCKS_GROUP },
+    .Naming = { STR_RIDE_NAME_MONSTER_TRUCKS, STR_RIDE_DESCRIPTION_MONSTER_TRUCKS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MONSTER_TRUCKS),
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),

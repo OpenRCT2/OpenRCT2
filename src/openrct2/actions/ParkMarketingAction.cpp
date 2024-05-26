@@ -53,9 +53,10 @@ GameActions::Result ParkMarketingAction::Query() const
 {
     if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
     }
-    if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+    if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,

@@ -11,7 +11,7 @@
 
 #include "../Context.h"
 #include "../common.h"
-#include "../config/Config.h"
+#include "../config/ConfigTypes.h"
 #include "../interface/Cursors.h"
 
 #include <memory>

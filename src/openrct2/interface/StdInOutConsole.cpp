@@ -7,11 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "StdInOutConsole.h"
+
 #include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../config/ConfigTypes.h"
 #include "../platform/Platform.h"
 #include "../scripting/ScriptEngine.h"
-#include "InteractiveConsole.h"
 
 #include <linenoise.hpp>
 

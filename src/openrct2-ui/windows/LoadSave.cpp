@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <ctime>
 #include <iterator>
 #include <memory>
@@ -18,7 +17,9 @@
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
@@ -27,11 +28,12 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/network.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/title/TitleScreen.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -118,7 +120,7 @@ static Widget window_loadsave_widgets[] =
         if (a.type != b.type)
             return a.type - b.type < 0;
 
-        switch (gConfigGeneral.LoadSaveSort)
+        switch (Config::Get().general.LoadSaveSort)
         {
             case Sort::NameAscending:
                 return StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
@@ -135,7 +137,7 @@ static Widget window_loadsave_widgets[] =
     static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
     {
         config_str = Path::GetDirectory(path);
-        ConfigSaveDefault();
+        Config::Save();
     }
 
     static bool IsValidPath(const char* path)
@@ -153,16 +155,16 @@ static Widget window_loadsave_widgets[] =
         switch (type & 0x0E)
         {
             case LOADSAVETYPE_GAME:
-                return gConfigGeneral.LastSaveGameDirectory;
+                return Config::Get().general.LastSaveGameDirectory;
 
             case LOADSAVETYPE_LANDSCAPE:
-                return gConfigGeneral.LastSaveLandscapeDirectory;
+                return Config::Get().general.LastSaveLandscapeDirectory;
 
             case LOADSAVETYPE_SCENARIO:
-                return gConfigGeneral.LastSaveScenarioDirectory;
+                return Config::Get().general.LastSaveScenarioDirectory;
 
             case LOADSAVETYPE_TRACK:
-                return gConfigGeneral.LastSaveTrackDirectory;
+                return Config::Get().general.LastSaveTrackDirectory;
 
             default:
                 return u8string();
@@ -271,7 +273,7 @@ static Widget window_loadsave_widgets[] =
         switch (_type & 0x0F)
         {
             case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
-                SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
+                SetAndSaveConfigPath(Config::Get().general.LastSaveGameDirectory, pathBuffer);
                 if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
                 {
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
@@ -287,8 +289,8 @@ static Widget window_loadsave_widgets[] =
                 break;
 
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
-                SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-                if (ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
+                SetAndSaveConfigPath(Config::Get().general.LastSaveGameDirectory, pathBuffer);
+                if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 1 : 0))
                 {
                     gScenarioSavePath = pathBuffer;
                     gCurrentLoadedPath = pathBuffer;
@@ -308,7 +310,7 @@ static Widget window_loadsave_widgets[] =
                 break;
 
             case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE):
-                SetAndSaveConfigPath(gConfigGeneral.LastSaveLandscapeDirectory, pathBuffer);
+                SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
                 if (Editor::LoadLandscape(pathBuffer))
                 {
                     gCurrentLoadedPath = pathBuffer;
@@ -324,9 +326,9 @@ static Widget window_loadsave_widgets[] =
                 break;
 
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
-                SetAndSaveConfigPath(gConfigGeneral.LastSaveLandscapeDirectory, pathBuffer);
+                SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
                 gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-                if (ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
+                if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                 {
                     gCurrentLoadedPath = pathBuffer;
                     WindowCloseByClass(WindowClass::Loadsave);
@@ -342,19 +344,21 @@ static Widget window_loadsave_widgets[] =
 
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
             {
-                SetAndSaveConfigPath(gConfigGeneral.LastSaveScenarioDirectory, pathBuffer);
-                int32_t parkFlagsBackup = gameState.ParkFlags;
-                gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
+                int32_t parkFlagsBackup = gameState.Park.Flags;
+                gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                 gameState.EditorStep = EditorStep::Invalid;
                 gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-                int32_t success = ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
-                gameState.ParkFlags = parkFlagsBackup;
+                int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
+                gameState.Park.Flags = parkFlagsBackup;
 
                 if (success)
                 {
                     WindowCloseByClass(WindowClass::Loadsave);
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                    TitleLoad();
+
+                    auto* context = OpenRCT2::GetContext();
+                    context->SetActiveScene(context->GetTitleScene());
                 }
                 else
                 {
@@ -367,7 +371,7 @@ static Widget window_loadsave_widgets[] =
 
             case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK):
             {
-                SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
+                SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
                 auto intent = Intent(WindowClass::InstallTrack);
                 intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
                 ContextOpenIntent(&intent);
@@ -378,7 +382,7 @@ static Widget window_loadsave_widgets[] =
 
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
             {
-                SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
+                SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
 
                 const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
                 String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
@@ -458,8 +462,7 @@ static Widget window_loadsave_widgets[] =
             }
             else
             {
-                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                auto buffer = park.Name;
+                auto buffer = OpenRCT2::GetGameState().Park.Name;
                 if (buffer.empty())
                 {
                     buffer = LanguageGetString(STR_UNNAMED_PARK);
@@ -676,6 +679,13 @@ static Widget window_loadsave_widgets[] =
             const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
             const auto path = GetDir(type);
 
+            // Pause the game if not on title scene, nor in network play.
+            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            {
+                gGamePaused |= GAME_PAUSED_MODAL;
+                Audio::StopAll();
+            }
+
             const char* pattern = GetFilterPatternByType(type, isSave);
             PopulateList(isSave, path, pattern);
             no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -693,6 +703,13 @@ static Widget window_loadsave_widgets[] =
         {
             _listItems.clear();
             WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+
+            // Unpause the game if not on title scene, nor in network play.
+            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            {
+                gGamePaused &= ~GAME_PAUSED_MODAL;
+                Audio::Resume();
+            }
         }
 
         void OnResize() override
@@ -748,9 +765,9 @@ static Widget window_loadsave_widgets[] =
 
             // Name button text
             StringId id = STR_NONE;
-            if (gConfigGeneral.LoadSaveSort == Sort::NameAscending)
+            if (Config::Get().general.LoadSaveSort == Sort::NameAscending)
                 id = STR_UP;
-            else if (gConfigGeneral.LoadSaveSort == Sort::NameDescending)
+            else if (Config::Get().general.LoadSaveSort == Sort::NameDescending)
                 id = STR_DOWN;
 
             // Draw name button indicator.
@@ -762,9 +779,9 @@ static Widget window_loadsave_widgets[] =
                 { COLOUR_GREY });
 
             // Date button text
-            if (gConfigGeneral.LoadSaveSort == Sort::DateAscending)
+            if (Config::Get().general.LoadSaveSort == Sort::DateAscending)
                 id = STR_UP;
-            else if (gConfigGeneral.LoadSaveSort == Sort::DateDescending)
+            else if (Config::Get().general.LoadSaveSort == Sort::DateDescending)
                 id = STR_DOWN;
             else
                 id = STR_NONE;
@@ -820,29 +837,29 @@ static Widget window_loadsave_widgets[] =
                 break;
 
                 case WIDX_SORT_NAME:
-                    if (gConfigGeneral.LoadSaveSort == Sort::NameAscending)
+                    if (Config::Get().general.LoadSaveSort == Sort::NameAscending)
                     {
-                        gConfigGeneral.LoadSaveSort = Sort::NameDescending;
+                        Config::Get().general.LoadSaveSort = Sort::NameDescending;
                     }
                     else
                     {
-                        gConfigGeneral.LoadSaveSort = Sort::NameAscending;
+                        Config::Get().general.LoadSaveSort = Sort::NameAscending;
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     SortList();
                     Invalidate();
                     break;
 
                 case WIDX_SORT_DATE:
-                    if (gConfigGeneral.LoadSaveSort == Sort::DateDescending)
+                    if (Config::Get().general.LoadSaveSort == Sort::DateDescending)
                     {
-                        gConfigGeneral.LoadSaveSort = Sort::DateAscending;
+                        Config::Get().general.LoadSaveSort = Sort::DateAscending;
                     }
                     else
                     {
-                        gConfigGeneral.LoadSaveSort = Sort::DateDescending;
+                        Config::Get().general.LoadSaveSort = Sort::DateDescending;
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     SortList();
                     Invalidate();
                     break;
@@ -904,14 +921,14 @@ static Widget window_loadsave_widgets[] =
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return { 0, no_list_items * SCROLLABLE_ROW_HEIGHT };
+            return { 0, no_list_items * kScrollableRowHeight };
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t selectedItem;
 
-            selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem >= no_list_items)
                 return;
 
@@ -924,7 +941,7 @@ static Widget window_loadsave_widgets[] =
         {
             int32_t selectedItem;
 
-            selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem >= no_list_items)
                 return;
 
@@ -959,17 +976,18 @@ static Widget window_loadsave_widgets[] =
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
             const int32_t dateAnchor = widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
 
             for (int32_t i = 0; i < no_list_items; i++)
             {
-                int32_t y = i * SCROLLABLE_ROW_HEIGHT;
+                int32_t y = i * kScrollableRowHeight;
                 if (y > dpi.y + dpi.height)
                     break;
 
-                if (y + SCROLLABLE_ROW_HEIGHT < dpi.y)
+                if (y + kScrollableRowHeight < dpi.y)
                     continue;
 
                 StringId stringId = STR_BLACK_STRING;
@@ -978,7 +996,7 @@ static Widget window_loadsave_widgets[] =
                 if (i == selected_list_item)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::PaletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)
@@ -1027,7 +1045,7 @@ static Widget window_loadsave_widgets[] =
 
         // Bypass the lot?
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-        if (gConfigGeneral.UseNativeBrowseDialog && hasFilePicker)
+        if (Config::Get().general.UseNativeBrowseDialog && hasFilePicker)
         {
             const u8string path = OpenSystemFileBrowser(isSave);
             if (!path.empty())
@@ -1116,7 +1134,6 @@ static Widget window_loadsave_widgets[] =
         void OnOpen() override
         {
             widgets = window_overwrite_prompt_widgets;
-            colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override

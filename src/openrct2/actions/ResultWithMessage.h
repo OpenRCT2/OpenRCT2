@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../localisation/StringIds.h"
 
 struct ResultWithMessage
 {

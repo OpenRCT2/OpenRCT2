@@ -11,7 +11,6 @@
 
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
 #include "../../object/SmallSceneryEntry.h"
@@ -23,6 +22,7 @@
 #include "../../world/TileInspector.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
 using namespace OpenRCT2;
 
@@ -73,7 +73,7 @@ static void SetSupportHeights(
 {
     height += sceneryEntry.height;
 
-    PaintUtilSetGeneralSupportHeight(session, Ceil2(height, 8), 0x20);
+    PaintUtilSetGeneralSupportHeight(session, Ceil2(height, 8));
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
@@ -180,11 +180,11 @@ static void PaintSmallSceneryBody(
     ImageIndex baseImageIndex = sceneryEntry->image + direction;
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
     {
-        if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_1)
+        if (sceneryElement.GetAge() >= kSceneryWitherAgeThreshold1)
         {
             baseImageIndex += 4;
         }
-        if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_2)
+        if (sceneryElement.GetAge() >= kSceneryWitherAgeThreshold2)
         {
             baseImageIndex += 4;
         }

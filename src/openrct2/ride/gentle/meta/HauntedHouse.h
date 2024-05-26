@@ -17,13 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor HauntedHouseRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::FlatTrack3x3,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionHauntedHouse),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionHauntedHouse,
+        .EnabledTrackPieces = {},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_ALLOW_MUSIC |
@@ -31,7 +32,6 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::HauntedHouse),
     .DefaultMode = RideMode::HauntedHouse,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_HAUNTED_HOUSE, STR_RIDE_DESCRIPTION_HAUNTED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_HAUNTED_HOUSE),

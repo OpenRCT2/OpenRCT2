@@ -12,6 +12,7 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
 * Michael Bernardi (mrmbernardi) - Programming
 * Michael Steenbeek (Gymnasiast) - Lead Localisation - Programming
+* Aaron van Geffen (AaronVanGeffen) - Programming
 
 ## Support team
 * Kenton Boadway (Krutonium) - Lead OpenScenarios
@@ -21,7 +22,6 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Marijn van der Werf (marijnvdwerf)
 * (zsilencer)
 * Richard Jenkins (rwjuk)
-* Aaron van Geffen (AaronVanGeffen)
 * Rik Smeets (rik-smeets)
 
 ## Long term contributors
@@ -121,6 +121,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
 
 ## Bug fixes & Refactors
+* Claudio Tiecher (janclod)
 * (KirilAngelov)
 * (halfbro)
 * (Myrtle)
@@ -236,6 +237,9 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Harry Hopkinson (Harry-Hopkinson)
 * Jan Kelemen (jan-kelemen)
 * Cory Ye (CoryfY)
+* Karsten Van Fossan (karstenvanf)
+* Kaavya Ramachandhran (ayvaak)
+* Mike Harvey (harvito)
 
 ## Toolchain
 * (Balletie) - macOS

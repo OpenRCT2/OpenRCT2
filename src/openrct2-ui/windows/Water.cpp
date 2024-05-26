@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -156,7 +155,7 @@ static Widget _waterWidgets[] = {
                     dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
 
-            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Draw raise cost amount
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };

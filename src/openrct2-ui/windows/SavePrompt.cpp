@@ -209,7 +209,7 @@ static constexpr StringId window_save_prompt_labels[][2] = {
             return nullptr;
         }
 
-        if (!gConfigGeneral.ConfirmationPrompt)
+        if (!Config::Get().general.ConfirmationPrompt)
         {
             /* game_load_or_quit_no_save_prompt() will exec requested task and close this window
              * immediately again.

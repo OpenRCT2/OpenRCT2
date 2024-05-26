@@ -18,6 +18,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../localisation/StringIds.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Track.h"
@@ -58,7 +59,7 @@ static void PaintWallDoor(
 
     auto newImageId0 = imageId;
     auto newImageId1 = imageId.WithIndexOffset(1);
-    if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+    if (wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
         PaintAddImageAsParent(session, newImageId0, offset, bbR1);
         PaintAddImageAsParent(session, newImageId1, offset, bbR2);
@@ -89,7 +90,7 @@ static void PaintWallDoor(
         case 0:
         {
             BoundBoxXYZ bbR1 = { { 1, 1, height + 1 }, { 1, 3, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 9 }, { 1, 28, 3 } };
+            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 4 }, { 1, 28, 3 } };
 
             BoundBoxXYZ bbL = { { 1, 1, height + 1 }, { 1, 28, bbHeight } };
 
@@ -101,7 +102,7 @@ static void PaintWallDoor(
         case 1:
         {
             BoundBoxXYZ bbR1 = { { 1, 30, height + 1 }, { 3, 3, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 1, 30, height + bbHeight - 8 }, { 29, 3, 2 } };
+            BoundBoxXYZ bbR2 = { { 1, 30, height + bbHeight - 3 }, { 29, 3, 2 } };
             BoundBoxXYZ bbL = { { 2, 30, height + 1 }, { 29, 1, bbHeight } };
 
             CoordsXYZ offset = { 1, 31, height };
@@ -112,7 +113,7 @@ static void PaintWallDoor(
         case 2:
         {
             BoundBoxXYZ bbR1 = { { 30, 1, height + 1 }, { 3, 3, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 30, 1, height + bbHeight - 8 }, { 3, 29, 2 } };
+            BoundBoxXYZ bbR2 = { { 30, 1, height + bbHeight - 3 }, { 3, 29, 2 } };
             BoundBoxXYZ bbL = { { 30, 2, height + 1 }, { 1, 29, bbHeight } };
 
             CoordsXYZ offset = { 31, 0, height };
@@ -123,7 +124,7 @@ static void PaintWallDoor(
         case 3:
         {
             BoundBoxXYZ bbR1 = { { 1, 1, height + 1 }, { 3, 1, bbHeight - 5 } };
-            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 9 }, { 28, 1, 3 } };
+            BoundBoxXYZ bbR2 = { { 1, 1, height + bbHeight - 4 }, { 28, 1, 3 } };
             BoundBoxXYZ bbL = { { 1, 1, height + 1 }, { 28, 1, bbHeight } };
 
             CoordsXYZ offset = { 2, 1, height };
@@ -164,7 +165,7 @@ static void PaintWallScrollingText(
         return;
 
     scrollingMode = wallEntry.scrolling_mode + ((direction + 1) & 3);
-    if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
+    if (scrollingMode >= kMaxScrollingTextModes)
         return;
 
     auto banner = wallElement.GetBanner();
@@ -177,7 +178,7 @@ static void PaintWallScrollingText(
     auto ft = Formatter();
     banner->FormatTextTo(ft);
     char signString[256];
-    if (gConfigGeneral.UpperCaseBanners)
+    if (Config::Get().general.UpperCaseBanners)
     {
         FormatStringToUpper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
@@ -332,7 +333,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }
 
-    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.ClearanceHeight, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.ClearanceHeight);
 
     auto isGhost = false;
     if (gTrackDesignSaveMode)

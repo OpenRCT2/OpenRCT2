@@ -17,17 +17,21 @@
 // clang-format off
 constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL_STEEP, TRACK_REVERSE_FREEFALL, TRACK_ON_RIDE_PHOTO},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionReverseFreefallRC),
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionReverseFreefallRC,
+        .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL_STEEP, TRACK_REVERSE_FREEFALL, TRACK_ON_RIDE_PHOTO},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
+    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS | RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT,
     .RideModes = EnumsToFlags(RideMode::LimPoweredLaunch),
     .DefaultMode = RideMode::LimPoweredLaunch,
-    .OperatingSettings = { 7, 30, 30, 40, 40, 0 },
+    .OperatingSettings = { 7, 30 },
+    .TrackSpeedSettings = { 60, 60 },
+    .BoosterSettings = { 40, 40 },
+    .LegacyBoosterSettings = { 40, 40 },
     .Naming = { STR_RIDE_NAME_REVERSE_FREEFALL_COASTER, STR_RIDE_DESCRIPTION_REVERSE_FREEFALL_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_REVERSE_FREEFALL_COASTER),

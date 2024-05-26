@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Widget.h>
@@ -80,6 +79,7 @@ namespace OpenRCT2::Ui::Windows
         RIDE_TYPE_MINE_TRAIN_COASTER,
         RIDE_TYPE_LOOPING_ROLLER_COASTER,
         RIDE_TYPE_STAND_UP_ROLLER_COASTER,
+        RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER,
         RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
         RIDE_TYPE_HYPERCOASTER,
         RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER,
@@ -324,7 +324,7 @@ static Widget window_new_ride_widgets[] = {
 
             WidgetInvalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
@@ -364,12 +364,12 @@ static Widget window_new_ride_widgets[] = {
                     ContextOpenWindowView(WV_FINANCES_RESEARCH);
                     break;
                 case WIDX_GROUP_BY_TRACK_TYPE:
-                    gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
-                    ConfigSaveDefault();
+                    Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;
+                    Config::Save();
                     SetPage(_currentTab);
                     break;
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter.data(), TEXT_INPUT_SIZE);
+                    WindowStartTextbox(*this, widgetIndex, _filter, kTextInputSize);
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _filter.clear();
@@ -391,7 +391,7 @@ static Widget window_new_ride_widgets[] = {
         {
             SetPressedTab();
 
-            if (!gConfigInterface.ListRideVehiclesSeparately)
+            if (!Config::Get().interface.ListRideVehiclesSeparately)
                 pressed_widgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
             else
                 pressed_widgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
@@ -479,7 +479,7 @@ static Widget window_new_ride_widgets[] = {
                 return;
             }
 
-            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
@@ -684,7 +684,7 @@ static Widget window_new_ride_widgets[] = {
                 const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
-                if (!gConfigInterface.ListRideVehiclesSeparately
+                if (!Config::Get().interface.ListRideVehiclesSeparately
                     && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                     && highestVehiclePriority > rideEntry->BuildMenuPriority)
                 {
@@ -699,7 +699,7 @@ static Widget window_new_ride_widgets[] = {
                 highestVehiclePriority = rideEntry->BuildMenuPriority;
 
                 // Determines how and where to draw a button for this ride type/vehicle.
-                if (gConfigInterface.ListRideVehiclesSeparately
+                if (Config::Get().interface.ListRideVehiclesSeparately
                     || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                 {
                     // Separate, draw apart
@@ -845,7 +845,7 @@ static Widget window_new_ride_widgets[] = {
                 widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-                if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+                if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
                     widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
                 newWidth = 300;
@@ -931,7 +931,7 @@ static Widget window_new_ride_widgets[] = {
 
             if (!_vehicleAvailability.empty())
             {
-                if (gConfigInterface.ListRideVehiclesSeparately)
+                if (Config::Get().interface.ListRideVehiclesSeparately)
                 {
                     ft = Formatter();
                     ft.Add<StringId>(rideEntry->naming.Name);
@@ -953,7 +953,7 @@ static Widget window_new_ride_widgets[] = {
             DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
             // Price
-            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Get price of ride
                 int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
@@ -986,7 +986,7 @@ static Widget window_new_ride_widgets[] = {
                 spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex, colours[1]),
+                    dpi, ImageId(spriteIndex, colours[1].colour),
                     windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }

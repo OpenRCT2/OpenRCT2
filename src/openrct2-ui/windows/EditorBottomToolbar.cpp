@@ -105,7 +105,7 @@ static Widget _editorBottomToolbarWidgets[] = {
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
                 {
-                    if (GetNumFreeEntities() != MAX_ENTITIES || GetGameState().ParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
+                    if (GetNumFreeEntities() != MAX_ENTITIES || GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)
                     {
                         HidePreviousStepButton();
                     }
@@ -141,7 +141,7 @@ static Widget _editorBottomToolbarWidgets[] = {
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
                 if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    || (GetNumFreeEntities() == MAX_ENTITIES && !(GetGameState().ParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
+                    || (GetNumFreeEntities() == MAX_ENTITIES && !(GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
                 {
                     ((this)->*(_previousButtonMouseUp[EnumValue(gameState.EditorStep)]))();
                 }
@@ -186,30 +186,9 @@ static Widget _editorBottomToolbarWidgets[] = {
             GfxInvalidateScreen();
         }
 
-        bool CheckObjectSelection() const
-        {
-            WindowBase* w;
-
-            auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
-            if (missingObjectType == ObjectType::None)
-            {
-                WindowCloseByClass(WindowClass::EditorObjectSelection);
-                return true;
-            }
-
-            ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-            w = WindowFindByClass(WindowClass::EditorObjectSelection);
-            if (w != nullptr)
-            {
-                // Click tab with missing object
-                w->OnMouseUp(WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
-            }
-            return false;
-        }
-
         void JumpForwardFromObjectSelection() const
         {
-            if (!CheckObjectSelection())
+            if (!EditorObjectSelectionWindowCheck())
                 return;
 
             FinishObjectSelection();
@@ -306,7 +285,7 @@ static Widget _editorBottomToolbarWidgets[] = {
                 dpi, ImageId(SPR_PREVIOUS),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
-            colour_t textColour = NOT_TRANSLUCENT(colours[1]);
+            colour_t textColour = colours[1].colour;
             if (gHoverWidget.window_classification == WindowClass::BottomToolbar
                 && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
             {
@@ -344,7 +323,7 @@ static Widget _editorBottomToolbarWidgets[] = {
                 dpi, ImageId(SPR_NEXT),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
-            colour_t textColour = NOT_TRANSLUCENT(colours[1]);
+            colour_t textColour = colours[1].colour;
 
             if (gHoverWidget.window_classification == WindowClass::BottomToolbar
                 && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
@@ -367,9 +346,10 @@ static Widget _editorBottomToolbarWidgets[] = {
         {
             int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
             int16_t stateY = height - 0x0C + windowPos.y;
+            auto colour = colours[2].withFlag(ColourFlag::translucent, false).withFlag(ColourFlag::withOutline, true);
             DrawTextBasic(
                 dpi, { stateX, stateY }, _editorStepNames[EnumValue(GetGameState().EditorStep)], {},
-                { static_cast<colour_t>(NOT_TRANSLUCENT(colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
+                { colour, TextAlignment::CENTRE });
         }
 
         static constexpr FuncPtr _previousButtonMouseUp[] = {

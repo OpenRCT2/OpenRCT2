@@ -14,6 +14,9 @@
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -95,12 +98,8 @@ static void BolligerMabillardTrackFlat(
         }
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -137,7 +136,7 @@ static void BolligerMabillardTrackStation(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -213,12 +212,8 @@ static void BolligerMabillardTrack25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -294,12 +289,8 @@ static void BolligerMabillardTrack60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 template<MetalSupportType supportType>
@@ -375,12 +366,8 @@ static void BolligerMabillardTrackFlatTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -468,12 +455,8 @@ static void BolligerMabillardTrack25DegUpTo60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 template<MetalSupportType supportType>
@@ -561,12 +544,8 @@ static void BolligerMabillardTrack60DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 template<MetalSupportType supportType>
@@ -642,12 +621,8 @@ static void BolligerMabillardTrack25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 template<MetalSupportType supportType>
@@ -744,10 +719,10 @@ static void BolligerMabillardTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -781,7 +756,7 @@ static void BolligerMabillardTrackLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -815,10 +790,10 @@ static void BolligerMabillardTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -852,7 +827,7 @@ static void BolligerMabillardTrackLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -896,7 +871,7 @@ static void BolligerMabillardTrackLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -906,7 +881,7 @@ static void BolligerMabillardTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn5<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -950,12 +925,8 @@ static void BolligerMabillardTrackFlatToLeftBank(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -997,12 +968,8 @@ static void BolligerMabillardTrackFlatToRightBank(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -1044,12 +1011,8 @@ static void BolligerMabillardTrackLeftBankToFlat(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -1091,12 +1054,8 @@ static void BolligerMabillardTrackRightBankToFlat(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -1153,10 +1112,10 @@ static void BolligerMabillardTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1190,7 +1149,7 @@ static void BolligerMabillardTrackBankedLeftQuarterTurn5(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -1224,10 +1183,10 @@ static void BolligerMabillardTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -1261,7 +1220,7 @@ static void BolligerMabillardTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -1308,7 +1267,7 @@ static void BolligerMabillardTrackBankedLeftQuarterTurn5(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1318,7 +1277,7 @@ static void BolligerMabillardTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackBankedLeftQuarterTurn5<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -1369,12 +1328,8 @@ static void BolligerMabillardTrackLeftBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -1423,12 +1378,8 @@ static void BolligerMabillardTrackRightBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -1477,12 +1428,8 @@ static void BolligerMabillardTrack25DegUpToLeftBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 template<MetalSupportType supportType>
@@ -1531,12 +1478,8 @@ static void BolligerMabillardTrack25DegUpToRightBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 template<MetalSupportType supportType>
@@ -1608,12 +1551,8 @@ static void BolligerMabillardTrackLeftBank(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -1668,10 +1607,10 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -1703,7 +1642,7 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -1736,10 +1675,10 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -1771,7 +1710,7 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -1815,7 +1754,7 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -1864,10 +1803,10 @@ static void BolligerMabillardTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -1899,7 +1838,7 @@ static void BolligerMabillardTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -1931,10 +1870,10 @@ static void BolligerMabillardTrackRightQuarterTurn525DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -1966,7 +1905,7 @@ static void BolligerMabillardTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -2010,7 +1949,7 @@ static void BolligerMabillardTrackRightQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -2020,7 +1959,7 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackRightQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -2030,7 +1969,7 @@ static void BolligerMabillardTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -2079,7 +2018,7 @@ static void BolligerMabillardTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -2115,7 +2054,7 @@ static void BolligerMabillardTrackSBendLeft(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2151,7 +2090,7 @@ static void BolligerMabillardTrackSBendLeft(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2195,7 +2134,7 @@ static void BolligerMabillardTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2244,7 +2183,7 @@ static void BolligerMabillardTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -2280,7 +2219,7 @@ static void BolligerMabillardTrackSBendRight(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2316,7 +2255,7 @@ static void BolligerMabillardTrackSBendRight(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2360,7 +2299,7 @@ static void BolligerMabillardTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2412,7 +2351,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -2450,7 +2389,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -2484,7 +2423,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -2514,13 +2453,13 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -2550,7 +2489,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -2584,7 +2523,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -2622,7 +2561,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -2669,7 +2608,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -2706,7 +2645,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -2736,7 +2675,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
                         session, supportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -2762,7 +2701,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
                         { { 16, 0, height }, { 2, 16, 119 } });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -2784,13 +2723,13 @@ static void BolligerMabillardTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(17613), { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -2812,7 +2751,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(17614), { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -2838,7 +2777,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
                         { { 10, 16, height }, { 4, 16, 119 } });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -2868,7 +2807,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
                         session, supportType, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -2900,7 +2839,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 
@@ -2951,10 +2890,10 @@ static void BolligerMabillardTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2988,7 +2927,7 @@ static void BolligerMabillardTrackLeftQuarterTurn3(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3032,7 +2971,7 @@ static void BolligerMabillardTrackLeftQuarterTurn3(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3042,7 +2981,7 @@ static void BolligerMabillardTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn3<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -3094,10 +3033,10 @@ static void BolligerMabillardTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3131,7 +3070,7 @@ static void BolligerMabillardTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3178,7 +3117,7 @@ static void BolligerMabillardTrackLeftQuarterTurn3Bank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3188,7 +3127,7 @@ static void BolligerMabillardTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn3Bank<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -3233,13 +3172,13 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -3279,7 +3218,7 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3324,13 +3263,13 @@ static void BolligerMabillardTrackRightQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -3377,7 +3316,7 @@ static void BolligerMabillardTrackRightQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3387,7 +3326,7 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackRightQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -3397,7 +3336,7 @@ static void BolligerMabillardTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -3449,10 +3388,10 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3486,7 +3425,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3533,7 +3472,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3580,10 +3519,10 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -3617,7 +3556,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -3659,7 +3598,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3711,10 +3650,10 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3748,7 +3687,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3795,7 +3734,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3842,10 +3781,10 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -3879,7 +3818,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -3921,7 +3860,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3936,7 +3875,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixDownSmall(
         trackSequence -= 4;
         direction = (direction - 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackRightHalfBankedHelixUpSmall<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -3951,7 +3890,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixDownSmall(
         trackSequence -= 4;
         direction = (direction + 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftHalfBankedHelixUpSmall<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -4003,10 +3942,10 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -4040,7 +3979,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -4074,10 +4013,10 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -4111,7 +4050,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -4158,7 +4097,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -4205,10 +4144,10 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
             switch (direction)
@@ -4242,7 +4181,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
             switch (direction)
@@ -4275,10 +4214,10 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
             switch (direction)
@@ -4312,7 +4251,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
             switch (direction)
@@ -4354,7 +4293,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -4406,10 +4345,10 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -4443,7 +4382,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -4476,10 +4415,10 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -4513,7 +4452,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -4567,7 +4506,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -4614,10 +4553,10 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
             switch (direction)
@@ -4651,7 +4590,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
             switch (direction)
@@ -4685,10 +4624,10 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
             switch (direction)
@@ -4722,7 +4661,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
             switch (direction)
@@ -4771,7 +4710,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -4786,7 +4725,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixDownLarge(
         trackSequence -= 7;
         direction = (direction - 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackRightHalfBankedHelixUpLarge<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -4801,7 +4740,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixDownLarge(
         trackSequence -= 7;
         direction = (direction + 1) & 3;
     }
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackLeftHalfBankedHelixUpLarge<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -4848,7 +4787,7 @@ static void BolligerMabillardTrackLeftQuarterTurn160DegUp(
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 template<MetalSupportType supportType>
@@ -4893,7 +4832,7 @@ static void BolligerMabillardTrackRightQuarterTurn160DegUp(
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 template<MetalSupportType supportType>
@@ -4939,12 +4878,8 @@ static void BolligerMabillardTrackBrakes(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -4987,12 +4922,8 @@ static void BolligerMabillardTrack25DegUpLeftBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -5035,12 +4966,8 @@ static void BolligerMabillardTrack25DegUpRightBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -5076,7 +5003,7 @@ static void BolligerMabillardTrackOnRidePhoto(
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -5130,11 +5057,8 @@ static void BolligerMabillardTrack90DegUp(
             }
             PaintUtilSetVerticalTunnel(session, height + 32);
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             break;
@@ -5186,11 +5110,8 @@ static void BolligerMabillardTrack60DegUpTo90DegUp(
             }
             PaintUtilSetVerticalTunnel(session, height + 56);
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             break;
@@ -5243,12 +5164,8 @@ static void BolligerMabillardTrack90DegUpTo60DegUp(
             PaintUtilPushTunnelLeft(session, height + 48, TUNNEL_SQUARE_8);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 80);
 }
 
 template<MetalSupportType supportType>
@@ -5287,11 +5204,8 @@ static void BolligerMabillardTrack60DegDownTo90DegDown(
                 PaintUtilPushTunnelRotated(session, direction, height + 48, TUNNEL_SQUARE_8);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
             break;
@@ -5335,11 +5249,8 @@ static void BolligerMabillardTrackLeftEighthToDiag(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5373,7 +5284,7 @@ static void BolligerMabillardTrackLeftEighthToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5407,7 +5318,7 @@ static void BolligerMabillardTrackLeftEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5418,7 +5329,7 @@ static void BolligerMabillardTrackLeftEighthToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5460,7 +5371,7 @@ static void BolligerMabillardTrackLeftEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5502,11 +5413,8 @@ static void BolligerMabillardTrackRightEighthToDiag(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5540,7 +5448,7 @@ static void BolligerMabillardTrackRightEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5574,7 +5482,7 @@ static void BolligerMabillardTrackRightEighthToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5585,7 +5493,7 @@ static void BolligerMabillardTrackRightEighthToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5627,7 +5535,7 @@ static void BolligerMabillardTrackRightEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5689,11 +5597,8 @@ static void BolligerMabillardTrackLeftEighthBankToDiag(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5727,7 +5632,7 @@ static void BolligerMabillardTrackLeftEighthBankToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5761,7 +5666,7 @@ static void BolligerMabillardTrackLeftEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5772,7 +5677,7 @@ static void BolligerMabillardTrackLeftEighthBankToDiag(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5814,7 +5719,7 @@ static void BolligerMabillardTrackLeftEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5856,11 +5761,8 @@ static void BolligerMabillardTrackRightEighthBankToDiag(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5894,7 +5796,7 @@ static void BolligerMabillardTrackRightEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5928,7 +5830,7 @@ static void BolligerMabillardTrackRightEighthBankToDiag(
                         PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             PaintUtilSetSegmentSupportHeight(
@@ -5939,7 +5841,7 @@ static void BolligerMabillardTrackRightEighthBankToDiag(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5981,7 +5883,7 @@ static void BolligerMabillardTrackRightEighthBankToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -6011,168 +5913,13 @@ static void BolligerMabillardTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17861), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17791), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
-            break;
-        case 1:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17858), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17788), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
-            break;
-        case 2:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17860), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17790), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
-            break;
-        case 3:
-            if (trackElement.HasChain())
-            {
-                switch (direction)
-                {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17859), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
-                        break;
-                }
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
-                    case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(17789), { -16, -16, height },
-                            { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, supportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
-                        break;
-                }
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
-            break;
-    }
+    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+        { 17788, 17789, 17790, 17791 },
+        { 17858, 17859, 17860, 17861 },
+    };
+
+    TrackPaintUtilDiagTilesPaintExtra(
+        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType);
 }
 
 template<MetalSupportType supportType>
@@ -6213,7 +5960,7 @@ static void BolligerMabillardTrackDiag25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6245,7 +5992,7 @@ static void BolligerMabillardTrackDiag25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6278,7 +6025,7 @@ static void BolligerMabillardTrackDiag25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6339,7 +6086,7 @@ static void BolligerMabillardTrackDiag25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -6382,7 +6129,7 @@ static void BolligerMabillardTrackDiag60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6414,7 +6161,7 @@ static void BolligerMabillardTrackDiag60DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6447,7 +6194,7 @@ static void BolligerMabillardTrackDiag60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6508,7 +6255,7 @@ static void BolligerMabillardTrackDiag60DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -6551,7 +6298,7 @@ static void BolligerMabillardTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6583,7 +6330,7 @@ static void BolligerMabillardTrackDiagFlatTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6616,7 +6363,7 @@ static void BolligerMabillardTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6677,7 +6424,7 @@ static void BolligerMabillardTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6720,7 +6467,7 @@ static void BolligerMabillardTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6752,7 +6499,7 @@ static void BolligerMabillardTrackDiag25DegUpTo60DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6785,7 +6532,7 @@ static void BolligerMabillardTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6846,7 +6593,7 @@ static void BolligerMabillardTrackDiag25DegUpTo60DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -6889,7 +6636,7 @@ static void BolligerMabillardTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6921,7 +6668,7 @@ static void BolligerMabillardTrackDiag60DegUpTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6954,7 +6701,7 @@ static void BolligerMabillardTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7015,7 +6762,7 @@ static void BolligerMabillardTrackDiag60DegUpTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7058,7 +6805,7 @@ static void BolligerMabillardTrackDiag25DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7090,7 +6837,7 @@ static void BolligerMabillardTrackDiag25DegUpToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7123,7 +6870,7 @@ static void BolligerMabillardTrackDiag25DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7184,7 +6931,7 @@ static void BolligerMabillardTrackDiag25DegUpToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -7227,7 +6974,7 @@ static void BolligerMabillardTrackDiag25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7259,7 +7006,7 @@ static void BolligerMabillardTrackDiag25DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7292,7 +7039,7 @@ static void BolligerMabillardTrackDiag25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7353,7 +7100,7 @@ static void BolligerMabillardTrackDiag25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -7396,7 +7143,7 @@ static void BolligerMabillardTrackDiag60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7428,7 +7175,7 @@ static void BolligerMabillardTrackDiag60DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7461,7 +7208,7 @@ static void BolligerMabillardTrackDiag60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7522,7 +7269,7 @@ static void BolligerMabillardTrackDiag60DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -7691,7 +7438,7 @@ static void BolligerMabillardTrackDiagFlatTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -7732,7 +7479,7 @@ static void BolligerMabillardTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7764,7 +7511,7 @@ static void BolligerMabillardTrackDiag25DegDownTo60DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7797,7 +7544,7 @@ static void BolligerMabillardTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7858,7 +7605,7 @@ static void BolligerMabillardTrackDiag25DegDownTo60DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7901,7 +7648,7 @@ static void BolligerMabillardTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7933,7 +7680,7 @@ static void BolligerMabillardTrackDiag60DegDownTo25DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7966,7 +7713,7 @@ static void BolligerMabillardTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8027,7 +7774,7 @@ static void BolligerMabillardTrackDiag60DegDownTo25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8070,7 +7817,7 @@ static void BolligerMabillardTrackDiag25DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8102,7 +7849,7 @@ static void BolligerMabillardTrackDiag25DegDownToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8135,7 +7882,7 @@ static void BolligerMabillardTrackDiag25DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8196,7 +7943,7 @@ static void BolligerMabillardTrackDiag25DegDownToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8239,7 +7986,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8271,7 +8018,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8304,7 +8051,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8365,7 +8112,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8408,7 +8155,7 @@ static void BolligerMabillardTrackDiag60DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8440,7 +8187,7 @@ static void BolligerMabillardTrackDiag60DegUpToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8473,7 +8220,7 @@ static void BolligerMabillardTrackDiag60DegUpToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8534,7 +8281,7 @@ static void BolligerMabillardTrackDiag60DegUpToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8577,7 +8324,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8609,7 +8356,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegDown(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8642,7 +8389,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegDown(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8703,7 +8450,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8746,7 +8493,7 @@ static void BolligerMabillardTrackDiag60DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8778,7 +8525,7 @@ static void BolligerMabillardTrackDiag60DegDownToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8811,7 +8558,7 @@ static void BolligerMabillardTrackDiag60DegDownToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8872,7 +8619,7 @@ static void BolligerMabillardTrackDiag60DegDownToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8901,7 +8648,7 @@ static void BolligerMabillardTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -8922,7 +8669,7 @@ static void BolligerMabillardTrackDiagFlatToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -8941,7 +8688,7 @@ static void BolligerMabillardTrackDiagFlatToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -8974,7 +8721,7 @@ static void BolligerMabillardTrackDiagFlatToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -9003,7 +8750,7 @@ static void BolligerMabillardTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -9021,7 +8768,7 @@ static void BolligerMabillardTrackDiagFlatToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -9043,7 +8790,7 @@ static void BolligerMabillardTrackDiagFlatToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -9076,7 +8823,7 @@ static void BolligerMabillardTrackDiagFlatToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -9105,7 +8852,7 @@ static void BolligerMabillardTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -9126,7 +8873,7 @@ static void BolligerMabillardTrackDiagLeftBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -9145,7 +8892,7 @@ static void BolligerMabillardTrackDiagLeftBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -9178,7 +8925,7 @@ static void BolligerMabillardTrackDiagLeftBankToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -9207,7 +8954,7 @@ static void BolligerMabillardTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -9225,7 +8972,7 @@ static void BolligerMabillardTrackDiagRightBankToFlat(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -9247,7 +8994,7 @@ static void BolligerMabillardTrackDiagRightBankToFlat(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -9280,7 +9027,7 @@ static void BolligerMabillardTrackDiagRightBankToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -9309,7 +9056,7 @@ static void BolligerMabillardTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9330,7 +9077,7 @@ static void BolligerMabillardTrackDiagLeftBankTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9349,7 +9096,7 @@ static void BolligerMabillardTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9382,7 +9129,7 @@ static void BolligerMabillardTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9411,7 +9158,7 @@ static void BolligerMabillardTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9429,7 +9176,7 @@ static void BolligerMabillardTrackDiagRightBankTo25DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9451,7 +9198,7 @@ static void BolligerMabillardTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9484,7 +9231,7 @@ static void BolligerMabillardTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9513,7 +9260,7 @@ static void BolligerMabillardTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -9534,7 +9281,7 @@ static void BolligerMabillardTrackDiag25DegUpToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -9553,7 +9300,7 @@ static void BolligerMabillardTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -9586,7 +9333,7 @@ static void BolligerMabillardTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -9615,7 +9362,7 @@ static void BolligerMabillardTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -9633,7 +9380,7 @@ static void BolligerMabillardTrackDiag25DegUpToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -9655,7 +9402,7 @@ static void BolligerMabillardTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -9688,7 +9435,7 @@ static void BolligerMabillardTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -9790,7 +9537,7 @@ static void BolligerMabillardTrackDiagLeftBankTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -9890,7 +9637,7 @@ static void BolligerMabillardTrackDiagRightBankTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -9917,7 +9664,7 @@ static void BolligerMabillardTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -9938,7 +9685,7 @@ static void BolligerMabillardTrackDiag25DegDownToLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -9957,7 +9704,7 @@ static void BolligerMabillardTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -9990,7 +9737,7 @@ static void BolligerMabillardTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -10019,7 +9766,7 @@ static void BolligerMabillardTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -10037,7 +9784,7 @@ static void BolligerMabillardTrackDiag25DegDownToRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -10059,7 +9806,7 @@ static void BolligerMabillardTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -10092,7 +9839,7 @@ static void BolligerMabillardTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -10121,7 +9868,7 @@ static void BolligerMabillardTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -10139,7 +9886,7 @@ static void BolligerMabillardTrackDiagLeftBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -10158,7 +9905,7 @@ static void BolligerMabillardTrackDiagLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -10191,7 +9938,7 @@ static void BolligerMabillardTrackDiagLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -10220,7 +9967,7 @@ static void BolligerMabillardTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -10238,7 +9985,7 @@ static void BolligerMabillardTrackDiagRightBank(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -10257,7 +10004,7 @@ static void BolligerMabillardTrackDiagRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -10290,7 +10037,7 @@ static void BolligerMabillardTrackDiagRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -10338,13 +10085,13 @@ static void BolligerMabillardTrackLeftBankToLeftQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -10384,7 +10131,7 @@ static void BolligerMabillardTrackLeftBankToLeftQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -10432,13 +10179,13 @@ static void BolligerMabillardTrackRightBankToRightQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -10485,7 +10232,7 @@ static void BolligerMabillardTrackRightBankToRightQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -10537,13 +10284,13 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegDownToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -10586,7 +10333,7 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegDownToLeftBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -10631,13 +10378,13 @@ static void BolligerMabillardTrackRightQuarterTurn325DegDownToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -10680,7 +10427,7 @@ static void BolligerMabillardTrackRightQuarterTurn325DegDownToRightBank(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -10711,12 +10458,8 @@ static void BolligerMabillardTrackBlockBrakes(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -10760,13 +10503,13 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -10808,7 +10551,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -10854,13 +10597,13 @@ static void BolligerMabillardTrackRightBankedQuarterTurn325DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -10909,7 +10652,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn325DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -10919,7 +10662,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackRightBankedQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -10929,7 +10672,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     BolligerMabillardTrackLeftBankedQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -10978,10 +10721,10 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11014,7 +10757,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -11047,10 +10790,10 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -11084,7 +10827,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -11128,7 +10871,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -11177,10 +10920,10 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11213,7 +10956,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -11245,10 +10988,10 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -11282,7 +11025,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -11326,7 +11069,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -11336,7 +11079,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackRightBankedQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
@@ -11346,7 +11089,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     BolligerMabillardTrackLeftBankedQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
@@ -11394,12 +11137,8 @@ static void BolligerMabillardTrack25DegUpToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -11445,12 +11184,8 @@ static void BolligerMabillardTrack25DegUpToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -11496,12 +11231,8 @@ static void BolligerMabillardTrackLeftBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -11547,12 +11278,8 @@ static void BolligerMabillardTrackRightBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -11631,12 +11358,8 @@ static void BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -11679,12 +11402,8 @@ static void BolligerMabillardTrackRightBankedFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -11727,12 +11446,8 @@ static void BolligerMabillardTrackLeftBanked25DegUpToLeftBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 template<MetalSupportType supportType>
@@ -11775,12 +11490,8 @@ static void BolligerMabillardTrackRightBanked25DegUpToRightBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 template<MetalSupportType supportType>
@@ -11862,12 +11573,8 @@ static void BolligerMabillardTrackFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -11913,12 +11620,8 @@ static void BolligerMabillardTrackFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<MetalSupportType supportType>
@@ -11964,12 +11667,8 @@ static void BolligerMabillardTrackLeftBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 template<MetalSupportType supportType>
@@ -12015,12 +11714,8 @@ static void BolligerMabillardTrackRightBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 template<MetalSupportType supportType>
@@ -12098,11 +11793,8 @@ static void BolligerMabillardTrackLeftQuarterTurn190DegUp(
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             break;
@@ -12148,11 +11840,8 @@ static void BolligerMabillardTrackRightQuarterTurn190DegUp(
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             break;
@@ -12257,12 +11946,8 @@ static void BolligerMabillardTrackFlatTo60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 template<MetalSupportType supportType>
@@ -12344,12 +12029,8 @@ static void BolligerMabillardTrack60DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_FLAT);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 template<MetalSupportType supportType>
@@ -12411,12 +12092,8 @@ static void BolligerMabillardTrackBrakeForDrop(
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /* The following track elements used to be specific to the Steel Twister */
@@ -12453,11 +12130,8 @@ static void BolligerMabillardTrackHalfLoopUp(
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -12491,7 +12165,7 @@ static void BolligerMabillardTrackHalfLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12523,7 +12197,7 @@ static void BolligerMabillardTrackHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -12550,11 +12224,8 @@ static void BolligerMabillardTrackHalfLoopUp(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12605,7 +12276,7 @@ static void BolligerMabillardTrackLeftCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -12632,7 +12303,7 @@ static void BolligerMabillardTrackLeftCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12678,7 +12349,7 @@ static void BolligerMabillardTrackLeftCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12727,7 +12398,7 @@ static void BolligerMabillardTrackRightCorkscrewUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -12754,7 +12425,7 @@ static void BolligerMabillardTrackRightCorkscrewUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12800,7 +12471,7 @@ static void BolligerMabillardTrackRightCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12863,11 +12534,8 @@ static void BolligerMabillardTrackFlatTo60DegUpLongBase(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -12898,11 +12566,8 @@ static void BolligerMabillardTrackFlatTo60DegUpLongBase(
                 MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -12933,11 +12598,8 @@ static void BolligerMabillardTrackFlatTo60DegUpLongBase(
                 MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -12977,11 +12639,8 @@ static void BolligerMabillardTrackFlatTo60DegUpLongBase(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
     }
 }
@@ -13027,11 +12686,8 @@ static void BolligerMabillardTrack60DegUpToFlatLongBase(
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_7);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
             switch (direction)
@@ -13062,11 +12718,8 @@ static void BolligerMabillardTrack60DegUpToFlatLongBase(
                 MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 16, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 2:
             switch (direction)
@@ -13097,11 +12750,8 @@ static void BolligerMabillardTrack60DegUpToFlatLongBase(
                 MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -13141,11 +12791,8 @@ static void BolligerMabillardTrack60DegUpToFlatLongBase(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -13231,7 +12878,7 @@ static void BolligerMabillardTrackLeftBarrelRollUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -13277,7 +12924,7 @@ static void BolligerMabillardTrackLeftBarrelRollUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -13332,7 +12979,7 @@ static void BolligerMabillardTrackLeftBarrelRollUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -13400,7 +13047,7 @@ static void BolligerMabillardTrackRightBarrelRollUpToDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -13446,7 +13093,7 @@ static void BolligerMabillardTrackRightBarrelRollUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -13501,7 +13148,7 @@ static void BolligerMabillardTrackRightBarrelRollUpToDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -13561,12 +13208,8 @@ static void BolligerMabillardTrackPoweredLift(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 template<MetalSupportType supportType>
@@ -13606,11 +13249,8 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -13638,11 +13278,8 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
             }
             MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -13676,7 +13313,7 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -13718,7 +13355,7 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -13752,7 +13389,7 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -13786,7 +13423,7 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -13824,7 +13461,7 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -13866,11 +13503,8 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -13898,11 +13532,8 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
             }
             MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -13936,7 +13567,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -13978,7 +13609,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -14012,7 +13643,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -14046,7 +13677,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -14084,7 +13715,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -14141,7 +13772,7 @@ static void BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp(
                 PaintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -14172,7 +13803,7 @@ static void BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp(
                 PaintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -14207,7 +13838,7 @@ static void BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp(
                 PaintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -14246,12 +13877,8 @@ void BolligerMabillardTrackBooster(
         MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -14298,7 +13925,7 @@ static void BolligerMabillardTrackLeftTwistDownToUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -14328,7 +13955,7 @@ static void BolligerMabillardTrackLeftTwistDownToUp(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -14369,7 +13996,7 @@ static void BolligerMabillardTrackLeftTwistDownToUp(
                     PaintUtilPushTunnelLeft(session, height - 32, TUNNEL_SQUARE_FLAT);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -14418,7 +14045,7 @@ static void BolligerMabillardTrackRightTwistDownToUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -14448,7 +14075,7 @@ static void BolligerMabillardTrackRightTwistDownToUp(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -14489,7 +14116,7 @@ static void BolligerMabillardTrackRightTwistDownToUp(
                     PaintUtilPushTunnelLeft(session, height - 16, TUNNEL_SQUARE_FLAT);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -14535,7 +14162,7 @@ static void BolligerMabillardTrackLeftTwistUpToDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 24, TUNNEL_SQUARE_FLAT);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -14565,7 +14192,7 @@ static void BolligerMabillardTrackLeftTwistUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -14609,7 +14236,7 @@ static void BolligerMabillardTrackLeftTwistUpToDown(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -14655,7 +14282,7 @@ static void BolligerMabillardTrackRightTwistUpToDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -14685,7 +14312,7 @@ static void BolligerMabillardTrackRightTwistUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -14729,7 +14356,7 @@ static void BolligerMabillardTrackRightTwistUpToDown(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -14740,17 +14367,17 @@ static void BolligerMabillardTrackDiagBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, BolligerMabillardDiagBrakeImages,
-        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        session, 3, height, direction, trackSequence, BolligerMabillardDiagBrakeImages, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(session, supportType, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType>
@@ -14759,18 +14386,17 @@ static void BolligerMabillardTrackDiagBlockBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours,
-        BolligerMabillardDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 3, height, direction, trackSequence, BolligerMabillardDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(session, supportType, DiagSupportPlacement[direction], 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionBolligerMabillard(int32_t trackType)

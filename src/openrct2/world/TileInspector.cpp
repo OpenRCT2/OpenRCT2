@@ -31,8 +31,8 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
+#include "tile_element/Slope.h"
 
-#include <algorithm>
 #include <optional>
 
 TileCoordsXY windowTileInspectorTile;
@@ -219,7 +219,7 @@ namespace OpenRCT2::TileInspector
                 case TileElementType::Path:
                     if (tileElement->AsPath()->IsSloped())
                     {
-                        newRotation = (tileElement->AsPath()->GetSlopeDirection() + 1) & TILE_ELEMENT_DIRECTION_MASK;
+                        newRotation = (tileElement->AsPath()->GetSlopeDirection() + 1) & kTileElementDirectionMask;
                         tileElement->AsPath()->SetSlopeDirection(newRotation);
                     }
                     pathEdges = tileElement->AsPath()->GetEdges();
@@ -503,7 +503,7 @@ namespace OpenRCT2::TileInspector
             if (!showFences)
                 surfaceelement->SetParkFences(0);
             else
-                ParkUpdateFences(loc);
+                Park::UpdateFences(loc);
         }
 
         return GameActions::Result();
@@ -524,24 +524,24 @@ namespace OpenRCT2::TileInspector
             uint8_t newSlope = surfaceElement->GetSlope() ^ (1 << cornerIndex);
 
             // All corners are raised
-            if ((newSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if ((newSlope & kTileSlopeRaisedCornersMask) == kTileSlopeRaisedCornersMask)
             {
-                newSlope = TILE_ELEMENT_SLOPE_FLAT;
-                if ((originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
+                newSlope = kTileSlopeFlat;
+                if ((originalSlope & kTileSlopeDiagonalFlag) != 0)
                 {
-                    switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                    switch (originalSlope & kTileSlopeRaisedCornersMask)
                     {
-                        case TILE_ELEMENT_SLOPE_S_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                        case kTileSlopeSCornerDown:
+                            newSlope |= kTileSlopeNCornerUp;
                             break;
-                        case TILE_ELEMENT_SLOPE_W_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                        case kTileSlopeWCornerDown:
+                            newSlope |= kTileSlopeECornerUp;
                             break;
-                        case TILE_ELEMENT_SLOPE_N_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                        case kTileSlopeNCornerDown:
+                            newSlope |= kTileSlopeSCornerUp;
                             break;
-                        case TILE_ELEMENT_SLOPE_E_CORNER_DN:
-                            newSlope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                        case kTileSlopeECornerDown:
+                            newSlope |= kTileSlopeWCornerUp;
                             break;
                     }
                 }
@@ -567,7 +567,7 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+            uint8_t newSlope = surfaceElement->GetSlope() ^ kTileSlopeDiagonalFlag;
             surfaceElement->SetSlope(newSlope);
         }
 
@@ -935,6 +935,21 @@ namespace OpenRCT2::TileInspector
             uint8_t edges = bannerElement->AsBanner()->GetAllowedEdges();
             edges ^= (1 << edgeIndex);
             bannerElement->AsBanner()->SetAllowedEdges(edges);
+        }
+
+        return GameActions::Result();
+    }
+
+    GameActions::Result WallSetAnimationIsBackwards(const CoordsXY& loc, int32_t elementIndex, bool backwards, bool isExecuting)
+    {
+        TileElement* const wallElement = MapGetNthElementAt(loc, elementIndex);
+        if (wallElement == nullptr || wallElement->GetType() != TileElementType::Wall)
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_WALL_ELEMENT_NOT_FOUND);
+
+        if (isExecuting)
+        {
+            wallElement->AsWall()->SetAnimationIsBackwards(backwards);
         }
 
         return GameActions::Result();

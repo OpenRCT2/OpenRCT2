@@ -121,8 +121,12 @@ private:
             SDL_UnlockSurface(_surface);
         }
 
+// On macOS with high DPI ("retina") screens this renders only to a quarter of the screen.
+// A workaround is to always scale the surface, but that incurs an additonal copy.
+// https://github.com/OpenRCT2/OpenRCT2/issues/21772
+#if !defined(__APPLE__)
         // Copy the surface to the window
-        if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
+        if (Config::Get().general.WindowScale == 1 || Config::Get().general.WindowScale <= 0)
         {
             SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
             if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
@@ -132,6 +136,7 @@ private:
             }
         }
         else
+#endif
         {
             // first blit to rgba surface to change the pixel format
             if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))

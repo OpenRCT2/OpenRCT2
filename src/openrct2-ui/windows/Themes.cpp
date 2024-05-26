@@ -15,8 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform.h>
@@ -219,6 +218,7 @@ static WindowClass window_themes_tab_7_classes[] = {
     WindowClass::FirePrompt,
     WindowClass::TrackDeletePrompt,
     WindowClass::LoadsaveOverwritePrompt,
+    WindowClass::ProgressWindow,
     WindowClass::NetworkStatus,
 };
     // clang-format on
@@ -613,11 +613,11 @@ static WindowClass window_themes_tab_7_classes[] = {
                 case WIDX_THEMES_LIST:
                     if (selectedIndex != -1)
                     {
-                        const auto newColour = ThemeOverrideExtendedColour(ColourDropDownIndexToColour(selectedIndex));
+                        ColourWithFlags newColour = { ColourDropDownIndexToColour(selectedIndex) };
                         WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
-                        uint8_t colour = ThemeGetColour(wc, _colour_index_2);
-                        colour = (colour & COLOUR_FLAG_TRANSLUCENT) | newColour;
-                        ThemeSetColour(wc, _colour_index_2, colour);
+                        auto oldColour = ThemeGetColour(wc, _colour_index_2);
+                        newColour.flags = oldColour.flags;
+                        ThemeSetColour(wc, _colour_index_2, newColour);
                         ColourSchemeUpdateAll();
                         WindowInvalidateAll();
                         _colour_index_1 = -1;
@@ -716,8 +716,9 @@ static WindowClass window_themes_tab_7_classes[] = {
                             widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
 
-                            uint8_t colour = ThemeGetColour(wc, _colour_index_2);
-                            WindowDropdownShowColour(this, &(widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour);
+                            auto colour = ThemeGetColour(wc, _colour_index_2);
+                            WindowDropdownShowColour(
+                                this, &(widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour.colour, true);
                             WidgetInvalidate(*this, WIDX_THEMES_LIST);
                         }
                     }
@@ -731,15 +732,8 @@ static WindowClass window_themes_tab_7_classes[] = {
                         }
                         else
                         {
-                            uint8_t colour = ThemeGetColour(wc, _colour_index_2);
-                            if (colour & COLOUR_FLAG_TRANSLUCENT)
-                            {
-                                colour &= ~COLOUR_FLAG_TRANSLUCENT;
-                            }
-                            else
-                            {
-                                colour |= COLOUR_FLAG_TRANSLUCENT;
-                            }
+                            auto colour = ThemeGetColour(wc, _colour_index_2);
+                            colour.setFlag(ColourFlag::translucent, !colour.hasFlag(ColourFlag::translucent));
                             ThemeSetColour(wc, _colour_index_2, colour);
                             ColourSchemeUpdateAll();
                             WindowInvalidateAll();
@@ -756,10 +750,10 @@ static WindowClass window_themes_tab_7_classes[] = {
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
                 return;
 
-            if ((colours[1] & 0x80) == 0)
+            if (!colours[1].hasFlag(ColourFlag::translucent))
                 // GfxFillRect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
-                // ColourMapA[colours[1]].mid_light);
-                GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+                // ColourMapA[colours[1].colour].mid_light);
+                GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
@@ -771,26 +765,26 @@ static WindowClass window_themes_tab_7_classes[] = {
                 {
                     if (i + 1 < GetColourSchemeTabCount())
                     {
-                        int32_t colour = colours[1];
+                        auto colour = colours[1];
 
                         auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - 2 };
                         auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 2 };
                         auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
-                        if (colour & COLOUR_FLAG_TRANSLUCENT)
+                        if (colour.hasFlag(ColourFlag::translucent))
                         {
-                            TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
+                            TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[colour.colour];
 
                             GfxFilterRect(dpi, { leftTop, rightBottom }, windowPalette.highlight);
                             GfxFilterRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                         }
                         else
                         {
-                            colour = ColourMapA[colours[1]].mid_dark;
-                            GfxFillRect(dpi, { leftTop, rightBottom }, colour);
+                            colour = ColourMapA[colours[1].colour].mid_dark;
+                            GfxFillRect(dpi, { leftTop, rightBottom }, colour.colour);
 
-                            colour = ColourMapA[colours[1]].lightest;
-                            GfxFillRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
+                            colour = ColourMapA[colours[1].colour].lightest;
+                            GfxFillRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
                         }
                     }
 
@@ -800,20 +794,19 @@ static WindowClass window_themes_tab_7_classes[] = {
                     {
                         DrawTextBasic(dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { colours[1] });
 
-                        uint8_t colour = ThemeGetColour(wc, j);
+                        auto colour = ThemeGetColour(wc, j);
                         const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
-                        auto image = ImageId(
-                            isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
+                        auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
                         GfxDrawSprite(dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
 
                         ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                         ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
                         GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
-                        if (colour & COLOUR_FLAG_TRANSLUCENT)
+                        if (colour.hasFlag(ColourFlag::translucent))
                         {
-                            GfxDrawString(
-                                dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
-                                { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark });
+                            DrawText(
+                                dpi, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark },
+                                static_cast<const char*>(CheckBoxMarkString));
                         }
                     }
                 }

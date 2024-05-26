@@ -17,10 +17,8 @@ struct IScenarioRepository;
 
 namespace OpenRCT2
 {
-    class GameState;
-
     namespace Title
     {
-        [[nodiscard]] std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(GameState& gameState);
+        [[nodiscard]] std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer();
     } // namespace Title
 } // namespace OpenRCT2

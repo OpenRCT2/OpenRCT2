@@ -9,6 +9,7 @@
 
 #include "MapHelpers.h"
 
+#include "../world/tile_element/Slope.h"
 #include "Map.h"
 #include "Surface.h"
 
@@ -34,7 +35,7 @@ int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
-            surfaceElement->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+            surfaceElement->SetSlope(kTileSlopeFlat);
 
             // Raise to edge height - 2
             highest = surfaceElement->BaseHeight;
@@ -124,20 +125,20 @@ int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
 
             if (doubleCorner != -1)
             {
-                uint8_t slope = surfaceElement->GetSlope() | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+                uint8_t slope = surfaceElement->GetSlope() | kTileSlopeDiagonalFlag;
                 switch (doubleCorner)
                 {
                     case 0:
-                        slope |= TILE_ELEMENT_SLOPE_N_CORNER_DN;
+                        slope |= kTileSlopeNCornerDown;
                         break;
                     case 1:
-                        slope |= TILE_ELEMENT_SLOPE_W_CORNER_DN;
+                        slope |= kTileSlopeWCornerDown;
                         break;
                     case 2:
-                        slope |= TILE_ELEMENT_SLOPE_S_CORNER_DN;
+                        slope |= kTileSlopeSCornerDown;
                         break;
                     case 3:
-                        slope |= TILE_ELEMENT_SLOPE_E_CORNER_DN;
+                        slope |= kTileSlopeECornerDown;
                         break;
                 }
                 surfaceElement->SetSlope(slope);
@@ -148,41 +149,41 @@ int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
                 // Corners
                 auto surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                    slope |= kTileSlopeNCornerUp;
 
                 surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                    slope |= kTileSlopeWCornerUp;
 
                 surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y - 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                    slope |= kTileSlopeECornerUp;
 
                 surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y - 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                    slope |= kTileSlopeSCornerUp;
 
                 // Sides
                 surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 0 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_NE_SIDE_UP;
+                    slope |= kTileSlopeNESideUp;
 
                 surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 0 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_SW_SIDE_UP;
+                    slope |= kTileSlopeSWSideUp;
 
                 surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y - 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_SE_SIDE_UP;
+                    slope |= kTileSlopeSESideUp;
 
                 surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y + 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
-                    slope |= TILE_ELEMENT_SLOPE_NW_SIDE_UP;
+                    slope |= kTileSlopeNWSideUp;
 
                 // Raise
-                if (slope == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                if (slope == kTileSlopeRaisedCornersMask)
                 {
-                    slope = TILE_ELEMENT_SLOPE_FLAT;
+                    slope = kTileSlopeFlat;
                     surfaceElement->BaseHeight = surfaceElement->ClearanceHeight += 2;
                 }
                 surfaceElement->SetSlope(slope);
@@ -262,19 +263,19 @@ int32_t TileSmooth(const TileCoordsXY& tileCoords)
     int8_t thresholdS = std::clamp(neighbourHeightOffset.SE, 0, 1) + std::clamp(neighbourHeightOffset.S, 0, 1)
         + std::clamp(neighbourHeightOffset.SW, 0, 1);
 
-    uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
+    uint8_t slope = kTileSlopeFlat;
     slope |= (thresholdW >= 1) ? SLOPE_W_THRESHOLD_FLAGS : 0;
     slope |= (thresholdN >= 1) ? SLOPE_N_THRESHOLD_FLAGS : 0;
     slope |= (thresholdE >= 1) ? SLOPE_E_THRESHOLD_FLAGS : 0;
     slope |= (thresholdS >= 1) ? SLOPE_S_THRESHOLD_FLAGS : 0;
 
     // Set diagonal when three corners (one corner down) have been raised, and the middle one can be raised one more
-    if ((slope == TILE_ELEMENT_SLOPE_W_CORNER_DN && neighbourHeightOffset.W >= 4)
-        || (slope == TILE_ELEMENT_SLOPE_S_CORNER_DN && neighbourHeightOffset.S >= 4)
-        || (slope == TILE_ELEMENT_SLOPE_E_CORNER_DN && neighbourHeightOffset.E >= 4)
-        || (slope == TILE_ELEMENT_SLOPE_N_CORNER_DN && neighbourHeightOffset.N >= 4))
+    if ((slope == kTileSlopeWCornerDown && neighbourHeightOffset.W >= 4)
+        || (slope == kTileSlopeSCornerDown && neighbourHeightOffset.S >= 4)
+        || (slope == kTileSlopeECornerDown && neighbourHeightOffset.E >= 4)
+        || (slope == kTileSlopeNCornerDown && neighbourHeightOffset.N >= 4))
     {
-        slope |= TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+        slope |= kTileSlopeDiagonalFlag;
     }
 
     // Check if the calculated slope is the same already
@@ -284,10 +285,10 @@ int32_t TileSmooth(const TileCoordsXY& tileCoords)
         return 0;
     }
 
-    if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+    if ((slope & kTileSlopeRaisedCornersMask) == kTileSlopeRaisedCornersMask)
     {
         // All corners are raised, raise the entire tile instead.
-        surfaceElement->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        surfaceElement->SetSlope(kTileSlopeFlat);
         surfaceElement->BaseHeight = (surfaceElement->ClearanceHeight += 2);
         if (surfaceElement->GetWaterHeight() <= surfaceElement->GetBaseZ())
         {
@@ -300,9 +301,9 @@ int32_t TileSmooth(const TileCoordsXY& tileCoords)
         surfaceElement->SetSlope(slope);
 
         // Set correct clearance height
-        if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        if (slope & kTileSlopeDiagonalFlag)
             surfaceElement->ClearanceHeight = surfaceElement->BaseHeight + 4;
-        else if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        else if (slope & kTileSlopeRaisedCornersMask)
             surfaceElement->ClearanceHeight = surfaceElement->BaseHeight + 2;
     }
 

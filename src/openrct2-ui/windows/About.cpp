@@ -6,6 +6,9 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
+#include "../UiStringIds.h"
+
 #include <SDL_clipboard.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -14,8 +17,6 @@
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 

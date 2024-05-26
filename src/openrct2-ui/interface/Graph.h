@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <openrct2/common.h>
+#include <openrct2/core/Money.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/world/Location.hpp>
 

@@ -17,20 +17,22 @@
 // clang-format off
 constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
 {
-   .AlternateType = RIDE_TYPE_NULL,
    .Category = RIDE_CATEGORY_ROLLERCOASTER,
-   .EnabledTrackPieces = {TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_WATER_SPLASH, TRACK_BLOCK_BRAKES, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
-   .ExtraTrackPieces = {},
-   .CoveredTrackPieces = 0,
    .StartTrackPiece = TrackElemType::EndStation,
-   .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionClassicWoodenRC),
+   .TrackPaintFunctions = TrackDrawerDescriptor({
+       .Drawer = GetTrackPaintFunctionClassicWoodenRC,
+       .EnabledTrackPieces = {TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_WATER_SPLASH, TRACK_BLOCK_BRAKES, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
+       .ExtraTrackPieces = {},
+   }),
+   .InvertedTrackPaintFunctions = {},
    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                     RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
                     RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS,
    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
    .DefaultMode = RideMode::ContinuousCircuit,
-   .OperatingSettings = { 0, 0, 0, 0, 68, 0 },
+   .BoosterSettings = { 0, 68 },
+   .LegacyBoosterSettings = { 0, 68 },
    .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_ROLLER_COASTER },
    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
    .EnumName = nameof(RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER),

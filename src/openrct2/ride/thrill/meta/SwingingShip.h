@@ -17,13 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor SwingingShipRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_THRILL,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::FlatTrack1x5,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSwingingShip),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionSwingingShip,
+        .EnabledTrackPieces = {},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                      RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -32,7 +33,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::Swing),
     .DefaultMode = RideMode::Swing,
-    .OperatingSettings = { 7, 25, 0, 0, 0, 0 },
+    .OperatingSettings = { 7, 25 },
     .Naming = { STR_RIDE_NAME_SWINGING_SHIP, STR_RIDE_DESCRIPTION_SWINGING_SHIP },
     .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_SWINGING_SHIP),

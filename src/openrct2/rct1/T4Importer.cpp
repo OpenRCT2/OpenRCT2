@@ -153,7 +153,7 @@ namespace RCT1
             td->colour_scheme = td4Base.VersionAndColourScheme & 0x3;
 
             // Vehicle colours
-            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
                 // RCT1 had no third colour
                 RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
@@ -198,7 +198,7 @@ namespace RCT1
                 }
             }
             // Set remaining vehicles to same colour as first vehicle
-            for (size_t i = Limits::MaxTrainsPerRide; i < std::size(td->vehicle_colours); i++)
+            for (size_t i = Limits::kMaxTrainsPerRide; i < std::size(td->vehicle_colours); i++)
             {
                 td->vehicle_colours[i] = td->vehicle_colours[0];
             }

@@ -299,7 +299,15 @@ namespace Platform
             return {};
         }
 
-        auto steamPath = Path::Combine(homeDir, u8".local/share/Steam/ubuntu12_32/steamapps/content");
+        // Prefer new path for Steam, which is the default when using with Proton
+        auto steamPath = Path::Combine(homeDir, u8".local/share/Steam/steamapps/common");
+        if (Path::DirectoryExists(steamPath))
+        {
+            return steamPath;
+        }
+
+        // Fallback paths
+        steamPath = Path::Combine(homeDir, u8".local/share/Steam/ubuntu12_32/steamapps/content");
         if (Path::DirectoryExists(steamPath))
         {
             return steamPath;
@@ -310,8 +318,17 @@ namespace Platform
         {
             return steamPath;
         }
-
         return {};
+    }
+
+    u8string GetRCT1SteamDir()
+    {
+        return u8"Rollercoaster Tycoon Deluxe";
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return u8"Rollercoaster Tycoon 2";
     }
 
 #    ifndef NO_TTF

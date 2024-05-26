@@ -18,7 +18,6 @@
 #    include "ScViewport.hpp"
 #    include "ScWindow.hpp"
 
-#    include <algorithm>
 #    include <memory>
 #    include <openrct2/Context.h>
 #    include <openrct2/Input.h>

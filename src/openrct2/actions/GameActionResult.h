@@ -8,7 +8,6 @@
  *****************************************************************************/
 #pragma once
 
-#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../world/Location.hpp"
 

@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <deque>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -276,7 +275,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     Invalidate();
                     break;
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, STR_STRING, _filteredSceneryTab.Filter.data(), TEXT_INPUT_SIZE);
+                    WindowStartTextbox(*this, widgetIndex, _filteredSceneryTab.Filter, kTextInputSize);
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _tabEntries[_activeTabIndex].Filter.clear();
@@ -463,7 +462,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
             }
 
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
@@ -631,24 +630,15 @@ static Widget WindowSceneryBaseWidgets[] = {
                 pressed_widgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
             widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::Empty;
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::Empty;
             widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Empty;
-
-            if (!(gWindowSceneryPaintEnabled & 1))
-            {
-                widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::FlatBtn;
-            }
 
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
             if (!tabSelectedScenery.IsUndefined())
             {
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
                 {
-                    if (!(gWindowSceneryPaintEnabled & 1))
-                    {
-                        widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::FlatBtn;
-                    }
+                    widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::FlatBtn;
 
                     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(
                         tabSelectedScenery.EntryIndex);
@@ -685,7 +675,6 @@ static Widget WindowSceneryBaseWidgets[] = {
                 widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
-                widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
             }
             else if (!tabSelectedScenery.IsUndefined())
             {
@@ -813,7 +802,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -1338,7 +1327,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     auto scgEntry = tabInfo.GetSceneryGroupEntry();
                     if (scgEntry != nullptr)
                     {
-                        widget.image = ImageId(scgEntry->image, colours[1]);
+                        widget.image = ImageId(scgEntry->image, colours[1].colour);
                     }
                 }
 
@@ -1635,7 +1624,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
         void ContentScrollDraw(DrawPixelInfo& dpi)
         {
-            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
             auto numColumns = GetNumColumns();
             auto tabIndex = _activeTabIndex;

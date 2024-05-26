@@ -64,6 +64,7 @@ GameActions::Result StaffSetCostumeAction::Query() const
 {
     if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
+        LOG_ERROR("Invalid sprite index %u", _spriteIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
@@ -71,14 +72,14 @@ GameActions::Result StaffSetCostumeAction::Query() const
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+        LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);
     if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
     {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+        LOG_ERROR("Invalid entertainer costume %u", _costume);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
@@ -90,7 +91,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+        LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 

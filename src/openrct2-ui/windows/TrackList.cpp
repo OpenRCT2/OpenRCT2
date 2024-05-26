@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/windows/Window.h>
@@ -75,7 +74,7 @@ static Widget _trackListWidgets[] = {
     {
     private:
         std::vector<TrackDesignFileRef> _trackDesigns;
-        utf8 _filterString[USER_STRING_MAX_LENGTH]{};
+        utf8 _filterString[kUserStringMaxLength]{};
         std::vector<uint16_t> _filteredTrackIds;
         uint16_t _loadedTrackDesignIndex;
         std::unique_ptr<TrackDesign> _loadedTrackDesign;
@@ -173,7 +172,7 @@ static Widget _trackListWidgets[] = {
                 maxItems++;
             }
 
-            int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            int32_t index = screenCoords.y / kScrollableRowHeight;
             if (index < 0 || static_cast<uint32_t>(index) >= maxItems)
             {
                 index = -1;
@@ -243,7 +242,7 @@ static Widget _trackListWidgets[] = {
             gTrackDesignSceneryToggle = false;
             WindowPushOthersRight(*this);
             _currentTrackPieceDirection = 2;
-            _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
+            _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
 
             _loadedTrackDesign = nullptr;
             _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
@@ -297,8 +296,7 @@ static Widget _trackListWidgets[] = {
                     }
                     break;
                 case WIDX_FILTER_STRING:
-                    WindowStartTextbox(
-                        *this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
+                    WindowStartTextbox(*this, widgetIndex, _filterString, sizeof(_filterString));
                     break;
                 case WIDX_FILTER_CLEAR:
                     // Keep the highlighted item selected
@@ -330,7 +328,7 @@ static Widget _trackListWidgets[] = {
                 // Extra item: custom design
                 numItems++;
             }
-            int32_t scrollHeight = static_cast<int32_t>(numItems * SCROLLABLE_ROW_HEIGHT);
+            int32_t scrollHeight = static_cast<int32_t>(numItems * kScrollableRowHeight);
 
             return { width, scrollHeight };
         }
@@ -424,7 +422,8 @@ static Widget _trackListWidgets[] = {
             }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-            const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
+            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT)
+                                                                              : WINDOW_PADDING;
             widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
@@ -434,7 +433,7 @@ static Widget _trackListWidgets[] = {
 
         void OnUpdate() override
         {
-            if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this
@@ -467,11 +466,11 @@ static Widget _trackListWidgets[] = {
 
             // Track preview
             auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
-            int32_t colour = ColourMapA[colours[0]].darkest;
+            int32_t colour = ColourMapA[colours[0].colour].darkest;
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
             {
                 const auto shortPath = ShortenPath(path, width, FontStyle::Medium);
                 auto ft = Formatter();
@@ -505,7 +504,7 @@ static Widget _trackListWidgets[] = {
             screenPos = windowPos + ScreenCoordsXY{ tdWidget.midX(), tdWidget.midY() };
 
             G1Element g1temp = {};
-            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
@@ -521,7 +520,7 @@ static Widget _trackListWidgets[] = {
             {
                 // Vehicle design not available
                 DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::CENTRE });
-                screenPos.y -= SCROLLABLE_ROW_HEIGHT;
+                screenPos.y -= kScrollableRowHeight;
             }
 
             if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
@@ -531,7 +530,7 @@ static Widget _trackListWidgets[] = {
                     // Scenery not available
                     DrawTextEllipsised(
                         dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
-                    screenPos.y -= SCROLLABLE_ROW_HEIGHT;
+                    screenPos.y -= kScrollableRowHeight;
                 }
             }
 
@@ -547,17 +546,17 @@ static Widget _trackListWidgets[] = {
             ft = Formatter();
             ft.Add<fixed32_2dp>(_loadedTrackDesign->excitement * 10);
             DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
-            screenPos.y += LIST_ROW_HEIGHT;
+            screenPos.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<fixed32_2dp>(_loadedTrackDesign->intensity * 10);
             DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
-            screenPos.y += LIST_ROW_HEIGHT;
+            screenPos.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<fixed32_2dp>(_loadedTrackDesign->nausea * 10);
             DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
-            screenPos.y += LIST_ROW_HEIGHT + 4;
+            screenPos.y += kListRowHeight + 4;
 
             // Information for tracked rides.
             if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
@@ -571,7 +570,7 @@ static Widget _trackListWidgets[] = {
                         ft = Formatter();
                         ft.Add<uint16_t>(_loadedTrackDesign->holes & 0x1F);
                         DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
-                        screenPos.y += LIST_ROW_HEIGHT;
+                        screenPos.y += kListRowHeight;
                     }
                     else
                     {
@@ -579,13 +578,13 @@ static Widget _trackListWidgets[] = {
                         ft = Formatter();
                         ft.Add<uint16_t>(((_loadedTrackDesign->max_speed << 16) * 9) >> 18);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
-                        screenPos.y += LIST_ROW_HEIGHT;
+                        screenPos.y += kListRowHeight;
 
                         // Average speed
                         ft = Formatter();
                         ft.Add<uint16_t>(((_loadedTrackDesign->average_speed << 16) * 9) >> 18);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
-                        screenPos.y += LIST_ROW_HEIGHT;
+                        screenPos.y += kListRowHeight;
                     }
 
                     // Ride length
@@ -593,7 +592,7 @@ static Widget _trackListWidgets[] = {
                     ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
                     ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
                     DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
 
                 if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -602,19 +601,19 @@ static Widget _trackListWidgets[] = {
                     ft = Formatter();
                     ft.Add<int32_t>(_loadedTrackDesign->max_positive_vertical_g * 32);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
 
                     // Maximum negative vertical Gs
                     ft = Formatter();
                     ft.Add<int32_t>(_loadedTrackDesign->max_negative_vertical_g * 32);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
 
                     // Maximum lateral Gs
                     ft = Formatter();
                     ft.Add<int32_t>(_loadedTrackDesign->max_lateral_g * 32);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
 
                     if (_loadedTrackDesign->total_air_time != 0)
                     {
@@ -622,7 +621,7 @@ static Widget _trackListWidgets[] = {
                         ft = Formatter();
                         ft.Add<int32_t>(_loadedTrackDesign->total_air_time * 25);
                         DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
-                        screenPos.y += LIST_ROW_HEIGHT;
+                        screenPos.y += kListRowHeight;
                     }
                 }
 
@@ -632,13 +631,13 @@ static Widget _trackListWidgets[] = {
                     ft = Formatter();
                     ft.Add<uint16_t>(_loadedTrackDesign->drops & 0x3F);
                     DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
 
                     // Drop height is multiplied by 0.75
                     ft = Formatter();
                     ft.Add<uint16_t>((_loadedTrackDesign->highest_drop_height * 3) / 4);
                     DrawTextBasic(dpi, screenPos, STR_HIGHEST_DROP_HEIGHT, ft);
-                    screenPos.y += LIST_ROW_HEIGHT;
+                    screenPos.y += kListRowHeight;
                 }
 
                 if (_loadedTrackDesign->type != RIDE_TYPE_MINI_GOLF)
@@ -650,7 +649,7 @@ static Widget _trackListWidgets[] = {
                         ft.Add<uint16_t>(inversions);
                         // Inversions
                         DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
-                        screenPos.y += LIST_ROW_HEIGHT;
+                        screenPos.y += kListRowHeight;
                     }
                 }
                 screenPos.y += 4;
@@ -663,7 +662,7 @@ static Widget _trackListWidgets[] = {
                 ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
                 ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
-                screenPos.y += LIST_ROW_HEIGHT;
+                screenPos.y += kListRowHeight;
             }
 
             if (_loadedTrackDesign->cost != 0)
@@ -676,7 +675,7 @@ static Widget _trackListWidgets[] = {
 
         void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[0]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[0].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
@@ -698,7 +697,7 @@ static Widget _trackListWidgets[] = {
                 {
                     // Highlight
                     GfxFilterRect(
-                        dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                        dpi, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                         FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
@@ -710,20 +709,20 @@ static Widget _trackListWidgets[] = {
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_BUILD_CUSTOM_DESIGN);
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
                 listIndex++;
             }
 
             for (auto i : _filteredTrackIds)
             {
-                if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y < dpi.y + dpi.height)
+                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y < dpi.y + dpi.height)
                 {
                     StringId stringId;
                     if (listIndex == static_cast<size_t>(selected_list_item))
                     {
                         // Highlight
                         GfxFilterRect(
-                            dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                            dpi, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                             FilterPaletteID::PaletteDarken1);
                         stringId = STR_WINDOW_COLOUR_2_STRINGID;
                     }
@@ -739,7 +738,7 @@ static Widget _trackListWidgets[] = {
                     DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
                 }
 
-                screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y += kScrollableRowHeight;
                 listIndex++;
             }
         }
@@ -768,11 +767,11 @@ static Widget _trackListWidgets[] = {
         {
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
-            screenPos = { screenWidth / 2 - 300, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
+            screenPos = { screenWidth / 2 - 300, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
         }
         else
         {
-            screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
+            screenPos = { 0, kTopToolbarHeight + 2 };
         }
         return WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
     }

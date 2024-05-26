@@ -75,7 +75,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
     }
 
     const auto& gameState = GetGameState();
-    if (gameState.ParkEntrances.size() >= OpenRCT2::Limits::MaxParkEntrances)
+    if (gameState.Park.Entrances.size() >= OpenRCT2::Limits::MaxParkEntrances)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -121,7 +121,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
 
     uint32_t flags = GetFlags();
 
-    GetGameState().ParkEntrances.push_back(_loc);
+    GetGameState().Park.Entrances.push_back(_loc);
 
     auto zLow = _loc.z;
     auto zHigh = zLow + ParkEntranceHeight;
@@ -170,11 +170,11 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
             FootpathConnectEdges(entranceLoc, entranceElement->as<TileElement>(), GAME_COMMAND_FLAG_APPLY);
         }
 
-        ParkUpdateFences(entranceLoc);
-        ParkUpdateFences({ entranceLoc.x - COORDS_XY_STEP, entranceLoc.y });
-        ParkUpdateFences({ entranceLoc.x + COORDS_XY_STEP, entranceLoc.y });
-        ParkUpdateFences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
-        ParkUpdateFences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
+        Park::UpdateFences(entranceLoc);
+        Park::UpdateFences({ entranceLoc.x - COORDS_XY_STEP, entranceLoc.y });
+        Park::UpdateFences({ entranceLoc.x + COORDS_XY_STEP, entranceLoc.y });
+        Park::UpdateFences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
+        Park::UpdateFences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
 
         MapInvalidateTile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
 

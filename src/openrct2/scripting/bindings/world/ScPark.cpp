@@ -24,8 +24,6 @@
 #    include "../../ScriptEngine.h"
 #    include "ScParkMessage.hpp"
 
-#    include <algorithm>
-
 namespace OpenRCT2::Scripting
 {
     static const DukEnumMap<uint64_t> ParkFlagMap({
@@ -68,7 +66,7 @@ namespace OpenRCT2::Scripting
 
     int32_t ScPark::rating_get() const
     {
-        return GetGameState().ParkRating;
+        return GetGameState().Park.Rating;
     }
     void ScPark::rating_set(int32_t value)
     {
@@ -76,9 +74,9 @@ namespace OpenRCT2::Scripting
 
         auto valueClamped = std::min(std::max(0, value), 999);
         auto& gameState = GetGameState();
-        if (gameState.ParkRating != valueClamped)
+        if (gameState.Park.Rating != valueClamped)
         {
-            gameState.ParkRating = std::min(std::max(0, value), 999);
+            gameState.Park.Rating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }
@@ -121,16 +119,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::entranceFee_get() const
     {
-        return GetGameState().ParkEntranceFee;
+        return GetGameState().Park.EntranceFee;
     }
     void ScPark::entranceFee_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
         auto& gameState = GetGameState();
-        if (gameState.ParkEntranceFee != value)
+        if (gameState.Park.EntranceFee != value)
         {
-            gameState.ParkEntranceFee = value;
+            gameState.Park.EntranceFee = value;
             WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
@@ -172,16 +170,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::value_get() const
     {
-        return GetGameState().ParkValue;
+        return GetGameState().Park.Value;
     }
     void ScPark::value_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
         auto& gameState = GetGameState();
-        if (gameState.ParkValue != value)
+        if (gameState.Park.Value != value)
         {
-            gameState.ParkValue = value;
+            gameState.Park.Value = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -263,28 +261,28 @@ namespace OpenRCT2::Scripting
 
     int16_t ScPark::casualtyPenalty_get() const
     {
-        return GetGameState().ParkRatingCasualtyPenalty;
+        return GetGameState().Park.RatingCasualtyPenalty;
     }
     void ScPark::casualtyPenalty_set(int16_t value)
     {
         ThrowIfGameStateNotMutable();
-        GetGameState().ParkRatingCasualtyPenalty = value;
+        GetGameState().Park.RatingCasualtyPenalty = value;
     }
 
     uint16_t ScPark::parkSize_get() const
     {
-        return GetGameState().ParkSize;
+        return GetGameState().Park.Size;
     }
 
     std::string ScPark::name_get() const
     {
-        return GetContext()->GetGameState()->GetPark().Name;
+        return GetGameState().Park.Name;
     }
     void ScPark::name_set(std::string value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& park = GetContext()->GetGameState()->GetPark();
+        auto& park = GetGameState().Park;
         if (park.Name != value)
         {
             park.Name = std::move(value);
@@ -295,7 +293,7 @@ namespace OpenRCT2::Scripting
     bool ScPark::getFlag(const std::string& key) const
     {
         auto mask = ParkFlagMap[key];
-        return (GetGameState().ParkFlags & mask) != 0;
+        return (GetGameState().Park.Flags & mask) != 0;
     }
 
     void ScPark::setFlag(const std::string& key, bool value)
@@ -304,9 +302,9 @@ namespace OpenRCT2::Scripting
         auto mask = ParkFlagMap[key];
         auto& gameState = GetGameState();
         if (value)
-            gameState.ParkFlags |= mask;
+            gameState.Park.Flags |= mask;
         else
-            gameState.ParkFlags &= ~mask;
+            gameState.Park.Flags &= ~mask;
         GfxInvalidateScreen();
     }
 

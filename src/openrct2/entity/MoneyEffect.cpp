@@ -22,6 +22,8 @@
 #include "../world/Map.h"
 #include "EntityRegistry.h"
 
+using namespace OpenRCT2;
+
 static constexpr CoordsXY _moneyEffectMoveOffset[] = {
     { 1, -1 },
     { 1, 1 },
@@ -179,7 +181,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    if (GuestPurchase && !gConfigGeneral.ShowGuestPurchases)
+    if (GuestPurchase && !Config::Get().general.ShowGuestPurchases)
     {
         // Don't show the money effect for guest purchases when the option is disabled.
         return;

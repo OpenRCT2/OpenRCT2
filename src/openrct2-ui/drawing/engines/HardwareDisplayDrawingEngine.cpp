@@ -141,7 +141,7 @@ public:
 
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
-            uint32_t scale = std::ceil(gConfigGeneral.WindowScale);
+            uint32_t scale = std::ceil(Config::Get().general.WindowScale);
             _scaledScreenTexture = SDL_CreateTexture(
                 _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
 
@@ -169,7 +169,7 @@ public:
                 _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
             }
 
-            if (gConfigGeneral.EnableLightFx)
+            if (Config::Get().general.EnableLightFx)
             {
                 auto& lightPalette = LightFXGetPalette();
                 for (int32_t i = 0; i < 256; i++)
@@ -210,7 +210,7 @@ protected:
 private:
     void Display()
     {
-        if (gConfigGeneral.EnableLightFx)
+        if (Config::Get().general.EnableLightFx)
         {
             void* pixels;
             int32_t pitch;
@@ -244,14 +244,14 @@ private:
         }
 
         bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
-        if (isSteamOverlayActive && gConfigGeneral.SteamOverlayPause)
+        if (isSteamOverlayActive && Config::Get().general.SteamOverlayPause)
         {
             OverlayPreRenderCheck();
         }
 
         SDL_RenderPresent(_sdlRenderer);
 
-        if (isSteamOverlayActive && gConfigGeneral.SteamOverlayPause)
+        if (isSteamOverlayActive && Config::Get().general.SteamOverlayPause)
         {
             OverlayPostRenderCheck();
         }
@@ -343,8 +343,8 @@ private:
 
     void RenderDirtyVisuals()
     {
-        float scaleX = gConfigGeneral.WindowScale;
-        float scaleY = gConfigGeneral.WindowScale;
+        float scaleX = Config::Get().general.WindowScale;
+        float scaleY = Config::Get().general.WindowScale;
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
         for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)

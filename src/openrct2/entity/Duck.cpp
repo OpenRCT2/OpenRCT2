@@ -20,7 +20,6 @@
 #include "../world/Surface.h"
 #include "EntityRegistry.h"
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 

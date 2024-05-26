@@ -21,11 +21,11 @@
 
 using namespace OpenRCT2::Ui;
 
-constexpr uint32_t UNUSED_INDEX = 0xFFFFFFFF;
+constexpr uint32_t kUnusedIndex = 0xFFFFFFFF;
 
 TextureCache::TextureCache()
 {
-    std::fill(_indexMap.begin(), _indexMap.end(), UNUSED_INDEX);
+    std::fill(_indexMap.begin(), _indexMap.end(), kUnusedIndex);
 }
 
 TextureCache::~TextureCache()
@@ -38,13 +38,13 @@ void TextureCache::InvalidateImage(ImageIndex image)
     unique_lock lock(_mutex);
 
     uint32_t index = _indexMap[image];
-    if (index == UNUSED_INDEX)
+    if (index == kUnusedIndex)
         return;
 
     AtlasTextureInfo& elem = _textureCache.at(index);
 
     _atlases[elem.index].Free(elem);
-    _indexMap[image] = UNUSED_INDEX;
+    _indexMap[image] = kUnusedIndex;
 
     if (index == _textureCache.size() - 1)
     {
@@ -76,7 +76,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId imageId)
         shared_lock lock(_mutex);
 
         index = _indexMap[imageId.GetIndex()];
-        if (index != UNUSED_INDEX)
+        if (index != kUnusedIndex)
         {
             const auto& info = _textureCache[index];
             return {
@@ -144,7 +144,7 @@ BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(ImageIndex image, const vo
         shared_lock lock(_mutex);
 
         index = _indexMap[image];
-        if (index != UNUSED_INDEX)
+        if (index != kUnusedIndex)
         {
             const auto& info = _textureCache[index];
             return {
@@ -216,7 +216,7 @@ void TextureCache::CreateTextures()
 
 void TextureCache::GeneratePaletteTexture()
 {
-    static_assert(PALETTE_TOTAL_OFFSETS + 5 < 256, "Height of palette too large!");
+    static_assert(kPaletteTotalOffsets + 5 < 256, "Height of palette too large!");
     constexpr int32_t height = 256;
     constexpr int32_t width = height;
     DrawPixelInfo dpi = CreateDPI(width, height);
@@ -227,7 +227,7 @@ void TextureCache::GeneratePaletteTexture()
         dpi.bits[i] = i;
     }
 
-    for (int i = 0; i < PALETTE_TOTAL_OFFSETS; ++i)
+    for (int i = 0; i < kPaletteTotalOffsets; ++i)
     {
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
@@ -394,7 +394,7 @@ void TextureCache::FreeTextures()
     // Free array texture
     glDeleteTextures(1, &_atlasesTexture);
     _textureCache.clear();
-    std::fill(_indexMap.begin(), _indexMap.end(), UNUSED_INDEX);
+    std::fill(_indexMap.begin(), _indexMap.end(), kUnusedIndex);
 }
 
 DrawPixelInfo TextureCache::CreateDPI(int32_t width, int32_t height)

@@ -10,16 +10,14 @@
 #include "X8DrawingEngine.h"
 
 #include "../Context.h"
-#include "../Game.h"
-#include "../Intro.h"
 #include "../config/Config.h"
 #include "../core/Numerics.hpp"
 #include "../interface/Screenshot.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
-#include "../world/Climate.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
@@ -123,7 +121,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
     LightFXSetAvailable(true);
-    _lastLightFXenabled = (gConfigGeneral.EnableLightFx != 0);
+    _lastLightFXenabled = (Config::Get().general.EnableLightFx != 0);
 }
 
 X8DrawingEngine::~X8DrawingEngine()
@@ -186,10 +184,10 @@ void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32
 
 void X8DrawingEngine::BeginDraw()
 {
-    if (gIntroState == IntroState::None)
+    if (!IntroIsPlaying())
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
-        if (_lastLightFXenabled != (gConfigGeneral.EnableLightFx != 0))
+        if (_lastLightFXenabled != (Config::Get().general.EnableLightFx != 0))
         {
             Resize(_width, _height);
         }
@@ -742,4 +740,101 @@ void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, 
 void X8DrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
     GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
+}
+
+#ifndef NO_TTF
+template<bool TUseHinting>
+static void DrawTTFBitmapInternal(
+    DrawPixelInfo& dpi, uint8_t colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+{
+    const int32_t surfaceWidth = surface->w;
+    int32_t width = surfaceWidth;
+    int32_t height = surface->h;
+
+    const int32_t overflowX = (dpi.x + dpi.width) - (x + width);
+    const int32_t overflowY = (dpi.y + dpi.height) - (y + height);
+    if (overflowX < 0)
+        width += overflowX;
+    if (overflowY < 0)
+        height += overflowY;
+    int32_t skipX = x - dpi.x;
+    int32_t skipY = y - dpi.y;
+
+    auto src = static_cast<const uint8_t*>(surface->pixels);
+    uint8_t* dst = dpi.bits;
+
+    if (skipX < 0)
+    {
+        width += skipX;
+        src += -skipX;
+        skipX = 0;
+    }
+    if (skipY < 0)
+    {
+        height += skipY;
+        src += (-skipY * surfaceWidth);
+        skipY = 0;
+    }
+
+    dst += skipX;
+    dst += skipY * (dpi.width + dpi.pitch);
+
+    const int32_t srcScanSkip = surfaceWidth - width;
+    const int32_t dstScanSkip = dpi.width + dpi.pitch - width;
+    for (int32_t yy = 0; yy < height; yy++)
+    {
+        for (int32_t xx = 0; xx < width; xx++)
+        {
+            if (*src != 0)
+            {
+                if constexpr (TUseHinting)
+                {
+                    if (*src > 180)
+                    {
+                        // Centre of the glyph: use full colour.
+                        *dst = colour;
+                    }
+                    else if (*src > hintingThreshold)
+                    {
+                        *dst = BlendColours(colour, *dst);
+                    }
+                }
+                else
+                {
+                    *dst = colour;
+                }
+            }
+            src++;
+            dst++;
+        }
+        src += srcScanSkip;
+        dst += dstScanSkip;
+    }
+}
+#endif // NO_TTF
+
+void X8DrawingContext::DrawTTFBitmap(
+    DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+{
+#ifndef NO_TTF
+    const uint8_t fgColor = info->palette[1];
+    const uint8_t bgColor = info->palette[3];
+
+    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    {
+        DrawTTFBitmapInternal<false>(dpi, bgColor, surface, x + 1, y, 0);
+        DrawTTFBitmapInternal<false>(dpi, bgColor, surface, x - 1, y, 0);
+        DrawTTFBitmapInternal<false>(dpi, bgColor, surface, x, y + 1, 0);
+        DrawTTFBitmapInternal<false>(dpi, bgColor, surface, x, y - 1, 0);
+    }
+    if (info->flags & TEXT_DRAW_FLAG_INSET)
+    {
+        DrawTTFBitmapInternal<false>(dpi, bgColor, surface, x + 1, y + 1, 0);
+    }
+
+    if (hintingThreshold > 0)
+        DrawTTFBitmapInternal<true>(dpi, fgColor, surface, x, y, hintingThreshold);
+    else
+        DrawTTFBitmapInternal<false>(dpi, fgColor, surface, x, y, 0);
+#endif // NO_TTF
 }

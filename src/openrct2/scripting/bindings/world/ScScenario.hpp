@@ -20,8 +20,6 @@
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 
-#    include <algorithm>
-
 namespace OpenRCT2::Scripting
 {
     static const DukEnumMap<uint32_t> ScenarioObjectiveTypeMap({

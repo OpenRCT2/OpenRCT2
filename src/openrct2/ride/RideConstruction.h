@@ -22,6 +22,9 @@ using track_type_t = uint16_t;
 
 struct TileElement;
 struct CoordsXYE;
+struct RideTypeDescriptor;
+struct TrackDrawerDescriptor;
+struct TrackDrawerEntry;
 
 enum class RideConstructionState : uint8_t
 {
@@ -59,7 +62,7 @@ extern TrackPitch _previousTrackPitchEnd;
 
 extern CoordsXYZ _previousTrackPiece;
 
-extern uint8_t _currentBrakeSpeed2;
+extern uint8_t _currentBrakeSpeed;
 extern uint8_t _currentSeatRotationAngle;
 
 extern CoordsXYZD _unkF440C5;
@@ -92,3 +95,6 @@ bool RideSelectBackwardsFromFront();
 bool RideSelectForwardsFromBack();
 
 void RideConstructionStart(Ride& ride);
+
+TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& rtd);
+TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd);

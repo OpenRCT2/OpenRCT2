@@ -19,7 +19,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/IniReaderTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/IniWriterTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/LanguagePackTest.cpp"
-   "${CMAKE_CURRENT_SOURCE_DIR}/Localisation.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/LocalisationTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/MultiLaunch.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Pathfinding.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Platform.cpp"

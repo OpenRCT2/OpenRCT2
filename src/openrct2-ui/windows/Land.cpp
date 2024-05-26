@@ -264,7 +264,7 @@ static Widget window_land_widgets[] = {
 
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
 
-            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Draw raise cost amount
                 if (gLandToolRaiseCost != kMoney64Undefined && gLandToolRaiseCost != 0)
@@ -325,7 +325,7 @@ static Widget window_land_widgets[] = {
             if (surfaceObj != nullptr)
             {
                 surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != 255)
+                if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
                     surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
             }
 

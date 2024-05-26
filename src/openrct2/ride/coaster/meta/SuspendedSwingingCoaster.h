@@ -17,19 +17,19 @@
 // clang-format off
 constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_UNBANKED_QUARTER, TRACK_HELIX_UP_UNBANKED_QUARTER, TRACK_BRAKES, TRACK_BLOCK_BRAKES},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSuspendedSwingingRC),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionSuspendedSwingingRC,
+        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_UNBANKED_QUARTER, TRACK_HELIX_UP_UNBANKED_QUARTER, TRACK_BRAKES, TRACK_BLOCK_BRAKES},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_IS_SUSPENDED,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_SUSPENDED_SWINGING_COASTER, STR_RIDE_DESCRIPTION_SUSPENDED_SWINGING_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_SUSPENDED_SWINGING_COASTER),

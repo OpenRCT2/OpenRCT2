@@ -14,10 +14,10 @@ namespace RCT12::Limits
 {
     constexpr uint8_t MaxRideObjects = 128;
 
-    constexpr uint8_t MaxRidesInPark = 255;
+    constexpr uint8_t kMaxRidesInPark = 255;
     constexpr uint8_t MaxAwards = 4;
     constexpr uint8_t MaxNewsItems = 61;
-    constexpr uint8_t MaxStationsPerRide = 4;
+    constexpr uint8_t kMaxStationsPerRide = 4;
     constexpr uint8_t MaxPeepSpawns = 2;
     constexpr uint8_t MaxParkEntrances = 4;
     // The number of elements in the patrol_areas array per staff member. Every bit in the array represents a 4x4 square.
@@ -39,11 +39,11 @@ namespace RCT12::Limits
 
     constexpr uint16_t RideMeasurementMaxItems = 4800;
 
-    constexpr uint16_t const MaxInversions = 31;
-    constexpr uint16_t const MaxGolfHoles = 31;
-    constexpr uint16_t const MaxHelices = 31;
+    constexpr uint16_t const kMaxInversions = 31;
+    constexpr uint16_t const kMaxGolfHoles = 31;
+    constexpr uint16_t const kMaxHelices = 31;
     constexpr uint8_t MaxElementHeight = 255;
-    constexpr uint8_t CustomerHistorySize = 10;
+    constexpr uint8_t kCustomerHistorySize = 10;
 
     constexpr uint8_t MaxWaitingTime = 250;
 } // namespace RCT12::Limits

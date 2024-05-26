@@ -50,7 +50,7 @@ GameActions::Result SignSetStyleAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner id. id = ", _bannerIndex);
+        LOG_ERROR("Banner not found for bannerIndex %u", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -59,12 +59,13 @@ GameActions::Result SignSetStyleAction::Query() const
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
         if (tileElement == nullptr)
         {
-            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_ERROR("Banner tile element not found for bannerIndex %u", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
         if (tileElement->GetType() != TileElementType::LargeScenery)
         {
-            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
+            LOG_ERROR(
+                "Tile element has type %u, expected %d (LargeScenery)", tileElement->GetType(), TileElementType::LargeScenery);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
@@ -74,7 +75,7 @@ GameActions::Result SignSetStyleAction::Query() const
 
         if (wallElement == nullptr)
         {
-            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
@@ -87,7 +88,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_ERROR("Invalid banner id. id = ", _bannerIndex);
+        LOG_ERROR("Invalid banner id %u", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

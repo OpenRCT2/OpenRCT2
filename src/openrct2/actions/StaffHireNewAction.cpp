@@ -20,6 +20,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../peep/PeepAnimationData.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -85,10 +86,8 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
     {
-        // Invalid staff type.
-        LOG_ERROR("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
-
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+        LOG_ERROR("Invalid staff type %u", static_cast<uint32_t>(_staffType));
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (GetNumFreeEntities() < 400)
@@ -100,19 +99,17 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
     {
         if (static_cast<uint8_t>(_entertainerType) >= static_cast<uint8_t>(EntertainerCostume::Count))
         {
-            // Invalid entertainer costume
-            LOG_ERROR("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
-
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+            LOG_ERROR("Invalid entertainer type %u", static_cast<uint32_t>(_entertainerType));
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         uint32_t availableCostumes = StaffGetAvailableEntertainerCostumes();
         if (!(availableCostumes & (1 << static_cast<uint8_t>(_entertainerType))))
         {
-            // Entertainer costume unavailable
-            LOG_ERROR("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
-
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+            LOG_ERROR("Unavailable entertainer costume %u", static_cast<uint32_t>(_entertainerType));
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
         }
     }
 
@@ -292,10 +289,10 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     {
         // No walking guests; pick random park entrance
         const auto& gameState = GetGameState();
-        if (!gameState.ParkEntrances.empty())
+        if (!gameState.Park.Entrances.empty())
         {
-            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.ParkEntrances.size()));
-            const auto& entrance = gameState.ParkEntrances[rand];
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.Park.Entrances.size()));
+            const auto& entrance = gameState.Park.Entrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;
             // TODO: Replace with CoordsDirectionDelta

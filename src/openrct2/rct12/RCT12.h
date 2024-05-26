@@ -929,7 +929,7 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
 {
     std::vector<RideId> ridesBeenOn;
-    for (uint16_t i = 0; i < RCT12::Limits::MaxRidesInPark; i++)
+    for (uint16_t i = 0; i < RCT12::Limits::kMaxRidesInPark; i++)
     {
         if (srcPeep->RidesBeenOn[i / 8] & (1 << (i % 8)))
         {

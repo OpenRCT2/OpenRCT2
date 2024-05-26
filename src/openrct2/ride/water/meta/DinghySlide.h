@@ -17,13 +17,21 @@
 // clang-format off
 constexpr RideTypeDescriptor DinghySlideRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_WATER,
-    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {TrackElemType::Flat, TrackElemType::Up25, TrackElemType::Up60, TrackElemType::FlatToUp25, TrackElemType::Up25ToUp60, TrackElemType::Up60ToUp25, TrackElemType::Up25ToFlat, TrackElemType::Down25, TrackElemType::Down60, TrackElemType::FlatToDown25, TrackElemType::Down25ToDown60, TrackElemType::Down60ToDown25, TrackElemType::Down25ToFlat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight, TrackElemType::LeftQuarterTurn3Tiles,TrackElemType::RightQuarterTurn3Tiles},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionDinghySlide, GetTrackPaintFunctionDinghySlideCovered),
+    .TrackPaintFunctions = TrackDrawerDescriptor(
+        {
+            .Drawer = GetTrackPaintFunctionDinghySlide,
+            .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE },
+            .ExtraTrackPieces = {},
+        }, 
+        {
+            .Drawer = GetTrackPaintFunctionDinghySlideCovered,
+            .EnabledTrackPieces = {TrackElemType::Flat, TrackElemType::Up25, TrackElemType::Up60, TrackElemType::FlatToUp25, TrackElemType::Up25ToUp60, TrackElemType::Up60ToUp25, TrackElemType::Up25ToFlat, TrackElemType::Down25, TrackElemType::Down60, TrackElemType::FlatToDown25, TrackElemType::Down25ToDown60, TrackElemType::Down60ToDown25, TrackElemType::Down25ToFlat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight, TrackElemType::LeftQuarterTurn3Tiles,TrackElemType::RightQuarterTurn3Tiles},
+            .ExtraTrackPieces = {},
+        }
+    ),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES |
@@ -33,7 +41,6 @@ constexpr RideTypeDescriptor DinghySlideRTD =
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_DINGHY_SLIDE),

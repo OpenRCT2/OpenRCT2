@@ -70,25 +70,23 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
     if (_loc.x < 0 || _loc.y < 0 || _loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y)
     {
         LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (_primaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR("Invalid primary colour: colour = %u", _primaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        LOG_ERROR("Invalid primary colour %u", _primaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
     }
-
-    if (_secondaryColour >= COLOUR_COUNT)
+    else if (_secondaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR("Invalid secondary colour: colour = %u", _secondaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
     }
-
-    if (_tertiaryColour >= COLOUR_COUNT)
+    else if (_tertiaryColour >= COLOUR_COUNT)
     {
-        LOG_ERROR("Invalid tertiary colour: colour = %u", _tertiaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
     }
 
     auto largeElement = MapGetLargeScenerySegment(_loc, _tileIndex);
@@ -110,7 +108,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
     if (sceneryEntry == nullptr)
     {
-        LOG_ERROR("Could not find scenery object. type = %u", largeElement->GetEntryIndex());
+        LOG_ERROR("Scenery element doesn't have scenery entry");
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     // Work out the base tile coordinates (Tile with index 0)

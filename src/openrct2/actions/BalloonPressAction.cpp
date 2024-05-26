@@ -39,7 +39,7 @@ GameActions::Result BalloonPressAction::Query() const
     auto balloon = TryGetEntity<Balloon>(_spriteIndex);
     if (balloon == nullptr)
     {
-        LOG_ERROR("Tried getting invalid sprite for balloon: %u", _spriteIndex);
+        LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
     }
@@ -51,7 +51,7 @@ GameActions::Result BalloonPressAction::Execute() const
     auto balloon = TryGetEntity<Balloon>(_spriteIndex);
     if (balloon == nullptr)
     {
-        LOG_ERROR("Tried getting invalid sprite for balloon: %u", _spriteIndex);
+        LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
     }

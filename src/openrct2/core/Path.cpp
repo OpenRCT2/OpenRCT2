@@ -17,7 +17,6 @@
 #include "Memory.hpp"
 #include "String.hpp"
 
-#include <algorithm>
 #include <iterator>
 
 namespace Path

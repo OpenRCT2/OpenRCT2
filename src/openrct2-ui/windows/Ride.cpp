@@ -7,9 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
 #include "../interface/Theme.h"
 
-#include <algorithm>
 #include <cmath>
 #include <iterator>
 #include <limits>
@@ -42,12 +42,12 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/StationObject.h>
+#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -168,6 +168,8 @@ enum {
     WIDX_LOCATE_MECHANIC,
     WIDX_REFURBISH_RIDE,
     WIDX_FORCE_BREAKDOWN,
+    WIDX_RELIABILITY_BAR,
+    WIDX_DOWN_TIME_BAR,
 
     WIDX_TRACK_PREVIEW = 14,
     WIDX_TRACK_COLOUR_SCHEME,
@@ -242,11 +244,11 @@ constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 // 0x009ADC34
 static Widget _mainWidgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({  3,  60}, {288, 107}, WindowWidgetType::Viewport,      WindowColour::Secondary, STR_VIEWPORT                                           ),
-    MakeWidget({ 35,  46}, {222,  12}, WindowWidgetType::DropdownMenu,      WindowColour::Secondary, 0xFFFFFFFF,                 STR_VIEW_SELECTION         ),
-    MakeWidget({245,  47}, { 11,  10}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIEW_SELECTION         ),
-    MakeWidget({  3, 167}, {288,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                                         ),
-    MakeWidget({291,  46}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
+    MakeWidget({  3,  60}, {288, 107}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                  ),
+    MakeWidget({ 35,  46}, {222,  12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, kWidgetContentEmpty,                 STR_VIEW_SELECTION         ),
+    MakeWidget({245,  47}, { 11,  10}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH,                  STR_VIEW_SELECTION         ),
+    MakeWidget({  3, 167}, {288,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                  ),
+    MakeWidget({291,  46}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, kWidgetContentEmpty,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
     MakeWidget({291,  70}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),           STR_CONSTRUCTION           ),
     MakeWidget({291,  94}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_RIDE_TIP          ),
     MakeWidget({291, 118}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP     ),
@@ -303,6 +305,8 @@ static Widget _maintenanceWidgets[] = {
     MakeWidget({289, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,         STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
     MakeWidget({265, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),   STR_REFURBISH_RIDE_TIP                                ),
     MakeWidget({241, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
+    MakeProgressBar({107, 47}, { 147, 10}, COLOUR_BRIGHT_GREEN),
+    MakeProgressBar({107, 58}, { 147, 10}, COLOUR_BRIGHT_RED),
     kWidgetsEnd,
 };
 
@@ -1281,7 +1285,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
-                || (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) != 0)
+                || (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
                 disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
@@ -1468,7 +1472,7 @@ static_assert(std::size(RatingNames) == 6);
                 newViewportFlags = viewport->flags;
                 RemoveViewport();
             }
-            else if (gConfigGeneral.AlwaysShowGridlines)
+            else if (Config::Get().general.AlwaysShowGridlines)
             {
                 newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
             }
@@ -1981,10 +1985,9 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             Widget* dropdownWidget = widget - 1;
-            auto ddWidth = WindowDropDownHasMultipleColumns(numItems) ? dropdownWidget->width() - 24 : dropdownWidget->width();
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, numItems, ddWidth);
+                colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width());
 
             // Find the current vehicle type in the ordered list.
             int32_t pos = 0;
@@ -2039,9 +2042,9 @@ static_assert(std::size(RatingNames) == 6);
             for (size_t i = 0; i < _entranceDropdownData.size(); i++)
             {
                 gDropdownItems[i].Args = _entranceDropdownData[i].LabelId;
-                gDropdownItems[i].Format = _entranceDropdownData[i].EntranceTypeId == ride->entrance_style
-                    ? STR_DROPDOWN_MENU_LABEL_SELECTED
-                    : STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                if (_entranceDropdownData[i].EntranceTypeId == ride->entrance_style)
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL_SELECTED;
             }
 
             WindowDropdownShowTextCustomWidth(
@@ -2417,7 +2420,11 @@ static_assert(std::size(RatingNames) == 6);
             const RideComponentName stationName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station);
             ft.Add<StringId>(ride->num_stations > 1 ? stationName.number : stationName.singular);
             ft.Add<uint16_t>(vehicle->current_station.ToUnderlying() + 1);
-            return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
+
+            if (stringId != STR_CRASHING && stringId != STR_CRASHED_0)
+                return STR_BLACK_STRING;
+            else
+                return STR_RED_OUTLINED_STRING;
         }
 
         StringId GetStatusStation(Formatter& ft) const
@@ -2559,7 +2566,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void VehicleResize()
         {
-            WindowSetResize(*this, 316, 221, 316, 221);
+            auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6;
+            WindowSetResize(*this, 316, bottom, 316, bottom);
         }
 
         void VehicleOnMouseDown(WidgetIndex widgetIndex)
@@ -2577,7 +2585,7 @@ static_assert(std::size(RatingNames) == 6);
                     ride->SetReversedTrains(!ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS));
                     break;
                 case WIDX_VEHICLE_TRAINS_INCREASE:
-                    if (ride->NumTrains < OpenRCT2::Limits::MaxTrainsPerRide)
+                    if (ride->NumTrains < OpenRCT2::Limits::kMaxTrainsPerRide)
                         ride->SetNumTrains(ride->NumTrains + 1);
                     break;
                 case WIDX_VEHICLE_TRAINS_DECREASE:
@@ -2805,7 +2813,7 @@ static_assert(std::size(RatingNames) == 6);
             // Excitement Factor
             if (rideEntry->excitement_multiplier != 0)
             {
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
 
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->excitement_multiplier));
@@ -2821,7 +2829,7 @@ static_assert(std::size(RatingNames) == 6);
                 if (lineHeight != 10)
                     screenCoords.x += 150;
                 else
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->intensity_multiplier));
@@ -2835,12 +2843,25 @@ static_assert(std::size(RatingNames) == 6);
             // Nausea Factor
             if (rideEntry->nausea_multiplier != 0)
             {
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
 
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
                 StringId stringId = rideEntry->nausea_multiplier > 0 ? STR_NAUSEA_FACTOR : STR_NAUSEA_FACTOR_NEGATIVE;
                 DrawTextBasic(dpi, screenCoords, stringId, ft);
+            }
+
+            const auto minimumPreviewStart = screenCoords.y - windowPos.y + kListRowHeight + 5;
+            if (minimumPreviewStart > widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top)
+            {
+                auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
+                height += heightIncrease;
+                ResizeFrameWithPage();
+
+                for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
+                {
+                    widgets[i].moveDown(heightIncrease);
+                }
             }
         }
 
@@ -2932,7 +2953,7 @@ static_assert(std::size(RatingNames) == 6);
                     y -= (carEntry.spacing / 2) / 17432;
                 }
 
-                if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
+                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW))
                 {
                     VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
                     *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
@@ -3377,10 +3398,10 @@ static_assert(std::size(RatingNames) == 6);
                 | (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX));
 
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
-            bool hasAlternativeType = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
-            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_LIFT_HILL)
-                || (hasAlternativeType
-                    && GetRideTypeDescriptor(ride->GetRideTypeDescriptor().AlternateType).SupportsTrackPiece(TRACK_LIFT_HILL)))
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            bool hasAlternativeType = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
+            if (rtd.TrackPaintFunctions.Regular.SupportsTrackPiece(TRACK_LIFT_HILL)
+                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.SupportsTrackPiece(TRACK_LIFT_HILL)))
             {
                 widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_LIFT_HILL_SPEED].type = WindowWidgetType::Spinner;
@@ -3608,7 +3629,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<uint16_t>(ride->num_block_brakes + ride->num_stations);
                 DrawTextBasic(
                     dpi, windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 },
-                    STR_BLOCK_SECTIONS, ft, COLOUR_BLACK);
+                    STR_BLOCK_SECTIONS, ft, { COLOUR_BLACK });
             }
         }
 
@@ -3636,23 +3657,6 @@ static_assert(std::size(RatingNames) == 6);
                 auto intent = Intent(WindowClass::Peep);
                 intent.PutExtra(INTENT_EXTRA_PEEP, mechanic);
                 ContextOpenIntent(&intent);
-            }
-        }
-
-        void MaintenanceDrawBar(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour) const
-        {
-            GfxFillRectInset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, colours[1], INSET_RECT_F_30);
-            if (colour & kBarBlink)
-            {
-                colour &= ~kBarBlink;
-                if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))
-                    return;
-            }
-
-            value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
-            if (value > 2)
-            {
-                GfxFillRectInset(dpi, { coords + ScreenCoordsXY{ 2, 1 }, coords + ScreenCoordsXY{ value + 1, 7 } }, colour, 0);
             }
         }
 
@@ -3926,7 +3930,7 @@ static_assert(std::size(RatingNames) == 6);
             AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (gConfigGeneral.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (Config::Get().general.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 widgets[WIDX_FORCE_BREAKDOWN].type = WindowWidgetType::FlatBtn;
             }
@@ -3976,15 +3980,14 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter();
             ft.Add<uint16_t>(reliability);
             DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
-            MaintenanceDrawBar(
-                dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, std::max<int32_t>(10, reliability), COLOUR_BRIGHT_GREEN);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
             screenCoords.y += 11;
 
             uint16_t downTime = ride->downtime;
             ft = Formatter();
             ft.Add<uint16_t>(downTime);
             DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
-            MaintenanceDrawBar(dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, downTime, COLOUR_BRIGHT_RED);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
             screenCoords.y += 26;
 
             // Last inspection
@@ -5287,7 +5290,7 @@ static_assert(std::size(RatingNames) == 6);
                 disabled_widgets |= (1uLL << WIDX_SAVE_TRACK_DESIGN);
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
                 {
-                    if (ride->excitement != RIDE_RATING_UNDEFINED)
+                    if (ride->excitement != kRideRatingUndefined)
                     {
                         disabled_widgets &= ~(1uLL << WIDX_SAVE_TRACK_DESIGN);
                         widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
@@ -5336,7 +5339,7 @@ static_assert(std::size(RatingNames) == 6);
                     StringId stringId = !RideHasRatings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE
                                                                : STR_EXCITEMENT_RATING;
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     // Intensity
                     ratingName = GetRatingName(ride->intensity);
@@ -5351,7 +5354,7 @@ static_assert(std::size(RatingNames) == 6);
                         stringId = STR_INTENSITY_RATING_RED;
 
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
-                    screenCoords.y += LIST_ROW_HEIGHT;
+                    screenCoords.y += kListRowHeight;
 
                     // Nausea
                     ratingName = GetRatingName(ride->nausea);
@@ -5360,7 +5363,7 @@ static_assert(std::size(RatingNames) == 6);
                     ft.Add<StringId>(ratingName);
                     stringId = !RideHasRatings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
-                    screenCoords.y += 2 * LIST_ROW_HEIGHT;
+                    screenCoords.y += 2 * kListRowHeight;
 
                     // Horizontal rule
                     GfxFillRectInset(
@@ -5375,7 +5378,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<uint16_t>(ride->holes);
                             DrawTextBasic(dpi, screenCoords, STR_HOLES, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
                         else
                         {
@@ -5383,13 +5386,13 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<int32_t>((ride->max_speed * 9) >> 18);
                             DrawTextBasic(dpi, screenCoords, STR_MAX_SPEED, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Average speed
                             ft = Formatter();
                             ft.Add<int32_t>((ride->average_speed * 9) >> 18);
                             DrawTextBasic(dpi, screenCoords, STR_AVERAGE_SPEED, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Ride time
                             ft = Formatter();
@@ -5429,7 +5432,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft.Add<uint16_t>(0);
                             ft.Add<uint16_t>(0);
                             DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
 
                         // Ride length
@@ -5470,7 +5473,7 @@ static_assert(std::size(RatingNames) == 6);
                         ft.Add<uint16_t>(0);
                         DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
 
-                        screenCoords.y += LIST_ROW_HEIGHT;
+                        screenCoords.y += kListRowHeight;
 
                         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
                         {
@@ -5480,7 +5483,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->max_positive_vertical_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Max. negative vertical G's
                             stringId = ride->max_negative_vertical_g <= RIDE_G_FORCES_RED_NEG_VERTICAL
@@ -5489,7 +5492,7 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<int32_t>(ride->max_negative_vertical_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Max lateral G's
                             stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED
@@ -5497,13 +5500,13 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->max_lateral_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Total 'air' time
                             ft = Formatter();
                             ft.Add<fixed32_2dp>(ride->total_air_time * 3);
                             DrawTextBasic(dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
 
                         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
@@ -5513,14 +5516,14 @@ static_assert(std::size(RatingNames) == 6);
                             ft = Formatter();
                             ft.Add<uint16_t>(drops);
                             DrawTextBasic(dpi, screenCoords, STR_DROPS, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
 
                             // Highest drop height
                             auto highestDropHeight = (ride->highest_drop_height * 3) / 4;
                             ft = Formatter();
                             ft.Add<int32_t>(highestDropHeight);
                             DrawTextBasic(dpi, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
-                            screenCoords.y += LIST_ROW_HEIGHT;
+                            screenCoords.y += kListRowHeight;
                         }
 
                         if (ride->type != RIDE_TYPE_MINI_GOLF)
@@ -5531,7 +5534,7 @@ static_assert(std::size(RatingNames) == 6);
                                 ft = Formatter();
                                 ft.Add<uint16_t>(ride->inversions);
                                 DrawTextBasic(dpi, screenCoords, STR_INVERSIONS, ft);
-                                screenCoords.y += LIST_ROW_HEIGHT;
+                                screenCoords.y += kListRowHeight;
                             }
                         }
                     }
@@ -5735,7 +5738,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // Anchor graph widget
             auto x = width - 4;
-            auto y = height - BUTTON_FACE_HEIGHT - 8;
+            auto y = height - kButtonFaceHeight - 8;
 
             widgets[WIDX_GRAPH].right = x;
             widgets[WIDX_GRAPH].bottom = y;
@@ -5744,7 +5747,7 @@ static_assert(std::size(RatingNames) == 6);
             widgets[WIDX_GRAPH_ALTITUDE].top = y;
             widgets[WIDX_GRAPH_VERTICAL].top = y;
             widgets[WIDX_GRAPH_LATERAL].top = y;
-            y += BUTTON_FACE_HEIGHT + 1;
+            y += kButtonFaceHeight + 1;
             widgets[WIDX_GRAPH_VELOCITY].bottom = y;
             widgets[WIDX_GRAPH_ALTITUDE].bottom = y;
             widgets[WIDX_GRAPH_VERTICAL].bottom = y;
@@ -6070,7 +6073,7 @@ static_assert(std::size(RatingNames) == 6);
 
             auto rideEntry = ride->GetRideEntry();
             const auto& rtd = ride->GetRideTypeDescriptor();
-            return ParkRidePricesUnlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
+            return Park::RidePricesUnlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
         }
 
@@ -6096,7 +6099,7 @@ static_assert(std::size(RatingNames) == 6);
 
         void IncomeOnMouseUp(WidgetIndex widgetIndex)
         {
-            utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
+            utf8 _moneyInputText[kMoneyStringMaxlength] = {};
 
             switch (widgetIndex)
             {
@@ -6123,10 +6126,10 @@ static_assert(std::size(RatingNames) == 6);
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
-                        MoneyToString(ride->price[0], _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                        MoneyToString(ride->price[0], _moneyInputText, kMoneyStringMaxlength, true);
                         WindowTextInputRawOpen(
                             this, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                            MONEY_STRING_MAXLENGTH);
+                            kMoneyStringMaxlength);
                     }
                     break;
                 }
@@ -6137,10 +6140,10 @@ static_assert(std::size(RatingNames) == 6);
                 {
                     auto price64 = IncomeGetSecondaryPrice();
 
-                    MoneyToString(price64, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                    MoneyToString(price64, _moneyInputText, kMoneyStringMaxlength, true);
                     WindowTextInputRawOpen(
                         this, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
-                        MONEY_STRING_MAXLENGTH);
+                        kMoneyStringMaxlength);
                 }
                 break;
                 case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:
@@ -6245,7 +6248,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!ParkRidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
+            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
                 && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
             {
                 disabled_widgets |= (1uLL << WIDX_PRIMARY_PRICE);
@@ -6393,7 +6396,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<money64>(ride->income_per_hour);
 
                 DrawTextBasic(dpi, screenCoords, STR_INCOME_PER_HOUR, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Running cost per hour
@@ -6402,7 +6405,7 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter();
             ft.Add<money64>(costPerHour);
             DrawTextBasic(dpi, screenCoords, stringId, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Profit per hour
             if (ride->profit != kMoney64Undefined)
@@ -6410,7 +6413,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft = Formatter();
                 ft.Add<money64>(ride->profit);
                 DrawTextBasic(dpi, screenCoords, STR_PROFIT_PER_HOUR, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 5;
 
@@ -6550,14 +6553,14 @@ static_assert(std::size(RatingNames) == 6);
                 auto ft = Formatter();
                 ft.Add<int16_t>(ride->num_riders);
                 DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Customers per hour
             auto ft = Formatter();
             ft.Add<int32_t>(RideCustomersPerHour(*ride));
             DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Popularity
             popularity = ride->popularity;
@@ -6573,7 +6576,7 @@ static_assert(std::size(RatingNames) == 6);
             ft = Formatter();
             ft.Add<int16_t>(popularity);
             DrawTextBasic(dpi, screenCoords, stringId, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Satisfaction
             satisfaction = ride->satisfaction;
@@ -6589,7 +6592,7 @@ static_assert(std::size(RatingNames) == 6);
             ft = Formatter();
             ft.Add<int16_t>(satisfaction);
             DrawTextBasic(dpi, screenCoords, stringId, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Queue time
             if (ride->IsRide())
@@ -6610,7 +6613,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
                 ft.Add<uint32_t>(ride->no_primary_items_sold);
                 DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Secondary shop items sold / on-ride photos sold
@@ -6622,14 +6625,14 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
                 ft.Add<uint32_t>(ride->no_secondary_items_sold);
                 DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
 
             // Total customers
             ft = Formatter();
             ft.Add<uint32_t>(ride->total_customers);
             DrawTextBasic(dpi, screenCoords, STR_TOTAL_CUSTOMERS, ft);
-            screenCoords.y += LIST_ROW_HEIGHT;
+            screenCoords.y += kListRowHeight;
 
             // Guests favourite
             if (ride->IsRide())
@@ -6638,7 +6641,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<uint32_t>(ride->guests_favourite);
                 stringId = ride->guests_favourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
                 DrawTextBasic(dpi, screenCoords, stringId, ft);
-                screenCoords.y += LIST_ROW_HEIGHT;
+                screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 2;
 
@@ -6797,7 +6800,7 @@ static_assert(std::size(RatingNames) == 6);
 
         // Get view index
         int16_t view = 1;
-        for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+        for (int32_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
         {
             if (ride->vehicles[i] == headVehicleSpriteIndex)
                 break;

@@ -405,16 +405,20 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                 _resizeDirection = ResizeDirection::Both;
 
             if (_resizeDirection != ResizeDirection::X)
-                _mapSize.y = std::clamp(_mapSize.y + sizeOffset, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+                _mapSize.y = std::clamp(
+                    _mapSize.y + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
+                    static_cast<int>(kMaximumMapSizeTechnical));
             if (_resizeDirection != ResizeDirection::Y)
-                _mapSize.x = std::clamp(_mapSize.x + sizeOffset, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+                _mapSize.x = std::clamp(
+                    _mapSize.x + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
+                    static_cast<int>(kMaximumMapSizeTechnical));
         }
 
         void InputMapSize(WidgetIndex callingWidget, int32_t currentValue)
         {
             Formatter ft;
-            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
-            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int16_t>(kMinimumMapSizePractical);
+            ft.Add<int16_t>(kMaximumMapSizePractical);
 
             // Practical map size is 2 lower than the technical map size
             currentValue -= 2;
@@ -650,13 +654,13 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             if (IsWidgetDisabled(widgetIndex))
             {
                 // Draw greyed out (light border bottom right shadow)
-                auto colour = colours[widget.colour];
-                colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
+                auto colour = colours[widget.colour].colour;
+                colour = ColourMapA[colour].lighter;
                 GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
 
                 // Draw greyed out (dark)
-                colour = colours[widget.colour];
-                colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
+                colour = colours[widget.colour].colour;
+                colour = ColourMapA[colour].mid_light;
                 GfxDrawSpriteSolid(dpi, image, pos, colour);
             }
             else
@@ -674,7 +678,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             if (surfaceObj != nullptr)
             {
                 surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != 255)
+                if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
                 {
                     surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
                 }
@@ -1009,7 +1013,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             DrawTabImages(dpi);
             DrawDropdownButtons(dpi, WIDX_SIMPLEX_FLOOR_TEXTURE, WIDX_SIMPLEX_WALL_TEXTURE);
 
-            const uint8_t textColour = colours[1];
+            const auto textColour = colours[1];
 
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_SIMPLEX_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
@@ -1085,7 +1089,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_LOW_UP:
-                    _heightmapLow = std::min(_heightmapLow + 1, 142 - 1);
+                    _heightmapLow = std::min(_heightmapLow + 1, kMaximumWaterHeight - 1);
                     _heightmapHigh = std::max(_heightmapHigh, _heightmapLow + 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
@@ -1094,7 +1098,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
-                    _heightmapHigh = std::min(_heightmapHigh + 1, 142);
+                    _heightmapHigh = std::min<int32_t>(_heightmapHigh + 1, kMaximumWaterHeight);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
@@ -1194,11 +1198,11 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            const colour_t enabledColour = colours[1];
-            const colour_t disabledColour = enabledColour | COLOUR_FLAG_INSET;
+            const auto enabledColour = colours[1];
+            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Smooth strength label and value
-            const colour_t strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
+            const auto strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
                 { strengthColour });
@@ -1212,7 +1216,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                 STR_COMMA16, ft, { strengthColour });
 
             // Low label and value
-            const colour_t labelColour = _heightmapLoaded ? enabledColour : disabledColour;
+            const auto labelColour = _heightmapLoaded ? enabledColour : disabledColour;
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
                 { labelColour });

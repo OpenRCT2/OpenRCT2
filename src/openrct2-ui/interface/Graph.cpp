@@ -7,12 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Context.h>
 #include <openrct2/Date.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+
+using namespace OpenRCT2;
 
 namespace Graph
 {

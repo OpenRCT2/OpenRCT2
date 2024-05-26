@@ -12,6 +12,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"
@@ -64,9 +66,9 @@ static void PaintHauntedHouse(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = track_map_3x3[direction][trackSequence];
+    trackSequence = kTrackMap3x3[direction][trackSequence];
 
-    int32_t edges = edges_3x3[trackSequence];
+    int32_t edges = kEdges3x3[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
@@ -74,11 +76,11 @@ static void PaintHauntedHouse(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-        fenceSpritesRope, session.CurrentRotation);
+        kFenceSpritesRope, session.CurrentRotation);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
@@ -118,7 +120,7 @@ static void PaintHauntedHouse(
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionHauntedHouse(int32_t trackType)

@@ -9,10 +9,12 @@
 
 #pragma once
 
-#define NETWORK_DEFAULT_PORT 11753
-#define NETWORK_LAN_BROADCAST_PORT 11754
-#define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
-#define MAX_SERVER_DESCRIPTION_LENGTH 256
+#include <cstdint>
+
+constexpr uint16_t kNetworkDefaultPort = 11753;
+constexpr uint16_t kNetworkLanBroadcastPort = 11754;
+constexpr const char* kNetworkLanBroadcastMsg = "openrct2.server.query";
+constexpr uint16_t kMaxServerDescriptionLength = 256;
 
 #include "../Game.h"
 #include "../common.h"

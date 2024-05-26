@@ -31,6 +31,7 @@
 #include "RideConstruction.h"
 #include "RideEntry.h"
 #include "RideRatings.h"
+#include "RideStringIds.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
@@ -199,12 +200,30 @@ struct RideOperatingSettings
 {
     uint8_t MinValue;
     uint8_t MaxValue;
-    uint8_t MaxBrakesSpeed;
-    uint8_t PoweredLiftAcceleration;
-    uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
-    uint16_t AccelerationFactor = 12;
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+};
+
+struct RideTrackSpeedSettings
+{
+    int8_t BrakesMaxSpeed = 30;
+    int8_t BoosterMaxSpeed = 30;
+};
+
+struct RideBoosterSettings
+{
+    uint8_t PoweredLiftAcceleration = 0;
+    uint8_t BoosterAcceleration = 0;
+    uint8_t AccelerationFactor = 12; // the amount to right-shift the launch speed for powered launch from a station
+};
+
+struct RideLegacyBoosterSettings
+// These values that must be kept for backwards compatibility. New ride types should set the acceleration values equal to
+// BoosterSettings' and leave BoosterSpeedFactor at default.
+{
+    uint8_t PoweredLiftAcceleration = 0; // PoweredLiftAcceleration value before unified-speed update
+    uint8_t BoosterAcceleration = 0;     // BoosterAcceleration value before unified-speed update
+    int8_t BoosterSpeedFactor = 2; // Multiplier representing how much to multiply booster speed by, scaled to 2x the final
+                                   // multiplier.
 };
 
 struct RatingsModifier
@@ -267,71 +286,87 @@ enum class RideConstructionWindowContext : uint8_t
     Maze,
 };
 
+struct TrackDrawerEntry
+{
+    TRACK_PAINT_FUNCTION_GETTER Drawer = nullptr;
+    /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
+    RideTrackGroup EnabledTrackPieces{};
+    // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
+    // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
+    RideTrackGroup ExtraTrackPieces{};
+
+    void GetAvailableTrackPieces(RideTrackGroup& res) const;
+    bool SupportsTrackPiece(const uint64_t trackPiece) const;
+};
+
 struct TrackDrawerDescriptor
 {
-    TRACK_PAINT_FUNCTION_GETTER Regular;
-    TRACK_PAINT_FUNCTION_GETTER Covered;
+    TrackDrawerEntry Regular{};
+    TrackDrawerEntry Covered{};
 
-    constexpr TrackDrawerDescriptor(TRACK_PAINT_FUNCTION_GETTER function)
+    constexpr TrackDrawerDescriptor()
+    {
+    }
+
+    constexpr TrackDrawerDescriptor(TrackDrawerEntry function)
         : Regular(function)
-        , Covered(nullptr)
     {
     }
 
-    constexpr TrackDrawerDescriptor(TRACK_PAINT_FUNCTION_GETTER functionRegular, TRACK_PAINT_FUNCTION_GETTER functionCovered)
-        : Regular(functionRegular)
-        , Covered(functionCovered)
+    constexpr TrackDrawerDescriptor(TrackDrawerEntry entryRegular, TrackDrawerEntry entryCovered)
+        : Regular(entryRegular)
+        , Covered(entryCovered)
     {
     }
+
+    bool HasCoveredPieces() const;
+    bool SupportsTrackPiece(const uint64_t trackPiece) const;
 };
 
 struct RideTypeDescriptor
 {
-    uint8_t AlternateType;
-    uint8_t Category;
-    /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
-    RideTrackGroup EnabledTrackPieces;
-    // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
-    // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
-    RideTrackGroup ExtraTrackPieces;
-    RideTrackGroup CoveredTrackPieces;
+    uint8_t Category{};
     /** rct2: 0x0097CC68 */
-    track_type_t StartTrackPiece;
-    TrackDrawerDescriptor TrackPaintFunctions;
-    uint64_t Flags;
+    track_type_t StartTrackPiece{};
+    TrackDrawerDescriptor TrackPaintFunctions{};
+    TrackDrawerDescriptor InvertedTrackPaintFunctions{};
+    uint64_t Flags{};
     /** rct2: 0x0097C8AC */
-    uint64_t RideModes;
-    RideMode DefaultMode;
+    uint64_t RideModes{};
+    RideMode DefaultMode{};
     /** rct2: 0x0097CF40 */
-    RideOperatingSettings OperatingSettings;
-    RideNaming Naming;
-    RideNameConvention NameConvention;
-    const char* EnumName;
-    uint8_t AvailableBreakdowns;
+    RideOperatingSettings OperatingSettings{};
+    RideTrackSpeedSettings TrackSpeedSettings{};
+    RideBoosterSettings BoosterSettings{};
+    RideLegacyBoosterSettings LegacyBoosterSettings{};
+    RideNaming Naming{};
+    RideNameConvention NameConvention{};
+    const char* EnumName{};
+    uint8_t AvailableBreakdowns{};
     /** rct2: 0x0097D218 */
-    RideHeights Heights;
-    uint8_t MaxMass;
+    RideHeights Heights{};
+    uint8_t MaxMass{};
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-    RideLiftData LiftData;
+    RideLiftData LiftData{};
     // rct2: 0x0097CD1E
-    RatingTuple RatingsMultipliers;
-    UpkeepCostsDescriptor UpkeepCosts;
+    RatingTuple RatingsMultipliers{};
+    UpkeepCostsDescriptor UpkeepCosts{};
     // rct2: 0x0097DD78
-    RideBuildCost BuildCosts;
-    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
-    std::string_view DefaultMusic;
+    RideBuildCost BuildCosts{};
+    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    std::string_view DefaultMusic{};
     /** rct2: 0x0097D7CB */
-    ShopItemIndex PhotoItem;
+    ShopItemIndex PhotoItem{};
     /** rct2: 0x0097D21E */
-    uint8_t BonusValue;
-    TrackColourPresetList ColourPresets;
-    RideColourPreview ColourPreview;
-    RideColourKey ColourKey;
+    uint8_t BonusValue{};
+    TrackColourPresetList ColourPresets{};
+    RideColourPreview ColourPreview{};
+    RideColourKey ColourKey{};
 
     // json name lookup
-    std::string_view Name;
+    std::string_view Name{};
 
-    RideRatingsDescriptor RatingsData;
+    RideRatingsDescriptor RatingsData{};
 
     UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
@@ -358,7 +393,7 @@ struct RideTypeDescriptor
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
 
     bool HasFlag(uint64_t flag) const;
-    void GetAvailableTrackPieces(RideTrackGroup& res) const;
+    /** @deprecated */
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
@@ -388,11 +423,13 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_HAS_DATA_LOGGING = (1uLL << 9),
     RIDE_TYPE_FLAG_HAS_DROPS = (1uLL << 10),
     RIDE_TYPE_FLAG_NO_TEST_MODE = (1uLL << 11),
-    RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = (1uLL << 12), // used by rides with two varieties, like the u and o
-                                                                     // shapes of the dinghy slide and the dry and submerged
-                                                                     // track of the water coaster
+    RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = (1uLL << 12), // set on rides with two varieties,
+                                                                     // like the u and o shapes of the dinghy slide
+                                                                     // and the dry and submerged track of the water
+                                                                     // coaster
     RIDE_TYPE_FLAG_NO_VEHICLES = (1uLL << 13),                       // used only by maze, spiral slide and shops
     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = (1uLL << 14),
+    RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT = (1uLL << 15),
     RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1uLL << 16), // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
     RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1uLL << 17),
@@ -411,6 +448,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_CHECK_FOR_STALLING = (1uLL << 27),
     RIDE_TYPE_FLAG_HAS_TRACK = (1uLL << 28),
     RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = (1uLL << 29), // Only set by lift
+    RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW = (1uLL << 30), // Only set by reverser coaster
     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = (1uLL << 31),
 
     RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK = (1uLL << 32),
@@ -518,17 +556,17 @@ extern const StringId RideModeNames[EnumValue(RideMode::Count)];
 // clang-format off
 constexpr RideTypeDescriptor DummyRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_NONE,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(nullptr),
+    .TrackPaintFunctions = {},
+    .InvertedTrackPaintFunctions = {},
     .Flags = 0,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
+    .OperatingSettings = {},
+    .TrackSpeedSettings = {},
+    .BoosterSettings = {},
+    .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = "(INVALID)",
@@ -582,5 +620,8 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 }
 
 bool IsTrackEnabled(int32_t trackFlagIndex);
-void UpdateEnabledRidePieces(ride_type_t rideType);
+void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor);
 void UpdateDisabledRidePieces(const RideTrackGroup& res);
+
+TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted);
+TrackDrawerEntry getTrackDrawerEntry(const RideTypeDescriptor& rtd, bool isInverted = false, bool isCovered = false);

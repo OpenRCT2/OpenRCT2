@@ -81,10 +81,10 @@ class NetworkBase;
 namespace OpenRCT2
 {
     class AssetPackManager;
-    class GameState;
 
     struct IPlatformEnvironment;
     struct IReplayManager;
+    struct IScene;
 
     namespace Audio
     {
@@ -125,7 +125,6 @@ namespace OpenRCT2
 
         [[nodiscard]] virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
         [[nodiscard]] virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
-        virtual GameState* GetGameState() abstract;
         [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;
@@ -144,11 +143,26 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         virtual NetworkBase& GetNetwork() abstract;
 #endif
+
+        virtual IScene* GetPreloaderScene() abstract;
+        virtual IScene* GetIntroScene() abstract;
+        virtual IScene* GetTitleScene() abstract;
+        virtual IScene* GetGameScene() abstract;
+        virtual IScene* GetEditorScene() abstract;
+
+        virtual IScene* GetActiveScene() abstract;
+        virtual void SetActiveScene(IScene* screen) abstract;
+
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
         virtual bool Initialise() abstract;
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
+
+        virtual void OpenProgress(StringId captionStringId) abstract;
+        virtual void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) abstract;
+        virtual void CloseProgress() abstract;
+
         virtual bool LoadParkFromFile(
             const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
         virtual bool LoadParkFromStream(
@@ -212,11 +226,10 @@ void ContextSetCursorTrap(bool value);
 WindowBase* ContextOpenWindow(WindowClass wc);
 WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
 WindowBase* ContextOpenWindowView(uint8_t view);
-WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args);
+WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args, bool autoClose = false);
 WindowBase* ContextOpenIntent(Intent* intent);
 void ContextBroadcastIntent(Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);
-void ContextUpdateMapTooltip();
 void ContextHandleInput();
 void ContextInputHandleKeyboard(bool isTitle);
 void ContextQuit();

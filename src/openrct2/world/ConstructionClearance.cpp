@@ -18,6 +18,7 @@
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../world/tile_element/Slope.h"
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
@@ -36,13 +37,13 @@ static int32_t MapPlaceClearFunc(
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
     auto& gameState = GetGameState();
-    if (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+    if (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
         if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
-    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
+    if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -79,7 +80,7 @@ int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& 
 
 static bool MapLoc68BABCShouldContinue(
     TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money64& price,
-    uint8_t crossingMode, bool canBuildCrossing)
+    CreateCrossingMode crossingMode, bool canBuildCrossing)
 {
     if (clearFunc != nullptr)
     {
@@ -89,17 +90,16 @@ static bool MapLoc68BABCShouldContinue(
         }
     }
 
-    // Crossing mode 1: building track over path
     auto tileElement = *tileElementPtr;
-    if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TileElementType::Path
+    if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->GetType() == TileElementType::Path
         && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
     {
         return true;
     }
-    // Crossing mode 2: building path over track
     else if (
-        crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TileElementType::Track
-        && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
+        crossingMode == CreateCrossingMode::pathOverTrack && canBuildCrossing
+        && tileElement->GetType() == TileElementType::Track && tileElement->GetBaseZ() == pos.baseZ
+        && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
         if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
@@ -122,7 +122,8 @@ static bool MapLoc68BABCShouldContinue(
  *  bl = bl
  */
 GameActions::Result MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, CreateCrossingMode crossingMode,
+    bool isTree)
 {
     auto res = GameActions::Result();
 
@@ -189,7 +190,7 @@ GameActions::Result MapCanConstructWithClearAt(
             }
         }
 
-        if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
+        if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
@@ -202,8 +203,8 @@ GameActions::Result MapCanConstructWithClearAt(
         }
 
         // Only allow building crossings directly on a flat surface tile.
-        if (tileElement->GetType() == TileElementType::Surface
-            && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT && tileElement->GetBaseZ() == pos.baseZ)
+        if (tileElement->GetType() == TileElementType::Surface && (tileElement->AsSurface()->GetSlope()) == kTileSlopeFlat
+            && tileElement->GetBaseZ() == pos.baseZ)
         {
             canBuildCrossing = true;
         }
@@ -223,28 +224,28 @@ GameActions::Result MapCanConstructWithClearAt(
                 auto southZ = northZ;
                 auto westZ = northZ;
                 const auto slope = tileElement->AsSurface()->GetSlope();
-                if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
+                if (slope & kTileSlopeNCornerUp)
                 {
                     northZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeSCornerDown | kTileSlopeDiagonalFlag))
                         northZ += LAND_HEIGHT_STEP;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP)
+                if (slope & kTileSlopeECornerUp)
                 {
                     eastZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_W_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeWCornerDown | kTileSlopeDiagonalFlag))
                         eastZ += LAND_HEIGHT_STEP;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
+                if (slope & kTileSlopeSCornerUp)
                 {
                     southZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeNCornerDown | kTileSlopeDiagonalFlag))
                         southZ += LAND_HEIGHT_STEP;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
+                if (slope & kTileSlopeWCornerUp)
                 {
                     westZ += LAND_HEIGHT_STEP;
-                    if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
                         westZ += LAND_HEIGHT_STEP;
                 }
                 const auto baseHeight = pos.baseZ + (4 * COORDS_Z_STEP);

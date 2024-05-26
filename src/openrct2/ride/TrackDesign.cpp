@@ -35,6 +35,7 @@
 #include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../drawing/X8DrawingEngine.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -57,6 +58,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -65,7 +67,6 @@
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 
@@ -307,7 +308,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
             Direction entranceDirection = tileElement->GetDirection();
             entranceDirection -= _saveDirection;
-            entranceDirection &= TILE_ELEMENT_DIRECTION_MASK;
+            entranceDirection &= kTileElementDirectionMask;
 
             mapLocation -= tds.Origin;
             // Rotate entrance coordinates backwards to the correct direction
@@ -973,7 +974,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     }
 
     int32_t z = scenery.loc.z + originZ;
-    uint8_t sceneryRotation = (rotation + scenery.flags) & TILE_ELEMENT_DIRECTION_MASK;
+    uint8_t sceneryRotation = (rotation + scenery.flags) & kTileElementDirectionMask;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
@@ -1524,10 +1525,10 @@ static GameActions::Result TrackDesignPlaceMaze(
             if (surfaceElement == nullptr)
                 continue;
             int16_t surfaceZ = surfaceElement->GetBaseZ();
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
                 surfaceZ += LAND_HEIGHT_STEP;
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                 {
                     surfaceZ += LAND_HEIGHT_STEP;
                 }
@@ -1690,10 +1691,10 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                     }
 
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
-                    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                    if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
                     {
                         surfaceZ += LAND_HEIGHT_STEP;
-                        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                        if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                         {
                             surfaceZ += LAND_HEIGHT_STEP;
                         }
@@ -1942,8 +1943,8 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gameState.ParkFlags;
-    gameState.ParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    uint32_t backup_park_flags = gameState.Park.Flags;
+    gameState.Park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
     auto mapSize = TileCoordsXY{ gameState.MapSize.x * 16, gameState.MapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
@@ -1967,7 +1968,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     auto res = TrackDesignPlaceVirtual(
         tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gameState.ParkFlags = backup_park_flags;
+    gameState.Park.Flags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
     {
@@ -2016,7 +2017,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     uint8_t flags;
     if (!TrackDesignPlacePreview(tds, td6, &cost, &ride, &flags))
     {
-        std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
+        std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
         UnstashMap();
         return;
     }
@@ -2085,7 +2086,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         view.rotation = i;
         ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
 
-        dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
+        dpi.bits += kTrackPreviewImageSize;
     }
 
     ride->Delete();
@@ -2098,7 +2099,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
  */
 static void TrackDesignPreviewClearMap()
 {
-    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
     GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
@@ -2111,7 +2112,7 @@ static void TrackDesignPreviewClearMap()
         auto* element = &tileElements.emplace_back();
         element->ClearAs(TileElementType::Surface);
         element->SetLastForTile(true);
-        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        element->AsSurface()->SetSlope(kTileSlopeFlat);
         element->AsSurface()->SetWaterHeight(0);
         element->AsSurface()->SetSurfaceObjectIndex(0);
         element->AsSurface()->SetEdgeObjectIndex(0);

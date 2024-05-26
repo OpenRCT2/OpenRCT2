@@ -11,7 +11,6 @@
 
 #include "../interface/Window.h"
 
-#include <algorithm>
 #include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -30,10 +29,10 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/title/TitleScreen.h>
-#include <openrct2/title/TitleSequence.h>
-#include <openrct2/title/TitleSequenceManager.h>
-#include <openrct2/title/TitleSequencePlayer.h>
+#include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/scenes/title/TitleSequence.h>
+#include <openrct2/scenes/title/TitleSequenceManager.h>
+#include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -46,8 +45,6 @@ namespace OpenRCT2::Title
     class TitleSequencePlayer final : public ITitleSequencePlayer
     {
     private:
-        GameState& _gameState;
-
         std::unique_ptr<TitleSequence> _sequence;
         int32_t _position = 0;
         int32_t _waitCounter = 0;
@@ -57,8 +54,7 @@ namespace OpenRCT2::Title
         ScreenCoordsXY _previousViewPosition = {};
 
     public:
-        explicit TitleSequencePlayer(GameState& gameState)
-            : _gameState(gameState)
+        explicit TitleSequencePlayer()
         {
         }
 
@@ -248,7 +244,7 @@ namespace OpenRCT2::Title
             {
                 if (Update())
                 {
-                    _gameState.UpdateLogic();
+                    gameStateUpdateLogic();
                 }
                 else
                 {
@@ -431,8 +427,8 @@ namespace OpenRCT2::Title
         }
     };
 
-    std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(GameState& gameState)
+    std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer()
     {
-        return std::make_unique<TitleSequencePlayer>(gameState);
+        return std::make_unique<TitleSequencePlayer>();
     }
 } // namespace OpenRCT2::Title

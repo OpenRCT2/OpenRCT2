@@ -11,6 +11,9 @@
 
 // Windows.h needs to be included first
 // clang-format off
+#    ifndef WIN32_LEAN_AND_MEAN
+#        define WIN32_LEAN_AND_MEAN
+#    endif
 #    include <windows.h>
 #    include <shellapi.h>
 // clang-format on
@@ -21,7 +24,6 @@
 
 #    include <SDL.h>
 #    include <SDL_syswm.h>
-#    include <algorithm>
 #    include <openrct2/common.h>
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>

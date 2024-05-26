@@ -18,13 +18,14 @@
 // clang-format off
 constexpr RideTypeDescriptor DodgemsRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_GENTLE,
-    .EnabledTrackPieces = {},
-    .ExtraTrackPieces = {},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::FlatTrack4x4,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionDodgems),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionDodgems,
+        .EnabledTrackPieces = {},
+        .ExtraTrackPieces = {},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
                      RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT |
@@ -32,7 +33,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::Dodgems),
     .DefaultMode = RideMode::Dodgems,
-    .OperatingSettings = { 20, 180, 0, 0, 0, 0 },
+    .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_DODGEMS),

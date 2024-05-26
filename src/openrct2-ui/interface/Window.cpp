@@ -9,12 +9,11 @@
 
 #include "Window.h"
 
+#include "../UiStringIds.h"
 #include "Theme.h"
 #include "Widget.h"
-#include "openrct2/world/Location.hpp"
 
 #include <SDL.h>
-#include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -25,9 +24,9 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/world/Location.hpp>
 
 using namespace OpenRCT2;
 
@@ -63,7 +62,7 @@ static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int3
 {
     if (loc.x < 0)
         return false;
-    if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
     if (loc.x + width > ContextGetWidth())
         return false;
@@ -84,7 +83,7 @@ static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t
     unk = screenWidth + (unk * 2);
     if (loc.x > unk)
         return false;
-    if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
     unk = screenHeight - (height / 4);
     if (loc.y > unk)
@@ -101,7 +100,7 @@ static ScreenCoordsXY ClampWindowToScreen(
     else if (screenPos.x + width > screenWidth)
         screenPos.x = screenWidth - width;
 
-    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (TOP_TOOLBAR_HEIGHT + 1);
+    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (kTopToolbarHeight + 1);
     if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
         screenPos.y = toolbarAllowance;
     else if (screenPos.y + height - toolbarAllowance > screenHeight)
@@ -205,7 +204,7 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
     auto uiContext = GetContext()->GetUiContext();
     auto screenWidth = uiContext->GetWidth();
     auto screenHeight = uiContext->GetHeight();
-    return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
+    return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
 }
 
 WindowBase* WindowCreate(
@@ -224,8 +223,8 @@ WindowBase* WindowCreate(
     }
 
     // Check if there are any window slots left
-    // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.WindowLimit + WINDOW_LIMIT_RESERVED))
+    // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
+    if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
     {
         // Close least recently used window
         for (auto& w : g_window_list)
@@ -411,101 +410,96 @@ static void WindowViewportWheelInput(WindowBase& w, int32_t wheel)
         WindowZoomOut(w, true);
 }
 
+static bool isSpinnerGroup(WindowBase& w, WidgetIndex index, WindowWidgetType buttonType)
+{
+    const auto& widgets = w.widgets;
+
+    if (widgets[index].type != WindowWidgetType::Spinner && widgets[index].type != WindowWidgetType::ImgBtn)
+        return false;
+
+    if (widgets[index + 1].type != buttonType)
+        return false;
+
+    if (widgets[index + 2].type != buttonType)
+        return false;
+
+    return true;
+}
+
+static std::optional<WidgetIndex> getSpinnerGroupWidgetIndex(WindowBase& w, WidgetIndex startIndex)
+{
+    // We only iterate 3 times as we might be at the spinner or one of its buttons.
+    for (WidgetIndex index = 0; index < 3; index++)
+    {
+        const auto reverseIndex = startIndex - index;
+        if (reverseIndex < 0)
+        {
+            break;
+        }
+
+        if (isSpinnerGroup(w, reverseIndex, WindowWidgetType::TrnBtn))
+        {
+            return reverseIndex;
+        }
+
+        if (isSpinnerGroup(w, reverseIndex, WindowWidgetType::Button))
+        {
+            return reverseIndex;
+        }
+    }
+
+    return std::nullopt;
+}
+
+// Allow mouse wheel scrolling to manipulate spinner widgets and tool sizes
 static bool WindowOtherWheelInput(WindowBase& w, WidgetIndex widgetIndex, int32_t wheel)
 {
     // HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
     //       this selective approach will have to do.
 
-    // Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
-    auto widgetType = w.widgets[widgetIndex].type;
-
-    // Lower widgetIndex once or twice we got a type that matches, to allow scrolling on the increase/decrease buttons too
-    int32_t attempts = 0;
-    while (widgetType != WindowWidgetType::ImgBtn && widgetType != WindowWidgetType::Spinner && widgetIndex > 0)
-    {
-        switch (widgetType)
-        {
-            case WindowWidgetType::TrnBtn: // + and - for preview widget
-            case WindowWidgetType::Button: // + and - for spinner widget
-            {
-                if (attempts > 0)
-                {
-                    // Verify that the previous button was of the same type
-                    auto previousType = w.widgets[widgetIndex + 1].type;
-                    if (previousType != widgetType)
-                    {
-                        return false;
-                    }
-                }
-                break;
-            }
-            default:
-                // The widget type is not an increment or decrement button
-                return false;
-        }
-
-        attempts++;
-        if (attempts > 2)
-        {
-            // We're 2 buttons up, and no preview or spinner widget was found
-            return false;
-        }
-
-        widgetIndex--;
-        widgetType = w.widgets[widgetIndex].type;
-    }
-
-    WidgetIndex buttonWidgetIndex;
-    WindowWidgetType expectedType;
-
-    switch (widgetType)
-    {
-        case WindowWidgetType::ImgBtn:
-        {
-            auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
-            auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
-
-            auto button1Image = w.widgets[widgetIndex + 1].image;
-            auto button2Image = w.widgets[widgetIndex + 2].image;
-            if (button1Image != expectedContent1 || button2Image != expectedContent2)
-            {
-                return false;
-            }
-
-            buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
-            expectedType = WindowWidgetType::TrnBtn;
-            break;
-        }
-        case WindowWidgetType::Spinner:
-        {
-            auto button1StringID = w.widgets[widgetIndex + 1].text;
-            auto button2StringID = w.widgets[widgetIndex + 2].text;
-            if (button1StringID != STR_NUMERIC_UP || button2StringID != STR_NUMERIC_DOWN)
-            {
-                return false;
-            }
-
-            buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
-            expectedType = WindowWidgetType::Button;
-            break;
-        }
-        default:
-            return false;
-    }
-
-    if (WidgetIsDisabled(w, buttonWidgetIndex))
+    const auto spinnerGroupIndex = getSpinnerGroupWidgetIndex(w, widgetIndex);
+    if (!spinnerGroupIndex.has_value())
     {
         return false;
     }
 
-    auto button1Type = w.widgets[widgetIndex + 1].type;
-    auto button2Type = w.widgets[widgetIndex + 2].type;
-    if (button1Type != expectedType || button2Type != expectedType)
+    const auto entryWidgetType = w.widgets[*spinnerGroupIndex].type;
+    auto targetWidgetIndex = *spinnerGroupIndex;
+
+    if (entryWidgetType == WindowWidgetType::ImgBtn)
+    {
+        auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
+        auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
+
+        auto button1Image = w.widgets[*spinnerGroupIndex + 1].image;
+        auto button2Image = w.widgets[*spinnerGroupIndex + 2].image;
+        if (button1Image != expectedContent1 || button2Image != expectedContent2)
+        {
+            return false;
+        }
+
+        // Expected widget order: decrease, increase
+        targetWidgetIndex += wheel < 0 ? 2 : 1;
+    }
+    else if (entryWidgetType == WindowWidgetType::Spinner)
+    {
+        auto button1StringId = w.widgets[*spinnerGroupIndex + 1].text;
+        auto button2StringId = w.widgets[*spinnerGroupIndex + 2].text;
+        if (button1StringId != STR_NUMERIC_UP || button2StringId != STR_NUMERIC_DOWN)
+        {
+            return false;
+        }
+
+        // Expected widget order: increase, decrease
+        targetWidgetIndex += wheel < 0 ? 1 : 2;
+    }
+
+    if (WidgetIsDisabled(w, targetWidgetIndex))
     {
         return false;
     }
 
-    w.OnMouseDown(buttonWidgetIndex);
+    w.OnMouseDown(targetWidgetIndex);
     return true;
 }
 
@@ -571,7 +565,7 @@ void WindowAllWheelInput()
 
 void ApplyScreenSaverLockSetting()
 {
-    gConfigGeneral.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+    Config::Get().general.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
 }
 
 /**
@@ -650,7 +644,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
     if (w.flags & WF_WHITE_BORDER_MASK)
     {
         GfxFillRectInset(
-            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
+            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
             INSET_RECT_FLAG_FILL_NONE);
     }
 }
@@ -829,12 +823,18 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
 
 ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
 {
-    const uint8_t buttonOffset = (gConfigInterface.WindowButtonsOnTheLeft) ? CloseButtonWidth + 2 : 0;
+    const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
     return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
 }
 
 namespace OpenRCT2::Ui::Windows
 {
+    static u8string _textBoxInput;
+    static int32_t _textBoxFrameNo = 0;
+    static bool _usingWidgetTextBox = false;
+    static TextInputSession* _textInput;
+    static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+
     WindowBase* WindowGetListening()
     {
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -858,5 +858,78 @@ namespace OpenRCT2::Ui::Windows
     WindowClass WindowGetClassification(const WindowBase& window)
     {
         return window.classification;
+    }
+
+    void WindowStartTextbox(const WindowBase& callW, WidgetIndex callWidget, u8string existingText, int32_t maxLength)
+    {
+        if (_usingWidgetTextBox)
+            WindowCancelTextbox();
+
+        _usingWidgetTextBox = true;
+        _currentTextBox.window.classification = callW.classification;
+        _currentTextBox.window.number = callW.number;
+        _currentTextBox.widget_index = callWidget;
+        _textBoxFrameNo = 0;
+
+        WindowCloseByClass(WindowClass::Textinput);
+
+        _textBoxInput = existingText;
+
+        _textInput = ContextStartTextInput(_textBoxInput, maxLength);
+    }
+
+    void WindowCancelTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            _currentTextBox.window.classification = WindowClass::Null;
+            _currentTextBox.window.number = 0;
+            ContextStopTextInput();
+            _usingWidgetTextBox = false;
+            if (w != nullptr)
+            {
+                WidgetInvalidate(*w, _currentTextBox.widget_index);
+            }
+            _currentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
+        }
+    }
+
+    void WindowUpdateTextboxCaret()
+    {
+        _textBoxFrameNo++;
+        if (_textBoxFrameNo > 30)
+            _textBoxFrameNo = 0;
+    }
+
+    void WindowUpdateTextbox()
+    {
+        if (_usingWidgetTextBox)
+        {
+            _textBoxFrameNo = 0;
+            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
+        }
+    }
+    const TextInputSession* GetTextboxSession()
+    {
+        return _textInput;
+    }
+    void SetTexboxSession(TextInputSession* session)
+    {
+        _textInput = session;
+    }
+    bool IsUsingWidgetTextBox()
+    {
+        return _usingWidgetTextBox;
+    }
+    bool TextBoxCaretIsFlashed()
+    {
+        return _textBoxFrameNo <= 15;
+    }
+    const WidgetIdentifier& GetCurrentTextBox()
+    {
+        return _currentTextBox;
     }
 } // namespace OpenRCT2::Ui::Windows

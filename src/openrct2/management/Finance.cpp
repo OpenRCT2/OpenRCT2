@@ -47,7 +47,7 @@ static constexpr int32_t dword_988E60[EnumValue(ExpenditureType::Count)] = {
  */
 bool FinanceCheckMoneyRequired(uint32_t flags)
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
         return false;
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return false;
@@ -78,7 +78,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
     auto& gameState = GetGameState();
-    gameState.Cash = AddClamp_money64(gameState.Cash, -amount);
+    gameState.Cash = AddClamp<money64>(gameState.Cash, -amount);
 
     gameState.ExpenditureTable[0][EnumValue(type)] -= amount;
     if (dword_988E60[EnumValue(type)] & 1)
@@ -99,7 +99,7 @@ void FinancePayWages()
 {
     PROFILED_FUNCTION();
 
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -117,7 +117,7 @@ void FinancePayWages()
 void FinancePayResearch()
 {
     const auto& gameState = GetGameState();
-    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -134,7 +134,7 @@ void FinancePayInterest()
 {
     const auto& gameState = GetGameState();
 
-    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -143,7 +143,7 @@ void FinancePayInterest()
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     const money64 current_loan = gameState.BankLoan;
     const auto current_interest_rate = gameState.BankLoanInterestRate;
-    const money64 interest_to_pay = (gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST)
+    const money64 interest_to_pay = (gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST)
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
 
@@ -165,7 +165,7 @@ void FinancePayRideUpkeep()
             ride.Renew();
         }
 
-        if (ride.status != RideStatus::Closed && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::Closed && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeep_cost;
             if (upkeep != kMoney64Undefined)
@@ -186,14 +186,14 @@ void FinancePayRideUpkeep()
 void FinanceResetHistory()
 {
     auto& gameState = GetGameState();
-    for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
+    for (auto i = 0; i < kFinanceGraphSize; i++)
     {
         gameState.CashHistory[i] = kMoney64Undefined;
         gameState.WeeklyProfitHistory[i] = kMoney64Undefined;
-        gameState.ParkValueHistory[i] = kMoney64Undefined;
+        gameState.Park.ValueHistory[i] = kMoney64Undefined;
     }
 
-    for (uint32_t i = 0; i < EXPENDITURE_TABLE_MONTH_COUNT; ++i)
+    for (uint32_t i = 0; i < kExpenditureTableMonthCount; ++i)
     {
         for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); ++j)
         {
@@ -229,13 +229,13 @@ void FinanceInit()
     gameState.MaxBankLoan = 20000.00_GBP;
 
     gameState.BankLoanInterestRate = 10;
-    gameState.ParkValue = 0;
+    gameState.Park.Value = 0;
     gameState.CompanyValue = 0;
     gameState.HistoricalProfit = 0;
     gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.TotalAdmissions = 0;
     gameState.TotalIncomeFromAdmissions = 0;
-    gameState.ScenarioCompletedBy = "?";
+    gameState.ScenarioCompletedBy = std::string("?");
 }
 
 /**
@@ -252,7 +252,7 @@ void FinanceUpdateDailyProfit()
 
     money64 current_profit = 0;
 
-    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
+    if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
         for (auto peep : EntityList<Staff>())
@@ -318,18 +318,18 @@ money64 FinanceGetCurrentCash()
 void FinanceShiftExpenditureTable()
 {
     auto& gameState = GetGameState();
-    // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
-    if (GetDate().GetMonthsElapsed() >= EXPENDITURE_TABLE_MONTH_COUNT)
+    // If kExpenditureTableMonthCount months have passed then is full, sum the oldest month
+    if (GetDate().GetMonthsElapsed() >= kExpenditureTableMonthCount)
     {
         const money64 sum = std::accumulate(
-            std::cbegin(gameState.ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]),
-            std::cend(gameState.ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1]), money64{});
+            std::cbegin(gameState.ExpenditureTable[kExpenditureTableMonthCount - 1]),
+            std::cend(gameState.ExpenditureTable[kExpenditureTableMonthCount - 1]), money64{});
 
         GetGameState().HistoricalProfit += sum;
     }
 
     // Shift the table
-    for (size_t i = EXPENDITURE_TABLE_MONTH_COUNT - 1; i >= 1; i--)
+    for (size_t i = kExpenditureTableMonthCount - 1; i >= 1; i--)
     {
         for (size_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
         {

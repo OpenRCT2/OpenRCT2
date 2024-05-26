@@ -15,8 +15,6 @@
 #include "GameState.h"
 #include "core/Guard.hpp"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 constexpr int32_t kMonthTicksIncrement = 4;
@@ -31,12 +29,6 @@ static const int16_t days_in_month[MONTH_COUNT] = {
 
 RealWorldTime gRealTimeOfDay;
 
-Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
-    : _monthTicks(monthTicks)
-    , _monthsElapsed(monthsElapsed)
-{
-}
-
 Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
 {
     year = std::clamp(year, 0, kMaxYear - 1);
@@ -44,83 +36,69 @@ Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
     auto daysInMonth = days_in_month[month];
     day = std::clamp(day, 0, daysInMonth - 1);
 
-    int32_t monthsElapsed = (year * MONTH_COUNT) + month;
+    uint32_t paramMonthsElapsed = (year * MONTH_COUNT) + month;
     // Day
-    int32_t monthTicks = 0;
+    uint16_t paramMonthTicks = 0;
     if (day != 0)
     {
-        monthTicks = ((day << 16) / daysInMonth) + kMonthTicksIncrement;
+        paramMonthTicks = ((day << 16) / daysInMonth) + kMonthTicksIncrement;
     }
 
-    return Date(monthsElapsed, monthTicks);
-}
-
-void Date::Update()
-{
-    int32_t monthTicks = _monthTicks + kMonthTicksIncrement;
-    if (monthTicks > kMaskMonthTicks)
-    {
-        _monthTicks = 0;
-        _monthsElapsed++;
-    }
-    else
-    {
-        _monthTicks = static_cast<uint16_t>(monthTicks);
-    }
+    return Date{ paramMonthsElapsed, paramMonthTicks };
 }
 
 uint16_t Date::GetMonthTicks() const
 {
-    return _monthTicks;
+    return monthTicks;
 }
 
 uint32_t Date::GetMonthsElapsed() const
 {
-    return _monthsElapsed;
+    return monthsElapsed;
 }
 
 int32_t Date::GetDay() const
 {
     auto month = GetMonth();
     auto daysInMonth = GetDaysInMonth(month);
-    return ((_monthTicks * daysInMonth) >> 16) & 0xFF;
+    return ((monthTicks * daysInMonth) >> 16) & 0xFF;
 }
 
 int32_t Date::GetMonth() const
 {
-    return _monthsElapsed % MONTH_COUNT;
+    return monthsElapsed % MONTH_COUNT;
 }
 
 int32_t Date::GetYear() const
 {
-    return _monthsElapsed / MONTH_COUNT;
+    return monthsElapsed / MONTH_COUNT;
 }
 
 bool Date::IsDayStart() const
 {
-    if (_monthTicks < 4)
+    if (monthTicks < 4)
     {
         return false;
     }
-    int32_t prevMonthTick = _monthTicks - 4;
+    int32_t prevMonthTick = monthTicks - 4;
     int32_t currentMonth = GetMonth();
     int32_t currentDaysInMonth = GetDaysInMonth(currentMonth);
-    return ((currentDaysInMonth * _monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
+    return ((currentDaysInMonth * monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
 }
 
 bool Date::IsWeekStart() const
 {
-    return (_monthTicks & kMaskWeekTicks) == 0;
+    return (monthTicks & kMaskWeekTicks) == 0;
 }
 
 bool Date::IsFortnightStart() const
 {
-    return (_monthTicks & kMaskFortnightTicks) == 0;
+    return (monthTicks & kMaskFortnightTicks) == 0;
 }
 
 bool Date::IsMonthStart() const
 {
-    return (_monthTicks == 0);
+    return (monthTicks == 0);
 }
 
 int32_t Date::GetDaysInMonth(int32_t month)
@@ -128,6 +106,20 @@ int32_t Date::GetDaysInMonth(int32_t month)
     Guard::ArgumentInRange(month, 0, MONTH_COUNT - 1);
 
     return days_in_month[month];
+}
+
+void OpenRCT2::DateUpdate(GameState_t& gameState)
+{
+    int32_t monthTicks = gameState.Date.monthTicks + kMonthTicksIncrement;
+    if (monthTicks > kMaskMonthTicks)
+    {
+        gameState.Date.monthTicks = 0;
+        gameState.Date.monthsElapsed++;
+    }
+    else
+    {
+        gameState.Date.monthTicks = static_cast<uint16_t>(monthTicks);
+    }
 }
 
 int32_t DateGetMonth(int32_t months)
@@ -157,5 +149,16 @@ void DateUpdateRealTimeOfDay()
 
 Date& GetDate()
 {
-    return OpenRCT2::GetContext()->GetGameState()->GetDate();
+    return GetGameState().Date;
+}
+
+/**
+ *
+ *  rct2: 0x006C4494
+ */
+void ResetDate()
+{
+    auto& gameState = GetGameState();
+    gameState.Date = {};
+    gCurrentRealTimeTicks = 0;
 }

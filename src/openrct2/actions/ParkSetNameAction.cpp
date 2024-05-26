@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../GameState.h"
-#include "../config/Config.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
@@ -47,6 +46,7 @@ GameActions::Result ParkSetNameAction::Query() const
 {
     if (_name.empty())
     {
+        LOG_ERROR("Can't set park name to empty string");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
     }
     return GameActions::Result();
@@ -55,7 +55,7 @@ GameActions::Result ParkSetNameAction::Query() const
 GameActions::Result ParkSetNameAction::Execute() const
 {
     // Do a no-op if new name is the same as the current name is the same
-    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    auto& park = OpenRCT2::GetGameState().Park;
     if (_name != park.Name)
     {
         park.Name = _name;

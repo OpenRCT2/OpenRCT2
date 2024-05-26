@@ -48,7 +48,6 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 
-#include <algorithm>
 #include <array>
 #include <vector>
 
@@ -102,13 +101,17 @@ namespace Editor
      */
     void Load()
     {
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
+
         auto& gameState = GetGameState();
         Audio::StopAll();
         ObjectListLoad();
-        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        gameStateInitAll(gameState, DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gameState.EditorStep = EditorStep::ObjectSelection;
-        gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
@@ -161,13 +164,17 @@ namespace Editor
      */
     void LoadTrackDesigner()
     {
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
+
         Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -182,13 +189,17 @@ namespace Editor
      */
     void LoadTrackManager()
     {
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
+
         Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -243,6 +254,10 @@ namespace Editor
     static void AfterLoadCleanup(bool loadedFromSave)
     {
         ClearMapForEditing(loadedFromSave);
+
+        // TODO: replace with dedicated scene
+        auto* context = GetContext();
+        context->SetActiveScene(context->GetGameScene());
 
         GetGameState().EditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
@@ -324,18 +339,18 @@ namespace Editor
         gameState.GuestChangeModifier = 0;
         if (fromSave)
         {
-            gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
+            gameState.Park.Flags |= PARK_FLAGS_NO_MONEY;
 
-            if (gameState.ParkEntranceFee == 0)
+            if (gameState.Park.EntranceFee == 0)
             {
-                gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.Park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }
             else
             {
-                gameState.ParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.Park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
             }
 
-            gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
             gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
 
@@ -499,19 +514,19 @@ namespace Editor
      */
     ResultWithMessage CheckPark()
     {
-        int32_t parkSize = ParkCalculateSize();
+        auto& gameState = GetGameState();
+        int32_t parkSize = Park::UpdateSize(gameState);
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        const auto& gameState = GetGameState();
-        if (gameState.ParkEntrances.empty())
+        if (gameState.Park.Entrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };
         }
 
-        for (const auto& parkEntrance : gameState.ParkEntrances)
+        for (const auto& parkEntrance : gameState.Park.Entrances)
         {
             int32_t direction = DirectionReverse(parkEntrance.direction);
 
@@ -562,7 +577,7 @@ namespace Editor
     {
         if (index != OBJECT_ENTRY_INDEX_NULL)
         {
-            assert(static_cast<int32_t>(objectType) < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
+            assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::Paths));
             auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
             if (list.size() <= index)
             {

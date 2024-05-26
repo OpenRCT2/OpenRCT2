@@ -47,8 +47,9 @@ GameActions::Result BannerSetNameAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
     return GameActions::Result();
 }
@@ -58,8 +59,9 @@ GameActions::Result BannerSetNameAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
     banner->text = _name;

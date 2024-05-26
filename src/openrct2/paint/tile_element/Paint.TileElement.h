@@ -26,25 +26,6 @@ enum edge_t
     EDGE_TOPRIGHT = EDGE_NE
 };
 
-// This controls in which segment of a tile something is drawn.
-// This is from a screen perspective, e.g. topCorner will always represent the part of top of the screen.
-enum class PaintSegment : uint16_t
-{
-    topCorner = 0,
-    topRightSide = 1,
-    rightCorner = 2,
-    bottomRightSide = 3,
-    bottomCorner = 4,
-    bottomLeftSide = 5,
-    leftCorner = 6,
-    topLeftSide = 7,
-    centre = 8,
-};
-constexpr int32_t kSegmentsAll = EnumsToFlags(
-    PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner,
-    PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
-    PaintSegment::bottomRightSide);
-
 enum
 {
     TUNNEL_0 = 0,
@@ -89,7 +70,7 @@ void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t typ
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type);
 void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
 
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height);
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope);
 uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);

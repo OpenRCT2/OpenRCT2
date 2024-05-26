@@ -299,10 +299,10 @@ bool WindowRideConstructionUpdateState(
     }
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)
-        && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
+    const auto trackDrawerDecriptor = getCurrentTrackDrawerDescriptor(rtd);
+    if (trackDrawerDecriptor.HasCoveredPieces() && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
-        auto availablePieces = rtd.CoveredTrackPieces;
+        auto availablePieces = trackDrawerDecriptor.Covered.EnabledTrackPieces;
         const auto& ted = GetTrackElementDescriptor(trackType);
         auto alternativeType = ted.AlternativeType;
         // this method limits the track element types that can be used
@@ -372,7 +372,7 @@ bool WindowRideConstructionUpdateState(
 
     if (TrackTypeHasSpeedSetting(trackType))
     {
-        properties = _currentBrakeSpeed2;
+        properties = _currentBrakeSpeed;
     }
     else
     {

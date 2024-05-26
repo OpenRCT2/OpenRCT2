@@ -14,15 +14,15 @@
 #include "../object/Object.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
+#include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
-#include <algorithm>
 #include <array>
 #include <cstring>
 
-// 98DA00
-int32_t object_entry_group_counts[] = {
+// 0x0098DA00
+static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryGroupCounts = {
     MAX_RIDE_OBJECTS,          // rides
     MAX_SMALL_SCENERY_OBJECTS, // small scenery
     MAX_LARGE_SCENERY_OBJECTS, // large scenery
@@ -42,24 +42,20 @@ int32_t object_entry_group_counts[] = {
     MAX_FOOTPATH_RAILINGS_OBJECTS,
     MAX_AUDIO_OBJECTS,
 };
-static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
+static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::Count));
 
-// 98DA2C
-// clang-format off
-int32_t object_entry_group_encoding[] = {
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_ROTATE,
-};
-// clang-format on
+size_t getObjectEntryGroupCount(ObjectType objectType)
+{
+    return kObjectEntryGroupCounts[EnumValue(objectType)];
+}
+
+size_t getObjectTypeLimit(ObjectType type)
+{
+    auto index = EnumValue(type);
+    if (index >= EnumValue(ObjectType::Count))
+        return 0;
+    return static_cast<size_t>(kObjectEntryGroupCounts[index]);
+}
 
 ObjectList::const_iterator::const_iterator(const ObjectList* parent, bool end)
 {
@@ -203,7 +199,7 @@ void ObjectCreateIdentifierName(char* string_buffer, size_t size, const RCTObjec
 void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex)
 {
     uint8_t objectType = EnumValue(ObjectType::Ride);
-    for (size_t groupCount : object_entry_group_counts)
+    for (size_t groupCount : kObjectEntryGroupCounts)
     {
         if (index >= groupCount)
         {

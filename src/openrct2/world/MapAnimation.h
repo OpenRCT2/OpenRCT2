@@ -46,3 +46,4 @@ void MapAnimationInvalidateAll();
 const std::vector<MapAnimation>& GetMapAnimations();
 void MapAnimationAutoCreate();
 void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el);
+void ShiftAllMapAnimations(CoordsXY amount);

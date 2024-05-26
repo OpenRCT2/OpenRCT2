@@ -17,13 +17,14 @@
 // clang-format off
 constexpr RideTypeDescriptor RiverRaftsRTD =
 {
-    .AlternateType = RIDE_TYPE_NULL,
     .Category = RIDE_CATEGORY_WATER,
-    .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_S_BEND, TRACK_CURVE},
-    .ExtraTrackPieces = {TRACK_SLOPE, TRACK_SLOPE_STEEP_DOWN, TRACK_ON_RIDE_PHOTO},
-    .CoveredTrackPieces = {},
     .StartTrackPiece = TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionSplashBoats),
+    .TrackPaintFunctions = TrackDrawerDescriptor({
+        .Drawer = GetTrackPaintFunctionSplashBoats,
+        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_S_BEND, TRACK_CURVE},
+        .ExtraTrackPieces = {TRACK_SLOPE, TRACK_SLOPE_STEEP_DOWN, TRACK_ON_RIDE_PHOTO},
+    }),
+    .InvertedTrackPaintFunctions = {},
     .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
@@ -32,7 +33,6 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_RIVER_RAFTS, STR_RIDE_DESCRIPTION_RIVER_RAFTS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_RIVER_RAFTS),

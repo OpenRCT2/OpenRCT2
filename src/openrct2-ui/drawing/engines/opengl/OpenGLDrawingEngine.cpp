@@ -25,7 +25,6 @@
 #    include <algorithm>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>
-#    include <openrct2/Intro.h>
 #    include <openrct2/config/Config.h>
 #    include <openrct2/core/Console.hpp>
 #    include <openrct2/drawing/Drawing.h>
@@ -37,7 +36,6 @@
 #    include <openrct2/ui/UiContext.h>
 #    include <openrct2/util/Util.h>
 #    include <openrct2/world/Climate.h>
-#    include <unordered_map>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -73,6 +71,8 @@ private:
     ScreenCoordsXY _spriteOffset;
 
     int32_t _drawCount = 0;
+
+    uint32_t _ttfGlId = 0;
 
     struct
     {
@@ -110,8 +110,7 @@ public:
     void DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
     void DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawTTFBitmap(
-        DrawPixelInfo& dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
-        int32_t y, uint8_t hinting_threshold) override;
+        DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold) override;
 
     void FlushCommandBuffers();
 
@@ -451,7 +450,7 @@ private:
         }
         if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
-            uint32_t scale = std::ceil(gConfigGeneral.WindowScale);
+            uint32_t scale = std::ceil(Config::Get().general.WindowScale);
             _smoothScaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width * scale, _height * scale, false, false);
         }
     }
@@ -804,8 +803,6 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
 {
     CalculcateClipping(dpi);
 
-    assert((colour & 0xFF) > 0u);
-
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
@@ -908,17 +905,25 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
 }
 
 void OpenGLDrawingContext::DrawTTFBitmap(
-    DrawPixelInfo& dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
-    int32_t y, uint8_t hinting_threshold)
+    DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
+#    ifndef NO_TTF
     CalculcateClipping(dpi);
 
-    const auto texture = _textureCache->GetOrLoadBitmapTexture(image, pixels, width, height);
+    auto baseId = uint32_t(0x7FFFF) - 1024;
+    auto imageId = baseId + _ttfGlId;
+    _engine.InvalidateImage(imageId);
+    const auto texture = _textureCache->GetOrLoadBitmapTexture(imageId, surface->pixels, surface->w, surface->h);
+    _ttfGlId++;
+    if (_ttfGlId >= 1023)
+    {
+        _ttfGlId = 0;
+    }
 
     int32_t drawOffsetX = 0;
     int32_t drawOffsetY = 0;
-    int32_t drawWidth = static_cast<uint16_t>(width);
-    int32_t drawHeight = static_cast<uint16_t>(height);
+    int32_t drawWidth = static_cast<uint16_t>(surface->w);
+    int32_t drawHeight = static_cast<uint16_t>(surface->h);
 
     int32_t left = x + drawOffsetX;
     int32_t top = y + drawOffsetY;
@@ -976,7 +981,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
         command.depth = _drawCount++;
     }
-    auto& cmdBuf = hinting_threshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
+    auto& cmdBuf = hintingThreshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
     DrawRectCommand& command = cmdBuf.allocate();
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture.index;
@@ -984,10 +989,11 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
-    command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hinting_threshold << 8);
+    command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hintingThreshold << 8);
     command.colour = info->palette[1];
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
+#    endif // NO_TTF
 }
 
 void OpenGLDrawingContext::FlushCommandBuffers()

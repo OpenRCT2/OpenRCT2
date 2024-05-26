@@ -156,7 +156,6 @@ void GameReduceGameSpeed();
 
 void GameCreateWindows();
 void ResetAllSpriteQuadrantPlacements();
-void UpdatePaletteEffects();
 
 void GameLoadOrQuitNoSavePrompt();
 void GameLoadInit();

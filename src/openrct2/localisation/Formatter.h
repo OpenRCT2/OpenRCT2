@@ -12,6 +12,7 @@
 #include "../Identifiers.h"
 #include "../common.h"
 #include "../core/Guard.hpp"
+#include "../core/Money.hpp"
 #include "../core/String.hpp"
 
 #include <array>

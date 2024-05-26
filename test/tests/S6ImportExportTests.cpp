@@ -18,7 +18,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/core/Crypt.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/MemoryStream.h>
@@ -138,10 +137,9 @@ static void RecordGameStateSnapshot(std::unique_ptr<IContext>& context, MemorySt
 
 static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 {
-    auto* gameState = context->GetGameState();
     for (uint32_t i = 0; i < ticks; i++)
     {
-        gameState->UpdateLogic();
+        gameStateUpdateLogic();
     }
 }
 
