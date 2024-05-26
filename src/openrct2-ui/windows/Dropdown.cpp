@@ -118,17 +118,18 @@ namespace OpenRCT2::Ui::Windows
                     const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 1, 0 };
                     const ScreenCoordsXY shadowOffset{ 0, 1 };
 
-                    if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
+                    if (colours[0].hasFlag(ColourFlag::translucent))
                     {
-                        TranslucentWindowPalette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
+                        TranslucentWindowPalette palette = TranslucentWindowPalettes[colours[0].colour];
                         GfxFilterRect(dpi, { leftTop, rightBottom }, palette.highlight);
                         GfxFilterRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                     }
                     else
                     {
-                        GfxFillRect(dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
+                        GfxFillRect(dpi, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
                         GfxFillRect(
-                            dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
+                            dpi, { leftTop + shadowOffset, rightBottom + shadowOffset },
+                            ColourMapA[colours[0].colour].lightest);
                     }
                 }
                 else
@@ -157,11 +158,11 @@ namespace OpenRCT2::Ui::Windows
                             item++;
 
                         // Calculate colour
-                        colour_t colour = NOT_TRANSLUCENT(colours[0]);
+                        ColourWithFlags colour = { colours[0].colour };
                         if (i == highlightedIndex)
-                            colour = COLOUR_WHITE;
+                            colour.colour = COLOUR_WHITE;
                         if (i < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(i))
-                            colour = NOT_TRANSLUCENT(colours[0]) | COLOUR_FLAG_INSET;
+                            colour = { colours[0].colour, EnumToFlag(ColourFlag::inset) };
 
                         // Draw item string
                         auto yOffset = GetAdditionalRowPadding();
@@ -182,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void SetTextItems(
-            const ScreenCoordsXY& screenPos, int32_t extraY, uint8_t colour, uint8_t customHeight, uint8_t txtFlags,
+            const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, uint8_t customHeight, uint8_t txtFlags,
             size_t numItems, int32_t itemWidth)
         {
             // Set and calculate num items, rows and columns
@@ -208,13 +209,13 @@ namespace OpenRCT2::Ui::Windows
 
             UpdateSizeAndPosition(screenPos, extraY);
 
-            if (colour & COLOUR_FLAG_TRANSLUCENT)
+            if (colour.hasFlag(ColourFlag::translucent))
                 flags |= WF_TRANSPARENT;
             colours[0] = colour;
         }
 
         void SetImageItems(
-            const ScreenCoordsXY& screenPos, int32_t extraY, uint8_t colour, int32_t numItems, int32_t itemWidth,
+            const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, int32_t numItems, int32_t itemWidth,
             int32_t itemHeight, int32_t numColumns)
         {
             UseImages = _dropdownPrepareUseImages;
@@ -243,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
 
             UpdateSizeAndPosition(screenPos, extraY);
 
-            if (colour & COLOUR_FLAG_TRANSLUCENT)
+            if (colour.hasFlag(ColourFlag::translucent))
                 flags |= WF_TRANSPARENT;
             colours[0] = colour;
         }
@@ -318,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
      * @param colour (al)
      */
     void WindowDropdownShowText(
-        const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items)
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items)
     {
         int32_t string_width, max_string_width;
         char buffer[256];
@@ -348,8 +349,8 @@ namespace OpenRCT2::Ui::Windows
      * @param custom_height (ah) requires flag set as well
      */
     void WindowDropdownShowTextCustomWidth(
-        const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
-        int32_t width)
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        size_t num_items, int32_t width)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
         if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.EnlargedUi)
@@ -380,7 +381,7 @@ namespace OpenRCT2::Ui::Windows
      * @param numColumns (bl)
      */
     void WindowDropdownShowImage(
-        int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
+        int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
         int32_t itemHeight, int32_t numColumns)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
@@ -493,12 +494,13 @@ static constexpr colour_t kColoursDropdownOrder[] = {
     /**
      *  rct2: 0x006ED43D
      */
-    void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
+    void WindowDropdownShowColour(
+        WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour, bool alwaysHideSpecialColours)
     {
         int32_t defaultIndex = -1;
 
-        auto numColours = (GetGameState().Cheats.AllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT)
-                                                                            : COLOUR_NUM_NORMAL;
+        const bool specialColoursEnabled = !alwaysHideSpecialColours && GetGameState().Cheats.AllowSpecialColourSchemes;
+        auto numColours = specialColoursEnabled ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
         // Set items
         for (uint64_t i = 0; i < numColours; i++)
         {

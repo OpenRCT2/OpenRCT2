@@ -58,7 +58,7 @@ static Widget window_debug_paint_widgets[] = {
             InitScrollWidgets();
             WindowPushOthersBelow(*this);
 
-            colours[0] = TRANSLUCENT(COLOUR_BLACK);
+            colours[0] = ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::translucent, true);
             colours[1] = COLOUR_GREY;
 
             ResizeLanguage = LANGUAGE_UNDEFINED;

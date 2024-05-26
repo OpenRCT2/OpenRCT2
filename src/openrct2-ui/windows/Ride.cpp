@@ -3629,7 +3629,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<uint16_t>(ride->num_block_brakes + ride->num_stations);
                 DrawTextBasic(
                     dpi, windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 },
-                    STR_BLOCK_SECTIONS, ft, COLOUR_BLACK);
+                    STR_BLOCK_SECTIONS, ft, { COLOUR_BLACK });
             }
         }
 

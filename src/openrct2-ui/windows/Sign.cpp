@@ -197,10 +197,10 @@ static Widget _signWidgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_MAIN_COLOUR:
-                    WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(_mainColour));
+                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), _mainColour);
                     break;
                 case WIDX_TEXT_COLOUR:
-                    WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(_textColour));
+                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), _textColour);
                     break;
             }
         }

@@ -654,13 +654,13 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             if (IsWidgetDisabled(widgetIndex))
             {
                 // Draw greyed out (light border bottom right shadow)
-                auto colour = colours[widget.colour];
-                colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
+                auto colour = colours[widget.colour].colour;
+                colour = ColourMapA[colour].lighter;
                 GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
 
                 // Draw greyed out (dark)
-                colour = colours[widget.colour];
-                colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
+                colour = colours[widget.colour].colour;
+                colour = ColourMapA[colour].mid_light;
                 GfxDrawSpriteSolid(dpi, image, pos, colour);
             }
             else
@@ -1013,7 +1013,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             DrawTabImages(dpi);
             DrawDropdownButtons(dpi, WIDX_SIMPLEX_FLOOR_TEXTURE, WIDX_SIMPLEX_WALL_TEXTURE);
 
-            const uint8_t textColour = colours[1];
+            const auto textColour = colours[1];
 
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_SIMPLEX_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
@@ -1198,11 +1198,11 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            const colour_t enabledColour = colours[1];
-            const colour_t disabledColour = enabledColour | COLOUR_FLAG_INSET;
+            const auto enabledColour = colours[1];
+            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Smooth strength label and value
-            const colour_t strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
+            const auto strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
                 { strengthColour });
@@ -1216,7 +1216,7 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
                 STR_COMMA16, ft, { strengthColour });
 
             // Low label and value
-            const colour_t labelColour = _heightmapLoaded ? enabledColour : disabledColour;
+            const auto labelColour = _heightmapLoaded ? enabledColour : disabledColour;
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
                 { labelColour });

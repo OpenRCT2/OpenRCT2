@@ -85,7 +85,7 @@ void ChatUpdate()
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void ChatDraw(DrawPixelInfo& dpi, uint8_t chatBackgroundColor)
+void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 

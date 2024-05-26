@@ -160,7 +160,7 @@ static Widget window_banner_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_MAIN_COLOUR:
-                    WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), banner->colour);
+                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), banner->colour);
                     break;
                 case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 

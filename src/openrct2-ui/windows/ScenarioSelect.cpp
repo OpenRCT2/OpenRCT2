@@ -393,7 +393,7 @@ static Widget _scenarioSelectWidgets[] = {
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -451,7 +451,8 @@ static Widget _scenarioSelectWidgets[] = {
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<char*>(buffer);
-                        colour_t colour = isDisabled ? colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
+                        auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
+                                                 : ColourWithFlags{ COLOUR_BLACK };
                         auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
@@ -490,9 +491,9 @@ static Widget _scenarioSelectWidgets[] = {
     private:
         void DrawCategoryHeading(DrawPixelInfo& dpi, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
-            colour_t baseColour = colours[1];
-            colour_t lightColour = ColourMapA[baseColour].lighter;
-            colour_t darkColour = ColourMapA[baseColour].mid_dark;
+            auto baseColour = colours[1];
+            colour_t lightColour = ColourMapA[baseColour.colour].lighter;
+            colour_t darkColour = ColourMapA[baseColour.colour].mid_dark;
 
             // Draw string
             int32_t centreX = (left + right) / 2;

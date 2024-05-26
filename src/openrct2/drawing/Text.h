@@ -39,15 +39,19 @@ enum class TextDarkness
 
 struct TextPaint
 {
-    colour_t Colour = COLOUR_BLACK;
+    ColourWithFlags Colour = { COLOUR_BLACK };
     ::FontStyle FontStyle = FontStyle::Medium;
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
     TextDarkness Darkness = TextDarkness::Regular;
 
     TextPaint() = default;
-    TextPaint(colour_t colour)
+    TextPaint(ColourWithFlags colour)
         : Colour(colour)
+    {
+    }
+    TextPaint(colour_t colour)
+        : Colour(ColourWithFlags{ colour })
     {
     }
     TextPaint(::FontStyle fontStyle)
@@ -63,18 +67,33 @@ struct TextPaint
     {
     }
 
-    TextPaint(colour_t colour, ::FontStyle fontStyle)
+    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle)
         : Colour(colour)
         , FontStyle(fontStyle)
     {
     }
-    TextPaint(colour_t colour, TextUnderline underlineText)
+    TextPaint(colour_t colour, ::FontStyle fontStyle)
+        : Colour(ColourWithFlags{ colour })
+        , FontStyle(fontStyle)
+    {
+    }
+    TextPaint(ColourWithFlags colour, TextUnderline underlineText)
         : Colour(colour)
         , UnderlineText(underlineText)
     {
     }
-    TextPaint(colour_t colour, TextAlignment alignment)
+    TextPaint(colour_t colour, TextUnderline underlineText)
+        : Colour(ColourWithFlags{ colour })
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(ColourWithFlags colour, TextAlignment alignment)
         : Colour(colour)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(colour_t colour, TextAlignment alignment)
+        : Colour(ColourWithFlags{ colour })
         , Alignment(alignment)
     {
     }
@@ -95,26 +114,50 @@ struct TextPaint
     {
     }
 
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText)
+    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextUnderline underlineText)
         : Colour(colour)
         , FontStyle(fontStyle)
         , UnderlineText(underlineText)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment)
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText)
+        : Colour(ColourWithFlags{ colour })
+        , FontStyle(fontStyle)
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextAlignment alignment)
         : Colour(colour)
         , FontStyle(fontStyle)
         , Alignment(alignment)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextDarkness darkness)
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment)
+        : Colour(ColourWithFlags{ colour })
+        , FontStyle(fontStyle)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextDarkness darkness)
         : Colour(colour)
         , FontStyle(fontStyle)
         , Darkness(darkness)
     {
     }
-    TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextDarkness darkness)
+        : Colour(ColourWithFlags{ colour })
+        , FontStyle(fontStyle)
+        , Darkness(darkness)
+    {
+    }
+    TextPaint(ColourWithFlags colour, TextUnderline underlineText, TextAlignment alignment)
         : Colour(colour)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
+        : Colour(ColourWithFlags{ colour })
         , UnderlineText(underlineText)
         , Alignment(alignment)
     {
@@ -126,15 +169,29 @@ struct TextPaint
     {
     }
 
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
+    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
         : Colour(colour)
         , FontStyle(fontStyle)
         , UnderlineText(underlineText)
         , Alignment(alignment)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
+        : Colour(ColourWithFlags{ colour })
+        , FontStyle(fontStyle)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
         : Colour(colour)
+        , FontStyle(fontStyle)
+        , Alignment(alignment)
+        , Darkness(darkness)
+    {
+    }
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
+        : Colour(ColourWithFlags{ colour })
         , FontStyle(fontStyle)
         , Alignment(alignment)
         , Darkness(darkness)

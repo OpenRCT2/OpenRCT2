@@ -540,7 +540,7 @@ static StringId window_cheats_page_titles[] = {
                 ft.Add<money64>(_moneySpinnerValue);
                 if (IsWidgetDisabled(WIDX_MONEY_SPINNER))
                 {
-                    colour |= COLOUR_FLAG_INSET;
+                    colour.setFlag(ColourFlag::inset, true);
                 }
                 int32_t actual_month = _monthSpinnerValue - 1;
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });

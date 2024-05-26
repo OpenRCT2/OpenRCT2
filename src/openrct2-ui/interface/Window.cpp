@@ -644,7 +644,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
     if (w.flags & WF_WHITE_BORDER_MASK)
     {
         GfxFillRectInset(
-            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
+            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
             INSET_RECT_FLAG_FILL_NONE);
     }
 }
