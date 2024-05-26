@@ -62,7 +62,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (_stationNum.ToUnderlying() >= Limits::MaxStationsPerRide)
+    if (_stationNum.ToUnderlying() >= Limits::kMaxStationsPerRide)
     {
         LOG_ERROR("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);

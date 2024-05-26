@@ -12,19 +12,20 @@
 
 namespace OpenRCT2::Limits
 {
-    constexpr uint16_t MaxRidesInPark = 1000;
-    constexpr uint16_t MaxStationsPerRide = 255;
-    constexpr uint8_t CustomerHistorySize = RCT12::Limits::CustomerHistorySize;
-    constexpr uint16_t MaxGolfHoles = RCT12::Limits::MaxGolfHoles;
-    constexpr uint16_t MaxHelices = RCT12::Limits::MaxHelices;
-    constexpr uint16_t MaxInversions = RCT12::Limits::MaxInversions;
-    constexpr uint16_t MaxTrainsPerRide = 255;
+    constexpr uint16_t kMaxRidesInPark = 1000;
+    constexpr uint16_t kMaxStationsPerRide = 255;
+    constexpr uint8_t kCustomerHistorySize = RCT12::Limits::kCustomerHistorySize;
+    constexpr uint16_t kMaxGolfHoles = RCT12::Limits::kMaxGolfHoles;
+    constexpr uint16_t kMaxHelices = RCT12::Limits::kMaxHelices;
+    constexpr uint16_t kMaxInversions = RCT12::Limits::kMaxInversions;
+    constexpr uint16_t kMaxTrainsPerRide = 255;
     constexpr uint16_t MaxCarsPerTrain = 255;
-    constexpr const uint16_t MaxVehicleColours = MaxTrainsPerRide; // this should really be MaxTrainsPerRide * MaxCarsPerTrain
-    // MaxVehicleColours should be set to MaxTrainsPerRide or MaxCarsPerTrain, whichever is higher.
+    constexpr const uint16_t MaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *
+                                                                    // MaxCarsPerTrain
+    // MaxVehicleColours should be set to kMaxTrainsPerRide or MaxCarsPerTrain, whichever is higher.
     // Sadly, using std::max() will cause compilation failures when using MaxVehicleColours as an array size,
     // hence the usage of static asserts.
-    static_assert(MaxVehicleColours >= MaxTrainsPerRide);
+    static_assert(MaxVehicleColours >= kMaxTrainsPerRide);
     static_assert(MaxVehicleColours >= MaxCarsPerTrain);
     constexpr uint8_t MaxCircuitsPerRide = 20;
     constexpr uint8_t MaxAwards = RCT12::Limits::MaxAwards;

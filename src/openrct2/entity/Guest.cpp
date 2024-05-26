@@ -1865,9 +1865,9 @@ Ride* Guest::FindBestRideToGoOn()
     return mostExcitingRide;
 }
 
-OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
+OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> Guest::FindRidesToGoOn()
 {
-    OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> rideConsideration;
+    OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
@@ -2562,7 +2562,7 @@ bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array
     {
         chosen_train = ride.GetStation(CurrentRideStation).TrainAtStation;
     }
-    if (chosen_train >= OpenRCT2::Limits::MaxTrainsPerRide)
+    if (chosen_train >= OpenRCT2::Limits::kMaxTrainsPerRide)
     {
         return false;
     }
@@ -3145,7 +3145,7 @@ template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool consid
         }
     }
 
-    OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> rideConsideration;
+    OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> rideConsideration;
     if (!considerOnlyCloseRides && (peep->HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park
@@ -3188,7 +3188,7 @@ template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool consid
     }
 
     // Filter the considered rides
-    RideId potentialRides[OpenRCT2::Limits::MaxRidesInPark];
+    RideId potentialRides[OpenRCT2::Limits::kMaxRidesInPark];
     size_t numPotentialRides = 0;
     for (auto& ride : GetRideManager())
     {
@@ -3793,7 +3793,7 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
 
     peep->MoveTo({ x, y, z });
 
-    Guard::Assert(peep->CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
+    Guard::Assert(peep->CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
     auto exit = ride.GetStation(peep->CurrentRideStation).Exit;
     x = exit.x;
     y = exit.y;
@@ -4140,7 +4140,7 @@ void Guest::UpdateRideLeaveVehicle()
     vehicle->ApplyMass(-Mass);
     vehicle->Invalidate();
 
-    if (ride_station.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
+    if (ride_station.ToUnderlying() >= OpenRCT2::Limits::kMaxStationsPerRide)
     {
         // HACK #5658: Some parks have hacked rides which end up in this state
         auto bestStationIndex = RideGetFirstValidStationExit(*ride);
@@ -4159,7 +4159,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     const auto* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
-    assert(CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
+    assert(CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
     auto& station = ride->GetStation(CurrentRideStation);
 
     if (!(carEntry->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS))
