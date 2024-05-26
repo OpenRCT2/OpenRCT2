@@ -145,27 +145,27 @@ static constexpr uint32_t GhostTrainTrackPiecesBrakes[4] = {
     SprGhostTrainTrackBrakesNwSe,
 };
 
-static constexpr uint8_t DoorOpeningOutwardsToImage[] = {
-    TUNNEL_DOORS_2, // Closed
-    TUNNEL_DOORS_2, // Unused?
-    TUNNEL_DOORS_3, // Half open
-    TUNNEL_DOORS_4, // Fully open
-    TUNNEL_DOORS_2, // Unused?
-    TUNNEL_DOORS_2, // Unused?
-    TUNNEL_DOORS_2, // Unused?
+static constexpr TunnelType DoorOpeningOutwardsToImage[] = {
+    TunnelType::Doors2, // Closed
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors3, // Half open
+    TunnelType::Doors4, // Fully open
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
 };
 
-static constexpr uint8_t DoorOpeningInwardsToImage[] = {
-    TUNNEL_DOORS_2, // Closed
-    TUNNEL_DOORS_2, // Unused?
-    TUNNEL_DOORS_5, // Half open
-    TUNNEL_DOORS_6, // Fully open
-    TUNNEL_DOORS_2, // Unused?
-    TUNNEL_DOORS_2, // Unused?
-    TUNNEL_DOORS_2, // Unused?
+static constexpr TunnelType DoorOpeningInwardsToImage[] = {
+    TunnelType::Doors2, // Closed
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors5, // Half open
+    TunnelType::Doors6, // Fully open
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
 };
 
-static uint8_t GetTunnelDoorsImageStraightFlat(const TrackElement& trackElement, uint8_t direction)
+static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackElement, uint8_t direction)
 {
     switch (direction)
     {
@@ -178,7 +178,7 @@ static uint8_t GetTunnelDoorsImageStraightFlat(const TrackElement& trackElement,
         case 3:
             return DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
-    return TUNNEL_DOORS_2;
+    return TunnelType::Doors2;
 }
 
 /** rct2: 0x00770BEC */
@@ -225,16 +225,16 @@ static void PaintGhostTrainTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
             break;
     }
 
@@ -252,7 +252,7 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     const TrackElement& trackElement)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::Down25ToFlat;
-    uint8_t doorImage;
+    TunnelType doorImage;
     if (!isBackwards)
     {
         doorImage = DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
@@ -279,10 +279,10 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
             PaintUtilPushTunnelLeft(session, height, doorImage);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height, doorImage);
@@ -330,7 +330,7 @@ static void PaintGhostTrainTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardFlat);
             break;
         case 1:
             PaintUtilPushTunnelRight(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
@@ -339,7 +339,7 @@ static void PaintGhostTrainTrack25DegUpToFlat(
             PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardFlat);
             break;
     }
 }
@@ -362,7 +362,7 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
     switch ((direction + 2) % 4)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardFlat);
             break;
         case 1:
             PaintUtilPushTunnelRight(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
@@ -371,7 +371,7 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
             PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardFlat);
             break;
     }
 }
@@ -404,7 +404,7 @@ static void PaintGhostTrainStation(
     imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 3 } });
 
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
 
@@ -472,7 +472,7 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     const TrackElement& trackElement)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::RightQuarterTurn1Tile;
-    uint8_t tunnelStartImage, tunnelEndImage;
+    TunnelType tunnelStartImage, tunnelEndImage;
     if (!isBackwards)
     {
         tunnelStartImage = DoorOpeningInwardsToImage[trackElement.GetDoorAState()];

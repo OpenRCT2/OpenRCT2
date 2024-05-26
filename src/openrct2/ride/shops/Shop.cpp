@@ -58,7 +58,7 @@ static void PaintShop(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType)

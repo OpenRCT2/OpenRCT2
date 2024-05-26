@@ -91,7 +91,7 @@ namespace AlpineRC
                     session.SupportColours);
             }
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -125,7 +125,7 @@ namespace AlpineRC
             { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -200,11 +200,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -281,11 +281,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -362,11 +362,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -429,7 +429,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -508,10 +508,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -570,7 +570,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -720,10 +720,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -782,7 +782,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -949,7 +949,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2211,7 +2211,7 @@ namespace AlpineRC
                 session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2256,7 +2256,7 @@ namespace AlpineRC
                 session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2317,11 +2317,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2369,11 +2369,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2421,11 +2421,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2473,11 +2473,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2545,7 +2545,7 @@ namespace AlpineRC
                 session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4110,7 +4110,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -4192,10 +4192,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4257,7 +4257,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -4410,10 +4410,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4472,7 +4472,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4639,7 +4639,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4822,7 +4822,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -4870,10 +4870,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4924,7 +4924,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -4977,10 +4977,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5047,7 +5047,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -5197,10 +5197,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5251,7 +5251,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -5401,10 +5401,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5471,7 +5471,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -5591,10 +5591,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5645,7 +5645,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -5765,10 +5765,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5822,7 +5822,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -5904,10 +5904,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5953,10 +5953,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6038,7 +6038,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6091,7 +6091,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6173,10 +6173,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6222,10 +6222,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6307,7 +6307,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6386,7 +6386,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6539,10 +6539,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6588,10 +6588,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6744,7 +6744,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6796,7 +6796,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6954,10 +6954,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7003,10 +7003,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7164,7 +7164,7 @@ namespace AlpineRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -7230,7 +7230,7 @@ namespace AlpineRC
                 session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -7274,7 +7274,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -7322,10 +7322,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7379,7 +7379,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -7427,10 +7427,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7481,7 +7481,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -7532,10 +7532,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7586,7 +7586,7 @@ namespace AlpineRC
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -7637,10 +7637,10 @@ namespace AlpineRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(

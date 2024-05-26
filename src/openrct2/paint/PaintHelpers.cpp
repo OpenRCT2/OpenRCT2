@@ -39,15 +39,3 @@ PaintStruct* PaintAddImageAsChildRotated(
 
     return PaintAddImageAsChild(session, image_id, offset, boundBox);
 }
-
-void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)
-{
-    if (direction & 1)
-    {
-        PaintUtilPushTunnelRight(session, height, type);
-    }
-    else
-    {
-        PaintUtilPushTunnelLeft(session, height, type);
-    }
-}

@@ -1862,7 +1862,7 @@ static void JuniorRCPaintTrackFlat(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_flat[subTypeOffset][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -1931,7 +1931,7 @@ static void JuniorRCPaintStation(
     }
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
@@ -1949,7 +1949,8 @@ static void JuniorRCPaintTrack25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
     int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
-    uint8_t tunnelType[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
+    TunnelType tunnelType[4] = { TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd, TunnelType::StandardSlopeEnd,
+                                 TunnelType::StandardSlopeStart };
     PaintUtilPushTunnelRotated(session, direction, height + tunnelHeights[direction], tunnelType[direction]);
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -1977,11 +1978,11 @@ static void JuniorRCPaintTrackFlatTo25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -2008,16 +2009,16 @@ static void JuniorRCPaintTrack25DegUpToFlat(
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_25_deg_up_to_flat[subTypeOffset][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
-    uint8_t tunnelType;
+    TunnelType tunnelType;
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TUNNEL_12;
+        tunnelType = TunnelType::_12;
         tunnelHeight = height + 8;
     }
     else
     {
-        tunnelType = TUNNEL_0;
+        tunnelType = TunnelType::StandardFlat;
         tunnelHeight = height - 8;
     }
 
@@ -2077,22 +2078,22 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     switch (trackSequence)
@@ -2178,13 +2179,13 @@ static void JuniorRCFlatToLeftBankPaintSetup(
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
-        PaintUtilPushTunnelRight(session, height, 0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-        PaintUtilPushTunnelLeft(session, height, 0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (junior_rc_track_pieces_flat_to_left_bank[direction][1] != 0)
@@ -2229,13 +2230,13 @@ static void JuniorRCFlatToRightBankPaintSetup(
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
-        PaintUtilPushTunnelRight(session, height, 0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-        PaintUtilPushTunnelLeft(session, height, 0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (junior_rc_track_pieces_flat_to_right_bank[direction][1] != 0)
@@ -2385,22 +2386,22 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     switch (trackSequence)
@@ -2510,16 +2511,16 @@ static void JuniorRCLeftBankTo25DegUpPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
             break;
     }
 
@@ -2573,16 +2574,16 @@ static void JuniorRCRightBankTo25DegUpPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
             break;
     }
 
@@ -2603,16 +2604,16 @@ static void JuniorRC25DegUpToLeftBankPaintSetup(
 {
     ImageId image_id;
 
-    uint8_t tunnelType;
+    TunnelType tunnelType;
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TUNNEL_12;
+        tunnelType = TunnelType::_12;
         tunnelHeight = height + 8;
     }
     else
     {
-        tunnelType = TUNNEL_0;
+        tunnelType = TunnelType::StandardFlat;
         tunnelHeight = height - 8;
     }
 
@@ -2667,16 +2668,16 @@ static void JuniorRC25DegUpToRightBankPaintSetup(
 {
     ImageId image_id;
 
-    uint8_t tunnelType;
+    TunnelType tunnelType;
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TUNNEL_12;
+        tunnelType = TunnelType::_12;
         tunnelHeight = height + 8;
     }
     else
     {
-        tunnelType = TUNNEL_0;
+        tunnelType = TunnelType::StandardFlat;
         tunnelHeight = height - 8;
     }
 
@@ -2792,11 +2793,11 @@ static void JuniorRCLeftBankPaintSetup(
 
     if (direction & 1)
     {
-        PaintUtilPushTunnelRight(session, height, 0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
     else
     {
-        PaintUtilPushTunnelLeft(session, height, 0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -2850,19 +2851,19 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
     }
     if (direction == 2 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
     }
     if (direction == 3 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
     }
 
     switch (trackSequence)
@@ -2955,19 +2956,19 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
     }
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
     }
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
     }
 
     switch (trackSequence)
@@ -3092,7 +3093,7 @@ static void JuniorRCSBendLeftPaintSetup(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)
@@ -3113,7 +3114,7 @@ static void JuniorRCSBendLeftPaintSetup(
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)
@@ -3200,7 +3201,7 @@ static void JuniorRCSBendRightPaintSetup(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)
@@ -3221,7 +3222,7 @@ static void JuniorRCSBendRightPaintSetup(
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)
@@ -3276,7 +3277,7 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_0);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
 
     static constexpr MetalSupportType supportType[2][4] = {
         { kSupportType, MetalSupportType::ForkAlt, kSupportType, MetalSupportType::ForkAlt },
@@ -3384,7 +3385,7 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_banked_quarter_turn_3_tiles, nullptr, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
         junior_rc_right_quarter_turn_3_tiles_bank_offsets);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_0);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
 
     if (direction == 1 && trackSequence == 3)
     {
@@ -3465,22 +3466,22 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
     }
 
     static constexpr MetalSupportType supportType[2][4] = {
@@ -3550,22 +3551,22 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
     }
 
     static constexpr MetalSupportType supportType[2][4] = {
@@ -3669,22 +3670,22 @@ static void JuniorRCRightHalfBankedHelixUpSmallPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -3742,22 +3743,22 @@ static void JuniorRCRightHalfBankedHelixDownSmallPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -3845,22 +3846,22 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     switch (trackSequence)
@@ -3952,22 +3953,22 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
     }
 
     switch (trackSequence)
@@ -4070,13 +4071,13 @@ static void JuniorRCBrakePaintSetup(
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
 
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
 
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -4109,13 +4110,13 @@ static void JuniorRCBlockBrakePaintSetup(
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
 
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
 
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -4167,11 +4168,11 @@ static void JuniorRCLeftEighthToDiagPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -4240,11 +4241,11 @@ static void JuniorRCRightEighthToDiagPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -4412,11 +4413,11 @@ static void JuniorRCLeftEighthToDiagBankPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -4566,11 +4567,11 @@ static void JuniorRCRightEighthToDiagBankPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -5323,16 +5324,16 @@ static void JuniorRCPaintTrack60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 56, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height + 56, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 56, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height + 56, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
             break;
     }
 
@@ -5409,16 +5410,16 @@ static void JuniorRCPaintTrack25DegUpTo60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
             break;
     }
 
@@ -5474,16 +5475,16 @@ static void JuniorRCPaintTrack60DegUpTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
             break;
     }
 
@@ -5729,16 +5730,16 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_1);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_1);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeStart);
             break;
     }
 
@@ -5792,16 +5793,16 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_1);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height + 24, TunnelType::StandardSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_1);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeStart);
             break;
     }
 
@@ -5863,14 +5864,14 @@ static void JuniorRCBoosterPaintSetup(
         PaintAddImageAsParent(
             session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), { 0, 0, height }, { 20, 32, 1 });
 
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
     else
     {
         PaintAddImageAsParent(
             session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), { 0, 0, height }, { 32, 20, 1 });
 
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -5900,7 +5901,7 @@ static void JuniorRCTrackOnRidePhoto(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3 + photoCameraOffset, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48 + photoCameraOffset);
 }
