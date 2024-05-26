@@ -521,10 +521,10 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless)
             {
                 auto* preloaderScene = GetPreloaderScene();
-                preloaderScene->AddJob([this]() { InitialiseRepositories(); });
+                SetActiveScene(preloaderScene);
 
                 // TODO: preload the title scene in another (parallel) job.
-                SetActiveScene(preloaderScene);
+                preloaderScene->AddJob([this]() { InitialiseRepositories(); });
             }
             else
             {
@@ -549,35 +549,34 @@ namespace OpenRCT2
             }
 
             auto currentLanguage = _localisationService->GetCurrentLanguage();
-            auto* preloaderScene = GetPreloaderScene();
 
-            preloaderScene->UpdateCaption(STR_CHECKING_OBJECT_FILES);
+            OpenProgress(STR_CHECKING_OBJECT_FILES);
             _objectRepository->LoadOrConstruct(currentLanguage);
 
-            preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
+            OpenProgress(STR_LOADING_GENERIC);
             Audio::LoadAudioObjects();
 
             if (!gOpenRCT2Headless)
             {
-                preloaderScene->UpdateCaption(STR_CHECKING_ASSET_PACKS);
+                OpenProgress(STR_CHECKING_ASSET_PACKS);
                 _assetPackManager->Scan();
                 _assetPackManager->LoadEnabledAssetPacks();
                 _assetPackManager->Reload();
             }
 
-            preloaderScene->UpdateCaption(STR_CHECKING_TRACK_DESIGN_FILES);
+            OpenProgress(STR_CHECKING_TRACK_DESIGN_FILES);
             _trackDesignRepository->Scan(currentLanguage);
 
-            preloaderScene->UpdateCaption(STR_CHECKING_SCENARIO_FILES);
+            OpenProgress(STR_CHECKING_SCENARIO_FILES);
             _scenarioRepository->Scan(currentLanguage);
 
-            preloaderScene->UpdateCaption(STR_CHECKING_TITLE_SEQUENCES);
+            OpenProgress(STR_CHECKING_TITLE_SEQUENCES);
             TitleSequenceManager::Scan();
 
-            if (preloaderScene->GetCompletionScene() == GetTitleScene())
-                preloaderScene->UpdateCaption(STR_LOADING_TITLE_SEQUENCE);
+            if (GetPreloaderScene()->GetCompletionScene() == GetTitleScene())
+                OpenProgress(STR_LOADING_TITLE_SEQUENCE);
             else
-                preloaderScene->UpdateCaption(STR_LOADING_GENERIC);
+                OpenProgress(STR_LOADING_GENERIC);
         }
 
     public:
@@ -646,12 +645,27 @@ namespace OpenRCT2
             _drawingEngine = nullptr;
         }
 
-        void SetProgress(size_t currentProgress, size_t totalCount) override
+        void OpenProgress(StringId captionStringId) override
         {
-            if (GetActiveScene() != GetPreloaderScene())
-                return;
+            auto captionString = _localisationService->GetString(captionStringId);
+            auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
+            intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
+            ContextOpenIntent(&intent);
+        }
 
-            GetPreloaderScene()->SetProgress(currentProgress, totalCount);
+        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) override
+        {
+            auto intent = Intent(INTENT_ACTION_PROGRESS_SET);
+            intent.PutExtra(INTENT_EXTRA_PROGRESS_OFFSET, currentProgress);
+            intent.PutExtra(INTENT_EXTRA_PROGRESS_TOTAL, totalCount);
+            intent.PutExtra(INTENT_EXTRA_STRING_ID, format);
+            ContextOpenIntent(&intent);
+        }
+
+        void CloseProgress() override
+        {
+            auto intent = Intent(INTENT_ACTION_PROGRESS_CLOSE);
+            ContextOpenIntent(&intent);
         }
 
         bool LoadParkFromFile(const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override

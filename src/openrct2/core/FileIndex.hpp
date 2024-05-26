@@ -212,7 +212,7 @@ private:
             auto reportProgress = [&]() {
                 const size_t completed = processed;
                 Console::WriteFormat("File %5zu of %zu, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
-                OpenRCT2::GetContext()->SetProgress(completed, totalCount);
+                OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(completed), static_cast<uint32_t>(totalCount));
             };
 
             for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)

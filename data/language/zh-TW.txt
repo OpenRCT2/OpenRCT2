@@ -2889,7 +2889,7 @@ STR_5755    :不合適的遊戲版本 (伺服器版本為{STRING})
 STR_5756    :密碼錯誤
 STR_5757    :伺服器人數已滿
 STR_5758    :{OUTLINE}{GREEN}{STRING}已加入遊戲
-STR_5759    :下載劇情中… ({INT32} / {INT32}) KiB
+STR_5759    :下載劇情中…
 STR_5760    :港幣 (HK$)
 STR_5761    :新台幣 (NT$)
 STR_5762    :人民幣 (CN¥)
@@ -3452,7 +3452,7 @@ STR_6374    :阻礙檢查已關閉
 STR_6375    :未知遊樂設施
 STR_6376    :{WINDOW_COLOUR_2}遊樂設施車輛:{NEWLINE}{BLACK}{STRINGID}於{STRINGID}內
 STR_6377    :{WINDOW_COLOUR_2}種類: {BLACK}{STRINGID}於{STRINGID}內
-STR_6378    :正在接收物件列表: {INT32} / {INT32}
+STR_6378    :正在接收物件列表:
 STR_6379    :已接收不正確的資料
 STR_6380    :有可用的更新!
 STR_6381    :加入OpenRCT2的Discord!

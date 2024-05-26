@@ -2887,7 +2887,7 @@ STR_5755    :Nesprávná verze hry (Server používá {STRING})
 STR_5756    :Špatné heslo
 STR_5757    :Server je plný
 STR_5758    :{OUTLINE}{GREEN}Hráč {STRING} se připojil do hry
-STR_5759    :Stahování mapy … ({INT32} / {INT32}) KiB
+STR_5759    :Stahování mapy …
 STR_5760    :Hongkongský dolar (HK$)
 STR_5761    :Tchajwanský dolar (NT$)
 STR_5762    :Čínský jüan (CN¥)
@@ -3450,7 +3450,7 @@ STR_6374    :K
 STR_6375    :Neznámá atrakce
 STR_6376    :{WINDOW_COLOUR_2}Vozy atrakce:{NEWLINE}{BLACK}{STRINGID} pro {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} pro {STRINGID}
-STR_6378    :Stahování seznamu objektů: {INT32} / {INT32}
+STR_6378    :Stahování seznamu objektů:
 STR_6379    :Stažena neplatná data
 STR_6380    :Dostupná aktualizace!
 STR_6381    :Připojte se na OpenRCT2 Discord!

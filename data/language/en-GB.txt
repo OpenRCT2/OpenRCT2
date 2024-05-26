@@ -2885,7 +2885,7 @@ STR_5755    :Incorrect Software Version (Server is using {STRING})
 STR_5756    :Bad Password
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
-STR_5759    :Downloading map … ({INT32} / {INT32}) KiB
+STR_5759    :Downloading map …
 STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
 STR_5762    :Chinese Yuan (CN¥)
@@ -3449,7 +3449,7 @@ STR_6374    :C
 STR_6375    :Unknown Ride
 STR_6376    :{WINDOW_COLOUR_2}Ride vehicle:{NEWLINE}{BLACK}{STRINGID} for {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} for {STRINGID}
-STR_6378    :Receiving objects list: {INT32} / {INT32}
+STR_6378    :Receiving objects list…
 STR_6379    :Received invalid data
 STR_6380    :Update available!
 STR_6381    :Join OpenRCT2 Discord!
@@ -3712,6 +3712,9 @@ STR_6637    :Loading title sequence…
 STR_6638    :Enlarged UI
 STR_6639    :Modifies the interface to be more suitable for touch usage
 STR_6640    :Edit asset packs…
+STR_6641    :Loading/progress window
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 
 #############
 # Scenarios #

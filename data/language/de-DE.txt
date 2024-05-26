@@ -2884,7 +2884,7 @@ STR_5755    :Inkompatible Softwareversion (Server benutzt {STRING})
 STR_5756    :Falsches Passwort
 STR_5757    :Server voll
 STR_5758    :{OUTLINE}{GREEN}{STRING} hat das Spiel betreten
-STR_5759    :Karte herunterladen … ({INT32} / {INT32}) KiB
+STR_5759    :Karte herunterladen …
 STR_5760    :Hongkong-Dollar (HK$)
 STR_5761    :Taiwan-Dollar (NT$)
 STR_5762    :Chines. Yuan (CN¥)
@@ -3446,7 +3446,7 @@ STR_6374    :A
 STR_6375    :Unbekannte Attraktion
 STR_6376    :{WINDOW_COLOUR_2}Fahrzeug:{NEWLINE}{BLACK}{STRINGID} für {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} für {STRINGID}
-STR_6378    :Objektliste empfangen: {INT32}/{INT32}
+STR_6378    :Objektliste empfangen:
 STR_6379    :Ungültige Daten empfangen
 STR_6380    :Update verfügbar!
 STR_6381    :OpenRCT2-Discord beitreten!

@@ -2883,7 +2883,7 @@ STR_5755    :Feil Software-versjon (Server bruker {STRING})
 STR_5756    :Dårlig passord
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har blitt med i spillet
-STR_5759    :Laster ned kart … ({INT32} / {INT32}) KiB
+STR_5759    :Laster ned kart …
 STR_5760    :Hong Kong Dollar (HK$)
 STR_5761    :Nye Taiwanske Dollar (NT$)
 STR_5762    :Kinesisk Yuan (CN¥)
@@ -3447,7 +3447,7 @@ STR_6374    :K
 STR_6375    :Ukjent attraksjon
 STR_6376    :{WINDOW_COLOUR_2}Kjøretøy:{NEWLINE}{BLACK}{STRINGID} for {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} for {STRINGID}
-STR_6378    :Mottar liste over objekter: {INT32} / {INT32}
+STR_6378    :Mottar liste over objekter:
 STR_6379    :Mottok ugyldig data
 STR_6380    :Oppdatering tilgjengelig!
 STR_6381    :Bli med i OpenRCT2 på Discord!

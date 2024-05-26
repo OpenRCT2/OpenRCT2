@@ -179,10 +179,11 @@ static constexpr WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::Changelog,                   "WC_CHANGELOG",                      STR_CHANGELOG_TITLE,                              COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { WindowClass::Multiplayer,                 "WC_MULTIPLAYER",                    STR_MULTIPLAYER,                                  COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { WindowClass::Player,                      "WC_PLAYER",                         STR_THEMES_WINDOW_PLAYER,                         COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { WindowClass::NetworkStatus,               "WC_NETWORK_STATUS",                 STR_THEMES_WINDOW_NETWORK_STATUS,                 COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
+    { WindowClass::NetworkStatus,               "WC_NETWORK_STATUS",                 STR_THEMES_WINDOW_NETWORK_STATUS,                 COLOURS_1(COLOUR_BLACK                                                                                                         ) },
     { WindowClass::ServerList,                  "WC_SERVER_LIST",                    STR_SERVER_LIST,                                  COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { WindowClass::Chat,                        "WC_CHAT",                           STR_CHAT,                                         COLOURS_1(TRANSLUCENT(COLOUR_GREY)                                                                                             ) },
     { WindowClass::Console,                     "WC_CONSOLE",                        STR_CONSOLE,                                      COLOURS_2(TRANSLUCENT(COLOUR_LIGHT_BLUE),  COLOUR_WHITE                                                                        ) },
+    { WindowClass::ProgressWindow,              "WC_PROGRESS_WINDOW",                STR_THEME_LOADING_WINDOW,                         COLOURS_1(COLOUR_BLACK                                                                                                         ) },
 };
 
 #pragma endregion

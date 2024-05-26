@@ -2892,7 +2892,7 @@ STR_5755    :Väärä ohjelmistoversio (palvelimella on {STRING})
 STR_5756    :Väärä salasana
 STR_5757    :Palvelin täynnä
 STR_5758    :{OUTLINE}{GREEN}{STRING} liittyi peliin
-STR_5759    :Ladataan tasoa… ({INT32} / {INT32}) KiB
+STR_5759    :Ladataan tasoa…
 STR_5760    :Hong Kongin dollari (HK$)
 STR_5761    :Uusi Taiwanin dollari (NT$)
 STR_5762    :Kiinan juan (CN¥)
@@ -3456,7 +3456,7 @@ STR_6374    :C
 STR_6375    :Tuntematon laite
 STR_6376    :{WINDOW_COLOUR_2}Vaunu:{NEWLINE}{BLACK}{STRINGID} laitteelle {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tyyppi: {BLACK}{STRINGID} laitteelle {STRINGID}
-STR_6378    :Vastaanotetaan esinelistaa: {INT32} / {INT32}
+STR_6378    :Vastaanotetaan esinelistaa:
 STR_6379    :Vastaanotettiin epäkelpoja tietoja
 STR_6380    :Päivitys saatavilla!
 STR_6381    :Liity OpenRCT2:n Discordiin!

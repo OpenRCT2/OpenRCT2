@@ -2888,7 +2888,7 @@ STR_5755    :Versió de programari incorrecta (el servidor usa {STRING}).
 STR_5756    :Contrasenya no vàlida
 STR_5757    :Servidor ple
 STR_5758    :{OUTLINE}{GREEN}{STRING} s’ha unit a la partida.
-STR_5759    :Es descarrega el mapa… ({INT32}/{INT32} KiB)
+STR_5759    :Es descarrega el mapa…
 STR_5760    :Dòlars de Hong Kong(HK$)
 STR_5761    :Nou dòlar de Taiwan(NT$)
 STR_5762    :Iuan xinès (CN¥)
@@ -3452,7 +3452,7 @@ STR_6374    :C
 STR_6375    :Atracció desconeguda
 STR_6376    :{WINDOW_COLOUR_2}Vehicle d’atracció:{NEWLINE}{BLACK}{STRINGID} per {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipus: {BLACK}{STRINGID} per {STRINGID}
-STR_6378    :Es va rebent la llista d’objectes: {INT32} / {INT32}
+STR_6378    :Es va rebent la llista d’objectes:
 STR_6379    :S’han rebut dades no vàlides.
 STR_6380    :Actualització disponible!
 STR_6381    :Uniu-vos al canal de l’OpenRCT2 de Discord!

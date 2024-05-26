@@ -2889,7 +2889,7 @@ STR_5755    :Fel version av OpenRCT2 (servern använder {STRING})
 STR_5756    :Fel lösenord
 STR_5757    :Servern är full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har anslutit till spelet
-STR_5759    :Laddar ner banan… ({INT32} av {INT32}) KiB
+STR_5759    :Laddar ner banan…
 STR_5760    :Hong Kong-dollar (HK$)
 STR_5761    :New Taiwan-dollar (NT$)
 STR_5762    :Kinesiska Yuan (CN¥)
@@ -3453,7 +3453,7 @@ STR_6374    :F
 STR_6375    :Okänd åktur
 STR_6376    :{WINDOW_COLOUR_2}Fordon:{NEWLINE}{BLACK}{STRINGID} för {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} för {STRINGID}
-STR_6378    :Mottar objektlista: {INT32} / {INT32}
+STR_6378    :Mottar objektlista:
 STR_6379    :Mottog ogiltiga data
 STR_6380    :Uppdatering tillgänglig!
 STR_6381    :Gå med i OpenRCT2 Discord!

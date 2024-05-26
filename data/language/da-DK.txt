@@ -2883,7 +2883,7 @@ STR_5755    :Forkert spil version (Serveren kører med {STRING})
 STR_5756    :Ugyldig kode
 STR_5757    :Serveren er fyldt
 STR_5758    :{OUTLINE}{GREEN}{STRING} har sluttet sig til spillet
-STR_5759    :Henter kortet … ({INT32} / {INT32}) KB
+STR_5759    :Henter kortet …
 STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
 STR_5762    :Chinese Yuan (CN¥)
@@ -3447,7 +3447,7 @@ STR_6374    :R
 STR_6375    :Ukendt forlystelse
 STR_6376    :{WINDOW_COLOUR_2}Vogn:{NEWLINE}{BLACK}{STRINGID} til {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} til {STRINGID}
-STR_6378    :Henter objektliste: {INT32} / {INT32}
+STR_6378    :Henter objektliste:
 STR_6379    :Modtog ugyldig data
 STR_6380    :Opdatering tilgængelig!
 STR_6381    :Deltag i OpenRCT2 Discord gruppe!

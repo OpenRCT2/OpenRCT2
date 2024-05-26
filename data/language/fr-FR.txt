@@ -2894,7 +2894,7 @@ STR_5755    :Mauvaise version du programme (le serveur utilise {STRING})
 STR_5756    :Mauvais mot de passe
 STR_5757    :Serveur plein
 STR_5758    :{OUTLINE}{GREEN}{STRING} a rejoint la partie
-STR_5759    :Téléchargement de la carte… ({INT32}/{INT32} Kio)
+STR_5759    :Téléchargement de la carte…
 STR_5760    :Dollars de Hong Kong (HK$)
 STR_5761    :Nouveau Dollar Taïwanais (NT$)
 STR_5762    :Yuan Chinois (CN¥)
@@ -3458,7 +3458,7 @@ STR_6374    :C
 STR_6375    :Attraction inconnue
 STR_6376    :{WINDOW_COLOUR_2}Véhicule : {NEWLINE}{BLACK}{STRINGID} pour {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type : {BLACK}{STRINGID} pour {STRINGID}
-STR_6378    :Réception de la liste des objets : {INT32} / {INT32}
+STR_6378    :Réception de la liste des objets :
 STR_6379    :Donnée(s) invalide(s) reçues
 STR_6380    :Mise à jour disponible !
 STR_6381    :Rejoindre le Discord d’OpenRCT2 !
@@ -3719,6 +3719,9 @@ STR_6636    :Vérification des séquences titre…
 STR_6637    :Chargement de la séquence titre…
 STR_6638    :Interface agrandie
 STR_6639    :Adapte l’interface à un usage tactile
+
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} Kio)
 
 #############
 # Scenarios #
