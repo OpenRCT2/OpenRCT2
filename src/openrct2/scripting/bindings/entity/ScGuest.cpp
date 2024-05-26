@@ -11,9 +11,11 @@
 
 #    include "ScGuest.hpp"
 
+#    include "../../../GameState.h"
 #    include "../../../entity/Guest.h"
 #    include "../../../localisation/Localisation.h"
 #    include "../../../peep/PeepAnimationData.h"
+#    include "../../../ride/RideEntry.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -537,7 +539,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            if (value.type() == DukValue::Type::NUMBER)
+            if (value.type() == DukValue::Type::NUMBER && value.as_uint() < GetGameState().Rides.size() && GetGameState().Rides[value.as_uint()].type != RIDE_TYPE_NULL)
             {
                 peep->FavouriteRide = RideId::FromUnderlying(value.as_uint());
             }
