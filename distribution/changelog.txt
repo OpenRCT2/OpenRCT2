@@ -6,6 +6,7 @@
 - Feature: [#21853] Enlarged UI mode.
 - Feature: [#21893, #22065] On launch, the game now indicates what system is being initialised.
 - Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
+- Improved: [#19870] Allow using new colours in UI themes.
 - Improved: [#21853] Dropdowns now automatically use multiple columns if they are too tall for the screen.
 - Improved: [#21981] Rendering performance of the map window has been improved considerably.
 - Improved: [#21981] The map window now defaults to showing as much of the map as fits the screen.
@@ -17,6 +18,7 @@
 - Change: [#7248] Small mini-maps are now centred in the map window.
 - Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
+- Change: [#21991] UI themes JSON now use colour names and a translucency bool, instead of a number (old themes still work).
 - Change: [#22057] Reorder Time Twister’s scenarios and adjust their difficulty classification.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
 - Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
