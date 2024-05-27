@@ -3202,7 +3202,7 @@ static_assert(std::size(RatingNames) == 6);
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
                     upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                                             : OpenRCT2::Limits::MaxCircuitsPerRide;
+                                                                             : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
                         rideId, RideSetSetting::NumCircuits,
@@ -3210,7 +3210,7 @@ static_assert(std::size(RatingNames) == 6);
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
                     upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                                             : OpenRCT2::Limits::MaxCircuitsPerRide;
+                                                                             : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
                         rideId, RideSetSetting::NumCircuits,
