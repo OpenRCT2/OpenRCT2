@@ -125,7 +125,7 @@ GameActions::Result PeepSpawnPlaceAction::Execute() const
     }
 
     // If we have reached our max peep spawns, remove the oldest spawns
-    while (gameState.PeepSpawns.size() >= Limits::MaxPeepSpawns)
+    while (gameState.PeepSpawns.size() >= Limits::kMaxPeepSpawns)
     {
         PeepSpawn oldestSpawn = *gameState.PeepSpawns.begin();
         gameState.PeepSpawns.erase(gameState.PeepSpawns.begin());

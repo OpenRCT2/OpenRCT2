@@ -754,7 +754,7 @@ namespace RCT1
         money16 ParkEntranceFee;
         Entrance ParkEntrance;
         uint8_t Unk198849;
-        RCT12PeepSpawn PeepSpawn[Limits::MaxPeepSpawns];
+        RCT12PeepSpawn PeepSpawn[Limits::kMaxPeepSpawns];
         uint8_t Unk198856;
         uint8_t ResearchLevel;
         uint32_t Unk198858;

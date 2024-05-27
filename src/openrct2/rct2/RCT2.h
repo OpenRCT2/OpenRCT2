@@ -861,7 +861,7 @@ namespace RCT2
         uint8_t Pad013573EE[2];
         uint8_t RCT1ParkEntranceZ;
         uint8_t Pad013573F1;
-        RCT12PeepSpawn PeepSpawns[Limits::MaxPeepSpawns];
+        RCT12PeepSpawn PeepSpawns[Limits::kMaxPeepSpawns];
         uint8_t GuestCountChangeModifier;
         uint8_t CurrentResearchLevel;
         uint8_t Pad01357400[4];
