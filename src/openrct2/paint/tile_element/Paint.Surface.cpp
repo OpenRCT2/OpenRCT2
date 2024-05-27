@@ -347,15 +347,12 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType ty
         hasDoors = edgeObject->HasDoors && !edgeObject->UsesFallbackImages();
     }
 
-    if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount && EnumValue(type) < std::size(kTunnels))
+    if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount)
         type = TunnelType::StandardFlat;
 
-    ImageId result;
-    if (EnumValue(type) < std::size(kTunnels))
-    {
-        result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
-                     .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
-    }
+    ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
+                         .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+
     return result;
 }
 
