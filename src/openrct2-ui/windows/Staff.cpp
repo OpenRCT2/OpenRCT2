@@ -822,6 +822,7 @@ static Widget _staffOptionsWidgets[] = {
             switch (staff->AssignedStaffType)
             {
                 case StaffType::Entertainer:
+                {
                     widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Empty;
                     widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Empty;
                     widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
@@ -830,11 +831,13 @@ static Widget _staffOptionsWidgets[] = {
                     widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
 
                     // TODO: retrieve string from object instead
-                    if (EnumValue(staff->SpriteType) >= 4)
-                        widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[EnumValue(staff->SpriteType) - 4];
+                    auto costumeType = EnumValue(staff->SpriteType) - EnumValue(PeepSpriteType::EntertainerPanda);
+                    if (costumeType >= 0)
+                        widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[costumeType];
                     else
                         widgets[WIDX_COSTUME_BOX].text = STR_UNKNOWN_OBJECT_TYPE;
                     break;
+                }
                 case StaffType::Handyman:
                     widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
                     widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
