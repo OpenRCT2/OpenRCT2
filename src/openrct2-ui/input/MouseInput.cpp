@@ -269,7 +269,8 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
 
 static void CloseWindowsRightClick(WindowBase* w, Widget* widget)
 {
-    if (w->classification == WindowClass::TopToolbar || w->classification == WindowClass::BottomToolbar)
+    if (w->classification == WindowClass::TopToolbar || w->classification == WindowClass::BottomToolbar
+        || w->classification == WindowClass::EditorObjectSelection)
     {
         return;
     }
