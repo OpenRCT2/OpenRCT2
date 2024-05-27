@@ -3708,6 +3708,9 @@ STR_6637    :Laden der Titelsequenzen…
 STR_6638    :Vergrößerte Benutzeroberfläche
 STR_6639    :Verändert die Benutzeroberfläche so, dass sie besser für die Touch-Bedienung geeignet ist
 STR_6640    :Medienpakete bearbeiten…
+STR_6641    :Lade-/Fortschrittsfenster
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 
 #############
 # Scenarios #

@@ -3711,6 +3711,9 @@ STR_6637    :Carregando sequências de título…
 STR_6638    :Interface Gráfica Ampliada
 STR_6639    :Modifica a interface para ser mais adequada ao uso por toque
 STR_6640    :Modificar conjuntos de recurso…
+STR_6641    :Janela de carregamento/progresso
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 
 #############
 # Scenarios #

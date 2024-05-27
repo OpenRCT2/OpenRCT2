@@ -3711,6 +3711,9 @@ STR_6637    :Ŝargas titolosekvencon…
 STR_6638    :Pligrandigita fasado
 STR_6639    :Modifas la fasadon por esti pli taŭga por tuŝekranoj
 STR_6640    :Redakti havaĵo-pakojn…
+STR_6641    :Ŝargado/progreso-fenestro
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 
 #############
 # Scenarios #
