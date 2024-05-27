@@ -857,7 +857,7 @@ namespace OpenRCT2
                     auto& currentAwards = gameState.CurrentAwards;
                     if (version <= 6)
                     {
-                        Award awards[RCT2::Limits::MaxAwards]{};
+                        Award awards[RCT2::Limits::kMaxAwards]{};
                         cs.ReadWriteArray(awards, [&cs, &currentAwards](Award& award) {
                             if (award.Time != 0)
                             {

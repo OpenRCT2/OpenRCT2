@@ -15,7 +15,7 @@ namespace RCT12::Limits
     constexpr uint8_t MaxRideObjects = 128;
 
     constexpr uint8_t kMaxRidesInPark = 255;
-    constexpr uint8_t MaxAwards = 4;
+    constexpr uint8_t kMaxAwards = 4;
     constexpr uint8_t MaxNewsItems = 61;
     constexpr uint8_t kMaxStationsPerRide = 4;
     constexpr uint8_t MaxPeepSpawns = 2;

@@ -819,7 +819,7 @@ namespace RCT1
         money32 AdmissionTotalIncome;
         money32 CompanyValue;
         uint8_t ThoughtTimer[16];
-        RCT12Award Awards[Limits::MaxAwards];
+        RCT12Award Awards[Limits::kMaxAwards];
         money16 LandPrice;
         money16 ConstructionRightsPrice;
         uint16_t Unk199BCC;

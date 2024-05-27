@@ -28,7 +28,7 @@ namespace OpenRCT2::Limits
     static_assert(kMaxVehicleColours >= kMaxTrainsPerRide);
     static_assert(kMaxVehicleColours >= kMaxCarsPerTrain);
     constexpr uint8_t kMaxCircuitsPerRide = 20;
-    constexpr uint8_t MaxAwards = RCT12::Limits::MaxAwards;
+    constexpr uint8_t kMaxAwards = RCT12::Limits::kMaxAwards;
     constexpr uint8_t NumColourSchemes = RCT12::Limits::NumColourSchemes;
     constexpr uint8_t DowntimeHistorySize = RCT2::Limits::DowntimeHistorySize;
     constexpr uint16_t MaxPeepSpawns = 256;

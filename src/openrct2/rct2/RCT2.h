@@ -945,7 +945,7 @@ namespace RCT2
         money32 IncomeFromAdmissions;
         money32 CompanyValue;
         uint8_t PeepWarningThrottle[16];
-        RCT12Award Awards[Limits::MaxAwards];
+        RCT12Award Awards[Limits::kMaxAwards];
         money16 LandPrice;
         money16 ConstructionRightsPrice;
         uint16_t Word01358774;
