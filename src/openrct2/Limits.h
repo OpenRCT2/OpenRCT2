@@ -34,5 +34,5 @@ namespace OpenRCT2::Limits
     constexpr uint16_t kMaxPeepSpawns = 256;
     constexpr uint16_t kMaxParkEntrances = 256;
     constexpr uint8_t kMaxWaitingTime = RCT12::Limits::kMaxWaitingTime;
-    constexpr uint8_t CheatsMaxOperatingLimit = 255;
+    constexpr uint8_t kCheatsMaxOperatingLimit = 255;
 } // namespace OpenRCT2::Limits

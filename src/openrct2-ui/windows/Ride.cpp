@@ -2984,7 +2984,7 @@ static_assert(std::size(RatingNames) == 6);
 
             if (GetGameState().Cheats.UnlockOperatingLimits)
             {
-                maxValue = OpenRCT2::Limits::CheatsMaxOperatingLimit;
+                maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
             uint8_t increment = ride->mode == RideMode::Dodgems ? 10 : 1;
@@ -3004,7 +3004,7 @@ static_assert(std::size(RatingNames) == 6);
             uint8_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
             if (GetGameState().Cheats.UnlockOperatingLimits)
             {
-                maxValue = OpenRCT2::Limits::CheatsMaxOperatingLimit;
+                maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
             uint8_t decrement = ride->mode == RideMode::Dodgems ? 10 : 1;
@@ -3140,7 +3140,7 @@ static_assert(std::size(RatingNames) == 6);
                     break;
                 case WIDX_LIFT_HILL_SPEED_INCREASE:
                     upperBound = GetGameState().Cheats.UnlockOperatingLimits
-                        ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                        ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                         : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
                     lowerBound = GetGameState().Cheats.UnlockOperatingLimits
                         ? 0
@@ -3151,7 +3151,7 @@ static_assert(std::size(RatingNames) == 6);
                     break;
                 case WIDX_LIFT_HILL_SPEED_DECREASE:
                     upperBound = GetGameState().Cheats.UnlockOperatingLimits
-                        ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                        ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                         : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
                     lowerBound = GetGameState().Cheats.UnlockOperatingLimits
                         ? 0
@@ -3201,7 +3201,7 @@ static_assert(std::size(RatingNames) == 6);
                     LoadDropdown(&widgets[widgetIndex]);
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                              : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
@@ -3209,7 +3209,7 @@ static_assert(std::size(RatingNames) == 6);
                         std::clamp<int16_t>(ride->num_circuits + 1, lowerBound, upperBound));
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                              : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
@@ -3253,7 +3253,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
-            int16_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+            int16_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                            : operatingSettings.MaxValue;
             int16_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
@@ -3335,7 +3335,7 @@ static_assert(std::size(RatingNames) == 6);
             if (widgetIndex == WIDX_MODE_TWEAK)
             {
                 const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
-                uint32_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                uint32_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                                 : operatingSettings.MaxValue;
                 uint32_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
                 auto multiplier = ride->GetRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
