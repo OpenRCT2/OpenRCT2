@@ -264,9 +264,9 @@ namespace RCT2
         money32 IncomePerHour;                                      // 0x1B0
         money32 Profit;                                             // 0x1B4
         uint8_t QueueTime[Limits::kMaxStationsPerRide];             // 0x1B8
-        uint8_t TrackColourMain[Limits::NumColourSchemes];          // 0x1BC
-        uint8_t TrackColourAdditional[Limits::NumColourSchemes];    // 0x1C0
-        uint8_t TrackColourSupports[Limits::NumColourSchemes];      // 0x1C4
+        uint8_t TrackColourMain[Limits::kNumColourSchemes];         // 0x1BC
+        uint8_t TrackColourAdditional[Limits::kNumColourSchemes];   // 0x1C0
+        uint8_t TrackColourSupports[Limits::kNumColourSchemes];     // 0x1C4
         uint8_t Music;                                              // 0x1C8
         uint8_t EntranceStyle;                                      // 0x1C9
         uint16_t VehicleChangeTimeout;                              // 0x1CA
@@ -388,9 +388,9 @@ namespace RCT2
         uint8_t Intensity;                                          // 0x5C
         uint8_t Nausea;                                             // 0x5D
         money16 UpkeepCost;                                         // 0x5E
-        uint8_t TrackSpineColour[Limits::NumColourSchemes];         // 0x60
-        uint8_t TrackRailColour[Limits::NumColourSchemes];          // 0x64
-        uint8_t TrackSupportColour[Limits::NumColourSchemes];       // 0x68
+        uint8_t TrackSpineColour[Limits::kNumColourSchemes];        // 0x60
+        uint8_t TrackRailColour[Limits::kNumColourSchemes];         // 0x64
+        uint8_t TrackSupportColour[Limits::kNumColourSchemes];      // 0x68
         uint32_t Flags2;                                            // 0x6C
         RCTObjectEntry VehicleObject;                               // 0x70
         uint8_t SpaceRequiredX;                                     // 0x80

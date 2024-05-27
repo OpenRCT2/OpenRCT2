@@ -951,10 +951,10 @@ namespace RCT1
      */
     struct TD4AA : public TD4
     {
-        uint8_t TrackSpineColour[Limits::NumColourSchemes];   // 0x38
-        uint8_t TrackRailColour[Limits::NumColourSchemes];    // 0x3C
-        uint8_t TrackSupportColour[Limits::NumColourSchemes]; // 0x40
-        uint8_t Flags2;                                       // 0x44
+        uint8_t TrackSpineColour[Limits::kNumColourSchemes];   // 0x38
+        uint8_t TrackRailColour[Limits::kNumColourSchemes];    // 0x3C
+        uint8_t TrackSupportColour[Limits::kNumColourSchemes]; // 0x40
+        uint8_t Flags2;                                        // 0x44
 
         uint8_t Pad45[0x7F]; // 0x45
     };

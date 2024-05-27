@@ -25,7 +25,7 @@ namespace RCT12::Limits
     // For RCT2, it's a 32-bit array. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
     constexpr uint8_t PatrolAreaSize = 128;
     constexpr uint8_t StaffTypeCount = 4;
-    constexpr uint8_t NumColourSchemes = 4;
+    constexpr uint8_t kNumColourSchemes = 4;
     constexpr uint8_t kMaxVehicleColours = 32;
 
     constexpr uint8_t ExpenditureTableMonthCount = 16;

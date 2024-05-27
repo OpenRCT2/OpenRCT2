@@ -1551,7 +1551,7 @@ namespace RCT2
             dst->income_per_hour = ToMoney64(src->IncomePerHour);
             dst->profit = ToMoney64(src->Profit);
 
-            for (uint8_t i = 0; i < Limits::NumColourSchemes; i++)
+            for (uint8_t i = 0; i < Limits::kNumColourSchemes; i++)
             {
                 dst->track_colour[i].main = src->TrackColourMain[i];
                 dst->track_colour[i].additional = src->TrackColourAdditional[i];

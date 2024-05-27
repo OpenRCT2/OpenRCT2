@@ -86,9 +86,9 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign->intensity);
         tempStream.WriteValue<uint8_t>(_trackDesign->nausea);
         tempStream.WriteValue<money16>(ToMoney16(_trackDesign->upkeep_cost));
-        tempStream.WriteArray(_trackDesign->track_spine_colour, Limits::NumColourSchemes);
-        tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::NumColourSchemes);
-        tempStream.WriteArray(_trackDesign->track_support_colour, Limits::NumColourSchemes);
+        tempStream.WriteArray(_trackDesign->track_spine_colour, Limits::kNumColourSchemes);
+        tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::kNumColourSchemes);
+        tempStream.WriteArray(_trackDesign->track_support_colour, Limits::kNumColourSchemes);
         tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
         tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
