@@ -1535,7 +1535,7 @@ namespace RCT2
             dst->inspection_interval = src->InspectionInterval;
             dst->last_inspection = src->LastInspection;
 
-            for (uint8_t i = 0; i < Limits::DowntimeHistorySize; i++)
+            for (uint8_t i = 0; i < Limits::kDowntimeHistorySize; i++)
             {
                 dst->downtime_history[i] = src->DowntimeHistory[i];
             }

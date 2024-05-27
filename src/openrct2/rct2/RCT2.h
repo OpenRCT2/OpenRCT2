@@ -249,13 +249,13 @@ namespace RCT2
         // making breakdowns more and more likely.
         uint8_t UnreliabilityFactor; // 0x198
         // Range from [0, 100]
-        uint8_t Downtime;                                     // 0x199
-        uint8_t InspectionInterval;                           // 0x19A
-        uint8_t LastInspection;                               // 0x19B
-        uint8_t DowntimeHistory[Limits::DowntimeHistorySize]; // 0x19C
-        uint32_t NoPrimaryItemsSold;                          // 0x1A4
-        uint32_t NoSecondaryItemsSold;                        // 0x1A8
-        uint8_t BreakdownSoundModifier;                       // 0x1AC
+        uint8_t Downtime;                                      // 0x199
+        uint8_t InspectionInterval;                            // 0x19A
+        uint8_t LastInspection;                                // 0x19B
+        uint8_t DowntimeHistory[Limits::kDowntimeHistorySize]; // 0x19C
+        uint32_t NoPrimaryItemsSold;                           // 0x1A4
+        uint32_t NoSecondaryItemsSold;                         // 0x1A8
+        uint8_t BreakdownSoundModifier;                        // 0x1AC
         // Used to oscillate the sound when ride breaks down.
         // 0 = no change, 255 = max change
         uint8_t NotFixedTimeout;                                    // 0x1AD

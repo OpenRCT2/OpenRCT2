@@ -17,7 +17,7 @@ namespace RCT2::Limits
     constexpr uint8_t MaxBanners = 250;
     constexpr uint8_t kMaxTrainsPerRide = 32;
     constexpr uint8_t kMaxVehicleColours = 32;
-    constexpr uint8_t DowntimeHistorySize = 8;
+    constexpr uint8_t kDowntimeHistorySize = 8;
     constexpr uint16_t MaxEntities = 10000;
     constexpr uint16_t MaxEntitiesRCTCExtended = 15000; // Used in files marked with “classic flag” 0xF
     constexpr uint32_t MaxTileElements = 0x30000;
