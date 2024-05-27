@@ -2447,7 +2447,7 @@ namespace RCT1
             gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 

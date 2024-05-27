@@ -980,10 +980,10 @@ namespace RCT2
         uint8_t CurrentInterestRate;
         uint8_t Pad0135934B;
         uint32_t SamePriceThroughoutExtended;
-        int16_t ParkEntranceX[Limits::MaxParkEntrances];
-        int16_t ParkEntranceY[Limits::MaxParkEntrances];
-        int16_t ParkEntranceZ[Limits::MaxParkEntrances];
-        uint8_t ParkEntranceDirection[Limits::MaxParkEntrances];
+        int16_t ParkEntranceX[Limits::kMaxParkEntrances];
+        int16_t ParkEntranceY[Limits::kMaxParkEntrances];
+        int16_t ParkEntranceZ[Limits::kMaxParkEntrances];
+        uint8_t ParkEntranceDirection[Limits::kMaxParkEntrances];
         char ScenarioFilename[256];
         uint8_t SavedExpansionPackNames[3256];
         RCT12Banner Banners[Limits::MaxBanners];

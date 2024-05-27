@@ -32,7 +32,7 @@ namespace OpenRCT2::Limits
     constexpr uint8_t kNumColourSchemes = RCT12::Limits::kNumColourSchemes;
     constexpr uint8_t kDowntimeHistorySize = RCT2::Limits::kDowntimeHistorySize;
     constexpr uint16_t kMaxPeepSpawns = 256;
-    constexpr uint16_t MaxParkEntrances = 256;
+    constexpr uint16_t kMaxParkEntrances = 256;
     constexpr uint8_t MaxWaitingTime = RCT12::Limits::MaxWaitingTime;
     constexpr uint8_t CheatsMaxOperatingLimit = 255;
 } // namespace OpenRCT2::Limits

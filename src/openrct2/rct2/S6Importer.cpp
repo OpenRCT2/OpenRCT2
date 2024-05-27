@@ -411,7 +411,7 @@ namespace RCT2
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.Park.Entrances.clear();
-            for (uint8_t i = 0; i < Limits::MaxParkEntrances; i++)
+            for (uint8_t i = 0; i < Limits::kMaxParkEntrances; i++)
             {
                 if (_s6.ParkEntranceX[i] != LOCATION_NULL)
                 {
