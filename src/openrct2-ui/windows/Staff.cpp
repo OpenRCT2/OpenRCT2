@@ -828,7 +828,12 @@ static Widget _staffOptionsWidgets[] = {
                     widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
                     widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::DropdownMenu;
                     widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
-                    widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[EnumValue(staff->SpriteType) - 4];
+
+                    // TODO: retrieve string from object instead
+                    if (EnumValue(staff->SpriteType) >= 4)
+                        widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[EnumValue(staff->SpriteType) - 4];
+                    else
+                        widgets[WIDX_COSTUME_BOX].text = STR_UNKNOWN_OBJECT_TYPE;
                     break;
                 case StaffType::Handyman:
                     widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
