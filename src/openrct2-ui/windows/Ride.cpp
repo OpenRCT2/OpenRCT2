@@ -2593,7 +2593,7 @@ static_assert(std::size(RatingNames) == 6);
                         ride->SetNumTrains(ride->NumTrains - 1);
                     break;
                 case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
-                    if (ride->num_cars_per_train < OpenRCT2::Limits::MaxCarsPerTrain)
+                    if (ride->num_cars_per_train < OpenRCT2::Limits::kMaxCarsPerTrain)
                         ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
                     break;
                 case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
@@ -2897,7 +2897,7 @@ static_assert(std::size(RatingNames) == 6);
             // For each train
             for (int32_t i = 0; i < ride->NumTrains; i++)
             {
-                VehicleDrawInfo trainCarImages[OpenRCT2::Limits::MaxCarsPerTrain];
+                VehicleDrawInfo trainCarImages[OpenRCT2::Limits::kMaxCarsPerTrain];
                 VehicleDrawInfo* nextSpriteToDraw = trainCarImages;
                 int32_t x = startX;
                 int32_t y = startY;
