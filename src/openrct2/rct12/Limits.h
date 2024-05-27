@@ -45,5 +45,5 @@ namespace RCT12::Limits
     constexpr uint8_t MaxElementHeight = 255;
     constexpr uint8_t kCustomerHistorySize = 10;
 
-    constexpr uint8_t MaxWaitingTime = 250;
+    constexpr uint8_t kMaxWaitingTime = 250;
 } // namespace RCT12::Limits

@@ -3167,28 +3167,28 @@ static_assert(std::size(RatingNames) == 6);
                     OperatingLengthWindow(WIDX_MAXIMUM_LENGTH);
                     break;
                 case WIDX_MINIMUM_LENGTH_INCREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MinWaitingTime,
                         std::clamp<int16_t>(ride->min_waiting_time + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MINIMUM_LENGTH_DECREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MinWaitingTime,
                         std::clamp<int16_t>(ride->min_waiting_time - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_INCREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MaxWaitingTime,
                         std::clamp<int16_t>(ride->max_waiting_time + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_DECREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MaxWaitingTime,
@@ -3225,7 +3225,7 @@ static_assert(std::size(RatingNames) == 6);
             if (ride == nullptr)
                 return;
 
-            uint8_t upperBound = OpenRCT2::Limits::MaxWaitingTime;
+            uint8_t upperBound = OpenRCT2::Limits::kMaxWaitingTime;
             uint8_t lowerBound = 0;
             Formatter ft;
             ft.Add<int16_t>(lowerBound);
@@ -3358,7 +3358,7 @@ static_assert(std::size(RatingNames) == 6);
                     auto rideSetSetting = widgetIndex == WIDX_MINIMUM_LENGTH ? RideSetSetting::MinWaitingTime
                                                                              : RideSetSetting::MaxWaitingTime;
 
-                    uint16_t upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    uint16_t upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     uint16_t lowerBound = 0;
                     uint16_t size = std::stol(std::string(text));
                     size = std::clamp(size, lowerBound, upperBound);
