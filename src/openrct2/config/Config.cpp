@@ -249,6 +249,8 @@ namespace OpenRCT2::Config
             model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
 
             model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
+
+            model->CloseWindowsRightClick = reader->GetBoolean("close_window_right_click", false);
         }
     }
 
@@ -333,6 +335,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("invisible_paths", model->InvisiblePaths);
         writer->WriteBoolean("invisible_supports", model->InvisibleSupports);
         writer->WriteInt64("last_version_check_time", model->LastVersionCheckTime);
+        writer->WriteBoolean("close_window_right_click", model->CloseWindowsRightClick);
     }
 
     static void ReadInterface(IIniReader* reader)

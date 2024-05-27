@@ -267,6 +267,23 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
     }
 }
 
+static void CloseWindowsRightClick(WindowBase* w, Widget* widget)
+{
+    if (w->classification == WindowClass::TopToolbar || w->classification == WindowClass::BottomToolbar)
+    {
+        return;
+    }
+
+    WindowCloseByClass(w->classification);
+
+    if (w->classification == WindowClass::Dropdown)
+    {
+        _inputState = InputState::Normal;
+    }
+
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget->midX());
+}
+
 /**
  *
  *  rct2: 0x006E8655
@@ -306,8 +323,10 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
 
                     if (widgetIndex != -1)
                     {
+                        bool shouldCloseRightClick = Config::Get().general.CloseWindowsRightClick;
                         switch (widget->type)
                         {
+                            case WindowWidgetType::ImgBtn:
                             case WindowWidgetType::Viewport:
                                 if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
                                 {
@@ -315,9 +334,12 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                                 }
                                 break;
                             case WindowWidgetType::Scroll:
-                                InputScrollDragBegin(screenCoords, w, widgetIndex);
+                                shouldCloseRightClick ? CloseWindowsRightClick(w, widget)
+                                                      : InputScrollDragBegin(screenCoords, w, widgetIndex);
                                 break;
                             default:
+                                if (shouldCloseRightClick)
+                                    CloseWindowsRightClick(w, widget);
                                 break;
                         }
                     }

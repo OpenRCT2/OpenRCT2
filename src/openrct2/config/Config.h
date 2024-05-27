@@ -104,6 +104,7 @@ namespace OpenRCT2::Config
         bool AllowEarlyCompletion;
         u8string AssetPackOrder;
         u8string EnabledAssetPacks;
+        bool CloseWindowsRightClick;
 
         // Loading and saving
         bool ConfirmationPrompt;
