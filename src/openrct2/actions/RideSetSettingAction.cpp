@@ -268,7 +268,7 @@ bool RideSetSettingAction::RideIsValidLiftHillSpeed(const Ride& ride) const
 bool RideSetSettingAction::RideIsValidNumCircuits() const
 {
     int32_t minNumCircuits = 1;
-    int32_t maxNumCircuits = GetGameState().Cheats.UnlockOperatingLimits ? 255 : Limits::MaxCircuitsPerRide;
+    int32_t maxNumCircuits = GetGameState().Cheats.UnlockOperatingLimits ? 255 : Limits::kMaxCircuitsPerRide;
     return _value >= minNumCircuits && _value <= maxNumCircuits;
 }
 

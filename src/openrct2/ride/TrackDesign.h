@@ -125,7 +125,7 @@ struct TrackDesign
     RideMode ride_mode;
     uint8_t track_flags;
     uint8_t colour_scheme;
-    std::array<VehicleColour, OpenRCT2::Limits::MaxVehicleColours> vehicle_colours;
+    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicle_colours;
     u8string StationObjectIdentifier{};
     uint8_t total_air_time;
     uint8_t depart_flags;
@@ -148,9 +148,9 @@ struct TrackDesign
     uint8_t intensity;
     uint8_t nausea;
     money64 upkeep_cost;
-    uint8_t track_spine_colour[OpenRCT2::Limits::NumColourSchemes];
-    uint8_t track_rail_colour[OpenRCT2::Limits::NumColourSchemes];
-    uint8_t track_support_colour[OpenRCT2::Limits::NumColourSchemes];
+    uint8_t track_spine_colour[OpenRCT2::Limits::kNumColourSchemes];
+    uint8_t track_rail_colour[OpenRCT2::Limits::kNumColourSchemes];
+    uint8_t track_support_colour[OpenRCT2::Limits::kNumColourSchemes];
     uint32_t flags2;
     ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;

@@ -411,7 +411,7 @@ namespace RCT2
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.Park.Entrances.clear();
-            for (uint8_t i = 0; i < Limits::MaxParkEntrances; i++)
+            for (uint8_t i = 0; i < Limits::kMaxParkEntrances; i++)
             {
                 if (_s6.ParkEntranceX[i] != LOCATION_NULL)
                 {
@@ -1318,7 +1318,7 @@ namespace RCT2
             dst->mode = static_cast<RideMode>(src->Mode);
             dst->colour_scheme_type = src->ColourSchemeType;
 
-            for (uint8_t i = 0; i < Limits::MaxVehicleColours; i++)
+            for (uint8_t i = 0; i < Limits::kMaxVehicleColours; i++)
             {
                 dst->vehicle_colours[i].Body = src->VehicleColours[i].BodyColour;
                 dst->vehicle_colours[i].Trim = src->VehicleColours[i].TrimColour;
@@ -1535,7 +1535,7 @@ namespace RCT2
             dst->inspection_interval = src->InspectionInterval;
             dst->last_inspection = src->LastInspection;
 
-            for (uint8_t i = 0; i < Limits::DowntimeHistorySize; i++)
+            for (uint8_t i = 0; i < Limits::kDowntimeHistorySize; i++)
             {
                 dst->downtime_history[i] = src->DowntimeHistory[i];
             }
@@ -1551,7 +1551,7 @@ namespace RCT2
             dst->income_per_hour = ToMoney64(src->IncomePerHour);
             dst->profit = ToMoney64(src->Profit);
 
-            for (uint8_t i = 0; i < Limits::NumColourSchemes; i++)
+            for (uint8_t i = 0; i < Limits::kNumColourSchemes; i++)
             {
                 dst->track_colour[i].main = src->TrackColourMain[i];
                 dst->track_colour[i].additional = src->TrackColourAdditional[i];
@@ -1757,7 +1757,7 @@ namespace RCT2
 
             auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
-            for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
+            for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
                 if (_s6.PeepSpawns[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {

@@ -630,7 +630,7 @@ void AwardUpdateAll()
         }
 
         // Check if there was a free award entry
-        if (currentAwards.size() < OpenRCT2::Limits::MaxAwards)
+        if (currentAwards.size() < OpenRCT2::Limits::kMaxAwards)
         {
             // Get a random award type not already active
             AwardType awardType;

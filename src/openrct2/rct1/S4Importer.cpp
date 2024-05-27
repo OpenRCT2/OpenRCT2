@@ -1109,7 +1109,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::NumColourSchemes; i++)
+                for (int i = 0; i < Limits::kNumColourSchemes; i++)
                 {
                     dst->track_colour[i].main = RCT1::GetColour(src->TrackColourMain[i]);
                     dst->track_colour[i].additional = RCT1::GetColour(src->TrackColourAdditional[i]);
@@ -1410,7 +1410,7 @@ namespace RCT1
         {
             auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
-            for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
+            for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
                 if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
@@ -2447,7 +2447,7 @@ namespace RCT1
             gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 

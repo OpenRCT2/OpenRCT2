@@ -121,7 +121,7 @@ struct Ride
     ObjectEntryIndex subtype{ OBJECT_ENTRY_INDEX_NULL };
     RideMode mode{};
     uint8_t colour_scheme_type{};
-    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxVehicleColours]{};
+    VehicleColour vehicle_colours[OpenRCT2::Limits::kMaxVehicleColours]{};
     // 0 = closed, 1 = open, 2 = test
     RideStatus status{};
     std::string custom_name;
@@ -250,7 +250,7 @@ struct Ride
     uint8_t downtime{};
     uint8_t inspection_interval{};
     uint8_t last_inspection{};
-    uint8_t downtime_history[OpenRCT2::Limits::DowntimeHistorySize]{};
+    uint8_t downtime_history[OpenRCT2::Limits::kDowntimeHistorySize]{};
     uint32_t no_primary_items_sold{};
     uint32_t no_secondary_items_sold{};
     uint8_t breakdown_sound_modifier{};
@@ -261,7 +261,7 @@ struct Ride
     uint8_t connected_message_throttle{};
     money64 income_per_hour{};
     money64 profit{};
-    TrackColour track_colour[OpenRCT2::Limits::NumColourSchemes]{};
+    TrackColour track_colour[OpenRCT2::Limits::kNumColourSchemes]{};
     ObjectEntryIndex music{ OBJECT_ENTRY_INDEX_NULL };
     ObjectEntryIndex entrance_style{ OBJECT_ENTRY_INDEX_NULL };
     uint16_t vehicle_change_timeout{};

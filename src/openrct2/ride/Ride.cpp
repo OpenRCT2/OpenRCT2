@@ -1399,14 +1399,14 @@ static void RideBreakdownUpdate(Ride& ride)
     {
         int32_t totalDowntime = 0;
 
-        for (int32_t i = 0; i < OpenRCT2::Limits::DowntimeHistorySize; i++)
+        for (int32_t i = 0; i < OpenRCT2::Limits::kDowntimeHistorySize; i++)
         {
             totalDowntime += ride.downtime_history[i];
         }
 
         ride.downtime = std::min(totalDowntime / 2, 100);
 
-        for (int32_t i = OpenRCT2::Limits::DowntimeHistorySize - 1; i > 0; i--)
+        for (int32_t i = OpenRCT2::Limits::kDowntimeHistorySize - 1; i > 0; i--)
         {
             ride.downtime_history[i] = ride.downtime_history[i - 1];
         }
@@ -4318,7 +4318,7 @@ void Ride::SetColourPreset(uint8_t index)
     {
         colours = colourPresets->list[index];
     }
-    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
     {
         track_colour[i].main = colours.main;
         track_colour[i].additional = colours.additional;
@@ -4718,11 +4718,11 @@ void RideUpdateVehicleColours(const Ride& ride)
                     if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
                     {
                         colours = ride.vehicle_colours[std::min(
-                            (ride.num_cars_per_train - 1) - carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                            (ride.num_cars_per_train - 1) - carIndex, OpenRCT2::Limits::kMaxCarsPerTrain - 1)];
                     }
                     else
                     {
-                        colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                        colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::kMaxCarsPerTrain - 1)];
                     }
                     break;
             }

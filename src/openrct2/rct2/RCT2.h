@@ -74,11 +74,11 @@ namespace RCT2
         uint8_t Type; // 0x000
         // pointer to static info. for example, wild mouse type is 0x36, subtype is
         // 0x4c.
-        RCT12ObjectEntryIndex Subtype;                                // 0x001
-        uint16_t Pad002;                                              // 0x002
-        uint8_t Mode;                                                 // 0x004
-        uint8_t ColourSchemeType;                                     // 0x005
-        RCT12VehicleColour VehicleColours[Limits::MaxVehicleColours]; // 0x006
+        RCT12ObjectEntryIndex Subtype;                                 // 0x001
+        uint16_t Pad002;                                               // 0x002
+        uint8_t Mode;                                                  // 0x004
+        uint8_t ColourSchemeType;                                      // 0x005
+        RCT12VehicleColour VehicleColours[Limits::kMaxVehicleColours]; // 0x006
         uint8_t Pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
         uint8_t Status; // 0x049
@@ -249,42 +249,42 @@ namespace RCT2
         // making breakdowns more and more likely.
         uint8_t UnreliabilityFactor; // 0x198
         // Range from [0, 100]
-        uint8_t Downtime;                                     // 0x199
-        uint8_t InspectionInterval;                           // 0x19A
-        uint8_t LastInspection;                               // 0x19B
-        uint8_t DowntimeHistory[Limits::DowntimeHistorySize]; // 0x19C
-        uint32_t NoPrimaryItemsSold;                          // 0x1A4
-        uint32_t NoSecondaryItemsSold;                        // 0x1A8
-        uint8_t BreakdownSoundModifier;                       // 0x1AC
+        uint8_t Downtime;                                      // 0x199
+        uint8_t InspectionInterval;                            // 0x19A
+        uint8_t LastInspection;                                // 0x19B
+        uint8_t DowntimeHistory[Limits::kDowntimeHistorySize]; // 0x19C
+        uint32_t NoPrimaryItemsSold;                           // 0x1A4
+        uint32_t NoSecondaryItemsSold;                         // 0x1A8
+        uint8_t BreakdownSoundModifier;                        // 0x1AC
         // Used to oscillate the sound when ride breaks down.
         // 0 = no change, 255 = max change
-        uint8_t NotFixedTimeout;                                   // 0x1AD
-        uint8_t LastCrashType;                                     // 0x1AE
-        uint8_t ConnectedMessageThrottle;                          // 0x1AF
-        money32 IncomePerHour;                                     // 0x1B0
-        money32 Profit;                                            // 0x1B4
-        uint8_t QueueTime[Limits::kMaxStationsPerRide];            // 0x1B8
-        uint8_t TrackColourMain[Limits::NumColourSchemes];         // 0x1BC
-        uint8_t TrackColourAdditional[Limits::NumColourSchemes];   // 0x1C0
-        uint8_t TrackColourSupports[Limits::NumColourSchemes];     // 0x1C4
-        uint8_t Music;                                             // 0x1C8
-        uint8_t EntranceStyle;                                     // 0x1C9
-        uint16_t VehicleChangeTimeout;                             // 0x1CA
-        uint8_t NumBlockBrakes;                                    // 0x1CC
-        uint8_t LiftHillSpeed;                                     // 0x1CD
-        uint16_t GuestsFavourite;                                  // 0x1CE
-        uint32_t LifecycleFlags;                                   // 0x1D0
-        uint8_t VehicleColoursExtended[Limits::MaxVehicleColours]; // 0x1D4
-        uint16_t TotalAirTime;                                     // 0x1F4
-        uint8_t CurrentTestStation;                                // 0x1F6
-        uint8_t NumCircuits;                                       // 0x1F7
-        int16_t CableLiftX;                                        // 0x1F8
-        int16_t CableLiftY;                                        // 0x1FA
-        uint8_t CableLiftZ;                                        // 0x1FC
-        uint8_t Pad1FD;                                            // 0x1FD
-        uint16_t CableLift;                                        // 0x1FE
-        uint16_t QueueLength[Limits::kMaxStationsPerRide];         // 0x200
-        uint8_t Pad208[0x58];                                      // 0x208
+        uint8_t NotFixedTimeout;                                    // 0x1AD
+        uint8_t LastCrashType;                                      // 0x1AE
+        uint8_t ConnectedMessageThrottle;                           // 0x1AF
+        money32 IncomePerHour;                                      // 0x1B0
+        money32 Profit;                                             // 0x1B4
+        uint8_t QueueTime[Limits::kMaxStationsPerRide];             // 0x1B8
+        uint8_t TrackColourMain[Limits::kNumColourSchemes];         // 0x1BC
+        uint8_t TrackColourAdditional[Limits::kNumColourSchemes];   // 0x1C0
+        uint8_t TrackColourSupports[Limits::kNumColourSchemes];     // 0x1C4
+        uint8_t Music;                                              // 0x1C8
+        uint8_t EntranceStyle;                                      // 0x1C9
+        uint16_t VehicleChangeTimeout;                              // 0x1CA
+        uint8_t NumBlockBrakes;                                     // 0x1CC
+        uint8_t LiftHillSpeed;                                      // 0x1CD
+        uint16_t GuestsFavourite;                                   // 0x1CE
+        uint32_t LifecycleFlags;                                    // 0x1D0
+        uint8_t VehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
+        uint16_t TotalAirTime;                                      // 0x1F4
+        uint8_t CurrentTestStation;                                 // 0x1F6
+        uint8_t NumCircuits;                                        // 0x1F7
+        int16_t CableLiftX;                                         // 0x1F8
+        int16_t CableLiftY;                                         // 0x1FA
+        uint8_t CableLiftZ;                                         // 0x1FC
+        uint8_t Pad1FD;                                             // 0x1FD
+        uint16_t CableLift;                                         // 0x1FE
+        uint16_t QueueLength[Limits::kMaxStationsPerRide];          // 0x200
+        uint8_t Pad208[0x58];                                       // 0x208
 
         uint8_t GetMinCarsPerTrain() const;
         uint8_t GetMaxCarsPerTrain() const;
@@ -388,9 +388,9 @@ namespace RCT2
         uint8_t Intensity;                                          // 0x5C
         uint8_t Nausea;                                             // 0x5D
         money16 UpkeepCost;                                         // 0x5E
-        uint8_t TrackSpineColour[Limits::NumColourSchemes];         // 0x60
-        uint8_t TrackRailColour[Limits::NumColourSchemes];          // 0x64
-        uint8_t TrackSupportColour[Limits::NumColourSchemes];       // 0x68
+        uint8_t TrackSpineColour[Limits::kNumColourSchemes];        // 0x60
+        uint8_t TrackRailColour[Limits::kNumColourSchemes];         // 0x64
+        uint8_t TrackSupportColour[Limits::kNumColourSchemes];      // 0x68
         uint32_t Flags2;                                            // 0x6C
         RCTObjectEntry VehicleObject;                               // 0x70
         uint8_t SpaceRequiredX;                                     // 0x80
@@ -861,7 +861,7 @@ namespace RCT2
         uint8_t Pad013573EE[2];
         uint8_t RCT1ParkEntranceZ;
         uint8_t Pad013573F1;
-        RCT12PeepSpawn PeepSpawns[Limits::MaxPeepSpawns];
+        RCT12PeepSpawn PeepSpawns[Limits::kMaxPeepSpawns];
         uint8_t GuestCountChangeModifier;
         uint8_t CurrentResearchLevel;
         uint8_t Pad01357400[4];
@@ -945,7 +945,7 @@ namespace RCT2
         money32 IncomeFromAdmissions;
         money32 CompanyValue;
         uint8_t PeepWarningThrottle[16];
-        RCT12Award Awards[Limits::MaxAwards];
+        RCT12Award Awards[Limits::kMaxAwards];
         money16 LandPrice;
         money16 ConstructionRightsPrice;
         uint16_t Word01358774;
@@ -980,10 +980,10 @@ namespace RCT2
         uint8_t CurrentInterestRate;
         uint8_t Pad0135934B;
         uint32_t SamePriceThroughoutExtended;
-        int16_t ParkEntranceX[Limits::MaxParkEntrances];
-        int16_t ParkEntranceY[Limits::MaxParkEntrances];
-        int16_t ParkEntranceZ[Limits::MaxParkEntrances];
-        uint8_t ParkEntranceDirection[Limits::MaxParkEntrances];
+        int16_t ParkEntranceX[Limits::kMaxParkEntrances];
+        int16_t ParkEntranceY[Limits::kMaxParkEntrances];
+        int16_t ParkEntranceZ[Limits::kMaxParkEntrances];
+        uint8_t ParkEntranceDirection[Limits::kMaxParkEntrances];
         char ScenarioFilename[256];
         uint8_t SavedExpansionPackNames[3256];
         RCT12Banner Banners[Limits::MaxBanners];

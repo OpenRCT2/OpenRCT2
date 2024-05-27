@@ -19,20 +19,20 @@ namespace OpenRCT2::Limits
     constexpr uint16_t kMaxHelices = RCT12::Limits::kMaxHelices;
     constexpr uint16_t kMaxInversions = RCT12::Limits::kMaxInversions;
     constexpr uint16_t kMaxTrainsPerRide = 255;
-    constexpr uint16_t MaxCarsPerTrain = 255;
-    constexpr const uint16_t MaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *
-                                                                    // MaxCarsPerTrain
-    // MaxVehicleColours should be set to kMaxTrainsPerRide or MaxCarsPerTrain, whichever is higher.
-    // Sadly, using std::max() will cause compilation failures when using MaxVehicleColours as an array size,
+    constexpr uint16_t kMaxCarsPerTrain = 255;
+    constexpr const uint16_t kMaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *
+                                                                     // kMaxCarsPerTrain
+    // kMaxVehicleColours should be set to kMaxTrainsPerRide or kMaxCarsPerTrain, whichever is higher.
+    // Sadly, using std::max() will cause compilation failures when using kMaxVehicleColours as an array size,
     // hence the usage of static asserts.
-    static_assert(MaxVehicleColours >= kMaxTrainsPerRide);
-    static_assert(MaxVehicleColours >= MaxCarsPerTrain);
-    constexpr uint8_t MaxCircuitsPerRide = 20;
-    constexpr uint8_t MaxAwards = RCT12::Limits::MaxAwards;
-    constexpr uint8_t NumColourSchemes = RCT12::Limits::NumColourSchemes;
-    constexpr uint8_t DowntimeHistorySize = RCT2::Limits::DowntimeHistorySize;
-    constexpr uint16_t MaxPeepSpawns = 256;
-    constexpr uint16_t MaxParkEntrances = 256;
-    constexpr uint8_t MaxWaitingTime = RCT12::Limits::MaxWaitingTime;
-    constexpr uint8_t CheatsMaxOperatingLimit = 255;
+    static_assert(kMaxVehicleColours >= kMaxTrainsPerRide);
+    static_assert(kMaxVehicleColours >= kMaxCarsPerTrain);
+    constexpr uint8_t kMaxCircuitsPerRide = 20;
+    constexpr uint8_t kMaxAwards = RCT12::Limits::kMaxAwards;
+    constexpr uint8_t kNumColourSchemes = RCT12::Limits::kNumColourSchemes;
+    constexpr uint8_t kDowntimeHistorySize = RCT2::Limits::kDowntimeHistorySize;
+    constexpr uint16_t kMaxPeepSpawns = 256;
+    constexpr uint16_t kMaxParkEntrances = 256;
+    constexpr uint8_t kMaxWaitingTime = RCT12::Limits::kMaxWaitingTime;
+    constexpr uint8_t kCheatsMaxOperatingLimit = 255;
 } // namespace OpenRCT2::Limits

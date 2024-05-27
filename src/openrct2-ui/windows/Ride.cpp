@@ -2593,7 +2593,7 @@ static_assert(std::size(RatingNames) == 6);
                         ride->SetNumTrains(ride->NumTrains - 1);
                     break;
                 case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
-                    if (ride->num_cars_per_train < OpenRCT2::Limits::MaxCarsPerTrain)
+                    if (ride->num_cars_per_train < OpenRCT2::Limits::kMaxCarsPerTrain)
                         ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
                     break;
                 case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
@@ -2897,7 +2897,7 @@ static_assert(std::size(RatingNames) == 6);
             // For each train
             for (int32_t i = 0; i < ride->NumTrains; i++)
             {
-                VehicleDrawInfo trainCarImages[OpenRCT2::Limits::MaxCarsPerTrain];
+                VehicleDrawInfo trainCarImages[OpenRCT2::Limits::kMaxCarsPerTrain];
                 VehicleDrawInfo* nextSpriteToDraw = trainCarImages;
                 int32_t x = startX;
                 int32_t y = startY;
@@ -2984,7 +2984,7 @@ static_assert(std::size(RatingNames) == 6);
 
             if (GetGameState().Cheats.UnlockOperatingLimits)
             {
-                maxValue = OpenRCT2::Limits::CheatsMaxOperatingLimit;
+                maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
             uint8_t increment = ride->mode == RideMode::Dodgems ? 10 : 1;
@@ -3004,7 +3004,7 @@ static_assert(std::size(RatingNames) == 6);
             uint8_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
             if (GetGameState().Cheats.UnlockOperatingLimits)
             {
-                maxValue = OpenRCT2::Limits::CheatsMaxOperatingLimit;
+                maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
             uint8_t decrement = ride->mode == RideMode::Dodgems ? 10 : 1;
@@ -3140,7 +3140,7 @@ static_assert(std::size(RatingNames) == 6);
                     break;
                 case WIDX_LIFT_HILL_SPEED_INCREASE:
                     upperBound = GetGameState().Cheats.UnlockOperatingLimits
-                        ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                        ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                         : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
                     lowerBound = GetGameState().Cheats.UnlockOperatingLimits
                         ? 0
@@ -3151,7 +3151,7 @@ static_assert(std::size(RatingNames) == 6);
                     break;
                 case WIDX_LIFT_HILL_SPEED_DECREASE:
                     upperBound = GetGameState().Cheats.UnlockOperatingLimits
-                        ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                        ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                         : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
                     lowerBound = GetGameState().Cheats.UnlockOperatingLimits
                         ? 0
@@ -3167,28 +3167,28 @@ static_assert(std::size(RatingNames) == 6);
                     OperatingLengthWindow(WIDX_MAXIMUM_LENGTH);
                     break;
                 case WIDX_MINIMUM_LENGTH_INCREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MinWaitingTime,
                         std::clamp<int16_t>(ride->min_waiting_time + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MINIMUM_LENGTH_DECREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MinWaitingTime,
                         std::clamp<int16_t>(ride->min_waiting_time - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_INCREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MaxWaitingTime,
                         std::clamp<int16_t>(ride->max_waiting_time + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_DECREASE:
-                    upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
                         rideId, RideSetSetting::MaxWaitingTime,
@@ -3201,16 +3201,16 @@ static_assert(std::size(RatingNames) == 6);
                     LoadDropdown(&widgets[widgetIndex]);
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                                             : OpenRCT2::Limits::MaxCircuitsPerRide;
+                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+                                                                             : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
                         rideId, RideSetSetting::NumCircuits,
                         std::clamp<int16_t>(ride->num_circuits + 1, lowerBound, upperBound));
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                                             : OpenRCT2::Limits::MaxCircuitsPerRide;
+                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+                                                                             : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
                         rideId, RideSetSetting::NumCircuits,
@@ -3225,7 +3225,7 @@ static_assert(std::size(RatingNames) == 6);
             if (ride == nullptr)
                 return;
 
-            uint8_t upperBound = OpenRCT2::Limits::MaxWaitingTime;
+            uint8_t upperBound = OpenRCT2::Limits::kMaxWaitingTime;
             uint8_t lowerBound = 0;
             Formatter ft;
             ft.Add<int16_t>(lowerBound);
@@ -3253,7 +3253,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
-            int16_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+            int16_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                            : operatingSettings.MaxValue;
             int16_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
@@ -3335,7 +3335,7 @@ static_assert(std::size(RatingNames) == 6);
             if (widgetIndex == WIDX_MODE_TWEAK)
             {
                 const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
-                uint32_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                uint32_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                                 : operatingSettings.MaxValue;
                 uint32_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
                 auto multiplier = ride->GetRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
@@ -3358,7 +3358,7 @@ static_assert(std::size(RatingNames) == 6);
                     auto rideSetSetting = widgetIndex == WIDX_MINIMUM_LENGTH ? RideSetSetting::MinWaitingTime
                                                                              : RideSetSetting::MaxWaitingTime;
 
-                    uint16_t upperBound = OpenRCT2::Limits::MaxWaitingTime;
+                    uint16_t upperBound = OpenRCT2::Limits::kMaxWaitingTime;
                     uint16_t lowerBound = 0;
                     uint16_t size = std::stol(std::string(text));
                     size = std::clamp(size, lowerBound, upperBound);
@@ -4193,7 +4193,7 @@ static_assert(std::size(RatingNames) == 6);
             switch (widgetIndex)
             {
                 case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-                    for (i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
+                    for (i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                         gDropdownItems[i].Args = ColourSchemeNames[i];
