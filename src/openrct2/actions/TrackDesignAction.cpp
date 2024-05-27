@@ -261,7 +261,7 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (size_t i = 0; i < Limits::MaxVehicleColours; i++)
+    for (size_t i = 0; i < Limits::kMaxVehicleColours; i++)
     {
         ride->vehicle_colours[i] = _td.vehicle_colours[i];
     }

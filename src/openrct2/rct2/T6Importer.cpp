@@ -79,7 +79,7 @@ namespace RCT2
             td->ride_mode = static_cast<RideMode>(td6.RideMode);
             td->track_flags = 0;
             td->colour_scheme = td6.VersionAndColourScheme & 0x3;
-            for (auto i = 0; i < Limits::MaxVehicleColours; ++i)
+            for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
             {
                 td->vehicle_colours[i].Body = td6.VehicleColours[i].BodyColour;
                 td->vehicle_colours[i].Trim = td6.VehicleColours[i].TrimColour;

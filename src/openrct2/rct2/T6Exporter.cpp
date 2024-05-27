@@ -57,7 +57,7 @@ namespace RCT2
         tempStream.WriteValue<uint32_t>(_trackDesign->flags);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
         tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
+        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
             tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Body);
             tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Trim);
@@ -93,7 +93,7 @@ namespace RCT2
         tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
+        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
             tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Tertiary);
         }

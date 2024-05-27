@@ -26,7 +26,7 @@ namespace RCT12::Limits
     constexpr uint8_t PatrolAreaSize = 128;
     constexpr uint8_t StaffTypeCount = 4;
     constexpr uint8_t NumColourSchemes = 4;
-    constexpr uint8_t MaxVehicleColours = 32;
+    constexpr uint8_t kMaxVehicleColours = 32;
 
     constexpr uint8_t ExpenditureTableMonthCount = 16;
     constexpr uint8_t ExpenditureTypeCount = 14;

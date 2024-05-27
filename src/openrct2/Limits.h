@@ -20,13 +20,13 @@ namespace OpenRCT2::Limits
     constexpr uint16_t kMaxInversions = RCT12::Limits::kMaxInversions;
     constexpr uint16_t kMaxTrainsPerRide = 255;
     constexpr uint16_t kMaxCarsPerTrain = 255;
-    constexpr const uint16_t MaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *
-                                                                    // kMaxCarsPerTrain
-    // MaxVehicleColours should be set to kMaxTrainsPerRide or kMaxCarsPerTrain, whichever is higher.
-    // Sadly, using std::max() will cause compilation failures when using MaxVehicleColours as an array size,
+    constexpr const uint16_t kMaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *
+                                                                     // kMaxCarsPerTrain
+    // kMaxVehicleColours should be set to kMaxTrainsPerRide or kMaxCarsPerTrain, whichever is higher.
+    // Sadly, using std::max() will cause compilation failures when using kMaxVehicleColours as an array size,
     // hence the usage of static asserts.
-    static_assert(MaxVehicleColours >= kMaxTrainsPerRide);
-    static_assert(MaxVehicleColours >= kMaxCarsPerTrain);
+    static_assert(kMaxVehicleColours >= kMaxTrainsPerRide);
+    static_assert(kMaxVehicleColours >= kMaxCarsPerTrain);
     constexpr uint8_t MaxCircuitsPerRide = 20;
     constexpr uint8_t MaxAwards = RCT12::Limits::MaxAwards;
     constexpr uint8_t NumColourSchemes = RCT12::Limits::NumColourSchemes;

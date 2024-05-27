@@ -74,11 +74,11 @@ namespace RCT2
         uint8_t Type; // 0x000
         // pointer to static info. for example, wild mouse type is 0x36, subtype is
         // 0x4c.
-        RCT12ObjectEntryIndex Subtype;                                // 0x001
-        uint16_t Pad002;                                              // 0x002
-        uint8_t Mode;                                                 // 0x004
-        uint8_t ColourSchemeType;                                     // 0x005
-        RCT12VehicleColour VehicleColours[Limits::MaxVehicleColours]; // 0x006
+        RCT12ObjectEntryIndex Subtype;                                 // 0x001
+        uint16_t Pad002;                                               // 0x002
+        uint8_t Mode;                                                  // 0x004
+        uint8_t ColourSchemeType;                                      // 0x005
+        RCT12VehicleColour VehicleColours[Limits::kMaxVehicleColours]; // 0x006
         uint8_t Pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
         uint8_t Status; // 0x049
@@ -258,33 +258,33 @@ namespace RCT2
         uint8_t BreakdownSoundModifier;                       // 0x1AC
         // Used to oscillate the sound when ride breaks down.
         // 0 = no change, 255 = max change
-        uint8_t NotFixedTimeout;                                   // 0x1AD
-        uint8_t LastCrashType;                                     // 0x1AE
-        uint8_t ConnectedMessageThrottle;                          // 0x1AF
-        money32 IncomePerHour;                                     // 0x1B0
-        money32 Profit;                                            // 0x1B4
-        uint8_t QueueTime[Limits::kMaxStationsPerRide];            // 0x1B8
-        uint8_t TrackColourMain[Limits::NumColourSchemes];         // 0x1BC
-        uint8_t TrackColourAdditional[Limits::NumColourSchemes];   // 0x1C0
-        uint8_t TrackColourSupports[Limits::NumColourSchemes];     // 0x1C4
-        uint8_t Music;                                             // 0x1C8
-        uint8_t EntranceStyle;                                     // 0x1C9
-        uint16_t VehicleChangeTimeout;                             // 0x1CA
-        uint8_t NumBlockBrakes;                                    // 0x1CC
-        uint8_t LiftHillSpeed;                                     // 0x1CD
-        uint16_t GuestsFavourite;                                  // 0x1CE
-        uint32_t LifecycleFlags;                                   // 0x1D0
-        uint8_t VehicleColoursExtended[Limits::MaxVehicleColours]; // 0x1D4
-        uint16_t TotalAirTime;                                     // 0x1F4
-        uint8_t CurrentTestStation;                                // 0x1F6
-        uint8_t NumCircuits;                                       // 0x1F7
-        int16_t CableLiftX;                                        // 0x1F8
-        int16_t CableLiftY;                                        // 0x1FA
-        uint8_t CableLiftZ;                                        // 0x1FC
-        uint8_t Pad1FD;                                            // 0x1FD
-        uint16_t CableLift;                                        // 0x1FE
-        uint16_t QueueLength[Limits::kMaxStationsPerRide];         // 0x200
-        uint8_t Pad208[0x58];                                      // 0x208
+        uint8_t NotFixedTimeout;                                    // 0x1AD
+        uint8_t LastCrashType;                                      // 0x1AE
+        uint8_t ConnectedMessageThrottle;                           // 0x1AF
+        money32 IncomePerHour;                                      // 0x1B0
+        money32 Profit;                                             // 0x1B4
+        uint8_t QueueTime[Limits::kMaxStationsPerRide];             // 0x1B8
+        uint8_t TrackColourMain[Limits::NumColourSchemes];          // 0x1BC
+        uint8_t TrackColourAdditional[Limits::NumColourSchemes];    // 0x1C0
+        uint8_t TrackColourSupports[Limits::NumColourSchemes];      // 0x1C4
+        uint8_t Music;                                              // 0x1C8
+        uint8_t EntranceStyle;                                      // 0x1C9
+        uint16_t VehicleChangeTimeout;                              // 0x1CA
+        uint8_t NumBlockBrakes;                                     // 0x1CC
+        uint8_t LiftHillSpeed;                                      // 0x1CD
+        uint16_t GuestsFavourite;                                   // 0x1CE
+        uint32_t LifecycleFlags;                                    // 0x1D0
+        uint8_t VehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
+        uint16_t TotalAirTime;                                      // 0x1F4
+        uint8_t CurrentTestStation;                                 // 0x1F6
+        uint8_t NumCircuits;                                        // 0x1F7
+        int16_t CableLiftX;                                         // 0x1F8
+        int16_t CableLiftY;                                         // 0x1FA
+        uint8_t CableLiftZ;                                         // 0x1FC
+        uint8_t Pad1FD;                                             // 0x1FD
+        uint16_t CableLift;                                         // 0x1FE
+        uint16_t QueueLength[Limits::kMaxStationsPerRide];          // 0x200
+        uint8_t Pad208[0x58];                                       // 0x208
 
         uint8_t GetMinCarsPerTrain() const;
         uint8_t GetMaxCarsPerTrain() const;
