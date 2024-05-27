@@ -11,9 +11,11 @@
 
 #    include "ScGuest.hpp"
 
+#    include "../../../GameState.h"
 #    include "../../../entity/Guest.h"
 #    include "../../../localisation/Localisation.h"
 #    include "../../../peep/PeepAnimationData.h"
+#    include "../../../ride/RideEntry.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -202,6 +204,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
+        dukglue_register_property(ctx, &ScGuest::favouriteRide_get, &ScGuest::favouriteRide_set, "favouriteRide");
         dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
         dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
         dukglue_register_property(ctx, &ScGuest::availableAnimations_get, nullptr, "availableAnimations");
@@ -504,6 +507,47 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->GuestIsLostCountdown = value;
+        }
+    }
+
+    DukValue ScGuest::favouriteRide_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            if (peep->FavouriteRide != RideId::GetNull())
+            {
+                duk_push_int(ctx, peep->FavouriteRide.ToUnderlying());
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScGuest::favouriteRide_set(const DukValue& value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            if (value.type() == DukValue::Type::NUMBER && value.as_uint() < GetGameState().Rides.size()
+                && GetGameState().Rides[value.as_uint()].type != RIDE_TYPE_NULL)
+            {
+                peep->FavouriteRide = RideId::FromUnderlying(value.as_uint());
+            }
+            else
+            {
+                peep->FavouriteRide = RideId::GetNull();
+            }
         }
     }
 
