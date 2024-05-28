@@ -344,7 +344,7 @@ namespace OpenRCT2::Scripting
                 }
                 else if (status == SocketStatus::Connected)
                 {
-                    char buffer[2048];
+                    char buffer[16384];
                     size_t bytesRead{};
                     auto result = _socket->ReceiveData(buffer, sizeof(buffer), &bytesRead);
                     switch (result)
