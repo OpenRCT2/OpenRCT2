@@ -140,7 +140,7 @@ void VehicleCrashParticle::Update()
     MoveTo(newLoc);
 
     frame += kCrashedVehicleParticleFrameIncrement;
-    if (frame >= kCrashedVehicleParticleNumberSprites * kCrashedVehicleParticleFrameToSprite)
+    if (frame >= (kCrashedVehicleParticleNumberSprites * kCrashedVehicleParticleFrameToSprite))
     {
         frame = 0;
     }
