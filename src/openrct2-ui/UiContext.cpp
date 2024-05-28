@@ -131,7 +131,7 @@ public:
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
     }
 
-    void Initialise() override
+    void InitialiseScriptExtensions() override
     {
 #ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext()->GetScriptEngine();

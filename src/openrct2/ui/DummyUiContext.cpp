@@ -24,7 +24,7 @@ namespace OpenRCT2::Ui
         std::unique_ptr<IWindowManager> const _windowManager = CreateDummyWindowManager();
 
     public:
-        void Initialise() override
+        void InitialiseScriptExtensions() override
         {
         }
         void Tick() override
