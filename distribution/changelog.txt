@@ -22,6 +22,7 @@
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
 - Change: [#21991] UI themes JSON now use colour names and a translucency bool, instead of a number (old themes still work).
 - Change: [#22057] Reorder Time Twister’s scenarios and adjust their difficulty classification.
+- Fix: [#13234] Vehicle weight sometimes wrong after using Remove All Guests cheat.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
 - Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).

@@ -711,10 +711,14 @@ void CheatSetAction::RemoveAllGuests() const
             for (Vehicle* vehicle = TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
                  vehicle = TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
+                auto i = 0;
                 for (auto& peepInTrainIndex : vehicle->peep)
                 {
+                    if (i >= vehicle->num_peeps)
+                        break;
+
                     auto peep = TryGetEntity<Guest>(peepInTrainIndex);
-                    if (peep != nullptr)
+                    if (peep != nullptr && peep->CurrentRide == ride.id)
                     {
                         if ((peep->State == PeepState::OnRide && peep->RideSubState == PeepRideSubState::OnRide)
                             || (peep->State == PeepState::LeavingRide && peep->RideSubState == PeepRideSubState::LeaveVehicle))
@@ -723,6 +727,7 @@ void CheatSetAction::RemoveAllGuests() const
                         }
                     }
                     peepInTrainIndex = EntityId::GetNull();
+                    i++;
                 }
 
                 vehicle->num_peeps = 0;
