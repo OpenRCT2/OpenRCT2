@@ -38,11 +38,6 @@ void Scene::FinishScene()
     }
 }
 
-IScene* Scene::GetCompletionScene()
-{
-    return _nextScene;
-}
-
 void Scene::SetCompletionScene(IScene* scene)
 {
     _nextScene = scene;

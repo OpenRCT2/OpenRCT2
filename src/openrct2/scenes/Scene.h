@@ -28,7 +28,6 @@ namespace OpenRCT2
         virtual void Tick() = 0;
         virtual void Stop() = 0;
 
-        virtual IScene* GetCompletionScene() = 0;
         virtual void SetCompletionScene(IScene* scene) = 0;
     };
 
@@ -40,7 +39,6 @@ namespace OpenRCT2
         GameState_t& GetGameState() override;
         IContext& GetContext() override;
 
-        IScene* GetCompletionScene() override;
         void SetCompletionScene(IScene* scene) override;
 
     protected:

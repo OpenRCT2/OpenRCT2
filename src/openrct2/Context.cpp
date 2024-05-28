@@ -573,10 +573,7 @@ namespace OpenRCT2
             OpenProgress(STR_CHECKING_TITLE_SEQUENCES);
             TitleSequenceManager::Scan();
 
-            if (GetPreloaderScene()->GetCompletionScene() == GetTitleScene())
-                OpenProgress(STR_LOADING_TITLE_SEQUENCE);
-            else
-                OpenProgress(STR_LOADING_GENERIC);
+            OpenProgress(STR_LOADING_GENERIC);
         }
 
     public:
