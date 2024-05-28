@@ -729,7 +729,6 @@ static Widget _staffListWidgets[] = {
         {
             switch (type)
             {
-                default:
                 case PeepSpriteType::EntertainerPanda:
                     return SPR_STAFF_COSTUME_PANDA;
                 case PeepSpriteType::EntertainerTiger:
@@ -752,6 +751,9 @@ static Widget _staffListWidgets[] = {
                     return SPR_STAFF_COSTUME_SHERIFF;
                 case PeepSpriteType::EntertainerPirate:
                     return SPR_STAFF_COSTUME_PIRATE;
+                case PeepSpriteType::Normal:
+                default:
+                    return SPR_PEEP_SMALL_FACE_HAPPY;
             }
         }
     };
