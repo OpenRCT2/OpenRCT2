@@ -310,9 +310,7 @@ namespace OpenRCT2
             return EXIT_FAILURE;
         }
 
-        // NB: This takes some liberty in returning PreloaderScene* instead of IScene*.
-        // PreloaderScene adds some methods to Scene, which are used internally by Context.
-        PreloaderScene* GetPreloaderScene() override
+        IScene* GetPreloaderScene() override
         {
             if (auto* scene = _preloaderScene.get())
                 return scene;
@@ -520,7 +518,7 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                auto* preloaderScene = GetPreloaderScene();
+                auto* preloaderScene = static_cast<PreloaderScene*>(GetPreloaderScene());
                 SetActiveScene(preloaderScene);
 
                 // TODO: preload the title scene in another (parallel) job.
