@@ -13,9 +13,9 @@
 
 #    include "../../../entity/Guest.h"
 #    include "../../../localisation/Localisation.h"
+#    include "../../../peep/PeepAnimationData.h"
 #    include "../../../ride/Ride.h"
 #    include "../ride/ScRide.hpp"
-#    include "../../../peep/PeepAnimationData.h"
 
 namespace OpenRCT2::Scripting
 {
