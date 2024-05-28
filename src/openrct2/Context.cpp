@@ -972,7 +972,7 @@ namespace OpenRCT2
             return true;
         }
 
-        IScene* DetermineStartUpScene()
+        void SwitchToStartUpScene()
         {
             if (gOpenRCT2Headless)
             {
@@ -990,16 +990,19 @@ namespace OpenRCT2
                 }
             }
 
+            IScene* nextScene{};
             switch (gOpenRCT2StartupAction)
             {
                 case StartupAction::Intro:
                 {
-                    return GetIntroScene();
+                    nextScene = GetIntroScene();
+                    break;
                 }
 
                 case StartupAction::Title:
                 {
-                    return GetTitleScene();
+                    nextScene = GetTitleScene();
+                    break;
                 }
 
                 case StartupAction::Open:
@@ -1013,14 +1016,16 @@ namespace OpenRCT2
                         auto data = DownloadPark(gOpenRCT2StartupActionPath);
                         if (data.empty())
                         {
-                            return GetTitleScene();
+                            nextScene = GetTitleScene();
+                            break;
                         }
 
                         auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            return GetTitleScene();
+                            nextScene = GetTitleScene();
+                            break;
                         }
 #endif
                     }
@@ -1030,67 +1035,55 @@ namespace OpenRCT2
                         {
                             if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
                             {
-                                return GetTitleScene();
+                                nextScene = GetTitleScene();
+                                break;
                             }
                         }
                         catch (const std::exception& ex)
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             Console::Error::WriteLine("%s", ex.what());
-                            return GetTitleScene();
+                            nextScene = GetTitleScene();
+                            break;
                         }
                     }
 
                     // Successfully loaded a file
-                    return GetGameScene();
+                    nextScene = GetGameScene();
+                    break;
                 }
+
                 case StartupAction::Edit:
                 {
                     if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
                     {
                         Editor::Load();
-                        return GetGameScene();
+                        nextScene = GetGameScene();
                     }
                     else if (Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        return GetGameScene();
+                        nextScene = GetGameScene();
                     }
-                    [[fallthrough]];
+                    else
+                    {
+                        nextScene = GetTitleScene();
+                    }
+                    break;
                 }
+
                 default:
                 {
-                    return GetTitleScene();
+                    nextScene = GetTitleScene();
                 }
             }
+
+            SetActiveScene(nextScene);
+            InitNetworkGame(nextScene == GetGameScene());
         }
 
-        /**
-         * Launches the game, after command line arguments have been parsed and processed.
-         */
-        void Launch()
+        void InitNetworkGame(bool isGameScene)
         {
-            if (!_versionCheckFuture.valid())
-            {
-                _versionCheckFuture = std::async(std::launch::async, [this] {
-                    _newVersionInfo = GetLatestVersion();
-                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
-                    {
-                        _hasNewVersionInfo = true;
-                    }
-                });
-            }
-
-            auto* scene = DetermineStartUpScene();
-            if (!gOpenRCT2Headless)
-            {
-                _preloaderScene->SetCompletionScene(scene);
-            }
-            else
-            {
-                SetActiveScene(scene);
-            }
-
-            if (scene == GetGameScene())
+            if (isGameScene)
             {
 #ifndef DISABLE_NETWORK
                 if (gNetworkStart == NETWORK_MODE_SERVER)
@@ -1133,6 +1126,32 @@ namespace OpenRCT2
                 _network.BeginClient(gNetworkStartHost, gNetworkStartPort);
             }
 #endif // DISABLE_NETWORK
+        }
+
+        /**
+         * Launches the game, after command line arguments have been parsed and processed.
+         */
+        void Launch()
+        {
+            if (!_versionCheckFuture.valid())
+            {
+                _versionCheckFuture = std::async(std::launch::async, [this] {
+                    _newVersionInfo = GetLatestVersion();
+                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
+                    {
+                        _hasNewVersionInfo = true;
+                    }
+                });
+            }
+
+            if (!gOpenRCT2Headless)
+            {
+                _preloaderScene->SetOnComplete([&]() { SwitchToStartUpScene(); });
+            }
+            else
+            {
+                SwitchToStartUpScene();
+            }
 
             _stdInOutConsole.Start();
             RunGameLoop();
