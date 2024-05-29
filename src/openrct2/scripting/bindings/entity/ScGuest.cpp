@@ -15,6 +15,7 @@
 #    include "../../../entity/Guest.h"
 #    include "../../../localisation/Localisation.h"
 #    include "../../../peep/PeepAnimationData.h"
+#    include "../../../ride/Ride.h"
 #    include "../../../ride/RideEntry.h"
 #    include "../ride/ScRide.hpp"
 
@@ -206,6 +207,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
         dukglue_register_property(ctx, &ScGuest::favouriteRide_get, &ScGuest::favouriteRide_set, "favouriteRide");
+        dukglue_register_property(ctx, &ScGuest::rideHeadedTo_get, &ScGuest::rideHeadedTo_set, "rideHeadedTo");
         dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
         dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
         dukglue_register_property(ctx, &ScGuest::availableAnimations_get, nullptr, "availableAnimations");
@@ -532,11 +534,12 @@ namespace OpenRCT2::Scripting
         {
             duk_push_null(ctx);
         }
-        return -1;
+        return DukValue::take_from_stack(ctx);
     }
 
     void ScGuest::favouriteRide_set(const DukValue& value)
     {
+        ThrowIfGameStateNotMutable();
         auto peep = GetGuest();
         if (peep != nullptr)
         {
@@ -549,6 +552,78 @@ namespace OpenRCT2::Scripting
             {
                 peep->FavouriteRide = RideId::GetNull();
             }
+        }
+    }
+
+    DukValue ScGuest::rideHeadedTo_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            auto rideId = peep->GuestHeadingToRideId;
+            auto ride = GetRideManager()[rideId];
+            if (ride != nullptr)
+            {
+                return ToDuk<int32_t>(ctx, ride->id.ToUnderlying());
+            }
+        }
+        return ToDuk(ctx, nullptr);
+    }
+
+    void ScGuest::rideHeadedTo_set(DukValue value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto guest = GetGuest();
+        if (guest == nullptr)
+            return;
+
+        if (value.type() == DukValue::Type::NULLREF && guest->GuestHeadingToRideId != RideId::GetNull())
+        {
+            // Clear the ride the guest is headed to
+            guest->GuestHeadingToRideId = RideId::GetNull();
+            guest->SetState(PeepState::Walking);
+            guest->GuestIsLostCountdown = 200;
+            guest->TimeLost = 0;
+            guest->ResetPathfindGoal();
+            guest->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
+            return;
+        }
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            Ride* ride = GetRide(RideId::FromUnderlying(value.as_uint()));
+            if (ride == nullptr)
+                return;
+
+            if (guest->x == LOCATION_NULL)
+                return;
+
+            /**
+             * Filters out guests who are not in the park or are doing the wrong actions.
+             */
+            PeepState& State = guest->State;
+            if (State != PeepState::Walking && State != PeepState::Sitting && State != PeepState::Watching
+                && State != PeepState::UsingBin && State != PeepState::Queuing && State != PeepState::QueuingFront)
+                return;
+
+            // If the guest is leaving the park, interrupts and sends them to the ride
+            if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+            {
+                guest->PeepFlags &= ~PEEP_FLAGS_LEAVING_PARK;
+            }
+
+            if (State == PeepState::Queuing || State == PeepState::QueuingFront)
+            {
+                guest->RemoveFromQueue();
+            }
+
+            // Head to that ride
+            guest->SetState(PeepState::Walking);
+            guest->GuestHeadingToRideId = ride->id;
+            guest->GuestIsLostCountdown = 200;
+            guest->TimeLost = 0;
+            guest->ResetPathfindGoal();
+            guest->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
         }
     }
 
