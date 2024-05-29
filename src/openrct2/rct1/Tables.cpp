@@ -766,7 +766,7 @@ namespace RCT1
             "rct1aa.ride.virginia_reel_tubs",        // RCT1_RIDE_TYPE_VIRGINIA_REEL
             "rct1aa.ride.splash_boats",              // RCT1_RIDE_TYPE_RIVER_RIDE
             "rct1aa.ride.mini_helicopters",          // RCT1_RIDE_TYPE_CYCLE_MONORAIL
-            "rct2.ride.vekst",                       // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
+            "rct1aa.ride.lay_down_trains",           // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
             "rct1aa.ride.suspended_monorail_trains", // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
             "",                                      // RCT1_RIDE_TYPE_40
             "rct1aa.ride.reverser_cars",             // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
@@ -871,7 +871,7 @@ namespace RCT1
             "rct1aa.ride.reverser_cars",                   //  VehicleType::ReverserCars
             "rct2.ride.golf1",                             //  VehicleType::Golfers
             "rct1aa.ride.splash_boats",                    //  VehicleType::RiverRideBoats
-            "rct2.ride.vekst",                             //  VehicleType::FlyingRollerCoasterTrain
+            "rct1aa.ride.lay_down_trains",                 //  VehicleType::FlyingRollerCoasterTrain
             "rct1aa.ride.hyper_twister_trains",            //  VehicleType::NonLoopingSteelTwisterRollerCoasterTrain
             "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCars
             "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCarsReversed
