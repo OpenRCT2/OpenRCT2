@@ -64,7 +64,7 @@ GameActions::Result RideSetColourSchemeAction::Query() const
                 GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_TRACK_PARAMETERS);
         }
     }
-    if (_newColourScheme >= OpenRCT2::Limits::NumColourSchemes)
+    if (_newColourScheme >= OpenRCT2::Limits::kNumColourSchemes)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_COLOUR_SCHEME_PARAMETER);

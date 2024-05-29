@@ -295,14 +295,17 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TSize, typename TIndex> static void AppendSeparator(char (&buffer)[TSize], TIndex& i, std::string_view sep)
+    template<size_t TSize, typename TIndex>
+    static void AppendSeparatorReversed(char (&buffer)[TSize], TIndex& i, std::string_view sep)
     {
-        if (i < TSize)
+        if (i + sep.size() >= TSize)
+            return;
+
+        utf8 sepBuffer[32];
+        std::memcpy(&sepBuffer[0], sep.data(), sep.size());
+        for (int32_t j = static_cast<int32_t>(sep.size()) - 1; j >= 0; j--)
         {
-            auto remainingLen = TSize - i;
-            auto cpyLen = std::min(sep.size(), remainingLen);
-            std::memcpy(&buffer[i], sep.data(), cpyLen);
-            i += static_cast<TIndex>(cpyLen);
+            buffer[i++] = sepBuffer[j];
         }
     }
 
@@ -353,7 +356,7 @@ namespace OpenRCT2
             }
 
             auto decSep = GetDecimalSeparator();
-            AppendSeparator(buffer, i, decSep);
+            AppendSeparatorReversed(buffer, i, decSep);
         }
 
         // Whole digits
@@ -366,7 +369,7 @@ namespace OpenRCT2
                 if (groupLen >= 3)
                 {
                     groupLen = 0;
-                    AppendSeparator(buffer, i, digitSep);
+                    AppendSeparatorReversed(buffer, i, digitSep);
                 }
             }
             buffer[i++] = static_cast<char>('0' + (num % 10));

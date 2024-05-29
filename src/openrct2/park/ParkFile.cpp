@@ -846,7 +846,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.HistoricalProfit);
 
                     // Marketing
-                    cs.ReadWriteVector(gMarketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                    cs.ReadWriteVector(gameState.MarketingCampaigns, [&cs](MarketingCampaign& campaign) {
                         cs.ReadWrite(campaign.Type);
                         cs.ReadWrite(campaign.WeeksLeft);
                         cs.ReadWrite(campaign.Flags);
@@ -857,7 +857,7 @@ namespace OpenRCT2
                     auto& currentAwards = gameState.CurrentAwards;
                     if (version <= 6)
                     {
-                        Award awards[RCT2::Limits::MaxAwards]{};
+                        Award awards[RCT2::Limits::kMaxAwards]{};
                         cs.ReadWriteArray(awards, [&cs, &currentAwards](Award& award) {
                             if (award.Time != 0)
                             {
@@ -1617,7 +1617,7 @@ namespace OpenRCT2
         static std::vector<RideId> LegacyGetRidesBeenOn(const std::array<uint8_t, 32>& srcArray)
         {
             std::vector<RideId> ridesBeenOn;
-            for (uint16_t i = 0; i < RCT2::Limits::MaxRidesInPark; i++)
+            for (uint16_t i = 0; i < RCT2::Limits::kMaxRidesInPark; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {

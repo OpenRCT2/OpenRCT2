@@ -46,6 +46,7 @@ public:
     void AddTask(std::function<void()> workFn, std::function<void()> completionFn = nullptr);
     void Join(std::function<void()> reportFn = nullptr);
     size_t CountPending();
+    size_t CountProcessing();
 
 private:
     void ProcessQueue();

@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -478,8 +480,10 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_MISC:
-                    widgets[WIDX_OPEN_CLOSE_PARK].text = (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
-                                                                                                       : STR_CHEAT_OPEN_PARK;
+                    widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
+                    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+                        widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
+
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
                     SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.FreezeWeather);
                     SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.NeverendingMarketing);
@@ -536,7 +540,7 @@ static StringId window_cheats_page_titles[] = {
                 ft.Add<money64>(_moneySpinnerValue);
                 if (IsWidgetDisabled(WIDX_MONEY_SPINNER))
                 {
-                    colour |= COLOUR_FLAG_INSET;
+                    colour.setFlag(ColourFlag::inset, true);
                 }
                 int32_t actual_month = _monthSpinnerValue - 1;
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });

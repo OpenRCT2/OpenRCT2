@@ -302,7 +302,7 @@ static Widget _trackPlaceWidgets[] = {
                 g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
                 GfxSetG1Element(SPR_TEMP, &g1temp);
                 DrawingEngineInvalidateImage(SPR_TEMP);
-                GfxDrawSprite(clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(this->colours[0])), { 0, 0 });
+                GfxDrawSprite(clippedDpi, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
             }
 
             // Price

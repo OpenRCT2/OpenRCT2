@@ -10,6 +10,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../UiContext.h"
+#    include "../UiStringIds.h"
 #    include "../interface/Dropdown.h"
 #    include "../interface/Widget.h"
 #    include "../scripting/ScGraphicsContext.hpp"
@@ -25,7 +26,6 @@
 #    include <openrct2/localisation/Formatter.h>
 #    include <openrct2/localisation/Language.h>
 #    include <openrct2/localisation/Localisation.h>
-#    include <openrct2/localisation/StringIds.h>
 #    include <openrct2/scripting/Plugin.h>
 #    include <openrct2/sprites.h>
 #    include <optional>
@@ -250,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Title;
         std::optional<int32_t> Id;
         std::vector<CustomWidgetDesc> Widgets;
-        std::vector<colour_t> Colours;
+        std::vector<ColourWithFlags> Colours;
         std::vector<CustomTabDesc> Tabs;
         std::optional<int32_t> TabIndex;
 
@@ -302,14 +302,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto dukColours = desc["colours"].as_array();
                 std::transform(dukColours.begin(), dukColours.end(), std::back_inserter(result.Colours), [](const DukValue& w) {
-                    colour_t c = COLOUR_BLACK;
+                    ColourWithFlags c = { COLOUR_BLACK };
                     if (w.type() == DukValue::Type::NUMBER)
                     {
-                        c = std::clamp<int32_t>(BASE_COLOUR(w.as_int()), COLOUR_BLACK, COLOUR_COUNT - 1);
-                        if (w.as_int() & COLOUR_FLAG_TRANSLUCENT)
-                        {
-                            c = TRANSLUCENT(c);
-                        }
+                        colour_t colour = w.as_int() & ~kLegacyColourFlagTranslucent;
+                        auto isTranslucent = (w.as_int() & kLegacyColourFlagTranslucent);
+                        c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
+                        c.flags = (isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0);
                     }
                     return c;
                 });
@@ -476,7 +475,7 @@ namespace OpenRCT2::Ui::Windows
             // This has to be called to ensure the window frame is correctly initialised - not doing this will
             // cause an assertion to be hit.
             ResizeFrameWithPage();
-            widgets[WIDX_CLOSE].text = (colours[0] & COLOUR_FLAG_TRANSLUCENT) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
+            widgets[WIDX_CLOSE].text = colours[0].hasFlag(ColourFlag::translucent) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
             // For now just hide it if there are no tabs and the window is not resizable
@@ -631,8 +630,10 @@ namespace OpenRCT2::Ui::Windows
                     const auto numItems = std::min<size_t>(items.size(), Dropdown::ItemsMaxSize);
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdownItems[i].Format = selectedIndex == static_cast<int32_t>(i) ? STR_OPTIONS_DROPDOWN_ITEM_SELECTED
-                                                                                            : STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                        if (selectedIndex == static_cast<int32_t>(i))
+                            gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
+
                         auto sz = items[i].c_str();
                         std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
                     }
@@ -907,8 +908,8 @@ namespace OpenRCT2::Ui::Windows
                     : _info.Desc.Tabs[page].Widgets[widgetDescIndex - tabWidgetsOffset];
                 auto preWidgetSize = widgetList.size();
                 CreateWidget(widgetList, widgetDesc);
-                auto numWidetsAdded = widgetList.size() - preWidgetSize;
-                for (size_t i = 0; i < numWidetsAdded; i++)
+                auto numWidgetsAdded = widgetList.size() - preWidgetSize;
+                for (size_t i = 0; i < numWidgetsAdded; i++)
                 {
                     _info.WidgetIndexMap.push_back(widgetDescIndex);
                 }
@@ -1060,25 +1061,25 @@ namespace OpenRCT2::Ui::Windows
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 widgetList.push_back(widget);
 
-                // Add the decrement button
+                // Add the increment button
                 widget = {};
                 widget.type = WindowWidgetType::Button;
                 widget.colour = 1;
-                widget.left = desc.X + desc.Width - 26;
-                widget.right = widget.left + 12;
+                widget.left = desc.X + desc.Width - 13;
+                widget.right = widget.left + 11;
                 widget.top = desc.Y + 1;
                 widget.bottom = desc.Y + desc.Height - 2;
-                widget.text = STR_NUMERIC_DOWN;
+                widget.text = STR_NUMERIC_UP;
                 widget.tooltip = STR_NONE;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
                 widgetList.push_back(widget);
 
-                // Add the increment button
-                widget.left = desc.X + desc.Width - 13;
-                widget.right = widget.left + 11;
-                widget.text = STR_NUMERIC_UP;
+                // Add the decrement button
+                widget.left = desc.X + desc.Width - 26;
+                widget.right = widget.left + 12;
+                widget.text = STR_NUMERIC_DOWN;
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "textbox")

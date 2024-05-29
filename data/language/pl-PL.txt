@@ -2881,7 +2881,7 @@ STR_5755    :Niewłaściwa wersja gry
 STR_5756    :Błędne hasło
 STR_5757    :Serwer osiągnął maksymalną liczbę graczy
 STR_5758    :{OUTLINE}{GREEN}{STRING} dołączył do gry
-STR_5759    :Pobieranie mapy … ({INT32} / {INT32}) KiB
+STR_5759    :Pobieranie mapy …
 STR_5760    :Dolar hongkoński (HK$)
 STR_5761    :Dolar tajwański (NT$)
 STR_5762    :Juan chiński (CN¥)
@@ -3445,7 +3445,7 @@ STR_6374    :P
 STR_6375    :Nieznana atrakcja
 STR_6376    :{WINDOW_COLOUR_2}Pojazd:{NEWLINE}{BLACK}{STRINGID} dla {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} dla {STRINGID}
-STR_6378    :Odebrano listę obiektów: {INT32} / {INT32}
+STR_6378    :Odebrano listę obiektów:
 STR_6379    :Odebrano nieprawidłowe dane
 STR_6380    :Dostępna aktualizacja!
 STR_6381    :Dołącz do Discorda OpenRCT2!
@@ -4171,87 +4171,87 @@ STR_DTLS    :Wybuduj brakujące obiekty “Six Flags” lub upiększ lunapark w�
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Afryka - Kopalnia diamentów
+STR_SCNR    :Mines of Africa
 STR_PARK    :Mines of Africa
 STR_DTLS    :Otrzymujesz w spadku nieużywaną kopalnię diamentów i znajdujesz w niej cenny kamień szlachetny. Postanawiasz zainwestować zdobytą fortunę w budowę parku tematycznego, który zasłynie na całym świecie.
 
 <Africa - Oasis>
-STR_SCNR    :Afryka - Oaza
+STR_SCNR    :Mirage Madness
 STR_PARK    :Mirage Madness
 STR_DTLS    :Odkryto pustynną oazę, która może stać się dobrym miejscem pod budowę lunaparku. Transport został zapewniony.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Afryka - Wodospad Wiktorii
+STR_SCNR    :Over The Edge
 STR_PARK    :Over The Edge
 STR_DTLS    :Wybudowano tamę umożliwiającą produkcję taniej energii w hydroelektrowni, która będzie zasilać park. Musisz sprawić, aby osiągnął on dużą wartość, dzięki czemu spłacisz kredyt zaciągnięty na budowę.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarktyka - Ekologiczny odzysk
+STR_SCNR    :Icy Adventures
 STR_PARK    :Icy Adventures
 STR_DTLS    :Agencja ochrony środowiska skierowała cię do przekształcenia starej rafinerii, będącej solą w oku ekologów, w czołową atrakcję turystyczną. Ziemia jest tania, lecz odsetki od kredytów wysokie. Możesz sprzedać stare budynki, aby powiększyć swoje fundusze.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Azja - Rozwój turystyki wokół Wielkiego Muru Chińskiego
+STR_SCNR    :Wielki Mur Chiński
 STR_PARK    :Wielki Mur Chiński
 STR_DTLS    :Władze postanowiły przyciągnąć więcej turystów w okolice Wielkiego Muru, budując w pobliżu park tematyczny. Pieniądze nie grają roli!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Azja - Odzysk japońskiego wybrzeża
+STR_SCNR    :Okinawa Coast
 STR_PARK    :Okinawa Coast
 STR_DTLS    :W pewnym parku zabrakło miejsca. Twoją jedyną szansą jest wyjście w morze i w tym celu zaciągasz kredyt. Twoje budowle muszą mieć ograniczoną wysokość z uwagi na obciążenie fundamentów i zagrożenie trzęsieniem ziemi.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Azja - Pałac Maharadży
+STR_SCNR    :Park Maharadży
 STR_PARK    :Park Maharadży
 STR_DTLS    :Maharadża zlecił ci zapewnienie rozrywki swoim licznym poddanym. Wybuduj lunapark, wzorując się na pałacu maharadży.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australia - Ayers Rock
+STR_SCNR    :Ayers Adventure
 STR_PARK    :Ayers Adventure
 STR_DTLS    :Pomagasz Aborygenom w budowie lunaparku w ramach programu świadomości kulturalnej. Musisz przyciągnąć wielu gości i zapoznać ich z unikalnym dziedzictwem ludu Aborygenów.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australia - Zabawa na plaży
+STR_SCNR    :Beach Barbecue Blast
 STR_PARK    :Beach Barbecue Blast
 STR_DTLS    :Miejscowe oceanarium zbankrutowało. Masz już niewielki własny lunapark i kupujesz drugi park od firmy budowlanej. Przekształć je w duży połączony lunapark.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europa - Europejski Festiwal Kulturalny
+STR_SCNR    :European Extravaganza
 STR_PARK    :European Extravaganza
 STR_DTLS    :Zlecono ci objęcie kierownictwa działu Turystycznych Atrakcji Kulturalnych. Musisz zwiększyć liczbę gości, aby spłacić unijne dofinansowanie przed zakończeniem bieżącej kadencji parlamentu europejskiego.
 
 <Europe - Renovation>
-STR_SCNR    :Europa - Odbudowa
+STR_SCNR    :From The Ashes
 STR_PARK    :From The Ashes
 STR_DTLS    :Pewien stary lunapark popadł w ruinę. Otrzymujesz fundusze z Unii Europejskiej, aby przywrócić temu żałosnemu miejscu jego dawną chwałę! Musisz odnowić park i zwrócić otrzymany kredyt.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Ameryka Płn. - Ekstremalne Hawaje
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Mieszkańcy Hawajów znudzili się surfowaniem i szukają bardziej intensywnych przeżyć. Budując swój lunapark, musisz o tym pamiętać, aby utrzymać wysoką ocenę dla turystów.
 
 <North America - Grand Canyon>
-STR_SCNR    :Ameryka Płn. - Wielki Kanion
+STR_SCNR    :Canyon Calamities
 STR_PARK    :Canyon Calamities
 STR_DTLS    :Twoim celem jest wybudowanie lunaparku na ograniczonym terenie znajdującym się na jednym z brzegów tego przyrodniczego cudu. Będziesz mógł kupować ziemię od Indian. Musisz osiągnąć swój cel, aby zapewnić utrzymanie mieszkańcom pobliskiego miasteczka.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Ameryka Płn. - Raj kolejek górskich
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :Jesteś znanym biznesmenem na urlopie i pragniesz wykorzystać wolny czas na przekształcenie miejskiego lunaparku w raj dla miłośników kolejek górskich. Pieniądze nie grają roli!
 
 <South America - Inca Lost City>
-STR_SCNR    :Ameryka Płd. - Zaginione miasto Inków
+STR_SCNR    :Lost City Founder
 STR_PARK    :Lost City Founder
 STR_DTLS    :W celu lepszego wypromowania miejscowej turystyki musisz wybudować lunapark pasujący do swego otoczenia. Obowiązuje ograniczenie wysokości budynków.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Ameryka Płd. - Tropikalny płaskowyż
+STR_SCNR    :Rainforest Romp
 STR_PARK    :Rainforest Romp
 STR_DTLS    :W lesie deszczowym miejsce jest bardzo cenne - musisz upchnąć jak najwięcej obiektów na dostępnym wykarczowanym obszarze, aby lunapark stał się dobrą alternatywą dla miejscowego przemysłu drzewnego.
 
 <South America - Rio Carnival>
-STR_SCNR    :Ameryka Płd. - Karnawał w Rio
+STR_SCNR    :Sugarloaf Shores
 STR_PARK    :Sugarloaf Shores
 STR_DTLS    :Prowadzisz mały lunapark pod Rio, a bank wezwał cię do spłacenia kredytu. Musisz szybko zwiększyć swoje przychody, aby zwrócić dług.
 
@@ -4259,72 +4259,72 @@ STR_DTLS    :Prowadzisz mały lunapark pod Rio, a bank wezwał cię do spłaceni
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Mroczne Wieki - zamek
+STR_SCNR    :Cliffside Castle
 STR_PARK    :Cliffside Castle
 STR_DTLS    :Miejscowi miłośnicy odtwarzania rycerskich turniejów podchodzą do swego hobby raczej poważnie. Powierzyli ci zadanie budowy lunaparku stylizowanego na średniowiecze, który ma powstać na ziemiach Zamku na urwisku.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Mroczne Wieki - Robin Hood
+STR_SCNR    :Sherwood Forest
 STR_PARK    :Sherwood Forest
 STR_DTLS    :Aby uwolnić bogatych od bogactwa i rozdać go biednym, wraz ze swą bandą wesołych ludzi z lasu planujesz wybudować park tematyczny w lesie Sherwood.
 
 <Future - First Encounters>
-STR_SCNR    :Przyszłość - Pierwsze spotkania
+STR_SCNR    :Extraterrestrial Extravaganza
 STR_PARK    :Extraterrestrial Extravaganza
 STR_DTLS    :Odkryto życie na odległej planecie! Wybuduj park tematyczny, którego motywem przewodnim będą kosmici, a zgarniesz kasę dzięki bezprecedensowej fali zainteresowania tym zagadnieniem.
 
 <Future - Future World>
-STR_SCNR    :Przyszłość - Świat przyszłości
+STR_SCNR    :Gemini City
 STR_PARK    :Gemini City
 STR_DTLS    :Pokaż ludziom swoją twórczą, utopijną wizję przyszłości - wybuduj futurystyczny lunapark, oferujący atrakcje najwyższej jakości.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mitologia - Mechaniczny plan filmowy
+STR_SCNR    :Animatronic Antics
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Otrzymujesz zadanie prowadzenia i rozbudowy istniejącego lunaparku, wybudowanego na dawnym planie filmowym. Stwórz hołd dla pionierów animacji poklatkowej, którzy przywoływali do życia mitologiczne potwory na srebrnym ekranie.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mitologia - Kołyska cywilizacji
+STR_SCNR    :Mythological Madness
 STR_PARK    :Mythological Madness
 STR_DTLS    :Jesteś właścicielem pewnej wyspy o dużej wartości archeologicznej. Postanawiasz sfinansować konserwację tych zabytków, budując lunapark w stylu inspirowanym mitologicznym dziedzictwem regionu.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prehistoria - Po asteroidzie
+STR_SCNR    :Crater Carnage
 STR_PARK    :Crater Carnage
 STR_DTLS    :Otrzymujesz na własność zakurzony krater po meteorycie. Jako przedsiębiorca z krwi i kości, postanawiasz zbudować park tematyczny związany z tym obiektem i przekształcić w ten sposób swój bezwartościowy teren w źródło przyzwoitych dochodów.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prehistoria - Jurajskie safari
+STR_SCNR    :Coastersaurus
 STR_PARK    :Coastersaurus
 STR_DTLS    :Otrzymujesz zadanie wybudowania lunaparku w stylu jurajskim. Aby goście mogli wygodnie podziwiać egzotyczne rośliny i okazy zwierząt, musisz skonstruować kolejki przejeżdżające nad doliną i prowadzące do niej.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prehistoria - Epoka kamienna
+STR_SCNR    :Rocky Rambles
 STR_PARK    :Rocky Rambles
 STR_DTLS    :Aby powstrzymać budowniczych autostrady i zachować dla potomności tajemnicze kamienne kręgi, musisz wybudować lunapark w stylu epoki kamiennej i osiągnąć zyski. Jednak przyciągnięcie gości może okazać się trudne, bo okolica jest wybitnie niegościnna.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Ryczące Dwudziestki - Wyspa więzienna
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :Niesławna wyspa więzienna, której ludność składała się niegdyś z przemytników i bandytów, jest na sprzedaż. Postanawiasz przekształcić ją w niesamowitą atrakcję turystyczną - pieniądze nie grają roli.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Ryczące Dwudziestki - Puchar Schneidera
+STR_SCNR    :Schneider Shores
 STR_PARK    :Schneider Shores
 STR_DTLS    :Za kilka lat będzie mieć miejsce 75. rocznica zdobycia przez twego dziadka Pucharu Schneidera. Postanawiasz uczcić ten wielki sukces, budując lunapark stylizowany na ów sławny wyścig hydroplanów.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Ryczące Dwudziestki - Drapacze chmur
+STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
 STR_DTLS    :Jesteś właścicielem pustej parceli w pobliżu dzielnicy o niskiej zabudowie. Aby wycisnąć jak największy zysk ze swej nieruchomości, wybuduj lunapark, którego motywem wiodącym będą drapacze chmur w stylu art deco, charakterystycznym dla lat dwudziestych.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ’n’ Roll - Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Na twoim terenie odbywa się wielki doroczny festiwal muzyczny. Wybuduj lunapark w stylu hipisowskim, by wolnomyślicielska publiczność mogła się w nim zabawić.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_SCNR    :Rock ’n’ Roll Revival
 STR_PARK    :Rock ’n’ Roll Revival
 STR_DTLS    :Ten starzejący się lunapark ma najlepsze dni za sobą. Pomóż właścicielom nadać mu stylowy, rockandrollowy wygląd i przekształć to miejsce w dochodowe przedsięwzięcie.
 

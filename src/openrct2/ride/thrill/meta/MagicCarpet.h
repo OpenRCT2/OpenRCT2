@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::Swing),
     .DefaultMode = RideMode::Swing,
-    .OperatingSettings = { 7, 15, 0, 0, 0, 0 },
+    .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MAGIC_CARPET),

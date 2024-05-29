@@ -18,6 +18,7 @@
 #include "../windows/TileInspectorGlobals.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
+#include "Colour.h"
 #include "Widget.h"
 #include "WindowClasses.h"
 #include "ZoomLevel.h"
@@ -128,6 +129,12 @@ struct Widget
     {
         top += amount;
         bottom += amount;
+    }
+
+    void moveTo(ScreenCoordsXY coords)
+    {
+        moveRight(coords.x - left);
+        moveDown(coords.y - top);
     }
 
     bool IsVisible() const
@@ -478,7 +485,7 @@ extern WindowBase* gWindowAudioExclusive;
 
 extern uint32_t gWindowUpdateTicks;
 
-extern colour_t gCurrentWindowColours[4];
+extern colour_t gCurrentWindowColours[3];
 
 extern bool gDisableErrorWindowSound;
 

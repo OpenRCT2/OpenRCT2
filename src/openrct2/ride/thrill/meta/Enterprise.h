@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
     .RideModes = EnumsToFlags(RideMode::Rotation),
     .DefaultMode = RideMode::Rotation,
-    .OperatingSettings = { 10, 20, 0, 0, 0, 0 },
+    .OperatingSettings = { 10, 20 },
     .Naming = { STR_RIDE_NAME_ENTERPRISE, STR_RIDE_DESCRIPTION_ENTERPRISE },
     .NameConvention = { RideComponentType::Wheel, RideComponentType::Structure, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_ENTERPRISE),

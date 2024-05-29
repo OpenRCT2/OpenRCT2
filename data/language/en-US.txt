@@ -233,6 +233,9 @@ STR_6328    :With this option enabled, giant screenshots will have a transparent
 STR_6501    :Random color
 STR_6625    :Invalid color
 
+STR_6629    :Align toolbar buttons horizontally centered
+STR_6630    :This setting will align the toolbar buttons horizontally in the center of the screen. The traditional way of aligning them is in the left and right corner.
+
 #############
 # Scenarios #
 #############
@@ -811,87 +814,87 @@ STR_DTLS    :Build the missing Six Flags rides, or create your own designs to im
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Africa - African Diamond Mine
+STR_SCNR    :Mines of Africa
 STR_PARK    :Mines of Africa
 STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond. You decide to invest that money to build a world-famous theme park.
 
 <Africa - Oasis>
-STR_SCNR    :Africa - Oasis
+STR_SCNR    :Mirage Madness
 STR_PARK    :Mirage Madness
 STR_DTLS    :A desert Oasis has been discovered and would provide a beautiful location for a park. Transport to the oasis has been provided.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Africa - Victoria Falls
+STR_SCNR    :Over The Edge
 STR_PARK    :Over The Edge
 STR_DTLS    :A dam has been built offering abundant, cheap hydroelectric power with which to run a park. You need to reach a high park value to help repay the loan for the dam.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarctic - Ecological Salvage
+STR_SCNR    :Icy Adventures
 STR_PARK    :Icy Adventures
 STR_DTLS    :The environment agency has turned to you to transform an old oil refinery ecological eyesore into a top tourist attraction. Land is cheap but loan interest is high. You can sell the old buildings for salvage.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_SCNR    :Great Wall of China
 STR_PARK    :Great Wall of China
 STR_DTLS    :The authorities have decided to enhance tourism around the Great Wall by building a theme park on the adjacent land. Money is no object!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_SCNR    :Okinawa Coast
 STR_PARK    :Okinawa Coast
 STR_DTLS    :An existing park has run out of space. Your only option is to build out into the sea, and so you have taken out a loan. Height restrictions on your building are enforced due to foundations and earthquake risk.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia - Maharaja Palace
+STR_SCNR    :Park Maharaja
 STR_PARK    :Park Maharaja
 STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja’s palace.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasia - Ayers Rock
+STR_SCNR    :Ayers Adventure
 STR_PARK    :Ayers Adventure
 STR_DTLS    :You are helping Aboriginal people to build a park as part of a cultural awareness program. You need to get a large number of guests to educate them in the unique heritage of the Aboriginal people.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasia - Fun at the Beach
+STR_SCNR    :Beach Barbecue Blast
 STR_PARK    :Beach Barbecue Blast
 STR_DTLS    :A local entrepreneur’s sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europe - European Cultural Festival
+STR_SCNR    :European Extravaganza
 STR_PARK    :European Extravaganza
 STR_DTLS    :You have been brought in to take over a European Cultural Visitor Attraction and must increase the number of guests in order to pay back the EU subsidy by the end of the current European parliament term.
 
 <Europe - Renovation>
-STR_SCNR    :Europe - Renovation
+STR_SCNR    :From The Ashes
 STR_PARK    :From The Ashes
 STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area’s tourist attraction rating high.
 
 <North America - Grand Canyon>
-STR_SCNR    :North America - Grand Canyon
+STR_SCNR    :Canyon Calamities
 STR_PARK    :Canyon Calamities
 STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighboring land from the Native American Indians. You need to complete the objective to sustain the local town’s population.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :North America - Rollercoaster Heaven
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :You are a successful business tycoon on long sabbatical who desires to use this time transforming the city park into Rollercoaster Heaven. Money is no object!
 
 <South America - Inca Lost City>
-STR_SCNR    :South America - Inca Lost City
+STR_SCNR    :Lost City Founder
 STR_PARK    :Lost City Founder
 STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :South America - Rain Forest Plateau
+STR_SCNR    :Rainforest Romp
 STR_PARK    :Rainforest Romp
 STR_DTLS    :Space is limited in the precious rainforest - you must cram as much as possible into the existing clearing, in order to provide a viable alternative to the local timber industry.
 
 <South America - Rio Carnival>
-STR_SCNR    :South America - Rio Carnival
+STR_SCNR    :Sugarloaf Shores
 STR_PARK    :Sugarloaf Shores
 STR_DTLS    :You run a small park near Rio but the bank has called in your loan. You need to quickly increase your earning capacity to repay this unexpected debt.
 
@@ -899,71 +902,71 @@ STR_DTLS    :You run a small park near Rio but the bank has called in your loan.
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Dark Age - Castle
+STR_SCNR    :Cliffside Castle
 STR_PARK    :Cliffside Castle
 STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They’ve entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Dark Age - Robin Hood
+STR_SCNR    :Sherwood Forest
 STR_PARK    :Sherwood Forest
 STR_DTLS    :To liberate wealth from the rich and distribute it to the needy, you and your Merry Men have decided to build a theme park in Sherwood Forest.
 
 <Future - First Encounters>
-STR_SCNR    :Future - First Encounters
+STR_SCNR    :Extraterrestrial Extravaganza
 STR_PARK    :Extraterrestrial Extravaganza
 STR_DTLS    :Life has been discovered on a distant planet. Build an alien theme park to cash in on the unprecedented wave of interest.
 
 <Future - Future World>
-STR_SCNR    :Future - Future World
+STR_SCNR    :Gemini City
 STR_PARK    :Gemini City
 STR_DTLS    :Show off your inventive, utopian vision of the future - come up with a futuristic park design that incorporates state-of-the-art attractions.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mythological - Animatronic Film Set
+STR_SCNR    :Animatronic Antics
 STR_PARK    :Animatronic Antics
 STR_DTLS    :You have been given the task of running and improving an existing theme park, which has been built on an old film set. Build a tribute to the pioneering stop-motion animators who first brought mythical creatures to life on the silver screen.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mythological - Cradle of Civilization
+STR_SCNR    :Mythological Madness
 STR_PARK    :Mythological Madness
 STR_DTLS    :You own an island of particular archaeological value. You’ve decided to fund its preservation by constructing a theme park based on the area’s rich Mythological heritage.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prehistoric - After the Asteroid
+STR_SCNR    :Crater Carnage
 STR_PARK    :Crater Carnage
 STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you’ve decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prehistoric - Jurassic Safari
+STR_SCNR    :Coastersaurus
 STR_PARK    :Coastersaurus
 STR_DTLS    :You’ve been given the task of constructing a Jurassic era theme park. To optimize your visitors’ access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prehistoric - Stone Age
+STR_SCNR    :Rocky Rambles
 STR_PARK    :Rocky Rambles
 STR_DTLS    :To thwart the highway developers and preserve the mysterious ancient stone circles, you will need to construct a Stone Age theme park and turn a profit. However, attracting visitors may pose a challenge, as the terrain is a tad inhospitable.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Roaring Twenties - Prison Island
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You’ve decided to convert it into a top tourist attraction, and money is no object.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Roaring Twenties - Schneider Cup
+STR_SCNR    :Schneider Shores
 STR_PARK    :Schneider Shores
 STR_DTLS    :The 75th anniversary of your grandfather’s Schneider Cup victory is coming up in a few years. You’re going to honor his achievement by building a theme park based on the famous seaplane race.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Roaring Twenties - Skyscrapers
+STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
 STR_DTLS    :You own an empty lot near the low-rise part of town. To squeeze the most out of your urban property, build a skyscraper theme park inspired by the soaring art deco architecture of the twenties.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ‘n’ Roll - Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :A large annual music festival takes place on your land. Build a hip theme park to keep the free-spirited audience entertained.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ‘n’ Roll - Rock ‘n’ Roll
+STR_SCNR    :Rock ‘n’ Roll Revival
 STR_PARK    :Rock ‘n’ Roll Revival
 STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock ‘n’ roll makeover and turn the place into a successful venue.

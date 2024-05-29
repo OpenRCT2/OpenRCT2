@@ -2877,7 +2877,7 @@ STR_5755    :Yanlış yazılım sürümü (Serverda bu kullanılmakda: {STRING})
 STR_5756    :Şifre yanlış
 STR_5757    :Server dolu
 STR_5758    :{OUTLINE}{GREEN}{STRING} servere katıldı
-STR_5759    :Harita indiriliyor … ({INT32} / {INT32}) KiB
+STR_5759    :Harita indiriliyor …
 STR_5760    :Hong Kong Doları (HK$)
 STR_5761    :Yeni Taiwan Doları (NT$)
 STR_5762    :Çin Yuanı (CN¥)
@@ -3950,87 +3950,87 @@ STR_DTLS    :Gerçekde ABD’nin Texas eyaletinde bulunan bir lunapark
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Africa - African Diamond Mine
+STR_SCNR    :Mines of Africa
 STR_PARK    :Mines of Africa
 STR_DTLS    :Kullanılmayan bir elmas madeni satın aldınız. Bu madende değerli bir elmas buldunuz ve onun satışı ile popüler bir lunapark inşa etmeye karar verdiniz
 
 <Africa - Oasis>
-STR_SCNR    :Africa - Oasis
+STR_SCNR    :Mirage Madness
 STR_PARK    :Mirage Madness
 STR_DTLS    :Afrikada bir vaha buldunuz ve bu vahanın etrafına güzel bir lunapark inşa etmeye karar verdiniz
 
 <Africa - Victoria Falls>
-STR_SCNR    :Africa - Victoria Falls
+STR_SCNR    :Over The Edge
 STR_PARK    :Over The Edge
 STR_DTLS    :Ucuza ve bol miktarda park için ceyeran üretmek amacıyla bir baraj inşa ettirdiniz. Baraj için çektiğiniz krediyi geri ödediniz bile. Şimdi park değerini yükseltmeye çalışınız
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarctic - Ecological Salvage
+STR_SCNR    :Icy Adventures
 STR_PARK    :Icy Adventures
 STR_DTLS    :Çevre koruma makamı size eski petrol rafinerisini görüntü kirliliği olduğundan dolayı yıkıp yerine güzel bir lunapark inşa etmenizi istedi. Arazi satın alma ucuz fakat kredi faizi çok yüksek
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_SCNR    :Great Wall of China
 STR_PARK    :Great Wall of China
 STR_DTLS    :Yetkililer, bitişik arazide bir lunapark inşa ederek Çin Seddi çevresindeki turizmi geliştirmeye karar verdiler. Paranız sınırsız
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_SCNR    :Okinawa Coast
 STR_PARK    :Okinawa Coast
 STR_DTLS    :Burada kurulu olan lunaparkın yeri bitmek üzere. Bundan dolayı suyun üstüne inşa etmeniz gerekli. Bu yüzden kredi çekmeniz gerklidi. Deprem riskinden dolayı yüksek inşa yasağı koyulmuştur
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia - Maharaja Palace
+STR_SCNR    :Park Maharaja
 STR_PARK    :Park Maharaja
 STR_DTLS    :Maharaja ailesi sizden yerel halkın eğlenmesi için Maharaja Sarayının etrafına lunapark inşa etmenizi diledi
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasia - Ayers Rock
+STR_SCNR    :Ayers Adventure
 STR_PARK    :Ayers Adventure
 STR_DTLS    :Aborijin halkının kültürünü anma programı için bir lunapark kurmanız rica edildi.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasia - Fun at the Beach
+STR_SCNR    :Beach Barbecue Blast
 STR_PARK    :Beach Barbecue Blast
 STR_DTLS    :Yerel bir girişimcinin deniz yaşamı parkı kapandı. Siz henüz küçük bir lunaparka sahipsiniz ve kapalı olan diğer parkıda satın aldınız. Bu parkları birleştiriniz
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europe - European Cultural Festival
+STR_SCNR    :European Extravaganza
 STR_PARK    :European Extravaganza
 STR_DTLS    :Avrupa kültürel festivalinin yöneticisi olarak seçildiniz. Sizden festivala daha fazla müşteri getirmeniz bekleniyor
 
 <Europe - Renovation>
-STR_SCNR    :Europe - Renovation
+STR_SCNR    :From The Ashes
 STR_PARK    :From The Ashes
 STR_DTLS    :Eski bir lunapark harabeye dönüşdü. Avrupa Birliği size bu parkı eski ihtişamına getirmek dileği ile verdi. Parkı yenilemeniz ve krediyi geri ödemeniz gerekiyor.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Hawaii’de yaşıyan insanlar bütün gün sörf yapmakdan sıkılmış ve daha heyecanlı birşey yapmak istiyorlar. Sizden turistlerin ziyaret edeceği ve yerel halkı memnun edecek bir park inşa etmeniz bekleniyor
 
 <North America - Grand Canyon>
-STR_SCNR    :North America - Grand Canyon
+STR_SCNR    :Canyon Calamities
 STR_PARK    :Canyon Calamities
 STR_DTLS    :Bu doğal hazinenin her iki tarafında sınırlı bir alanda bir park inşa etmelisiniz. - Yerli Kızılderililerden toprak satın alma imkanınız var. Yerel kasabanın nüfusunu sürdürmek için hedefi tamamlamanız gerekiyor.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :North America - Rollercoaster Heaven
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :Çok başarılı bir iş adamısınız ve uzun bir müddet tatile çıktınız. Bu tatilde şehirin göbeğinde bulunan boş araziye başarılı bir lunapark inşa etmeye karar verdiniz. Paranız sınırsız
 
 <South America - Inca Lost City>
-STR_SCNR    :South America - Inca Lost City
+STR_SCNR    :Lost City Founder
 STR_PARK    :Lost City Founder
 STR_DTLS    :Yerel turizmi güçlendirmek için çevresiyle uyumlu bir park kurmanız gereklidir. Fakat inşa için yükseklik sınırı koyulmuşdur
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :South America - Rain Forest Plateau
+STR_SCNR    :Rainforest Romp
 STR_PARK    :Rainforest Romp
 STR_DTLS    :Bu yağmur ormanında boş alan kısıtlı - yerel kereste endüstrisine bir alternatif sunmak için bu kısıtlı alanda lunapark inşa ediniz
 
 <South America - Rio Carnival>
-STR_SCNR    :South America - Rio Carnival
+STR_SCNR    :Sugarloaf Shores
 STR_PARK    :Sugarloaf Shores
 STR_DTLS    :Rio yakınlarında küçük bir park işletiyorsun fakat banka kredinizi aradı. Bu beklenmedik borcu geri ödemek için kârınızı hızla artırmanız gerekiyor.
 
@@ -4038,71 +4038,71 @@ STR_DTLS    :Rio yakınlarında küçük bir park işletiyorsun fakat banka kred
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Dark Age - Castle
+STR_SCNR    :Cliffside Castle
 STR_PARK    :Cliffside Castle
 STR_DTLS    :Savaşın yeniden canlandırılması toplumunun yerel üyeleri, hobileri hakkında oldukça ciddi. Cliffside Kalesi’nin arazisinde bir Karanlık Çağ temalı park inşa etmenizi dilediler
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Dark Age - Robin Hood
+STR_SCNR    :Sherwood Forest
 STR_PARK    :Sherwood Forest
 STR_DTLS    :Zenginlerden para kırpıp ve muhtaçlara dağıtmak için, siz ve ‘Mutlu Adamlarınız’ Sherwood Ormanı’nda bir lunapark kurmaya karar verdiniz
 
 <Future - First Encounters>
-STR_SCNR    :Future - First Encounters
+STR_SCNR    :Extraterrestrial Extravaganza
 STR_PARK    :Extraterrestrial Extravaganza
 STR_DTLS    :Uzak bir gezegende hayat keşfedildi. Bu gezegende bir uzaylı lunaparkı inşa ediniz
 
 <Future - Future World>
-STR_SCNR    :Future - Future World
+STR_SCNR    :Gemini City
 STR_PARK    :Gemini City
 STR_DTLS    :Geleceğin yaratıcı, ütopik vizyonunu sergileyin - son teknoloji konumlarını içeren fütüristik bir park tasarımı ile parkınızı oluşturunuz
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mythological - Animatronic Film Set
+STR_SCNR    :Animatronic Antics
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Eski bir film setinde kurulmuş olan mevcut bir lunaparkını işletme ve geliştirme görevi size verilmiştir
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mythological - Cradle of Civilisation
+STR_SCNR    :Mythological Madness
 STR_PARK    :Mythological Madness
 STR_DTLS    :Arkeolojik eserler bulunduran bir adaya sahipsiniz. Bu eserlerin korunmasını sağlamak için lunapark kurmaya karar verdiniz
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prehistoric - After the Asteroid
+STR_SCNR    :Crater Carnage
 STR_PARK    :Crater Carnage
 STR_DTLS    :Eski bir meteor kraterine sahipsiniz. Gerçek girişimci ruhu içinde, bir asteroid lunaparkı kurmaya ve görünüşte değersiz arazinizi büyük bir servete dönüştürmeye karar verdiniz
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prehistoric - Jurassic Safari
+STR_SCNR    :Coastersaurus
 STR_PARK    :Coastersaurus
 STR_DTLS    :Jura devri tarzı lunapark inşa etme görevini üstlendiniz. Müşterilerin egzotik bitki ve hayvan sergilerine erişimini optimize etmek için, vadiye giden ve gelen aletler inşa etmeniz gerekecektir
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prehistoric - Stone Age
+STR_SCNR    :Rocky Rambles
 STR_PARK    :Rocky Rambles
 STR_DTLS    :Karayol kurulmasını engellemek için bu araziyi satın aldınız ve Taş Devri temalı bir lunapark inşa etmeye karar verdiniz
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Roaring Twenties - Prison Island
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :ABD’nin meşhur hapishanesini satın aldınız ve burayı güzel bir lunaparka çevirmeye karar verdiniz. Paranız sınırsızdır
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Roaring Twenties - Schneider Cup
+STR_SCNR    :Schneider Shores
 STR_PARK    :Schneider Shores
 STR_DTLS    :Dedeniz 75 yıl önce Schneider Kupasını kazanmış ve onun zaferini anmak için buraya bir lunapark inşa etmeye karar verdiniz
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Roaring Twenties - Skyscrapers
+STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
 STR_DTLS    :Şehirin içinde boş bir araziye sahipsiniz ve bu boş araziye şehir ve yirmili yıllar teamlı bir lunapark inşa etmeye karar verdiniz
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ’n’ Roll - Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Büyük bir müzik festivalının yanına bir lunapark inşa edinizki festival ziyaretcileri daha çok eğlensin
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_SCNR    :Rock ’n’ Roll Revival
 STR_PARK    :Rock ’n’ Roll Revival
 STR_DTLS    :Bu lunapark zamanında çok başarılımış. Fakat şimdi git gide bu parkın başarısı ve parlaklığı geriliyor. Park sahibi sizden parkı geri canlandırmanızı ve eski parlaklığına getirmenizi diliyor

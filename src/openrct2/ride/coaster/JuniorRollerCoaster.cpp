@@ -15,6 +15,7 @@
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -1875,7 +1876,7 @@ static void JuniorRCPaintTrackFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<JuniorRCSubType TSubType>
@@ -1935,7 +1936,7 @@ static void JuniorRCPaintStation(
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<JuniorRCSubType TSubType>
@@ -2147,7 +2148,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr uint8_t junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {
@@ -2211,7 +2212,7 @@ static void JuniorRCFlatToLeftBankPaintSetup(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**
@@ -2262,7 +2263,7 @@ static void JuniorRCFlatToRightBankPaintSetup(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void JuniorRCLeftBankToFlatPaintSetup(
@@ -2455,7 +2456,7 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /* rct2: 0x008AB000 */
@@ -2809,7 +2810,7 @@ static void JuniorRCLeftBankPaintSetup(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**
@@ -3156,7 +3157,7 @@ static void JuniorRCSBendLeftPaintSetup(
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, (direction & 1)), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /* rct2: 0x008AAE60, 0x0051BBC0, 0x0051BE06, 0x0051C04E, 0x0051C068 */
@@ -3264,7 +3265,7 @@ static void JuniorRCSBendRightPaintSetup(
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, (direction & 1)), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AAEB0, 0x0051C0E0, 0x0051C2C1, 0x0051C47F, 0x0051C61D */
@@ -3309,7 +3310,7 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AAEA0 */
@@ -3428,7 +3429,7 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
@@ -3705,7 +3706,7 @@ static void JuniorRCRightHalfBankedHelixUpSmallPaintSetup(
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB110, 0x0052BD80, 0x0052BFD4, 0x0052C23B, 0x0052C450 */
@@ -3778,7 +3779,7 @@ static void JuniorRCRightHalfBankedHelixDownSmallPaintSetup(
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB0E0 */
@@ -3915,7 +3916,7 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB150, 0x0052D778, 0x0052DB27, 0x0052DEEA, 0x0052E26B */
@@ -4022,7 +4023,7 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB120 */
@@ -4089,7 +4090,7 @@ static void JuniorRCBrakePaintSetup(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**
@@ -4128,7 +4129,7 @@ static void JuniorRCBlockBrakePaintSetup(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AAF80 */
@@ -4201,7 +4202,7 @@ static void JuniorRCLeftEighthToDiagPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AAF90 */
@@ -4274,7 +4275,7 @@ static void JuniorRCRightEighthToDiagPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AAFA0 */
@@ -4446,7 +4447,7 @@ static void JuniorRCLeftEighthToDiagBankPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr CoordsXY junior_rc_right_eighth_to_diag_bank_bound_lengths[4][4] = {
@@ -4600,7 +4601,7 @@ static void JuniorRCRightEighthToDiagBankPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB180 */
@@ -4627,19 +4628,8 @@ static void JuniorRCPaintTrackDiagFlat(
     const TrackElement& trackElement)
 {
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
-    TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat[subTypeOffset], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-    {
-        MetalASupportsPaintSetupRotated(
-            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-    }
-
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    TrackPaintUtilDiagTilesPaintExtra(
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat[subTypeOffset], kSupportType);
 }
 
 static void JuniorRCTrackDiagBrakes(
@@ -4930,7 +4920,7 @@ static void JuniorRCDiagFlatToLeftBankPaintSetup(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB1D0 */
@@ -4957,7 +4947,7 @@ static void JuniorRCDiagFlatToRightBankPaintSetup(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB1E0 */
@@ -4984,7 +4974,7 @@ static void JuniorRCDiagLeftBankToFlatPaintSetup(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB1F0 */
@@ -5011,7 +5001,7 @@ static void JuniorRCDiagRightBankToFlatPaintSetup(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB220 */
@@ -5263,7 +5253,7 @@ static void JuniorRCDiagLeftBankPaintSetup(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AB1B0 */
@@ -5285,7 +5275,7 @@ static void JuniorRCDiagRightBankPaintSetup(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr CoordsXY junior_rc_60_deg_up_bound_offsets[4] = {
@@ -5894,7 +5884,7 @@ static void JuniorRCBoosterPaintSetup(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void JuniorRCTrackOnRidePhoto(

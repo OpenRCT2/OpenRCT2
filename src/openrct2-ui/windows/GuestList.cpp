@@ -594,7 +594,8 @@ static Widget window_guest_list_widgets[] = {
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                ColourMapA[colours[1].colour].mid_light);
             switch (_selectedTab)
             {
                 case TabId::Individual:

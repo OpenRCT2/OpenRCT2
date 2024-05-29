@@ -13,6 +13,8 @@
 
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Widget.h>
+
+// TODO: only because of STR_NONE. We can do better.
 #include <openrct2/localisation/StringIds.h>
 
 ImageId GetColourButtonImage(colour_t colour);
@@ -81,6 +83,23 @@ constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NO
     const auto content = ImageId(ImageIndexUndefined);
 
     return MakeWidget(origin, size, type, colour, content, tooltip);
+}
+
+constexpr Widget MakeProgressBar(
+    const ScreenCoordsXY& origin, const ScreenSize& size, colour_t colour, uint8_t lowerBlinkBound = 0,
+    uint8_t upperBlinkBound = 0)
+{
+    Widget out = {};
+    out.left = origin.x;
+    out.right = origin.x + size.width - 1;
+    out.top = origin.y;
+    out.bottom = origin.y + size.height - 1;
+    out.type = WindowWidgetType::ProgressBar;
+    out.colour = colour;
+    out.content = 0 | (lowerBlinkBound << 8) | (upperBlinkBound << 16);
+    out.tooltip = STR_NONE;
+
+    return out;
 }
 
 // NOLINTBEGIN
@@ -152,3 +171,5 @@ void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
 void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
 void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
 void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
+
+void WidgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);

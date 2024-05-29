@@ -285,7 +285,7 @@ static Widget _editorBottomToolbarWidgets[] = {
                 dpi, ImageId(SPR_PREVIOUS),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
-            colour_t textColour = NOT_TRANSLUCENT(colours[1]);
+            colour_t textColour = colours[1].colour;
             if (gHoverWidget.window_classification == WindowClass::BottomToolbar
                 && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
             {
@@ -323,7 +323,7 @@ static Widget _editorBottomToolbarWidgets[] = {
                 dpi, ImageId(SPR_NEXT),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
-            colour_t textColour = NOT_TRANSLUCENT(colours[1]);
+            colour_t textColour = colours[1].colour;
 
             if (gHoverWidget.window_classification == WindowClass::BottomToolbar
                 && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
@@ -346,9 +346,10 @@ static Widget _editorBottomToolbarWidgets[] = {
         {
             int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
             int16_t stateY = height - 0x0C + windowPos.y;
+            auto colour = colours[2].withFlag(ColourFlag::translucent, false).withFlag(ColourFlag::withOutline, true);
             DrawTextBasic(
                 dpi, { stateX, stateY }, _editorStepNames[EnumValue(GetGameState().EditorStep)], {},
-                { static_cast<colour_t>(NOT_TRANSLUCENT(colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
+                { colour, TextAlignment::CENTRE });
         }
 
         static constexpr FuncPtr _previousButtonMouseUp[] = {

@@ -13,6 +13,7 @@
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
@@ -777,7 +778,7 @@ static void PaintSplashBoatsTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1A0 */
@@ -812,7 +813,7 @@ static void PaintSplashBoatsStation(
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1D0 */
@@ -943,7 +944,7 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1D0 */
@@ -1072,7 +1073,7 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B180 */
@@ -1182,7 +1183,7 @@ static void PaintSplashBoatsTrackSBendLeft(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B190 */
@@ -1292,7 +1293,7 @@ static void PaintSplashBoatsTrackSBendRight(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintSplashBoatsTrackOnRidePhoto(

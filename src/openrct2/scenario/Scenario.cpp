@@ -160,7 +160,7 @@ void ScenarioReset(GameState_t& gameState)
         gameState.LastEntranceStyle = 0;
     }
 
-    gMarketingCampaigns.clear();
+    gameState.MarketingCampaigns.clear();
     gameState.Park.RatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money

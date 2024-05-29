@@ -266,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_cursorBlink > 15)
                     {
-                        uint8_t colour = ColourMapA[colours[1]].mid_light;
+                        uint8_t colour = ColourMapA[colours[1].colour].mid_light;
                         // TODO: palette index addition
                         GfxFillRect(
                             dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);

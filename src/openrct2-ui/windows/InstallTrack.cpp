@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <memory>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -152,7 +154,7 @@ static Widget window_install_track_widgets[] = {
             // Track preview
             Widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-            int32_t colour = ColourMapA[colours[0]].darkest;
+            int32_t colour = ColourMapA[colours[0].colour].darkest;
             GfxFillRect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};

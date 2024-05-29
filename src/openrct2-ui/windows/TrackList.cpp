@@ -466,7 +466,7 @@ static Widget _trackListWidgets[] = {
 
             // Track preview
             auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
-            int32_t colour = ColourMapA[colours[0]].darkest;
+            int32_t colour = ColourMapA[colours[0].colour].darkest;
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
@@ -675,7 +675,7 @@ static Widget _trackListWidgets[] = {
 
         void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[0]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[0].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             auto screenCoords = ScreenCoordsXY{ 0, 0 };

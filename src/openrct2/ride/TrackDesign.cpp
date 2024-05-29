@@ -117,7 +117,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
         vehicle_colours[i] = ride.vehicle_colours[i];
     }
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
     {
         track_spine_colour[i] = ride.track_colour[i].main;
         track_rail_colour[i] = ride.track_colour[i].additional;
@@ -1924,7 +1924,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         ride->entrance_style = gameState.LastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
     {
         ride->track_colour[i].main = td6->track_spine_colour[i];
         ride->track_colour[i].additional = td6->track_rail_colour[i];

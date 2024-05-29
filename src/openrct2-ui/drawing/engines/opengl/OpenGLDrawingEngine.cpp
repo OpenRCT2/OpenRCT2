@@ -22,6 +22,7 @@
 #    include "TransparencyDepth.h"
 
 #    include <SDL.h>
+#    include <algorithm>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>
 #    include <openrct2/config/Config.h>
@@ -801,8 +802,6 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
 void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     CalculcateClipping(dpi);
-
-    assert((colour & 0xFF) > 0u);
 
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)

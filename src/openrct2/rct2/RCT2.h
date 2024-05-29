@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/FileSystem.hpp"
+#include "../core/FixedPoint.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../world/Park.h"
@@ -73,11 +74,11 @@ namespace RCT2
         uint8_t Type; // 0x000
         // pointer to static info. for example, wild mouse type is 0x36, subtype is
         // 0x4c.
-        RCT12ObjectEntryIndex Subtype;                                // 0x001
-        uint16_t Pad002;                                              // 0x002
-        uint8_t Mode;                                                 // 0x004
-        uint8_t ColourSchemeType;                                     // 0x005
-        RCT12VehicleColour VehicleColours[Limits::MaxVehicleColours]; // 0x006
+        RCT12ObjectEntryIndex Subtype;                                 // 0x001
+        uint16_t Pad002;                                               // 0x002
+        uint8_t Mode;                                                  // 0x004
+        uint8_t ColourSchemeType;                                      // 0x005
+        RCT12VehicleColour VehicleColours[Limits::kMaxVehicleColours]; // 0x006
         uint8_t Pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
         uint8_t Status; // 0x049
@@ -91,21 +92,21 @@ namespace RCT2
                 uint16_t NameArgumentsNumber;   // 0x04E
             };
         };
-        RCT12xy8 OverallView;                               // 0x050
-        RCT12xy8 StationStarts[Limits::MaxStationsPerRide]; // 0x052
-        uint8_t StationHeights[Limits::MaxStationsPerRide]; // 0x05A
-        uint8_t StationLength[Limits::MaxStationsPerRide];  // 0x05E
-        uint8_t StationDepart[Limits::MaxStationsPerRide];  // 0x062
+        RCT12xy8 OverallView;                                // 0x050
+        RCT12xy8 StationStarts[Limits::kMaxStationsPerRide]; // 0x052
+        uint8_t StationHeights[Limits::kMaxStationsPerRide]; // 0x05A
+        uint8_t StationLength[Limits::kMaxStationsPerRide];  // 0x05E
+        uint8_t StationDepart[Limits::kMaxStationsPerRide];  // 0x062
         // ride->vehicle index for current train waiting for passengers
         // at station
-        uint8_t TrainAtStation[Limits::MaxStationsPerRide];   // 0x066
-        RCT12xy8 Entrances[Limits::MaxStationsPerRide];       // 0x06A
-        RCT12xy8 Exits[Limits::MaxStationsPerRide];           // 0x072
-        uint16_t LastPeepInQueue[Limits::MaxStationsPerRide]; // 0x07A
-        uint8_t Pad082[Limits::MaxStationsPerRide];           // 0x082, Used to be number of peeps in queue in RCT1, but this
-                                                              // has moved.
-        uint16_t Vehicles[Limits::MaxTrainsPerRide];          // 0x086, Points to the first car in the train
-        uint8_t DepartFlags;                                  // 0x0C6
+        uint8_t TrainAtStation[Limits::kMaxStationsPerRide];   // 0x066
+        RCT12xy8 Entrances[Limits::kMaxStationsPerRide];       // 0x06A
+        RCT12xy8 Exits[Limits::kMaxStationsPerRide];           // 0x072
+        uint16_t LastPeepInQueue[Limits::kMaxStationsPerRide]; // 0x07A
+        uint8_t Pad082[Limits::kMaxStationsPerRide];           // 0x082, Used to be number of peeps in queue in RCT1, but this
+                                                               // has moved.
+        uint16_t Vehicles[Limits::kMaxTrainsPerRide];          // 0x086, Points to the first car in the train
+        uint8_t DepartFlags;                                   // 0x0C6
 
         // Not sure if these should be uint or sint.
         uint8_t NumStations;             // 0x0C7
@@ -138,20 +139,20 @@ namespace RCT2
         uint8_t Pad0D6[2];            // 0x0D6
         // Divide this value by 29127 to get the human-readable max speed
         // (in RCT2, display_speed = (max_speed * 9) >> 18)
-        int32_t MaxSpeed;                           // 0x0D8
-        int32_t AverageSpeed;                       // 0x0DC
-        uint8_t CurrentTestSegment;                 // 0x0E0
-        uint8_t AverageSpeedTestTimeout;            // 0x0E1
-        uint8_t Pad0E2[0x2];                        // 0x0E2
-        int32_t Length[Limits::MaxStationsPerRide]; // 0x0E4
-        uint16_t Time[Limits::MaxStationsPerRide];  // 0x0F4
-        fixed16_2dp MaxPositiveVerticalG;           // 0x0FC
-        fixed16_2dp MaxNegativeVerticalG;           // 0x0FE
-        fixed16_2dp MaxLateralG;                    // 0x100
-        fixed16_2dp PreviousVerticalG;              // 0x102
-        fixed16_2dp PreviousLateralG;               // 0x104
-        uint8_t Pad106[0x2];                        // 0x106
-        uint32_t TestingFlags;                      // 0x108
+        int32_t MaxSpeed;                            // 0x0D8
+        int32_t AverageSpeed;                        // 0x0DC
+        uint8_t CurrentTestSegment;                  // 0x0E0
+        uint8_t AverageSpeedTestTimeout;             // 0x0E1
+        uint8_t Pad0E2[0x2];                         // 0x0E2
+        int32_t Length[Limits::kMaxStationsPerRide]; // 0x0E4
+        uint16_t Time[Limits::kMaxStationsPerRide];  // 0x0F4
+        fixed16_2dp MaxPositiveVerticalG;            // 0x0FC
+        fixed16_2dp MaxNegativeVerticalG;            // 0x0FE
+        fixed16_2dp MaxLateralG;                     // 0x100
+        fixed16_2dp PreviousVerticalG;               // 0x102
+        fixed16_2dp PreviousLateralG;                // 0x104
+        uint8_t Pad106[0x2];                         // 0x106
+        uint32_t TestingFlags;                       // 0x108
         // x y map location of the current track piece during a test
         // this is to prevent counting special tracks multiple times
         RCT12xy8 CurTestTrackLocation; // 0x10C
@@ -182,10 +183,10 @@ namespace RCT2
         // Counts ticks to update customer intervals, resets each 960 game ticks.
         uint16_t NumCustomersTimeout; // 0x122
         // Customer count in the last 10 * 960 game ticks (sliding window)
-        uint16_t NumCustomers[Limits::CustomerHistorySize]; // 0x124
-        money16 Price;                                      // 0x138
-        RCT12xy8 ChairliftBullwheelLocation[2];             // 0x13A
-        uint8_t ChairliftBullwheelZ[2];                     // 0x13E
+        uint16_t NumCustomers[Limits::kCustomerHistorySize]; // 0x124
+        money16 Price;                                       // 0x138
+        RCT12xy8 ChairliftBullwheelLocation[2];              // 0x13A
+        uint8_t ChairliftBullwheelZ[2];                      // 0x13E
         union
         {
             RatingTuple Ratings; // 0x140
@@ -248,42 +249,42 @@ namespace RCT2
         // making breakdowns more and more likely.
         uint8_t UnreliabilityFactor; // 0x198
         // Range from [0, 100]
-        uint8_t Downtime;                                     // 0x199
-        uint8_t InspectionInterval;                           // 0x19A
-        uint8_t LastInspection;                               // 0x19B
-        uint8_t DowntimeHistory[Limits::DowntimeHistorySize]; // 0x19C
-        uint32_t NoPrimaryItemsSold;                          // 0x1A4
-        uint32_t NoSecondaryItemsSold;                        // 0x1A8
-        uint8_t BreakdownSoundModifier;                       // 0x1AC
+        uint8_t Downtime;                                      // 0x199
+        uint8_t InspectionInterval;                            // 0x19A
+        uint8_t LastInspection;                                // 0x19B
+        uint8_t DowntimeHistory[Limits::kDowntimeHistorySize]; // 0x19C
+        uint32_t NoPrimaryItemsSold;                           // 0x1A4
+        uint32_t NoSecondaryItemsSold;                         // 0x1A8
+        uint8_t BreakdownSoundModifier;                        // 0x1AC
         // Used to oscillate the sound when ride breaks down.
         // 0 = no change, 255 = max change
-        uint8_t NotFixedTimeout;                                   // 0x1AD
-        uint8_t LastCrashType;                                     // 0x1AE
-        uint8_t ConnectedMessageThrottle;                          // 0x1AF
-        money32 IncomePerHour;                                     // 0x1B0
-        money32 Profit;                                            // 0x1B4
-        uint8_t QueueTime[Limits::MaxStationsPerRide];             // 0x1B8
-        uint8_t TrackColourMain[Limits::NumColourSchemes];         // 0x1BC
-        uint8_t TrackColourAdditional[Limits::NumColourSchemes];   // 0x1C0
-        uint8_t TrackColourSupports[Limits::NumColourSchemes];     // 0x1C4
-        uint8_t Music;                                             // 0x1C8
-        uint8_t EntranceStyle;                                     // 0x1C9
-        uint16_t VehicleChangeTimeout;                             // 0x1CA
-        uint8_t NumBlockBrakes;                                    // 0x1CC
-        uint8_t LiftHillSpeed;                                     // 0x1CD
-        uint16_t GuestsFavourite;                                  // 0x1CE
-        uint32_t LifecycleFlags;                                   // 0x1D0
-        uint8_t VehicleColoursExtended[Limits::MaxVehicleColours]; // 0x1D4
-        uint16_t TotalAirTime;                                     // 0x1F4
-        uint8_t CurrentTestStation;                                // 0x1F6
-        uint8_t NumCircuits;                                       // 0x1F7
-        int16_t CableLiftX;                                        // 0x1F8
-        int16_t CableLiftY;                                        // 0x1FA
-        uint8_t CableLiftZ;                                        // 0x1FC
-        uint8_t Pad1FD;                                            // 0x1FD
-        uint16_t CableLift;                                        // 0x1FE
-        uint16_t QueueLength[Limits::MaxStationsPerRide];          // 0x200
-        uint8_t Pad208[0x58];                                      // 0x208
+        uint8_t NotFixedTimeout;                                    // 0x1AD
+        uint8_t LastCrashType;                                      // 0x1AE
+        uint8_t ConnectedMessageThrottle;                           // 0x1AF
+        money32 IncomePerHour;                                      // 0x1B0
+        money32 Profit;                                             // 0x1B4
+        uint8_t QueueTime[Limits::kMaxStationsPerRide];             // 0x1B8
+        uint8_t TrackColourMain[Limits::kNumColourSchemes];         // 0x1BC
+        uint8_t TrackColourAdditional[Limits::kNumColourSchemes];   // 0x1C0
+        uint8_t TrackColourSupports[Limits::kNumColourSchemes];     // 0x1C4
+        uint8_t Music;                                              // 0x1C8
+        uint8_t EntranceStyle;                                      // 0x1C9
+        uint16_t VehicleChangeTimeout;                              // 0x1CA
+        uint8_t NumBlockBrakes;                                     // 0x1CC
+        uint8_t LiftHillSpeed;                                      // 0x1CD
+        uint16_t GuestsFavourite;                                   // 0x1CE
+        uint32_t LifecycleFlags;                                    // 0x1D0
+        uint8_t VehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
+        uint16_t TotalAirTime;                                      // 0x1F4
+        uint8_t CurrentTestStation;                                 // 0x1F6
+        uint8_t NumCircuits;                                        // 0x1F7
+        int16_t CableLiftX;                                         // 0x1F8
+        int16_t CableLiftY;                                         // 0x1FA
+        uint8_t CableLiftZ;                                         // 0x1FC
+        uint8_t Pad1FD;                                             // 0x1FD
+        uint16_t CableLift;                                         // 0x1FE
+        uint16_t QueueLength[Limits::kMaxStationsPerRide];          // 0x200
+        uint8_t Pad208[0x58];                                       // 0x208
 
         uint8_t GetMinCarsPerTrain() const;
         uint8_t GetMaxCarsPerTrain() const;
@@ -347,8 +348,8 @@ namespace RCT2
             uint8_t RideMode;   // 0x06
             uint8_t TrackFlags; // 0x06
         };
-        uint8_t VersionAndColourScheme;                              // 0x07 0b0000_VVCC
-        RCT12VehicleColour VehicleColours[Limits::MaxTrainsPerRide]; // 0x08
+        uint8_t VersionAndColourScheme;                               // 0x07 0b0000_VVCC
+        RCT12VehicleColour VehicleColours[Limits::kMaxTrainsPerRide]; // 0x08
         union
         {
             uint8_t Pad48;
@@ -381,21 +382,21 @@ namespace RCT2
             uint8_t Inversions; // 0x58
             uint8_t Holes;      // 0x58
         };
-        uint8_t Drops;                                             // 0x59
-        uint8_t HighestDropHeight;                                 // 0x5A
-        uint8_t Excitement;                                        // 0x5B
-        uint8_t Intensity;                                         // 0x5C
-        uint8_t Nausea;                                            // 0x5D
-        money16 UpkeepCost;                                        // 0x5E
-        uint8_t TrackSpineColour[Limits::NumColourSchemes];        // 0x60
-        uint8_t TrackRailColour[Limits::NumColourSchemes];         // 0x64
-        uint8_t TrackSupportColour[Limits::NumColourSchemes];      // 0x68
-        uint32_t Flags2;                                           // 0x6C
-        RCTObjectEntry VehicleObject;                              // 0x70
-        uint8_t SpaceRequiredX;                                    // 0x80
-        uint8_t SpaceRequiredY;                                    // 0x81
-        uint8_t VehicleAdditionalColour[Limits::MaxTrainsPerRide]; // 0x82
-        uint8_t LiftHillSpeedNumCircuits;                          // 0xA2 0bCCCL_LLLL
+        uint8_t Drops;                                              // 0x59
+        uint8_t HighestDropHeight;                                  // 0x5A
+        uint8_t Excitement;                                         // 0x5B
+        uint8_t Intensity;                                          // 0x5C
+        uint8_t Nausea;                                             // 0x5D
+        money16 UpkeepCost;                                         // 0x5E
+        uint8_t TrackSpineColour[Limits::kNumColourSchemes];        // 0x60
+        uint8_t TrackRailColour[Limits::kNumColourSchemes];         // 0x64
+        uint8_t TrackSupportColour[Limits::kNumColourSchemes];      // 0x68
+        uint32_t Flags2;                                            // 0x6C
+        RCTObjectEntry VehicleObject;                               // 0x70
+        uint8_t SpaceRequiredX;                                     // 0x80
+        uint8_t SpaceRequiredY;                                     // 0x81
+        uint8_t VehicleAdditionalColour[Limits::kMaxTrainsPerRide]; // 0x82
+        uint8_t LiftHillSpeedNumCircuits;                           // 0xA2 0bCCCL_LLLL
         // 0xA3 (data starts here in file)
     };
     assert_struct_size(TD6Track, 0xA3);
@@ -860,7 +861,7 @@ namespace RCT2
         uint8_t Pad013573EE[2];
         uint8_t RCT1ParkEntranceZ;
         uint8_t Pad013573F1;
-        RCT12PeepSpawn PeepSpawns[Limits::MaxPeepSpawns];
+        RCT12PeepSpawn PeepSpawns[Limits::kMaxPeepSpawns];
         uint8_t GuestCountChangeModifier;
         uint8_t CurrentResearchLevel;
         uint8_t Pad01357400[4];
@@ -944,7 +945,7 @@ namespace RCT2
         money32 IncomeFromAdmissions;
         money32 CompanyValue;
         uint8_t PeepWarningThrottle[16];
-        RCT12Award Awards[Limits::MaxAwards];
+        RCT12Award Awards[Limits::kMaxAwards];
         money16 LandPrice;
         money16 ConstructionRightsPrice;
         uint16_t Word01358774;
@@ -979,16 +980,16 @@ namespace RCT2
         uint8_t CurrentInterestRate;
         uint8_t Pad0135934B;
         uint32_t SamePriceThroughoutExtended;
-        int16_t ParkEntranceX[Limits::MaxParkEntrances];
-        int16_t ParkEntranceY[Limits::MaxParkEntrances];
-        int16_t ParkEntranceZ[Limits::MaxParkEntrances];
-        uint8_t ParkEntranceDirection[Limits::MaxParkEntrances];
+        int16_t ParkEntranceX[Limits::kMaxParkEntrances];
+        int16_t ParkEntranceY[Limits::kMaxParkEntrances];
+        int16_t ParkEntranceZ[Limits::kMaxParkEntrances];
+        uint8_t ParkEntranceDirection[Limits::kMaxParkEntrances];
         char ScenarioFilename[256];
         uint8_t SavedExpansionPackNames[3256];
         RCT12Banner Banners[Limits::MaxBanners];
         char CustomStrings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTicks1;
-        Ride Rides[Limits::MaxRidesInPark];
+        Ride Rides[Limits::kMaxRidesInPark];
         uint16_t SavedAge; // unused
         int16_t SavedViewX;
         int16_t SavedViewY;

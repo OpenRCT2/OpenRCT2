@@ -27,6 +27,7 @@
 #include "../entity/EntityTweener.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
+#include "../localisation/LocalisationService.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform.h"
 #include "../scenario/Scenario.h"
@@ -46,7 +47,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 0;
+constexpr uint8_t kNetworkStreamVersion = 1;
 
 const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::to_string(kNetworkStreamVersion);
 
@@ -2382,6 +2383,15 @@ void NetworkBase::ServerHandleToken(NetworkConnection& connection, [[maybe_unuse
     ServerSendToken(connection);
 }
 
+static void OpenNetworkProgress(StringId captionStringId)
+{
+    auto captionString = GetContext()->GetLocalisationService().GetString(captionStringId);
+    auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
+    intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
+    intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+    ContextOpenIntent(&intent);
+}
+
 void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet)
 {
     auto& repo = GetContext().GetObjectRepository();
@@ -2398,17 +2408,8 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
 
     if (totalObjects > 0)
     {
-        char objectListMsg[256];
-        const uint32_t args[] = {
-            index + 1,
-            totalObjects,
-        };
-        FormatStringLegacy(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
-
-        auto intent = Intent(WindowClass::NetworkStatus);
-        intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
-        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
-        ContextOpenIntent(&intent);
+        OpenNetworkProgress(STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST);
+        GetContext().SetProgress(index + 1, totalObjects);
 
         uint8_t objectType{};
         packet >> objectType;
@@ -2780,17 +2781,12 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
     {
         chunk_buffer.resize(size);
     }
-    char str_downloading_map[256];
-    uint32_t downloading_map_args[2] = {
-        (offset + chunksize) / 1024,
-        size / 1024,
-    };
-    FormatStringLegacy(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
 
-    auto intent = Intent(WindowClass::NetworkStatus);
-    intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
-    intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
-    ContextOpenIntent(&intent);
+    const auto currentProgressKiB = (offset + chunksize) / 1024;
+    const auto totalSizeKiB = size / 1024;
+
+    OpenNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
+    GetContext().SetProgress(currentProgressKiB, totalSizeKiB, STR_STRING_M_OF_N_KIB);
 
     std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);
     if (offset + chunksize == size)
@@ -2798,7 +2794,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         // Allow queue processing of game actions again.
         GameActions::ResumeQueue();
 
-        ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
+        ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
         GameUnloadScripts();
         GameNotifyMapChange();
 

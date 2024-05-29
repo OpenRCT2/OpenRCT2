@@ -73,7 +73,10 @@ struct PaintStringStruct
 struct PaintEntry
 {
 private:
-    std::array<uint8_t, std::max({ sizeof(PaintStruct), sizeof(AttachedPaintStruct), sizeof(PaintStringStruct) })> data;
+    // Avoid including expensive <algorithm> for std::max. Manually ensure we use the largest type.
+    static_assert(sizeof(PaintStruct) >= sizeof(AttachedPaintStruct));
+    static_assert(sizeof(PaintStruct) >= sizeof(PaintStringStruct));
+    std::array<uint8_t, sizeof(PaintStruct)> data;
 
 public:
     PaintStruct* AsBasic()

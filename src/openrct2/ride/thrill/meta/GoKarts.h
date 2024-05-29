@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::Race, RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::Race,
-    .OperatingSettings = { 1, 10, 0, 0, 0, 0 },
+    .OperatingSettings = { 1, 10 },
     .Naming = { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_GO_KARTS),

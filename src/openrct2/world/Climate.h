@@ -81,6 +81,7 @@ void ClimateForceWeather(WeatherType weather);
 
 bool ClimateIsRaining();
 bool ClimateIsSnowing();
+bool ClimateIsSnowingHeavily();
 bool WeatherIsDry(WeatherType);
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
 uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);

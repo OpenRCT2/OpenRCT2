@@ -335,6 +335,28 @@ public:
                 return window;
             }
 
+            case INTENT_ACTION_PROGRESS_OPEN:
+            {
+                std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
+                close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
+                return ProgressWindowOpen(message, callback);
+            }
+
+            case INTENT_ACTION_PROGRESS_SET:
+            {
+                uint32_t currentProgress = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_OFFSET);
+                uint32_t totalCount = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_TOTAL);
+                StringId format = intent->GetUIntExtra(INTENT_EXTRA_STRING_ID);
+                ProgressWindowSet(currentProgress, totalCount, format);
+                return nullptr;
+            }
+
+            case INTENT_ACTION_PROGRESS_CLOSE:
+            {
+                ProgressWindowClose();
+                return nullptr;
+            }
+
             case INTENT_ACTION_NULL:
                 // Intent does not hold an intent action
                 break;
@@ -551,6 +573,10 @@ public:
         {
             case WindowClass::NetworkStatus:
                 WindowNetworkStatusClose();
+                break;
+
+            case WindowClass::ProgressWindow:
+                ProgressWindowClose();
                 break;
 
             default:

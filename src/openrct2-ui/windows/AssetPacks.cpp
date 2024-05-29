@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/AssetPack.h>
@@ -194,7 +196,7 @@ static Widget WindowAssetPacksWidgets[] = {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
                 dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
-                ColourMapA[colours[1]].mid_light);
+                ColourMapA[colours[1].colour].mid_light);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
             if (assetPackManager == nullptr)
@@ -236,17 +238,17 @@ static Widget WindowAssetPacksWidgets[] = {
     private:
         void PaintItem(DrawPixelInfo& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
         {
-            auto listWidth = dpi.width - 1;
+            auto listWidth = widgets[WIDX_LIST].right - widgets[WIDX_LIST].left;
             auto stringId = STR_BLACK_STRING;
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else if (isHighlighted)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
             }
 
             DrawTextEllipsised(dpi, { 16, y + 1 }, listWidth, stringId, ft);

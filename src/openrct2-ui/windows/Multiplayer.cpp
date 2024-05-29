@@ -758,7 +758,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 _buffer.clear();
 
                 // Draw player name
-                colour_t colour = COLOUR_BLACK;
+                auto colour = ColourWithFlags{ COLOUR_BLACK };
                 if (listPosition == selected_list_item)
                 {
                     GfxFilterRect(
@@ -886,7 +886,8 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
-            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+            ColourMapA[colours[1].colour].mid_light);
 
         for (int32_t i = 0; i < NetworkGetNumActions(); i++)
         {

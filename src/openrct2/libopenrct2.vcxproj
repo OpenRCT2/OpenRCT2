@@ -199,6 +199,7 @@
     <ClInclude Include="core\FileStream.h" />
     <ClInclude Include="core\FileSystem.hpp" />
     <ClInclude Include="core\FileWatcher.h" />
+    <ClInclude Include="core\FixedPoint.hpp" />
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />
     <ClInclude Include="core\Http.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
+    <ClInclude Include="core\Money.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />
@@ -218,6 +220,7 @@
     <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\FixedVector.h" />
+    <ClInclude Include="core\Speed.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
@@ -367,6 +370,7 @@
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\tile_element\Segment.h" />
     <ClInclude Include="paint\track\Segment.h" />
+    <ClInclude Include="paint\track\Support.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="park\Legacy.h" />
@@ -518,8 +522,9 @@
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
-    <ClInclude Include="scenes\intro\IntroScene.h" />
     <ClInclude Include="scenes\game\GameScene.h" />
+    <ClInclude Include="scenes\intro\IntroScene.h" />
+    <ClInclude Include="scenes\preloader\PreloaderScene.h" />
     <ClInclude Include="scenes\title\Command\End.h" />
     <ClInclude Include="scenes\title\Command\FollowEntity.h" />
     <ClInclude Include="scenes\title\Command\LoadPark.h" />
@@ -1011,6 +1016,7 @@
     <ClCompile Include="scenes\Scene.cpp" />
     <ClCompile Include="scenes\game\GameScene.cpp" />
     <ClCompile Include="scenes\intro\IntroScene.cpp" />
+    <ClCompile Include="scenes\preloader\PreloaderScene.cpp" />
     <ClCompile Include="scenes\title\Command\End.cpp" />
     <ClCompile Include="scenes\title\Command\FollowEntity.cpp" />
     <ClCompile Include="scenes\title\Command\LoadPark.cpp" />

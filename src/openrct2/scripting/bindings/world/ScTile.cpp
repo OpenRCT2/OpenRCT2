@@ -15,6 +15,7 @@
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
 #    include "../../../entity/EntityRegistry.h"
+#    include "../../../object/LargeSceneryEntry.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
@@ -195,6 +196,13 @@ namespace OpenRCT2::Scripting
         auto first = GetFirstElement();
         if (index < GetNumElements(first))
         {
+            auto element = &first[index];
+            if (element->GetType() != TileElementType::LargeScenery
+                || element->AsLargeScenery()->GetEntry()->scrolling_mode == SCROLLING_MODE_NONE
+                || ScTileElement::GetOtherLargeSceneryElement(_coords, element->AsLargeScenery()) == nullptr)
+            {
+                element->RemoveBannerEntry();
+            }
             TileElementRemove(&first[index]);
             MapInvalidateTileFull(_coords);
         }

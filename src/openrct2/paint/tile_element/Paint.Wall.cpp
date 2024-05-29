@@ -18,6 +18,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../localisation/StringIds.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Track.h"
@@ -164,7 +165,7 @@ static void PaintWallScrollingText(
         return;
 
     scrollingMode = wallEntry.scrolling_mode + ((direction + 1) & 3);
-    if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
+    if (scrollingMode >= kMaxScrollingTextModes)
         return;
 
     auto banner = wallElement.GetBanner();

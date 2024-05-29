@@ -23,6 +23,7 @@
 #include "ObjectLimits.h"
 #include "ObjectRepository.h"
 
+#include <algorithm>
 #include <cstring>
 #include <stdexcept>
 

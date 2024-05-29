@@ -75,7 +75,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
     }
 
     const auto& gameState = GetGameState();
-    if (gameState.Park.Entrances.size() >= OpenRCT2::Limits::MaxParkEntrances)
+    if (gameState.Park.Entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);

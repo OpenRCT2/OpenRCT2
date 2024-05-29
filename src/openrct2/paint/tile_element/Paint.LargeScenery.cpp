@@ -18,6 +18,7 @@
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../localisation/StringIds.h"
 #include "../../object/LargeSceneryObject.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"

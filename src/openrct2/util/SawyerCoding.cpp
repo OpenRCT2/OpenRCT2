@@ -219,8 +219,9 @@ static size_t DecodeChunkRLEWithSize(const uint8_t* src_buffer, uint8_t* dst_buf
 
     dst = dst_buffer;
 
-    assert(length > 0);
-    assert(dstSize > 0);
+    if (length <= 0 || dstSize <= 0)
+        throw std::out_of_range("Invalid RLE string!");
+
     for (size_t i = 0; i < length; i++)
     {
         rleCodeByte = src_buffer[i];
@@ -235,8 +236,8 @@ static size_t DecodeChunkRLEWithSize(const uint8_t* src_buffer, uint8_t* dst_buf
         }
         else
         {
-            assert(dst + rleCodeByte + 1 <= dst_buffer + dstSize);
-            assert(i + 1 < length);
+            if ((dst + rleCodeByte + 1 > dst_buffer + dstSize) || (i + 1 >= length))
+                throw std::out_of_range("Invalid RLE string!");
             std::memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
             dst = reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(dst) + rleCodeByte + 1);
             i += rleCodeByte + 1;

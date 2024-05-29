@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -46,6 +48,10 @@ static Widget _mainWidgets[] = {
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
+            // Skip viewport render during preloader
+            if (GetContext()->GetActiveScene() == GetContext()->GetPreloaderScene())
+                return;
+
             ViewportRender(dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
         }
 

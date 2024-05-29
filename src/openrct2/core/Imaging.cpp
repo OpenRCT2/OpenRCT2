@@ -19,6 +19,7 @@
 #include "Memory.hpp"
 #include "String.hpp"
 
+#include <algorithm>
 #include <fstream>
 #include <png.h>
 #include <stdexcept>

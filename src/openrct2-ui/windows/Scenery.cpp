@@ -1327,7 +1327,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     auto scgEntry = tabInfo.GetSceneryGroupEntry();
                     if (scgEntry != nullptr)
                     {
-                        widget.image = ImageId(scgEntry->image, colours[1]);
+                        widget.image = ImageId(scgEntry->image, colours[1].colour);
                     }
                 }
 
@@ -1624,7 +1624,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
         void ContentScrollDraw(DrawPixelInfo& dpi)
         {
-            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
             auto numColumns = GetNumColumns();
             auto tabIndex = _activeTabIndex;

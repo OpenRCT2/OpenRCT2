@@ -34,7 +34,6 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
                      RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MINIATURE_RAILWAY),

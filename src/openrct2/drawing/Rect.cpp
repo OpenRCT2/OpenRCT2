@@ -24,15 +24,15 @@
  * colour (ebp)
  * flags (si)
  */
-void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
+void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, ColourWithFlags colour, uint8_t flags)
 {
     const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
     const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
     const auto rightTop = ScreenCoordsXY{ rect.GetRight(), rect.GetTop() };
     const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
-    if (colour & COLOUR_FLAG_TRANSLUCENT)
+    if (colour.hasFlag(ColourFlag::translucent))
     {
-        auto palette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
+        auto palette = TranslucentWindowPalettes[colour.colour];
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {
@@ -71,15 +71,15 @@ void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour
         uint8_t shadow, fill, hilight;
         if (flags & INSET_RECT_FLAG_FILL_MID_LIGHT)
         {
-            shadow = ColourMapA[colour].dark;
-            fill = ColourMapA[colour].mid_light;
-            hilight = ColourMapA[colour].lighter;
+            shadow = ColourMapA[colour.colour].dark;
+            fill = ColourMapA[colour.colour].mid_light;
+            hilight = ColourMapA[colour.colour].lighter;
         }
         else
         {
-            shadow = ColourMapA[colour].mid_dark;
-            fill = ColourMapA[colour].light;
-            hilight = ColourMapA[colour].lighter;
+            shadow = ColourMapA[colour.colour].mid_dark;
+            fill = ColourMapA[colour.colour].light;
+            hilight = ColourMapA[colour.colour].lighter;
         }
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
@@ -104,7 +104,7 @@ void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour
                     }
                     else
                     {
-                        fill = ColourMapA[colour].lighter;
+                        fill = ColourMapA[colour.colour].lighter;
                     }
                 }
                 GfxFillRect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);

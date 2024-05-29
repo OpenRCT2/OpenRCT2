@@ -254,14 +254,14 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->entrance_style = gameState.LastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < Limits::kNumColourSchemes; i++)
     {
         ride->track_colour[i].main = _td.track_spine_colour[i];
         ride->track_colour[i].additional = _td.track_rail_colour[i];
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (size_t i = 0; i < Limits::MaxVehicleColours; i++)
+    for (size_t i = 0; i < Limits::kMaxVehicleColours; i++)
     {
         ride->vehicle_colours[i] = _td.vehicle_colours[i];
     }

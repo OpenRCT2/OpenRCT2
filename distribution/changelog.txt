@@ -1,14 +1,29 @@
 0.4.12 (in development)
 ------------------------------------------------------------------------
 - Feature: [#622] Add option to align the top toolbar buttons horizontally centred (off by default).
+- Feature: [#20263] Ability to increase the size of the map in the (0, 0) direction.
 - Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
+- Feature: [#21853] Enlarged UI mode.
+- Feature: [#21893, #22065] On launch, the game now indicates what system is being initialised.
 - Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
+- Feature: [#22087] [Plugin] Expose guests’ favourite rides to the plugin API.
+- Improved: [#19870] Allow using new colours in UI themes.
+- Improved: [#21853] Dropdowns now automatically use multiple columns if they are too tall for the screen.
 - Improved: [#21981] Rendering performance of the map window has been improved considerably.
 - Improved: [#21981] The map window now defaults to showing as much of the map as fits the screen.
 - Improved: [#21983] Taking a screenshot now shows a message again, closing when taking another.
 - Improved: [#22026] The options window now stays centred when window scaling is changed.
+- Improved: [#22060] [Plugin] The scroll wheel can now be used to modify spinner widget values in custom/script windows.
+- Improved: [#22065] Joining a network game now indicates progress using coaster trains.
+- Improved: [#22075] [Plugin] Plugins can now use G1 Icons.
+- Improved: [#22084] The game now temporarily pauses while the load/save window is open.
 - Change: [#7248] Small mini-maps are now centred in the map window.
+- Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
+- Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
+- Change: [#21991] UI themes JSON now use colour names and a translucency bool, instead of a number (old themes still work).
+- Change: [#22057] Reorder Time Twister’s scenarios and adjust their difficulty classification.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
+- Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
 - Fix: [#22008] Uninverted Lay-down roller coaster uses the wrong support type.
 - Fix: [#22012] [Plugin] Images on ImgButton widgets cannot be updated.
@@ -65,6 +80,7 @@
 - Fix: [#21434] Number of guests overflows in objective text.
 - Fix: [#21522] Supports for 3×3 turns and 45 degree turns on the Hybrid Coaster and Wooden Roller Coaster not drawn correctly.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
+- Fix: [#21627] [Plugin] Banners are properly created or deleted when tile elements are changed by plugins.
 - Fix: [#21635] Tile inspector hotkey can set wall slope for non-slopeable objects.
 - Fix: [#21641] Crash when creating track iterator from an invalid tile element.
 - Fix: [#21652] Dialog window to confirm overwriting files does not apply the theme colours correctly.
@@ -72,7 +88,7 @@
 - Fix: [#21654] Extraneous reports of an object conflict between `rct2.audio.base` and `rct2.audio.base.rctc`.
 - Fix: [#21664] Crash when switching between languages that use TTF.
 - Fix: [#21668] Crash when on null ride in Guest::UpdateRideLeaveExit.
-- Fix: [#21691] Crash when validating rides which can't contain banked track.
+- Fix: [#21691] Crash when validating rides which can’t contain banked track.
 - Fix: [objects#290] “Haunted Mansion” cars have a non-functional third remap colour.
 - Fix: [objects#296] Incorrect wall placement around large Kremlin/drab pieces.
 - Fix: [objects#300] Incorrect Colosseum and volcano corner clearances.
@@ -122,7 +138,7 @@
 
 0.4.8 (2024-02-04)
 ------------------------------------------------------------------------
-- Feature: [#21062] [Plugin] Add API for managing a guest's items.
+- Feature: [#21062] [Plugin] Add API for managing a guest’s items.
 - Improved: [#18632, #21306] Land ownership and construction rights are now shown on top of the water.
 - Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
 - Improved: [#21184] The construction marker for rides, paths and large scenery is now shown on top of the water.

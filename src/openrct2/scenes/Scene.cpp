@@ -28,3 +28,22 @@ GameState_t& Scene::GetGameState()
 {
     return OpenRCT2::GetGameState();
 }
+
+void Scene::FinishScene()
+{
+    if (_nextScene != nullptr)
+    {
+        _context.SetActiveScene(_nextScene);
+        _nextScene = nullptr;
+    }
+}
+
+IScene* Scene::GetCompletionScene()
+{
+    return _nextScene;
+}
+
+void Scene::SetCompletionScene(IScene* scene)
+{
+    _nextScene = scene;
+}

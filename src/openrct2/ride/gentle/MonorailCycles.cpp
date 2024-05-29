@@ -13,6 +13,7 @@
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../world/Map.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
@@ -189,7 +190,7 @@ static void PaintMonorailCyclesTrackFlat(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0088ADD8 */
@@ -222,7 +223,7 @@ static void PaintMonorailCyclesStation(
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0088AD88 */
@@ -270,7 +271,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = {
@@ -437,7 +438,7 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0088ADA8 */
@@ -564,7 +565,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
                 0xFFFF, 0);
             break;
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x*/
@@ -682,7 +683,7 @@ static void PaintMonorailCyclesTrackSBendRight(
                 0xFFFF, 0);
             break;
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

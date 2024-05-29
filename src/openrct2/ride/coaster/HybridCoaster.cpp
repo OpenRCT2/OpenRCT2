@@ -20,6 +20,7 @@
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -58,7 +59,7 @@ namespace HybridRC
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackStation(
@@ -92,7 +93,7 @@ namespace HybridRC
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void Track25DegUp(
@@ -485,7 +486,7 @@ namespace HybridRC
                       { boundBoxLengths[direction].x, boundBoxLengths[direction].y, boundBoxLengths[direction].z } });
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 break;
@@ -676,10 +677,10 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -721,7 +722,7 @@ namespace HybridRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -765,7 +766,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -821,7 +822,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 PaintUtilSetSegmentSupportHeight(
@@ -830,7 +831,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -872,7 +873,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -915,7 +916,7 @@ namespace HybridRC
                             PaintSegment::bottomRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -924,7 +925,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -966,7 +967,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -1010,7 +1011,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1066,7 +1067,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1101,7 +1102,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1136,7 +1137,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -1159,7 +1160,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -1186,7 +1187,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1234,7 +1235,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1269,7 +1270,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1304,7 +1305,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -1327,7 +1328,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -1354,7 +1355,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1407,7 +1408,7 @@ namespace HybridRC
                     session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
 
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
                 break;
             case 2:
@@ -1415,12 +1416,12 @@ namespace HybridRC
                     session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
 
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
                 break;
         }
@@ -1449,7 +1450,7 @@ namespace HybridRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1480,7 +1481,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1511,7 +1512,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -1523,7 +1524,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1551,7 +1552,7 @@ namespace HybridRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1582,7 +1583,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1613,7 +1614,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -1625,7 +1626,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -3117,7 +3118,7 @@ namespace HybridRC
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackFlatToRightBank(
@@ -3157,7 +3158,7 @@ namespace HybridRC
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackLeftBankToflat(
@@ -3431,7 +3432,7 @@ namespace HybridRC
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackRightbank(
@@ -3458,7 +3459,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -3477,7 +3478,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3492,7 +3493,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3505,7 +3506,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -3527,7 +3528,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -3542,7 +3543,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3561,7 +3562,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3574,7 +3575,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -3596,7 +3597,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -3615,7 +3616,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3630,7 +3631,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3643,7 +3644,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -3665,7 +3666,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -3680,7 +3681,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3699,7 +3700,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3712,7 +3713,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4282,7 +4283,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4301,7 +4302,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4316,7 +4317,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4329,7 +4330,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4351,7 +4352,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4366,7 +4367,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4385,7 +4386,7 @@ namespace HybridRC
                 WoodenBSupportsPaintSetupRotated(
                     session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4398,7 +4399,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4452,10 +4453,10 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4497,7 +4498,7 @@ namespace HybridRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4547,7 +4548,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4609,7 +4610,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 PaintUtilSetSegmentSupportHeight(
@@ -4618,7 +4619,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4660,7 +4661,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4706,7 +4707,7 @@ namespace HybridRC
                             PaintSegment::bottomRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -4715,7 +4716,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -4757,7 +4758,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -4807,7 +4808,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4869,7 +4870,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4907,7 +4908,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4942,7 +4943,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4965,7 +4966,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -4995,7 +4996,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5049,7 +5050,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -5087,7 +5088,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5122,7 +5123,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5145,7 +5146,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -5178,7 +5179,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -7814,7 +7815,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -7856,7 +7857,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -7898,7 +7899,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -7942,7 +7943,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -7990,7 +7991,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -8032,7 +8033,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -8074,7 +8075,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -8118,7 +8119,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -8172,7 +8173,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -8194,7 +8195,7 @@ namespace HybridRC
                             session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -8236,7 +8237,7 @@ namespace HybridRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -8286,7 +8287,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -8336,7 +8337,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -8358,7 +8359,7 @@ namespace HybridRC
                             session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -8400,7 +8401,7 @@ namespace HybridRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -8445,7 +8446,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -8499,7 +8500,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -8521,7 +8522,7 @@ namespace HybridRC
                             session, kSupportType, WoodenSupportSubType::Corner3, height, session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -8563,7 +8564,7 @@ namespace HybridRC
                             PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -8613,7 +8614,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -8663,7 +8664,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -8685,7 +8686,7 @@ namespace HybridRC
                             session, kSupportType, WoodenSupportSubType::Corner0, height, session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -8727,7 +8728,7 @@ namespace HybridRC
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -8772,7 +8773,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -8852,7 +8853,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 PaintUtilSetSegmentSupportHeight(
@@ -8861,7 +8862,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::rightCorner, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -8903,7 +8904,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -8949,7 +8950,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -8958,7 +8959,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::rightCorner, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -9000,7 +9001,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -9050,7 +9051,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -9100,7 +9101,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 8:
                 PaintUtilSetSegmentSupportHeight(
@@ -9109,7 +9110,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 9:
                 switch (direction)
@@ -9151,7 +9152,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 10:
                 switch (direction)
@@ -9197,7 +9198,7 @@ namespace HybridRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 11:
                 PaintUtilSetSegmentSupportHeight(
@@ -9206,7 +9207,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 12:
                 switch (direction)
@@ -9248,7 +9249,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 13:
                 switch (direction)
@@ -9293,7 +9294,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -9347,7 +9348,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 PaintUtilSetSegmentSupportHeight(
@@ -9356,7 +9357,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -9398,7 +9399,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -9444,7 +9445,7 @@ namespace HybridRC
                             PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -9453,7 +9454,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -9495,7 +9496,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -9545,7 +9546,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -9595,7 +9596,7 @@ namespace HybridRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 8:
                 PaintUtilSetSegmentSupportHeight(
@@ -9604,7 +9605,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::rightCorner, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 9:
                 switch (direction)
@@ -9646,7 +9647,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 10:
                 switch (direction)
@@ -9692,7 +9693,7 @@ namespace HybridRC
                             PaintSegment::topLeftSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 11:
                 PaintUtilSetSegmentSupportHeight(
@@ -9701,7 +9702,7 @@ namespace HybridRC
                         EnumsToFlags(PaintSegment::rightCorner, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 12:
                 switch (direction)
@@ -9743,7 +9744,7 @@ namespace HybridRC
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 13:
                 switch (direction)
@@ -9788,7 +9789,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -9868,7 +9869,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -10013,7 +10014,7 @@ namespace HybridRC
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -10989,7 +10990,7 @@ namespace HybridRC
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackOnRidePhoto(
@@ -11318,7 +11319,7 @@ namespace HybridRC
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void Trackbooster(
@@ -11332,7 +11333,7 @@ namespace HybridRC
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 32);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackpoweredLift(

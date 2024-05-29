@@ -164,13 +164,18 @@ static Widget _scenarioSelectWidgets[] = {
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            int32_t format;
             const ScenarioIndexEntry* scenario;
 
             DrawWidgets(dpi);
 
-            format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
-            FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
+            StringId format = STR_WINDOW_COLOUR_2_STRINGID;
+            FontStyle fontStyle = FontStyle::Medium;
+
+            if (ScenarioSelectUseSmallFont())
+            {
+                format = STR_SMALL_WINDOW_COLOUR_2_STRINGID;
+                fontStyle = FontStyle::Small;
+            }
 
             // Text for each tab
             for (uint32_t i = 0; i < std::size(kScenarioOriginStringIds); i++)
@@ -388,11 +393,16 @@ static Widget _scenarioSelectWidgets[] = {
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
-            StringId highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
-            StringId unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
+            StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
+            StringId unhighlighted_format = STR_BLACK_STRING;
+            if (ScenarioSelectUseSmallFont())
+            {
+                highlighted_format = STR_WHITE_STRING;
+                unhighlighted_format = STR_WHITE_STRING;
+            }
 
             const auto& listWidget = widgets[WIDX_SCENARIOLIST];
             int32_t listWidth = listWidget.width() - 12;
@@ -441,7 +451,8 @@ static Widget _scenarioSelectWidgets[] = {
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<char*>(buffer);
-                        colour_t colour = isDisabled ? colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
+                        auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
+                                                 : ColourWithFlags{ COLOUR_BLACK };
                         auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
@@ -480,9 +491,9 @@ static Widget _scenarioSelectWidgets[] = {
     private:
         void DrawCategoryHeading(DrawPixelInfo& dpi, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
-            colour_t baseColour = colours[1];
-            colour_t lightColour = ColourMapA[baseColour].lighter;
-            colour_t darkColour = ColourMapA[baseColour].mid_dark;
+            auto baseColour = colours[1];
+            colour_t lightColour = ColourMapA[baseColour.colour].lighter;
+            colour_t darkColour = ColourMapA[baseColour.colour].mid_dark;
 
             // Draw string
             int32_t centreX = (left + right) / 2;

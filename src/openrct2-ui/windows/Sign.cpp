@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -18,7 +20,6 @@
 #include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/WallSceneryEntry.h>
@@ -26,6 +27,7 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_SIGN;
@@ -195,10 +197,10 @@ static Widget _signWidgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_MAIN_COLOUR:
-                    WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(_mainColour));
+                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), _mainColour);
                     break;
                 case WIDX_TEXT_COLOUR:
-                    WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(_textColour));
+                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), _textColour);
                     break;
             }
         }

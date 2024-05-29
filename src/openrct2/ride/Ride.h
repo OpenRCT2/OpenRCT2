@@ -13,6 +13,7 @@
 #include "../actions/ResultWithMessage.h"
 #include "../common.h"
 #include "../core/BitSet.hpp"
+#include "../core/FixedPoint.hpp"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
@@ -44,7 +45,7 @@ constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
-constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
+constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
@@ -120,13 +121,13 @@ struct Ride
     ObjectEntryIndex subtype{ OBJECT_ENTRY_INDEX_NULL };
     RideMode mode{};
     uint8_t colour_scheme_type{};
-    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxVehicleColours]{};
+    VehicleColour vehicle_colours[OpenRCT2::Limits::kMaxVehicleColours]{};
     // 0 = closed, 1 = open, 2 = test
     RideStatus status{};
     std::string custom_name;
     uint16_t default_name_number{};
     CoordsXY overall_view;
-    EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]{}; // Points to the first car in the train
+    EntityId vehicles[OpenRCT2::Limits::kMaxTrainsPerRide + 1]{}; // Points to the first car in the train
     uint8_t depart_flags{};
     uint8_t num_stations{};
     uint8_t NumTrains{};
@@ -187,7 +188,7 @@ struct Ride
     // Counts ticks to update customer intervals, resets each 960 game ticks.
     uint16_t num_customers_timeout{};
     // Customer count in the last 10 * 960 game ticks (sliding window)
-    uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize]{};
+    uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
     money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
@@ -249,7 +250,7 @@ struct Ride
     uint8_t downtime{};
     uint8_t inspection_interval{};
     uint8_t last_inspection{};
-    uint8_t downtime_history[OpenRCT2::Limits::DowntimeHistorySize]{};
+    uint8_t downtime_history[OpenRCT2::Limits::kDowntimeHistorySize]{};
     uint32_t no_primary_items_sold{};
     uint32_t no_secondary_items_sold{};
     uint8_t breakdown_sound_modifier{};
@@ -260,7 +261,7 @@ struct Ride
     uint8_t connected_message_throttle{};
     money64 income_per_hour{};
     money64 profit{};
-    TrackColour track_colour[OpenRCT2::Limits::NumColourSchemes]{};
+    TrackColour track_colour[OpenRCT2::Limits::kNumColourSchemes]{};
     ObjectEntryIndex music{ OBJECT_ENTRY_INDEX_NULL };
     ObjectEntryIndex entrance_style{ OBJECT_ENTRY_INDEX_NULL };
     uint16_t vehicle_change_timeout{};
@@ -285,13 +286,13 @@ struct Ride
     friend void UpdateChairlift(Ride& ride);
 
 private:
-    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide> stations{};
+    std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide> stations{};
 
 public:
     RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0));
     const RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0)) const;
-    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations();
-    const std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations() const;
+    std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations();
+    const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations() const;
     StationIndex GetStationIndex(const RideStation* station) const;
 
     // Returns the logical station number from the given station. Index 0 = station 1, index 1 = station 2. It accounts for gaps

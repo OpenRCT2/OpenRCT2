@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor MazeRTD =
                      RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA | RIDE_TYPE_FLAG_IS_MAZE,
     .RideModes = EnumsToFlags(RideMode::Maze),
     .DefaultMode = RideMode::Maze,
-    .OperatingSettings = { 1, 64, 0, 0, 0, 0 },
+    .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MAZE),

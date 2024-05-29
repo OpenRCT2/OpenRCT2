@@ -180,7 +180,7 @@ void Ride::RemoveVehicles()
         lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
         lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
-        for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+        for (size_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
         {
             auto spriteIndex = vehicles[i];
             while (!spriteIndex.IsNull())
@@ -198,7 +198,7 @@ void Ride::RemoveVehicles()
             vehicles[i] = EntityId::GetNull();
         }
 
-        for (size_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+        for (size_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             stations[i].TrainAtStation = RideStation::kNoTrain;
 
         // Also clean up orphaned vehicles for good measure.

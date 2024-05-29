@@ -12,6 +12,7 @@
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../RideData.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
@@ -96,7 +97,7 @@ static void SubmarineRidePaintTrackStation(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void SubmarineRidePaintTrackFlat(

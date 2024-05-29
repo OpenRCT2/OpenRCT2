@@ -798,7 +798,7 @@ namespace RCT1
 
         void ImportRides()
         {
-            for (int32_t i = 0; i < Limits::MaxRidesInPark; i++)
+            for (int32_t i = 0; i < Limits::kMaxRidesInPark; i++)
             {
                 if (_s4.Rides[i].Type != RideType::Null)
                 {
@@ -873,7 +873,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->OverallView.x, src->OverallView.y }.ToCoordsXY();
             }
 
-            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 if (src->StationStarts[i].IsNull())
@@ -910,7 +910,7 @@ namespace RCT1
                 dstStation.SegmentLength = src->Length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 dstStation.Start.SetNull();
@@ -923,11 +923,11 @@ namespace RCT1
             dst->num_stations = src->NumStations;
 
             // Vehicle links (indexes converted later)
-            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::FromUnderlying(src->Vehicles[i]);
             }
-            for (int32_t i = Limits::MaxTrainsPerRide; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = Limits::kMaxTrainsPerRide; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::GetNull();
             }
@@ -1109,7 +1109,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::NumColourSchemes; i++)
+                for (int i = 0; i < Limits::kNumColourSchemes; i++)
                 {
                     dst->track_colour[i].main = RCT1::GetColour(src->TrackColourMain[i]);
                     dst->track_colour[i].additional = RCT1::GetColour(src->TrackColourAdditional[i]);
@@ -1139,7 +1139,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::MaxTrainsPerRide; i++)
+                for (int i = 0; i < Limits::kMaxTrainsPerRide; i++)
                 {
                     // RCT1 had no third colour
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->VehicleType);
@@ -1410,7 +1410,7 @@ namespace RCT1
         {
             auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
-            for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
+            for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
                 if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
@@ -1477,7 +1477,7 @@ namespace RCT1
                     {
                         campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
-                    gMarketingCampaigns.push_back(campaign);
+                    gameState.MarketingCampaigns.push_back(campaign);
                 }
             }
         }
@@ -2447,7 +2447,7 @@ namespace RCT1
             gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 

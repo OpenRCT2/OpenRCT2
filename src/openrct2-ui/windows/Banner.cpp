@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -22,6 +24,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 113;
@@ -157,7 +160,7 @@ static Widget window_banner_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_MAIN_COLOUR:
-                    WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), banner->colour);
+                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), banner->colour);
                     break;
                 case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 

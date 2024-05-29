@@ -24,6 +24,8 @@
 #include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/tile_element/Segment.h"
+#include "../paint/track/Segment.h"
+#include "../paint/track/Support.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../world/Map.h"
@@ -1162,7 +1164,8 @@ constexpr CoordsXY defaultDiagBoundLengths[4] = {
 
 void TrackPaintUtilDiagTilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4])
+    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4],
+    int8_t additionalBoundsHeight)
 {
     auto shouldDraw = kDiagSpriteMap[direction][trackSequence];
     if (!shouldDraw)
@@ -1173,11 +1176,31 @@ void TrackPaintUtilDiagTilesPaint(
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
     CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction]);
     CoordsXY boundsLength = boundsLengths[direction];
-    CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction]);
+    CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, additionalBoundsHeight) : boundsOffsets[direction]);
 
     PaintAddImageAsParent(
         session, imageId, { offset, height },
         { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
+}
+
+void TrackPaintUtilDiagTilesPaintExtra(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const uint32_t sprites[4], MetalSupportType supportType)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, thickness, height, direction, trackSequence, sprites, defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
+
+    if (SupportedSequences::kDiagStraightFlat[trackSequence] != MetalSupportPlace::None)
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType, SupportedSequences::kDiagStraightFlat[trackSequence], direction, 0, height,
+            session.SupportColours);
+    }
+
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {

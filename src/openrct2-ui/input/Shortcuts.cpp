@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
 #include "ShortcutIds.h"
 #include "ShortcutManager.h"
 
@@ -798,7 +799,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, ShortcutOpenSceneryPicker);
     RegisterShortcut(
         ShortcutId::InterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, ShortcutToggleClearanceChecks);
-    RegisterShortcut(ShortcutId::InterfaceMultiplayerChat, STR_SEND_MESSAGE, "C", []() {
+    RegisterShortcut(ShortcutId::InterfaceMultiplayerChat, STR_SHORTCUT_SEND_MESSAGE, "C", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && ChatAvailable())
         {
             ChatToggle();
@@ -896,7 +897,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
 
     // Debug
     RegisterShortcut(ShortcutId::DebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);
-    RegisterShortcut(ShortcutId::DebugAdvanceTick, STR_ADVANCE_TO_NEXT_TICK, []() {
+    RegisterShortcut(ShortcutId::DebugAdvanceTick, STR_SHORTCUT_ADVANCE_TO_NEXT_TICK, []() {
         if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
         {
             gDoSingleUpdate = true;

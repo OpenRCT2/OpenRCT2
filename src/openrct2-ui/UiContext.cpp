@@ -12,6 +12,7 @@
 #include "CursorRepository.h"
 #include "SDLException.h"
 #include "TextComposition.h"
+#include "UiStringIds.h"
 #include "WindowManager.h"
 #include "drawing/engines/DrawingEngineFactory.hpp"
 #include "input/ShortcutManager.h"
@@ -38,7 +39,6 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/scripting/ScriptEngine.h>
@@ -46,6 +46,9 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 #include <vector>
+
+// TODO: only because of STR_NONE. We can do better.
+#include <openrct2/localisation/StringIds.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

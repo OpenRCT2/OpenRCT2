@@ -20,6 +20,7 @@
 #include "Date.h"
 #include "FormatCodes.h"
 #include "Formatting.h"
+#include "StringIds.h"
 
 #include <cstring>
 

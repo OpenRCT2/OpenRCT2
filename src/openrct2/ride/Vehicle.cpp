@@ -19,7 +19,9 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/FixedPoint.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Particle.h"
 #include "../entity/Yaw.hpp"
@@ -780,7 +782,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
     {
-        if (ride.inversions < OpenRCT2::Limits::MaxInversions)
+        if (ride.inversions < OpenRCT2::Limits::kMaxInversions)
             ride.inversions++;
     }
 }
@@ -791,7 +793,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
     {
-        if (ride.holes < OpenRCT2::Limits::MaxGolfHoles)
+        if (ride.holes < OpenRCT2::Limits::kMaxGolfHoles)
             ride.holes++;
     }
 }
@@ -1073,7 +1075,7 @@ void Vehicle::UpdateMeasurements()
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
             uint8_t helixes = RideGetHelixSections(*curRide);
-            if (helixes != OpenRCT2::Limits::MaxHelices)
+            if (helixes != OpenRCT2::Limits::kMaxHelices)
                 helixes++;
 
             curRide->special_track_elements &= ~0x1F;
@@ -2535,7 +2537,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::UpwardLaunch:
             if ((curRide->launch_speed << 16) > velocity)
             {
-                acceleration = curRide->launch_speed << rtd.OperatingSettings.AccelerationFactor;
+                acceleration = curRide->launch_speed << rtd.BoosterSettings.AccelerationFactor;
             }
             break;
         case RideMode::DownwardLaunch:
@@ -7108,7 +7110,7 @@ Loc6DAEB9:
         auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
         {
-            acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration
+            acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration
                 << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
@@ -7120,7 +7122,7 @@ Loc6DAEB9:
     if ((trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT))
         || (trackType == TrackElemType::PoweredLift))
     {
-        acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.PoweredLiftAcceleration << 16;
+        acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration << 16;
     }
     if (trackType == TrackElemType::BrakeForDrop)
     {
@@ -7490,7 +7492,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
             if (boosterSpeed < _vehicleVelocityF64E08)
             {
-                acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration << 16;
+                acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration << 16;
             }
         }
 

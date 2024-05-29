@@ -2889,7 +2889,7 @@ STR_5755    :Fel version av OpenRCT2 (servern använder {STRING})
 STR_5756    :Fel lösenord
 STR_5757    :Servern är full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har anslutit till spelet
-STR_5759    :Laddar ner banan… ({INT32} av {INT32}) KiB
+STR_5759    :Laddar ner banan…
 STR_5760    :Hong Kong-dollar (HK$)
 STR_5761    :New Taiwan-dollar (NT$)
 STR_5762    :Kinesiska Yuan (CN¥)
@@ -3453,7 +3453,7 @@ STR_6374    :F
 STR_6375    :Okänd åktur
 STR_6376    :{WINDOW_COLOUR_2}Fordon:{NEWLINE}{BLACK}{STRINGID} för {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} för {STRINGID}
-STR_6378    :Mottar objektlista: {INT32} / {INT32}
+STR_6378    :Mottar objektlista:
 STR_6379    :Mottog ogiltiga data
 STR_6380    :Uppdatering tillgänglig!
 STR_6381    :Gå med i OpenRCT2 Discord!
@@ -3617,7 +3617,7 @@ STR_6539    :Bromsen stängd
 STR_6540    :{WINDOW_COLOUR_2}Särskilt tack till följande företag för att de tillåter oss att använda deras likhet:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 STR_6542    :Medverkande
-STR_6543    :Medverkande ...
+STR_6543    :Medverkande …
 STR_6544    :Lånet kan inte vara negativt!
 STR_6545    :Använd RCT1-ränteberäkning
 STR_6546    :Använd RollerCoaster Tycoon 1:s ränteberäkningsalgoritm, som använder en fast procentsats på cirka 1,33 %.
@@ -3659,7 +3659,7 @@ STR_6581    :Är du säker på att du vill återställa alla kortkommandon på d
 STR_6582    :Öppna fönstret för kortkommandon
 STR_6583    :{WINDOW_COLOUR_2}Bakvända tåg
 STR_6584    :Välj att köra tåg baklänges
-STR_6585    :Ändringar kan inte göras...
+STR_6585    :Ändringar kan inte göras…
 STR_6586    :OpenRCT2
 STR_6587    :OpenRCT2:s omslagstema är ett verk av Allister Brimble,{NEWLINE}licensierat under CC BY-SA 4.0.
 STR_6588    :Tack till Herman Riddering för att vi fick spela in 35er Voigt.
@@ -4263,87 +4263,87 @@ STR_DTLS    :Bygg de Six Flags-attraktionerna som saknas eller skapa dina egna f
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Afrika – Afrikansk diamantgruva
+STR_SCNR    :Afrikas gruvor
 STR_PARK    :Afrikas gruvor
 STR_DTLS    :Du har hittat en diamant efter att ha ärvt en övergiven diamantgruva. Du beslutar dig för att satsa pengarna på ett storslaget nöjesfält.
 
 <Africa - Oasis>
-STR_SCNR    :Afrika – Oas
+STR_SCNR    :Hägring och fägring
 STR_PARK    :Hägring och fägring
 STR_DTLS    :Man har upptäckt en ökenoas som skulle passa utmärkt till ett nöjesfält. Transportmöjligheter till oasen har ordnats redan.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Afrika – Victoriafallen
+STR_SCNR    :Över kanten
 STR_PARK    :Över kanten
 STR_DTLS    :En nybyggd damm ger tillräckligt med billig vattenkraft för att kunna driva ett nöjesfält. Du måste dock uppnå ett högt parkvärde för att kunna betala tillbaka lånet för dammen.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarktis – Miljöräddning
+STR_SCNR    :Iskallt äventyr
 STR_PARK    :Iskallt äventyr
 STR_DTLS    :En miljöorganisation har bett dig att bygga om ett gammalt, miljöfarligt oljeraffinaderi till en toppmodern turistattraktion. Marken är billig, men låneräntan är hög. Du kan dock sälja de gamla byggnaderna.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asien – Turistsatsning vid Kinesiska muren
+STR_SCNR    :Kinesiska muren
 STR_PARK    :Kinesiska muren
 STR_DTLS    :Myndigheterna har beslutat att stödja turismen kring Kinesiska muren genom att bygga ett nöjesfält i dess närhet. Pengar är inget hinder!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asien – Japansk kustremsa
+STR_SCNR    :Okinawa-kusten
 STR_PARK    :Okinawa-kusten
 STR_DTLS    :Ett nöjesfält behöver mer plats. Din enda möjlighet är att ta ett lån och bygga ut mot havet. Höjdrestriktioner råder på grund av jordbävningsfaran.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asien – Maharadjans palats
+STR_SCNR    :Maharadjaparken
 STR_PARK    :Maharadjaparken
 STR_DTLS    :Du har fått i uppdrag av maharadjan att underhålla lokalbefolkningen. Inhämta inspiration från maharadjans palats när du bygger nöjesfältet.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasien – Ayers Rock
+STR_SCNR    :Ayers äventyr
 STR_PARK    :Ayers äventyr
 STR_DTLS    :Du hjälper urbefolkningen att bygga ett nöjesfält som en del av ett kulturprogram. Du måste locka tillräckligt med besökare för att kunna sprida urbefolkningens kultur.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasien – Fun at the Beach
+STR_SCNR    :Strandhugg
 STR_PARK    :Strandhugg
 STR_DTLS    :En lokal affärsmans vattenpark har gått i konkurs. Du driver redan en liten välfungerande park, och har köpt upp konkursboet. Utveckla det hela till en stor gemensam park.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europa – Europeisk kulturfestival
+STR_SCNR    :Europeisk festival
 STR_PARK    :Europeisk festival
 STR_DTLS    :Du har blivit erbjuden att ta över en europeisk turistattraktion, men måste öka besöksfrekvensen för att kunna betala tillbaka ett EU-lån innan det europeiska parlamentet tar sommarlov.
 
 <Europe - Renovation>
-STR_SCNR    :Europa – Renovering
+STR_SCNR    :Ur askan
 STR_PARK    :Ur askan
 STR_DTLS    :Ett gammalt nöjesfält har förfallit. Du har beviljats ett EU-lån för att kunna återställa det nedgångna området till sin forna prakt. Du måste renovera nöjesfältet och betala tillbaka lånet.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Nordamerika – Extrem Hawaii-ö
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Folket på Hawaii har tröttnat på att surfa och vill göra något mer spännande. Du måste bygga ett nöjesfält för att hålla dem på gott humör och bibehålla områdets attraktionskraft.
 
 <North America - Grand Canyon>
-STR_SCNR    :Nordamerika – Grand Canyon
+STR_SCNR    :Trubbel i Canyon
 STR_PARK    :Trubbel i Canyon
 STR_DTLS    :Du måste bygga ett nöjesfält på ett begränsat område på båda sidor om detta naturfenomen. Du har möjlighet att köpa upp angränsande land från urbefolkningen. Målet med bygget är att bibehålla den lokala befolkningssiffran.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Nordamerika – Rollercoaster Heaven
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :Du är en framgångsrik affärsman som under ett sabbatsår beslutar dig för att förvandla en stadspark till ett ”Rollercoaster Heaven”, oavsett kostnad!
 
 <South America - Inca Lost City>
-STR_SCNR    :Sydamerika – Förlorad inka-stad
+STR_SCNR    :Grundare av Förlorade Staden
 STR_PARK    :Grundare av Förlorade Staden
 STR_DTLS    :Du måste öka de lokala turistintäkterna genom att bygga ett nöjesfält som passar omgivningen och håller sig inom höjdrestriktionerna.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Sydamerika – Regnskogsplatå
+STR_SCNR    :Kul i regnskog
 STR_PARK    :Kul i regnskog
 STR_DTLS    :Utrymmet är begränsat i den utrotningshotade regnskogen. Du måste få plats med så mycket som möjligt i gläntan för att kunna erbjuda ett alternativ till den lokala timmerindustrin.
 
 <South America - Rio Carnival>
-STR_SCNR    :Sydamerika – Rio-karneval
+STR_SCNR    :Sockersöta stränder
 STR_PARK    :Sockersöta stränder
 STR_DTLS    :Du driver ett litet nöjesfält nära Rio, men banken kräver plötsligt betalning av ditt lån. Du måste öka dina intäkter snabbt för att kunna klara den uppkomna krisen.
 
@@ -4351,72 +4351,72 @@ STR_DTLS    :Du driver ett litet nöjesfält nära Rio, men banken kräver plöt
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Medeltiden – Slott
+STR_SCNR    :Slott på klipporna
 STR_PARK    :Slott på klipporna
 STR_DTLS    :Medlemmarna i den lokala medeltidsföreningen tar sin hobby på allvar. De har bett dig konstruera en nöjespark med medeltidstema på det gamla slottets ägor.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Medeltiden – Robin Hood
+STR_SCNR    :Sherwoodskogen
 STR_PARK    :Sherwoodskogen
 STR_DTLS    :För att kunna stjäla mer från de rika och ge till de fattiga har du och dina män bestämt er för att bygga ett nöjesfält i Sherwoodskogen.
 
 <Future - First Encounters>
-STR_SCNR    :Framtid – Första kontakt
+STR_SCNR    :Utomjordisk extravagans
 STR_PARK    :Utomjordisk extravagans
 STR_DTLS    :Liv har påträffats på en främmande planet. Bygg en park med utomjordiskt tema för att tjäna pengar på folks nyväckta intresse.
 
 <Future - Future World>
-STR_SCNR    :Framtid – Framtidsvärld
+STR_SCNR    :Gemini City
 STR_PARK    :Gemini City
 STR_DTLS    :Realisera din innovativa och utopiska vision av framtiden. Bygg en futuristisk park med de allra senaste attraktionerna.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mytologisk tid – Animatronisk filminspelning
+STR_SCNR    :Animatroniska äventyr
 STR_PARK    :Animatroniska äventyr
 STR_DTLS    :Du har fått i uppgift att driva och förbättra en existerande park som ligger på en gammal filminspelningsplats. Bygg en hyllning till filmhistoriens animationspionjärer som först gav liv åt förhistoriska vidunder på vita duken.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mytologisk tid – Civilisationens vagga
+STR_SCNR    :Mytologiskt arv
 STR_PARK    :Mytologiskt arv
 STR_DTLS    :Du äger en ö av högt arkeologiskt värde. Du har bestämt dig för att finansiera dess bevarande genom att konstruera ett nöjesfält med ett tema baserat på områdets rika mytologiska arv.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Förhistorisk tid – Efter asteroiden
+STR_SCNR    :Kraterkatastrof
 STR_PARK    :Kraterkatastrof
 STR_DTLS    :Du äger en dammig gammal meteorkrater. Som den entreprenör du är bestämmer du dig för att bygga ett nöjesfält med asteroidtema och omvandla den till synes värdelösa marken till en förmögenhet.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Förhistorisk tid – Dinosauriesafari
+STR_SCNR    :Bergosaurier
 STR_PARK    :Bergosaurier
 STR_DTLS    :Du har fått i uppgift att bygga en park med Juratema. För att besökarna ska kunna uppleva den exotiska floran och faunan ordentligt krävs det att du bygger attraktioner som går ovanför och ned i dalen.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Förhistorisk tid – Stenålder
+STR_SCNR    :Stenigt värre
 STR_PARK    :Stenigt värre
 STR_DTLS    :Stoppa motorvägsbygget och bevara de urtida stencirklarna genom att bygga ett nöjesfält med stenålderstema som går med vinst. Det kan dock bli en smula problematiskt att locka besökare eftersom terrängen är aningen oländig.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Det glada tjugotalet – Fängelseön
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :Den ökända fängelseön, vars befolkning en gång i tiden utgjordes av smugglare och gangsters, är till salu. Du har bestämt dig för att förvandla den till en förstklassig turistattraktion. Pengar är inget hinder.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Det glada tjugotalet – Schneidertrofén
+STR_SCNR    :Schneiders strand
 STR_PARK    :Schneiders strand
 STR_DTLS    :75-årsjubiléet av din faders vinst av Schneidertrofén inträffar om några år. Du vill hedra hans prestation genom att bygga en park baserad på den berömda sjöflygplanstävlingen.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Det glada tjugotalet – Skyskrapor
+STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
 STR_DTLS    :Du äger en tom tomt i närheten av stadens lågt byggda kvarter. För att få ut så mycket vinst som möjligt av marken bygger du ett nöjesfält i form av en skyskrapa inspirerad av tjugotalets art déco-arkitektur.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock’n’roll – Flower power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :En stor årlig rockfestival äger rum på din mark. Bygg en hipp nöjespark i den fritänkande publikens smak.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock’n’roll – Rock’n’roll
+STR_SCNR    :Rock’n’roll-revival
 STR_PARK    :Rock’n’roll-revival
 STR_DTLS    :Denna åldrande park har sett bättre dagar. Hjälp ägaren med att ge den ett retro-rock’n’roll-tema för att förvandla den till en framgångsrik park.
 

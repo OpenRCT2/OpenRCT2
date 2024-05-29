@@ -542,17 +542,23 @@ static Widget _rideListWidgets[] = {
         {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
+                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } },
+                ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
             {
-                StringId format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
+                StringId format = STR_BLACK_STRING;
+                if (_quickDemolishMode)
+                    format = STR_RED_STRINGID;
+
                 if (i == static_cast<size_t>(selected_list_item))
                 {
                     // Background highlight
                     GfxFilterRect(dpi, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
-                    format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+                    format = STR_WINDOW_COLOUR_2_STRINGID;
+                    if (_quickDemolishMode)
+                        format = STR_LIGHTPINK_STRINGID;
                 }
 
                 // Get ride

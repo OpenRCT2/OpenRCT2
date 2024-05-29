@@ -30,7 +30,6 @@ constexpr RideTypeDescriptor MiniGolfRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
     .NameConvention = { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_MINI_GOLF),

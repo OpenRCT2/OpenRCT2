@@ -17,7 +17,9 @@
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
@@ -26,6 +28,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/network.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
@@ -676,6 +679,13 @@ static Widget window_loadsave_widgets[] =
             const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
             const auto path = GetDir(type);
 
+            // Pause the game if not on title scene, nor in network play.
+            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            {
+                gGamePaused |= GAME_PAUSED_MODAL;
+                Audio::StopAll();
+            }
+
             const char* pattern = GetFilterPatternByType(type, isSave);
             PopulateList(isSave, path, pattern);
             no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -693,6 +703,13 @@ static Widget window_loadsave_widgets[] =
         {
             _listItems.clear();
             WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+
+            // Unpause the game if not on title scene, nor in network play.
+            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            {
+                gGamePaused &= ~GAME_PAUSED_MODAL;
+                Audio::Resume();
+            }
         }
 
         void OnResize() override
@@ -959,7 +976,8 @@ static Widget window_loadsave_widgets[] =
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
             const int32_t dateAnchor = widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
 

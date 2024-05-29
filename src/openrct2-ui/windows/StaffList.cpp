@@ -381,7 +381,7 @@ static Widget _staffListWidgets[] = {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
                 dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
-                ColourMapA[colours[1]].mid_light);
+                ColourMapA[colours[1].colour].mid_light);
 
             // How much space do we have for the name and action columns? (Discount scroll area and icons.)
             const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;
@@ -405,12 +405,18 @@ static Widget _staffListWidgets[] = {
                     {
                         continue;
                     }
-                    int32_t format = (_quickFireMode ? STR_RED_STRINGID : STR_BLACK_STRING);
+
+                    StringId format = STR_BLACK_STRING;
+                    if (_quickFireMode)
+                        format = STR_RED_STRINGID;
 
                     if (i == _highlightedIndex)
                     {
                         GfxFilterRect(dpi, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::PaletteDarken1);
-                        format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+
+                        format = STR_WINDOW_COLOUR_2_STRINGID;
+                        if (_quickFireMode)
+                            format = STR_LIGHTPINK_STRINGID;
                     }
 
                     auto ft = Formatter();

@@ -27,6 +27,7 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
+#include "core/Money.hpp"
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
@@ -228,7 +229,7 @@ static void FixPeepsWithInvalidRideReference()
     // Fix possibly invalid field values
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->CurrentRideStation.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
+        if (peep->CurrentRideStation.ToUnderlying() >= OpenRCT2::Limits::kMaxStationsPerRide)
         {
             const auto srcStation = peep->CurrentRideStation;
             const auto rideIdx = peep->CurrentRide;

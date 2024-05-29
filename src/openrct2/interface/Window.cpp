@@ -47,7 +47,7 @@ WindowBase* gWindowAudioExclusive;
 WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
 
 uint32_t gWindowUpdateTicks;
-colour_t gCurrentWindowColours[4];
+colour_t gCurrentWindowColours[3];
 
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
@@ -1178,10 +1178,9 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
     w.OnPrepareDraw();
 
     // Text colouring
-    gCurrentWindowColours[0] = NOT_TRANSLUCENT(w.colours[0]);
-    gCurrentWindowColours[1] = NOT_TRANSLUCENT(w.colours[1]);
-    gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
-    gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
+    gCurrentWindowColours[0] = w.colours[0].colour;
+    gCurrentWindowColours[1] = w.colours[1].colour;
+    gCurrentWindowColours[2] = w.colours[2].colour;
 
     w.OnDraw(copy);
 }

@@ -24,6 +24,7 @@
 #include "LightFX.h"
 #include "Weather.h"
 
+#include <algorithm>
 #include <cstring>
 
 using namespace OpenRCT2;

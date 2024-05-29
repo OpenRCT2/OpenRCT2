@@ -275,7 +275,7 @@ static Widget _inventionListDragWidgets[] = {
             const auto& gameState = GetGameState();
 
             // Draw background
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
@@ -313,7 +313,7 @@ static Widget _inventionListDragWidgets[] = {
 
                 // TODO: this parameter by itself produces very light text.
                 // It needs a {BLACK} token in the string to work properly.
-                colour_t colour = COLOUR_BLACK;
+                ColourWithFlags colour = { COLOUR_BLACK };
                 FontStyle fontStyle = FontStyle::Medium;
                 auto darkness = TextDarkness::Regular;
 
@@ -323,7 +323,7 @@ static Widget _inventionListDragWidgets[] = {
                         darkness = TextDarkness::ExtraDark;
                     else
                         darkness = TextDarkness::Dark;
-                    colour = colours[1] | COLOUR_FLAG_INSET;
+                    colour = colours[1].withFlag(ColourFlag::inset, true);
                 }
 
                 DrawResearchItem(dpi, researchItem, boxWidth, { 1, itemY }, STR_BLACK_STRING, { colour, fontStyle, darkness });
@@ -379,7 +379,7 @@ static Widget _inventionListDragWidgets[] = {
                 dpi,
                 { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
-                ColourMapA[colours[1]].darkest);
+                ColourMapA[colours[1].colour].darkest);
 
             auto* researchItem = WindowEditorInventionsListDragGetItem();
             if (researchItem == nullptr || researchItem->IsNull())
@@ -658,7 +658,7 @@ static Widget _inventionListDragWidgets[] = {
 
             DrawResearchItem(
                 dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
-                { COLOUR_BLACK | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE) });
+                { ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::withOutline, true) });
         }
 
         void Init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)

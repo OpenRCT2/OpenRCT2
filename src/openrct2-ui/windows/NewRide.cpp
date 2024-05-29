@@ -479,7 +479,7 @@ static Widget window_new_ride_widgets[] = {
                 return;
             }
 
-            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
@@ -986,7 +986,7 @@ static Widget window_new_ride_widgets[] = {
                 spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex, colours[1]),
+                    dpi, ImageId(spriteIndex, colours[1].colour),
                     windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }

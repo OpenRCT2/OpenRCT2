@@ -2887,7 +2887,7 @@ STR_5755    :Nesprávná verze hry (Server používá {STRING})
 STR_5756    :Špatné heslo
 STR_5757    :Server je plný
 STR_5758    :{OUTLINE}{GREEN}Hráč {STRING} se připojil do hry
-STR_5759    :Stahování mapy … ({INT32} / {INT32}) KiB
+STR_5759    :Stahování mapy …
 STR_5760    :Hongkongský dolar (HK$)
 STR_5761    :Tchajwanský dolar (NT$)
 STR_5762    :Čínský jüan (CN¥)
@@ -3450,7 +3450,7 @@ STR_6374    :K
 STR_6375    :Neznámá atrakce
 STR_6376    :{WINDOW_COLOUR_2}Vozy atrakce:{NEWLINE}{BLACK}{STRINGID} pro {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} pro {STRINGID}
-STR_6378    :Stahování seznamu objektů: {INT32} / {INT32}
+STR_6378    :Stahování seznamu objektů:
 STR_6379    :Stažena neplatná data
 STR_6380    :Dostupná aktualizace!
 STR_6381    :Připojte se na OpenRCT2 Discord!
@@ -3737,87 +3737,87 @@ STR_DTLS    :Postavte chybějící Six Flags atrakce, nebo vytvořte své vlastn
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Africa - African Diamond Mine
+STR_SCNR    :Mines of Africa
 STR_PARK    :Mines of Africa
 STR_DTLS    :Zdědili jste diamantový důl mimo provoz a nalezli hodnotný diamant. Rozhodli jste se tedy investovat peníze do stavby světoznámého zábavního parku.
 
 <Africa - Oasis>
-STR_SCNR    :Africa - Oasis
+STR_SCNR    :Mirage Madness
 STR_PARK    :Mirage Madness
 STR_DTLS    :Byla objevena pouštní oáza, která nabízí nádherné místo pro zábavní park. Přeprava do oázy zajištěna.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Africa - Victoria Falls
+STR_SCNR    :Over The Edge
 STR_PARK    :Over The Edge
 STR_DTLS    :Postavená přehrada zajišťuje velké množství levné hydroelektrické energie pro váš zábavní park. Dosáhněte vysokého hodnocení parku, abyste snáze splatili půjčku na přehradu.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarctic - Ecological Salvage
+STR_SCNR    :Icy Adventures
 STR_PARK    :Icy Adventures
 STR_DTLS    :Obrátili se na vás ochranáři životního prostředí s prosbou, abyste přeměnili neekologickou rafinerii na vysoce navštěvovanou turistickou destinací. Pozemky jsou levné, ale úrok z půjčky vysoký. Zkuste prodat staré budovy.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_SCNR    :Great Wall of China
 STR_PARK    :Great Wall of China
 STR_DTLS    :Místní správa se rozhodla podpořit cestovní ruch a vytvořit Velkou zeď stavbou přilehlého zábavního parku. Peníze nehrají roli.
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_SCNR    :Okinawa Coast
 STR_PARK    :Okinawa Coast
 STR_DTLS    :Současnému zábavnímu parku došlo místo. Jedinou možností je začít stavět na moři, takže budete potřebovat velkou půjčku. V této oblasti jsou častá zemětřesení, proto nesmíte stavět vysoké budovy.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia - Maharaja Palace
+STR_SCNR    :Park Maharaja
 STR_PARK    :Park Maharaja
 STR_DTLS    :Mahárádža vás vybral, abyste přinesli zábavu pro místní velkou populaci. Postavte zábavní park inspirovaný Mahárádžovým palácem
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasia - Ayers Rock
+STR_SCNR    :Ayers Adventure
 STR_PARK    :Ayers Adventure
 STR_DTLS    :Pomáháte domorodcům postavit zábavní park pro upozornění na jejich kulturu. Musíte poučit co nejvíce lidí o unikátní kultuře domorodých obyvatel.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasia - Fun at the Beach
+STR_SCNR    :Beach Barbecue Blast
 STR_PARK    :Beach Barbecue Blast
 STR_DTLS    :Místní mořský svět bankrotoval a vy jste ho odkoupili. Vám už ale jeden malý park patří - postavte tedy ze dvou malých parků jeden obrovský!
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europe - European Cultural Festival
+STR_SCNR    :European Extravaganza
 STR_PARK    :European Extravaganza
 STR_DTLS    :Byli jste přizváni, abyste převzali kontrolu nad Evropskou Kulturní Návštěvnickou Atrakcí a musíte zajistit nárůst návštěvnosti, jinak nebudete moci zaplatit za EU dotaci do konce vládního období.
 
 <Europe - Renovation>
-STR_SCNR    :Europe - Renovation
+STR_SCNR    :From The Ashes
 STR_PARK    :From The Ashes
 STR_DTLS    :Evropská Unie vám dala grant, abyste zajistil obnovu starého, neudržovaného zábavního parku a přinesl zpět jeho tehdejší slávu. Musíte celý park renovovat a splatit grant.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Havajané jsou znudění ze surfování a chtějí zažít něco adrenalinovějšího. Postavte zábavní park a nezapomeňte na to - pomůže vám to s dosažením dobrého hodnocení parku.
 
 <North America - Grand Canyon>
-STR_SCNR    :North America - Grand Canyon
+STR_SCNR    :Canyon Calamities
 STR_PARK    :Canyon Calamities
 STR_DTLS    :Omezený terén vás nutí vybudovat zábavní park po stranách národní památky. Můžete ale od Indiánů nakupovat pozemky. Abyste si udrželi hodnocení místní správy, splňte cíl!
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :North America - Rollercoaster Heaven
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :Jste úspěšný obchodní magnát, který si přeje přetvořit městský park v místo nebeských horských drah. Peníze nehrají žádnou roli!
 
 <South America - Inca Lost City>
-STR_SCNR    :South America - Inca Lost City
+STR_SCNR    :Lost City Founder
 STR_PARK    :Lost City Founder
 STR_DTLS    :Abyste zvýšili počet místních turistů, musíte postavit zábavní park, který zapadá do okolí a nemá žádné výškové budovy.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :South America - Rain Forest Plateau
+STR_SCNR    :Rainforest Romp
 STR_PARK    :Rainforest Romp
 STR_DTLS    :Prostor je limitovaný drahocenným deštným pralesem - musíte toho namáčknout co nejvíce do dosavadních pozemků, abyste mohli konkurovat místním dřevorubeckým společnostem.
 
 <South America - Rio Carnival>
-STR_SCNR    :South America - Rio Carnival
+STR_SCNR    :Sugarloaf Shores
 STR_PARK    :Sugarloaf Shores
 STR_DTLS    :Provozujete malý zábavní park poblíž Ria, ale banka chce vrátit půjčku. Musíte rychle zvýšit vaše příjmy, abyste mohli dluh splatit.
 
@@ -3825,72 +3825,72 @@ STR_DTLS    :Provozujete malý zábavní park poblíž Ria, ale banka chce vrát
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Dark Age - Castle
+STR_SCNR    :Cliffside Castle
 STR_PARK    :Cliffside Castle
 STR_DTLS    :Členové místní skupiny pro rekonstrukci historických bitev berou své hobby trochu moc vážně. Svěřili vám stavbu starověkého zábavního parku na území Cliffside Castle.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Dark Age - Robin Hood
+STR_SCNR    :Sherwood Forest
 STR_PARK    :Sherwood Forest
 STR_DTLS    :Abyste mohli brát bohatým a dávat chudým, rozhodli jste se postavit zábavní park v Sherwood Forest.
 
 <Future - First Encounters>
-STR_SCNR    :Future - First Encounters
+STR_SCNR    :Extraterrestrial Extravaganza
 STR_PARK    :Extraterrestrial Extravaganza
 STR_DTLS    :Byl objeven život na vzdálené planetě. Postavte mimozemsky zaměřený zábavní park, abyste se svezli na vlně nového nepředvídaného zájmu.
 
 <Future - Future World>
-STR_SCNR    :Future - Future World
+STR_SCNR    :Gemini City
 STR_PARK    :Gemini City
 STR_DTLS    :Ukažte svou vynalézavou, utopickou vizi budoucnosti - přijďte s futuristickým zábavním parkem, který zahrnuje ty nejnovější atrakce.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mythological - Animatronic Film Set
+STR_SCNR    :Animatronic Antics
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Byl vám zadán úkol správy a vylepšování stávajícího zábavního parku, který byl postaven na starém filmařském místě. Vybudujte odkaz průkopníkům-animátorům, kteří poprvé přinesli mýtické postavy k životu na stříbrném plátně.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mythological - Cradle of Civilisation
+STR_SCNR    :Mythological Madness
 STR_PARK    :Mythological Madness
 STR_DTLS    :Vlastníte ostrov velké archeologické hodnoty. Rozhodli jste se podpořit jeho zachování vybudováním zábavního parku založeném na mytologii tohoto místa.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prehistoric - After the Asteroid
+STR_SCNR    :Crater Carnage
 STR_PARK    :Crater Carnage
 STR_DTLS    :Vlastníte velký kráter a jakožto opravdový průkopník jste se rozhodl vybudovat zábavní park ve stylu asteroidů a přeměnit tuto zdánlivě bezcennou půdu v profitující a vyhledávanou oblast.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prehistoric - Jurassic Safari
+STR_SCNR    :Coastersaurus
 STR_PARK    :Coastersaurus
 STR_DTLS    :Byli jste zaúkolováni stavbou zábavního parku ve stylu období Jura. Pro zlepšení přístupu návštěvníků k exotickým rostlinám a zvířatům budete muset postavit mosty do a přes údolí.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prehistoric - Stone Age
+STR_SCNR    :Rocky Rambles
 STR_PARK    :Rocky Rambles
 STR_DTLS    :Abyste se vyhnuli stavbě dálnice a zachovali mysteriózní prehistorické kamenné kruhy, budete muset postavit zábavní park ve stylu doby kamenné a začít vydělávat. Nicméně přilákat návštěvníky bude těžké, protože terén je opravdu nehostinný.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Roaring Twenties - Prison Island
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :Nechvalně proslavená ostrovní věznice - jejíž populace jednou překypovala pašeráky a vyděrači - je nyní na prodej. Rozhodli jste se jí přetvořit na velkou turistickou atrakci - na peníze berte ohled!
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Roaring Twenties - Schneider Cup
+STR_SCNR    :Schneider Shores
 STR_PARK    :Schneider Shores
 STR_DTLS    :75. leté výročí výhry Schneider Cup vašeho dědečka se blíží a zbývá už jen pár let. Poctíte jeho úspěch stavbou zábavního parku založeném na proslulém závodu hydroplánů.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Roaring Twenties - Skyscrapers
+STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
 STR_DTLS    :Vlastníte volný pozemek v městské oblasti téměř bez růstu. Abyste vymačkali co nejvíce z vaší nemovitosti, postavíte mrakodrap-zábavní park inspirovaný architekturou dvacátých let.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ’n’ Roll - Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Obrovský každoroční hudební festival se bude konat na vašem pozemku. Postavte pořádný park, abyste zabavili návštěvníky.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_SCNR    :Rock ’n’ Roll Revival
 STR_PARK    :Rock ’n’ Roll Revival
 STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomozte majiteli dát parku retro rock ’n’ roll vzhled a udělat z něho vyhledávané místo.
 

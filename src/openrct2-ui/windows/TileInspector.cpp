@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -18,7 +20,6 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -1467,10 +1468,10 @@ static uint64_t PageDisabledWidgets[] = {
                         DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME, {}, { colours[1] });
 
                         // Current animation frame
-                        colour_t colour = colours[1];
+                        auto colour = colours[1];
                         if (IsWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME))
                         {
-                            colour = colours[0] | COLOUR_FLAG_INSET;
+                            colour = colours[0].withFlag(ColourFlag::inset, true);
                         }
                         screenCoords.x = windowPos.x + widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3;
                         ft = Formatter();
@@ -1570,7 +1571,8 @@ static uint64_t PageDisabledWidgets[] = {
         {
             const int32_t listWidth = widgets[WIDX_LIST].width();
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                ColourMapA[colours[1].colour].mid_light);
 
             // Show usage hint when nothing is selected
             if (!_tileSelected)
@@ -1604,14 +1606,17 @@ static uint64_t PageDisabledWidgets[] = {
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
                                                  { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 if (selectedRow)
-                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 else if (hoveredRow)
-                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark | 0x1000000);
+                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
                 // Zebra stripes
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
-                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].light | 0x1000000);
+                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].light | 0x1000000);
 
-                const StringId stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+                StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
+                if (selectedRow || hoveredRow)
+                    stringFormat = STR_WHITE_STRING;
+
                 auto checkboxFormatter = Formatter();
                 checkboxFormatter.Add<StringId>(STR_STRING);
                 checkboxFormatter.Add<char*>(CheckBoxMarkString);

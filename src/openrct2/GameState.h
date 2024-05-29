@@ -16,6 +16,7 @@
 #include "interface/ZoomLevel.h"
 #include "management/Award.h"
 #include "management/Finance.h"
+#include "management/Marketing.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -91,7 +92,7 @@ namespace OpenRCT2
         std::vector<Banner> Banners;
         Entity_t Entities[MAX_ENTITIES]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-        std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
+        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
         ::RideRatingUpdateStates RideRatingUpdateStates;
         std::vector<TileElement> TileElements;
 
@@ -130,6 +131,8 @@ namespace OpenRCT2
         ObjectEntryIndex LastEntranceStyle;
 
         std::vector<Award> CurrentAwards;
+
+        std::vector<MarketingCampaign> MarketingCampaigns;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
