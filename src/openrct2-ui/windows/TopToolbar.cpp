@@ -122,13 +122,13 @@ namespace OpenRCT2::Ui::Windows
         DDIDX_SAVE_GAME = 3,
         DDIDX_SAVE_GAME_AS = 4,
         // separator
-        DDIDX_ABOUT = 6,
-        DDIDX_OPTIONS = 7,
-        DDIDX_SCREENSHOT = 8,
-        DDIDX_GIANT_SCREENSHOT = 9,
+        DDIDX_SCREENSHOT = 6,
+        DDIDX_GIANT_SCREENSHOT = 7,
         // separator
-        DDIDX_FILE_BUG_ON_GITHUB = 11,
-        DDIDX_UPDATE_AVAILABLE = 12,
+        DDIDX_ABOUT = 9,
+        DDIDX_FILE_BUG_ON_GITHUB = 10,
+        DDIDX_UPDATE_AVAILABLE = 11,
+        DDIDX_OPTIONS = 12,
         // separator
         DDIDX_QUIT_TO_MENU = 14,
         DDIDX_EXIT_OPENRCT2 = 15,
@@ -2624,9 +2624,9 @@ namespace OpenRCT2::Ui::Windows
                     if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR) && selectedIndex > DDIDX_LOAD_GAME)
                         selectedIndex += 1;
 
-                    // Track designer and track designs manager start with About, not Load/save
+                    // Track designer and track designs manager start with Screenshot, not Load/save
                     if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-                        selectedIndex += DDIDX_ABOUT;
+                        selectedIndex += DDIDX_SCREENSHOT;
 
                     // The "Update available" menu item is only available when there is one
                     if (selectedIndex >= DDIDX_UPDATE_AVAILABLE && !OpenRCT2::GetContext()->HasNewVersionInfo())
@@ -3732,16 +3732,16 @@ namespace OpenRCT2::Ui::Windows
         int32_t numItems = 0;
         if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
         {
-            gDropdownItems[numItems++].Format = STR_ABOUT;
-            gDropdownItems[numItems++].Format = STR_OPTIONS;
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
             gDropdownItems[numItems++].Format = STR_EMPTY;
 
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -3757,16 +3757,16 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[numItems++].Format = STR_EMPTY;
             gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
             gDropdownItems[numItems++].Format = STR_EMPTY;
-            gDropdownItems[numItems++].Format = STR_ABOUT;
-            gDropdownItems[numItems++].Format = STR_OPTIONS;
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
             gDropdownItems[numItems++].Format = STR_EMPTY;
             gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
             gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
@@ -3779,16 +3779,16 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[numItems++].Format = STR_SAVE_GAME;
             gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
             gDropdownItems[numItems++].Format = STR_EMPTY;
-            gDropdownItems[numItems++].Format = STR_ABOUT;
-            gDropdownItems[numItems++].Format = STR_OPTIONS;
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
+            gDropdownItems[numItems++].Format = STR_OPTIONS;
             gDropdownItems[numItems++].Format = STR_EMPTY;
             gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
             gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
