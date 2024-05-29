@@ -31,13 +31,13 @@ GameState_t& Scene::GetGameState()
 
 void Scene::FinishScene()
 {
-    if (_onFinish != nullptr)
+    if (_onComplete != nullptr)
     {
-        _onFinish();
+        _onComplete();
     }
 }
 
-void Scene::SetOnComplete(std::function<void()> onFinish)
+void Scene::SetOnComplete(std::function<void()> onComplete)
 {
-    _onFinish = onFinish;
+    _onComplete = onComplete;
 }

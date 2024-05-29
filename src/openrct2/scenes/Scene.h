@@ -48,7 +48,7 @@ namespace OpenRCT2
 
     protected:
         IContext& _context;
-        std::function<void()> _onFinish{};
+        std::function<void()> _onComplete{};
     };
 
 } // namespace OpenRCT2
