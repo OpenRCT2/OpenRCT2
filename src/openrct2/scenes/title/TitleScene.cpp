@@ -121,6 +121,9 @@ void TitleScene::Load()
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
+
+    GetContext().OpenProgress(STR_LOADING_TITLE_SEQUENCE);
+
     TitleInitialise();
     OpenRCT2::Audio::PlayTitleMusic();
 
@@ -138,6 +141,8 @@ void TitleScene::Load()
         TryLoadSequence();
         _sequencePlayer->Update();
     }
+
+    GetContext().CloseProgress();
 
     LOG_VERBOSE("TitleScene::Load() finished");
 }

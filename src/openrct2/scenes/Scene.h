@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <functional>
+
 namespace OpenRCT2
 {
     struct GameState_t;
@@ -28,8 +30,7 @@ namespace OpenRCT2
         virtual void Tick() = 0;
         virtual void Stop() = 0;
 
-        virtual IScene* GetCompletionScene() = 0;
-        virtual void SetCompletionScene(IScene* scene) = 0;
+        virtual void SetOnComplete(std::function<void()>) = 0;
     };
 
     class Scene : public IScene
@@ -40,15 +41,14 @@ namespace OpenRCT2
         GameState_t& GetGameState() override;
         IContext& GetContext() override;
 
-        IScene* GetCompletionScene() override;
-        void SetCompletionScene(IScene* scene) override;
+        void SetOnComplete(std::function<void()>) override;
 
     protected:
         void FinishScene();
 
     protected:
         IContext& _context;
-        IScene* _nextScene = nullptr;
+        std::function<void()> _onComplete{};
     };
 
 } // namespace OpenRCT2

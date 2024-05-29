@@ -31,19 +31,13 @@ GameState_t& Scene::GetGameState()
 
 void Scene::FinishScene()
 {
-    if (_nextScene != nullptr)
+    if (_onComplete != nullptr)
     {
-        _context.SetActiveScene(_nextScene);
-        _nextScene = nullptr;
+        _onComplete();
     }
 }
 
-IScene* Scene::GetCompletionScene()
+void Scene::SetOnComplete(std::function<void()> onComplete)
 {
-    return _nextScene;
-}
-
-void Scene::SetCompletionScene(IScene* scene)
-{
-    _nextScene = scene;
+    _onComplete = onComplete;
 }
