@@ -7,7 +7,7 @@
 - Feature: [#21893, #22065] On launch, the game now indicates what system is being initialised.
 - Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
 - Feature: [#22046] [Plugin] Add interface for crashed vehicle particle.
-- Feature: [#22085] [Plugin] The result of actions that create banners now include the bannerIndex.
+- Feature: [#22085] [Plugin] The result of actions that create banners now includes the bannerIndex.
 - Feature: [#22087] [Plugin] Expose guests’ favourite rides to the plugin API.
 - Improved: [#19870] Allow using new colours in UI themes.
 - Improved: [#21853] Dropdowns now automatically use multiple columns if they are too tall for the screen.
