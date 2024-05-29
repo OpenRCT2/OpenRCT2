@@ -2123,6 +2123,11 @@ declare global {
         supports: number;
     }
 
+    interface CrashedVehicleColour {
+        body: number;
+        trim: number;
+    }
+
     interface VehicleColour {
         body: number;
         trim: number;
@@ -2607,6 +2612,63 @@ declare global {
         "waiting_for_passengers" |
         "waiting_to_depart" |
         "waiting_to_start";
+
+    type CrashParticleType =  "corner" | "rod" | "wheel" | "panel" | "seat";
+
+    /**
+     * Override properties for launch data. All properties except colour are randomly
+     * chosen if not overridden, using the same algorithm as regular crashed particles.
+     */
+    interface CrashParticleLaunchData {
+        colours?: CrashedVehicleColour;
+        timeToLive?: number;
+        velocity?: CoordsXYZ;
+        crashParticleType?: CrashParticleType;
+        frame?: number;
+    }
+
+    /**
+     * Represents a vehicle explosion particle. They are emitted during a vehicle
+     * crash and will bounce until their timer expires and they are automatically
+     * removed.
+     */
+    interface CrashedVehicleParticle extends Entity {
+        /**
+         * The colour of the particle.
+         */
+        colours: CrashedVehicleColour;
+
+        /**
+         * The lifetime of the particle in ticks. Default value 65535. Entity is
+         * automatically removed at 0.
+         */
+        timeToLive: number;
+
+        /**
+         * The particle velocity.
+         */
+        velocity: CoordsXYZ;
+
+        /**
+         * The acceleration of the particle in the x, y, and z directions.
+         */
+        acceleration: CoordsXYZ;
+
+        /**
+         * The type of crash particle.
+         */
+        crashParticleType: CrashParticleType;
+
+        /**
+         * The current frame of the crash particle.
+         */
+        frame: number;
+
+        /**
+         * Sets the sprite bounds and launches the particle.
+         */
+        launch(launchData?: CrashParticleLaunchData): void;
+    }
 
     /**
      * Represents a guest or staff member.

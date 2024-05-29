@@ -16,6 +16,11 @@ struct CoordsXYZ;
 struct PaintSession;
 struct VehicleColour;
 
+constexpr int32_t kCrashedVehicleParticleFrameToSprite = 256;
+constexpr int32_t kCrashedVehicleParticleNumberSprites = 12;
+constexpr int32_t kCrashedVehicleParticleNumberTypes = 5;
+constexpr int32_t kCrashedVehicleParticleFrameIncrement = 85; // 1/3 of 256, rounded up
+
 struct VehicleCrashParticle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::CrashedVehicleParticle;
@@ -30,6 +35,8 @@ struct VehicleCrashParticle : EntityBase
     int32_t acceleration_y;
     int32_t acceleration_z;
     static void Create(VehicleColour& colours, const CoordsXYZ& vehiclePos);
+    void SetSpriteData();
+    void Launch();
     void Update();
     void Serialise(DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
