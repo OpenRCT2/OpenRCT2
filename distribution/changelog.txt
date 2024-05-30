@@ -6,12 +6,9 @@
 - Feature: [#21853] Enlarged UI mode.
 - Feature: [#21893, #22065] On launch, the game now indicates what system is being initialised.
 - Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
-<<<<<<< HEAD
 - Feature: [#22046] [Plugin] Add interface for crashed vehicle particle.
-- Feature: [#22085] [Plugin] The result of actions that create banners now includes the bannerIndex.
-=======
 - Feature: [#22048] [Plugin] Add yawRotation and bankRotation to car interface.
->>>>>>> 819c0e6ed5 (add rotation values to car interface)
+- Feature: [#22085] [Plugin] The result of actions that create banners now includes the bannerIndex.
 - Feature: [#22087] [Plugin] Expose guests’ favourite rides to the plugin API.
 - Improved: [#19870] Allow using new colours in UI themes.
 - Improved: [#21853] Dropdowns now automatically use multiple columns if they are too tall for the screen.
