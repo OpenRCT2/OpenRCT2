@@ -566,10 +566,10 @@ STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Construir senderos
 STR_1174    :Cartel de señal interfiere
 STR_1175    :No se puede construir esto sobre una pendiente
-STR_1176    :No se puede construir este camino aquí…
-STR_1177    :No se puede quitar este camino de aquí…
+STR_1176    :No se puede construir un sendero aquí…
+STR_1177    :No se puede quitar este sendero de aquí…
 STR_1178    :Pendiente del terreno no apto
-STR_1179    :Camino interfiere
+STR_1179    :Sendero interfiere
 STR_1180    :¡No se puede construir bajo el agua!
 STR_1181    :Senderos
 STR_1182    :Tipo
@@ -579,8 +579,8 @@ STR_1185    :Dirección
 STR_1186    :Cuesta abajo
 STR_1187    :Nivel del suelo
 STR_1188    :Cuesta arriba
-STR_1189    :Construye el camino seleccionado
-STR_1190    :Eliminar la sección de camino previo
+STR_1189    :Construye el sendero seleccionado
+STR_1190    :Eliminar la sección de sendero previo
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -1043,7 +1043,7 @@ STR_1649    :“¡Me estoy quedando sin dinero!”
 STR_1650    :“¡Wow! ¡Están construyendo una nueva atracción!”
 STR_1653    :“… ¡Y aquí estamos en {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Pensamientos recientes:
-STR_1655    :Construir camino a nivel del suelo.
+STR_1655    :Construir sendero a nivel del suelo.
 STR_1656    :Construir puente o túnel.
 STR_1657    :{WINDOW_COLOUR_2}Atracción preferida:
 STR_1658    :{WINDOW_COLOUR_2}Intensidad: {BLACK}menos de {COMMA16}
@@ -2056,7 +2056,7 @@ STR_2851    :Escenario ya instalado
 STR_2852    :Vía ya instalada
 STR_2853    :¡Prohibido por las autoridades locales!
 STR_2854    :{RED}¡Los visitantes no encuentran la entrada de {STRINGID}!{NEWLINE}Construye un sendero hacia la entrada
-STR_2855    :{RED}¡{STRINGID} no tiene un camino de salida!{NEWLINE}Construye un camino desde la salida de la atracción.
+STR_2855    :{RED}¡{STRINGID} no tiene un sendero de salida!{NEWLINE}Construye un sendero desde la salida de la atracción.
 STR_2858    :No puedes iniciar una campaña publicitaria…
 STR_2861    :{WINDOW_COLOUR_2}Bajo licencia a Infogrames Interactive Inc.
 STR_2971    :Esquema de color principal
@@ -2346,7 +2346,7 @@ STR_3328    :No se puede avanzar a la siguiente etapa del editor…
 STR_3329    :No se ha construido una entrada del parque
 STR_3330    :El parque debe poseer un terreno
 STR_3331    :El sendero de la entrada del parque al borde del mapa no está completo o es demasiado complejo. Ha de tener un sólo carril con el menor número posible de cruces y curvas.
-STR_3332    :La entrada del parque está al revés o no tiene un camino que lleve al borde del mapa
+STR_3332    :La entrada del parque está al revés o no tiene un sendero que lleve al borde del mapa
 STR_3333    :Exportar complementos al guardar el juego
 STR_3334    :Selecciona si los complementos adicionales (datos no distribuidos con el juego principal) utilizados en un escenario deben exportarse al guardar el juego, lo que permite que otros jugadores que no tengan esos complementos puedan abrirlo.
 STR_3335    :Diseñador de Vías - Selecciona el tipo de Atracción y Vehículo
@@ -3109,7 +3109,7 @@ STR_5980    :Texto de bandera: {BLACK}{STRINGID}
 STR_5981    :No es una bandera
 STR_5982    :Tipo de escenario grande: {BLACK}{COMMA16}
 STR_5983    :ID pieza de escenario grande: {BLACK}{COMMA16}
-STR_5984    :Caminos Bloqueados:
+STR_5984    :Senderos Bloqueados:
 STR_5985    :Nueva Carpeta
 STR_5986    :Escribe el nombre de la nueva carpeta
 STR_5987    :No se puede crear la carpeta
@@ -3346,7 +3346,7 @@ STR_6257    :Translúcido
 STR_6258    :Transparente
 STR_6259    :Deshabilitado
 STR_6260    :Mostrar casillas bloqueadas
-STR_6261    :Mostrar caminos anchos
+STR_6261    :Mostrar senderos anchos
 STR_6262    :Volumen Maestro
 STR_6263    :Activar o desactivar todos los sonidos
 STR_6264    :Usar siempre explorador de archivos del sistema
@@ -3422,7 +3422,7 @@ STR_6343    :Inspector de cuadrícula: Aumentar coordenada Y
 STR_6344    :Inspector de cuadrícula: Disminuir coordenada Y
 STR_6345    :Inspector de cuadrícula: Aumentar altura del elemento
 STR_6346    :Inspector de cuadrícula: Disminuir altura del elemento
-STR_6347    :¡Agregados a los caminos no se pueden añadir en cruces de nivel!
+STR_6347    :¡Adiciones a los senderos no se pueden colocar en cruces de nivel!
 STR_6348    :¡Primero quita el cruce de nivel!
 STR_6349    :Secuencia de la pantalla de inicio al azar
 STR_6350    :Distribuir
@@ -3524,7 +3524,7 @@ STR_6445    :Pasamanos de sendero.
 STR_6446    :{WINDOW_COLOUR_2}Nombre de la superficie: {BLACK}{STRINGID}
 STR_6447    :{WINDOW_COLOUR_2}Nombre del pasamanos: {BLACK}{STRINGID}
 STR_6448    :Formato de objeto no soportado
-STR_6449    :{WINDOW_COLOUR_2}Caminos:
+STR_6449    :{WINDOW_COLOUR_2}Senderos:
 STR_6450    :{BLACK}“{STRING}”
 STR_6451    :{BLACK}“{STRING}” - {STRING}
 STR_6452    :{WINDOW_COLOUR_2}Vende: {BLACK}{STRING}
@@ -3552,7 +3552,7 @@ STR_6474    :Visitantes invisibles
 STR_6475    :Empleados invisibles
 STR_6476    :Vegetación invisible
 STR_6477    :Escenario invisible
-STR_6478    :Caminos invisibles
+STR_6478    :Senderos invisibles
 STR_6479    :Atracciones invisibles
 STR_6480    :Vehículos invisibles
 STR_6481    :Opciones de transparencia
@@ -3611,8 +3611,8 @@ STR_6533    :{WINDOW_COLOUR_2}Factor de emoción: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Factor de intensidad: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Factor de náusea: {BLACK}-{COMMA16}%
 STR_6536    :Este parque fue guardado en una versión más reciente de OpenRCT2. Este parque se guardó en la v{INT32}, actualmente estás en la v{INT32}.
-STR_6537    :Permitir usar caminos normales como cola
-STR_6538    :Muestra caminos normales en el menú desplegable de colas de la ventana Senderos.
+STR_6537    :Permitir usar senderos normales como cola
+STR_6538    :Muestra senderos normales en el menú desplegable de colas de la ventana Senderos.
 STR_6539    :Freno cerrado
 STR_6540    :{WINDOW_COLOUR_2}En especial gracias a las siguientes empresas for permitir el uso de su imagen:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
@@ -3684,7 +3684,7 @@ STR_6606    :Elemento de superficie no encontrado
 STR_6607    :Elemento de casilla no encontrado
 STR_6608    :Elemento de vía no encontrado
 STR_6609    :Bloque de vía no encontrado
-STR_6610    :Elemento de camino no encontrado
+STR_6610    :Elemento de sendero no encontrado
 STR_6611    :Elemento de muro no encontrado
 STR_6612    :Elemento de banner no encontrado
 STR_6613    :Recargar objeto
@@ -3702,6 +3702,9 @@ STR_6624    :Inspector de cuadrícula: Ordernar elementos
 STR_6625    :Color no válido
 STR_6626    :La animación está reflejada
 STR_6627    :¡Velocidad de vía demasiado alta!
+STR_6628    :¡Sólo puede ser colocado en los bordes del sendero!
+STR_6629    :Alinear los botones de la barra de herramientas centrados horizontalmente
+STR_6630    :Este ajuste alineará los botones de la barra de herramientas horizontalmente en el centro de la pantalla. La forma tradicional de alinearlos es en la esquina izquierda y derecha.
 
 ##############
 # Escenarios #

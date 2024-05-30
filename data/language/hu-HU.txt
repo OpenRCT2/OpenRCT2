@@ -3703,6 +3703,10 @@ STR_6629    :Eszköztár gombjainak vízszintes középre igazítása
 STR_6630    :Ez a beállítás az eszköztár gombjait vízszintesen a képernyő közepére igazítja. A hagyományos elrendezés a bal és jobb sarokban helyezi el őket.
 STR_6638    :Nagyított felhasználói felület
 STR_6639    :Módosítja a felületet, hogy megfelelőbb legyen érintőképernyős használathoz
+STR_6640    :Asset csomagok szerkesztése…
+STR_6641    :Betöltés/előrehaladás ablak
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 
 #############
 # Scenarios #
