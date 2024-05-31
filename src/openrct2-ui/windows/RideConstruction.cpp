@@ -1107,7 +1107,8 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall) && _currentTrackRollEnd == TrackRoll::Right45)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall)
+                            && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightHalfBankedHelixDownSmall
                                 | RideConstructionSpecialPieceSelected;
@@ -1249,7 +1250,8 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall) && _currentTrackRollEnd == TrackRoll::Right45)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall)
+                            && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightHalfBankedHelixUpSmall
                                 | RideConstructionSpecialPieceSelected;
