@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 #include "../VehiclePaint.h"
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
+static constexpr MetalSupportType kSupportType = MetalSupportType::Stick;
 
 enum
 {
