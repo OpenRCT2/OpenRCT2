@@ -551,12 +551,12 @@ static Widget _rideConstructionWidgets[] = {
                     disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
                 }
             }
-            if (_previousTrackRollEnd == TrackRoll::Left)
+            if (_previousTrackRollEnd == TrackRoll::Left45)
             {
                 disabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
                     | (1uLL << WIDX_RIGHT_CURVE_LARGE) | (1uLL << WIDX_BANK_RIGHT);
             }
-            if (_previousTrackRollEnd == TrackRoll::Right)
+            if (_previousTrackRollEnd == TrackRoll::Right45)
             {
                 disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_LEFT_CURVE_LARGE)
                     | (1uLL << WIDX_BANK_LEFT);
@@ -672,12 +672,12 @@ static Widget _rideConstructionWidgets[] = {
                 else if (IsTrackEnabled(TRACK_SLOPE_CURVE_BANKED))
                 {
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
-                    if (_currentTrackRollEnd == TrackRoll::Left)
+                    if (_currentTrackRollEnd == TrackRoll::Left45)
                     {
                         disabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT);
                         disabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
                     }
-                    if (_currentTrackRollEnd == TrackRoll::Right)
+                    if (_currentTrackRollEnd == TrackRoll::Right45)
                     {
                         disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT);
                         disabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
@@ -786,7 +786,7 @@ static Widget _rideConstructionWidgets[] = {
                 // If the track is banked left or right and curvature is standard size (2.5 tile radius), attempt to show
                 // buttons for half or quarter helixes
                 else if (
-                    (_currentTrackRollEnd == TrackRoll::Left || _currentTrackRollEnd == TrackRoll::Right)
+                    (_currentTrackRollEnd == TrackRoll::Left45 || _currentTrackRollEnd == TrackRoll::Right45)
                     && (_currentTrackCurve == EnumValue(TrackCurve::Left)
                         || _currentTrackCurve == EnumValue(TrackCurve::Right)))
                 {
@@ -798,7 +798,7 @@ static Widget _rideConstructionWidgets[] = {
                 // If the track is banked left or right and curvature is small size (1.5 tile radius), attempt to show buttons
                 // for half helixes
                 else if (
-                    (_currentTrackRollEnd == TrackRoll::Left || _currentTrackRollEnd == TrackRoll::Right)
+                    (_currentTrackRollEnd == TrackRoll::Left45 || _currentTrackRollEnd == TrackRoll::Right45)
                     && (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall)
                         || _currentTrackCurve == EnumValue(TrackCurve::RightSmall)))
                 {
@@ -1083,7 +1083,7 @@ static Widget _rideConstructionWidgets[] = {
                     RideConstructionInvalidateCurrentTrack();
                     if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                     {
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left45)
                         {
                             _currentTrackCurve = TrackElemType::LeftHalfBankedHelixDownLarge
                                 | RideConstructionSpecialPieceSelected;
@@ -1091,7 +1091,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightHalfBankedHelixDownLarge
                                 | RideConstructionSpecialPieceSelected;
@@ -1099,7 +1099,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall) && _currentTrackRollEnd == TrackRoll::Left)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall) && _currentTrackRollEnd == TrackRoll::Left45)
                         {
                             _currentTrackCurve = TrackElemType::LeftHalfBankedHelixDownSmall
                                 | RideConstructionSpecialPieceSelected;
@@ -1107,7 +1107,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall) && _currentTrackRollEnd == TrackRoll::Right)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall) && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightHalfBankedHelixDownSmall
                                 | RideConstructionSpecialPieceSelected;
@@ -1118,7 +1118,7 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
                     {
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left45)
                         {
                             _currentTrackCurve = TrackElemType::LeftQuarterBankedHelixLargeDown
                                 | RideConstructionSpecialPieceSelected;
@@ -1126,7 +1126,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightQuarterBankedHelixLargeDown
                                 | RideConstructionSpecialPieceSelected;
@@ -1180,11 +1180,11 @@ static Widget _rideConstructionWidgets[] = {
                     {
                         if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall))
                         {
-                            _currentTrackRollEnd = TrackRoll::Left;
+                            _currentTrackRollEnd = TrackRoll::Left45;
                         }
                         else if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall))
                         {
-                            _currentTrackRollEnd = TrackRoll::Right;
+                            _currentTrackRollEnd = TrackRoll::Right45;
                         }
                     }
                     else if (
@@ -1192,11 +1192,11 @@ static Widget _rideConstructionWidgets[] = {
                     {
                         if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall))
                         {
-                            _currentTrackRollEnd = TrackRoll::Left;
+                            _currentTrackRollEnd = TrackRoll::Left45;
                         }
                         else if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall))
                         {
-                            _currentTrackRollEnd = TrackRoll::Right;
+                            _currentTrackRollEnd = TrackRoll::Right45;
                         }
                     }
                     UpdateLiftHillSelected(TrackPitch::None);
@@ -1225,7 +1225,7 @@ static Widget _rideConstructionWidgets[] = {
                     RideConstructionInvalidateCurrentTrack();
                     if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                     {
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left45)
                         {
                             _currentTrackCurve = TrackElemType::LeftHalfBankedHelixUpLarge
                                 | RideConstructionSpecialPieceSelected;
@@ -1233,7 +1233,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightHalfBankedHelixUpLarge
                                 | RideConstructionSpecialPieceSelected;
@@ -1241,7 +1241,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall) && _currentTrackRollEnd == TrackRoll::Left)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall) && _currentTrackRollEnd == TrackRoll::Left45)
                         {
                             _currentTrackCurve = TrackElemType::LeftHalfBankedHelixUpSmall
                                 | RideConstructionSpecialPieceSelected;
@@ -1249,7 +1249,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall) && _currentTrackRollEnd == TrackRoll::Right)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall) && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightHalfBankedHelixUpSmall
                                 | RideConstructionSpecialPieceSelected;
@@ -1260,7 +1260,7 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
                     {
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left45)
                         {
                             _currentTrackCurve = TrackElemType::LeftQuarterBankedHelixLargeUp
                                 | RideConstructionSpecialPieceSelected;
@@ -1268,7 +1268,7 @@ static Widget _rideConstructionWidgets[] = {
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
-                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right)
+                        if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right45)
                         {
                             _currentTrackCurve = TrackElemType::RightQuarterBankedHelixLargeUp
                                 | RideConstructionSpecialPieceSelected;
@@ -1321,7 +1321,7 @@ static Widget _rideConstructionWidgets[] = {
                     RideConstructionInvalidateCurrentTrack();
                     if (!_currentlyShowingBrakeOrBoosterSpeed)
                     {
-                        _currentTrackRollEnd = TrackRoll::Left;
+                        _currentTrackRollEnd = TrackRoll::Left45;
                         _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                     }
@@ -1356,7 +1356,7 @@ static Widget _rideConstructionWidgets[] = {
                     RideConstructionInvalidateCurrentTrack();
                     if (!_currentlyShowingBrakeOrBoosterSpeed)
                     {
-                        _currentTrackRollEnd = TrackRoll::Right;
+                        _currentTrackRollEnd = TrackRoll::Right45;
                         _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                     }
@@ -2105,7 +2105,7 @@ static Widget _rideConstructionWidgets[] = {
                 }
                 switch (_currentTrackRollEnd)
                 {
-                    case TrackRoll::Left:
+                    case TrackRoll::Left45:
                         widgetIndex = WIDX_BANK_LEFT;
                         break;
                     case TrackRoll::None:
@@ -4447,7 +4447,7 @@ static Widget _rideConstructionWidgets[] = {
                     w->OnMouseDown(WIDX_BANK_LEFT);
                 }
                 break;
-            case TrackRoll::Right:
+            case TrackRoll::Right45:
                 if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
                 {
                     w->OnMouseDown(WIDX_BANK_STRAIGHT);
@@ -4483,7 +4483,7 @@ static Widget _rideConstructionWidgets[] = {
                     w->OnMouseDown(WIDX_BANK_RIGHT);
                 }
                 break;
-            case TrackRoll::Left:
+            case TrackRoll::Left45:
                 if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
                 {
                     w->OnMouseDown(WIDX_BANK_STRAIGHT);
