@@ -498,6 +498,7 @@ declare global {
 
         subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
         subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
+        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
@@ -505,7 +506,6 @@ declare global {
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
-        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
         subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
@@ -620,10 +620,21 @@ declare global {
         "footpath_railings";
 
     type HookType =
-        "interval.tick" | "interval.day" |
-        "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.change" | "map.changed" | "map.save";
+        "action.query" |
+        "action.execute" |
+        "action.location" |
+        "interval.tick" | 
+        "interval.day" |
+        "network.chat" |
+        "network.authenticate" |
+        "network.join" |
+        "network.leave" |
+        "ride.ratings.calculate" |
+        "guest.generation" |
+        "vehicle.crash" |
+        "map.save" |
+        "map.change" |
+        "map.changed";
 
     type ExpenditureType =
         "ride_construction" |
