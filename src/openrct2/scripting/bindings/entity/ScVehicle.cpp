@@ -73,8 +73,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::pitch_get, &ScVehicle::pitch_set, "pitch");
         dukglue_register_property(ctx, &ScVehicle::roll_get, &ScVehicle::roll_set, "bankRotation");
         dukglue_register_property(ctx, &ScVehicle::roll_get, &ScVehicle::roll_set, "roll");
-        dukglue_register_property<ScVehicle, uint8_t, uint8_t>(
-            ctx, &ScVehicle::rotation_get, &ScVehicle::rotation_set, "yaw");
+        dukglue_register_property<ScVehicle, uint8_t, uint8_t>(ctx, &ScVehicle::rotation_get, &ScVehicle::rotation_set, "yaw");
         dukglue_register_property(ctx, &ScVehicle::isReversed_get, &ScVehicle::isReversed_set, "isReversed");
         dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
         dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
@@ -88,7 +87,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
-        dukglue_register_property(ctx, &ScVehicle::maxRotationFrames_get, nullptr, "maxRotationFrames");
+        dukglue_register_property(ctx, &ScVehicle::numberYawValues_get, nullptr, "numberYawValues");
         dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
     }
 
@@ -97,7 +96,7 @@ namespace OpenRCT2::Scripting
         return ::GetEntity<Vehicle>(_id);
     }
 
-    uint16_t ScVehicle::maxRotationFrames_get() const
+    uint16_t ScVehicle::numberYawValues_get() const
     {
         return Entity::Yaw::BaseRotation;
     }
