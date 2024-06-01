@@ -2325,7 +2325,7 @@ declare global {
         getSubpositions(subpositionType: number, direction: Direction): TrackSubposition[];
     }
 
-    enum TrackSlope {
+    enum VehiclePitch {
         None = 0,
         Up12 = 1,
         Up25 = 2,
@@ -2388,7 +2388,7 @@ declare global {
         UpSmallQuarterHelix = 59
     }
 
-    enum TrackBanking {
+    enum VehicleRoll {
         None = 0,
         Left22 = 1,
         Left45 = 2,
@@ -2409,6 +2409,25 @@ declare global {
         InvertedLeft45 = 17,
         InvertedRight22 = 18,
         InvertedRight45 = 19
+    }
+
+    enum TrackSlope {
+        None = 0,
+        Up25 = 2,
+        Up60 = 4,
+        Down25 = 6,
+        Down60 = 8,
+        Up90 = 10,
+        Down90 = 18
+    }
+
+    enum TrackBanking {
+        None = 0,
+        Left45 = 2,
+        Right45 = 4,
+        Left = 2,
+        Right = 4,
+        UpsideDown = 15
     }
 
     type TrackCurveType = "straight" | "left" | "right";
@@ -2536,11 +2555,6 @@ declare global {
         vehicleObject: number;
 
         /**
-         * @deprecated identical to pitchRotation
-         */
-        spriteType: TrackSlope;
-
-        /**
          * How many seats the car has, i.e. the capacity.
          */
         numSeats: number;
@@ -2593,17 +2607,27 @@ declare global {
         /**
          * The current rotation of the entity on the Z axis.
          */
-        yawRotation: number;
+        yaw: number;
+
+        /**
+         * @deprecated since version 92. Use pitch instead.
+         */
+        spriteType: VehiclePitch;
 
         /**
          * The current pitch of the car on the X/Y axis.
          */
-        pitchRotation: TrackSlope;
+        pitch: VehiclePitch;
 
         /**
-         * The current tilt of the car in the X/Y axis.
+         * @deprecated since version 92. Use roll instead.
          */
-        bankRotation: TrackBanking;
+        bankRotation: VehicleRoll;
+
+        /**
+         * The current roll of the car in the X/Y axis.
+         */
+        roll: VehicleRoll;
 
         /**
          * Whether the car sprite is reversed or not.

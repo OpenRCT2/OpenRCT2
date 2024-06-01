@@ -66,8 +66,8 @@ namespace OpenRCT2::Scripting
         uint8_t pitch_get() const;
         void pitch_set(const uint8_t& value);
 
-        uint8_t bankRotation_get() const;
-        void bankRotation_set(uint8_t value);
+        uint8_t roll_get() const;
+        void roll_set(uint8_t value);
 
         template<uint32_t flag> bool flag_get() const;
         template<uint32_t flag> void flag_set(bool value);

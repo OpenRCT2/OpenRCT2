@@ -70,10 +70,11 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::acceleration_get, &ScVehicle::acceleration_set, "acceleration");
         dukglue_register_property(ctx, &ScVehicle::velocity_get, &ScVehicle::velocity_set, "velocity");
         dukglue_register_property(ctx, &ScVehicle::pitch_get, &ScVehicle::pitch_set, "spriteType");
-        dukglue_register_property(ctx, &ScVehicle::pitch_get, &ScVehicle::pitch_set, "pitchRotation");
-        dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
+        dukglue_register_property(ctx, &ScVehicle::pitch_get, &ScVehicle::pitch_set, "pitch");
+        dukglue_register_property(ctx, &ScVehicle::roll_get, &ScVehicle::roll_set, "bankRotation");
+        dukglue_register_property(ctx, &ScVehicle::roll_get, &ScVehicle::roll_set, "roll");
         dukglue_register_property<ScVehicle, uint8_t, uint8_t>(
-            ctx, &ScVehicle::rotation_get, &ScVehicle::rotation_set, "yawRotation");
+            ctx, &ScVehicle::rotation_get, &ScVehicle::rotation_set, "yaw");
         dukglue_register_property(
             ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
             "isReversed");
@@ -329,12 +330,12 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    uint8_t ScVehicle::bankRotation_get() const
+    uint8_t ScVehicle::roll_get() const
     {
         auto vehicle = GetVehicle();
         return vehicle != nullptr ? vehicle->bank_rotation : 0;
     }
-    void ScVehicle::bankRotation_set(uint8_t value)
+    void ScVehicle::roll_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
         auto vehicle = GetVehicle();
