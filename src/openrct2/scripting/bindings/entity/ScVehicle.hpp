@@ -28,7 +28,7 @@ namespace OpenRCT2::Scripting
     private:
         Vehicle* GetVehicle() const;
 
-        uint16_t maxRotationFrames_get() const;
+        uint16_t numberYawValues_get() const;
 
         ObjectEntryIndex rideObject_get() const;
         void rideObject_set(ObjectEntryIndex value);
