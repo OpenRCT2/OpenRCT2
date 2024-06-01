@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
         { "stopping_1b", Vehicle::Status::Stopping1B },
         { "unloading_passengers_1c", Vehicle::Status::UnloadingPassengers1C },
         { "stopped_by_block_brake", Vehicle::Status::StoppedByBlockBrakes },
-    });
+        });
 
     ScVehicle::ScVehicle(EntityId id)
         : ScEntity(id)
@@ -90,7 +90,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
-        dukglue_register_property(ctx, &ScVehicle::maxRotationFrames_get, nullptr, "maxRotationFrames");
+        dukglue_register_property(ctx, &ScVehicle::numberYawValues_get, nullptr, "numberYawValues");
         dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
     }
 
@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
         return ::GetEntity<Vehicle>(_id);
     }
 
-    uint16_t ScVehicle::maxRotationFrames_get() const
+    uint16_t ScVehicle::numberYawValues_get() const
     {
         return Entity::Yaw::BaseRotation;
     }

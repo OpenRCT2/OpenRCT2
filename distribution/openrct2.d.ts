@@ -2600,9 +2600,9 @@ declare global {
 
         /**
          * The current value that represents one full revolution of the entity. The
-         * rotation of yawRotation is 360/maxRotationFrames;
+         * entity's rotation is yaw*360/numYawValues;
          */
-        readonly maxRotationFrames: number;
+        readonly numYawValues: number;
 
         /**
          * The current rotation of the entity on the Z axis.
@@ -2610,7 +2610,7 @@ declare global {
         yaw: number;
 
         /**
-         * @deprecated since version 92. Use pitch instead.
+         * @deprecated since version 93. Use pitch instead.
          */
         spriteType: VehiclePitch;
 
@@ -2620,7 +2620,7 @@ declare global {
         pitch: VehiclePitch;
 
         /**
-         * @deprecated since version 92. Use roll instead.
+         * @deprecated since version 93. Use roll instead.
          */
         bankRotation: VehicleRoll;
 
