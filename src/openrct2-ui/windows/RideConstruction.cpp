@@ -531,6 +531,9 @@ static Widget _rideConstructionWidgets[] = {
                 case TrackPitch::Up90:
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
                     break;
+                default:
+                    // satisfy -Werror -Wswitch
+                    break;
             }
             if (_previousTrackPitchEnd == TrackPitch::None)
             {
