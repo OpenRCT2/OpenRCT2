@@ -19,6 +19,8 @@
 - Improved: [#22065] Joining a network game now indicates progress using coaster trains.
 - Improved: [#22075] [Plugin] Plugins can now use G1 Icons.
 - Improved: [#22084] The game now temporarily pauses while the load/save window is open.
+- Improved: [objects#238] Add preview image for invisible queue.
+- Improved: [objects#329] Add RCT1AA lay-down coaster trains (for import only).
 - Change: [#7248] Small mini-maps are now centred in the map window.
 - Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
@@ -30,7 +32,11 @@
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
 - Fix: [#22008] Uninverted Lay-down roller coaster uses the wrong support type.
 - Fix: [#22012] [Plugin] Images on ImgButton widgets cannot be updated.
-- Fix: [#22121] Some news items in the “Recent Messages” window have the wrong text colour.
+- Fix: [#22121] Some news items in the “Recent Messages” window have the wrong text colour.  
+- Fix: [objects#323] Incorrect wall boundaries on large WW/TT scenery objects.
+- Fix: [objects#331] Incorrect hover car capacity string.
+- Fix: [objects#334] Incorrect school bus capacity string.
+- Fix: [objects#337] Swan Boats use an incorrect third remap colour (original bug).
 
 0.4.11 (2024-05-05)
 ------------------------------------------------------------------------
