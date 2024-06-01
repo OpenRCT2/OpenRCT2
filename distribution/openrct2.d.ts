@@ -510,7 +510,7 @@ declare global {
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
-        subscribe(hook: "park.calculateGuestCap", callback: (e: CalculateGuestCapArgs) => void): IDisposable;
+        subscribe(hook: "park.calculateGuestCap", callback: (e: ParkCalculateGuestCapArgs) => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -1402,7 +1402,7 @@ declare global {
      * The 'suggestedGuestMaximum' field in this interface can be used to override 
      * the park's suggested guest cap.
      */
-    interface CalculateGuestCapArgs {
+    interface ParkCalculateGuestCapArgs {
         suggestedGuestMaximum: number;
     }
 
