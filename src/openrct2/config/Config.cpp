@@ -357,6 +357,7 @@ namespace OpenRCT2::Config
             model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
             model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", WindowButtonsOnTheLeftDefault);
             model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
+            model->TouchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
         }
     }
 
@@ -381,6 +382,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("list_ride_vehicles_separately", model->ListRideVehiclesSeparately);
         writer->WriteBoolean("window_buttons_on_the_left", model->WindowButtonsOnTheLeft);
         writer->WriteBoolean("enlarged_ui", model->EnlargedUi);
+        writer->WriteBoolean("touch_enhancements", model->TouchEnhancements);
     }
 
     static void ReadSound(IIniReader* reader)

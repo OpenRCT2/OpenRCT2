@@ -3715,6 +3715,8 @@ STR_6640    :Edit asset packs…
 STR_6641    :Loading/progress window
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Touch enhancements
+STR_6645    :Makes some UI elements bigger so they are easier to click or tap.
 
 #############
 # Scenarios #
