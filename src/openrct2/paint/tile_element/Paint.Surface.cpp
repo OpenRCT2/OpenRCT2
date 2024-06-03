@@ -154,63 +154,42 @@ static constexpr uint8_t Byte97B55D[] = {
     1, 5, 1, 3, 2, 3, 1, 5, 0,
 };
 
-static constexpr uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
-    { 2, 2 },
-    { 3, 3 },
-    { 3, 5 },
-    { 3, 3 },
-    { 4, 4 },
-    { 4, 6 },
-    { 2, 2 },
-    { 3, 3 },
-    { 3, 5 },
-    { 3, 3 },
-    { 2, 3 },
-    { 2, 3 },
-    { 2, 3 },
-    { 3, 4 },
-    { 2, 3 },
-    { 3, 4 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
+struct TunnelDescriptor
+{
+    uint8_t height;
+    uint8_t boundBoxLength;
+    int16_t boundBoxZOffset;
+    TunnelType lowClearanceAlternative;
+    uint8_t imageOffset;
 };
-
-static constexpr int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
-    0,
-    0,
-    -32,
-    0,
-    0,
-    -48,
-    0,
-    0,
-    -32,
-    0,
-    -16,
-    -16,
-    -16,
-    -16,
-    -16,
-    -16,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
+static constexpr TunnelDescriptor kTunnels[] = {
+    { 2, 2, 0,   TunnelType::StandardFlat,     36 },  // TunnelType::StandardFlat
+    { 3, 3, 0,   TunnelType::StandardFlat,     40 },  // TunnelType::StandardSlopeStart
+    { 3, 5, -32, TunnelType::StandardFlat,     44 },  // TunnelType::StandardSlopeEnd
+    { 3, 3, 0,   TunnelType::InvertedFlat,     48 },  // TunnelType::InvertedFlat
+    { 4, 4, 0,   TunnelType::InvertedFlat,     52 },  // TunnelType::InvertedSlopeStart
+    { 4, 6, -48, TunnelType::InvertedFlat,     56 },  // TunnelType::InvertedSlopeEnd
+    { 2, 2, 0,   TunnelType::SquareFlat,       60 },  // TunnelType::SquareFlat
+    { 3, 3, 0,   TunnelType::SquareFlat,       64 },  // TunnelType::SquareSlopeStart
+    { 3, 5, -32, TunnelType::SquareFlat,       68 },  // TunnelType::SquareSlopeEnd
+    { 3, 3, 0,   TunnelType::SquareFlat,       72 },  // TunnelType::InvertedSquare
+    { 2, 3, -16, TunnelType::PathAndMiniGolf,  76 },  // TunnelType::PathAndMiniGolf
+    { 2, 3, -16, TunnelType::Path11,           80 },  // TunnelType::Path11
+    { 2, 3, -16, TunnelType::_12,              36 },  // TunnelType::_12
+    { 3, 4, -16, TunnelType::_13,              48 },  // TunnelType::_13
+    { 2, 3, -16, TunnelType::_14,              60 },  // TunnelType::_14
+    { 3, 4, -16, TunnelType::_14,              72 },  // TunnelType::_15
+    { 2, 2, 0,   TunnelType::Doors0,           76 },  // TunnelType::Doors0
+    { 2, 2, 0,   TunnelType::Doors1,           80 },  // TunnelType::Doors1
+    { 2, 2, 0,   TunnelType::Doors2,           84 },  // TunnelType::Doors2
+    { 2, 2, 0,   TunnelType::Doors3,           88 },  // TunnelType::Doors3
+    { 2, 2, 0,   TunnelType::Doors4,           92 },  // TunnelType::Doors4
+    { 2, 2, 0,   TunnelType::Doors5,           96 },  // TunnelType::Doors5
+    { 2, 2, 0,   TunnelType::Doors6,          100 }, // TunnelType::Doors6
 };
 
 // clang-format on
 // tunnel offset
-static constexpr uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
-    0, 0, 0, 3, 3, 3, 6, 6, 6, 6, 10, 11, 12, 13, 14, 14, 16, 17, 18, 19, 20, 21, 22,
-};
 
 static constexpr uint8_t Byte97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
@@ -360,25 +339,20 @@ static ImageId GetEdgeImage(const TerrainEdgeObject* edgeObject, uint8_t type)
     return result;
 }
 
-static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, uint8_t type, edge_t edge)
+static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType type, edge_t edge)
 {
-    static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
-                                                             36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
-
     bool hasDoors = false;
     if (edgeObject != nullptr)
     {
         hasDoors = edgeObject->HasDoors && !edgeObject->UsesFallbackImages();
     }
 
-    if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
-        type = TUNNEL_0;
+    if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount)
+        type = TunnelType::StandardFlat;
 
-    ImageId result;
-    if (type < std::size(offsets))
-    {
-        result = GetEdgeImageWithOffset(edgeObject, offsets[type]).WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
-    }
+    ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
+                         .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+
     return result;
 }
 
@@ -670,19 +644,22 @@ static void ViewportSurfaceDrawTileSideBottom(
         }
 
         // Tunnels
-        uint8_t tunnelType = tunnelArray[tunnelIndex].type;
-        uint8_t tunnelHeight = _tunnelHeights[tunnelType][0];
+        auto tunnelType = tunnelArray[tunnelIndex].type;
+        auto td = kTunnels[EnumValue(tunnelType)];
+        uint8_t tunnelHeight = td.height;
         int16_t zOffset = curHeight;
 
+        // When dealing with flat land but a sloped track, we fall back to the non-sloped variant.
         if ((zOffset + tunnelHeight) > neighbourCornerHeight1 || (zOffset + tunnelHeight) > cornerHeight1)
         {
-            tunnelType = Byte97B5B0[tunnelType];
+            tunnelType = td.lowClearanceAlternative;
+            td = kTunnels[EnumValue(tunnelType)];
         }
 
         zOffset *= 16;
 
-        int16_t boundBoxOffsetZ = zOffset + _boundBoxZOffsets[tunnelType];
-        int8_t boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
+        int16_t boundBoxOffsetZ = zOffset + td.boundBoxZOffset;
+        int8_t boundBoxLength = td.boundBoxLength * 16;
         if (boundBoxOffsetZ < 16)
         {
             boundBoxOffsetZ += 16;
@@ -691,12 +668,11 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         auto imageId = GetTunnelImage(edgeObject, tunnelType, edge);
         PaintAddImageAsParent(
-            session, imageId, { offset, zOffset },
-            { { 0, 0, boundBoxOffsetZ }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
+            session, imageId, { offset, zOffset }, { { 0, 0, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
         boundBoxOffsetZ = curHeight * COORDS_Z_PER_TINY_Z;
-        boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
-        boundBoxOffsetZ += _boundBoxZOffsets[tunnelType];
+        boundBoxLength = td.boundBoxLength * 16;
+        boundBoxOffsetZ += td.boundBoxZOffset;
         if (boundBoxOffsetZ == 0)
         {
             boundBoxOffsetZ += 16;
@@ -706,10 +682,9 @@ static void ViewportSurfaceDrawTileSideBottom(
         imageId = GetTunnelImage(edgeObject, tunnelType, edge).WithIndexOffset(1);
         PaintAddImageAsParent(
             session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z },
-            { { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ },
-              { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
+            { { tunnelTopBoundBoxOffset, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
-        curHeight += _tunnelHeights[tunnelType][0];
+        curHeight += td.height;
         tunnelIndex++;
     }
 }

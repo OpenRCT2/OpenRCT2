@@ -174,11 +174,11 @@ static void PaintMonorailCyclesTrackFlat(
 
     if (direction & 1)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
     else
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     MetalASupportsPaintSetup(
@@ -218,7 +218,7 @@ static void PaintMonorailCyclesStation(
     }
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
@@ -233,7 +233,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
-    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TUNNEL_0, direction, trackSequence);
+    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TunnelType::StandardFlat, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -367,22 +367,22 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     switch (trackSequence)
@@ -481,7 +481,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)
@@ -502,7 +502,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)
@@ -599,7 +599,7 @@ static void PaintMonorailCyclesTrackSBendRight(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)
@@ -620,7 +620,7 @@ static void PaintMonorailCyclesTrackSBendRight(
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
         }
 
         switch (trackSequence)

@@ -73,7 +73,7 @@ static void PaintFacility(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 }
 
 /* 0x00762D44 */

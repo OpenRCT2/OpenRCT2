@@ -1367,27 +1367,6 @@ void TrackPaintUtilRightQuarterTurn5TilesPaint3(
     PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size);
 }
 
-void TrackPaintUtilRightQuarterTurn5TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-}
-
 void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence)
 {
@@ -1635,72 +1614,6 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint4(
     PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size);
 }
 
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0, uint8_t tunnelType3)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, tunnelType0);
-    }
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, tunnelType3);
-    }
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, tunnelType3);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, tunnelType0);
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0, uint8_t tunnelType3)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, tunnelType0);
-    }
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, tunnelType3);
-    }
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, tunnelType3);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, tunnelType0);
-    }
-}
-
 static constexpr int8_t left_quarter_turn_3_tiles_sprite_map[] = {
     2,
     -1,
@@ -1804,30 +1717,6 @@ void TrackPaintUtilLeftQuarterTurn3TilesPaintWithHeightOffset(
     }
 }
 
-void TrackPaintUtilLeftQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, uint8_t tunnelType, Direction direction, uint8_t trackSequence)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-
-    if (direction == 2 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-
-    if (direction == 3 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-}
-
 void TrackPaintUtilLeftQuarterTurn1TilePaint(
     PaintSession& session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
     const ImageId colourFlags, const uint32_t* sprites)
@@ -1851,33 +1740,6 @@ void TrackPaintUtilLeftQuarterTurn1TilePaint(
         case 3:
             PaintAddImageAsParent(
                 session, imageId, { 0, 0, height }, { { 6, 6, height + boundBoxZOffset }, { 24, 24, thickness } });
-            break;
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
-    uint8_t endTunnel)
-{
-    TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, (direction + 3) % 4, baseHeight, endOffset, endTunnel, startOffset, startTunnel);
-}
-
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
-    uint8_t endTunnel)
-{
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, baseHeight + startOffset, startTunnel);
-            break;
-        case 2:
-            PaintUtilPushTunnelRight(session, baseHeight + endOffset, endTunnel);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, baseHeight + startOffset, startTunnel);
-            PaintUtilPushTunnelLeft(session, baseHeight + endOffset, endTunnel);
             break;
     }
 }

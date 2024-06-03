@@ -15,6 +15,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "Boundbox.h"
+#include "tile_element/Paint.Tunnel.h"
 
 #include <mutex>
 #include <thread>
@@ -117,17 +118,9 @@ struct SupportHeight
     uint8_t pad;
 };
 
-struct TunnelEntry
-{
-    uint8_t height;
-    uint8_t type;
-};
-
 // The maximum size must be kMaximumMapSizeTechnical multiplied by 2 because
 // the quadrant index is based on the x and y components combined.
 static constexpr int32_t MaxPaintQuadrants = kMaximumMapSizeTechnical * 2;
-
-constexpr uint8_t kTunnelMaxCount = 65;
 
 /**
  * A pool of PaintEntry instances that can be rented out.
@@ -331,8 +324,6 @@ inline PaintStruct* PaintAddImageAsParentRotated(
 {
     return PaintAddImageAsParentRotated(session, direction, imageId, offset, { offset, boundBoxSize });
 }
-
-void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type);
 
 bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId imageId, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(PaintSession& session, const ImageId image_id, int32_t x, int32_t y);

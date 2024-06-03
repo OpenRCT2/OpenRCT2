@@ -448,16 +448,9 @@ void TrackPaintUtilRightQuarterTurn5TilesPaint2(
 void TrackPaintUtilRightQuarterTurn5TilesPaint3(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[][5]);
-void TrackPaintUtilRightQuarterTurn5TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType);
+
 void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence);
-void TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0,
-    uint8_t tunnelType3);
-void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0,
-    uint8_t tunnelType3);
 void TrackPaintUtilRightQuarterTurn3TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
@@ -474,16 +467,13 @@ void TrackPaintUtilRightQuarterTurn3TilesPaint3(
 void TrackPaintUtilRightQuarterTurn3TilesPaint4(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[4][3]);
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType);
+
 void TrackPaintUtilLeftQuarterTurn3TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3]);
 void TrackPaintUtilLeftQuarterTurn3TilesPaintWithHeightOffset(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset);
-void TrackPaintUtilLeftQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, uint8_t tunnelType, Direction direction, uint8_t trackSequence);
 void TrackPaintUtilLeftQuarterTurn1TilePaint(
     PaintSession& session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
     const ImageId colourFlags, const uint32_t* sprites);
@@ -523,13 +513,6 @@ void TrackPaintUtilDiagTilesPaint(
 void TrackPaintUtilDiagTilesPaintExtra(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], MetalSupportType supportType);
-
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
-    uint8_t endTunnel);
-void TrackPaintUtilRightQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
-    uint8_t endTunnel);
 
 void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence);
 

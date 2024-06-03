@@ -427,11 +427,11 @@ static void PaintMonorailTrackFlat(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -483,11 +483,11 @@ static void PaintMonorailStation(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
@@ -517,16 +517,16 @@ static void PaintMonorailTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareSlopeStart);
             break;
     }
 
@@ -562,16 +562,16 @@ static void PaintMonorailTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
             break;
     }
 
@@ -607,16 +607,16 @@ static void PaintMonorailTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareFlat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::_14);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::_14);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareFlat);
             break;
     }
 
@@ -676,22 +676,22 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -768,7 +768,7 @@ static void PaintMonorailTrackSBendLeft(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
         }
 
         switch (trackSequence)
@@ -789,7 +789,7 @@ static void PaintMonorailTrackSBendLeft(
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
         }
 
         switch (trackSequence)
@@ -864,7 +864,7 @@ static void PaintMonorailTrackSBendRight(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
         }
 
         switch (trackSequence)
@@ -885,7 +885,7 @@ static void PaintMonorailTrackSBendRight(
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
         }
 
         switch (trackSequence)
@@ -938,7 +938,7 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
 
     switch (trackSequence)
     {
@@ -1020,11 +1020,11 @@ static void PaintMonorailTrackLeftEighthToDiag(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;
@@ -1096,11 +1096,11 @@ static void PaintMonorailTrackRightEighthToDiag(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
     }
 
     int32_t blockedSegments = 0;

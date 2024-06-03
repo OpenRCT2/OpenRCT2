@@ -87,7 +87,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             }
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -121,7 +121,7 @@ namespace SingleRailRC
             { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -192,11 +192,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -269,11 +269,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 56, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -346,11 +346,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -435,11 +435,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -524,11 +524,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -601,11 +601,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -738,7 +738,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
@@ -787,10 +787,10 @@ namespace SingleRailRC
         switch (direction)
         {
             case 1:
-                PaintUtilPushTunnelRight(session, height + 48, TUNNEL_2);
+                PaintUtilPushTunnelRight(session, height + 48, TunnelType::StandardSlopeEnd);
                 break;
             case 2:
-                PaintUtilPushTunnelLeft(session, height + 48, TUNNEL_2);
+                PaintUtilPushTunnelLeft(session, height + 48, TunnelType::StandardSlopeEnd);
                 break;
         }
         PaintUtilSetSegmentSupportHeight(
@@ -830,7 +830,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 48, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height + 48, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -874,7 +874,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -951,10 +951,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1011,7 +1011,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -1159,10 +1159,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1219,7 +1219,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -1382,7 +1382,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -3904,7 +3904,7 @@ namespace SingleRailRC
         {
             MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -3947,7 +3947,7 @@ namespace SingleRailRC
         {
             MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4006,11 +4006,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4056,11 +4056,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4106,11 +4106,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4156,11 +4156,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4226,7 +4226,7 @@ namespace SingleRailRC
         {
             MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -5766,7 +5766,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -5855,10 +5855,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5923,7 +5923,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6091,10 +6091,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6155,7 +6155,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -6334,7 +6334,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -6529,7 +6529,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6579,10 +6579,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6635,7 +6635,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6692,10 +6692,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6764,7 +6764,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -6928,10 +6928,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6984,7 +6984,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -7148,10 +7148,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7222,7 +7222,8 @@ namespace SingleRailRC
                     { 0, 0, height }, { { 2, 2, height + 99 }, { 28, 28, 1 } });
                 break;
         }
-        TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
+        TrackPaintUtilLeftQuarterTurn1TileTunnel(
+            session, direction, height, -8, TunnelType::StandardSlopeStart, +56, TunnelType::StandardSlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
@@ -7266,7 +7267,8 @@ namespace SingleRailRC
                     { 0, 0, height }, { { 2, 2, height + 99 }, { 28, 28, 1 } });
                 break;
         }
-        TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
+        TrackPaintUtilRightQuarterTurn1TileTunnel(
+            session, direction, height, -8, TunnelType::StandardSlopeStart, +56, TunnelType::StandardSlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
@@ -7427,11 +7429,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7474,11 +7476,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7521,11 +7523,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7568,11 +7570,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7640,11 +7642,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7684,11 +7686,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7728,11 +7730,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7772,11 +7774,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7844,11 +7846,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7888,11 +7890,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7949,11 +7951,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7996,11 +7998,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -8043,11 +8045,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -8090,11 +8092,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -8166,7 +8168,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -8216,10 +8218,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8272,7 +8274,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -8329,10 +8331,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8401,7 +8403,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -8565,10 +8567,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8621,7 +8623,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -8785,10 +8787,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8853,7 +8855,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -8969,10 +8971,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9021,7 +9023,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -9137,10 +9139,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9192,7 +9194,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -9272,10 +9274,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9319,10 +9321,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9402,7 +9404,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -9453,7 +9455,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -9533,10 +9535,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9580,10 +9582,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9663,7 +9665,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -9740,7 +9742,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -9891,10 +9893,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9938,10 +9940,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10092,7 +10094,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -10142,7 +10144,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -10300,10 +10302,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10347,10 +10349,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10508,7 +10510,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -10601,7 +10603,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -10698,10 +10700,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_INVERTED_3);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::InvertedFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10769,7 +10771,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -10866,10 +10868,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_INVERTED_3);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::InvertedFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_INVERTED_3);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10932,7 +10934,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -11033,7 +11035,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -11072,7 +11074,7 @@ namespace SingleRailRC
         {
             MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -11108,7 +11110,7 @@ namespace SingleRailRC
                 break;
         }
         TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
@@ -11150,7 +11152,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -11254,10 +11256,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 24, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 24, TunnelType::StandardSlopeEnd);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 24, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 24, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11303,7 +11305,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -11407,10 +11409,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11457,7 +11459,7 @@ namespace SingleRailRC
         {
             MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -11498,7 +11500,7 @@ namespace SingleRailRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -11576,10 +11578,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11620,7 +11622,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -11698,10 +11700,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11758,7 +11760,7 @@ namespace SingleRailRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -11928,10 +11930,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11974,7 +11976,7 @@ namespace SingleRailRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -12143,10 +12145,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -12205,7 +12207,7 @@ namespace SingleRailRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12366,7 +12368,7 @@ namespace SingleRailRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, TunnelType::StandardFlat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
@@ -12412,7 +12414,7 @@ namespace SingleRailRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12581,7 +12583,7 @@ namespace SingleRailRC
                     0xFFFF, 0);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, TunnelType::StandardFlat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
@@ -12649,7 +12651,7 @@ namespace SingleRailRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12722,10 +12724,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -12789,7 +12791,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12862,10 +12864,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -12938,7 +12940,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 25, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -13073,10 +13075,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -13125,7 +13127,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 25, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -13261,10 +13263,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -13382,7 +13384,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -13443,7 +13445,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -13494,10 +13496,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13554,7 +13556,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -13605,10 +13607,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13662,7 +13664,7 @@ namespace SingleRailRC
                     session, kSupportType, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -13716,10 +13718,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13773,7 +13775,7 @@ namespace SingleRailRC
                     session, kSupportType, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -13827,10 +13829,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13879,7 +13881,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -14091,7 +14093,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -14139,7 +14141,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -14351,7 +14353,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -14472,11 +14474,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::StandardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -14561,11 +14563,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::StandardFlat);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -15349,7 +15351,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -15528,7 +15530,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -15841,7 +15843,7 @@ namespace SingleRailRC
 
                 if (direction == 1 || direction == 2)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
                 }
 
                 PaintUtilSetSegmentSupportHeight(
@@ -16021,7 +16023,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 1)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -17677,7 +17679,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -17856,7 +17858,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -18168,7 +18170,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 1 || direction == 2)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -18347,7 +18349,7 @@ namespace SingleRailRC
                 MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 1)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TunnelType::StandardSlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,

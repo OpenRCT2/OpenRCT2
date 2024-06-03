@@ -143,7 +143,7 @@ static void PaintGoKartsTrackFlat(
         imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
 
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
     else
     {
@@ -153,7 +153,7 @@ static void PaintGoKartsTrackFlat(
         imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
 
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
 
     WoodenASupportsPaintSetupRotated(
@@ -200,16 +200,16 @@ static void PaintGoKartsTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareSlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareSlopeStart);
             break;
     }
 
@@ -254,16 +254,16 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareSlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareSlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
             break;
     }
 
@@ -309,16 +309,16 @@ static void PaintGoKartsTrack25DegUpToFlat(
     {
         case 0:
 
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareFlat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::_14);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::_14);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareFlat);
             break;
     }
 
@@ -393,13 +393,13 @@ static void PaintGoKartsStation(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
 
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
     else
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
 
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
 
     if (direction == 0 || direction == 2)
@@ -514,14 +514,14 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
             break;
         case 2:
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
             break;
         case 3:
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
             break;
     }
 
