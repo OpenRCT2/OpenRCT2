@@ -133,15 +133,7 @@ namespace OpenRCT2::Scripting
 
         void paused_set(const bool& value)
         {
-#    ifndef DISABLE_NETWORK
-            if (NetworkGetMode() != NETWORK_MODE_NONE)
-            {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
-                duk_error(
-                    ctx, DUK_ERR_ERROR, "Setting paused state is not network safe. Use the pausetoggle game action instead.");
-                return;
-            }
-#    endif
+            ThrowIfGameStateNotMutable();
             if (value != GameIsPaused())
                 PauseToggle();
         }
