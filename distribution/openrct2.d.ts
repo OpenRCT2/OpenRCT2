@@ -2322,19 +2322,90 @@ declare global {
 
     enum TrackSlope {
         None = 0,
+        Up12 = 1,
         Up25 = 2,
+        Up42 = 3,
         Up60 = 4,
+        Down25 = 5,
         Down25 = 6,
+        Down42 = 7,
         Down60 = 8,
+        Up75 = 9,
         Up90 = 10,
-        Down90 = 18
+        Up105 = 11,
+        Up120 = 12,
+        Up135 = 13,
+        Up150 = 14,
+        Up165 = 15,
+        Inverted = 16,
+        Down75 = 17,
+        Down90 = 18,
+        Down105 = 19,
+        Down120 = 20,
+        Down135 = 21,
+        Down150 = 22,
+        Down165 = 23,
+        UpRightCorkscrew0 = 24,
+        UpRightCorkscrew1 = 25,
+        UpRightCorkscrew2 = 26,
+        UpRightCorkscrew3 = 27,
+        UpRightCorkscrew4 = 28,
+        DownRightCorkscrew0 = 29,
+        DownRightCorkscrew1 = 30,
+        DownRightCorkscrew2 = 31,
+        DownRightCorkscrew3 = 32,
+        DownRightCorkscrew4 = 33,
+        UpLeftCorkscrew0 = 34,
+        UpLeftCorkscrew1 = 35,
+        UpLeftCorkscrew2 = 36,
+        UpLeftCorkscrew3 = 37,
+        UpLeftCorkscrew4 = 38,
+        DownLeftCorkscrew0 = 39,
+        DownLeftCorkscrew1 = 40,
+        DownLeftCorkscrew2 = 41,
+        DownLeftCorkscrew3 = 42,
+        DownLeftCorkscrew4 = 43,
+        UpLargeHalfHelix = 44,
+        UpSmallHalfHelix = 45,
+        DownLargeHalfHelix = 46,
+        DownSmallHalfHelix = 47,
+        UpLargeQuarterHelix = 48,
+        DownLargeQuarterHelix = 49,
+        Up8 = 50,
+        Up16 = 51,
+        Up50 = 52,
+        Down8 = 53,
+        Down16 = 54,
+        Down50 = 55,
+        Down25Inverting = 56,
+        Down42Inverting = 57,
+        Down60Inverting = 58,
+        UpSmallQuarterHelix = 59
     }
 
     enum TrackBanking {
         None = 0,
+        Left22 = 1,
+        Left45 = 2,
         Left = 2,
+        Right22 = 3,
+        Right45 = 4,
         Right = 4,
-        UpsideDown = 15
+        Left67 = 5,
+        Left90 = 6,
+        Left112 = 7,
+        Left135 = 8,
+        Left157 = 9,
+        Right67 = 10,
+        Right90 = 11,
+        Right112 = 12,
+        Right135 = 13,
+        Right157 = 14,
+        UpsideDown = 15,
+        InvertedLeft22 = 16,
+        InvertedLeft45 = 17,
+        InvertedRight22 = 18,
+        InvertedRight45 = 19
     }
 
     type TrackCurveType = "straight" | "left" | "right";
@@ -2461,8 +2532,6 @@ declare global {
          */
         vehicleObject: number;
 
-        spriteType: number;
-
         /**
          * How many seats the car has, i.e. the capacity.
          */
@@ -2508,9 +2577,35 @@ declare global {
         velocity: number;
 
         /**
-         * The current tilt of the car in the X/Y axis.
+         * The current value that represents one full revolution of the entity. The
+         * entity's rotation is yaw*360/numYawValues;
          */
-        bankRotation: number;
+        readonly numYawValues: number;
+
+        /**
+         * The current rotation of the entity on the Z axis.
+         */
+        yaw: number;
+
+        /**
+         * @deprecated since version 93. Use pitch instead.
+         */
+        spriteType: TrackSlope;
+
+        /**
+         * The current pitch of the car on the X/Y axis.
+         */
+        pitch: TrackSlope;
+
+        /**
+         * @deprecated since version 93. Use roll instead.
+         */
+        bankRotation: TrackBanking;
+
+        /**
+         * The current bank of the car in the X/Y axis.
+         */
+        roll: TrackBanking;
 
         /**
          * Whether the car sprite is reversed or not.
