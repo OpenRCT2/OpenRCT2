@@ -2325,7 +2325,7 @@ declare global {
         getSubpositions(subpositionType: number, direction: Direction): TrackSubposition[];
     }
 
-    enum VehiclePitch {
+    enum TrackSlope {
         None = 0,
         Up12 = 1,
         Up25 = 2,
@@ -2388,12 +2388,14 @@ declare global {
         UpSmallQuarterHelix = 59
     }
 
-    enum VehicleRoll {
+    enum TrackBanking {
         None = 0,
         Left22 = 1,
         Left45 = 2,
+        Left = 2,
         Right22 = 3,
         Right45 = 4,
+        Right = 4,
         Left67 = 5,
         Left90 = 6,
         Left112 = 7,
@@ -2409,25 +2411,6 @@ declare global {
         InvertedLeft45 = 17,
         InvertedRight22 = 18,
         InvertedRight45 = 19
-    }
-
-    enum TrackSlope {
-        None = 0,
-        Up25 = 2,
-        Up60 = 4,
-        Down25 = 6,
-        Down60 = 8,
-        Up90 = 10,
-        Down90 = 18
-    }
-
-    enum TrackBanking {
-        None = 0,
-        Left45 = 2,
-        Right45 = 4,
-        Left = 2,
-        Right = 4,
-        UpsideDown = 15
     }
 
     type TrackCurveType = "straight" | "left" | "right";
@@ -2612,22 +2595,22 @@ declare global {
         /**
          * @deprecated since version 93. Use pitch instead.
          */
-        spriteType: VehiclePitch;
+        spriteType: TrackSlope;
 
         /**
          * The current pitch of the car on the X/Y axis.
          */
-        pitch: VehiclePitch;
+        pitch: TrackSlope;
 
         /**
          * @deprecated since version 93. Use roll instead.
          */
-        bankRotation: VehicleRoll;
+        bankRotation: TrackBanking;
 
         /**
-         * The current roll of the car in the X/Y axis.
+         * The current bank of the car in the X/Y axis.
          */
-        roll: VehicleRoll;
+        roll: TrackBanking;
 
         /**
          * Whether the car sprite is reversed or not.

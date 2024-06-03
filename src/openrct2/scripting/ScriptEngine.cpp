@@ -525,7 +525,7 @@ public:
 void ScriptEngine::RegisterConstants()
 {
     ConstantBuilder builder(_context);
-    builder.Namespace("VehiclePitch")
+    builder.Namespace("TrackSlope")
         .Constant("None", EnumValue(TrackPitch::None))
         .Constant("Up12", EnumValue(TrackPitch::Up12))
         .Constant("Up25", EnumValue(TrackPitch::Up25))
@@ -586,8 +586,10 @@ void ScriptEngine::RegisterConstants()
         .Constant("Down42Inverting", EnumValue(TrackPitch::Down42Inverting))
         .Constant("Down60Inverting", EnumValue(TrackPitch::Down60Inverting))
         .Constant("UpSmallQuarterHelix", EnumValue(TrackPitch::UpSmallQuarterHelix));
-    builder.Namespace("VehicleRoll")
+    builder.Namespace("TrackBanking")
         .Constant("None", EnumValue(TrackRoll::None))
+        .Constant("Left", EnumValue(TrackRoll::Left45))
+        .Constant("Right", EnumValue(TrackRoll::Right45))
         .Constant("Left22", EnumValue(TrackRoll::Left22))
         .Constant("Left45", EnumValue(TrackRoll::Left45))
         .Constant("Right22", EnumValue(TrackRoll::Right22))
@@ -607,20 +609,6 @@ void ScriptEngine::RegisterConstants()
         .Constant("InvertedLeft45", EnumValue(TrackRoll::InvertedLeft45))
         .Constant("InvertedRight22", EnumValue(TrackRoll::InvertedRight22))
         .Constant("InvertedRight45", EnumValue(TrackRoll::InvertedRight45));
-    builder.Namespace("TrackSlope")
-        .Constant("None", EnumValue(TrackPitch::None))
-        .Constant("Up25", EnumValue(TrackPitch::Up25))
-        .Constant("Up60", EnumValue(TrackPitch::Up60))
-        .Constant("Down25", EnumValue(TrackPitch::Down25))
-        .Constant("Down60", EnumValue(TrackPitch::Down60))
-        .Constant("Up90", EnumValue(TrackPitch::Up90))
-        .Constant("Inverted", EnumValue(TrackPitch::Inverted))
-        .Constant("Down90", EnumValue(TrackPitch::Down90));
-    builder.Namespace("TrackBanking")
-        .Constant("None", EnumValue(TrackRoll::None))
-        .Constant("Left", EnumValue(TrackRoll::Left45))
-        .Constant("Right", EnumValue(TrackRoll::Right45))
-        .Constant("UpsideDown", EnumValue(TrackRoll::UpsideDown));
 }
 
 void ScriptEngine::RefreshPlugins()
