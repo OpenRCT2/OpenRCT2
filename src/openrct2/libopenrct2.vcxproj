@@ -369,7 +369,7 @@
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\tile_element\Segment.h" />
-    <ClInclude Include="paint\tile_element\Tunnel.h" />
+    <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
     <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\track\Support.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
@@ -888,7 +888,7 @@
     <ClCompile Include="paint\tile_element\Paint.Surface.cpp" />
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Wall.cpp" />
-    <ClCompile Include="paint\tile_element\Tunnel.cpp" />
+    <ClCompile Include="paint\tile_element\Paint.Tunnel.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="park\Legacy.cpp" />

@@ -15,7 +15,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "Boundbox.h"
-#include "tile_element/Tunnel.h"
+#include "tile_element/Paint.Tunnel.h"
 
 #include <mutex>
 #include <thread>

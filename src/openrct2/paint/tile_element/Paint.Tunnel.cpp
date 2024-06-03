@@ -1,5 +1,5 @@
 
-#include "Tunnel.h"
+#include "Paint.Tunnel.h"
 
 #include "../Paint.h"
 
