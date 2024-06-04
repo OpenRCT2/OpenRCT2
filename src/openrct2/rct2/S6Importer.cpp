@@ -992,6 +992,7 @@ namespace OpenRCT2::RCT2
             dst->lift_hill_speed = src->LiftHillSpeed;
             dst->guests_favourite = src->GuestsFavourite;
             dst->lifecycle_flags = src->LifecycleFlags;
+            dst->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, true);
 
             for (uint8_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
@@ -1373,7 +1374,15 @@ namespace OpenRCT2::RCT2
                     }
                     else if (TrackTypeHasSpeedSetting(trackType))
                     {
-                        dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                        auto brakeSpeed = src2->GetBrakeBoosterSpeed() * kLegacyBrakeSpeedMultiplier;
+                        if (dst2->GetTrackType() == TrackElemType::Booster)
+                        {
+                            dst2->SetBrakeBoosterSpeed(GetAbsoluteBoosterSpeed(rideType, brakeSpeed));
+                        }
+                        else
+                        {
+                            dst2->SetBrakeBoosterSpeed(brakeSpeed);
+                        }
                     }
                     else if (trackType == TrackElemType::OnRidePhoto)
                     {
@@ -2005,7 +2014,23 @@ namespace OpenRCT2::RCT2
         dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->ScreamSoundId);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->NumLaps = src->NumLaps;
-        dst->brake_speed = src->BrakeSpeed;
+
+        dst->brake_speed = src->BrakeSpeed * kLegacyBrakeSpeedMultiplier;
+
+        auto rtd = GetRideTypeDescriptor(ride.Type);
+        dst->SetFlag(VehicleFlags::LegacyBoosterSpeed);
+        if ((dst->GetTrackType() == TrackElemType::PoweredLift)
+            || (dst->GetTrackType() == TrackElemType::Flat && rtd.HasFlag(RtdFlag::hasLsmBehaviourOnFlat)))
+        {
+            dst->BoosterAcceleration = GetRideTypeDescriptor(ride.Type).BoosterSettings.PoweredLiftAcceleration;
+            dst->SetFlag(VehicleFlags::OnPoweredLift);
+        }
+        else if (dst->GetTrackType() == TrackElemType::Booster)
+        {
+            dst->brake_speed = GetRideTypeDescriptor(ride.Type).GetAbsoluteBoosterSpeed(dst->brake_speed);
+            dst->BoosterAcceleration = GetRideTypeDescriptor(ride.Type).LegacyBoosterSettings.BoosterAcceleration;
+        }
+
         dst->lost_time_out = src->LostTimeOut;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->var_D3 = src->VarD3;

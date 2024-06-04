@@ -33,6 +33,7 @@ namespace OpenRCT2
     constexpr uint16_t kPeepNamesObjectsVersion = 39;
     constexpr uint16_t kWoodenRollerCoasterMediumLargeHalfLoopsVersion = 41;
     constexpr uint16_t kExtendedCorkscrewCoasterVersion = 42;
+    constexpr uint16_t UnifyBoosterSpeedVersion = 43;
 } // namespace OpenRCT2
 
 class ParkFileExporter

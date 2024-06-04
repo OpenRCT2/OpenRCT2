@@ -232,6 +232,37 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.brakeBoosterSpeed = element->GetBrakeBoosterSpeed();
         track.seatRotation = element->GetSeatRotation();
 
+        uint8_t trackFlags;
+        // This if-else block only applies to td6. New track design format will always encode speed and seat rotation.
+        if (TrackTypeHasSpeedSetting(track.type) && track.type != TrackElemType::BlockBrakes)
+        {
+            trackFlags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed();
+            if (track.type == TrackElemType::Booster)
+            {
+                trackFlags = ride.GetRideTypeDescriptor().GetRelativeBoosterSpeed(trackFlags);
+            }
+
+            // check to ensure the value is serialisable. This warning will not apply to new track design format.
+            bool tooHigh = trackFlags > kLegacyBrakeSpeedMask;
+            bool tooPrecise = trackFlags & 1;
+            if (tooPrecise || tooHigh)
+            {
+                warningMessage = STR_TRACK_DESIGN_SPEED_UNSERIALISABLE;
+            }
+            if (tooPrecise)
+            {
+                trackFlags += 1;
+            }
+            trackFlags = std::min<uint8_t>(trackFlags, kLegacyBrakeSpeedMask);
+
+            trackFlags /= kLegacyBrakeSpeedMultiplier;
+            trackFlags &= 0xF;
+        }
+        else
+        {
+            trackFlags = trackElement.element->AsTrack()->GetSeatRotation();
+        }
+
         // This warning will not apply to new track design format
         if (track.type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {

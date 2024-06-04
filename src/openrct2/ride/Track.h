@@ -19,8 +19,9 @@
 constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
 constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
-
-constexpr uint8_t kMaximumTrackSpeed = 30;
+constexpr uint8_t kLegacyBrakeSpeedMultiplier = 2;
+constexpr uint8_t kLegacyBrakeSpeedMask = 0b00011110;
+constexpr uint8_t kMaximumTrackSpeed = 0b00111111; // 2 high bits reserved for potential future behavior
 
 namespace OpenRCT2
 {
