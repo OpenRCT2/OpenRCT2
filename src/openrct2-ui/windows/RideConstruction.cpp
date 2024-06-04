@@ -47,6 +47,9 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
+constexpr int8_t kDefaultSpeedIncrement = 2;
+constexpr int8_t kDefaultMinimumSpeed = 2;
+
 using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
@@ -1336,9 +1339,10 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
-                        uint8_t brakesSpeed = *brakesSpeedPtr + 2;
-                        if (brakesSpeed <= kMaximumBrakeSpeed)
+                        auto trackSpeedMaximum = kMaximumTrackSpeed;
+                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                        uint8_t brakesSpeed = std::min<int16_t>(trackSpeedMaximum, _currentBrakeSpeed + trackSpeedIncrement);
+                        if (brakesSpeed != _currentBrakeSpeed)
                         {
                             if (_rideConstructionState == RideConstructionState::Selected)
                             {
@@ -1346,7 +1350,7 @@ static Widget _rideConstructionWidgets[] = {
                             }
                             else
                             {
-                                *brakesSpeedPtr = brakesSpeed;
+                                _currentBrakeSpeed = brakesSpeed;
                                 WindowRideConstructionUpdateActiveElements();
                             }
                         }
@@ -1362,9 +1366,14 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
-                        uint8_t brakesSpeed = *brakesSpeedPtr - 2;
-                        if (brakesSpeed >= 2)
+                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                        auto trackSpeedMinimum = kDefaultMinimumSpeed;
+                        if (GetGameState().Cheats.UnlockOperatingLimits)
+                        {
+                            trackSpeedMinimum = 0;
+                        }
+                        uint8_t brakesSpeed = std::max<int16_t>(trackSpeedMinimum, _currentBrakeSpeed - trackSpeedIncrement);
+                        if (brakesSpeed != _currentBrakeSpeed)
                         {
                             if (_rideConstructionState == RideConstructionState::Selected)
                             {
@@ -1372,7 +1381,7 @@ static Widget _rideConstructionWidgets[] = {
                             }
                             else
                             {
-                                *brakesSpeedPtr = brakesSpeed;
+                                _currentBrakeSpeed = brakesSpeed;
                                 WindowRideConstructionUpdateActiveElements();
                             }
                         }
