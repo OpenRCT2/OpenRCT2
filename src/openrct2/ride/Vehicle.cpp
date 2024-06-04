@@ -7110,9 +7110,9 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 && curRide.breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
             if (!hasBrakesFailure || curRide.mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
             {
-                auto brakeSpeed = ChooseBrakeSpeed();
+                auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
-                if ((brakeSpeed << 16) < _vehicleVelocityF64E08)
+                if ((brakeSpeed) < _vehicleVelocityF64E08)
                 {
                     acceleration = -_vehicleVelocityF64E08 * 16;
                 }
@@ -7128,11 +7128,11 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBooster(trackType))
         {
-            auto boosterSpeed = GetBoosterSpeed(curRide.type, brake_speed) << kTrackSpeedShiftAmount;
+            auto boosterSpeed = GetUnifiedBoosterSpeed(curRide.type, brake_speed) << kTrackSpeedShiftAmount;
             if (boosterSpeed > _vehicleVelocityF64E08)
             {
                 acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration
-                    << kBoosterAccelerationShiftAmount; //_vehicleVelocityF64E08 * 1.2;
+                    << kBoosterAccelerationShiftAmount;
             }
         }
         else if (rideEntry.flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps > 0)
@@ -7143,7 +7143,8 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         if ((trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RtdFlag::hasLsmBehaviourOnFlat))
             || (trackType == TrackElemType::PoweredLift))
         {
-            acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration << kBoosterAccelerationShiftAmount;
+            acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration
+                << kBoosterAccelerationShiftAmount;
         }
         if (trackType == TrackElemType::BrakeForDrop)
         {
