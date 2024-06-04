@@ -7511,15 +7511,6 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             }
         }
 
-        if (trackType == TrackElemType::Booster)
-        {
-            auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
-            if (boosterSpeed < _vehicleVelocityF64E08)
-            {
-                acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration << 16;
-            }
-        }
-
         uint16_t newTrackProgress = track_progress - 1;
         if (newTrackProgress == 0xFFFF)
         {
