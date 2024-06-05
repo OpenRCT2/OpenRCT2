@@ -105,7 +105,7 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    if (_brakeSpeed > kMaximumBrakeSpeed)
+    if (_brakeSpeed > kMaximumTrackSpeed)
     {
         LOG_WARNING("Invalid speed for track placement, speed = %d", _brakeSpeed);
         return GameActions::Result(
