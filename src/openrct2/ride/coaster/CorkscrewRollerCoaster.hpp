@@ -9923,8 +9923,8 @@ static void CorkscrewRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_kCorkscrewRcBlockBrakeImages[direction][isClosed]), { 0, 0, height },
-        { { 0, 6, height }, { 32, 20, 3 } });
+        session, direction, session.TrackColours.WithIndex(_kCorkscrewRcBlockBrakeImages[direction][isClosed]),
+        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);

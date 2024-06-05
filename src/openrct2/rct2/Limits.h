@@ -45,5 +45,5 @@ namespace RCT2::Limits
     constexpr uint8_t MaxWaterObjects = 1;
     constexpr uint8_t MaxScenarioTextObjects = 1;
     constexpr uint8_t RideTypeCount = 91;
-    constexpr uint16_t MaxMapSize = 256;
+    constexpr uint16_t kMaxMapSize = 256;
 } // namespace RCT2::Limits
