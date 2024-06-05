@@ -191,7 +191,7 @@ namespace OpenRCT2::Scripting
         {
             if (value.type() == DukValue::Type::NUMBER)
             {
-                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(value.as_int());
+                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(value.as_uint());
             }
             else
             {

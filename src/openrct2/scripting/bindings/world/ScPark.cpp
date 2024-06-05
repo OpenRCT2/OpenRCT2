@@ -390,7 +390,7 @@ namespace OpenRCT2::Scripting
                 auto dukSubject = message["subject"];
                 if (dukSubject.type() == DukValue::Type::NUMBER)
                 {
-                    assoc = static_cast<uint32_t>(dukSubject.as_int());
+                    assoc = static_cast<uint32_t>(dukSubject.as_uint());
                 }
             }
             News::AddItemToQueue(type, text.c_str(), assoc);

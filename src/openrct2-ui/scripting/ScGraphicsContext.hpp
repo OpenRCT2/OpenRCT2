@@ -75,7 +75,7 @@ namespace OpenRCT2::Scripting
         void colour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _colour = static_cast<colour_t>(value.as_int());
+                _colour = static_cast<colour_t>(value.as_uint());
             else
                 _colour = {};
         }
@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
         void secondaryColour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _secondaryColour = static_cast<colour_t>(value.as_int());
+                _secondaryColour = static_cast<colour_t>(value.as_uint());
             else
                 _secondaryColour = {};
         }
@@ -101,7 +101,7 @@ namespace OpenRCT2::Scripting
         void tertiaryColour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _tertiaryColour = static_cast<colour_t>(value.as_int());
+                _tertiaryColour = static_cast<colour_t>(value.as_uint());
             else
                 _tertiaryColour = {};
         }
@@ -114,7 +114,7 @@ namespace OpenRCT2::Scripting
         void paletteId_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _paletteId = static_cast<uint8_t>(value.as_int());
+                _paletteId = static_cast<uint8_t>(value.as_uint());
             else
                 _paletteId = {};
         }

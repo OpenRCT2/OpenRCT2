@@ -83,8 +83,8 @@ namespace OpenRCT2::Scripting
         result.type = FromDuk<Research::EntryType>(d["type"]);
         auto baseRideType = d["rideType"];
         if (baseRideType.type() == DukValue::NUMBER)
-            result.baseRideType = baseRideType.as_int();
-        result.entryIndex = d["object"].as_int();
+            result.baseRideType = baseRideType.as_uint();
+        result.entryIndex = d["object"].as_uint();
         return result;
     }
 

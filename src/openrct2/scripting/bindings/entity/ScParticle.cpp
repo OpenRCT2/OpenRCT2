@@ -183,11 +183,11 @@ namespace OpenRCT2::Scripting
             }
             if (value["timeToLive"].type() == DukValue::Type::NUMBER)
             {
-                entity->time_to_live = value["timeToLive"].as_int();
+                entity->time_to_live = value["timeToLive"].as_uint();
             }
             if (value["frame"].type() == DukValue::Type::NUMBER)
             {
-                entity->frame = std::clamp<uint16_t>(value["frame"].as_int(), 0, kCrashedVehicleParticleNumberSprites - 1)
+                entity->frame = std::clamp<uint16_t>(value["frame"].as_uint(), 0, kCrashedVehicleParticleNumberSprites - 1)
                     * kCrashedVehicleParticleFrameToSprite;
             }
             if (value["crashParticleType"].type() == DukValue::Type::STRING)

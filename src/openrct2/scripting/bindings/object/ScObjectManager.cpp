@@ -105,7 +105,7 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
                 if (p2.type() != DukValue::NUMBER)
                     throw DukException() << "Expected number for 'index'.";
 
-                auto index = static_cast<size_t>(p2.as_int());
+                auto index = static_cast<size_t>(p2.as_uint());
                 auto limit = getObjectTypeLimit(installedObject->Type);
                 if (index < limit)
                 {
@@ -155,7 +155,7 @@ void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
             if (p2.type() != DukValue::NUMBER)
                 throw DukException() << "'index' is invalid.";
 
-            auto objIndex = p2.as_int();
+            auto objIndex = p2.as_uint();
             auto obj = objectManager.GetLoadedObject(*objType, objIndex);
             if (obj != nullptr)
             {

@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (dukImage.type() == DukValue::Type::OBJECT)
             {
-                result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage["frameBase"].as_int()));
+                result.imageFrameBase = ImageId::FromUInt32(dukImage["frameBase"].as_uint());
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
                 result.imageFrameDuration = AsOrDefault(dukImage["frameDuration"], 0);
 
@@ -305,8 +305,8 @@ namespace OpenRCT2::Ui::Windows
                     ColourWithFlags c = { COLOUR_BLACK };
                     if (w.type() == DukValue::Type::NUMBER)
                     {
-                        colour_t colour = w.as_int() & ~kLegacyColourFlagTranslucent;
-                        auto isTranslucent = (w.as_int() & kLegacyColourFlagTranslucent);
+                        colour_t colour = w.as_uint() & ~kLegacyColourFlagTranslucent;
+                        auto isTranslucent = (w.as_uint() & kLegacyColourFlagTranslucent);
                         c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
                         c.flags = (isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0);
                     }

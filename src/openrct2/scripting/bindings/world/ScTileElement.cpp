@@ -1662,7 +1662,7 @@ namespace OpenRCT2::Scripting
             if (value.type() == DukValue::Type::NUMBER)
             {
                 el->SetSloped(true);
-                el->SetSlopeDirection(value.as_int());
+                el->SetSlopeDirection(value.as_uint());
             }
             else
             {
@@ -1715,7 +1715,7 @@ namespace OpenRCT2::Scripting
             if (value.type() == DukValue::Type::NUMBER)
             {
                 el->SetHasQueueBanner(true);
-                el->SetQueueBannerDirection(value.as_int());
+                el->SetQueueBannerDirection(value.as_uint());
             }
             else
             {
@@ -1865,7 +1865,7 @@ namespace OpenRCT2::Scripting
         {
             if (value.type() == DukValue::Type::NUMBER)
             {
-                auto addition = value.as_int();
+                auto addition = value.as_uint();
                 if (addition >= 0 && addition <= 254)
                 {
                     el->SetAdditionEntryIndex(addition);

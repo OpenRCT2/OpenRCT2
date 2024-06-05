@@ -160,13 +160,13 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         auto dukMinApiVersion = dukMetadata["minApiVersion"];
         if (dukMinApiVersion.type() == DukValue::Type::NUMBER)
         {
-            metadata.MinApiVersion = dukMinApiVersion.as_int();
+            metadata.MinApiVersion = dukMinApiVersion.as_uint();
         }
 
         auto dukTargetApiVersion = dukMetadata["targetApiVersion"];
         if (dukTargetApiVersion.type() == DukValue::Type::NUMBER)
         {
-            metadata.TargetApiVersion = dukTargetApiVersion.as_int();
+            metadata.TargetApiVersion = dukTargetApiVersion.as_uint();
         }
         else
         {

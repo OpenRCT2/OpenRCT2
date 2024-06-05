@@ -187,7 +187,7 @@ namespace OpenRCT2::Scripting
             {
                 if (id.type() == DukValue::Type::NUMBER)
                 {
-                    WindowCloseByNumber(cls, id.as_int());
+                    WindowCloseByNumber(cls, id.as_uint());
                 }
                 else
                 {
@@ -205,7 +205,7 @@ namespace OpenRCT2::Scripting
         {
             if (a.type() == DukValue::Type::NUMBER)
             {
-                auto index = a.as_int();
+                auto index = a.as_uint();
                 auto i = 0;
                 for (const auto& w : g_window_list)
                 {
