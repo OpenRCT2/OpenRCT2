@@ -118,7 +118,7 @@ namespace RCT1
 
     std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)
     {
-        static constexpr std::string_view map[Limits::NumTerrainSurfaces] =
+        static constexpr std::string_view map[Limits::kNumTerrainSurfaces] =
         {
             "rct2.terrain_surface.grass",
             "rct2.terrain_surface.sand",
@@ -686,13 +686,13 @@ namespace RCT1
 
         if (rct1VehicleType == VehicleType::HeartlineTwisterCars)
         {
-            return vehicleSubEntry == HEARTLINE_TWISTER_FORWARDS ? 0 : 1;    
+            return vehicleSubEntry == HEARTLINE_TWISTER_FORWARDS ? 0 : 1;
         }
         if (rct1VehicleType == VehicleType::HeartlineTwisterCarsReversed)
         {
-            return vehicleSubEntry == HEARTLINE_TWISTER_BACKWARDS ? 0 : 1;    
+            return vehicleSubEntry == HEARTLINE_TWISTER_BACKWARDS ? 0 : 1;
         }
-    
+
         return map[vehicleSubEntry];
     }
 
@@ -1255,7 +1255,7 @@ namespace RCT1
 
         if (wallType < std::size(map))
             return map[wallType];
-        
+
         return -1;
     }
 
