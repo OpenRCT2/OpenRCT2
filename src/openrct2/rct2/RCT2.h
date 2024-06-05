@@ -1003,8 +1003,8 @@ namespace RCT2
         RCT12RideMeasurement RideMeasurements[8];
         uint32_t NextGuestIndex;
         uint16_t GrassAndSceneryTilepos;
-        uint32_t PatrolAreas[(Limits::MaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
-        StaffMode StaffModes[Limits::MaxStaff + Limits::StaffTypeCount];
+        uint32_t PatrolAreas[(Limits::kMaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
+        StaffMode StaffModes[Limits::kMaxStaff + Limits::StaffTypeCount];
         uint8_t Pad13CA73E;
         uint8_t Pad13CA73F;
         uint8_t Byte13CA740;

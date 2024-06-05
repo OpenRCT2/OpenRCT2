@@ -871,8 +871,8 @@ namespace RCT1
         RCT12RideMeasurement RideMeasurements[8];
         uint32_t NextGuestIndex;
         uint16_t GameCounter5;
-        uint8_t PatrolAreas[(Limits::MaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
-        uint8_t StaffModes[Limits::MaxStaff];
+        uint8_t PatrolAreas[(Limits::kMaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
+        uint8_t StaffModes[Limits::kMaxStaff];
         uint8_t Unk1F431E[4];
         uint8_t Unk1F4322[8];
         uint8_t Climate;
