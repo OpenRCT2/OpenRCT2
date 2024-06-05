@@ -23,15 +23,15 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN = 16232;
+static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeOpen = 16232;
 static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN = 16233;
 static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED = 16234;
 static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED = 16235;
 
 static constexpr uint32_t _CorkscrewRCBlockBrakeImages[NumOrthogonalDirections][2] = {
-    { CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { kCorkscrewRcBlockBrakeSwNeOpen, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
     { CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
-    { CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { kCorkscrewRcBlockBrakeSwNeOpen, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
     { CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
