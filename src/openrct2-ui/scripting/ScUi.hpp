@@ -206,7 +206,7 @@ namespace OpenRCT2::Scripting
             if (a.type() == DukValue::Type::NUMBER)
             {
                 auto index = a.as_uint();
-                auto i = 0;
+                size_t i = 0;
                 for (const auto& w : g_window_list)
                 {
                     if (i == index)

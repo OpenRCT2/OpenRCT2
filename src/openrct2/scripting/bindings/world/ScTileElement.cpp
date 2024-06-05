@@ -1866,7 +1866,7 @@ namespace OpenRCT2::Scripting
             if (value.type() == DukValue::Type::NUMBER)
             {
                 auto addition = value.as_uint();
-                if (addition >= 0 && addition <= 254)
+                if (addition <= 254)
                 {
                     el->SetAdditionEntryIndex(addition);
                 }
