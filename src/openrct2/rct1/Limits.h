@@ -24,5 +24,5 @@ namespace RCT1::Limits
     constexpr uint32_t kNumLlCsgEntries = 69917;
     constexpr uint32_t kLlCsg1DatFileSize = 41402869;
     constexpr uint32_t kNumTerrainSurfaces = 16;
-    constexpr uint32_t NumTerrainEdges = 15;
+    constexpr uint32_t kNumTerrainEdges = 15;
 } // namespace RCT1::Limits

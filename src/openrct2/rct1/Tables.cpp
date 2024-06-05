@@ -142,7 +142,7 @@ namespace RCT1
 
     std::string_view GetTerrainEdgeObject(uint8_t terrainEdge)
     {
-        static constexpr std::string_view map[Limits::NumTerrainEdges] =
+        static constexpr std::string_view map[Limits::kNumTerrainEdges] =
         {
             "rct2.terrain_edge.rock",
             "rct1.terrain_edge.brick",
