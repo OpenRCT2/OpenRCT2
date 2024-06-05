@@ -26,13 +26,13 @@
 static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeOpen = 16232;
 static constexpr uint32_t kCorkscrewRcBlockBrakeNwSeOpen = 16233;
 static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeClosed = 16234;
-static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED = 16235;
+static constexpr uint32_t kCorkscrewRcBlockBrakeNwSeClosed = 16235;
 
 static constexpr uint32_t _CorkscrewRCBlockBrakeImages[NumOrthogonalDirections][2] = {
     { kCorkscrewRcBlockBrakeSwNeOpen, kCorkscrewRcBlockBrakeSwNeClosed },
-    { kCorkscrewRcBlockBrakeNwSeOpen, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+    { kCorkscrewRcBlockBrakeNwSeOpen, kCorkscrewRcBlockBrakeNwSeClosed },
     { kCorkscrewRcBlockBrakeSwNeOpen, kCorkscrewRcBlockBrakeSwNeClosed },
-    { kCorkscrewRcBlockBrakeNwSeOpen, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+    { kCorkscrewRcBlockBrakeNwSeOpen, kCorkscrewRcBlockBrakeNwSeClosed },
 };
 
 static constexpr const uint32_t CorkscrewRCDiagBrakeImages[NumOrthogonalDirections] = {
