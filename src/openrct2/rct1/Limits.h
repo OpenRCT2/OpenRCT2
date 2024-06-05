@@ -20,7 +20,7 @@ namespace RCT1::Limits
     constexpr uint8_t kMaxStaff = 116;
     constexpr uint16_t kMaxAnimatedObjects = 1000;
     constexpr uint8_t kMaxBanners = 100;
-    constexpr int32_t CoordsZStep = 4;
+    constexpr int32_t kCoordsZStep = 4;
     constexpr uint32_t Num_LL_CSG_Entries = 69917;
     constexpr uint32_t LL_CSG1_DAT_FileSize = 41402869;
     constexpr uint32_t NumTerrainSurfaces = 16;

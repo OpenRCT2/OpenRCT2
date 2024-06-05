@@ -885,7 +885,7 @@ namespace RCT1
                     auto tileStartLoc = TileCoordsXY{ src->StationStarts[i].x, src->StationStarts[i].y };
                     dstStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                dstStation.SetBaseZ(src->StationHeights[i] * Limits::CoordsZStep);
+                dstStation.SetBaseZ(src->StationHeights[i] * Limits::kCoordsZStep);
                 dstStation.Length = src->StationLengths[i];
                 dstStation.Depart = src->StationLights[i];
 
@@ -1321,7 +1321,7 @@ namespace RCT1
 
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
-            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * Limits::CoordsZStep };
+            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * Limits::kCoordsZStep };
             dst->NextFlags = src->NextFlags;
             dst->Var37 = src->Var37;
             dst->StepProgress = src->StepProgress;
@@ -1583,8 +1583,8 @@ namespace RCT1
             // This flag will be set by the caller.
             dst->SetLastForTile(false);
 
-            dst->SetBaseZ(src->BaseHeight * Limits::CoordsZStep);
-            dst->SetClearanceZ(src->ClearanceHeight * Limits::CoordsZStep);
+            dst->SetBaseZ(src->BaseHeight * Limits::kCoordsZStep);
+            dst->SetClearanceZ(src->ClearanceHeight * Limits::kCoordsZStep);
 
             switch (tileElementType)
             {
@@ -1793,8 +1793,8 @@ namespace RCT1
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
-                        auto baseZ = src->BaseHeight * Limits::CoordsZStep;
-                        auto clearanceZ = src->ClearanceHeight * Limits::CoordsZStep;
+                        auto baseZ = src->BaseHeight * Limits::kCoordsZStep;
+                        auto clearanceZ = src->ClearanceHeight * Limits::kCoordsZStep;
                         auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
