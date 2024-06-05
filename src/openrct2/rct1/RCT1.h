@@ -733,7 +733,7 @@ namespace RCT1
         uint32_t RandomB;
         RCT12TileElement TileElements[Limits::kMaxTileElements];
         uint32_t UnkCounter;
-        Entity Entities[Limits::MaxEntities];
+        Entity Entities[Limits::kMaxEntities];
         uint16_t NextEntityIndex;
         uint16_t FirstVehicleEntityIndex;
         uint16_t FirstPeepEntityIndex;

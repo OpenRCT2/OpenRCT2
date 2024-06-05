@@ -2217,7 +2217,7 @@ namespace RCT2
 
         uint16_t GetMaxEntities()
         {
-            return (_s6.Header.ClassicFlag == 0xf) ? Limits::MaxEntitiesRCTCExtended : Limits::MaxEntities;
+            return (_s6.Header.ClassicFlag == 0xf) ? Limits::MaxEntitiesRCTCExtended : Limits::kMaxEntities;
         }
 
         template<typename OpenRCT2_T> void ImportEntity(const RCT12EntityBase& src);

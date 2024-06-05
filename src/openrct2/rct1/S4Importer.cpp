@@ -1233,7 +1233,7 @@ namespace RCT1
 
         void ImportEntities()
         {
-            for (int i = 0; i < Limits::MaxEntities; i++)
+            for (int i = 0; i < Limits::kMaxEntities; i++)
             {
                 ImportEntity(_s4.Entities[i].Unknown);
             }
