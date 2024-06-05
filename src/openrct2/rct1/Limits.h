@@ -13,7 +13,7 @@
 namespace RCT1::Limits
 {
     using namespace RCT12::Limits;
-    constexpr uint16_t MaxTileElements = 0xC000;
+    constexpr uint16_t kMaxTileElements = 0xC000;
     constexpr uint16_t MaxEntities = 5000;
     constexpr uint8_t kMaxTrainsPerRide = 12;
     constexpr uint8_t MaxMapSize = 128;

@@ -842,7 +842,7 @@ namespace RCT2
         uint32_t ScenarioSrand1;
 
         // SC6[5]
-        RCT12TileElement TileElements[Limits::MaxTileElements];
+        RCT12TileElement TileElements[Limits::kMaxTileElements];
 
         // SC6[6]
         uint32_t NextFreeTileElementPointerIndex;

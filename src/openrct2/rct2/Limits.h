@@ -20,7 +20,7 @@ namespace RCT2::Limits
     constexpr uint8_t kDowntimeHistorySize = 8;
     constexpr uint16_t MaxEntities = 10000;
     constexpr uint16_t MaxEntitiesRCTCExtended = 15000; // Used in files marked with “classic flag” 0xF
-    constexpr uint32_t MaxTileElements = 0x30000;
+    constexpr uint32_t kMaxTileElements = 0x30000;
     constexpr uint16_t MaxAnimatedObjects = 2000;
     constexpr uint8_t MaxResearchedRideTypeQuads = 8;  // With 32 bits per uint32_t, this means there is room for
                                                        // 256 types.

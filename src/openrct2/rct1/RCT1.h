@@ -731,7 +731,7 @@ namespace RCT1
         uint32_t Ticks;
         uint32_t RandomA;
         uint32_t RandomB;
-        RCT12TileElement TileElements[Limits::MaxTileElements];
+        RCT12TileElement TileElements[Limits::kMaxTileElements];
         uint32_t UnkCounter;
         Entity Entities[Limits::MaxEntities];
         uint16_t NextEntityIndex;
