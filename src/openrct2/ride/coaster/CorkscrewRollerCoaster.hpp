@@ -42,7 +42,7 @@ static constexpr const uint32_t kCorkscrewRcDiagBrakeImages[NumOrthogonalDirecti
     SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t CorkscrewRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr const uint32_t kCorkscrewRcDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
     {
         SPR_G2_CORKSCREW_DIAG_BRAKES + 3,
         SPR_G2_CORKSCREW_DIAG_BRAKES + 5,
@@ -6432,7 +6432,7 @@ static void CorkscrewRCTrackDiagBlockBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, CorkscrewRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        session, 3, height, direction, trackSequence, kCorkscrewRcDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
