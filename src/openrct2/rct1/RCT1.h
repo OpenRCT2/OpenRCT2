@@ -861,7 +861,7 @@ namespace RCT1
         int16_t ViewY;
         uint8_t ViewZoom;
         uint8_t ViewRotation;
-        RCT12MapAnimation MapAnimations[Limits::MaxAnimatedObjects];
+        RCT12MapAnimation MapAnimations[Limits::kMaxAnimatedObjects];
         uint32_t NumMapAnimations;
         uint8_t Unk1CADBC[12];
         uint16_t ScrollingTextStep;

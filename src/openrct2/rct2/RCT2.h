@@ -995,7 +995,7 @@ namespace RCT2
         int16_t SavedViewY;
         uint8_t SavedViewZoom;
         uint8_t SavedViewRotation;
-        RCT12MapAnimation MapAnimations[Limits::MaxAnimatedObjects];
+        RCT12MapAnimation MapAnimations[Limits::kMaxAnimatedObjects];
         uint16_t NumMapAnimations;
         uint8_t Pad0138B582[2];
         RideRatingCalculationData RideRatingsCalcData;

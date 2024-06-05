@@ -18,7 +18,7 @@ namespace RCT1::Limits
     constexpr uint8_t kMaxTrainsPerRide = 12;
     constexpr uint8_t kMaxMapSize = 128;
     constexpr uint8_t kMaxStaff = 116;
-    constexpr uint16_t MaxAnimatedObjects = 1000;
+    constexpr uint16_t kMaxAnimatedObjects = 1000;
     constexpr uint8_t MaxBanners = 100;
     constexpr int32_t CoordsZStep = 4;
     constexpr uint32_t Num_LL_CSG_Entries = 69917;
