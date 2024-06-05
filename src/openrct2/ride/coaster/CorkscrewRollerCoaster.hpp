@@ -6398,13 +6398,13 @@ static void CorkscrewRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex kImages[2][NumOrthogonalDirections] = {
         { 16634, 16635, 16636, 16637 },
         { 16696, 16697, 16698, 16699 },
     };
 
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType);
+        session, 3, height, direction, trackSequence, kImages[trackElement.HasChain()], supportType);
 }
 
 template<MetalSupportType supportType>
