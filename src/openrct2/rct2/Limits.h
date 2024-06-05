@@ -14,7 +14,7 @@ namespace RCT2::Limits
 {
     using namespace RCT12::Limits;
     constexpr uint8_t kMaxStaff = 200;
-    constexpr uint8_t MaxBanners = 250;
+    constexpr uint8_t kMaxBanners = 250;
     constexpr uint8_t kMaxTrainsPerRide = 32;
     constexpr uint8_t kMaxVehicleColours = 32;
     constexpr uint8_t kDowntimeHistorySize = 8;

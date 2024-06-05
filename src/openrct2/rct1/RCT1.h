@@ -852,7 +852,7 @@ namespace RCT1
         uint16_t Unk199C9A;
         ResearchItem ResearchItemsLL[250];
         uint8_t Unk19A0D9[5118];
-        RCT12Banner Banners[Limits::MaxBanners];
+        RCT12Banner Banners[Limits::kMaxBanners];
         char StringTable[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTimeCounter;
         Ride Rides[Limits::kMaxRidesInPark];

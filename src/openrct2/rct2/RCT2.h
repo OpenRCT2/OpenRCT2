@@ -986,7 +986,7 @@ namespace RCT2
         uint8_t ParkEntranceDirection[Limits::kMaxParkEntrances];
         char ScenarioFilename[256];
         uint8_t SavedExpansionPackNames[3256];
-        RCT12Banner Banners[Limits::MaxBanners];
+        RCT12Banner Banners[Limits::kMaxBanners];
         char CustomStrings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTicks1;
         Ride Rides[Limits::kMaxRidesInPark];
