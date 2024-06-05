@@ -3799,6 +3799,14 @@ declare global {
 
         postMessage(message: string): void;
         postMessage(message: ParkMessageDesc): void;
+
+        /**
+         * Gets the monthly expenditure history for a given type.
+         * Index 0 represents the current month, index 1 the previous month, etc.
+         * The maximum length of the array is 16.
+         * @param type The type of expenditure to get.
+         */
+        getMonthlyExpenditure(type: ExpenditureType): number[]
     }
 
     interface Research {

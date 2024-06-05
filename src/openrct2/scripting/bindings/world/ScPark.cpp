@@ -401,6 +401,21 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    std::vector<int32_t> ScPark::getMonthlyExpenditure(const std::string& expenditureType) const
+    {
+        std::vector<int32_t> result(kExpenditureTableMonthCount, 0);
+        auto type = ScriptEngine::StringToExpenditureType(expenditureType);
+        if (type != ExpenditureType::Count)
+        {
+            auto& gameState = GetGameState();
+            for (size_t i = 0; i < kExpenditureTableMonthCount; ++i)
+            {
+                result[i] = gameState.ExpenditureTable[i][EnumValue(type)];
+            }
+        }
+        return result;
+    }
+
     void ScPark::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScPark::cash_get, &ScPark::cash_set, "cash");
@@ -432,6 +447,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");
         dukglue_register_method(ctx, &ScPark::setFlag, "setFlag");
         dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
+        dukglue_register_method(ctx, &ScPark::getMonthlyExpenditure, "getMonthlyExpenditure");
     }
 
 } // namespace OpenRCT2::Scripting
