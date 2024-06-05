@@ -126,7 +126,7 @@ static void CorkscrewRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint32_t imageIds[4][2] = {
+    static constexpr uint32_t kImageIds[4][2] = {
         { 16236, SPR_STATION_BASE_A_SW_NE },
         { 16237, SPR_STATION_BASE_A_NW_SE },
         { 16236, SPR_STATION_BASE_A_SW_NE },
@@ -143,11 +143,11 @@ static void CorkscrewRCTrackStation(
     else
     {
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(kImageIds[direction][0]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
+        session, direction, GetStationColourScheme(session, trackElement).WithIndex(kImageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
