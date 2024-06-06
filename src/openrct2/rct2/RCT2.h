@@ -866,7 +866,7 @@ namespace RCT2
         uint8_t CurrentResearchLevel;
         uint8_t Pad01357400[4];
         uint32_t ResearchedRideTypes[Limits::kMaxResearchedRideTypeQuads];
-        uint32_t ResearchedRideEntries[Limits::MaxResearchedRideEntryQuads];
+        uint32_t ResearchedRideEntries[Limits::kMaxResearchedRideEntryQuads];
         uint32_t ResearchedTrackTypesA[128];
         uint32_t ResearchedTrackTypesB[128];
 
