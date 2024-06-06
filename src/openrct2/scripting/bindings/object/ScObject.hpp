@@ -864,7 +864,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        uint8_t price_get() const
+        money64 price_get() const
         {
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
@@ -874,7 +874,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        uint8_t removalPrice_get() const
+        money64 removalPrice_get() const
         {
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
