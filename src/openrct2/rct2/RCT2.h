@@ -37,7 +37,7 @@ namespace RCT2
         Limits::kMaxBannerObjects +
         Limits::kMaxPathObjects +
         Limits::kMaxPathAdditionObjects +
-        Limits::MaxSceneryGroupObjects +
+        Limits::kMaxSceneryGroupObjects +
         Limits::MaxParkEntranceObjects +
         Limits::MaxWaterObjects +
         Limits::MaxScenarioTextObjects;
@@ -53,7 +53,7 @@ namespace RCT2
         Limits::kMaxBannerObjects,
         Limits::kMaxPathObjects,
         Limits::kMaxPathAdditionObjects,
-        Limits::MaxSceneryGroupObjects,
+        Limits::kMaxSceneryGroupObjects,
         Limits::MaxParkEntranceObjects,
         Limits::MaxWaterObjects,
         Limits::MaxScenarioTextObjects,
@@ -827,7 +827,7 @@ namespace RCT2
                 RCTObjectEntry BannerObjects[Limits::kMaxBannerObjects];
                 RCTObjectEntry PathObjects[Limits::kMaxPathObjects];
                 RCTObjectEntry PathAdditionObjects[Limits::kMaxPathAdditionObjects];
-                RCTObjectEntry SceneryGroupObjects[Limits::MaxSceneryGroupObjects];
+                RCTObjectEntry SceneryGroupObjects[Limits::kMaxSceneryGroupObjects];
                 RCTObjectEntry ParkEntranceObjects[Limits::MaxParkEntranceObjects];
                 RCTObjectEntry WaterObjects[Limits::MaxWaterObjects];
                 RCTObjectEntry ScenarioTextObjects[Limits::MaxScenarioTextObjects];
