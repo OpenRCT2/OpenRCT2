@@ -31,7 +31,7 @@ namespace RCT2
     // clang-format off
     constexpr uint16_t RCT2_OBJECT_ENTRY_COUNT =
         Limits::MaxRideObjects +
-        Limits::MaxSmallSceneryObjects +
+        Limits::kMaxSmallSceneryObjects +
         Limits::MaxLargeSceneryObjects +
         Limits::MaxWallSceneryObjects +
         Limits::MaxBannerObjects +
@@ -47,7 +47,7 @@ namespace RCT2
     // clang-format off
     constexpr int32_t RCT2ObjectEntryGroupCounts[] = {
         Limits::MaxRideObjects,
-        Limits::MaxSmallSceneryObjects,
+        Limits::kMaxSmallSceneryObjects,
         Limits::MaxLargeSceneryObjects,
         Limits::MaxWallSceneryObjects,
         Limits::MaxBannerObjects,
@@ -821,7 +821,7 @@ namespace RCT2
             struct
             {
                 RCTObjectEntry RideObjects[Limits::MaxRideObjects];
-                RCTObjectEntry SceneryObjects[Limits::MaxSmallSceneryObjects];
+                RCTObjectEntry SceneryObjects[Limits::kMaxSmallSceneryObjects];
                 RCTObjectEntry LargeSceneryObjects[Limits::MaxLargeSceneryObjects];
                 RCTObjectEntry WallSceneryObjects[Limits::MaxWallSceneryObjects];
                 RCTObjectEntry BannerObjects[Limits::MaxBannerObjects];
