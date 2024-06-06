@@ -32,7 +32,7 @@ namespace RCT2::Limits
                                                                                                  // quad.
     constexpr uint16_t kMaxResearchItems = 500;
 
-    constexpr uint16_t TD6MaxTrackElements = 8192;
+    constexpr uint16_t kTD6MaxTrackElements = 8192;
 
     constexpr uint8_t MaxSmallSceneryObjects = 252;
     constexpr uint8_t MaxLargeSceneryObjects = 128;
