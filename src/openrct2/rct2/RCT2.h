@@ -973,7 +973,7 @@ namespace RCT2
         uint8_t LastEntranceStyle;
         uint8_t RCT1WaterColour;
         uint8_t Pad01358842[2];
-        RCT12ResearchItem ResearchItems[Limits::MaxResearchItems];
+        RCT12ResearchItem ResearchItems[Limits::kMaxResearchItems];
         uint16_t MapBaseZ;
         char ScenarioName[64];
         char ScenarioDescription[256];

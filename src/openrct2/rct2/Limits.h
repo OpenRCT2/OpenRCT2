@@ -30,7 +30,7 @@ namespace RCT2::Limits
     constexpr const uint16_t kMaxResearchedSceneryItems = (kMaxResearchedSceneryItemQuads * 32); // There are 32
                                                                                                  // bits per
                                                                                                  // quad.
-    constexpr uint16_t MaxResearchItems = 500;
+    constexpr uint16_t kMaxResearchItems = 500;
 
     constexpr uint16_t TD6MaxTrackElements = 8192;
 
