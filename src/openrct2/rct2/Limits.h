@@ -41,7 +41,7 @@ namespace RCT2::Limits
     constexpr uint8_t kMaxPathObjects = 16;
     constexpr uint8_t kMaxPathAdditionObjects = 15;
     constexpr uint8_t kMaxSceneryGroupObjects = 19;
-    constexpr uint8_t MaxParkEntranceObjects = 1;
+    constexpr uint8_t kMaxParkEntranceObjects = 1;
     constexpr uint8_t MaxWaterObjects = 1;
     constexpr uint8_t MaxScenarioTextObjects = 1;
     constexpr uint8_t RideTypeCount = 91;

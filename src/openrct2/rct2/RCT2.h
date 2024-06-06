@@ -38,7 +38,7 @@ namespace RCT2
         Limits::kMaxPathObjects +
         Limits::kMaxPathAdditionObjects +
         Limits::kMaxSceneryGroupObjects +
-        Limits::MaxParkEntranceObjects +
+        Limits::kMaxParkEntranceObjects +
         Limits::MaxWaterObjects +
         Limits::MaxScenarioTextObjects;
     // clang-format on
@@ -54,7 +54,7 @@ namespace RCT2
         Limits::kMaxPathObjects,
         Limits::kMaxPathAdditionObjects,
         Limits::kMaxSceneryGroupObjects,
-        Limits::MaxParkEntranceObjects,
+        Limits::kMaxParkEntranceObjects,
         Limits::MaxWaterObjects,
         Limits::MaxScenarioTextObjects,
     };
@@ -828,7 +828,7 @@ namespace RCT2
                 RCTObjectEntry PathObjects[Limits::kMaxPathObjects];
                 RCTObjectEntry PathAdditionObjects[Limits::kMaxPathAdditionObjects];
                 RCTObjectEntry SceneryGroupObjects[Limits::kMaxSceneryGroupObjects];
-                RCTObjectEntry ParkEntranceObjects[Limits::MaxParkEntranceObjects];
+                RCTObjectEntry ParkEntranceObjects[Limits::kMaxParkEntranceObjects];
                 RCTObjectEntry WaterObjects[Limits::MaxWaterObjects];
                 RCTObjectEntry ScenarioTextObjects[Limits::MaxScenarioTextObjects];
             };
