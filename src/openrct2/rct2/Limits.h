@@ -43,7 +43,7 @@ namespace RCT2::Limits
     constexpr uint8_t kMaxSceneryGroupObjects = 19;
     constexpr uint8_t kMaxParkEntranceObjects = 1;
     constexpr uint8_t kMaxWaterObjects = 1;
-    constexpr uint8_t MaxScenarioTextObjects = 1;
+    constexpr uint8_t kMaxScenarioTextObjects = 1;
     constexpr uint8_t RideTypeCount = 91;
     constexpr uint16_t kMaxMapSize = 256;
 } // namespace RCT2::Limits
