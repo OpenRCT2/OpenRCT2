@@ -32,7 +32,7 @@ namespace RCT2
     constexpr uint16_t RCT2_OBJECT_ENTRY_COUNT =
         Limits::MaxRideObjects +
         Limits::kMaxSmallSceneryObjects +
-        Limits::MaxLargeSceneryObjects +
+        Limits::kMaxLargeSceneryObjects +
         Limits::MaxWallSceneryObjects +
         Limits::MaxBannerObjects +
         Limits::MaxPathObjects +
@@ -48,7 +48,7 @@ namespace RCT2
     constexpr int32_t RCT2ObjectEntryGroupCounts[] = {
         Limits::MaxRideObjects,
         Limits::kMaxSmallSceneryObjects,
-        Limits::MaxLargeSceneryObjects,
+        Limits::kMaxLargeSceneryObjects,
         Limits::MaxWallSceneryObjects,
         Limits::MaxBannerObjects,
         Limits::MaxPathObjects,
@@ -822,7 +822,7 @@ namespace RCT2
             {
                 RCTObjectEntry RideObjects[Limits::MaxRideObjects];
                 RCTObjectEntry SceneryObjects[Limits::kMaxSmallSceneryObjects];
-                RCTObjectEntry LargeSceneryObjects[Limits::MaxLargeSceneryObjects];
+                RCTObjectEntry LargeSceneryObjects[Limits::kMaxLargeSceneryObjects];
                 RCTObjectEntry WallSceneryObjects[Limits::MaxWallSceneryObjects];
                 RCTObjectEntry BannerObjects[Limits::MaxBannerObjects];
                 RCTObjectEntry PathObjects[Limits::MaxPathObjects];

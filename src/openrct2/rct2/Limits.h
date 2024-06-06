@@ -35,7 +35,7 @@ namespace RCT2::Limits
     constexpr uint16_t kTD6MaxTrackElements = 8192;
 
     constexpr uint8_t kMaxSmallSceneryObjects = 252;
-    constexpr uint8_t MaxLargeSceneryObjects = 128;
+    constexpr uint8_t kMaxLargeSceneryObjects = 128;
     constexpr uint8_t MaxWallSceneryObjects = 128;
     constexpr uint8_t MaxBannerObjects = 32;
     constexpr uint8_t MaxPathObjects = 16;
