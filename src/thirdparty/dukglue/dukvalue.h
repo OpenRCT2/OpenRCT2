@@ -336,7 +336,7 @@ public:
 	inline duk_int_t as_int() const {
 		if (mType != NUMBER)
 			throw DukException() << "Expected number, got " << type_name();
-		return static_cast<uint32_t>(mPOD.number);
+		return static_cast<int32_t>(mPOD.number);
 	}
 
 	inline duk_uint_t as_uint() const {

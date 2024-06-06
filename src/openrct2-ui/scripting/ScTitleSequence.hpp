@@ -130,26 +130,26 @@ namespace OpenRCT2::Scripting
         switch (type)
         {
             case TitleScript::Load:
-                command = LoadParkCommand{ static_cast<uint8_t>(value["index"].as_int()) };
+                command = LoadParkCommand{ static_cast<uint8_t>(value["index"].as_uint()) };
                 break;
             case TitleScript::Location:
                 command = SetLocationCommand{
-                    static_cast<uint8_t>(value["x"].as_int()),
-                    static_cast<uint8_t>(value["y"].as_int()),
+                    static_cast<uint8_t>(value["x"].as_uint()),
+                    static_cast<uint8_t>(value["y"].as_uint()),
                 };
                 break;
             case TitleScript::Rotate:
-                command = RotateViewCommand{ static_cast<uint8_t>(value["rotations"].as_int()) };
+                command = RotateViewCommand{ static_cast<uint8_t>(value["rotations"].as_uint()) };
                 break;
             case TitleScript::Zoom:
-                command = SetZoomCommand{ static_cast<uint8_t>(value["zoom"].as_int()) };
+                command = SetZoomCommand{ static_cast<uint8_t>(value["zoom"].as_uint()) };
                 break;
             case TitleScript::Follow:
             {
                 auto dukId = value["id"];
                 if (dukId.type() == DukValue::Type::NUMBER)
                 {
-                    command = FollowEntityCommand{ EntityId::FromUnderlying(dukId.as_int()) };
+                    command = FollowEntityCommand{ EntityId::FromUnderlying(dukId.as_uint()) };
                 }
                 else
                 {
@@ -158,10 +158,10 @@ namespace OpenRCT2::Scripting
                 break;
             }
             case TitleScript::Speed:
-                command = SetSpeedCommand{ static_cast<uint8_t>(value["speed"].as_int()) };
+                command = SetSpeedCommand{ static_cast<uint8_t>(value["speed"].as_uint()) };
                 break;
             case TitleScript::Wait:
-                command = WaitCommand{ static_cast<uint16_t>(value["duration"].as_int()) };
+                command = WaitCommand{ static_cast<uint16_t>(value["duration"].as_uint()) };
                 break;
             case TitleScript::LoadSc:
             {

@@ -268,7 +268,7 @@ namespace OpenRCT2::Scripting
                 {
                     if (item.type() == DukValue::Type::NUMBER)
                     {
-                        playerIds.push_back(static_cast<uint8_t>(item.as_int()));
+                        playerIds.push_back(static_cast<uint8_t>(item.as_uint()));
                     }
                 }
                 if (!playerArray.empty())

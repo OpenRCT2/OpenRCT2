@@ -93,8 +93,8 @@ namespace OpenRCT2::Scripting
 
         void free(const DukValue& dukRange)
         {
-            auto start = dukRange["start"].as_int();
-            auto count = dukRange["count"].as_int();
+            auto start = dukRange["start"].as_uint();
+            auto count = dukRange["count"].as_uint();
 
             ImageList range(start, count);
 
