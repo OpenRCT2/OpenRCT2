@@ -27,9 +27,9 @@ namespace RCT2::Limits
     constexpr uint8_t kMaxResearchedRideEntryQuads = 8; // With 32 bits per uint32_t, this means there is room for
                                                         // 256 entries.
     constexpr uint8_t kMaxResearchedSceneryItemQuads = 56;
-    constexpr const uint16_t MaxResearchedSceneryItems = (kMaxResearchedSceneryItemQuads * 32); // There are 32
-                                                                                               // bits per
-                                                                                               // quad.
+    constexpr const uint16_t kMaxResearchedSceneryItems = (kMaxResearchedSceneryItemQuads * 32); // There are 32
+                                                                                                 // bits per
+                                                                                                 // quad.
     constexpr uint16_t MaxResearchItems = 500;
 
     constexpr uint16_t TD6MaxTrackElements = 8192;

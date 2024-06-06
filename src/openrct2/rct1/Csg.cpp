@@ -63,7 +63,7 @@ bool RCT1DataPresentAtLocation(u8string_view path)
 bool CsgIsUsable(const Gx& csg)
 {
     return csg.header.total_size == RCT1::Limits::kLlCsg1DatFileSize
-        && csg.header.num_entries == RCT1::Limits::kNumLlCsgEntries;
+        && csg.header.num_entries == RCT1::Limits::kNumLLCsgEntries;
 }
 
 bool CsgAtLocationIsUsable(u8string_view path)
