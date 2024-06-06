@@ -885,7 +885,7 @@ namespace RCT2
         uint8_t SecurityColour;
 
         // Ignored in scenario
-        uint32_t ResearchedSceneryItems[Limits::MaxResearchedSceneryItemQuads];
+        uint32_t ResearchedSceneryItems[Limits::kMaxResearchedSceneryItemQuads];
 
         // SC6[9]
         uint16_t ParkRating;
