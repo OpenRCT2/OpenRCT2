@@ -22,7 +22,7 @@ namespace RCT1::Limits
     constexpr uint8_t kMaxBanners = 100;
     constexpr int32_t kCoordsZStep = 4;
     constexpr uint32_t kNumLLCsgEntries = 69917;
-    constexpr uint32_t kLlCsg1DatFileSize = 41402869;
+    constexpr uint32_t kLLCsg1DatFileSize = 41402869;
     constexpr uint32_t kNumTerrainSurfaces = 16;
     constexpr uint32_t kNumTerrainEdges = 15;
 } // namespace RCT1::Limits
