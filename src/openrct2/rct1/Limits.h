@@ -13,16 +13,16 @@
 namespace RCT1::Limits
 {
     using namespace RCT12::Limits;
-    constexpr uint16_t MaxTileElements = 0xC000;
-    constexpr uint16_t MaxEntities = 5000;
+    constexpr uint16_t kMaxTileElements = 0xC000;
+    constexpr uint16_t kMaxEntities = 5000;
     constexpr uint8_t kMaxTrainsPerRide = 12;
-    constexpr uint8_t MaxMapSize = 128;
-    constexpr uint8_t MaxStaff = 116;
-    constexpr uint16_t MaxAnimatedObjects = 1000;
-    constexpr uint8_t MaxBanners = 100;
-    constexpr int32_t CoordsZStep = 4;
-    constexpr uint32_t Num_LL_CSG_Entries = 69917;
-    constexpr uint32_t LL_CSG1_DAT_FileSize = 41402869;
-    constexpr uint32_t NumTerrainSurfaces = 16;
-    constexpr uint32_t NumTerrainEdges = 15;
+    constexpr uint8_t kMaxMapSize = 128;
+    constexpr uint8_t kMaxStaff = 116;
+    constexpr uint16_t kMaxAnimatedObjects = 1000;
+    constexpr uint8_t kMaxBanners = 100;
+    constexpr int32_t kCoordsZStep = 4;
+    constexpr uint32_t kNumLLCsgEntries = 69917;
+    constexpr uint32_t kLLCsg1DatFileSize = 41402869;
+    constexpr uint32_t kNumTerrainSurfaces = 16;
+    constexpr uint32_t kNumTerrainEdges = 15;
 } // namespace RCT1::Limits

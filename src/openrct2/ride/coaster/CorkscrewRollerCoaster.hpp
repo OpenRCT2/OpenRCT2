@@ -23,26 +23,26 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN = 16232;
-static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN = 16233;
-static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED = 16234;
-static constexpr uint32_t CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED = 16235;
+static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeOpen = 16232;
+static constexpr uint32_t kCorkscrewRcBlockBrakeNwSeOpen = 16233;
+static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeClosed = 16234;
+static constexpr uint32_t kCorkscrewRcBlockBrakeNwSeClosed = 16235;
 
-static constexpr uint32_t _CorkscrewRCBlockBrakeImages[NumOrthogonalDirections][2] = {
-    { CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
-    { CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
-    { CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
-    { CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+static constexpr uint32_t kCorkscrewRcBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { kCorkscrewRcBlockBrakeSwNeOpen, kCorkscrewRcBlockBrakeSwNeClosed },
+    { kCorkscrewRcBlockBrakeNwSeOpen, kCorkscrewRcBlockBrakeNwSeClosed },
+    { kCorkscrewRcBlockBrakeSwNeOpen, kCorkscrewRcBlockBrakeSwNeClosed },
+    { kCorkscrewRcBlockBrakeNwSeOpen, kCorkscrewRcBlockBrakeNwSeClosed },
 };
 
-static constexpr const uint32_t CorkscrewRCDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr const uint32_t kCorkscrewRcDiagBrakeImages[NumOrthogonalDirections] = {
     SPR_G2_CORKSCREW_DIAG_BRAKES,
     SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
     SPR_G2_CORKSCREW_DIAG_BRAKES,
     SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t CorkscrewRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr const uint32_t kCorkscrewRcDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
     {
         SPR_G2_CORKSCREW_DIAG_BRAKES + 3,
         SPR_G2_CORKSCREW_DIAG_BRAKES + 5,
@@ -126,7 +126,7 @@ static void CorkscrewRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint32_t imageIds[4][2] = {
+    static constexpr uint32_t kImageIds[4][2] = {
         { 16236, SPR_STATION_BASE_A_SW_NE },
         { 16237, SPR_STATION_BASE_A_NW_SE },
         { 16236, SPR_STATION_BASE_A_SW_NE },
@@ -137,17 +137,17 @@ static void CorkscrewRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_CorkscrewRCBlockBrakeImages[direction][isClosed]),
+            session, direction, session.TrackColours.WithIndex(kCorkscrewRcBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
     {
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(kImageIds[direction][0]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
+        session, direction, GetStationColourScheme(session, trackElement).WithIndex(kImageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
@@ -6398,13 +6398,13 @@ static void CorkscrewRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex kImages[2][NumOrthogonalDirections] = {
         { 16634, 16635, 16636, 16637 },
         { 16696, 16697, 16698, 16699 },
     };
 
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType);
+        session, 3, height, direction, trackSequence, kImages[trackElement.HasChain()], supportType);
 }
 
 template<MetalSupportType supportType>
@@ -6413,7 +6413,7 @@ static void CorkscrewRCTrackDiagBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, CorkscrewRCDiagBrakeImages, defaultDiagTileOffsets,
+        session, 3, height, direction, trackSequence, kCorkscrewRcDiagBrakeImages, defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
@@ -6432,7 +6432,7 @@ static void CorkscrewRCTrackDiagBlockBrakes(
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, CorkscrewRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        session, 3, height, direction, trackSequence, kCorkscrewRcDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
@@ -9923,7 +9923,7 @@ static void CorkscrewRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_CorkscrewRCBlockBrakeImages[direction][isClosed]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(kCorkscrewRcBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
     MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);

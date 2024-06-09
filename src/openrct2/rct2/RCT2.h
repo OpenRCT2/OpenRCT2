@@ -31,32 +31,32 @@ namespace RCT2
     // clang-format off
     constexpr uint16_t RCT2_OBJECT_ENTRY_COUNT =
         Limits::MaxRideObjects +
-        Limits::MaxSmallSceneryObjects +
-        Limits::MaxLargeSceneryObjects +
-        Limits::MaxWallSceneryObjects +
-        Limits::MaxBannerObjects +
-        Limits::MaxPathObjects +
-        Limits::MaxPathAdditionObjects +
-        Limits::MaxSceneryGroupObjects +
-        Limits::MaxParkEntranceObjects +
-        Limits::MaxWaterObjects +
-        Limits::MaxScenarioTextObjects;
+        Limits::kMaxSmallSceneryObjects +
+        Limits::kMaxLargeSceneryObjects +
+        Limits::kMaxWallSceneryObjects +
+        Limits::kMaxBannerObjects +
+        Limits::kMaxPathObjects +
+        Limits::kMaxPathAdditionObjects +
+        Limits::kMaxSceneryGroupObjects +
+        Limits::kMaxParkEntranceObjects +
+        Limits::kMaxWaterObjects +
+        Limits::kMaxScenarioTextObjects;
     // clang-format on
     static_assert(RCT2_OBJECT_ENTRY_COUNT == 721);
 
     // clang-format off
     constexpr int32_t RCT2ObjectEntryGroupCounts[] = {
         Limits::MaxRideObjects,
-        Limits::MaxSmallSceneryObjects,
-        Limits::MaxLargeSceneryObjects,
-        Limits::MaxWallSceneryObjects,
-        Limits::MaxBannerObjects,
-        Limits::MaxPathObjects,
-        Limits::MaxPathAdditionObjects,
-        Limits::MaxSceneryGroupObjects,
-        Limits::MaxParkEntranceObjects,
-        Limits::MaxWaterObjects,
-        Limits::MaxScenarioTextObjects,
+        Limits::kMaxSmallSceneryObjects,
+        Limits::kMaxLargeSceneryObjects,
+        Limits::kMaxWallSceneryObjects,
+        Limits::kMaxBannerObjects,
+        Limits::kMaxPathObjects,
+        Limits::kMaxPathAdditionObjects,
+        Limits::kMaxSceneryGroupObjects,
+        Limits::kMaxParkEntranceObjects,
+        Limits::kMaxWaterObjects,
+        Limits::kMaxScenarioTextObjects,
     };
     // clang-format on
 
@@ -821,16 +821,16 @@ namespace RCT2
             struct
             {
                 RCTObjectEntry RideObjects[Limits::MaxRideObjects];
-                RCTObjectEntry SceneryObjects[Limits::MaxSmallSceneryObjects];
-                RCTObjectEntry LargeSceneryObjects[Limits::MaxLargeSceneryObjects];
-                RCTObjectEntry WallSceneryObjects[Limits::MaxWallSceneryObjects];
-                RCTObjectEntry BannerObjects[Limits::MaxBannerObjects];
-                RCTObjectEntry PathObjects[Limits::MaxPathObjects];
-                RCTObjectEntry PathAdditionObjects[Limits::MaxPathAdditionObjects];
-                RCTObjectEntry SceneryGroupObjects[Limits::MaxSceneryGroupObjects];
-                RCTObjectEntry ParkEntranceObjects[Limits::MaxParkEntranceObjects];
-                RCTObjectEntry WaterObjects[Limits::MaxWaterObjects];
-                RCTObjectEntry ScenarioTextObjects[Limits::MaxScenarioTextObjects];
+                RCTObjectEntry SceneryObjects[Limits::kMaxSmallSceneryObjects];
+                RCTObjectEntry LargeSceneryObjects[Limits::kMaxLargeSceneryObjects];
+                RCTObjectEntry WallSceneryObjects[Limits::kMaxWallSceneryObjects];
+                RCTObjectEntry BannerObjects[Limits::kMaxBannerObjects];
+                RCTObjectEntry PathObjects[Limits::kMaxPathObjects];
+                RCTObjectEntry PathAdditionObjects[Limits::kMaxPathAdditionObjects];
+                RCTObjectEntry SceneryGroupObjects[Limits::kMaxSceneryGroupObjects];
+                RCTObjectEntry ParkEntranceObjects[Limits::kMaxParkEntranceObjects];
+                RCTObjectEntry WaterObjects[Limits::kMaxWaterObjects];
+                RCTObjectEntry ScenarioTextObjects[Limits::kMaxScenarioTextObjects];
             };
         };
 
@@ -842,11 +842,11 @@ namespace RCT2
         uint32_t ScenarioSrand1;
 
         // SC6[5]
-        RCT12TileElement TileElements[Limits::MaxTileElements];
+        RCT12TileElement TileElements[Limits::kMaxTileElements];
 
         // SC6[6]
         uint32_t NextFreeTileElementPointerIndex;
-        Entity Entities[Limits::MaxEntitiesRCTCExtended];
+        Entity Entities[Limits::kMaxEntitiesRCTCExtended];
         uint16_t EntityListsHead[EnumValue(EntityListId::Count)];
         uint16_t EntityListsCount[EnumValue(EntityListId::Count)];
         StringId ParkName;
@@ -865,8 +865,8 @@ namespace RCT2
         uint8_t GuestCountChangeModifier;
         uint8_t CurrentResearchLevel;
         uint8_t Pad01357400[4];
-        uint32_t ResearchedRideTypes[Limits::MaxResearchedRideTypeQuads];
-        uint32_t ResearchedRideEntries[Limits::MaxResearchedRideEntryQuads];
+        uint32_t ResearchedRideTypes[Limits::kMaxResearchedRideTypeQuads];
+        uint32_t ResearchedRideEntries[Limits::kMaxResearchedRideEntryQuads];
         uint32_t ResearchedTrackTypesA[128];
         uint32_t ResearchedTrackTypesB[128];
 
@@ -885,7 +885,7 @@ namespace RCT2
         uint8_t SecurityColour;
 
         // Ignored in scenario
-        uint32_t ResearchedSceneryItems[Limits::MaxResearchedSceneryItemQuads];
+        uint32_t ResearchedSceneryItems[Limits::kMaxResearchedSceneryItemQuads];
 
         // SC6[9]
         uint16_t ParkRating;
@@ -973,7 +973,7 @@ namespace RCT2
         uint8_t LastEntranceStyle;
         uint8_t RCT1WaterColour;
         uint8_t Pad01358842[2];
-        RCT12ResearchItem ResearchItems[Limits::MaxResearchItems];
+        RCT12ResearchItem ResearchItems[Limits::kMaxResearchItems];
         uint16_t MapBaseZ;
         char ScenarioName[64];
         char ScenarioDescription[256];
@@ -986,7 +986,7 @@ namespace RCT2
         uint8_t ParkEntranceDirection[Limits::kMaxParkEntrances];
         char ScenarioFilename[256];
         uint8_t SavedExpansionPackNames[3256];
-        RCT12Banner Banners[Limits::MaxBanners];
+        RCT12Banner Banners[Limits::kMaxBanners];
         char CustomStrings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTicks1;
         Ride Rides[Limits::kMaxRidesInPark];
@@ -995,7 +995,7 @@ namespace RCT2
         int16_t SavedViewY;
         uint8_t SavedViewZoom;
         uint8_t SavedViewRotation;
-        RCT12MapAnimation MapAnimations[Limits::MaxAnimatedObjects];
+        RCT12MapAnimation MapAnimations[Limits::kMaxAnimatedObjects];
         uint16_t NumMapAnimations;
         uint8_t Pad0138B582[2];
         RideRatingCalculationData RideRatingsCalcData;
@@ -1003,8 +1003,8 @@ namespace RCT2
         RCT12RideMeasurement RideMeasurements[8];
         uint32_t NextGuestIndex;
         uint16_t GrassAndSceneryTilepos;
-        uint32_t PatrolAreas[(Limits::MaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
-        StaffMode StaffModes[Limits::MaxStaff + Limits::StaffTypeCount];
+        uint32_t PatrolAreas[(Limits::kMaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
+        StaffMode StaffModes[Limits::kMaxStaff + Limits::StaffTypeCount];
         uint8_t Pad13CA73E;
         uint8_t Pad13CA73F;
         uint8_t Byte13CA740;

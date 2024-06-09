@@ -1792,12 +1792,12 @@ namespace RCT2
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-                Limits::MaxMapSize, _s6.TileElements, std::size(_s6.TileElements));
+                Limits::kMaxMapSize, _s6.TileElements, std::size(_s6.TileElements));
 
             std::vector<TileElement> tileElements;
             bool nextElementInvisible = false;
             bool restOfTileInvisible = false;
-            const auto maxSize = std::min(Limits::MaxMapSize, _s6.MapSize);
+            const auto maxSize = std::min(Limits::kMaxMapSize, _s6.MapSize);
             for (TileCoordsXY coords = { 0, 0 }; coords.y < kMaximumMapSizeTechnical; coords.y++)
             {
                 for (coords.x = 0; coords.x < kMaximumMapSizeTechnical; coords.x++)
@@ -2217,7 +2217,7 @@ namespace RCT2
 
         uint16_t GetMaxEntities()
         {
-            return (_s6.Header.ClassicFlag == 0xf) ? Limits::MaxEntitiesRCTCExtended : Limits::MaxEntities;
+            return (_s6.Header.ClassicFlag == 0xf) ? Limits::kMaxEntitiesRCTCExtended : Limits::kMaxEntities;
         }
 
         template<typename OpenRCT2_T> void ImportEntity(const RCT12EntityBase& src);

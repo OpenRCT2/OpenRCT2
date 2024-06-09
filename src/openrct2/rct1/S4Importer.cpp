@@ -320,7 +320,7 @@ namespace RCT1
             // Avoid reusing the value used for last import
             _parkValueConversionFactor = 0;
 
-            uint16_t mapSize = _s4.MapSize == 0 ? Limits::MaxMapSize : _s4.MapSize;
+            uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
             gScenarioFileName = GetRCT1ScenarioName();
 
@@ -465,7 +465,7 @@ namespace RCT1
 
         void AddAvailableEntriesFromMap()
         {
-            size_t maxTiles = Limits::MaxMapSize * Limits::MaxMapSize;
+            size_t maxTiles = Limits::kMaxMapSize * Limits::kMaxMapSize;
             size_t tileIndex = 0;
             RCT12TileElement* tileElement = _s4.TileElements;
 
@@ -885,7 +885,7 @@ namespace RCT1
                     auto tileStartLoc = TileCoordsXY{ src->StationStarts[i].x, src->StationStarts[i].y };
                     dstStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                dstStation.SetBaseZ(src->StationHeights[i] * Limits::CoordsZStep);
+                dstStation.SetBaseZ(src->StationHeights[i] * Limits::kCoordsZStep);
                 dstStation.Length = src->StationLengths[i];
                 dstStation.Depart = src->StationLights[i];
 
@@ -1233,7 +1233,7 @@ namespace RCT1
 
         void ImportEntities()
         {
-            for (int i = 0; i < Limits::MaxEntities; i++)
+            for (int i = 0; i < Limits::kMaxEntities; i++)
             {
                 ImportEntity(_s4.Entities[i].Unknown);
             }
@@ -1321,7 +1321,7 @@ namespace RCT1
 
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
-            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * Limits::CoordsZStep };
+            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * Limits::kCoordsZStep };
             dst->NextFlags = src->NextFlags;
             dst->Var37 = src->Var37;
             dst->StepProgress = src->StepProgress;
@@ -1522,10 +1522,10 @@ namespace RCT1
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-                Limits::MaxMapSize, _s4.TileElements, std::size(_s4.TileElements));
+                Limits::kMaxMapSize, _s4.TileElements, std::size(_s4.TileElements));
 
             std::vector<TileElement> tileElements;
-            const auto maxSize = _s4.MapSize == 0 ? Limits::MaxMapSize : _s4.MapSize;
+            const auto maxSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
             for (TileCoordsXY coords = { 0, 0 }; coords.y < kMaximumMapSizeTechnical; coords.y++)
             {
                 for (coords.x = 0; coords.x < kMaximumMapSizeTechnical; coords.x++)
@@ -1583,8 +1583,8 @@ namespace RCT1
             // This flag will be set by the caller.
             dst->SetLastForTile(false);
 
-            dst->SetBaseZ(src->BaseHeight * Limits::CoordsZStep);
-            dst->SetClearanceZ(src->ClearanceHeight * Limits::CoordsZStep);
+            dst->SetBaseZ(src->BaseHeight * Limits::kCoordsZStep);
+            dst->SetClearanceZ(src->ClearanceHeight * Limits::kCoordsZStep);
 
             switch (tileElementType)
             {
@@ -1793,8 +1793,8 @@ namespace RCT1
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
-                        auto baseZ = src->BaseHeight * Limits::CoordsZStep;
-                        auto clearanceZ = src->ClearanceHeight * Limits::CoordsZStep;
+                        auto baseZ = src->BaseHeight * Limits::kCoordsZStep;
+                        auto clearanceZ = src->ClearanceHeight * Limits::kCoordsZStep;
                         auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
@@ -2674,9 +2674,9 @@ namespace RCT1
          */
         void CountBlockSections()
         {
-            for (int32_t x = 0; x < Limits::MaxMapSize; x++)
+            for (int32_t x = 0; x < Limits::kMaxMapSize; x++)
             {
-                for (int32_t y = 0; y < Limits::MaxMapSize; y++)
+                for (int32_t y = 0; y < Limits::kMaxMapSize; y++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)

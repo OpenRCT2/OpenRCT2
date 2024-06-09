@@ -731,9 +731,9 @@ namespace RCT1
         uint32_t Ticks;
         uint32_t RandomA;
         uint32_t RandomB;
-        RCT12TileElement TileElements[Limits::MaxTileElements];
+        RCT12TileElement TileElements[Limits::kMaxTileElements];
         uint32_t UnkCounter;
-        Entity Entities[Limits::MaxEntities];
+        Entity Entities[Limits::kMaxEntities];
         uint16_t NextEntityIndex;
         uint16_t FirstVehicleEntityIndex;
         uint16_t FirstPeepEntityIndex;
@@ -852,7 +852,7 @@ namespace RCT1
         uint16_t Unk199C9A;
         ResearchItem ResearchItemsLL[250];
         uint8_t Unk19A0D9[5118];
-        RCT12Banner Banners[Limits::MaxBanners];
+        RCT12Banner Banners[Limits::kMaxBanners];
         char StringTable[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTimeCounter;
         Ride Rides[Limits::kMaxRidesInPark];
@@ -861,7 +861,7 @@ namespace RCT1
         int16_t ViewY;
         uint8_t ViewZoom;
         uint8_t ViewRotation;
-        RCT12MapAnimation MapAnimations[Limits::MaxAnimatedObjects];
+        RCT12MapAnimation MapAnimations[Limits::kMaxAnimatedObjects];
         uint32_t NumMapAnimations;
         uint8_t Unk1CADBC[12];
         uint16_t ScrollingTextStep;
@@ -871,8 +871,8 @@ namespace RCT1
         RCT12RideMeasurement RideMeasurements[8];
         uint32_t NextGuestIndex;
         uint16_t GameCounter5;
-        uint8_t PatrolAreas[(Limits::MaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
-        uint8_t StaffModes[Limits::MaxStaff];
+        uint8_t PatrolAreas[(Limits::kMaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
+        uint8_t StaffModes[Limits::kMaxStaff];
         uint8_t Unk1F431E[4];
         uint8_t Unk1F4322[8];
         uint8_t Climate;
