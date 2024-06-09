@@ -68,7 +68,7 @@ void Plugin::Load()
     {
         auto val = std::string(duk_safe_to_string(_context, -1));
         duk_pop(_context);
-        throw std::runtime_error("Failed to load plug-in script: " + val);
+        throw std::runtime_error("Failed to load plug-in script: " + val + " at " + _path);
     }
 
     _metadata = GetMetadata(DukValue::take_from_stack(_context));
