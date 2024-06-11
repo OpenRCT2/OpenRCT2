@@ -280,7 +280,7 @@ STR_0884    :Táj betöltése
 STR_0885    :Táj mentése
 STR_0887    :Kilépés a pályaszerkesztőből
 STR_0888    :Kilépés a játéktervezőből
-STR_0889    :Kilépés a játékterv-kezelőből
+STR_0889    :Kilépés a játéktervkezelőből
 STR_0891    :Képmentés
 STR_0892    :A képernyő elmentve ’{STRINGID}’ néven
 STR_0893    :A képmentés sikertelen !
@@ -2224,7 +2224,7 @@ STR_3204    :Beállítások kiválasztása
 STR_3205    :Cél kiválasztása
 STR_3206    :Pálya mentése
 STR_3207    :Játéktervező
-STR_3208    :Játékterv-kezelő
+STR_3208    :Játéktervkezelő
 STR_3209    :Vissza az előző lépésre:
 STR_3210    :Tovább a következő lépésre:
 STR_3211    :Térkép mérete:
@@ -2349,7 +2349,7 @@ STR_3332    :A parkbejárat rossz irányba néz, vagy nem vezet tőle út a tér
 STR_3333    :Egyedi objektumok exportálása a mentett játékokkal
 STR_3334    :Válaszd ki, hogy mentésre kerüljenek-e szükséges hozzáadott egyedi objektumok adatai (a játékhoz nem mellékelt kiegészítő adatok) a mentett játékok vagy pályák fájlaiban, hogy azok is betölthessék őket, akik nem rendelkeznek a hozzáadott objektumok adataival
 STR_3335    :Játéktervező - Válaszd ki a játék típusát és a járműveket
-STR_3336    :Játékterv-kezelő - Válaszd ki a játék típusát
+STR_3336    :Játéktervkezelő - Válaszd ki a játék típusát
 STR_3338    :{BLACK}Egyedi tervezés
 STR_3339    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
 STR_3340    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
@@ -2357,7 +2357,7 @@ STR_3341    :Játékeszközök
 STR_3342    :Pályaszerkesztő
 STR_3343    :Mentett játék pályává alakítása
 STR_3344    :Játéktervező
-STR_3345    :Játékterv-kezelő
+STR_3345    :Játéktervkezelő
 STR_3346    :A játékterv nem menthető el…
 STR_3347    :A játék túl nagy, túl sok elemből áll, vagy a díszlet túl kiterjedt
 STR_3348    :Átnevezés
@@ -2484,8 +2484,8 @@ STR_5211    :Találmányok listája
 STR_5212    :Pályabeállítások
 STR_5213    :Cél beállítások
 STR_5214    :Térkép generálása
-STR_5215    :Játékterv-kezelő
-STR_5216    :Játékterv-kezelő lista
+STR_5215    :Játéktervkezelő
+STR_5216    :Játéktervkezelő lista
 STR_5217    :Csalások
 STR_5218    :Témák
 STR_5219    :Beállítások
@@ -2972,7 +2972,7 @@ STR_5843    :A pályák fokozatos feloldásának engedélyezése (RCT1-beli vise
 STR_5844    :Tartsa fenn a kapcsolatot a többjátékos{NEWLINE}szerverrel akkor is, ha szinkronizációs vagy egyéb hiba jelentkezik
 STR_5845    :Hozzáadja a hibakereső{NEWLINE}eszközök gombját az eszköztárhoz.{NEWLINE}Engedélyezi a fejlesztői konzol gyorsbillentyűjét
 STR_5846    :Az OpenRCT2 milyen gyakran mentsen automatikusan
-STR_5847    :A címképernyőn használt parkjelenetek kiválasztása.{NEWLINE}Az RCT1/2-ből származó címképernyős jelenetek működéséhez importált pályák szükségesek
+STR_5847    :A címképernyőn használt parkjelenetek kiválasztása.{NEWLINE}Az RCT1/2-ből származó nyitójelenetek működéséhez importált pályák szükségesek
 STR_5849    :Az újonnan felvett alkalmazottak{NEWLINE}automatikus lerakása
 STR_5851    :Az alapértelmezett vizsgálati időköz megadása{NEWLINE}újonnan épített játékokhoz
 STR_5853    :A hanghatások be- és kikapcsolása
@@ -3278,7 +3278,7 @@ STR_6164    :{WHITE}❌
 STR_6165    :Vertikális szinkron
 STR_6166    :A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
 STR_6167    :Haladó
-STR_6168    :Címképernyős jelenetek
+STR_6168    :Nyitójelenetek
 STR_6169    :Pályaválasztás
 STR_6170    :Felület finomhangolása
 STR_6171    :Keresés
@@ -3590,12 +3590,12 @@ STR_6516    :Egy vagy több hozzáadott objektum RollerCoaster Tycoon 1 összeka
 STR_6517    :Egy vagy több objektum ebben a parkban RollerCoaster Tycoon 1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
 STR_6518    :{BLACK}Vidd az egeret egy pálya fölé a leírás és a cél megtekintéséhez.  Kattints rá a játék elindításához.
 STR_6519    :Extrák
-STR_6520    :Asset csomagok
+STR_6520    :Forráscsomagok
 STR_6521    :Alacsony prioritás
 STR_6522    :Magas prioritás
-STR_6523    :A kiválasztott asset csomag prioritásának csökkentése.
-STR_6524    :A kiválasztott asset csomag prioritásának növelése.
-STR_6525    :A játék összes assetjének újratöltése az engedélyezett asset csomagokkal.
+STR_6523    :A kiválasztott forráscsomag prioritásának csökkentése.
+STR_6524    :A kiválasztott forráscsomag prioritásának növelése.
+STR_6525    :A játék összes forráscsomagjának újratöltése az engedélyezett forráscsomagokkal.
 STR_6526    :(alap grafika, zene és hangeffektek)
 STR_6527    :Versenyek
 STR_6528    :Érvénytelen pályaparaméterek!
@@ -3701,9 +3701,16 @@ STR_6627    :Túl nagy a pálya sebessége!
 STR_6628    :Csak az utak szélein helyezhető el!
 STR_6629    :Eszköztár gombjainak vízszintes középre igazítása
 STR_6630    :Ez a beállítás az eszköztár gombjait vízszintesen a képernyő közepére igazítja. A hagyományos elrendezés a bal és jobb sarokban helyezi el őket.
+STR_6631    :Betöltés…
+STR_6632    :Objektumfájlok ellenőrzése…
+STR_6633    :Pályafájlok ellenőrzése…
+STR_6634    :Játéktervfájlok ellenőrzése…
+STR_6635    :Forráscsomagok ellenőrzése…
+STR_6636    :Nyitójelenetek ellenőrzése…
+STR_6637    :Nyitójelenet betöltése…
 STR_6638    :Nagyított felhasználói felület
 STR_6639    :Módosítja a felületet, hogy megfelelőbb legyen érintőképernyős használathoz
-STR_6640    :Asset csomagok szerkesztése…
+STR_6640    :Forráscsomagok kezelése…
 STR_6641    :Betöltés/előrehaladás ablak
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
