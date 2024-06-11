@@ -46,11 +46,12 @@ struct TrackDesignEntranceElement
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor scenery_object;
+    ObjectEntryDescriptor sceneryObject;
     CoordsXYZ loc;
     uint8_t flags;
-    uint8_t primary_colour;
-    uint8_t secondary_colour;
+    colour_t primaryColour;
+    colour_t secondaryColour;
+    colour_t tertiaryColour = COLOUR_DARK_BROWN;
 
     bool IsQueue() const
     {

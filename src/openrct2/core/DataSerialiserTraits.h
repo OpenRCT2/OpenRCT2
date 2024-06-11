@@ -749,29 +749,32 @@ template<> struct DataSerializerTraitsT<TrackDesignSceneryElement>
     {
         stream->Write(&val.loc);
         stream->Write(&val.flags);
-        stream->Write(&val.primary_colour);
-        stream->Write(&val.secondary_colour);
+        stream->Write(&val.primaryColour);
+        stream->Write(&val.secondaryColour);
+        stream->Write(&val.tertiaryColour);
         DataSerializerTraits<ObjectEntryDescriptor> s;
-        s.encode(stream, val.scenery_object);
+        s.encode(stream, val.sceneryObject);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignSceneryElement& val)
     {
         stream->Read(&val.loc);
         stream->Read(&val.flags);
-        stream->Read(&val.primary_colour);
-        stream->Read(&val.secondary_colour);
+        stream->Read(&val.primaryColour);
+        stream->Read(&val.secondaryColour);
+        stream->Read(&val.tertiaryColour);
         DataSerializerTraits<ObjectEntryDescriptor> s;
-        s.decode(stream, val.scenery_object);
+        s.decode(stream, val.sceneryObject);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignSceneryElement& val)
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d)",
-            val.loc.x, val.loc.y, val.loc.z, val.flags, val.primary_colour, val.secondary_colour);
+            msg, sizeof(msg),
+            "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d, colour3 = %d)",
+            val.loc.x, val.loc.y, val.loc.z, val.flags, val.primaryColour, val.secondaryColour, val.tertiaryColour);
         stream->Write(msg, strlen(msg));
 
-        auto identifier = val.scenery_object.GetName();
+        auto identifier = val.sceneryObject.GetName();
         stream->WriteArray(identifier.data(), identifier.size());
     }
 };

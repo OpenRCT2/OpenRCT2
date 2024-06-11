@@ -151,13 +151,21 @@ namespace RCT2
 
         for (const auto& sceneryElement : _trackDesign->sceneryElements)
         {
-            tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(RCTObjectEntry));
-            tempStream.WriteValue<int8_t>(sceneryElement.loc.x / COORDS_XY_STEP);
-            tempStream.WriteValue<int8_t>(sceneryElement.loc.y / COORDS_XY_STEP);
-            tempStream.WriteValue<int8_t>(sceneryElement.loc.z / COORDS_Z_STEP);
-            tempStream.WriteValue<uint8_t>(sceneryElement.flags);
-            tempStream.WriteValue<uint8_t>(sceneryElement.primary_colour);
-            tempStream.WriteValue<uint8_t>(sceneryElement.secondary_colour);
+            auto flags = sceneryElement.flags;
+            if (sceneryElement.sceneryObject.Entry.GetType() == ObjectType::Walls)
+            {
+                flags &= ~0xFC;
+                flags |= (sceneryElement.tertiaryColour << 2);
+            }
+
+            tempStream.Write(&sceneryElement.sceneryObject.Entry, sizeof(RCTObjectEntry));
+            auto tileCoords = TileCoordsXYZ(sceneryElement.loc);
+            tempStream.WriteValue<int8_t>(tileCoords.x);
+            tempStream.WriteValue<int8_t>(tileCoords.y);
+            tempStream.WriteValue<int8_t>(tileCoords.z);
+            tempStream.WriteValue<uint8_t>(flags);
+            tempStream.WriteValue<uint8_t>(sceneryElement.primaryColour);
+            tempStream.WriteValue<uint8_t>(sceneryElement.secondaryColour);
         }
 
         tempStream.WriteValue<uint8_t>(0xFF);

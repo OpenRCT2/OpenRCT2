@@ -491,7 +491,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
     // Run an element loop
     for (auto& scenery : sceneryElements)
     {
-        switch (scenery.scenery_object.GetType())
+        switch (scenery.sceneryObject.GetType())
         {
             case ObjectType::Paths:
             {
@@ -641,9 +641,9 @@ static void TrackDesignLoadSceneryObjects(TrackDesign* td6)
     // Load scenery objects
     for (const auto& scenery : td6->sceneryElements)
     {
-        if (scenery.scenery_object.HasValue())
+        if (scenery.sceneryObject.HasValue())
         {
-            objectManager.LoadObject(scenery.scenery_object);
+            objectManager.LoadObject(scenery.sceneryObject);
         }
     }
 }
@@ -696,13 +696,13 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     TrackSceneryEntry result;
 
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (scenery.scenery_object.GetType() == ObjectType::Paths)
+    if (scenery.sceneryObject.GetType() == ObjectType::Paths)
     {
-        auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.scenery_object, true, scenery.IsQueue());
+        auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.sceneryObject, true, scenery.IsQueue());
         if (footpathMapping == nullptr)
         {
             // Check if legacy path object is loaded
-            auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+            auto obj = objectMgr.GetLoadedObject(scenery.sceneryObject);
             if (obj != nullptr)
             {
                 result.Type = obj->GetObjectType();
@@ -734,7 +734,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     }
     else
     {
-        auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        auto obj = objectMgr.GetLoadedObject(scenery.sceneryObject);
         bool objectUnavailable = obj == nullptr;
         if (obj != nullptr)
         {
@@ -1096,8 +1096,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             }
 
             auto smallSceneryPlace = SmallSceneryPlaceAction(
-                { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primary_colour,
-                scenery.secondary_colour, COLOUR_DARK_BROWN);
+                { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primaryColour,
+                scenery.secondaryColour, scenery.tertiaryColour);
 
             smallSceneryPlace.SetFlags(flags);
             auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
@@ -1138,8 +1138,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
             auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primary_colour, scenery.secondary_colour,
-                COLOUR_DARK_BROWN);
+                { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primaryColour, scenery.secondaryColour,
+                scenery.tertiaryColour);
             sceneryPlaceAction.SetFlags(flags);
             auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction)
                                                        : GameActions::QueryNested(&sceneryPlaceAction);
@@ -1178,8 +1178,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
             auto wallPlaceAction = WallPlaceAction(
-                entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
-                (scenery.flags & 0xFC) >> 2);
+                entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primaryColour, scenery.secondaryColour,
+                scenery.tertiaryColour);
             wallPlaceAction.SetFlags(flags);
             auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction)
                                                        : GameActions::QueryNested(&wallPlaceAction);

@@ -189,13 +189,15 @@ namespace RCT2
                 TD6SceneryElement t6SceneryElement{};
                 _stream.Read(&t6SceneryElement, sizeof(TD6SceneryElement));
                 TrackDesignSceneryElement sceneryElement{};
-                sceneryElement.scenery_object = ObjectEntryDescriptor(t6SceneryElement.SceneryObject);
-                sceneryElement.loc.x = t6SceneryElement.x * COORDS_XY_STEP;
-                sceneryElement.loc.y = t6SceneryElement.y * COORDS_XY_STEP;
-                sceneryElement.loc.z = t6SceneryElement.z * COORDS_Z_STEP;
+                sceneryElement.sceneryObject = ObjectEntryDescriptor(t6SceneryElement.SceneryObject);
+                TileCoordsXYZ tileCoords = { t6SceneryElement.x, t6SceneryElement.y, t6SceneryElement.z };
+                sceneryElement.loc = tileCoords.ToCoordsXYZ();
                 sceneryElement.flags = t6SceneryElement.Flags;
-                sceneryElement.primary_colour = t6SceneryElement.PrimaryColour;
-                sceneryElement.secondary_colour = t6SceneryElement.SecondaryColour;
+                sceneryElement.primaryColour = t6SceneryElement.PrimaryColour;
+                sceneryElement.secondaryColour = t6SceneryElement.SecondaryColour;
+                if (t6SceneryElement.SceneryObject.GetType() == ObjectType::Walls)
+                    sceneryElement.tertiaryColour = t6SceneryElement.getTertiaryWallColour();
+
                 td->sceneryElements.push_back(std::move(sceneryElement));
             }
 
