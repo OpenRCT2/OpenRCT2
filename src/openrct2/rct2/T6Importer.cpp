@@ -75,7 +75,6 @@ namespace RCT2
             td->vehicleType = td6.VehicleType;
 
             td->cost = 0.00_GBP;
-            td->flags = td6.Flags;
             td->rideMode = static_cast<RideMode>(td6.RideMode);
             td->trackFlags = 0;
             td->colourScheme = td6.VersionAndColourScheme & 0x3;
@@ -121,7 +120,6 @@ namespace RCT2
                 td->trackRailColour[i] = td6.TrackRailColour[i];
                 td->trackSupportColour[i] = td6.TrackSupportColour[i];
             }
-            td->flags2 = td6.Flags2;
             td->vehicleObject = ObjectEntryDescriptor(td6.VehicleObject);
             td->spaceRequiredX = td6.SpaceRequiredX;
             td->spaceRequiredY = td6.SpaceRequiredY;

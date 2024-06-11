@@ -121,7 +121,6 @@ struct TrackDesign
     uint8_t type;
     uint8_t vehicleType;
     money64 cost;
-    uint32_t flags;
     RideMode rideMode;
     uint8_t trackFlags;
     uint8_t colourScheme;
@@ -151,7 +150,6 @@ struct TrackDesign
     uint8_t trackSpineColour[OpenRCT2::Limits::kNumColourSchemes];
     uint8_t trackRailColour[OpenRCT2::Limits::kNumColourSchemes];
     uint8_t trackSupportColour[OpenRCT2::Limits::kNumColourSchemes];
-    uint32_t flags2;
     ObjectEntryDescriptor vehicleObject;
     uint8_t spaceRequiredX;
     uint8_t spaceRequiredY;

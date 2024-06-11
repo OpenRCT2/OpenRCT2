@@ -158,8 +158,6 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     nausea = ride.ratings.Nausea / 10;
 
     upkeepCost = ride.upkeep_cost;
-    flags = 0;
-    flags2 = 0;
 
     const auto& rtd = GetRideTypeDescriptor(type);
 
@@ -566,7 +564,6 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(type);
     stream << DS_TAG(vehicleType);
     stream << DS_TAG(cost);
-    stream << DS_TAG(flags);
     stream << DS_TAG(rideMode);
     stream << DS_TAG(trackFlags);
     stream << DS_TAG(colourScheme);
@@ -596,7 +593,6 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(trackSpineColour);
     stream << DS_TAG(trackRailColour);
     stream << DS_TAG(trackSupportColour);
-    stream << DS_TAG(flags2);
     stream << DS_TAG(vehicleObject);
     stream << DS_TAG(spaceRequiredX);
     stream << DS_TAG(spaceRequiredY);

@@ -94,8 +94,6 @@ namespace RCT1
                 td->trackSupportColour[i] = RCT1::GetColour(td4aa.TrackSupportColour[i]);
             }
 
-            td->flags2 = td4aa.Flags2;
-
             return ImportTD4Base(std::move(td), td4aa);
         }
 
@@ -121,7 +119,7 @@ namespace RCT1
                     td->trackRailColour[i] = COLOUR_WHITE;
                 }
             }
-            td->flags2 = 0;
+
             return ImportTD4Base(std::move(td), td4);
         }
 
@@ -149,7 +147,6 @@ namespace RCT1
             td->vehicleObject = ObjectEntryDescriptor(vehicleObject);
             td->vehicleType = EnumValue(td4Base.VehicleType);
 
-            td->flags = td4Base.Flags;
             td->colourScheme = td4Base.VersionAndColourScheme & 0x3;
 
             // Vehicle colours

@@ -54,7 +54,7 @@ namespace RCT2
         OpenRCT2::MemoryStream tempStream;
         tempStream.WriteValue<uint8_t>(OpenRCT2RideTypeToRCT2RideType(_trackDesign->type));
         tempStream.WriteValue<uint8_t>(_trackDesign->vehicleType);
-        tempStream.WriteValue<uint32_t>(_trackDesign->flags);
+        tempStream.WriteValue<uint32_t>(0);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->rideMode));
         tempStream.WriteValue<uint8_t>((_trackDesign->colourScheme & 0x3) | (2 << 2));
         for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
@@ -89,7 +89,7 @@ namespace RCT2
         tempStream.WriteArray(_trackDesign->trackSpineColour, Limits::kNumColourSchemes);
         tempStream.WriteArray(_trackDesign->trackRailColour, Limits::kNumColourSchemes);
         tempStream.WriteArray(_trackDesign->trackSupportColour, Limits::kNumColourSchemes);
-        tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
+        tempStream.WriteValue<uint32_t>(0);
         tempStream.Write(&_trackDesign->vehicleObject.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->spaceRequiredX);
         tempStream.WriteValue<uint8_t>(_trackDesign->spaceRequiredY);
