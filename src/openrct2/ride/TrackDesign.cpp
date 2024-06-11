@@ -106,58 +106,58 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
         {
             return { false, STR_VEHICLE_UNSUPPORTED_TD6 };
         }
-        vehicle_object = ObjectEntryDescriptor(entry);
+        vehicleObject = ObjectEntryDescriptor(entry);
     }
 
-    ride_mode = ride.mode;
-    colour_scheme = ride.colour_scheme_type & 3;
+    rideMode = ride.mode;
+    colourScheme = ride.colour_scheme_type & 3;
 
-    for (size_t i = 0; i < std::size(vehicle_colours); i++)
+    for (size_t i = 0; i < std::size(vehicleColours); i++)
     {
-        vehicle_colours[i] = ride.vehicle_colours[i];
+        vehicleColours[i] = ride.vehicle_colours[i];
     }
 
     for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
     {
-        track_spine_colour[i] = ride.track_colour[i].main;
-        track_rail_colour[i] = ride.track_colour[i].additional;
-        track_support_colour[i] = ride.track_colour[i].supports;
+        trackSpineColour[i] = ride.track_colour[i].main;
+        trackRailColour[i] = ride.track_colour[i].additional;
+        trackSupportColour[i] = ride.track_colour[i].supports;
     }
 
-    depart_flags = ride.depart_flags;
-    number_of_trains = ride.NumTrains;
-    number_of_cars_per_train = ride.num_cars_per_train;
-    min_waiting_time = ride.min_waiting_time;
-    max_waiting_time = ride.max_waiting_time;
-    operation_setting = ride.operation_option;
-    lift_hill_speed = ride.lift_hill_speed;
-    num_circuits = ride.num_circuits;
+    departFlags = ride.depart_flags;
+    numberOfTrains = ride.NumTrains;
+    numberOfCarsPerTrain = ride.num_cars_per_train;
+    minWaitingTime = ride.min_waiting_time;
+    maxWaitingTime = ride.max_waiting_time;
+    operationSetting = ride.operation_option;
+    liftHillSpeed = ride.lift_hill_speed;
+    numCircuits = ride.num_circuits;
 
-    StationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
-    max_speed = static_cast<int8_t>(ride.max_speed / 65536);
-    average_speed = static_cast<int8_t>(ride.average_speed / 65536);
-    ride_length = ride.GetTotalLength() / 65536;
-    max_positive_vertical_g = ride.max_positive_vertical_g / 32;
-    max_negative_vertical_g = ride.max_negative_vertical_g / 32;
-    max_lateral_g = ride.max_lateral_g / 32;
+    stationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
+    maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
+    averageSpeed = static_cast<int8_t>(ride.average_speed / 65536);
+    rideLength = ride.GetTotalLength() / 65536;
+    maxPositiveVerticalG = ride.max_positive_vertical_g / 32;
+    maxNegativeVerticalG = ride.max_negative_vertical_g / 32;
+    maxLateralG = ride.max_lateral_g / 32;
     holes = ride.holes & 0x1F;
     inversions = ride.inversions & 0x1F;
     inversions |= (ride.sheltered_eighths << 5);
     drops = ride.drops;
-    highest_drop_height = ride.highest_drop_height;
+    highestDropHeight = ride.highest_drop_height;
 
-    uint16_t totalAirTime = (ride.total_air_time * 123) / 1024;
-    if (totalAirTime > 255)
+    uint16_t _totalAirTime = (ride.total_air_time * 123) / 1024;
+    if (_totalAirTime > 255)
     {
-        totalAirTime = 0;
+        _totalAirTime = 0;
     }
-    total_air_time = static_cast<uint8_t>(totalAirTime);
+    totalAirTime = static_cast<uint8_t>(_totalAirTime);
 
     excitement = ride.ratings.Excitement / 10;
     intensity = ride.ratings.Intensity / 10;
     nausea = ride.ratings.Nausea / 10;
 
-    upkeep_cost = ride.upkeep_cost;
+    upkeepCost = ride.upkeep_cost;
     flags = 0;
     flags2 = 0;
 
@@ -242,7 +242,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             track.SetFlag(TrackDesignTrackElementFlag::IsInverted);
         }
 
-        track_elements.push_back(track);
+        trackElements.push_back(track);
 
         if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
         {
@@ -262,7 +262,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         trackElement.x = newCoords->x;
         trackElement.y = newCoords->y;
 
-        if (track_elements.size() > RCT2::Limits::kTD6MaxTrackElements)
+        if (trackElements.size() > RCT2::Limits::kTD6MaxTrackElements)
         {
             return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         }
@@ -330,7 +330,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             {
                 entrance.IsExit = true;
             }
-            entrance_elements.push_back(entrance);
+            entranceElements.push_back(entrance);
         }
     }
 
@@ -343,8 +343,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 
-    space_required_x = ((tds.PreviewMax.x - tds.PreviewMin.x) / 32) + 1;
-    space_required_y = ((tds.PreviewMax.y - tds.PreviewMin.y) / 32) + 1;
+    spaceRequiredX = ((tds.PreviewMax.x - tds.PreviewMin.x) / 32) + 1;
+    spaceRequiredY = ((tds.PreviewMax.y - tds.PreviewMin.y) / 32) + 1;
     return { true, warningMessage };
 }
 
@@ -382,9 +382,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
                 maze.x = (x - startLoc.x) / COORDS_XY_STEP;
                 maze.y = (y - startLoc.y) / COORDS_XY_STEP;
                 _saveDirection = tileElement->GetDirection();
-                maze_elements.push_back(maze);
+                mazeElements.push_back(maze);
 
-                if (maze_elements.size() >= 2000)
+                if (mazeElements.size() >= 2000)
                 {
                     return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
                 }
@@ -418,7 +418,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     TrackDesignEntranceElement mazeEntrance{};
     mazeEntrance.Location = TileCoordsXYZD(CoordsXYZD(entranceOffset, 0, tileElement->GetDirection()));
     mazeEntrance.IsExit = false;
-    entrance_elements.push_back(mazeEntrance);
+    entranceElements.push_back(mazeEntrance);
 
     location = ride.GetStation().Exit;
     if (location.IsNull())
@@ -445,7 +445,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     TrackDesignEntranceElement mazeExit{};
     mazeExit.Location = TileCoordsXYZD(CoordsXYZD(exitOffset, 0, tileElement->GetDirection()));
     mazeExit.IsExit = true;
-    entrance_elements.push_back(mazeExit);
+    entranceElements.push_back(mazeExit);
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = tds.Origin.z;
@@ -456,8 +456,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 
-    space_required_x = ((tds.PreviewMax.x - tds.PreviewMin.x) / 32) + 1;
-    space_required_y = ((tds.PreviewMax.y - tds.PreviewMin.y) / 32) + 1;
+    spaceRequiredX = ((tds.PreviewMax.x - tds.PreviewMin.x) / 32) + 1;
+    spaceRequiredY = ((tds.PreviewMax.y - tds.PreviewMin.y) / 32) + 1;
     return { true };
 }
 
@@ -489,9 +489,9 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 
 ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 {
-    scenery_elements = _trackSavedTileElementsDesc;
+    sceneryElements = _trackSavedTileElementsDesc;
     // Run an element loop
-    for (auto& scenery : scenery_elements)
+    for (auto& scenery : sceneryElements)
     {
         switch (scenery.scenery_object.GetType())
         {
@@ -564,49 +564,49 @@ void TrackDesign::Serialise(DataSerialiser& stream)
         return;
     }
     stream << DS_TAG(type);
-    stream << DS_TAG(vehicle_type);
+    stream << DS_TAG(vehicleType);
     stream << DS_TAG(cost);
     stream << DS_TAG(flags);
-    stream << DS_TAG(ride_mode);
-    stream << DS_TAG(track_flags);
-    stream << DS_TAG(colour_scheme);
-    stream << DS_TAG(vehicle_colours);
-    stream << DS_TAG(StationObjectIdentifier);
-    stream << DS_TAG(total_air_time);
-    stream << DS_TAG(depart_flags);
-    stream << DS_TAG(number_of_trains);
-    stream << DS_TAG(number_of_cars_per_train);
-    stream << DS_TAG(min_waiting_time);
-    stream << DS_TAG(max_waiting_time);
-    stream << DS_TAG(operation_setting);
-    stream << DS_TAG(max_speed);
-    stream << DS_TAG(average_speed);
-    stream << DS_TAG(ride_length);
-    stream << DS_TAG(max_positive_vertical_g);
-    stream << DS_TAG(max_negative_vertical_g);
-    stream << DS_TAG(max_lateral_g);
+    stream << DS_TAG(rideMode);
+    stream << DS_TAG(trackFlags);
+    stream << DS_TAG(colourScheme);
+    stream << DS_TAG(vehicleColours);
+    stream << DS_TAG(stationObjectIdentifier);
+    stream << DS_TAG(totalAirTime);
+    stream << DS_TAG(departFlags);
+    stream << DS_TAG(numberOfTrains);
+    stream << DS_TAG(numberOfCarsPerTrain);
+    stream << DS_TAG(minWaitingTime);
+    stream << DS_TAG(maxWaitingTime);
+    stream << DS_TAG(operationSetting);
+    stream << DS_TAG(maxSpeed);
+    stream << DS_TAG(averageSpeed);
+    stream << DS_TAG(rideLength);
+    stream << DS_TAG(maxPositiveVerticalG);
+    stream << DS_TAG(maxNegativeVerticalG);
+    stream << DS_TAG(maxLateralG);
     stream << DS_TAG(inversions);
     stream << DS_TAG(holes);
     stream << DS_TAG(drops);
-    stream << DS_TAG(highest_drop_height);
+    stream << DS_TAG(highestDropHeight);
     stream << DS_TAG(excitement);
     stream << DS_TAG(intensity);
     stream << DS_TAG(nausea);
-    stream << DS_TAG(upkeep_cost);
-    stream << DS_TAG(track_spine_colour);
-    stream << DS_TAG(track_rail_colour);
-    stream << DS_TAG(track_support_colour);
+    stream << DS_TAG(upkeepCost);
+    stream << DS_TAG(trackSpineColour);
+    stream << DS_TAG(trackRailColour);
+    stream << DS_TAG(trackSupportColour);
     stream << DS_TAG(flags2);
-    stream << DS_TAG(vehicle_object);
-    stream << DS_TAG(space_required_x);
-    stream << DS_TAG(space_required_y);
-    stream << DS_TAG(lift_hill_speed);
-    stream << DS_TAG(num_circuits);
+    stream << DS_TAG(vehicleObject);
+    stream << DS_TAG(spaceRequiredX);
+    stream << DS_TAG(spaceRequiredY);
+    stream << DS_TAG(liftHillSpeed);
+    stream << DS_TAG(numCircuits);
 
-    stream << DS_TAG(maze_elements);
-    stream << DS_TAG(track_elements);
-    stream << DS_TAG(entrance_elements);
-    stream << DS_TAG(scenery_elements);
+    stream << DS_TAG(mazeElements);
+    stream << DS_TAG(trackElements);
+    stream << DS_TAG(entranceElements);
+    stream << DS_TAG(sceneryElements);
 
     stream << DS_TAG(name);
 }
@@ -637,13 +637,13 @@ static void TrackDesignLoadSceneryObjects(TrackDesign* td6)
     objectManager.UnloadAllTransient();
 
     // Load ride object
-    if (td6->vehicle_object.HasValue())
+    if (td6->vehicleObject.HasValue())
     {
-        objectManager.LoadObject(td6->vehicle_object);
+        objectManager.LoadObject(td6->vehicleObject);
     }
 
     // Load scenery objects
-    for (const auto& scenery : td6->scenery_elements)
+    for (const auto& scenery : td6->sceneryElements)
     {
         if (scenery.scenery_object.HasValue())
         {
@@ -765,7 +765,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
 static void TrackDesignMirrorScenery(TrackDesign* td6)
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    for (auto& scenery : td6->scenery_elements)
+    for (auto& scenery : td6->sceneryElements)
     {
         auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
         if (!entryInfo)
@@ -874,7 +874,7 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
 
 static void TrackDesignMirrorEntrances(TrackDesign& td)
 {
-    for (auto& entrance : td.entrance_elements)
+    for (auto& entrance : td.entranceElements)
     {
         entrance.Location.y = -entrance.Location.y;
         if (entrance.Location.direction & 1)
@@ -890,7 +890,7 @@ static void TrackDesignMirrorEntrances(TrackDesign& td)
  */
 static void TrackDesignMirrorRide(TrackDesign* td6)
 {
-    for (auto& track : td6->track_elements)
+    for (auto& track : td6->trackElements)
     {
         const auto& ted = GetTrackElementDescriptor(track.Type);
         track.Type = ted.MirrorElement;
@@ -908,7 +908,7 @@ static constexpr uint8_t maze_segment_mirror_map[] = {
  */
 static void TrackDesignMirrorMaze(TrackDesign* td6)
 {
-    for (auto& maze : td6->maze_elements)
+    for (auto& maze : td6->mazeElements)
     {
         maze.y = -maze.y;
 
@@ -1343,7 +1343,7 @@ static GameActions::Result TrackDesignPlaceAllScenery(
 static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
     TrackDesignState& tds, const TrackDesign& td, CoordsXYZ newCoords, RideId rideId, money64& totalCost)
 {
-    for (const auto& entrance : td.entrance_elements)
+    for (const auto& entrance : td.entranceElements)
     {
         auto rotation = _currentTrackPieceDirection & 3;
         CoordsXY entranceMapPos = entrance.Location.ToCoordsXY();
@@ -1457,7 +1457,7 @@ static GameActions::Result TrackDesignPlaceMaze(
     tds.PlaceZ = 0;
     money64 totalCost = 0;
 
-    for (const auto& maze_element : td.maze_elements)
+    for (const auto& maze_element : td.mazeElements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
         CoordsXY mazeMapPos = TileCoordsXY(maze_element.x, maze_element.y).ToCoordsXY();
@@ -1585,7 +1585,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
 
     // Track elements
     auto newCoords = origin;
-    for (const auto& track : td6->track_elements)
+    for (const auto& track : td6->trackElements)
     {
         auto trackType = track.Type;
         const auto& ted = GetTrackElementDescriptor(trackType);
@@ -1810,7 +1810,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
     }
 
     // Scenery elements
-    auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->scenery_elements, coords.direction);
+    auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->sceneryElements, coords.direction);
     if (sceneryPlaceRes.Error != GameActions::Status::Ok)
     {
         return sceneryPlaceRes;
@@ -1903,7 +1903,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
-    auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
+    auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicleObject);
 
     RideId rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
@@ -1918,7 +1918,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     ride->custom_name = {};
 
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td6->StationObjectIdentifier);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td6->stationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gameState.LastEntranceStyle;
@@ -1926,9 +1926,9 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
     {
-        ride->track_colour[i].main = td6->track_spine_colour[i];
-        ride->track_colour[i].additional = td6->track_rail_colour[i];
-        ride->track_colour[i].supports = td6->track_support_colour[i];
+        ride->track_colour[i].main = td6->trackSpineColour[i];
+        ride->track_colour[i].additional = td6->trackRailColour[i];
+        ride->track_colour[i].supports = td6->trackSupportColour[i];
     }
 
     // Flat rides need their vehicle colours loaded for display
@@ -1937,7 +1937,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     {
         for (size_t i = 0; i < std::size(ride->vehicle_colours); i++)
         {
-            ride->vehicle_colours[i] = td6->vehicle_colours[i];
+            ride->vehicle_colours[i] = td6->vehicleColours[i];
         }
     }
 
@@ -2022,7 +2022,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         return;
     }
     td6->cost = cost;
-    td6->track_flags = flags & 7;
+    td6->trackFlags = flags & 7;
 
     CoordsXYZ centre = { (tds.PreviewMin.x + tds.PreviewMax.x) / 2 + 16, (tds.PreviewMin.y + tds.PreviewMax.y) / 2 + 16,
                          (tds.PreviewMin.z + tds.PreviewMax.z) / 2 };

@@ -136,7 +136,7 @@ static Widget _trackListWidgets[] = {
                 return;
             }
 
-            if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+            if (_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
             {
                 gTrackDesignSceneryToggle = true;
             }
@@ -152,7 +152,7 @@ static Widget _trackListWidgets[] = {
             else
             {
                 if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
-                    && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE))
+                    && (_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE))
                 {
                     ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
                 }
@@ -515,7 +515,7 @@ static Widget _trackListWidgets[] = {
             screenPos.y = windowPos.y + tdWidget.bottom - 12;
 
             // Warnings
-            if ((_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)
+            if ((_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)
                 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
             {
                 // Vehicle design not available
@@ -523,7 +523,7 @@ static Widget _trackListWidgets[] = {
                 screenPos.y -= kScrollableRowHeight;
             }
 
-            if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+            if (_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
             {
                 if (!gTrackDesignSceneryToggle)
                 {
@@ -576,13 +576,13 @@ static Widget _trackListWidgets[] = {
                     {
                         // Maximum speed
                         ft = Formatter();
-                        ft.Add<uint16_t>(((_loadedTrackDesign->max_speed << 16) * 9) >> 18);
+                        ft.Add<uint16_t>(((_loadedTrackDesign->maxSpeed << 16) * 9) >> 18);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
                         screenPos.y += kListRowHeight;
 
                         // Average speed
                         ft = Formatter();
-                        ft.Add<uint16_t>(((_loadedTrackDesign->average_speed << 16) * 9) >> 18);
+                        ft.Add<uint16_t>(((_loadedTrackDesign->averageSpeed << 16) * 9) >> 18);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
                         screenPos.y += kListRowHeight;
                     }
@@ -590,7 +590,7 @@ static Widget _trackListWidgets[] = {
                     // Ride length
                     ft = Formatter();
                     ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
-                    ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
+                    ft.Add<uint16_t>(_loadedTrackDesign->rideLength);
                     DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
                     screenPos.y += kListRowHeight;
                 }
@@ -599,27 +599,27 @@ static Widget _trackListWidgets[] = {
                 {
                     // Maximum positive vertical Gs
                     ft = Formatter();
-                    ft.Add<int32_t>(_loadedTrackDesign->max_positive_vertical_g * 32);
+                    ft.Add<int32_t>(_loadedTrackDesign->maxPositiveVerticalG * 32);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
                     screenPos.y += kListRowHeight;
 
                     // Maximum negative vertical Gs
                     ft = Formatter();
-                    ft.Add<int32_t>(_loadedTrackDesign->max_negative_vertical_g * 32);
+                    ft.Add<int32_t>(_loadedTrackDesign->maxNegativeVerticalG * 32);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
                     screenPos.y += kListRowHeight;
 
                     // Maximum lateral Gs
                     ft = Formatter();
-                    ft.Add<int32_t>(_loadedTrackDesign->max_lateral_g * 32);
+                    ft.Add<int32_t>(_loadedTrackDesign->maxLateralG * 32);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
                     screenPos.y += kListRowHeight;
 
-                    if (_loadedTrackDesign->total_air_time != 0)
+                    if (_loadedTrackDesign->totalAirTime != 0)
                     {
                         // Total air time
                         ft = Formatter();
-                        ft.Add<int32_t>(_loadedTrackDesign->total_air_time * 25);
+                        ft.Add<int32_t>(_loadedTrackDesign->totalAirTime * 25);
                         DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
                         screenPos.y += kListRowHeight;
                     }
@@ -635,7 +635,7 @@ static Widget _trackListWidgets[] = {
 
                     // Drop height is multiplied by 0.75
                     ft = Formatter();
-                    ft.Add<uint16_t>((_loadedTrackDesign->highest_drop_height * 3) / 4);
+                    ft.Add<uint16_t>((_loadedTrackDesign->highestDropHeight * 3) / 4);
                     DrawTextBasic(dpi, screenPos, STR_HIGHEST_DROP_HEIGHT, ft);
                     screenPos.y += kListRowHeight;
                 }
@@ -655,12 +655,12 @@ static Widget _trackListWidgets[] = {
                 screenPos.y += 4;
             }
 
-            if (_loadedTrackDesign->space_required_x != 0xFF)
+            if (_loadedTrackDesign->spaceRequiredX != 0xFF)
             {
                 // Space required
                 ft = Formatter();
-                ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
-                ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
+                ft.Add<uint16_t>(_loadedTrackDesign->spaceRequiredX);
+                ft.Add<uint16_t>(_loadedTrackDesign->spaceRequiredY);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
                 screenPos.y += kListRowHeight;
             }

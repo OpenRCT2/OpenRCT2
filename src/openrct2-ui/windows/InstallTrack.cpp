@@ -170,7 +170,7 @@ static Widget window_install_track_widgets[] = {
 
             // Warnings
             const TrackDesign* td6 = _trackDesign.get();
-            if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+            if (td6->trackFlags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
             {
                 if (!gTrackDesignSceneryToggle)
                 {
@@ -198,7 +198,7 @@ static Widget window_install_track_widgets[] = {
             {
                 auto ft = Formatter();
 
-                const auto* objectEntry = ObjectManagerLoadObject(&td6->vehicle_object.Entry);
+                const auto* objectEntry = ObjectManagerLoadObject(&td6->vehicleObject.Entry);
                 if (objectEntry != nullptr)
                 {
                     auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(objectEntry);
@@ -254,7 +254,7 @@ static Widget window_install_track_widgets[] = {
                 {
                     // Maximum speed
                     {
-                        uint16_t speed = ((td6->max_speed << 16) * 9) >> 18;
+                        uint16_t speed = ((td6->maxSpeed << 16) * 9) >> 18;
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
@@ -262,7 +262,7 @@ static Widget window_install_track_widgets[] = {
                     }
                     // Average speed
                     {
-                        uint16_t speed = ((td6->average_speed << 16) * 9) >> 18;
+                        uint16_t speed = ((td6->averageSpeed << 16) * 9) >> 18;
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
@@ -273,7 +273,7 @@ static Widget window_install_track_widgets[] = {
                 // Ride length
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
-                ft.Add<uint16_t>(td6->ride_length);
+                ft.Add<uint16_t>(td6->rideLength);
                 DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
                 screenPos.y += kListRowHeight;
             }
@@ -282,7 +282,7 @@ static Widget window_install_track_widgets[] = {
             {
                 // Maximum positive vertical Gs
                 {
-                    int32_t gForces = td6->max_positive_vertical_g * 32;
+                    int32_t gForces = td6->maxPositiveVerticalG * 32;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
@@ -290,7 +290,7 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum negative vertical Gs
                 {
-                    int32_t gForces = td6->max_negative_vertical_g * 32;
+                    int32_t gForces = td6->maxNegativeVerticalG * 32;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
@@ -298,16 +298,16 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum lateral Gs
                 {
-                    int32_t gForces = td6->max_lateral_g * 32;
+                    int32_t gForces = td6->maxLateralG * 32;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
                     screenPos.y += kListRowHeight;
                 }
-                if (td6->total_air_time != 0)
+                if (td6->totalAirTime != 0)
                 {
                     // Total air time
-                    int32_t airTime = td6->total_air_time * 25;
+                    int32_t airTime = td6->totalAirTime * 25;
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
@@ -343,12 +343,12 @@ static Widget window_install_track_widgets[] = {
             }
             screenPos.y += 4;
 
-            if (td6->space_required_x != 0xFF)
+            if (td6->spaceRequiredX != 0xFF)
             {
                 // Space required
                 auto ft = Formatter();
-                ft.Add<uint16_t>(td6->space_required_x);
-                ft.Add<uint16_t>(td6->space_required_y);
+                ft.Add<uint16_t>(td6->spaceRequiredX);
+                ft.Add<uint16_t>(td6->spaceRequiredY);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
                 screenPos.y += kListRowHeight;
             }
@@ -422,7 +422,7 @@ static Widget window_install_track_widgets[] = {
             LOG_ERROR("Failed to load track (ride type null): %s", path);
             return nullptr;
         }
-        if (ObjectManagerLoadObject(&trackDesign->vehicle_object.Entry) == nullptr)
+        if (ObjectManagerLoadObject(&trackDesign->vehicleObject.Entry) == nullptr)
         {
             LOG_ERROR("Failed to load track (vehicle load fail): %s", path);
             return nullptr;
