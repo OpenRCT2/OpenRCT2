@@ -90,27 +90,10 @@ struct TrackDesignTrackElement
     }
 };
 
-/* Maze Element entry   size: 0x04 */
 struct TrackDesignMazeElement
 {
-    union
-    {
-        uint32_t all;
-        struct
-        {
-            int8_t x;
-            int8_t y;
-            union
-            {
-                uint16_t maze_entry;
-                struct
-                {
-                    uint8_t direction;
-                    uint8_t type;
-                };
-            };
-        };
-    };
+    TileCoordsXY location{};
+    uint16_t mazeEntry{};
 };
 
 class DataSerialiser;

@@ -703,19 +703,20 @@ template<> struct DataSerializerTraitsT<TrackDesignMazeElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignMazeElement& val)
     {
-        uint32_t temp = ByteSwapBE(val.all);
-        stream->Write(&temp);
+        stream->Write(&val.location);
+        stream->Write(&val.mazeEntry);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignMazeElement& val)
     {
-        uint32_t temp;
-        stream->Read(&temp);
-        val.all = ByteSwapBE(temp);
+        stream->Read(&val.location);
+        stream->Read(&val.mazeEntry);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignMazeElement& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "TrackDesignMazeElement(all = %d)", val.all);
+        snprintf(
+            msg, sizeof(msg), "TrackDesignMazeElement(x = %d, y = %d, entry = %d)", val.location.x, val.location.y,
+            val.mazeEntry);
         stream->Write(msg, strlen(msg));
     }
 };

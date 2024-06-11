@@ -104,7 +104,9 @@ namespace RCT2
         {
             for (const auto& mazeElement : _trackDesign->mazeElements)
             {
-                tempStream.WriteValue<uint32_t>(mazeElement.all);
+                tempStream.WriteValue<int8_t>(mazeElement.location.x);
+                tempStream.WriteValue<int8_t>(mazeElement.location.y);
+                tempStream.WriteValue<uint16_t>(mazeElement.mazeEntry);
             }
 
             for (const auto& entranceElement : _trackDesign->entranceElements)

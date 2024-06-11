@@ -376,9 +376,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 
                 TrackDesignMazeElement maze{};
 
-                maze.maze_entry = tileElement->AsTrack()->GetMazeEntry();
-                maze.x = (x - startLoc.x) / COORDS_XY_STEP;
-                maze.y = (y - startLoc.y) / COORDS_XY_STEP;
+                maze.mazeEntry = tileElement->AsTrack()->GetMazeEntry();
+                maze.location.x = (x - startLoc.x) / COORDS_XY_STEP;
+                maze.location.y = (y - startLoc.y) / COORDS_XY_STEP;
                 _saveDirection = tileElement->GetDirection();
                 mazeElements.push_back(maze);
 
@@ -906,16 +906,16 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
 {
     for (auto& maze : td6->mazeElements)
     {
-        maze.y = -maze.y;
+        maze.location.y = -maze.location.y;
 
-        uint16_t maze_entry = maze.maze_entry;
-        uint16_t new_entry = 0;
-        for (uint8_t position = UtilBitScanForward(maze_entry); position != 0xFF; position = UtilBitScanForward(maze_entry))
+        auto mazeEntry = maze.mazeEntry;
+        uint16_t newEntry = 0;
+        for (uint8_t position = UtilBitScanForward(mazeEntry); position != 0xFF; position = UtilBitScanForward(mazeEntry))
         {
-            maze_entry &= ~(1 << position);
-            new_entry |= (1 << maze_segment_mirror_map[position]);
+            mazeEntry &= ~(1 << position);
+            newEntry |= (1 << maze_segment_mirror_map[position]);
         }
-        maze.maze_entry = new_entry;
+        maze.mazeEntry = newEntry;
     }
 }
 
@@ -1456,7 +1456,7 @@ static GameActions::Result TrackDesignPlaceMaze(
     for (const auto& maze_element : td.mazeElements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
-        CoordsXY mazeMapPos = TileCoordsXY(maze_element.x, maze_element.y).ToCoordsXY();
+        CoordsXY mazeMapPos = maze_element.location.ToCoordsXY();
         auto mapCoord = mazeMapPos.Rotate(rotation);
         mapCoord += origin;
 
@@ -1473,7 +1473,7 @@ static GameActions::Result TrackDesignPlaceMaze(
             uint8_t flags;
             money64 cost = 0;
 
-            uint16_t maze_entry = Numerics::rol16(maze_element.maze_entry, rotation * 4);
+            uint16_t mazeEntry = Numerics::rol16(maze_element.mazeEntry, rotation * 4);
 
             if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
             {
@@ -1497,7 +1497,7 @@ static GameActions::Result TrackDesignPlaceMaze(
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
 
-            auto mazePlace = MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, maze_entry);
+            auto mazePlace = MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, mazeEntry);
             mazePlace.SetFlags(flags);
             auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
                                                        : GameActions::QueryNested(&mazePlace);

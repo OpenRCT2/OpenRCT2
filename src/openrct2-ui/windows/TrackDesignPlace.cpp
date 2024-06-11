@@ -547,7 +547,7 @@ static Widget _trackPlaceWidgets[] = {
             uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
             for (const auto& mazeElement : td6->mazeElements)
             {
-                auto rotatedMazeCoords = origin + TileCoordsXY{ mazeElement.x, mazeElement.y }.ToCoordsXY().Rotate(rotation);
+                auto rotatedMazeCoords = origin + mazeElement.location.ToCoordsXY().Rotate(rotation);
 
                 if (pass == 0)
                 {

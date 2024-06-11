@@ -946,10 +946,9 @@ void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
     else
     {
         TrackDesignMazeElement mazeElement{};
-        mazeElement.x = td46MazeElement.x;
-        mazeElement.y = td46MazeElement.y;
-        mazeElement.direction = td46MazeElement.Direction;
-        mazeElement.type = td46MazeElement.Type;
+        mazeElement.location.x = td46MazeElement.x;
+        mazeElement.location.y = td46MazeElement.y;
+        mazeElement.mazeEntry = td46MazeElement.MazeEntry;
         td.mazeElements.push_back(mazeElement);
     }
 }
