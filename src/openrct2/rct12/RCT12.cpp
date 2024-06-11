@@ -939,8 +939,8 @@ void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
     if (td46MazeElement.IsEntrance() || td46MazeElement.IsExit())
     {
         TrackDesignEntranceElement element{};
-        element.Location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
-        element.IsExit = td46MazeElement.IsExit();
+        element.location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
+        element.isExit = td46MazeElement.IsExit();
         td.entranceElements.push_back(element);
     }
     else

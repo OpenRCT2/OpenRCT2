@@ -109,11 +109,11 @@ namespace RCT2
 
             for (const auto& entranceElement : _trackDesign->entranceElements)
             {
-                tempStream.WriteValue<int8_t>(entranceElement.Location.x);
-                tempStream.WriteValue<int8_t>(entranceElement.Location.y);
-                tempStream.WriteValue<int8_t>(entranceElement.Location.direction);
+                tempStream.WriteValue<int8_t>(entranceElement.location.x);
+                tempStream.WriteValue<int8_t>(entranceElement.location.y);
+                tempStream.WriteValue<int8_t>(entranceElement.location.direction);
                 tempStream.WriteValue<int8_t>(
-                    EnumValue(entranceElement.IsExit ? TD46MazeElementType::Exit : TD46MazeElementType::Entrance));
+                    EnumValue(entranceElement.isExit ? TD46MazeElementType::Exit : TD46MazeElementType::Entrance));
             }
 
             tempStream.WriteValue<uint32_t>(0);
@@ -137,9 +137,9 @@ namespace RCT2
             for (const auto& entranceElement : _trackDesign->entranceElements)
             {
                 tempStream.WriteValue<uint8_t>(
-                    entranceElement.Location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.Location.z);
-                tempStream.WriteValue<uint8_t>(entranceElement.Location.direction | (entranceElement.IsExit << 7));
-                auto xy = entranceElement.Location.ToCoordsXY();
+                    entranceElement.location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.location.z);
+                tempStream.WriteValue<uint8_t>(entranceElement.location.direction | (entranceElement.isExit << 7));
+                auto xy = entranceElement.location.ToCoordsXY();
                 tempStream.WriteValue<int16_t>(xy.x);
                 tempStream.WriteValue<int16_t>(xy.y);
             }

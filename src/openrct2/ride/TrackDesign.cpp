@@ -321,12 +321,12 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             }
 
             TrackDesignEntranceElement entrance{};
-            entrance.Location = TileCoordsXYZD(rotatedMapLocation, z, entranceDirection);
+            entrance.location = TileCoordsXYZD(rotatedMapLocation, z, entranceDirection);
 
             // If this is the exit version
             if (i == 1)
             {
-                entrance.IsExit = true;
+                entrance.isExit = true;
             }
             entranceElements.push_back(entrance);
         }
@@ -414,8 +414,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 
     auto entranceOffset = entranceLoc - startLoc;
     TrackDesignEntranceElement mazeEntrance{};
-    mazeEntrance.Location = TileCoordsXYZD(CoordsXYZD(entranceOffset, 0, tileElement->GetDirection()));
-    mazeEntrance.IsExit = false;
+    mazeEntrance.location = TileCoordsXYZD(CoordsXYZD(entranceOffset, 0, tileElement->GetDirection()));
+    mazeEntrance.isExit = false;
     entranceElements.push_back(mazeEntrance);
 
     location = ride.GetStation().Exit;
@@ -441,8 +441,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 
     auto exitOffset = exitLoc - startLoc;
     TrackDesignEntranceElement mazeExit{};
-    mazeExit.Location = TileCoordsXYZD(CoordsXYZD(exitOffset, 0, tileElement->GetDirection()));
-    mazeExit.IsExit = true;
+    mazeExit.location = TileCoordsXYZD(CoordsXYZD(exitOffset, 0, tileElement->GetDirection()));
+    mazeExit.isExit = true;
     entranceElements.push_back(mazeExit);
 
     // Save global vars as they are still used by scenery????
@@ -872,10 +872,10 @@ static void TrackDesignMirrorEntrances(TrackDesign& td)
 {
     for (auto& entrance : td.entranceElements)
     {
-        entrance.Location.y = -entrance.Location.y;
-        if (entrance.Location.direction & 1)
+        entrance.location.y = -entrance.location.y;
+        if (entrance.location.direction & 1)
         {
-            entrance.Location.direction = DirectionReverse(entrance.Location.direction);
+            entrance.location.direction = DirectionReverse(entrance.location.direction);
         }
     }
 }
@@ -1342,7 +1342,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
     for (const auto& entrance : td.entranceElements)
     {
         auto rotation = _currentTrackPieceDirection & 3;
-        CoordsXY entranceMapPos = entrance.Location.ToCoordsXY();
+        CoordsXY entranceMapPos = entrance.location.ToCoordsXY();
         auto rotatedEntranceMapPos = entranceMapPos.Rotate(rotation);
         newCoords = { rotatedEntranceMapPos + tds.Origin, newCoords.z };
 
@@ -1358,8 +1358,8 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
             case PTD_OPERATION_PLACE_GHOST:
             case PTD_OPERATION_PLACE_TRACK_PREVIEW:
             {
-                rotation = (rotation + entrance.Location.direction) & 3;
-                newCoords.z = entrance.Location.z * COORDS_Z_STEP;
+                rotation = (rotation + entrance.location.direction) & 3;
+                newCoords.z = entrance.location.z * COORDS_Z_STEP;
                 newCoords.z += tds.Origin.z;
 
                 if (tds.PlaceOperation != PTD_OPERATION_PLACE_QUERY)
@@ -1405,7 +1405,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                         }
 
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-                            newCoords, rotation, rideId, stationIndex, entrance.IsExit);
+                            newCoords, rotation, rideId, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
                                                                    : GameActions::QueryNested(&rideEntranceExitPlaceAction);

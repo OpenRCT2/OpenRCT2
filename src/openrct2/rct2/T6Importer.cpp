@@ -177,8 +177,8 @@ namespace RCT2
                     TrackDesignEntranceElement entranceElement{};
                     auto xy = CoordsXY(t6EntranceElement.x, t6EntranceElement.y);
                     auto z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
-                    entranceElement.Location = TileCoordsXYZD(TileCoordsXY(xy), z, t6EntranceElement.GetDirection());
-                    entranceElement.IsExit = t6EntranceElement.IsExit();
+                    entranceElement.location = TileCoordsXYZD(TileCoordsXY(xy), z, t6EntranceElement.GetDirection());
+                    entranceElement.isExit = t6EntranceElement.IsExit();
                     td->entranceElements.push_back(entranceElement);
                 }
             }

@@ -40,8 +40,8 @@ struct TrackDesignState
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
-    TileCoordsXYZD Location{};
-    bool IsExit{};
+    TileCoordsXYZD location{};
+    bool isExit{};
 };
 
 struct TrackDesignSceneryElement
