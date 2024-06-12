@@ -495,40 +495,27 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
         {
             case ObjectType::Paths:
             {
-                uint8_t slope = (scenery.flags & 0x60) >> 5;
-                slope -= _saveDirection;
+                uint8_t slope = (scenery.getSlopeDirection() - _saveDirection) % NumOrthogonalDirections;
+                scenery.setSlopeDirection(slope);
 
-                scenery.flags &= 0x9F;
-                scenery.flags |= ((slope & 3) << 5);
-
-                // Direction of connection on path
-                uint8_t direction = scenery.flags & 0xF;
-                // Rotate the direction by the track direction
-                direction = ((direction << 4) >> _saveDirection);
-
-                scenery.flags &= 0xF0;
-                scenery.flags |= (direction & 0xF) | (direction >> 4);
+                uint8_t edges = Numerics::ror4(scenery.getEdges(), _saveDirection);
+                scenery.setEdges(edges);
                 break;
             }
             case ObjectType::Walls:
             {
-                uint8_t direction = scenery.flags & 3;
-                direction -= _saveDirection;
-
-                scenery.flags &= 0xFC;
-                scenery.flags |= (direction & 3);
+                auto direction = (scenery.getRotation() - _saveDirection) % NumOrthogonalDirections;
+                scenery.setRotation(direction);
                 break;
             }
             default:
             {
-                uint8_t direction = scenery.flags & 3;
-                uint8_t quadrant = (scenery.flags & 0x0C) >> 2;
+                auto direction = (scenery.getRotation() - _saveDirection) % NumOrthogonalDirections;
+                scenery.setRotation(direction);
 
-                direction -= _saveDirection;
-                quadrant -= _saveDirection;
+                auto quadrant = (scenery.getQuadrant() - _saveDirection) % NumOrthogonalDirections;
+                scenery.setQuadrant(quadrant);
 
-                scenery.flags &= 0xF0;
-                scenery.flags |= (direction & 3) | ((quadrant & 3) << 2);
                 break;
             }
         }
@@ -698,7 +685,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (scenery.sceneryObject.GetType() == ObjectType::Paths)
     {
-        auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.sceneryObject, true, scenery.IsQueue());
+        auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.sceneryObject, true, scenery.isQueue());
         if (footpathMapping == nullptr)
         {
             // Check if legacy path object is loaded
@@ -717,12 +704,12 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
         {
             result.Type = ObjectType::FootpathSurface;
             result.Index = objectMgr.GetLoadedObjectEntryIndex(
-                ObjectEntryDescriptor(scenery.IsQueue() ? footpathMapping->QueueSurface : footpathMapping->NormalSurface));
+                ObjectEntryDescriptor(scenery.isQueue() ? footpathMapping->QueueSurface : footpathMapping->NormalSurface));
             result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
         }
 
         if (result.Index == OBJECT_ENTRY_INDEX_NULL)
-            result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.IsQueue());
+            result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.isQueue());
         if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
             result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
 
@@ -794,7 +781,7 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
                     }
                 }
 
-                switch (scenery.flags & 3)
+                switch (scenery.getRotation())
                 {
                     case 0:
                         scenery.loc.y = -(scenery.loc.y + y1) - y2;
@@ -802,7 +789,6 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
                     case 1:
                         scenery.loc.x = scenery.loc.x + y2 + y1;
                         scenery.loc.y = -scenery.loc.y;
-                        scenery.flags ^= (1 << 1);
                         break;
                     case 2:
                         scenery.loc.y = -(scenery.loc.y - y2) + y1;
@@ -810,9 +796,9 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
                     case 3:
                         scenery.loc.x = scenery.loc.x - y2 - y1;
                         scenery.loc.y = -scenery.loc.y;
-                        scenery.flags ^= (1 << 1);
                         break;
                 }
+                scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
                 break;
             }
             case ObjectType::SmallScenery:
@@ -822,28 +808,22 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
 
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 {
-                    scenery.flags ^= (1 << 0);
+                    scenery.setRotation(scenery.getRotation() ^ (1 << 0));
                     if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
                     {
-                        scenery.flags ^= (1 << 2);
+                        scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));
                     }
                     break;
                 }
-                if (scenery.flags & (1 << 0))
-                {
-                    scenery.flags ^= (1 << 1);
-                }
 
-                scenery.flags ^= (1 << 2);
+                scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
+                scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));
                 break;
             }
             case ObjectType::Walls:
             {
                 scenery.loc.y = -scenery.loc.y;
-                if (scenery.flags & (1 << 0))
-                {
-                    scenery.flags ^= (1 << 1);
-                }
+                scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
                 break;
             }
             case ObjectType::Paths:
@@ -851,15 +831,14 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
             {
                 scenery.loc.y = -scenery.loc.y;
 
-                if (scenery.flags & (1 << 5))
+                if (scenery.hasSlope())
                 {
-                    scenery.flags ^= (1 << 6);
+                    scenery.setSlopeDirection(DirectionFlipXAxis(scenery.getSlopeDirection()));
                 }
 
-                uint8_t flags = scenery.flags;
-                flags = ((flags & (1 << 3)) >> 2) | ((flags & (1 << 1)) << 2);
-                scenery.flags &= 0xF5;
-                scenery.flags |= flags;
+                uint8_t edges = scenery.getEdges();
+                edges = ((edges & 0b1000) >> 2) | ((edges & 0b0010) << 2) | (edges & 0b0101);
+                scenery.setEdges(edges);
                 break;
             }
             default:
@@ -970,7 +949,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     }
 
     int32_t z = scenery.loc.z + originZ;
-    uint8_t sceneryRotation = (rotation + scenery.flags) & kTileElementDirectionMask;
+    uint8_t sceneryRotation = (rotation + scenery.getRotation()) & kTileElementDirectionMask;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
@@ -978,7 +957,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     {
         case ObjectType::SmallScenery:
         {
-            uint8_t quadrant = (scenery.flags >> 2) + _currentTrackPieceDirection;
+            uint8_t quadrant = scenery.getQuadrant() + _currentTrackPieceDirection;
             quadrant &= 3;
 
             auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
@@ -1059,7 +1038,6 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
     int16_t z;
     uint8_t flags;
-    uint8_t quadrant;
 
     switch (entryInfo->Type)
     {
@@ -1070,10 +1048,10 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 return GameActions::Result();
             }
 
-            rotation += scenery.flags;
+            rotation += scenery.getRotation();
             rotation &= 3;
             z = scenery.loc.z + originZ;
-            quadrant = ((scenery.flags >> 2) + _currentTrackPieceDirection) & 3;
+            uint8_t quadrant = (scenery.getQuadrant() + _currentTrackPieceDirection) & 3;
 
             flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN;
             if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1113,7 +1091,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 return GameActions::Result();
             }
 
-            rotation += scenery.flags;
+            rotation += scenery.getRotation();
             rotation &= 3;
 
             z = scenery.loc.z + originZ;
@@ -1155,7 +1133,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             }
 
             z = scenery.loc.z + originZ;
-            rotation += scenery.flags;
+            rotation += scenery.getRotation();
             rotation &= 3;
 
             flags = GAME_COMMAND_FLAG_APPLY;
@@ -1192,16 +1170,6 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             z = scenery.loc.z + originZ;
             if (mode == 0)
             {
-                auto isQueue = scenery.IsQueue();
-
-                uint8_t bh = ((scenery.flags & 0xF) << rotation);
-                flags = bh >> 4;
-                bh = (bh | flags) & 0xF;
-                flags = (((scenery.flags >> 5) + rotation) & 3) << 5;
-                bh |= flags;
-
-                bh |= scenery.flags & 0x90;
-
                 flags = GAME_COMMAND_FLAG_APPLY;
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                 {
@@ -1220,10 +1188,12 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 {
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
-                uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
-                uint8_t edges = bh & 0xF;
+                uint8_t slope = (scenery.getSlopeDirection() + rotation) & 0x3;
+                if (scenery.hasSlope())
+                    slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                uint8_t edges = Numerics::rol4(scenery.getEdges(), rotation);
                 PathConstructFlags constructFlags = 0;
-                if (isQueue)
+                if (scenery.isQueue())
                     constructFlags |= PathConstructFlag::IsQueue;
                 if (entryInfo->Type == ObjectType::Paths)
                     constructFlags |= PathConstructFlag::IsLegacyPathObject;

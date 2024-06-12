@@ -46,16 +46,94 @@ struct TrackDesignEntranceElement
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor sceneryObject;
-    CoordsXYZ loc;
-    uint8_t flags;
-    colour_t primaryColour;
-    colour_t secondaryColour;
+    ObjectEntryDescriptor sceneryObject{};
+    CoordsXYZ loc{};
+    uint8_t flags{};
+    colour_t primaryColour{};
+    colour_t secondaryColour{};
     colour_t tertiaryColour = COLOUR_DARK_BROWN;
 
-    bool IsQueue() const
+    Direction getRotation() const
+    {
+        return flags & 0x3;
+    }
+
+    void setRotation(Direction rotation)
+    {
+        flags &= ~0x3;
+        flags |= (rotation & 0x3);
+    }
+
+    // Small scenery
+    uint8_t getQuadrant() const
+    {
+        return (flags >> 2) & 0x3;
+    }
+
+    void setQuadrant(uint8_t quadrant)
+    {
+        flags &= ~0b00001100;
+        flags |= (quadrant & 0x3) << 2;
+    }
+
+    // Path
+    bool hasSlope() const
+    {
+        return (flags & 0b00010000) != 0;
+    }
+
+    void setHasSlope(bool on)
+    {
+        if (on)
+            flags |= 0b00010000;
+        else
+            flags &= ~0b00010000;
+    }
+
+    Direction getSlopeDirection() const
+    {
+        return (flags >> 5) % NumOrthogonalDirections;
+    }
+
+    void setSlopeDirection(Direction slope)
+    {
+        flags &= 0x9F;
+        flags |= ((slope & 3) << 5);
+    }
+
+    uint8_t getEdges() const
+    {
+        return (flags & 0xF);
+    }
+
+    void setEdges(uint8_t edges)
+    {
+        flags &= ~0xF;
+        flags |= (edges & 0xF);
+    }
+
+    bool isQueue() const
     {
         return (flags & (1 << 7)) != 0;
+    }
+
+    void setIsQueue(bool on)
+    {
+        if (on)
+            flags |= 0b10000000;
+        else
+            flags &= ~0b10000000;
+    }
+
+    bool operator==(const TrackDesignSceneryElement& rhs)
+    {
+        return sceneryObject == rhs.sceneryObject && loc == rhs.loc && flags == rhs.flags && primaryColour == rhs.primaryColour
+            && secondaryColour == rhs.secondaryColour && tertiaryColour == rhs.tertiaryColour;
+    }
+
+    bool operator!=(const TrackDesignSceneryElement& rhs)
+    {
+        return !((*this) == rhs);
     }
 };
 

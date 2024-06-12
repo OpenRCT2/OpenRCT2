@@ -208,33 +208,37 @@ static bool TrackDesignSaveIsSupportedObject(const Object* obj)
     return !entry.IsEmpty();
 }
 
-static void TrackDesignSavePushTileElementDesc(
-    const RCTObjectEntry& entry, const CoordsXYZ& loc, uint8_t flags, colour_t primaryColour, colour_t secondaryColour,
-    colour_t tertiaryColour)
+static TrackDesignSceneryElement TrackDesignCreateTileElementDesc(const RCTObjectEntry& entry, const CoordsXYZ& loc)
 {
     TrackDesignSceneryElement item{};
     item.sceneryObject = ObjectEntryDescriptor(entry);
     item.loc = loc;
-    item.flags = flags;
-    item.primaryColour = primaryColour;
-    item.secondaryColour = secondaryColour;
-    item.tertiaryColour = tertiaryColour;
-
-    _trackSavedTileElementsDesc.push_back(std::move(item));
+    return item;
 }
 
-static void TrackDesignSavePushTileElementDesc(
-    const Object* obj, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour,
-    colour_t tertiaryColour)
+static TrackDesignSceneryElement TrackDesignCreateTileElementDesc(const Object& obj, const CoordsXYZ& loc)
 {
-    const auto& entry = obj->GetObjectEntry();
+    const auto& entry = obj.GetObjectEntry();
     if (entry.IsEmpty())
     {
         // Unsupported, should have been blocked earlier
         assert(false);
     }
 
-    TrackDesignSavePushTileElementDesc(entry, loc, flags, primaryColour, secondaryColour, tertiaryColour);
+    return TrackDesignCreateTileElementDesc(entry, loc);
+}
+
+static TrackDesignSceneryElement TrackDesignSaveCreateSmallSceneryDesc(
+    const Object& object, const CoordsXY& loc, const SmallSceneryElement& smallSceneryElement)
+{
+    auto item = TrackDesignCreateTileElementDesc(object, { loc, smallSceneryElement.GetBaseZ() });
+    item.setRotation(smallSceneryElement.GetDirection());
+    item.setQuadrant(smallSceneryElement.GetSceneryQuadrant());
+    item.primaryColour = smallSceneryElement.GetPrimaryColour();
+    item.secondaryColour = smallSceneryElement.GetSecondaryColour();
+    item.tertiaryColour = smallSceneryElement.GetTertiaryColour();
+
+    return item;
 }
 
 static TrackDesignAddStatus TrackDesignSaveAddSmallScenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
@@ -243,21 +247,25 @@ static TrackDesignAddStatus TrackDesignSaveAddSmallScenery(const CoordsXY& loc, 
     auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
-        uint8_t flags = 0;
-        flags |= sceneryElement->GetDirection();
-        flags |= sceneryElement->GetSceneryQuadrant() << 2;
-
-        auto primaryColour = sceneryElement->GetPrimaryColour();
-        auto secondaryColour = sceneryElement->GetSecondaryColour();
-        auto tertiaryColour = sceneryElement->GetTertiaryColour();
-
+        auto item = TrackDesignSaveCreateSmallSceneryDesc(*obj, loc, *sceneryElement);
         TrackDesignSavePushTileElement(loc, reinterpret_cast<TileElement*>(sceneryElement));
-        TrackDesignSavePushTileElementDesc(
-            obj, { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags, primaryColour, secondaryColour, tertiaryColour);
+        _trackSavedTileElementsDesc.push_back(std::move(item));
         return TrackDesignAddStatus::Success();
     }
 
     return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
+}
+
+static TrackDesignSceneryElement TrackDesignSaveCreateLargeSceneryDesc(
+    const Object& object, const CoordsXYZ& loc, const LargeSceneryElement& largeSceneryElement)
+{
+    auto item = TrackDesignCreateTileElementDesc(object, loc);
+    item.setRotation(largeSceneryElement.GetDirection());
+    item.primaryColour = largeSceneryElement.GetPrimaryColour();
+    item.secondaryColour = largeSceneryElement.GetSecondaryColour();
+    item.tertiaryColour = largeSceneryElement.GetTertiaryColour();
+
+    return item;
 }
 
 static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
@@ -295,14 +303,10 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
             {
                 if (sequence == 0)
                 {
-                    uint8_t flags = largeElement->GetDirection();
-                    auto primaryColour = largeElement->GetPrimaryColour();
-                    auto secondaryColour = largeElement->GetSecondaryColour();
-                    auto tertiaryColour = largeElement->GetTertiaryColour();
-
-                    TrackDesignSavePushTileElementDesc(obj, tileLoc, flags, primaryColour, secondaryColour, tertiaryColour);
+                    auto item = TrackDesignSaveCreateLargeSceneryDesc(*obj, tileLoc, *largeElement);
+                    _trackSavedTileElementsDesc.push_back(std::move(item));
                 }
-                TrackDesignSavePushTileElement({ tileLoc.x, tileLoc.y }, reinterpret_cast<TileElement*>(largeElement));
+                TrackDesignSavePushTileElement(tileLoc, reinterpret_cast<TileElement*>(largeElement));
             }
         }
         return TrackDesignAddStatus::Success();
@@ -311,32 +315,37 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
     return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
 }
 
+static TrackDesignSceneryElement TrackDesignSaveCreateWallDesc(
+    const Object& object, const CoordsXY& loc, const WallElement& wallElement)
+{
+    auto item = TrackDesignCreateTileElementDesc(object, { loc, wallElement.GetBaseZ() });
+    item.setRotation(wallElement.GetDirection());
+    item.primaryColour = wallElement.GetPrimaryColour();
+    item.secondaryColour = wallElement.GetSecondaryColour();
+    item.tertiaryColour = wallElement.GetTertiaryColour();
+
+    return item;
+}
+
 static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElement* wallElement)
 {
     auto entryIndex = wallElement->GetEntryIndex();
     auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
-        uint8_t flags = 0;
-        flags |= wallElement->GetDirection();
-
-        auto primaryColour = wallElement->GetPrimaryColour();
-        auto secondaryColour = wallElement->GetSecondaryColour();
-        auto tertiaryColour = wallElement->GetTertiaryColour();
-
+        auto item = TrackDesignSaveCreateWallDesc(*obj, loc, *wallElement);
         TrackDesignSavePushTileElement(loc, reinterpret_cast<TileElement*>(wallElement));
-        TrackDesignSavePushTileElementDesc(
-            obj, { loc.x, loc.y, wallElement->GetBaseZ() }, flags, primaryColour, secondaryColour, tertiaryColour);
+        _trackSavedTileElementsDesc.push_back(std::move(item));
         return TrackDesignAddStatus::Success();
     }
 
     return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
 }
 
-static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(PathElement* pathElement)
+static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(const PathElement& pathElement)
 {
     RCTObjectEntry pathEntry;
-    auto legacyPathObj = pathElement->GetLegacyPathEntry();
+    auto legacyPathObj = pathElement.GetLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
         pathEntry = legacyPathObj->GetObjectEntry();
@@ -347,36 +356,42 @@ static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(PathEle
     }
     else
     {
-        auto surfaceEntry = pathElement->GetSurfaceEntry();
+        auto surfaceEntry = pathElement.GetSurfaceEntry();
         if (surfaceEntry != nullptr)
         {
             auto surfaceId = surfaceEntry->GetIdentifier();
-            auto railingsEntry = pathElement->GetRailingsEntry();
+            auto railingsEntry = pathElement.GetRailingsEntry();
             auto railingsId = railingsEntry == nullptr ? "" : railingsEntry->GetIdentifier();
             return RCT2::GetBestObjectEntryForSurface(surfaceId, railingsId);
         }
     }
-    return {};
+    return std::nullopt;
+}
+
+static TrackDesignSceneryElement TrackDesignSaveCreateFootpathDesc(
+    const RCTObjectEntry& pathEntry, const CoordsXY& loc, const PathElement& pathElement)
+{
+    auto item = TrackDesignCreateTileElementDesc(pathEntry, { loc, pathElement.GetBaseZ() });
+    item.setEdges(pathElement.GetEdges());
+    item.setHasSlope(pathElement.IsSloped());
+    item.setSlopeDirection(pathElement.GetSlopeDirection());
+    item.setIsQueue(pathElement.IsQueue());
+
+    return item;
 }
 
 static TrackDesignAddStatus TrackDesignSaveAddFootpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    auto pathEntry = TrackDesignSaveFootpathGetBestEntry(pathElement);
-    if (!pathElement)
+    auto pathEntry = TrackDesignSaveFootpathGetBestEntry(*pathElement);
+    if (!pathEntry.has_value())
     {
         return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
     }
 
-    uint8_t flags = 0;
-    flags |= pathElement->GetEdges();
-    flags |= (pathElement->GetSlopeDirection()) << 5;
-    if (pathElement->IsSloped())
-        flags |= 0b00010000;
-    if (pathElement->IsQueue())
-        flags |= 1 << 7;
-
+    auto item = TrackDesignSaveCreateFootpathDesc(pathEntry.value(), loc, *pathElement);
     TrackDesignSavePushTileElement(loc, reinterpret_cast<TileElement*>(pathElement));
-    TrackDesignSavePushTileElementDesc(*pathEntry, { loc.x, loc.y, pathElement->GetBaseZ() }, flags, 0, 0, 0);
+
+    _trackSavedTileElementsDesc.push_back(std::move(item));
     return TrackDesignAddStatus::Success();
 }
 
@@ -434,17 +449,13 @@ static void TrackDesignSavePopTileElement(const CoordsXY& loc, TileElement* tile
  *
  *  rct2: 0x006D2FDD
  */
-static void TrackDesignSavePopTileElementDesc(const ObjectEntryDescriptor& entry, const CoordsXYZ& loc, uint8_t flags)
+static void TrackDesignSavePopTileElementDesc(const TrackDesignSceneryElement& desc)
 {
     size_t removeIndex = SIZE_MAX;
     for (size_t i = 0; i < _trackSavedTileElementsDesc.size(); i++)
     {
-        TrackDesignSceneryElement* item = &_trackSavedTileElementsDesc[i];
-        if (item->loc != loc)
-            continue;
-        if (item->flags != flags)
-            continue;
-        if (item->sceneryObject != entry)
+        TrackDesignSceneryElement& item = _trackSavedTileElementsDesc[i];
+        if (item != desc)
             continue;
 
         removeIndex = i;
@@ -462,12 +473,9 @@ static void TrackDesignSaveRemoveSmallScenery(const CoordsXY& loc, SmallSceneryE
     auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr)
     {
-        uint8_t flags = 0;
-        flags |= sceneryElement->GetDirection();
-        flags |= sceneryElement->GetSceneryQuadrant() << 2;
-
+        auto item = TrackDesignSaveCreateSmallSceneryDesc(*obj, loc, *sceneryElement);
         TrackDesignSavePopTileElement(loc, reinterpret_cast<TileElement*>(sceneryElement));
-        TrackDesignSavePopTileElementDesc(obj->GetDescriptor(), { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags);
+        TrackDesignSavePopTileElementDesc(item);
     }
 }
 
@@ -512,8 +520,8 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
             {
                 if (sequence == 0)
                 {
-                    uint8_t flags = largeElement->GetDirection();
-                    TrackDesignSavePopTileElementDesc(obj->GetDescriptor(), tileLoc, flags);
+                    auto item = TrackDesignSaveCreateLargeSceneryDesc(*obj, tileLoc, *largeElement);
+                    TrackDesignSavePopTileElementDesc(item);
                 }
                 TrackDesignSavePopTileElement({ tileLoc.x, tileLoc.y }, reinterpret_cast<TileElement*>(largeElement));
             }
@@ -527,30 +535,20 @@ static void TrackDesignSaveRemoveWall(const CoordsXY& loc, WallElement* wallElem
     auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr)
     {
-        uint8_t flags = 0;
-        flags |= wallElement->GetDirection();
-        flags |= wallElement->GetTertiaryColour() << 2;
-
+        auto item = TrackDesignSaveCreateWallDesc(*obj, loc, *wallElement);
         TrackDesignSavePopTileElement(loc, reinterpret_cast<TileElement*>(wallElement));
-        TrackDesignSavePopTileElementDesc(obj->GetDescriptor(), { loc.x, loc.y, wallElement->GetBaseZ() }, flags);
+        TrackDesignSavePopTileElementDesc(item);
     }
 }
 
 static void TrackDesignSaveRemoveFootpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    auto pathEntry = TrackDesignSaveFootpathGetBestEntry(pathElement);
-    if (pathElement)
+    auto pathEntry = TrackDesignSaveFootpathGetBestEntry(*pathElement);
+    if (pathEntry.has_value())
     {
-        uint8_t flags = 0;
-        flags |= pathElement->GetEdges();
-        flags |= (pathElement->GetSlopeDirection()) << 5;
-        if (pathElement->IsSloped())
-            flags |= 0b00010000;
-        if (pathElement->IsQueue())
-            flags |= 1 << 7;
-
+        auto item = TrackDesignSaveCreateFootpathDesc(pathEntry.value(), loc, *pathElement);
         TrackDesignSavePopTileElement(loc, reinterpret_cast<TileElement*>(pathElement));
-        TrackDesignSavePopTileElementDesc(ObjectEntryDescriptor(*pathEntry), { loc.x, loc.y, pathElement->GetBaseZ() }, flags);
+        TrackDesignSavePopTileElementDesc(item);
     }
 }
 
