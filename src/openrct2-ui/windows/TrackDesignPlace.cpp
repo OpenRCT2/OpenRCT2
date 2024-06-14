@@ -438,9 +438,9 @@ static Widget _trackPlaceWidgets[] = {
         void DrawMiniPreviewEntrances(
             const TrackDesign& td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
         {
-            for (const auto& entrance : td6.entrance_elements)
+            for (const auto& entrance : td6.entranceElements)
             {
-                auto rotatedAndOffsetEntrance = origin + entrance.Location.ToCoordsXY().Rotate(rotation);
+                auto rotatedAndOffsetEntrance = origin + entrance.location.ToCoordsXY().Rotate(rotation);
 
                 if (pass == 0)
                 {
@@ -455,7 +455,7 @@ static Widget _trackPlaceWidgets[] = {
                     if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
                         uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                        uint8_t colour = entrance.IsExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                        uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2
@@ -474,7 +474,7 @@ static Widget _trackPlaceWidgets[] = {
 
             CoordsXY curTrackStart = origin;
             uint8_t curTrackRotation = rotation;
-            for (const auto& trackElement : td6->track_elements)
+            for (const auto& trackElement : td6->trackElements)
             {
                 // Follow a single track piece shape
                 const auto& ted = GetTrackElementDescriptor(trackElement.Type);
@@ -545,9 +545,9 @@ static Widget _trackPlaceWidgets[] = {
         void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
         {
             uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
-            for (const auto& mazeElement : td6->maze_elements)
+            for (const auto& mazeElement : td6->mazeElements)
             {
-                auto rotatedMazeCoords = origin + TileCoordsXY{ mazeElement.x, mazeElement.y }.ToCoordsXY().Rotate(rotation);
+                auto rotatedMazeCoords = origin + mazeElement.location.ToCoordsXY().Rotate(rotation);
 
                 if (pass == 0)
                 {

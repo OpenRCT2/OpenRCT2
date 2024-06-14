@@ -40,17 +40,18 @@ struct TrackDesignState
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
-    TileCoordsXYZD Location{};
-    bool IsExit{};
+    TileCoordsXYZD location{};
+    bool isExit{};
 };
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor scenery_object;
+    ObjectEntryDescriptor sceneryObject;
     CoordsXYZ loc;
     uint8_t flags;
-    uint8_t primary_colour;
-    uint8_t secondary_colour;
+    colour_t primaryColour;
+    colour_t secondaryColour;
+    colour_t tertiaryColour = COLOUR_DARK_BROWN;
 
     bool IsQueue() const
     {
@@ -90,27 +91,10 @@ struct TrackDesignTrackElement
     }
 };
 
-/* Maze Element entry   size: 0x04 */
 struct TrackDesignMazeElement
 {
-    union
-    {
-        uint32_t all;
-        struct
-        {
-            int8_t x;
-            int8_t y;
-            union
-            {
-                uint16_t maze_entry;
-                struct
-                {
-                    uint8_t direction;
-                    uint8_t type;
-                };
-            };
-        };
-    };
+    TileCoordsXY location{};
+    uint16_t mazeEntry{};
 };
 
 class DataSerialiser;
@@ -119,49 +103,47 @@ enum class RideMode : uint8_t;
 struct TrackDesign
 {
     uint8_t type;
-    uint8_t vehicle_type;
+    uint8_t vehicleType;
     money64 cost;
-    uint32_t flags;
-    RideMode ride_mode;
-    uint8_t track_flags;
-    uint8_t colour_scheme;
-    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicle_colours;
-    u8string StationObjectIdentifier{};
-    uint8_t total_air_time;
-    uint8_t depart_flags;
-    uint8_t number_of_trains;
-    uint8_t number_of_cars_per_train;
-    uint8_t min_waiting_time;
-    uint8_t max_waiting_time;
-    uint8_t operation_setting;
-    int8_t max_speed;
-    int8_t average_speed;
-    uint16_t ride_length;
-    uint8_t max_positive_vertical_g;
-    int8_t max_negative_vertical_g;
-    uint8_t max_lateral_g;
+    RideMode rideMode;
+    uint8_t trackFlags;
+    uint8_t colourScheme;
+    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicleColours;
+    u8string stationObjectIdentifier{};
+    uint8_t totalAirTime;
+    uint8_t departFlags;
+    uint8_t numberOfTrains;
+    uint8_t numberOfCarsPerTrain;
+    uint8_t minWaitingTime;
+    uint8_t maxWaitingTime;
+    uint8_t operationSetting;
+    int8_t maxSpeed;
+    int8_t averageSpeed;
+    uint16_t rideLength;
+    uint8_t maxPositiveVerticalG;
+    int8_t maxNegativeVerticalG;
+    uint8_t maxLateralG;
     uint8_t inversions;
     uint8_t holes;
     uint8_t drops;
-    uint8_t highest_drop_height;
+    uint8_t highestDropHeight;
     uint8_t excitement;
     uint8_t intensity;
     uint8_t nausea;
-    money64 upkeep_cost;
-    uint8_t track_spine_colour[OpenRCT2::Limits::kNumColourSchemes];
-    uint8_t track_rail_colour[OpenRCT2::Limits::kNumColourSchemes];
-    uint8_t track_support_colour[OpenRCT2::Limits::kNumColourSchemes];
-    uint32_t flags2;
-    ObjectEntryDescriptor vehicle_object;
-    uint8_t space_required_x;
-    uint8_t space_required_y;
-    uint8_t lift_hill_speed;
-    uint8_t num_circuits;
+    money64 upkeepCost;
+    uint8_t trackSpineColour[OpenRCT2::Limits::kNumColourSchemes];
+    uint8_t trackRailColour[OpenRCT2::Limits::kNumColourSchemes];
+    uint8_t trackSupportColour[OpenRCT2::Limits::kNumColourSchemes];
+    ObjectEntryDescriptor vehicleObject;
+    uint8_t spaceRequiredX;
+    uint8_t spaceRequiredY;
+    uint8_t liftHillSpeed;
+    uint8_t numCircuits;
 
-    std::vector<TrackDesignMazeElement> maze_elements;
-    std::vector<TrackDesignTrackElement> track_elements;
-    std::vector<TrackDesignEntranceElement> entrance_elements;
-    std::vector<TrackDesignSceneryElement> scenery_elements;
+    std::vector<TrackDesignMazeElement> mazeElements;
+    std::vector<TrackDesignTrackElement> trackElements;
+    std::vector<TrackDesignEntranceElement> entranceElements;
+    std::vector<TrackDesignSceneryElement> sceneryElements;
 
     std::string name;
 

@@ -703,19 +703,20 @@ template<> struct DataSerializerTraitsT<TrackDesignMazeElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignMazeElement& val)
     {
-        uint32_t temp = ByteSwapBE(val.all);
-        stream->Write(&temp);
+        stream->Write(&val.location);
+        stream->Write(&val.mazeEntry);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignMazeElement& val)
     {
-        uint32_t temp;
-        stream->Read(&temp);
-        val.all = ByteSwapBE(temp);
+        stream->Read(&val.location);
+        stream->Read(&val.mazeEntry);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignMazeElement& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "TrackDesignMazeElement(all = %d)", val.all);
+        snprintf(
+            msg, sizeof(msg), "TrackDesignMazeElement(x = %d, y = %d, entry = %d)", val.location.x, val.location.y,
+            val.mazeEntry);
         stream->Write(msg, strlen(msg));
     }
 };
@@ -724,20 +725,20 @@ template<> struct DataSerializerTraitsT<TrackDesignEntranceElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignEntranceElement& val)
     {
-        stream->Write(&val.Location);
-        stream->Write(&val.IsExit);
+        stream->Write(&val.location);
+        stream->Write(&val.isExit);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignEntranceElement& val)
     {
-        stream->Read(&val.Location);
-        stream->Read(&val.IsExit);
+        stream->Read(&val.location);
+        stream->Read(&val.isExit);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignEntranceElement& val)
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TrackDesignEntranceElement(x = %d, y = %d, z = %d, dir = %d, isExit = %d)", val.Location.x,
-            val.Location.y, val.Location.z, val.Location.direction, val.IsExit);
+            msg, sizeof(msg), "TrackDesignEntranceElement(x = %d, y = %d, z = %d, dir = %d, isExit = %d)", val.location.x,
+            val.location.y, val.location.z, val.location.direction, val.isExit);
         stream->Write(msg, strlen(msg));
     }
 };
@@ -748,29 +749,32 @@ template<> struct DataSerializerTraitsT<TrackDesignSceneryElement>
     {
         stream->Write(&val.loc);
         stream->Write(&val.flags);
-        stream->Write(&val.primary_colour);
-        stream->Write(&val.secondary_colour);
+        stream->Write(&val.primaryColour);
+        stream->Write(&val.secondaryColour);
+        stream->Write(&val.tertiaryColour);
         DataSerializerTraits<ObjectEntryDescriptor> s;
-        s.encode(stream, val.scenery_object);
+        s.encode(stream, val.sceneryObject);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignSceneryElement& val)
     {
         stream->Read(&val.loc);
         stream->Read(&val.flags);
-        stream->Read(&val.primary_colour);
-        stream->Read(&val.secondary_colour);
+        stream->Read(&val.primaryColour);
+        stream->Read(&val.secondaryColour);
+        stream->Read(&val.tertiaryColour);
         DataSerializerTraits<ObjectEntryDescriptor> s;
-        s.decode(stream, val.scenery_object);
+        s.decode(stream, val.sceneryObject);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignSceneryElement& val)
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d)",
-            val.loc.x, val.loc.y, val.loc.z, val.flags, val.primary_colour, val.secondary_colour);
+            msg, sizeof(msg),
+            "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d, colour3 = %d)",
+            val.loc.x, val.loc.y, val.loc.z, val.flags, val.primaryColour, val.secondaryColour, val.tertiaryColour);
         stream->Write(msg, strlen(msg));
 
-        auto identifier = val.scenery_object.GetName();
+        auto identifier = val.sceneryObject.GetName();
         stream->WriteArray(identifier.data(), identifier.size());
     }
 };

@@ -209,20 +209,23 @@ static bool TrackDesignSaveIsSupportedObject(const Object* obj)
 }
 
 static void TrackDesignSavePushTileElementDesc(
-    const RCTObjectEntry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const RCTObjectEntry& entry, const CoordsXYZ& loc, uint8_t flags, colour_t primaryColour, colour_t secondaryColour,
+    colour_t tertiaryColour)
 {
     TrackDesignSceneryElement item{};
-    item.scenery_object = ObjectEntryDescriptor(entry);
+    item.sceneryObject = ObjectEntryDescriptor(entry);
     item.loc = loc;
     item.flags = flags;
-    item.primary_colour = primaryColour;
-    item.secondary_colour = secondaryColour;
+    item.primaryColour = primaryColour;
+    item.secondaryColour = secondaryColour;
+    item.tertiaryColour = tertiaryColour;
 
     _trackSavedTileElementsDesc.push_back(std::move(item));
 }
 
 static void TrackDesignSavePushTileElementDesc(
-    const Object* obj, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const Object* obj, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour,
+    colour_t tertiaryColour)
 {
     const auto& entry = obj->GetObjectEntry();
     if (entry.IsEmpty())
@@ -231,7 +234,7 @@ static void TrackDesignSavePushTileElementDesc(
         assert(false);
     }
 
-    TrackDesignSavePushTileElementDesc(entry, loc, flags, primaryColour, secondaryColour);
+    TrackDesignSavePushTileElementDesc(entry, loc, flags, primaryColour, secondaryColour, tertiaryColour);
 }
 
 static TrackDesignAddStatus TrackDesignSaveAddSmallScenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
@@ -244,12 +247,13 @@ static TrackDesignAddStatus TrackDesignSaveAddSmallScenery(const CoordsXY& loc, 
         flags |= sceneryElement->GetDirection();
         flags |= sceneryElement->GetSceneryQuadrant() << 2;
 
-        uint8_t primaryColour = sceneryElement->GetPrimaryColour();
-        uint8_t secondaryColour = sceneryElement->GetSecondaryColour();
+        auto primaryColour = sceneryElement->GetPrimaryColour();
+        auto secondaryColour = sceneryElement->GetSecondaryColour();
+        auto tertiaryColour = sceneryElement->GetTertiaryColour();
 
         TrackDesignSavePushTileElement(loc, reinterpret_cast<TileElement*>(sceneryElement));
         TrackDesignSavePushTileElementDesc(
-            obj, { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
+            obj, { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags, primaryColour, secondaryColour, tertiaryColour);
         return TrackDesignAddStatus::Success();
     }
 
@@ -292,10 +296,11 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
                 if (sequence == 0)
                 {
                     uint8_t flags = largeElement->GetDirection();
-                    uint8_t primaryColour = largeElement->GetPrimaryColour();
-                    uint8_t secondaryColour = largeElement->GetSecondaryColour();
+                    auto primaryColour = largeElement->GetPrimaryColour();
+                    auto secondaryColour = largeElement->GetSecondaryColour();
+                    auto tertiaryColour = largeElement->GetTertiaryColour();
 
-                    TrackDesignSavePushTileElementDesc(obj, tileLoc, flags, primaryColour, secondaryColour);
+                    TrackDesignSavePushTileElementDesc(obj, tileLoc, flags, primaryColour, secondaryColour, tertiaryColour);
                 }
                 TrackDesignSavePushTileElement({ tileLoc.x, tileLoc.y }, reinterpret_cast<TileElement*>(largeElement));
             }
@@ -314,14 +319,14 @@ static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElem
     {
         uint8_t flags = 0;
         flags |= wallElement->GetDirection();
-        flags |= wallElement->GetTertiaryColour() << 2;
 
-        uint8_t secondaryColour = wallElement->GetSecondaryColour();
-        uint8_t primaryColour = wallElement->GetPrimaryColour();
+        auto primaryColour = wallElement->GetPrimaryColour();
+        auto secondaryColour = wallElement->GetSecondaryColour();
+        auto tertiaryColour = wallElement->GetTertiaryColour();
 
         TrackDesignSavePushTileElement(loc, reinterpret_cast<TileElement*>(wallElement));
         TrackDesignSavePushTileElementDesc(
-            obj, { loc.x, loc.y, wallElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
+            obj, { loc.x, loc.y, wallElement->GetBaseZ() }, flags, primaryColour, secondaryColour, tertiaryColour);
         return TrackDesignAddStatus::Success();
     }
 
@@ -371,7 +376,7 @@ static TrackDesignAddStatus TrackDesignSaveAddFootpath(const CoordsXY& loc, Path
         flags |= 1 << 7;
 
     TrackDesignSavePushTileElement(loc, reinterpret_cast<TileElement*>(pathElement));
-    TrackDesignSavePushTileElementDesc(*pathEntry, { loc.x, loc.y, pathElement->GetBaseZ() }, flags, 0, 0);
+    TrackDesignSavePushTileElementDesc(*pathEntry, { loc.x, loc.y, pathElement->GetBaseZ() }, flags, 0, 0, 0);
     return TrackDesignAddStatus::Success();
 }
 
@@ -439,7 +444,7 @@ static void TrackDesignSavePopTileElementDesc(const ObjectEntryDescriptor& entry
             continue;
         if (item->flags != flags)
             continue;
-        if (item->scenery_object != entry)
+        if (item->sceneryObject != entry)
             continue;
 
         removeIndex = i;

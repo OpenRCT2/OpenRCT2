@@ -939,18 +939,17 @@ void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
     if (td46MazeElement.IsEntrance() || td46MazeElement.IsExit())
     {
         TrackDesignEntranceElement element{};
-        element.Location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
-        element.IsExit = td46MazeElement.IsExit();
-        td.entrance_elements.push_back(element);
+        element.location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
+        element.isExit = td46MazeElement.IsExit();
+        td.entranceElements.push_back(element);
     }
     else
     {
         TrackDesignMazeElement mazeElement{};
-        mazeElement.x = td46MazeElement.x;
-        mazeElement.y = td46MazeElement.y;
-        mazeElement.direction = td46MazeElement.Direction;
-        mazeElement.type = td46MazeElement.Type;
-        td.maze_elements.push_back(mazeElement);
+        mazeElement.location.x = td46MazeElement.x;
+        mazeElement.location.y = td46MazeElement.y;
+        mazeElement.mazeEntry = td46MazeElement.MazeEntry;
+        td.mazeElements.push_back(mazeElement);
     }
 }
 

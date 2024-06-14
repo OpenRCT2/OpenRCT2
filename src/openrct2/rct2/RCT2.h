@@ -323,6 +323,9 @@ namespace RCT2
         uint8_t Flags;                // 0x13 direction quadrant tertiary colour
         uint8_t PrimaryColour;        // 0x14
         uint8_t SecondaryColour;      // 0x15
+
+        colour_t getTertiaryWallColour() const;
+        void setTertiaryWallColour(colour_t colour);
     };
     assert_struct_size(TD6SceneryElement, 0x16);
 
