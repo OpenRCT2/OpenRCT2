@@ -1165,7 +1165,7 @@ constexpr CoordsXY defaultDiagBoundLengths[4] = {
 void TrackPaintUtilDiagTilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4],
-    int8_t additionalBoundsHeight)
+    int8_t additionalBoundsHeight, const ImageId colourFlags)
 {
     auto shouldDraw = kDiagSpriteMap[direction][trackSequence];
     if (!shouldDraw)
@@ -1173,7 +1173,7 @@ void TrackPaintUtilDiagTilesPaint(
         return;
     }
 
-    auto imageId = session.TrackColours.WithIndex(sprites[direction]);
+    auto imageId = colourFlags.WithIndex(sprites[direction]);
     CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction]);
     CoordsXY boundsLength = boundsLengths[direction];
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, additionalBoundsHeight) : boundsOffsets[direction]);

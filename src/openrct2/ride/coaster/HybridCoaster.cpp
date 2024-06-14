@@ -1389,7 +1389,7 @@ namespace HybridRC
 
         TrackPaintUtilDiagTilesPaint(
             session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
-            defaultDiagBoundLengths, nullptr);
+            defaultDiagBoundLengths, nullptr, 0, GetTrackColour(session));
 
         switch (trackSequence)
         {
