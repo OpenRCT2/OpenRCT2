@@ -3715,6 +3715,8 @@ STR_6640    :Edit asset packs…
 STR_6641    :Loading/progress window
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Guests ignore prices
+STR_6645    :Guests will ignore the price of rides and stalls.
 
 #############
 # Scenarios #
