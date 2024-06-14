@@ -596,7 +596,6 @@ namespace OpenRCT2
                     auto month = DateGetMonth(arg);
                     auto year = DateGetYear(arg) + 1;
                     FormatMonthYear(ss, month, year, true);
-                    ss << '.';
                 }
                 break;
             case FormatToken::Month:
