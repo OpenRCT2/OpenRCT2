@@ -136,6 +136,7 @@ namespace OpenRCT2::Config
         bool ListRideVehiclesSeparately;
         bool WindowButtonsOnTheLeft;
         bool EnlargedUi;
+        bool TouchEnhancements;
     };
 
     struct Sound

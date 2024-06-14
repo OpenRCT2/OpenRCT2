@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
         size_t num_items, int32_t width)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.EnlargedUi)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
             InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
         WindowDropdownClose();
@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t itemHeight, int32_t numColumns)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.EnlargedUi)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
             InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
         // Close existing dropdown
