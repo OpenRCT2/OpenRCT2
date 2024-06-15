@@ -12,6 +12,7 @@
 #    include "ScPark.hpp"
 
 #    include "../../../Context.h"
+#    include "../../../Date.h"
 #    include "../../../GameState.h"
 #    include "../../../common.h"
 #    include "../../../core/String.hpp"
@@ -403,12 +404,14 @@ namespace OpenRCT2::Scripting
 
     std::vector<int32_t> ScPark::getMonthlyExpenditure(const std::string& expenditureType) const
     {
-        std::vector<int32_t> result(kExpenditureTableMonthCount, 0);
+        auto recordedMonths = std::clamp(
+            GetDate().GetMonthsElapsed() + 1, static_cast<uint32_t>(0), static_cast<uint32_t>(kExpenditureTableMonthCount));
+        std::vector<int32_t> result(recordedMonths, 0);
         auto type = ScriptEngine::StringToExpenditureType(expenditureType);
         if (type != ExpenditureType::Count)
         {
             auto& gameState = GetGameState();
-            for (size_t i = 0; i < kExpenditureTableMonthCount; ++i)
+            for (size_t i = 0; i < recordedMonths; ++i)
             {
                 result[i] = gameState.ExpenditureTable[i][EnumValue(type)];
             }
