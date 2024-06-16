@@ -163,6 +163,9 @@ namespace OpenRCT2::Scripting
         uint8_t maxLiftHillSpeed_get() const;
         uint8_t minLiftHillSpeed_get() const;
 
+        uint8_t satisfaction_get() const;
+        void satisfaction_set(uint8_t value);
+
         Ride* GetRide() const;
 
     public:
