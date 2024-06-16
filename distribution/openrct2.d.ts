@@ -2115,6 +2115,12 @@ declare global {
          * The min chain lift speed for this ride in miles per hour.
          */
         readonly minLiftHillSpeed: number;
+
+        /**
+         * The satisfaction rating of the ride.
+         * Times it by 5 to get the percentage out of 100.
+         */
+        satisfaction: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";
