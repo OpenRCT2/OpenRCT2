@@ -11,6 +11,7 @@
 - Feature: [#22087] [Plugin] Expose guests’ favourite rides to the plugin API.
 - Feature: [#22140] Add option to automatically close dropdown menus if Enlarged UI is enabled.
 - Feature: [#22150] [Plugin] Expose monthly expenditure history to the plugin API.
+- Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Improved: [#19870] Allow using new colours in UI themes.
 - Improved: [#21853] Dropdowns now automatically use multiple columns if they are too tall for the screen.
 - Improved: [#21981] Rendering performance of the map window has been improved considerably.
