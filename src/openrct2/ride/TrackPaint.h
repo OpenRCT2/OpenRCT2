@@ -508,8 +508,18 @@ void TrackPaintUtilEighthToDiagTilesPaint(
     const CoordsXYZ boundsOffsets[4][4]);
 void TrackPaintUtilDiagTilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4],
+    int8_t additionalBoundsHeight, const ImageId colourFlags);
+inline void TrackPaintUtilDiagTilesPaint(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4],
-    const CoordsXYZ boundsOffsets[4] = nullptr, int8_t additionalBoundsHeight = 0);
+    const CoordsXYZ boundsOffsets[4] = nullptr, int8_t additionalBoundsHeight = 0)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, thickness, height, direction, trackSequence, sprites, offsets, boundsLengths, boundsOffsets,
+        additionalBoundsHeight, session.TrackColours);
+}
+
 void TrackPaintUtilDiagTilesPaintExtra(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], MetalSupportType supportType);
