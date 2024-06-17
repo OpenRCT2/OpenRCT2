@@ -3714,6 +3714,8 @@ STR_6640    :Redakti havaĵo-pakojn…
 STR_6641    :Ŝargado/progreso-fenestro
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Tuŝekranaj plibonigoj
+STR_6645    :Pligrandigas kelkajn elementojn de la fasado, por ke ili estas pli facile klakeblaj aŭ tuŝeblaj.
 
 #############
 # Scenarios #

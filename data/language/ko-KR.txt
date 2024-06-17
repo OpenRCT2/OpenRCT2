@@ -3717,6 +3717,8 @@ STR_6640    :에셋 팩 편집…
 STR_6641    :불러오기/진행 창
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :터치 개선
+STR_6645    :일부 UI 요소를 크게 표시하여 클릭이나 터치가 용이하게 만듭니다.
 
 #############
 # Scenarios #
