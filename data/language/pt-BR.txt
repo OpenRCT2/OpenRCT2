@@ -3714,6 +3714,8 @@ STR_6640    :Modificar conjuntos de recurso…
 STR_6641    :Janela de carregamento/progresso
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Melhorias para toque
+STR_6645    :Aumenta alguns elementos da interface para ficarem mais fáceis de tocar.
 
 #############
 # Scenarios #
