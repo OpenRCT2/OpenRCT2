@@ -70,6 +70,20 @@
 #include <iterator>
 #include <memory>
 
+namespace TrackDesignSceneryElementFlags
+{
+    static constexpr uint8_t kRotationMask = 0b00000011;
+
+    static constexpr uint8_t kQuadrantMask = 0b00001100;
+
+    static constexpr uint8_t kEdgesMask = 0b00001111;
+    static constexpr uint8_t kHasSlopeMask = 0b00010000;
+    static constexpr uint8_t kSlopeDirectionMask = 0b01100000;
+    static constexpr uint8_t kIsQueueMask = 0b10000000;
+} // namespace TrackDesignSceneryElementFlags
+
+using namespace TrackDesignSceneryElementFlags;
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
@@ -1958,6 +1972,89 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     ride->Delete();
     _trackDesignDrawingPreview = false;
     return false;
+}
+
+Direction TrackDesignSceneryElement::getRotation() const
+{
+    return flags & kRotationMask;
+}
+
+void TrackDesignSceneryElement::setRotation(Direction rotation)
+{
+    flags &= ~kRotationMask;
+    flags |= (rotation & kRotationMask);
+}
+
+// Small scenery
+uint8_t TrackDesignSceneryElement::getQuadrant() const
+{
+    return (flags & kQuadrantMask) >> 2;
+}
+
+void TrackDesignSceneryElement::setQuadrant(uint8_t quadrant)
+{
+    flags &= ~kQuadrantMask;
+    flags |= ((quadrant << 2) & kQuadrantMask);
+}
+
+// Path
+bool TrackDesignSceneryElement::hasSlope() const
+{
+    return (flags & kHasSlopeMask) != 0;
+}
+
+void TrackDesignSceneryElement::setHasSlope(bool on)
+{
+    if (on)
+        flags |= kHasSlopeMask;
+    else
+        flags &= ~kHasSlopeMask;
+}
+
+Direction TrackDesignSceneryElement::getSlopeDirection() const
+{
+    return (flags >> 5) % NumOrthogonalDirections;
+}
+
+void TrackDesignSceneryElement::setSlopeDirection(Direction slope)
+{
+    flags &= ~kSlopeDirectionMask;
+    flags |= ((slope << 5) & kSlopeDirectionMask);
+}
+
+uint8_t TrackDesignSceneryElement::getEdges() const
+{
+    return (flags & kEdgesMask);
+}
+
+void TrackDesignSceneryElement::setEdges(uint8_t edges)
+{
+    flags &= ~kEdgesMask;
+    flags |= (edges & kEdgesMask);
+}
+
+bool TrackDesignSceneryElement::isQueue() const
+{
+    return (flags & kIsQueueMask) != 0;
+}
+
+void TrackDesignSceneryElement::setIsQueue(bool on)
+{
+    if (on)
+        flags |= kIsQueueMask;
+    else
+        flags &= ~kIsQueueMask;
+}
+
+bool TrackDesignSceneryElement::operator==(const TrackDesignSceneryElement& rhs)
+{
+    return sceneryObject == rhs.sceneryObject && loc == rhs.loc && flags == rhs.flags && primaryColour == rhs.primaryColour
+        && secondaryColour == rhs.secondaryColour && tertiaryColour == rhs.tertiaryColour;
+}
+
+bool TrackDesignSceneryElement::operator!=(const TrackDesignSceneryElement& rhs)
+{
+    return !((*this) == rhs);
 }
 
 #pragma region Track Design Preview

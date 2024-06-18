@@ -53,88 +53,28 @@ struct TrackDesignSceneryElement
     colour_t secondaryColour{};
     colour_t tertiaryColour = COLOUR_DARK_BROWN;
 
-    Direction getRotation() const
-    {
-        return flags & 0x3;
-    }
-
-    void setRotation(Direction rotation)
-    {
-        flags &= ~0x3;
-        flags |= (rotation & 0x3);
-    }
+    Direction getRotation() const;
+    void setRotation(Direction rotation);
 
     // Small scenery
-    uint8_t getQuadrant() const
-    {
-        return (flags >> 2) & 0x3;
-    }
-
-    void setQuadrant(uint8_t quadrant)
-    {
-        flags &= ~0b00001100;
-        flags |= (quadrant & 0x3) << 2;
-    }
+    uint8_t getQuadrant() const;
+    void setQuadrant(uint8_t quadrant);
 
     // Path
-    bool hasSlope() const
-    {
-        return (flags & 0b00010000) != 0;
-    }
+    bool hasSlope() const;
+    void setHasSlope(bool on);
 
-    void setHasSlope(bool on)
-    {
-        if (on)
-            flags |= 0b00010000;
-        else
-            flags &= ~0b00010000;
-    }
+    Direction getSlopeDirection() const;
+    void setSlopeDirection(Direction slope);
 
-    Direction getSlopeDirection() const
-    {
-        return (flags >> 5) % NumOrthogonalDirections;
-    }
+    uint8_t getEdges() const;
+    void setEdges(uint8_t edges);
 
-    void setSlopeDirection(Direction slope)
-    {
-        flags &= 0x9F;
-        flags |= ((slope & 3) << 5);
-    }
+    bool isQueue() const;
+    void setIsQueue(bool on);
 
-    uint8_t getEdges() const
-    {
-        return (flags & 0xF);
-    }
-
-    void setEdges(uint8_t edges)
-    {
-        flags &= ~0xF;
-        flags |= (edges & 0xF);
-    }
-
-    bool isQueue() const
-    {
-        return (flags & (1 << 7)) != 0;
-    }
-
-    void setIsQueue(bool on)
-    {
-        if (on)
-            flags |= 0b10000000;
-        else
-            flags &= ~0b10000000;
-    }
-
-    bool operator==(const TrackDesignSceneryElement& rhs)
-    {
-        return sceneryObject == rhs.sceneryObject && loc == rhs.loc && flags == rhs.flags && primaryColour == rhs.primaryColour
-            && secondaryColour == rhs.secondaryColour && tertiaryColour == rhs.tertiaryColour;
-    }
-
-    bool operator!=(const TrackDesignSceneryElement& rhs)
-    {
-        return !((*this) == rhs);
-    }
+    bool operator==(const TrackDesignSceneryElement& rhs);
+    bool operator!=(const TrackDesignSceneryElement& rhs);
 };
 
 enum class TrackDesignTrackElementFlag : uint8_t
