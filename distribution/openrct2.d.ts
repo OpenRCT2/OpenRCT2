@@ -2117,10 +2117,9 @@ declare global {
         readonly minLiftHillSpeed: number;
 
         /**
-         * The satisfaction rating of the ride.
-         * Times it by 5 to get the percentage out of 100.
+         * The satisfaction rating of the ride from 0 to 100.
          */
-        satisfaction: number;
+        readonly satisfaction: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";

@@ -527,18 +527,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScRide::satisfaction_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->satisfaction : 0;
-    }
-
-    void ScRide::satisfaction_set(uint8_t value)
-    {
-        ThrowIfGameStateNotMutable();
-
-        auto ride = GetRide();
-        if (ride)
-        {
-            ride->satisfaction = value <= 20 ? value : 20;
-        }
+        return ride != nullptr ? ride->satisfaction * 5 : 0;
     }
 
     void ScRide::Register(duk_context* ctx)
@@ -575,7 +564,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::liftHillSpeed_get, &ScRide::lifthillSpeed_set, "liftHillSpeed");
         dukglue_register_property(ctx, &ScRide::maxLiftHillSpeed_get, nullptr, "maxLiftHillSpeed");
         dukglue_register_property(ctx, &ScRide::minLiftHillSpeed_get, nullptr, "minLiftHillSpeed");
-        dukglue_register_property(ctx, &ScRide::satisfaction_get, &ScRide::satisfaction_set, "satisfaction");
+        dukglue_register_property(ctx, &ScRide::satisfaction_get, nullptr, "satisfaction");
     }
 
 } // namespace OpenRCT2::Scripting
