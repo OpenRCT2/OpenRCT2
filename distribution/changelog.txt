@@ -30,6 +30,7 @@
 - Fix: [#13234] Vehicle weight sometimes wrong after using Remove All Guests cheat.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
 - Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
+- Fix: [#21496] Some RCT1 scenery is hidden after saving and reloading.
 - Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
 - Fix: [#21987] [Plugin] API cannot handle negative removal prices.
 - Fix: [#22008] Uninverted Lay-down roller coaster uses the wrong support type.
