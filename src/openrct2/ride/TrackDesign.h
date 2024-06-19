@@ -46,17 +46,35 @@ struct TrackDesignEntranceElement
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor sceneryObject;
-    CoordsXYZ loc;
-    uint8_t flags;
-    colour_t primaryColour;
-    colour_t secondaryColour;
+    ObjectEntryDescriptor sceneryObject{};
+    CoordsXYZ loc{};
+    uint8_t flags{};
+    colour_t primaryColour{};
+    colour_t secondaryColour{};
     colour_t tertiaryColour = COLOUR_DARK_BROWN;
 
-    bool IsQueue() const
-    {
-        return (flags & (1 << 7)) != 0;
-    }
+    Direction getRotation() const;
+    void setRotation(Direction rotation);
+
+    // Small scenery
+    uint8_t getQuadrant() const;
+    void setQuadrant(uint8_t quadrant);
+
+    // Path
+    bool hasSlope() const;
+    void setHasSlope(bool on);
+
+    Direction getSlopeDirection() const;
+    void setSlopeDirection(Direction slope);
+
+    uint8_t getEdges() const;
+    void setEdges(uint8_t edges);
+
+    bool isQueue() const;
+    void setIsQueue(bool on);
+
+    bool operator==(const TrackDesignSceneryElement& rhs);
+    bool operator!=(const TrackDesignSceneryElement& rhs);
 };
 
 enum class TrackDesignTrackElementFlag : uint8_t
