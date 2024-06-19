@@ -182,7 +182,8 @@ enum class PTDOperation
     removeGhost,
 };
 
-bool PTDReplay = (1 << 7);
+
+static constexpr bool PTDReplay = (1 << 7);
 
 extern bool gTrackDesignSceneryToggle;
 
