@@ -171,18 +171,18 @@ enum
     TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE = (1 << 2),
 };
 
-enum
+enum class PTDOperation
 {
-    PTD_OPERATION_DRAW_OUTLINES,
-    PTD_OPERATION_PLACE_QUERY,
-    PTD_OPERATION_PLACE,
-    PTD_OPERATION_GET_PLACE_Z,
-    PTD_OPERATION_PLACE_GHOST,
-    PTD_OPERATION_PLACE_TRACK_PREVIEW,
-    PTD_OPERATION_REMOVE_GHOST,
+    drawOutlines,
+    placeQuery,
+    place,
+    getPlaceZ,
+    placeGhost,
+    placeTrackPreview,
+    removeGhost,
 };
 
-static constexpr uint8_t PTD_OPERATION_FLAG_IS_REPLAY = (1 << 7);
+bool PTDReplay = (1 << 7);
 
 extern bool gTrackDesignSceneryToggle;
 
