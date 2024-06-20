@@ -3718,6 +3718,8 @@ STR_6640    :Editar paquetes de recursos…
 STR_6641    :Ventana de carga/progreso
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Mejoras táctiles
+STR_6645    :Aumenta el tamaño de algunos elementos de la interfaz para que sea más fácil pulsarlos.
 
 ##############
 # Escenarios #

@@ -3714,6 +3714,8 @@ STR_6640    :Forráscsomagok kezelése…
 STR_6641    :Betöltés/előrehaladás ablak
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Érintőképernyős javítások
+STR_6645    :Néhány UI-elemet nagyobbá tesz, hogy könnyebb legyen kattintani vagy megérinteni őket.
 
 #############
 # Scenarios #
