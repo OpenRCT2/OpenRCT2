@@ -76,7 +76,7 @@ namespace OpenRCT2::Scripting
         uint8_t animationOffset_get() const;
         void animationOffset_set(uint8_t offset);
         uint8_t animationLength_get() const;
-        
+
         DukValue lawnsMown_get() const;
         void lawnsMown_set(uint32_t value);
 
