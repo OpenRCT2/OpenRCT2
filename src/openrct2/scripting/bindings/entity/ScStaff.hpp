@@ -76,6 +76,27 @@ namespace OpenRCT2::Scripting
         uint8_t animationOffset_get() const;
         void animationOffset_set(uint8_t offset);
         uint8_t animationLength_get() const;
+        
+        DukValue lawnsMown_get() const;
+        void lawnsMown_set(uint32_t value);
+
+        DukValue gardensWatered_get() const;
+        void gardensWatered_set(uint32_t value);
+
+        DukValue litterSwept_get() const;
+        void litterSwept_set(uint32_t value);
+
+        DukValue binsEmptied_get() const;
+        void binsEmptied_set(uint32_t value);
+
+        DukValue ridesFixed_get() const;
+        void ridesFixed_set(uint32_t value);
+
+        DukValue ridesInspected_get() const;
+        void ridesInspected_set(uint32_t value);
+
+        DukValue vandalsStopped_get() const;
+        void vandalsStopped_set(uint32_t value);
     };
 
 } // namespace OpenRCT2::Scripting
