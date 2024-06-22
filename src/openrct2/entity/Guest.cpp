@@ -1697,7 +1697,10 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     }
 
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
-        FinancePayment(shopItemDescriptor.Cost, expenditure);
+    {
+        money64 modifiedCost = FinanceGetModifiedCost(shopItemDescriptor.Cost, expenditure);
+        FinancePayment(modifiedCost, expenditure);
+    }
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
@@ -2305,16 +2308,18 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 {
     assert(!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY));
 
-    CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
-    CashSpent += amount;
+    auto modifiedCost = FinanceGetModifiedCost(amount, expenditure);
 
-    peep_expend_type += amount;
+    CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - modifiedCost);
+    CashSpent += modifiedCost;
+
+    peep_expend_type += modifiedCost;
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
 
-    FinancePayment(-amount, expenditure);
+    FinancePayment(-modifiedCost, expenditure);
 
-    MoneyEffect::CreateAt(amount, GetLocation(), true);
+    MoneyEffect::CreateAt(modifiedCost, GetLocation(), true);
 
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
 }
