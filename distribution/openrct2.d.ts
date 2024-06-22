@@ -3340,6 +3340,20 @@ declare global {
          * The total number of frames in the current animation.
          */
         readonly animationLength: number;
+
+        lawnsMown: number | null;
+
+        gardensWatered: number | null;
+
+        litterSwept: number | null;
+
+        binsEmptied: number | null;
+
+        ridesFixed: number | null;
+
+        ridesInspected: number | null;
+
+        vandalsStopped: number | null;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
