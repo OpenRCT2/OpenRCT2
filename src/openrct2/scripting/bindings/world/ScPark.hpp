@@ -98,6 +98,8 @@ namespace OpenRCT2::Scripting
 
         void postMessage(DukValue message);
 
+        std::vector<int32_t> getMonthlyExpenditure(const std::string& expenditureType) const;
+
         static void Register(duk_context* ctx);
     };
 } // namespace OpenRCT2::Scripting
