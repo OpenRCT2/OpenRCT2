@@ -849,7 +849,7 @@ STR_1455    :Nombre no válido para visitante
 STR_1456    :{WINDOW_COLOUR_2}Dinero gastado: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Dinero en el bolsillo: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Tiempo en el parque: {BLACK}{REALTIME}
-STR_1459    :Estilo Vía
+STR_1459    :Estilo de la Vía
 STR_1460    :Pista en forma de ‘U’
 STR_1461    :Pista en forma de ‘O’
 STR_1462    :Demasiado inclinado para las cadenas de elevación.
@@ -870,7 +870,7 @@ STR_1476    :{WINDOW_COLOUR_2}Nivel de intensidad: {BLACK}Aún no disponible
 STR_1477    :{WINDOW_COLOUR_2}Nivel de intensidad: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nivel de náusea: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nivel de náusea: {BLACK}Aún no disponible
-STR_1480    :“No puedo pagar para {STRINGID}”
+STR_1480    :“No puedo permitirme {STRINGID}”
 STR_1481    :“He gastado todo mi dinero”
 STR_1482    :“Me siento mareado”
 STR_1483    :“Me siento muy mareado”
@@ -3269,7 +3269,7 @@ STR_6149    :No se pudo conectar al Servidor Maestro
 STR_6150    :Respuesta no valida desde Servidor Maestro (no JSON number)
 STR_6151    :Servidor Maestro no devolvió Lista de Servidores
 STR_6152    :Respuesta no validad de Servidor Maestro (no JSON array)
-STR_6153    :Pagar por entrada / Pagar por atracción
+STR_6153    :Pagar por la entrada / Pagar por cada atracción
 STR_6154    :Por razones de seguridad, No es recomendable iniciar OpenRCT2 con privilegios elevados.
 STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno desde la línea de comando.
 STR_6156    :El nombre está reservado
