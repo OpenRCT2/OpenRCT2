@@ -46,7 +46,7 @@ STR_0041    :Cine 3D
 STR_0042    :Top Spin
 STR_0043    :Anillos Espaciales
 STR_0044    :Montaña Rusa Invertida
-STR_0045    :Elevador
+STR_0045    :Ascensor
 STR_0046    :Montaña Rusa Caída Vertical
 STR_0047    :Cajero Automático
 STR_0048    :Twist
@@ -102,23 +102,23 @@ STR_0097    :Montaña Rusa de pie clásica
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
-STR_0515    :Los pasajeros se sientan en asientos suspendidos bajo la vía y corren por rizos gigantes, giros y grandes caídas.
+STR_0515    :Los pasajeros se sientan en asientos suspendidos bajo la vía y corren por bucles gigantes, giros y grandes caídas.
 STR_0516    :Una montaña rusa más suave para la gente que no tiene el valor de afrontar las grandes montañas rusas.
 STR_0517    :Los pasajeros viajan en trenes diminutos sobre una pequeña vía.
-STR_0518    :Los pasajeros viajan en trenes eléctricos sobre una vía monorriel.
+STR_0518    :Los pasajeros viajan en trenes eléctricos sobre un monoraíl.
 STR_0519    :Los pasajeros se colocan boca abajo en unos vagones especiales en ésta montaña rusa.
 STR_0520    :Una plataforma de muelle donde los pasajeros pueden conducir botes sobre el agua.
 STR_0521    :Una montaña rusa rápida con curvas cerradas y fuertes caídas. La intensidad es muy alta.
-STR_0522    :Pequeña montaña rusa en donde los pasajeros se montan en unos vagones que recorren un monorriel.
+STR_0522    :Pequeña montaña rusa en donde los pasajeros se montan en unos vagones que recorren un monoraíl.
 STR_0523    :Los pasajeros viajan lentamente en vehículos autopropulsados sobre una vía.
 STR_0524    :Un vagón es lanzado en un neumático a lo alto de una elevada torre de acero, cayendo libremente.
 STR_0525    :Los pasajeros viajan por unas vías retorcidas en vagones tipo bobsleigh guiados únicamente por la curvatura y los peraltes de la vía semicircular.
 STR_0526    :Los pasajeros viajan en una cabina de observación giratoria que se desplaza hacia arriba en una torre alta.
-STR_0527    :Una montaña rusa de acero capaz de rizos verticales.
+STR_0527    :Una montaña rusa de acero capaz de bucles verticales.
 STR_0528    :Los pasajeros viajan en botes hinchables por tubos semicirculares o totalmente cerrados.
 STR_0529    :El tren de la mina corre por una vía de acero que recuerda las viejas vías del tren.
 STR_0530    :Asientos colgados de un cable de acero viajan continuamente desde un extremo a otro del recorrido.
-STR_0531    :Una montaña rusa compacta de acero donde los vagones circulan por rizos y sacacorchos.
+STR_0531    :Una montaña rusa compacta de acero donde los vagones circulan por bucles y sacacorchos.
 STR_0532    :
 STR_0533    :
 STR_0534    :Los visitantes corren carreras en kartings sobre una calle de asfalto.
@@ -166,7 +166,7 @@ STR_0581    :Un anillo de asientos es arrastrado a lo alto de una torre mientras
 STR_0582    :Los visitantes viajan en vehículos aerodeslizadores que controlan libremente.
 STR_0583    :
 STR_0584    :Bicicletas especiales que viajan sobre un monorraíl, impulsadas por el pedaleo.
-STR_0585    :Los pasajeros se sientan en parejas atravesando rizos e inversiones.
+STR_0585    :Los pasajeros se sientan en parejas atravesando bucles e inversiones.
 STR_0586    :Los vagones en forma de bote volante corren por el recorrido de la montaña rusa, con curvas cerradas y caídas pronunciadas, pasando por zonas de agua.
 STR_0587    :Tras un excitante lanzamiento el vagón corre por una vía vertical hasta el tope y baja vertical por el otro lado.
 STR_0588    :Vagones individuales corren bajo una vía zigzagueante.
@@ -789,7 +789,7 @@ STR_1395    :Opciones de mantenimiento
 STR_1396    :Opciones de esquemas de color
 STR_1397    :Opciones de música y sonidos
 STR_1398    :Datos de pruebas y medidas
-STR_1399    :Gráficas
+STR_1399    :Gráficos
 STR_1400    :Entrada
 STR_1401    :Salida
 STR_1402    :Construir o mover entrada de atracción/juego
@@ -882,7 +882,7 @@ STR_1488    :“No voy a pagar tanto para subir a {STRINGID}”
 STR_1489    :“Quiero volver a casa”
 STR_1490    :“{STRINGID} es barato”
 STR_1491    :“Ya tengo {STRINGID}”
-STR_1492    :“No puedo pagar para {STRINGID}”
+STR_1492    :“No me puedo permitir {STRINGID}”
 STR_1493    :“No tengo hambre”
 STR_1494    :“No tengo sed”
 STR_1495    :“¡Ayuda!¡Me ahogo!”
@@ -892,7 +892,7 @@ STR_1498    :“He esperado una eternidad en  {STRINGID}”
 STR_1499    :“Estoy cansado”
 STR_1500    :“Tengo hambre”
 STR_1501    :“Estoy sediento”
-STR_1502    :“Tengo que ir al lavabo”
+STR_1502    :“Tengo que ir al baño”
 STR_1503    :“No encuentro {STRINGID}”
 STR_1504    :“No voy a pagar tanto por {STRINGID}”
 STR_1505    :“No voy a subir a {STRINGID} mientras llueve”
@@ -901,11 +901,11 @@ STR_1507    :“No puedo encontrar la salida”
 STR_1508    :“Quiero bajarme de {STRINGID}”
 STR_1509    :“Quiero salir de {STRINGID}”
 STR_1510    :“No voy a subir a {STRINGID}, no es seguro”
-STR_1511    :“Este sendero es repugnante”
+STR_1511    :“Este camino es repugnante”
 STR_1512    :“Hay demasiada gente aquí”
 STR_1513    :“El vandalismo es terrible”
 STR_1514    :“¡El paisaje es estupendo!”
-STR_1515    :“Este parque está realmente limpio y ordenado”
+STR_1515    :“Este parque está muy limpio y ordenado”
 STR_1516    :“Las fuentes saltarinas son estupendas”
 STR_1517    :“La música es agradable”
 STR_1518    :“Este Globo de {STRINGID} es barato”
@@ -915,13 +915,13 @@ STR_1521    :“Esta Foto de {STRINGID} es barato”
 STR_1522    :“Este Paraguas de {STRINGID} es barato”
 STR_1523    :“Esta Bebida de {STRINGID} es barata”
 STR_1524    :“Esta Hamburguesa de {STRINGID} es barata”
-STR_1525    :“Estas Papas Fritas de {STRINGID} son baratas”
+STR_1525    :“Estas Patatas Fritas de {STRINGID} son baratas”
 STR_1526    :“Este Helado de {STRINGID} es barato”
 STR_1527    :“Este Algodón de {STRINGID} es barato”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :“Esta Pizza de {STRINGID} es barato”
+STR_1531    :“Esta Pizza de {STRINGID} es barata”
 STR_1532    :
 STR_1533    :“Estas Palomitas de {STRINGID} son baratas”
 STR_1534    :“Este Perrito de {STRINGID} es barato”
@@ -929,7 +929,7 @@ STR_1535    :“Este Tentáculo de {STRINGID} es barato”
 STR_1536    :“Este Sombrero de {STRINGID} es barato”
 STR_1537    :“Esta Manzana de {STRINGID} es barata”
 STR_1538    :“Esta Camiseta de {STRINGID} es barata”
-STR_1539    :“Esta Rosquilla de {STRINGID} es barata”
+STR_1539    :“Esta Donut de {STRINGID} es barato”
 STR_1540    :“Este Café de {STRINGID} es barato”
 STR_1541    :
 STR_1542    :“Este Pollo Frito de {STRINGID} es barato”
@@ -942,29 +942,29 @@ STR_1548    :
 STR_1549    :
 STR_1550    :“¡Wow!”
 STR_1551    :“Tengo la extraña sensación de que alguien me está observando”
-STR_1552    :“No voy a pagar tanto por el Globo de {STRINGID}”
+STR_1552    :“No voy a pagar tanto por un Globo de {STRINGID}”
 STR_1553    :“No voy a pagar tanto por el Juguetito de {STRINGID}”
-STR_1554    :“No voy a pagar tanto por el Mapa de {STRINGID}”
-STR_1555    :“No voy a pagar tanto por la Foto de {STRINGID}”
-STR_1556    :“No voy a pagar tanto por el Paraguas de {STRINGID}”
-STR_1557    :“No voy a pagar tanto por la Bebida de {STRINGID}”
-STR_1558    :“No voy a pagar tanto por la Hamburguesa de {STRINGID}”
-STR_1559    :“No voy a pagar tanto por las Papas Fritas de {STRINGID}”
-STR_1560    :“No voy a pagar tanto por el helado de {STRINGID}”
-STR_1561    :“No voy a pagar tanto por el Algodón de {STRINGID}”
+STR_1554    :“No voy a pagar tanto por un Mapa de {STRINGID}”
+STR_1555    :“No voy a pagar tanto por una Foto de {STRINGID}”
+STR_1556    :“No voy a pagar tanto por un Paraguas de {STRINGID}”
+STR_1557    :“No voy a pagar tanto por una Bebida de {STRINGID}”
+STR_1558    :“No voy a pagar tanto por una Hamburguesa de {STRINGID}”
+STR_1559    :“No voy a pagar tanto por unas Patatas Fritas de {STRINGID}”
+STR_1560    :“No voy a pagar tanto por un Helado de {STRINGID}”
+STR_1561    :“No voy a pagar tanto por un Algodón de Azúcar de {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :“No voy a pagar tanto por la Pizza de {STRINGID}”
+STR_1565    :“No voy a pagar tanto por una Pizza de {STRINGID}”
 STR_1566    :
 STR_1567    :“No voy a pagar tanto por las Palomitas de {STRINGID}”
-STR_1568    :“No voy a pagar tanto por el Perrito de {STRINGID}”
-STR_1569    :“No voy a pagar tanto por el Tentáculo de {STRINGID}”
-STR_1570    :“No voy a pagar tanto por el Sombrero de {STRINGID}”
-STR_1571    :“No voy a pagar tanto por la Manzana de {STRINGID}”
-STR_1572    :“No voy a pagar tanto por la Camiseta de {STRINGID}”
-STR_1573    :“No voy a pagar tanto por la Rosquilla de {STRINGID}”
-STR_1574    :“No voy a pagar tanto por el Café de {STRINGID}”
+STR_1568    :“No voy a pagar tanto por un Perrito Caliente de {STRINGID}”
+STR_1569    :“No voy a pagar tanto por un Tentáculo de {STRINGID}”
+STR_1570    :“No voy a pagar tanto por un Sombrero de {STRINGID}”
+STR_1571    :“No voy a pagar tanto por una Manzana de {STRINGID}”
+STR_1572    :“No voy a pagar tanto por una Camiseta de {STRINGID}”
+STR_1573    :“No voy a pagar tanto por un Donut de {STRINGID}”
+STR_1574    :“No voy a pagar tanto por un Café de {STRINGID}”
 STR_1575    :
 STR_1576    :“No voy a pagar tanto por el Pollo Frito de {STRINGID}”
 STR_1577    :“No voy a pagar tanto por la Limonada de {STRINGID}”
@@ -978,7 +978,7 @@ STR_1584    :“Esta Foto de {STRINGID} es barata”
 STR_1585    :“Esta Foto de {STRINGID} es barata”
 STR_1586    :“Esta Foto de {STRINGID} es barata”
 STR_1587    :“Este Pretzel de {STRINGID} es barato”
-STR_1588    :“Este Chocolate de {STRINGID} es barato”
+STR_1588    :“Este Chocolate Caliente de {STRINGID} es barato”
 STR_1589    :“Este Té de {STRINGID} es barato”
 STR_1590    :“Este Pastel de {STRINGID} es barato”
 STR_1591    :“Estas Gafas de {STRINGID} son baratas”
@@ -987,7 +987,7 @@ STR_1593    :“Este Arroz Frito de {STRINGID} son baratos”
 STR_1594    :“Esta Sopa Wonton de {STRINGID} es barata”
 STR_1595    :“Esta Sopa de Albóndigas de {STRINGID} es barata”
 STR_1596    :“Este Zumo de {STRINGID} es barato”
-STR_1597    :“Esta Leche Soja de {STRINGID} es barata”
+STR_1597    :“Esta Leche de Soja de {STRINGID} es barata”
 STR_1598    :“Este Sujeonggwa de {STRINGID} es barato”
 STR_1599    :“Este Sándwich de {STRINGID} es barato”
 STR_1600    :“Esta Galleta de {STRINGID} es barata”
@@ -1010,7 +1010,7 @@ STR_1616    :“No voy a pagar tanto por la Foto de {STRINGID}”
 STR_1617    :“No voy a pagar tanto por la Foto de {STRINGID}”
 STR_1618    :“No voy a pagar tanto por la Foto de {STRINGID}”
 STR_1619    :“No voy a pagar tanto por el Pretzel de {STRINGID}”
-STR_1620    :“No voy a pagar tanto por el Chocolate de {STRINGID}”
+STR_1620    :“No voy a pagar tanto por el Chocolate Caliente de {STRINGID}”
 STR_1621    :“No voy a pagar tanto por el Té de {STRINGID}”
 STR_1622    :“No voy a pagar tanto por el Pastel de {STRINGID}”
 STR_1623    :“No voy a pagar tanto por las Gafas de {STRINGID}”
@@ -1019,7 +1019,7 @@ STR_1625    :“No voy a pagar tanto por el Arroz Frito de {STRINGID}”
 STR_1626    :“No voy a pagar tanto por la Sopa Wonton de {STRINGID}”
 STR_1627    :“No voy a pagar tanto por la Sopa de Albóndigas de {STRINGID}”
 STR_1628    :“No voy a pagar tanto por el Zumo de {STRINGID}”
-STR_1629    :“No voy a pagar tanto por la Leche Soja de {STRINGID}”
+STR_1629    :“No voy a pagar tanto por la Leche de Soja de {STRINGID}”
 STR_1630    :“No voy a pagar tanto por el Sujeonggwa de {STRINGID}”
 STR_1631    :“No voy a pagar tanto por el Sándwich de {STRINGID}”
 STR_1632    :“No voy a pagar tanto por la Galleta de {STRINGID}”
@@ -1343,7 +1343,7 @@ STR_1963    :{WINDOW_COLOUR_2}Precio de la Foto:
 STR_1964    :{WINDOW_COLOUR_2}Precio del Paraguas:
 STR_1965    :{WINDOW_COLOUR_2}Precio de la Bebida:
 STR_1966    :{WINDOW_COLOUR_2}Precio de la Hamburguesa:
-STR_1967    :{WINDOW_COLOUR_2}Precio de las Papas Fritas:
+STR_1967    :{WINDOW_COLOUR_2}Precio de las Patatas Fritas:
 STR_1968    :{WINDOW_COLOUR_2}Precio del Helado:
 STR_1969    :{WINDOW_COLOUR_2}Precio del Algodón Azúcar:
 STR_1970    :{WINDOW_COLOUR_2}
@@ -1357,7 +1357,7 @@ STR_1977    :{WINDOW_COLOUR_2}Precio del Tentáculo:
 STR_1978    :{WINDOW_COLOUR_2}Precio del Sombrero:
 STR_1979    :{WINDOW_COLOUR_2}Precio de la Manzana:
 STR_1980    :{WINDOW_COLOUR_2}Precio de la Camiseta:
-STR_1981    :{WINDOW_COLOUR_2}Precio de la Rosquilla:
+STR_1981    :{WINDOW_COLOUR_2}Precio del Donut:
 STR_1982    :{WINDOW_COLOUR_2}Precio del Café:
 STR_1983    :{WINDOW_COLOUR_2}
 STR_1984    :{WINDOW_COLOUR_2}Precio Pollo Frito:
@@ -1385,7 +1385,7 @@ STR_2005    :Tentáculo
 STR_2006    :Sombrero
 STR_2007    :Manzana de Caramelo
 STR_2008    :Camiseta
-STR_2009    :Rosquilla
+STR_2009    :Donut
 STR_2010    :Café
 STR_2011    :Taza vacía
 STR_2012    :Pollo Frito
@@ -1413,7 +1413,7 @@ STR_2033    :Tentáculos
 STR_2034    :Sombreros
 STR_2035    :Manzanas de Caramelo
 STR_2036    :Camisetas
-STR_2037    :Rosquillas
+STR_2037    :Donuts
 STR_2038    :Cafés
 STR_2039    :Tazas vacías
 STR_2040    :Pollos Frito
@@ -1441,7 +1441,7 @@ STR_2061    :un Tentáculo
 STR_2062    :un Sombrero
 STR_2063    :una Manzana de Caramelo
 STR_2064    :una Camiseta
-STR_2065    :una Rosquilla
+STR_2065    :una Donut
 STR_2066    :un Café
 STR_2067    :una taza vacía
 STR_2068    :unos Pollos Fritos
@@ -1469,7 +1469,7 @@ STR_2089    :Tentáculo
 STR_2090    :Sombrero de “{STRINGID}”
 STR_2091    :Manzana de Caramelo
 STR_2092    :Camiseta de “{STRINGID}”
-STR_2093    :Rosquilla
+STR_2093    :Donut
 STR_2094    :Café
 STR_2095    :Taza vacía
 STR_2096    :Pollo Frito
@@ -1477,23 +1477,23 @@ STR_2097    :Limonada
 STR_2098    :Caja vacía
 STR_2099    :Botella vacía
 STR_2103    :{WINDOW_COLOUR_2}Precio de Pretzel:
-STR_2104    :{WINDOW_COLOUR_2}Precio Chocolate:
+STR_2104    :{WINDOW_COLOUR_2}Precio del Chocolate Caliente:
 STR_2105    :{WINDOW_COLOUR_2}Precio de Té Helado:
-STR_2106    :{WINDOW_COLOUR_2}Precio Pastel:
-STR_2107    :{WINDOW_COLOUR_2}Precio de Gafas:
-STR_2108    :{WINDOW_COLOUR_2}Precio de Fideos:
-STR_2109    :{WINDOW_COLOUR_2}Precio Arroz Frito:
-STR_2110    :{WINDOW_COLOUR_2}Precio Sopa Wonton:
-STR_2111    :{WINDOW_COLOUR_2}Precio Albóndigas:
-STR_2112    :{WINDOW_COLOUR_2}Precio Bebida de Fruta:
-STR_2113    :{WINDOW_COLOUR_2}Precio Leche Soja:
-STR_2114    :{WINDOW_COLOUR_2}Precio Sujongkwa:
-STR_2115    :{WINDOW_COLOUR_2}Precio Sándwich:
-STR_2116    :{WINDOW_COLOUR_2}Precio de Galleta:
+STR_2106    :{WINDOW_COLOUR_2}Precio de una Tarta:
+STR_2107    :{WINDOW_COLOUR_2}Precio de unas Gafas:
+STR_2108    :{WINDOW_COLOUR_2}Precio de unos Fideos:
+STR_2109    :{WINDOW_COLOUR_2}Precio del Arroz Frito:
+STR_2110    :{WINDOW_COLOUR_2}Precio de una Sopa Wonton:
+STR_2111    :{WINDOW_COLOUR_2}Precio de unas Albóndigas:
+STR_2112    :{WINDOW_COLOUR_2}Precio de una Bebida de Fruta:
+STR_2113    :{WINDOW_COLOUR_2}Precio de una Leche de Soja:
+STR_2114    :{WINDOW_COLOUR_2}Precio de un Sujeonggwa:
+STR_2115    :{WINDOW_COLOUR_2}Precio de un Sándwich:
+STR_2116    :{WINDOW_COLOUR_2}Precio de una Galleta:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Precio Salchicha:
+STR_2120    :{WINDOW_COLOUR_2}Precio de una Salchicha:
 STR_2121    :{WINDOW_COLOUR_2}
 STR_2125    :Pretzel
 STR_2126    :Chocolate Caliente
@@ -1505,8 +1505,8 @@ STR_2131    :Arroz Frito
 STR_2132    :Sopa Wonton
 STR_2133    :Sopa de Albóndigas
 STR_2134    :Jugo de Frutas
-STR_2135    :Leche Soja
-STR_2136    :Sujongkwa
+STR_2135    :Leche de Soja
+STR_2136    :Sujeonggwa
 STR_2137    :Mini-Sándwich
 STR_2138    :Galleta
 STR_2139    :Tazón vacío
@@ -1525,7 +1525,7 @@ STR_2154    :Sopas Wonton
 STR_2155    :Sopas de Albóndigas
 STR_2156    :Bebidas de Frutas
 STR_2157    :Leches Soja
-STR_2158    :Sujongkwa
+STR_2158    :Sujeonggwa
 STR_2159    :Sándwiches
 STR_2160    :Galletas
 STR_2161    :Tazones vacíos
@@ -1543,8 +1543,8 @@ STR_2175    :un Arroz Frito
 STR_2176    :una Sopa Wonton
 STR_2177    :una Sopa de Albóndiga
 STR_2178    :una Bebida de Fruta
-STR_2179    :una Leche Soja
-STR_2180    :un Sujongkwa
+STR_2179    :una Leche de Soja
+STR_2180    :un Sujeonggwa
 STR_2181    :un Mini-Sándwich
 STR_2182    :una Galleta
 STR_2183    :un Tazón Vacío
@@ -1563,7 +1563,7 @@ STR_2198    :Sopa Wonton
 STR_2199    :Sopa de Albóndigas
 STR_2200    :Bebida de Frutas
 STR_2201    :Leche de Soja
-STR_2202    :Sujongkwa
+STR_2202    :Sujeonggwa
 STR_2203    :Mini-Sándwich
 STR_2204    :Galleta
 STR_2205    :Tazón Vacío
@@ -1911,7 +1911,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Investigación Completa
 STR_2684    :Llega un gran grupo de visitantes
-STR_2685    :Simplex Noise Parameters
+STR_2685    :Parametros de Ruido Simplex
 STR_2686    :Bajo:
 STR_2687    :Alto:
 STR_2688    :Frecuencia Base:
@@ -4131,12 +4131,12 @@ STR_DTLS    :Un parque gigante completamente equipado con atracciones, necesita 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
 STR_PARK    :Venus Ponds
-STR_DTLS    :En un planeta lejano, esta zona de terreno debe convertirse en un parque temático.
+STR_DTLS    :En un planeta muy lejano, esta area convertirse en un parque temático.
 
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Intenta crear el parque rentable más pequeño del mundo.
+STR_DTLS    :Solo tienes un espacio de 15x15. Mucha suerte Jefe.
 
 ## Real Parks from RCT1
 # None of them had details
@@ -4274,22 +4274,22 @@ STR_DTLS    :Un parque colocado precariamente sobre roca volcánica (principalme
 <Lucky Lake>
 STR_SCNR    :Lago Suerte
 STR_PARK    :Lago Suerte
-STR_DTLS    :Con fondos ilimitados pero una ubicación desafiante, este parque será difícil de expandir y administrar.
+STR_DTLS    :Tienes Dinero ilimitado, pero una ubicación desafiante. Este parque será un desafio.
 
 <Rainbow Summit>
 STR_SCNR    :Cresta Arcoíris
 STR_PARK    :Cresta Arcoíris
-STR_DTLS    :Construido en una ladera, este parque la tiene difícil para construir algo alto. ¿Podrás expandir este parque y hacerlo exitoso?
+STR_DTLS    :Construido en una ladera, en este parque no se puede llegar alto. ¿Podrás expandir este parque y hacerlo exitoso?
 
 <Six Flags Belgium>
 STR_SCNR    :Six Flags Bélgica
 STR_PARK    :Six Flags Bélgica
-STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flags.
+STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Belga.
 
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Atraer más visitantes al parque!
+STR_DTLS    :Usa tus habilidades de diseño para recrear este parque de Six Flags.
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holanda
