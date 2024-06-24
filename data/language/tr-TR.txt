@@ -32,26 +32,26 @@ STR_0027    :Çarpışan Arabalar
 STR_0028    :Korsan Gemisi
 STR_0029    :Tepe Takla Gemisi
 STR_0030    :Yiyecek Standı
-STR_0031    :Bilinmeyen Stand (1D)
-STR_0032    :Içecek Standı
-STR_0033    :Bilinmeyen Stand (1F)
+STR_0031    :Bilinmeyen Stant (1D)
+STR_0032    :İçecek Standı
+STR_0033    :Bilinmeyen Stant (1F)
 STR_0034    :Dükkan
 STR_0035    :Atlıkarınca
-STR_0036    :Bilinmeyen Stand (22)
+STR_0036    :Bilinmeyen Stant (22)
 STR_0037    :Danışma
 STR_0038    :Tuvalet
 STR_0039    :Dönme Dolap
-STR_0040    :Kaza Simulatörü
+STR_0040    :Kaza Simülatörü
 STR_0041    :3D Sinema
 STR_0042    :Sapan
-STR_0043    :Astronot Antremanı
+STR_0043    :Astronot Antrenmanı
 STR_0044    :Ters Düşüşlü Tren
 STR_0045    :Asansör
 STR_0046    :Vertikal Düşüşlü tren
 STR_0047    :ATM
 STR_0048    :Twister
 STR_0049    :Perili Ev
-STR_0050    :Ilk yardım kulübesi
+STR_0050    :İlk yardım kulübesi
 STR_0051    :Sirk
 STR_0052    :Hayalet Treni
 STR_0053    :Çelik Yapılı Twister Treni
@@ -71,7 +71,7 @@ STR_0066    :Bilinmeyen Alet (40)
 STR_0067    :Yön değiştiren Tren
 STR_0068    :Heartline Twister Coaster
 STR_0069    :Mini Golf
-STR_0070    :Devasal Tren
+STR_0070    :Devasa Tren
 STR_0071    :Rotasyonlu Düşüş
 STR_0072    :Çarpışan Araçlar
 STR_0073    :Yamuk Ev
@@ -82,7 +82,7 @@ STR_0077    :Pnömatik Vertikal Tren
 STR_0078    :Teleferik Treni
 STR_0079    :Sihirli Halı
 STR_0080    :Denizaltı Kiralama
-STR_0081    :Sal Seyehati
+STR_0081    :Sal Seyahati
 STR_0082    :Bilinmeyen Alet (50)
 STR_0083    :Dönen Teker
 STR_0084    :Bilinmeyen Alet (52)
@@ -95,18 +95,18 @@ STR_0090    :Küçük Maden Treni
 STR_0091    :Bilinmeyen Alet (59)
 STR_0092    :LIM Tren
 STR_0096    :Klasik Tahta Tren
-STR_0512    :Sardal şeklinde tırmanma zinciri rayı ile yükseğe çıkabilen çelik yapılı bir tren
-STR_0513    :Yolcuların ayakda durdukları koltuksuz tren
+STR_0512    :Sarmal şeklinde tırmanma zinciri rayı ile yükseğe çıkabilen çelik yapılı bir tren
+STR_0513    :Yolcuların ayakta durdukları koltuksuz tren
 STR_0514    :Trenin vagonları salıncak gibi yukarıdan aşağı asılı. Virajlarda vagonlar sağa veya sola doğru sallanıyor
-STR_0515    :Vagonlar üstde bulunan raylara monte edilmiş halde. Bu trende büyük döngüler ve dik inişler mümkündür
+STR_0515    :Vagonlar üstte bulunan raylara monte edilmiş halde. Bu trende büyük döngüler ve dik inişler mümkündür
 STR_0516    :Hızlı trenlere cesaret edip binemeyen müşteriler için ölçülü bir tren
 STR_0517    :Yolcular minyatür treni hızlı ve kolay ulaşım için kullanabilirler
 STR_0518    :Yolcular monorayı hızlı ve kolay ulaşım için kullanabilirler
-STR_0519    :Yolcular üstde bulunan yuvarlak raylara monte edilmiş tekli vagonlara biniyor. Virajlarda vagonlara sağa veya sola sallanıyor
-STR_0520    :Müşteriler kıraladıkları sandalları gölde ya bağımsız bir şekilde yada belirlenmiş bir şeritde kullanabilirler
+STR_0519    :Yolcular üstte bulunan yuvarlak raylara monte edilmiş tekli vagonlara biniyor. Virajlarda vagonlara sağa veya sola sallanıyor
+STR_0520    :Müşteriler kiraladıkları sandalları gölde ya bağımsız bir şekilde yada belirlenmiş bir şeritte kullanabilirler
 STR_0521    :Fare şeklindeki vagonlar ahşap rayların üzerinde hızlıca virajlara girdiğinde yana yatıyorlar
 STR_0522    :Tek ray üzerinde süren bir tren
-STR_0523    :Müşteriler kiraladığı arablar ile belirlenmiş bir yol üzerinde sürebilirler
+STR_0523    :Müşteriler kiraladığı arabalar ile belirlenmiş bir yol üzerinde sürebilirler
 STR_0524    :Pnömatik şekilde havaya fırlatılan araç zirveye çıktığı gibi geri düşüyor
 STR_0525    :Rayları beşiğe benzeyen bu trende vagonlar serbest bir şekilde sürüyor
 STR_0526    :Asansör gibi zirveye düz ve dönerek çıkan gözetleme kulesi
@@ -115,72 +115,72 @@ STR_0528    :Yolcular şişme sandal üzerinde yarı veya tüm boru içinde kay�
 STR_0529    :Eski maden trenlerine bezeyen hız treni
 STR_0530    :Müşteriler teleferiği yol kısaltmak için kullanabilirler
 STR_0531    :Çelik yapılı tren. Döngüler ve sarmallar mümkündür
-STR_0532    :Labirentde müşterilerin çıkışı kafa karıştırıcı yollarda gezerek bulması gerekdir
+STR_0532    :Labirentte müşterilerin çıkışı kafa karıştırıcı yollarda gezinerek bulması gerekir
 STR_0533    :Bu ahşap kaydırak iç kısmında merdiven bulunduruyor. Müşteriler özel hasır ile kayıyor
 STR_0534    :Mazot ile çalışan Kartlar ile Kart yarışı
 STR_0535    :Ağaç gövdesine benzeyen vagonlar ile yolcuları ıslatmak amacıyla dik inişler mümkündür
-STR_0536    :Müşteriler yuvarlak gemiler ile fokurduyan sularda, şelalelerde ve akıntılarda gezdiren bir alet
+STR_0536    :Müşteriler yuvarlak gemiler ile fokurdayan sularda, şelalelerde ve akıntılarda gezdiren bir alet
 STR_0537    :Elektrik ile çalışan çarpışan arabalar
-STR_0538    :Deniz fırtınasına kapılmış korsan gemisi gibi sağa ve sola sallanan bir alet 
+STR_0538    :Deniz fırtınasına kapılmış korsan gemisi gibi sağa ve sola sallanan bir alet
 STR_0539    :Gemiye benzeyen bu alet yolcuları 360 dereceye kadar tepe takla sallıyor
-STR_0540    :Müşterilerin yiyecek satın alabileceği bir stand
-STR_0542    :Müşterilerin içecek satın alabileceği bir stand
-STR_0544    :Müşterilerin hatıra satın alabileceği bir stand
-STR_0545    :Gelenksel atlıkarınca
-STR_0547    :Müşterilerin park haritası ve şemsiye satın alabileceği bir stand
+STR_0540    :Müşterilerin yiyecek satın alabileceği bir stant
+STR_0542    :Müşterilerin içecek satın alabileceği bir stant
+STR_0544    :Müşterilerin hatıra satın alabileceği bir stant
+STR_0545    :Geleneksel atlıkarınca
+STR_0547    :Müşterilerin park haritası ve şemsiye satın alabileceği bir stant
 STR_0548    :Tuvalet
-STR_0549    :Koltukları açık olan dönmedolap
-STR_0550    :Müşteriler kaza simulatöründe kendileri kaza yapıyormuş gibisine hareketlendiriyor. Heyecanı artdırmak için aynı zamanda 3D Filmi oynuyor
-STR_0551    :Müşteriler kendilerini Filmin içinde gibi hisediyorlar
-STR_0552    :Müşteriler sapana benzeyen bir aletde yukarı ve aşağı hızlıca sallanıyor
-STR_0553    :Astronotların yaptığı antremanın hafif bir türü
-STR_0554    :Lineer Indüksiyon Motoru ile 90 derece dikine fırlatılan tren, aynı şekilde 90 derece düşüş ile başlangıca dönüyor
-STR_0555    :Müşterilerin farklı katlara ulaşbilmesi için bir alet
-STR_0556    :Extra büyük vagonlar ile dikey tırmanmalar ve düşüşler ile heyecanı zirveye çıkarıyor
+STR_0549    :Koltukları açık olan dönme dolap
+STR_0550    :Müşteriler kaza simülatöründe kendileri kaza yapıyormuş gibisine hareketlendiriyor. Heyecanı arttırmak için aynı zamanda 3D Filmi oynuyor
+STR_0551    :Müşteriler kendilerini Filmin içinde gibi hissediyorlar
+STR_0552    :Müşteriler sapana benzeyen bir alette yukarı ve aşağı hızlıca sallanıyor
+STR_0553    :Astronotların yaptığı antrenmanın hafif bir türü
+STR_0554    :Lineer İndüksiyon Motoru ile 90 derece dikine fırlatılan tren, aynı şekilde 90 derece düşüş ile başlangıca dönüyor
+STR_0555    :Müşterilerin farklı katlara ulaşabilmesi için bir alet
+STR_0556    :Ekstra büyük vagonlar ile dikey tırmanmalar ve düşüşler ile heyecanı zirveye çıkarıyor
 STR_0557    :Müşterilerin parası bitmek üzere olduğunda bu ATM ile yeniden para çekebiliyorlar
 STR_0558    :Müşteriler çift koltuklu koltuklarda çevriliyor
 STR_0559    :Perili evde bir çeşit canavar, hayalet ve peri şeklindeki korkunç robotlar müşterileri korkutmaya hazır
 STR_0560    :Müşterilerin midesi bulandığı takdirde burada rahatlayabilirler
 STR_0561    :Sirk hayvanlarının gösteri yaptığı bir alet
 STR_0562    :Yolcular korku dolu bir yerde seyahat yapıyor (dekorasyon gereklidir)
-STR_0563    :Bu çelik yapılı hız treni keskin virajlara ve sarmallara sahiptir. Heyecanı artdırmak için güvenlik askısı kalça kısmındadır
+STR_0563    :Bu çelik yapılı hız treni keskin virajlara ve sarmallara sahiptir. Heyecanı arttırmak için güvenlik askısı kalça kısmındadır
 STR_0564    :Bu hızlı, sesli ve kaba ahşap tren yolculara trenin her an raydan çıkağını hissettiriyor
 STR_0565    :Hafif inişlere ve virajlara sahip olan ahşap tren. Rayların sağında ve solunda bulunan tekerler ve yerçekimi bu treni rayda tutar
-STR_0566    :Tekli vagonlar zig zag bir şeritde keskin virajlardan döner ve dik eğilimlerden iner
+STR_0566    :Tekli vagonlar zikzak bir şeritte keskin virajlardan döner ve dik eğilimlerden iner
 STR_0567    :Bu trenin vagonları yön değiştirir ve bir yukarıda bulunur, bir aşağıda bulunur
 STR_0569    :Bu trende yolcuların ayakları yere basmadığından dolayı kendilerine uçuyorlarmış gibi bir his vermektedir
-STR_0571    :Çorba tasına benzeyen vagonlar zig zag bir şeritde keskin virajlardan dönüyor ve dik eğilimlerden iniyor
-STR_0572    :Büyük gemilere benzeyen vagonlar yükseğe tırmandıkdan sonra yolcuları ıslatmak suretiyle aşağı kayıyor
-STR_0573    :Helikoptere benziyen tekli araçlar, bisiklet pedalına benzeyen pedallar ile ilerler
+STR_0571    :Çorba tasına benzeyen vagonlar zikzak bir şeritte keskin virajlardan dönüyor ve dik eğilimlerden iniyor
+STR_0572    :Büyük gemilere benzeyen vagonlar yükseğe tırmandıktan sonra yolcuları ıslatmak suretiyle aşağı kayıyor
+STR_0573    :Helikoptere benzeyen tekli araçlar, bisiklet pedalına benzeyen pedallar ile ilerler
 STR_0574    :Yolcular özel vagonlara karın veya sırt üstü yatarak biniyor
 STR_0575    :Yolcular bu aracı hızlı ve kolay ulaşım için kullanabilirler
 STR_0577    :Bu ahşap trendeki bulunan özel raylar vagonları tersine çevirmektedir
-STR_0578    :Bu trenin vagonları silindire ve rayları kafesi benzemektedir. Yuvarlama raylarıda bulundurur
-STR_0579    :Mini Golf 
-STR_0580    :Devasal çelik yapılı tren. 90 metreye kadar yükselebilir
-STR_0581    :Tekere benzeyen bu alet rotasyon yaparak zirveye çıktıkdan sonra serbeşt düşüş ile aşağı iniyor. Aşağıda manyetik fren ile durduruluyor
+STR_0578    :Bu trenin vagonları silindire ve rayları kafesi benzemektedir. Yuvarlama rayları da bulundurur
+STR_0579    :Mini Golf
+STR_0580    :Devasa çelik yapılı tren. 90 metreye kadar yükselebilir
+STR_0581    :Tekere benzeyen bu alet rotasyon yaparak zirveye çıktıktan sonra serbest düşüş ile aşağı iniyor. Aşağıda manyetik fren ile durduruluyor
 STR_0582    :Hovercraft tekniği ile çalışan çarpışan araçlar
 STR_0583    :Müşterileri şaşırtan ve kafalarını karıştıran koridorlardan ve odalardan oluşan bir alet
 STR_0584    :Tekli rayın üstünde bisikletli alet
-STR_0585    :Havada bulunan raylara monte edilmiş vagonlar ters döngüler yapmakda ve keskin virajlardan sürmekde
-STR_0586    :Gemi şeklindeki vagonlar dar virajlarda ve dik düşüşlerde sürmektedir. Fakat su bölümleri ölçülü ve sakinleştiricir
+STR_0585    :Havada bulunan raylara monte edilmiş vagonlar ters döngüler yapmakta ve keskin virajlardan sürmekte
+STR_0586    :Gemi şeklindeki vagonlar dar virajlarda ve dik düşüşlerde sürmektedir. Fakat su bölümleri ölçülü ve sakinleştiricidir
 STR_0587    :Pnömatik teknik ile 90 derece dikine fırlatılan tren, aynı şekilde 90 derece düşüş ile başlangıca döner
-STR_0588    :Tekli vagonlar zig zag bir şeritde keskin virajlardan döner ve dik eğilimlerden iner
+STR_0588    :Tekli vagonlar zikzak bir şeritte keskin virajlardan döner ve dik eğilimlerden iner
 STR_0589    :Sihirli halı şeklinde sallanan bir alet
-STR_0590    :Müşteriler kıraladıkları denizaltıları ile belirli bir kısımda gezebilirler
+STR_0590    :Müşteriler kiraladıkları denizaltıları ile belirli bir kısımda gezebilirler
 STR_0591    :Sal şeklindeki gemiler ile tırmanışsız ve düşüşsüz sakin bir seyahat için
-STR_0593    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
+STR_0593    :Önce dönmeye başlayan ve daha sonra bir destek kolu tarafından yukarı doğru eğilen asılı yolcu bölmelerine sahip döner tekerlek
 STR_0598    :Vidaya benzeyen rayları ile 90 derece havaya fırlatılan ve aynı şekilde geri düşen tren
 STR_0599    :Tekli vagonları ve hafif düşüşleri ile ölçülü bir tren
-STR_0600    :Maden vagonlarından oluşan bu tren ölçülü virajlardan ve düşüşlerden gitmekde
-STR_0602    :Lineer Indüksiyon Motoru ile 90 derece dikine fırlatılan tren, aynı şekilde 90 derece düşüş ile başlangıca dönüyor
+STR_0600    :Maden vagonlarından oluşan bu tren ölçülü virajlardan ve düşüşlerden gitmekte
+STR_0602    :Lineer İndüksiyon Motoru ile 90 derece dikine fırlatılan tren, aynı şekilde 90 derece düşüş ile başlangıca dönüyor
 STR_0606    :Hızlı ve zor bir sürüşe sahip, açık havanın tadını çıkarabileceğiniz, bir miktar G kuvveti bulunan, ‘kontrolden-çıkmış’ gibi hissettirmek için tasarlanmış ahşap bir tren.
 STR_0767    :Müşteri {INT32}
-STR_0768    :Temizlikci {INT32}
+STR_0768    :Temizlikçi {INT32}
 STR_0769    :Mühendis {INT32}
 STR_0770    :Güvenlik {INT32}
 STR_0771    :Animatör {INT32}
-STR_0777    :Isimsiz park
+STR_0777    :İsimsiz park
 STR_0778    :Bir metin giriniz
 STR_0779    :1.
 STR_0780    :2.
@@ -271,14 +271,14 @@ STR_0883    :Oyunu kaydet
 STR_0884    :Araziyi yükle
 STR_0885    :Araziyi kaydet
 STR_0887    :Senaryo Editörünü kapat
-STR_0888    :Alet Tasarımıcısını kapat
-STR_0889    :Alet Menecerini kapat
+STR_0888    :Alet Tasarımcısını kapat
+STR_0889    :Alet Tasarım Yöneticisini kapat
 STR_0891    :Screenshot
 STR_0892    :Screenshot Hard Drive’a bu isim ile kayıt edildi: ‘{STRINGID}’
 STR_0893    :Screenshot çekilemedi!
 STR_0894    :Arazi veri alanı dolu!
 STR_0895    :Yarı yerüstü, yarı yeraltı inşa edilemez!
-STR_0896    :{POP16}{POP16}{STRINGID} Inşası
+STR_0896    :{POP16}{POP16}{STRINGID} İnşası
 STR_0897    :Yön
 STR_0898    :Sola viraj
 STR_0899    :Sağa viraj
@@ -297,8 +297,8 @@ STR_0911    :Sağ viraj için yuvarla
 STR_0912    :Yuvarlama
 STR_0913    :Bir önceki kesim
 STR_0914    :Bir sonraki kesim
-STR_0915    :Şeçdiğiniz kesimi inşa edin
-STR_0916    :Şeçdiğiniz kesimi silin
+STR_0915    :Seçtiğiniz kesimi inşa edin
+STR_0916    :Seçtiğiniz kesimi silin
 STR_0917    :90 derece düşür
 STR_0918    :Dik düşür
 STR_0919    :Düşür
@@ -316,7 +316,7 @@ STR_0930    :‘S’ şeklinde viraj (sağ)
 STR_0931    :Döngü (sol)
 STR_0932    :Döngü (sağ)
 STR_0933    :Arazin alçaltılması veya yükseltilmesi gerekli
-STR_0934    :Alet girşi engelliyor
+STR_0934    :Alet girişi engelliyor
 STR_0935    :Alet çıkışı engelliyor
 STR_0936    :Park girişi engelliyor
 STR_0937    :Görünüm ayarları
@@ -325,18 +325,18 @@ STR_0939    :Yeraltı veya iç görünüm
 STR_0940    :Tabanı gizle
 STR_0941    :Vertikal duvarları gizle
 STR_0942    :Aletleri gizle
-STR_0943    :Dekorsdyonu gizle
+STR_0943    :Dekorasyonu gizle
 STR_0944    :Kaydet
 STR_0945    :Kaydetme
-STR_0946    :Iptal
-STR_0947    :Yüklemeden önce kayıt etmek istermisiniz?
-STR_0948    :Kapatmadan önce kaydetmek istermisiniz?
-STR_0949    :Kapatmadan önce kaydetmek istermisiniz?
+STR_0946    :İptal
+STR_0947    :Yüklemeden önce kayıt etmek ister misiniz?
+STR_0948    :Kapatmadan önce kaydetmek ister misiniz?
+STR_0949    :Kapatmadan önce kaydetmek ister misiniz?
 STR_0950    :Oyunu yükle
 STR_0951    :Oyunu kapat
 STR_0952    :Oyunu kapat
 STR_0953    :Arazi yükle
-STR_0955    :Bu kesim için koltuk eğim dereceseni seçiniz
+STR_0955    :Bu kesim için koltuk eğim derecesini seçiniz
 STR_0956    :-180°
 STR_0957    :-135°
 STR_0958    :-90°
@@ -353,17 +353,17 @@ STR_0968    :+360°
 STR_0969    :+405°
 STR_0970    :+450°
 STR_0971    :+495°
-STR_0972    :Iptal
+STR_0972    :İptal
 STR_0973    :Tamam
 STR_0974    :Aletler
-STR_0975    :Dükkanlar ve Standlar
+STR_0975    :Dükkanlar ve Stantlar
 STR_0976    :Diğer tesisler
-STR_0977    :Toplu taşım araçları
+STR_0977    :Toplu taşıma araçları
 STR_0978    :Ölçülü aletler
 STR_0979    :Hız trenleri
 STR_0980    :Heyecanlı aletler
 STR_0981    :Sulu aletler ve trenler
-STR_0982    :Dükkanlar ve standlar
+STR_0982    :Dükkanlar ve stantlar
 STR_0983    :Araştırma ve Geliştirme
 STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
@@ -371,23 +371,23 @@ STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Çok fazla alet var
 STR_0988    :Yeni alet inşa edilemedi
 STR_0989    :{STRINGID}
-STR_0990    :Inşa et/Değiştir
-STR_0991    :Istasyon
+STR_0990    :İnşa et/Değiştir
+STR_0991    :İstasyon
 STR_0992    :Tüm aleti sil
 STR_0993    :Aleti sil
 STR_0994    :Sil
-STR_0995    :{WINDOW_COLOUR_1} {STRINGID}’i silmek istediğinizden eminmisinz?
+STR_0995    :{WINDOW_COLOUR_1} {STRINGID}’i silmek istediğinizden emin misiniz?
 STR_0996    :Genel görünüm
 STR_0997    :Görünümü seçiniz
 STR_0998    :Daha fazla istasyon inşa edilemez
-STR_0999    :Istasyon inşa etmeniz şart
+STR_0999    :İstasyon inşa etmeniz şart
 STR_1000    :Alet tam devre olmalıdır
 STR_1001    :Bu ray bu alet için uyumlu değil
 STR_1002    :{STRINGID} açılamıyor…
 STR_1003    :{STRINGID} test edilemiyor…
 STR_1004    :{STRINGID} kapatılamıyor…
 STR_1005    :{STRINGID} inşa edilemiyor…
-STR_1006    :Ilk önce kapatılması lazım
+STR_1006    :İlk önce kapatılması lazım
 STR_1007    :Yeterince vagon oluşturulamıyor
 STR_1008    :Aleti aç, kapat veya dene
 STR_1009    :Tüm aletleri aç veya kapat
@@ -406,8 +406,8 @@ STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} Tren başı vagon
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} Tren başı vagon
 STR_1024    :Tren başı vagon: {COMMA16}
-STR_1025    :Tren başı vagon: {COMMA16} 
-STR_1026    :Istasyon kesimi çok uzun
+STR_1025    :Tren başı vagon: {COMMA16}
+STR_1026    :İstasyon kesimi çok uzun
 STR_1027    :Ana görüntüye getir
 STR_1028    :Harita sınırının dışında!
 STR_1029    :Yarı su altı yarı su üstü inşa edilemez!
@@ -424,20 +424,20 @@ STR_1039    :Yeni alet tasarımı kur
 STR_1040    :Oyunu kaydet
 STR_1041    :Senaryoyu kaydet
 STR_1042    :Araziyi kaydet
-STR_1043    :OpenRCT2 - kayıdlı oyun
+STR_1043    :OpenRCT2 - kayıtlı oyun
 STR_1044    :OpenRCT2 - Senaryo dosyası
 STR_1045    :OpenRCT2 - Arazi dosyası
 STR_1046    :OpenRCT2 - Alet tasarımı dosyası
-STR_1047    :Oyun kayıdlanamadı!
-STR_1048    :Senaryo kayıdlanamadı!
+STR_1047    :Oyun kaydedilemedi!
+STR_1048    :Senaryo kaydedilemedi!
 STR_1049    :Arazi kayıtlanamadı!
 STR_1050    :Yüklenemedi. Dosya yanlış veriler içeriyor!
 STR_1051    :Direkleri gizle
 STR_1052    :Müşterileri gizle
-STR_1053    :Parkdaki aletler/dükkanlar/tesisler
+STR_1053    :Parktaki aletler/dükkanlar/tesisler
 STR_1054    :Aletin ismini değiştiriniz
 STR_1055    :Müşterinin ismini değiştiriniz
-STR_1056    :Işcinin ismini değiştiriniz
+STR_1056    :İşçinin ismini değiştiriniz
 STR_1057    :Alet ismi
 STR_1058    :Aletin yeni ismini giriniz:
 STR_1059    :Aletin ismi değiştirilemiyor…
@@ -445,30 +445,30 @@ STR_1060    :Olumsuz alet ismi
 STR_1061    :Normal mod
 STR_1062    :Normal tur modu (araçlar herhangi mesafede çıkıyor)
 STR_1063    :Düşüş modu (alet düşüş ile başlıyor)
-STR_1064    :Roket tarzı (Istasyondan frenlenmeden geçerek)
+STR_1064    :Roket tarzı (İstasyondan frenlenmeden geçerek)
 STR_1065    :Servis modu (tek vagonlu)
 STR_1066    :Kiralama modu
 STR_1067    :Yukarı atış
 STR_1068    :Rotasyon modu
-STR_1069    :Istasyonlar arası modu
+STR_1069    :İstasyonlar arası modu
 STR_1070    :Biletler tek kullanımlı
 STR_1071    :Biletler sınırsız kullanımlı
 STR_1072    :Labirent modu
 STR_1073    :Yarış modu
 STR_1074    :Çarpışan araba modu
 STR_1075    :Salıncak modu
-STR_1076    :Stand modu
+STR_1076    :Stant modu
 STR_1077    :Rotasyon modu
-STR_1078    :Ileriye rotasyon
+STR_1078    :İleriye rotasyon
 STR_1079    :Geriye rotasyon
-STR_1080    :Film: ”Intikamcı Pilotlar”
+STR_1080    :Film: ”İntikamcı Pilotlar”
 STR_1081    :3D-Film: ”Fare Kuyrukları”
-STR_1082    :Astronot Antremanı modu
+STR_1082    :Astronot Antrenmanı modu
 STR_1083    :Acemi modu
 STR_1084    :LIM ile başlangıç
 STR_1085    :Film: ”Çılgın Kaptan”
-STR_1086    :3D-Film: ”Savşcılar”
-STR_1087    :3D-Film: ”Uzay Eşkiyaları”
+STR_1086    :3D-Film: ”Savaşçılar”
+STR_1087    :3D-Film: ”Uzay Eşkıyaları”
 STR_1088    :Ölçülü mod
 STR_1089    :Aşırı mod
 STR_1090    :Perili ev modu
@@ -477,7 +477,7 @@ STR_1092    :Düşüşlü başlangıç
 STR_1093    :Yamuk Ev modu
 STR_1094    :Serbest düşüş modu
 STR_1095    :Bloklu tur modu (araçlar blok arası mesafe tutuyor)
-STR_1096    :Roket tarzı başlangıç (Istasyonda frenleyerek)
+STR_1096    :Roket tarzı başlangıç (İstasyonda frenleyerek)
 STR_1097    :Bloklu roket tarzı (araçlar blok arası mesafe tutuyor)
 STR_1098    :{POP16}{STRINGID}’un sonuna gidiyor
 STR_1099    :{POP16}{STRINGID}’da yolcu bekliyor
@@ -493,25 +493,25 @@ STR_1108    :Hız: {VELOCITY}
 STR_1109    :Sallıyor
 STR_1110    :Dönüyor
 STR_1111    :Dönüyor
-STR_1112    :Faaliyetde
+STR_1112    :Faaliyette
 STR_1113    :Film gösteriliyor
 STR_1114    :Dönüyor
-STR_1115    :Faaliyetde
-STR_1116    :Faaliyetde
+STR_1115    :Faaliyette
+STR_1116    :Faaliyette
 STR_1117    :Sirk gösterisinde
-STR_1118    :Faaliyetde
+STR_1118    :Faaliyette
 STR_1119    :Asansörlü tırmanma zincirini bekliyor
 STR_1120    :Hız: {VELOCITY}
 STR_1121    :Duruyor
 STR_1122    :Yolcu bekliyor
 STR_1123    :Başlamayı bekliyor
 STR_1124    :Başlıyor
-STR_1125    :Faaliyetde
+STR_1125    :Faaliyette
 STR_1126    :Duruyor
 STR_1127    :Yolcuları indiriyor
 STR_1128    :Blok fren ile durduruldu
 STR_1129    :Tüm vagonlara eşit renk
-STR_1130    :{STRINGID} başı farklı renk 
+STR_1130    :{STRINGID} başı farklı renk
 STR_1131    :Vagon başı farklı renk
 STR_1132    :Vagon {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1133    :Vagon {POP16}{COMMA16}
@@ -519,21 +519,21 @@ STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Ana rengi seçiniz
 STR_1137    :Birinci ek rengi seçiniz
-STR_1138    :Ikinci ek rengi seçiniz
+STR_1138    :İkinci ek rengi seçiniz
 STR_1139    :Desteklerin rengini seçiniz
 STR_1140    :Bu araç için renk seçiniz
-STR_1141    :Modife etmek istediğiniz vagonu seçiniz
+STR_1141    :Modifiye etmek istediğiniz vagonu seçiniz
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
-STR_1144    :Bu aletin girşi değiştirilemiyor veya inşa edilemiyor…
+STR_1144    :Bu aletin girişi değiştirilemiyor veya inşa edilemiyor…
 STR_1145    :Bu aletin çıkışı değiştirilemiyor veya inşa edilemiyor…
 STR_1146    :Giriş inşa edilmeli
 STR_1147    :Çıkış inşa edilmeli
-STR_1148    :Çeyrek’de başlat
-STR_1149    :Yarı’da başlat
-STR_1150    :Dörtte üç’de başlat
+STR_1148    :Çeyrekte başlat
+STR_1149    :Yarıda başlat
+STR_1150    :Dörtte üçte başlat
 STR_1151    :Dolu ise başlat
-STR_1152    :Herhangi dolulukda başlat
+STR_1152    :Herhangi dolulukta başlat
 STR_1153    :Alet yüksekliğini görüntüle
 STR_1154    :Arazı yüksekliğini görüntüle
 STR_1155    :Yol yüksekliğini görüntüle
@@ -541,10 +541,10 @@ STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Silinemedi…
 STR_1159    :Dekorasyonlar, çiçekler veya diğer cisimler
-STR_1160    :Su ayarları 
+STR_1160    :Su ayarları
 STR_1161    :Buraya inşa edilemez…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Modife etmek için sağ mouse tuşuna basınız)
+STR_1163    :{STRINGID}{NEWLINE}(Modifiye etmek için sağ mouse tuşuna basınız)
 STR_1164    :{STRINGID}{NEWLINE}(Silmek için sağ mouse tuşuna basınız)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Su seviyesi burada indirilemez…
@@ -552,8 +552,7 @@ STR_1167    :Su seviyesi burada yükseltilemez…
 STR_1168    :Seçenekler
 STR_1169    :(Hiç birisi)
 STR_1170    :{STRING}
-STR_1171    :{RED}Kapalı - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Kapalı
 STR_1173    :Yollar ve bekleme sıraları
 STR_1174    :Banner engelliyor
 STR_1175    :Eğimli yola koyulamaz
@@ -564,9 +563,9 @@ STR_1179    :Yol engelliyor
 STR_1180    :Suyun altında inşa edilemez!
 STR_1181    :Yollar
 STR_1182    :Tür
-STR_1183    :Istikamet
+STR_1183    :İstikamet
 STR_1184    :Eğim
-STR_1185    :Istikamet
+STR_1185    :İstikamet
 STR_1186    :Aşağı eğ
 STR_1187    :Düz
 STR_1188    :Yukarı eğ
@@ -590,14 +589,14 @@ STR_1205    :{COMMA16} dakika bekleme süresi
 STR_1206    :{WINDOW_COLOUR_2}Doluluk:
 STR_1207    :{WINDOW_COLOUR_2}Tren istasyona vardığında diğer treni yolla
 STR_1208    :{WINDOW_COLOUR_2}Bot istasyona vardığında diğer botu yolla
-STR_1209    :Aletin başlaması için en az kaç kişinin binmesi gerektiğni seçiniz
+STR_1209    :Aletin başlaması için en az kaç kişinin binmesi gerektiğini seçiniz
 STR_1210    :Bir aracın istasyona varmasıyla diğer bir aracın çıkmasını sağlar
 STR_1211    :{WINDOW_COLOUR_2}En az bekleme süresi:
 STR_1212    :{WINDOW_COLOUR_2}En yüksek bekleme süresi:
 STR_1213    :Aletin başlangıcından önceki{NEWLINE}beklenecek en az süreyi seçiniz
 STR_1214    :Aletin başlangıcından önceki{NEWLINE}beklenecek en fazla süreyi seçiniz
 STR_1215    :{WINDOW_COLOUR_2}Komşu istasyonlarla senkronize et
-STR_1216    :Iki alet yan yana inşa edildi ise bu iki aletin aynı anda başlamasını sağlayınız (mesela hız treni yarışı için)
+STR_1216    :İki alet yan yana inşa edildi ise bu iki aletin aynı anda başlamasını sağlayınız (mesela hız treni yarışı için)
 STR_1217    :{COMMA16} Saniye
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
@@ -609,7 +608,7 @@ STR_1224    :Ölçülü aletler
 STR_1225    :Hız trenleri
 STR_1226    :Heyecanlı aletler
 STR_1227    :Su temalı trenler ve aletler
-STR_1228    :Dükkanlar ve standlar
+STR_1228    :Dükkanlar ve stantlar
 STR_1229    :Tren
 STR_1230    :Trenler
 STR_1231    :Tren
@@ -631,20 +630,20 @@ STR_1246    :Raylar
 STR_1247    :{COMMA16} ray
 STR_1248    :{COMMA16} ray
 STR_1249    :Ray {COMMA16}
-STR_1250    :Iskele
-STR_1251    :Iskeleler
-STR_1252    :Iskele
-STR_1253    :Iskeleler
-STR_1254    :{COMMA16} Iskele
-STR_1255    :{COMMA16} Iskele
-STR_1256    :Iskele {COMMA16}
-STR_1257    :Istasyon
-STR_1258    :Istasyonlar
-STR_1259    :Istasyon
-STR_1260    :Istasyonlar
-STR_1261    :{COMMA16} Istasyon
-STR_1262    :{COMMA16} Istasyon
-STR_1263    :Istasyon {COMMA16}
+STR_1250    :İskele
+STR_1251    :İskeleler
+STR_1252    :İskele
+STR_1253    :İskeleler
+STR_1254    :{COMMA16} İskele
+STR_1255    :{COMMA16} İskele
+STR_1256    :İskele {COMMA16}
+STR_1257    :İstasyon
+STR_1258    :İstasyonlar
+STR_1259    :İstasyon
+STR_1260    :İstasyonlar
+STR_1261    :{COMMA16} İstasyon
+STR_1262    :{COMMA16} İstasyon
+STR_1263    :İstasyon {COMMA16}
 STR_1264    :Araç/Alet
 STR_1265    :Araçlar/Aletler
 STR_1266    :Araç/Alet
@@ -711,15 +710,15 @@ STR_1326    :Kurs {COMMA16}
 STR_1327    :Cisimleri 90° çevir
 STR_1328    :Düz arazi şart
 STR_1329    :{WINDOW_COLOUR_2}Başlangıç hızı:
-STR_1330    :Istasyonu hangi hız ile{NEWLINE}terk edeceğini seçiniz
+STR_1330    :İstasyonu hangi hız ile{NEWLINE}terk edeceğini seçiniz
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1335    :{STRINGID} - Giriş{POP16}{POP16}
-STR_1336    :{STRINGID} - Istasyon {POP16}{COMMA16} Giriş
+STR_1336    :{STRINGID} - İstasyon {POP16}{COMMA16} Giriş
 STR_1337    :{STRINGID} - Çıkış{POP16}{POP16}
-STR_1338    :{STRINGID} - Istasyon {POP16}{COMMA16} Çıkış
+STR_1338    :{STRINGID} - İstasyon {POP16}{COMMA16} Çıkış
 STR_1339    :{BLACK}Henüz test sonuçları yok…
 STR_1340    :{WINDOW_COLOUR_2}Azami hız: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Alet süreci: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
@@ -775,7 +774,7 @@ STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
 STR_1392    :Genel seçenekler
 STR_1393    :Alet bilgisi ve seçenekleri
-STR_1394    :Işletim seçenekleri
+STR_1394    :İşletim seçenekleri
 STR_1395    :Bakım seçenekleri
 STR_1396    :Renk seçenekleri
 STR_1397    :Ses ve Müzik seçenekleri
@@ -790,11 +789,11 @@ STR_1405    :Aleti yansıtınız
 STR_1406    :Dekorasyonu aç/kapat (hazır dekorasyon varsa)
 STR_1407    :{WINDOW_COLOUR_2}Bunu inşa ediniz…
 STR_1408    :{WINDOW_COLOUR_2}Maliyet: {BLACK}{CURRENCY}
-STR_1409    :Iniş/Biniş alanı
+STR_1409    :İniş/Biniş alanı
 STR_1410    :Kule
 STR_1411    :{STRINGID} engelliyor
 STR_1412    :{WINDOW_COLOUR_3}Bu alet için diyagram yok
-STR_1413    :{WINDOW_COLOUR_3}Diyagramlar ilk {STRINGID}{STRINGID}u terk ettiğinde oluşturulacakdır
+STR_1413    :{WINDOW_COLOUR_3}Diyagramlar ilk {STRINGID}{STRINGID}u terk ettiğinde oluşturulacaktır
 STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Hız
 STR_1416    :{WINDOW_COLOUR_2}Yükseklik
@@ -803,7 +802,7 @@ STR_1418    :{WINDOW_COLOUR_2}Yatay. G
 STR_1419    :{BLACK}{VELOCITY}
 STR_1420    :{BLACK}{LENGTH}
 STR_1421    :{BLACK}{COMMA16}g
-STR_1422    :{POP16}{STRINGID}in veri kayıdı
+STR_1422    :{POP16}{STRINGID}in veri kaydı
 STR_1423    :Bekleme sırası
 STR_1424    :Yol
 STR_1425    :Yol
@@ -839,7 +838,7 @@ STR_1454    :Müşteri ismi değiştirilemiyor…
 STR_1455    :Geçersiz müşteri ismi
 STR_1456    :{WINDOW_COLOUR_2}Harcadığı para: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Cebindeki para: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Parkda geçirdiği zaman: {BLACK}{REALTIME}
+STR_1458    :{WINDOW_COLOUR_2}Parkta geçirdiği zaman: {BLACK}{REALTIME}
 STR_1459    :Ray türü
 STR_1460    :Yarı boru
 STR_1461    :Kapalı boru
@@ -849,9 +848,9 @@ STR_1464    :Sarmal yukarı (küçük)
 STR_1465    :Sarmal yukarı (büyük)
 STR_1466    :Sarmal aşağı (küçük)
 STR_1467    :Sarmal aşağı (büyük)
-STR_1468    :Işciler
+STR_1468    :İşçiler
 STR_1469    :Alet istasyonlar başlayıp istasyonla bitmeli
-STR_1470    :Istasyon çok kısa
+STR_1470    :İstasyon çok kısa
 STR_1471    :{WINDOW_COLOUR_2}Hız:
 STR_1472    :Bu aletin hızı
 STR_1473    :{WINDOW_COLOUR_2}Heyecan oranı: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -876,14 +875,14 @@ STR_1491    :“Bundan var bile bende ({STRINGID})”
 STR_1492    :“{STRINGID} için param yetmiyor”
 STR_1493    :“Aç değilim”
 STR_1494    :“Susamadım”
-STR_1495    :“Imdat!Boğuluyorum!”
+STR_1495    :“İmdat! Boğuluyorum!”
 STR_1496    :“Kayıp oldum!”
 STR_1497    :“{STRINGID} süperdi!”
 STR_1498    :“{STRINGID} için çok fazla bekledim”
 STR_1499    :“Uykum geldi”
-STR_1500    :“Acıkdım”
+STR_1500    :“Acıktım”
 STR_1501    :“Susadım”
-STR_1502    :“Tuvalete gitmem lazim”
+STR_1502    :“Tuvalete gitmem lazım”
 STR_1503    :“{STRINGID} aletini bulamıyorum”
 STR_1504    :“Buna bu kadar para harcamam ({STRINGID})”
 STR_1505    :“{STRINGID} aletine yağmur yağdığı sürece binmem ”
@@ -892,11 +891,11 @@ STR_1507    :“Park çıkışını bulamıyorum”
 STR_1508    :“{STRINGID} aletini terk etmek istiyorum”
 STR_1509    :“{STRINGID} aletinden inmek istiyorum”
 STR_1510    :“{STRINGID} güvenli olmadığı sürece binmem”
-STR_1511    :“Bu yol berbat bir vaziyetde”
+STR_1511    :“Bu yol berbat bir vaziyette”
 STR_1512    :“Burada çok insan var”
 STR_1513    :“Buradaki vandalizm felaket”
 STR_1514    :“Harika bir manzara!”
-STR_1515    :“Bu Park gerçekden çok derli ve toplu”
+STR_1515    :“Bu Park gerçekten çok derli ve toplu”
 STR_1516    :“Bu çeşmeler harika”
 STR_1517    :“Müzik hoşuma gitti”
 STR_1518    :“Bu {STRINGID} balonu fiyatına değer”
@@ -915,12 +914,12 @@ STR_1530    :
 STR_1531    :“Bu {STRINGID} pizzası fiyatına değer”
 STR_1532    :
 STR_1533    :“Bu {STRINGID} patlamış mısırı fiyatına değer”
-STR_1534    :“Bu {STRINGID} Hot Dogu fiyatına değer”
+STR_1534    :“Bu {STRINGID} Hot Dog’u fiyatına değer”
 STR_1535    :“Bu {STRINGID} deniz ürünleri fiyatına değer”
 STR_1536    :“Bu {STRINGID} şapkası fiyatına değer”
 STR_1537    :“Bu {STRINGID} şeker elması fiyatına değer”
-STR_1538    :“Bu {STRINGID} tişörü fiyatına değer”
-STR_1539    :“Bu {STRINGID} donutı fiyatına değer”
+STR_1538    :“Bu {STRINGID} tişörtü fiyatına değer”
+STR_1539    :“Bu {STRINGID} donut’ı fiyatına değer”
 STR_1540    :“Bu {STRINGID} kahvesi fiyatına değer”
 STR_1541    :
 STR_1542    :“Bu {STRINGID} kızarmış tavuğu fiyatına değer”
@@ -1029,7 +1028,7 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :“Imdat! Yere bırakın beni!”
+STR_1648    :“İmdat! Yere bırakın beni!”
 STR_1649    :“Param bitiyor!”
 STR_1650    :“Wow! Yeni alet inşa ediliyor!”
 STR_1653    :“…sonunda varabildim! ({STRINGID})”
@@ -1055,11 +1054,11 @@ STR_1672    :Fren
 STR_1673    :Rotasyon ayarlayıcısı
 STR_1674    :Frenleme hızı
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :Frenlerin{NEWLINE}kaç km/h’dan itibaren frenlemeseni seçiniz
+STR_1676    :Frenlerin{NEWLINE}kaç km/h’ten itibaren frenlemesini seçiniz
 STR_1677    :{WINDOW_COLOUR_2}Popülerlik: {BLACK}Bilinmiyor
 STR_1678    :{WINDOW_COLOUR_2}Popülerlik: {BLACK}%{COMMA16}
-STR_1679    :Sarmal yuarkı (sol)
-STR_1680    :Sarmal yuarkı (sağ)
+STR_1679    :Sarmal yukarı (sol)
+STR_1680    :Sarmal yukarı (sağ)
 STR_1681    :Sarmal aşağı (sol)
 STR_1682    :Sarmal aşağı (sağ)
 STR_1683    :Taban boyutu 2 × 2
@@ -1073,24 +1072,24 @@ STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Maliyet: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Maliyet: {BLACK}{CURRENCY}’dan itibaren
 STR_1693    :Müşteriler
-STR_1694    :Işciler
+STR_1694    :İşçiler
 STR_1695    :Gelir ve Gider
 STR_1696    :Müşteri bilgisi
 STR_1697    :Bekleme sırasına koyulamaz
 STR_1698    :Sadece bekleme sırasına koyulabilir
 STR_1699    :Oyunda çok fazla kişi var
-STR_1700    :Yeni temizlikci al
+STR_1700    :Yeni temizlikçi al
 STR_1701    :Yeni tamirci al
 STR_1702    :Yeni güvenlik al
 STR_1703    :Yeni animatör al
-STR_1704    :Yeni işci işe alınamıyor…
-STR_1705    :Bu işciyi kov
+STR_1704    :Yeni işçi işe alınamıyor…
+STR_1705    :Bu işçiyi kov
 STR_1706    :Bu kişiyi başka yere taşı
-STR_1707    :Çok fazla işci var
-STR_1708    :Iscinin hangi bölgede{NEWLINE}çalışıcağını seçiniz
-STR_1709    :Işci kovmak
+STR_1707    :Çok fazla işçi var
+STR_1708    :İsçinin hangi bölgede{NEWLINE}çalışacağını seçiniz
+STR_1709    :İşçi kovmak
 STR_1710    :Evet
-STR_1711    :{WINDOW_COLOUR_1}Bu işciyi kovmak istediğinizden eminmisiniz: {STRINGID}
+STR_1711    :{WINDOW_COLOUR_1}Bu işçiyi kovmak istediğinizden emin misiniz: {STRINGID}
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Yolları temizlesin
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Çiçekleri sulasın
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Çöp bidonlarını boşaltsın
@@ -1106,17 +1105,17 @@ STR_1723    :Park açılamıyor…
 STR_1724    :Park kapatılamıyor…
 STR_1725    :Arazi satın alınamıyor…
 STR_1726    :Arazi satılık değil!
-STR_1727    :Inşa hakkı satılmıyor!
+STR_1727    :İnşa hakkı satılmıyor!
 STR_1728    :Burada inşa hakkı alınamıyor…
 STR_1729    :Bu alan parka ait değil
-STR_1730    :{RED}Kapalı - - 
-STR_1731    :{WHITE}{STRINGID} - - 
-STR_1732    :Inşa et
+STR_1730    :{RED}Kapalı - -
+STR_1731    :{WHITE}{STRINGID} - -
+STR_1732    :İnşa et
 STR_1733    :Mod
 STR_1734    :{WINDOW_COLOUR_2}Tur sayısı:
 STR_1735    :Tur miktarını seçiniz
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :Tur sayısı değistirelimiyor…
+STR_1738    :Tur sayısı değiştirilemiyor…
 STR_1739    :Yarışı {INT32} kazandı
 STR_1740    :Yarışı {STRINGID} kazandı
 STR_1741    :Daha inşa edilmedi!
@@ -1134,24 +1133,24 @@ STR_1754    :{BLACK}{COMMA32} Müşteri
 STR_1755    :{BLACK}{COMMA32} Müşteri
 STR_1756    :{WINDOW_COLOUR_2}Giriş ücreti:
 STR_1757    :{WINDOW_COLOUR_2}Güvenilirlik: {MOVE_X}{255}{BLACK}%{COMMA16}
-STR_1758    :Inşa modu
+STR_1758    :İnşa modu
 STR_1759    :Atlama modu
 STR_1760    :Doldurma modu
 STR_1761    :Labirenti buraya doğru inşa et
 STR_1762    :Şelale
 STR_1763    :Kaynar su
-STR_1764    :Agaç gövdeleri
+STR_1764    :Ağaç gövdeleri
 STR_1765    :Fotoğraf alanı
 STR_1766    :Çevirici
 STR_1767    :Türbin
 STR_1768    :Sallama sayısı değiştirilemiyor…
 STR_1769    :{WINDOW_COLOUR_2}Sallama sayısı:
-STR_1770    :Aletin kaç tur salıncağanı seçiniz
+STR_1770    :Aletin kaç tur salınacağını seçiniz
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Alet başı bir tane fotoğraf alanı inşa edilebilir
-STR_1774    :Alet başı bır tane asansörlü tırmanma zinciri inşa edilebilir
+STR_1774    :Alet başı bir tane asansörlü tırmanma zinciri inşa edilebilir
 STR_1777    :{WINDOW_COLOUR_2}Alet müziği
-STR_1778    :{STRINGID} - - 
+STR_1778    :{STRINGID} - -
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda kıyafeti
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Kaplan kıyafeti
 STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Fil kıyafeti
@@ -1159,11 +1158,11 @@ STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romalı kıyafeti
 STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Goril kıyafeti
 STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Kardan adam kıyafeti
 STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Şövalye kıyafeti
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Uzaycı kıyafeti
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Eşkiya kıyafeti
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronot kıyafeti
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Eşkıya kıyafeti
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Şerif kıyafeti
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Korsan kıyafeti
-STR_1790    :Bu işcinin üniforma{NEWLINE}rengini seçiniz
+STR_1790    :Bu işçinin üniforma{NEWLINE}rengini seçiniz
 STR_1791    :{WINDOW_COLOUR_2}Üniforma rengi:
 STR_1792    :{STRINGID} aletinin tamirine gidiyor
 STR_1793    :{STRINGID} aletini kontrol etmeye gidiyor
@@ -1172,13 +1171,13 @@ STR_1795    :Telsizi dinliyor
 STR_1796    :Bozuk - tamir edilmesi gerek
 STR_1798    :Hortum
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1800    :Acil stop şalteri 
+STR_1800    :Acil stop şalteri
 STR_1801    :Emniyet kemerleri açılmıyor
 STR_1802    :Emniyet kemerleri kapanmıyor
 STR_1803    :Kapılar açılmıyor
 STR_1804    :Kapılar kapanmıyor
 STR_1805    :Arızalı alet
-STR_1806    :Istasyon frenleri arızalı
+STR_1806    :İstasyon frenleri arızalı
 STR_1807    :Emniyet kontrolü arızalı
 STR_1808    :{WINDOW_COLOUR_2}Son arıza: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Şu anki arıza: {OUTLINE}{RED}{STRINGID}
@@ -1195,9 +1194,9 @@ STR_1819    :{WINDOW_COLOUR_2}Tüm müşteriler (özetli)
 STR_1820    :{WINDOW_COLOUR_2}Müşteri {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Düşünce: {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Müşterilerin {POP16}{STRINGID} hakkında düşündükleri
-STR_1823    :Müşterilerin bu alet{NEWLINE}üzeri düşünceleri
-STR_1824    :Bu aletin müşterile
-STR_1825    :Bu alet için{NEWLINE}bekliyen müşteriler
+STR_1823    :Müşterilerin bu alet{NEWLINE}üzerine düşünceleri
+STR_1824    :Bu aletteki müşterileri göster
+STR_1825    :Bu alet için{NEWLINE}bekleyen müşterileri göster
 STR_1826    :Durum
 STR_1827    :Popülerlik
 STR_1828    :Memnuniyet
@@ -1213,29 +1212,29 @@ STR_1837    :Bilinmiyor
 STR_1838    :%{COMMA16}
 STR_1839    :%{COMMA16}
 STR_1840    :%{COMMA16}
-STR_1841    :saatde {CURRENCY2DP}
+STR_1841    :Kâr: Saatte {CURRENCY2DP}
 STR_1842    :{COMMA32} kişinin favorisi
 STR_1843    :{COMMA32} kişinin favorisi
-STR_1844    :Informationsart auswÃ¤hlen, die{NEWLINE}in Attraktionsliste angezeigt{NEWLINE}werden soll
+STR_1844    : Yolculuk/çekicilik listesinde{NEWLINE}gösterilecek bilgi türünü seçin
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} müşteri
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} müşteri
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} müşteri
 STR_1849    :{WINDOW_COLOUR_2}Müziği aç/kapat
 STR_1850    :Bu alet için müziği{NEWLINE}seçiniz
-STR_1851    :{WINDOW_COLOUR_2}Işletme maliyeti:{BLACK} saatde {CURRENCY2DP} 
-STR_1852    :{WINDOW_COLOUR_2}Işletme maliyeti:{BLACK} Bilinmiyor
-STR_1853    :{WINDOW_COLOUR_2}Inşa:{BLACK} Bu yıl
-STR_1854    :{WINDOW_COLOUR_2}Inşa:{BLACK} Geçen yıl
-STR_1855    :{WINDOW_COLOUR_2}Inşa:{BLACK} {COMMA16} yıl önce
+STR_1851    :{WINDOW_COLOUR_2}İşletme maliyeti:{BLACK} saatte {CURRENCY2DP}
+STR_1852    :{WINDOW_COLOUR_2}İşletme maliyeti:{BLACK} Bilinmiyor
+STR_1853    :{WINDOW_COLOUR_2}İnşa:{BLACK} Bu yıl
+STR_1854    :{WINDOW_COLOUR_2}İnşa:{BLACK} Geçen yıl
+STR_1855    :{WINDOW_COLOUR_2}İnşa:{BLACK} {COMMA16} yıl önce
 STR_1856    :{WINDOW_COLOUR_2}Satış başı kâr: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Satış başı zarar: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Maaş: {BLACK}Aylık {CURRENCY2DP}
-STR_1859    :Temizlikci
+STR_1859    :Temizlikçi
 STR_1860    :Tamirci
 STR_1861    :Güvenlik
 STR_1862    :Animatör
-STR_1863    :Temizlikci
+STR_1863    :Temizlikçi
 STR_1864    :Tamirci
 STR_1865    :Güvenlik
 STR_1866    :Animatör
@@ -1244,8 +1243,8 @@ STR_1868    :Çevirme miktarı değiştirilemiyor…
 STR_1869    :{WINDOW_COLOUR_2}Çevirme miktarı:
 STR_1870    :Aletin kaç defa çevirme yapacağını seçiniz
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Gelir: {BLACK} saatde {CURRENCY2DP}
-STR_1874    :{WINDOW_COLOUR_2}Kâr: {BLACK} saatde {CURRENCY2DP} 
+STR_1873    :{WINDOW_COLOUR_2}Gelir: {BLACK} saatte {CURRENCY2DP}
+STR_1874    :{WINDOW_COLOUR_2}Kâr: {BLACK} saatte {CURRENCY2DP}
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Aletleri kontrol etsin
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Aletleri tamir etsin
@@ -1259,10 +1258,10 @@ STR_1884    :2 saate bir
 STR_1885    :Hiç bir zaman
 STR_1886    :{STRINGID} aletini kontrol ediyor
 STR_1887    :{WINDOW_COLOUR_2}Son kontrol: {BLACK}{COMMA16} dakika önce
-STR_1888    :{WINDOW_COLOUR_2}Son kontrol: {BLACK}4 saatden fazla
+STR_1888    :{WINDOW_COLOUR_2}Son kontrol: {BLACK}4 saatten fazla
 STR_1889    :{WINDOW_COLOUR_2}Sıra dışı: {MOVE_X}{255}{BLACK}%{COMMA16}
 STR_1890    :Tamircilerin bu aleti kaç defa kontrol{NEWLINE}edeceğini seçiniz
-STR_1891    :Parkda henüz {STRINGID} yok!
+STR_1891    :Parkta henüz {STRINGID} yok!
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} (satılan miktar): {BLACK}{COMMA32}
 STR_1895    :Yeni alet/dükkan inşa et
 STR_1896    :{WINDOW_COLOUR_2}Gider/Gelir
@@ -1272,11 +1271,11 @@ STR_1899    :{WINDOW_COLOUR_2}Arazi satın alma
 STR_1900    :{WINDOW_COLOUR_2}Arazi düzenleme
 STR_1901    :{WINDOW_COLOUR_2}Park biletleri
 STR_1902    :{WINDOW_COLOUR_2}Alet biletleri
-STR_1903    :{WINDOW_COLOUR_2}Diğer stand satışları
-STR_1904    :{WINDOW_COLOUR_2}Diğer stand giderleri
+STR_1903    :{WINDOW_COLOUR_2}Diğer stant satışları
+STR_1904    :{WINDOW_COLOUR_2}Diğer stant giderleri
 STR_1905    :{WINDOW_COLOUR_2}Gıda satışları
 STR_1906    :{WINDOW_COLOUR_2}Gıda giderleri
-STR_1907    :{WINDOW_COLOUR_2}Işci maaşları
+STR_1907    :{WINDOW_COLOUR_2}İşçi maaşları
 STR_1908    :{WINDOW_COLOUR_2}Pazarlama
 STR_1909    :{WINDOW_COLOUR_2}Araştırma
 STR_1910    :{WINDOW_COLOUR_2}Kredi faizi
@@ -1302,20 +1301,20 @@ STR_1931    :{STRINGID} {STRINGID} için sıra bekliyor
 STR_1932    :{STRINGID} {STRINGID} aletine bindi
 STR_1933    :{STRINGID} {STRINGID} aletine bindi
 STR_1934    :{STRINGID} {STRINGID} aletinden indi
-STR_1935    :{STRINGID} parkdan çıktı
+STR_1935    :{STRINGID} parktan çıktı
 STR_1936    :{STRINGID} {STRINGID} aldı
 STR_1937    :Bu bilginin penceresini göster
 STR_1938    :Müşteriyi takip ediniz
-STR_1939    :Işciyi takip ediniz
+STR_1939    :İşçiyi takip ediniz
 STR_1940    :Müşteri durumu
 STR_1941    :Müşterinin bindiği aletler
 STR_1942    :Müşterinin para durumu
 STR_1943    :Müşterinin düşünceleri
 STR_1944    :Müşterinin taşıdıkları
-STR_1945    :Işcinin talimatları ve seçenekleri
+STR_1945    :İşçinin talimatları ve seçenekleri
 STR_1946    :Animatörün kıyafeti
-STR_1947    :Bu işci türüne bağlı olan bölgeler
-STR_1948    :Yeni işci alınız
+STR_1947    :Bu işçi türüne bağlı olan bölgeler
+STR_1948    :Yeni işçi alınız
 STR_1949    :Finansal genel bakış
 STR_1950    :Finans grafiği
 STR_1951    :Parkın değer grafiği
@@ -1332,7 +1331,7 @@ STR_1961    :{WINDOW_COLOUR_2}Oyuncak fiyatı:
 STR_1962    :{WINDOW_COLOUR_2}Harita fiyatı:
 STR_1963    :{WINDOW_COLOUR_2}Fotoğraf fiyatı:
 STR_1964    :{WINDOW_COLOUR_2}Şemsiye fiyatı:
-STR_1965    :{WINDOW_COLOUR_2}Içecek fiyatı:
+STR_1965    :{WINDOW_COLOUR_2}İçecek fiyatı:
 STR_1966    :{WINDOW_COLOUR_2}Burger fiyatı:
 STR_1967    :{WINDOW_COLOUR_2}Patates fiyatı:
 STR_1968    :{WINDOW_COLOUR_2}Dondurma fiyatı:
@@ -1360,7 +1359,7 @@ STR_1989    :Oyuncak
 STR_1990    :Park haritası
 STR_1991    :Fotoğraf
 STR_1992    :Şemsiye
-STR_1993    :Içecek
+STR_1993    :İçecek
 STR_1994    :Burger
 STR_1995    :Patates
 STR_1996    :Dondurma
@@ -1388,7 +1387,7 @@ STR_2017    :Oyuncaklar
 STR_2018    :Park haritası
 STR_2019    :Fotoğraflar
 STR_2020    :Şemsiye
-STR_2021    :Içecekler
+STR_2021    :İçecekler
 STR_2022    :Burgerler
 STR_2023    :Patatesler
 STR_2024    :Dondurmalar
@@ -1416,7 +1415,7 @@ STR_2045    :Oyuncak
 STR_2046    :Park haritası
 STR_2047    :Fotoğraf
 STR_2048    :Şemsiye
-STR_2049    :Içecek
+STR_2049    :İçecek
 STR_2050    :Burger
 STR_2051    :Cips
 STR_2052    :Dondurma
@@ -1444,7 +1443,7 @@ STR_2073    :“{STRINGID}” oyuncağı
 STR_2074    :{STRINGID} haritası
 STR_2075    :{STRINGID} fotoğrafı
 STR_2076    :“{STRINGID}” şemsiyesi
-STR_2077    :Içecek
+STR_2077    :İçecek
 STR_2078    :Burger
 STR_2079    :Cips
 STR_2080    :Dondurma
@@ -1525,7 +1524,7 @@ STR_2163    :Boş meyve suyu şişeleri
 STR_2164    :Sosisler
 STR_2165    :Boş taslar
 STR_2169    :simit
-STR_2170    :sicak çikolata
+STR_2170    :sıcak çikolata
 STR_2171    :ice tea
 STR_2172    :kek
 STR_2173    :güneş gözlüğü
@@ -1562,11 +1561,11 @@ STR_2206    :Boş meyve suyu kutusu
 STR_2207    :Boş meyve suyu şişesi
 STR_2208    :Sosis
 STR_2209    :Boş tas
-STR_2210    :Parkdaki tüm temizlikciler
-STR_2211    :Parkdaki tüm tamirciler
-STR_2212    :Parkdaki tüm güvenlikler
-STR_2213    :Parkdaki tüm animatörler
-STR_2214    :Oyun durudurulduğu sürece inşa edilemiyor!
+STR_2210    :Parktaki tüm temizlikçiler
+STR_2211    :Parktaki tüm tamirciler
+STR_2212    :Parktaki tüm güvenlikler
+STR_2213    :Parktaki tüm animatörler
+STR_2214    :Oyun durdurulduğu sürece inşa edilemiyor!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
@@ -1575,17 +1574,17 @@ STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}
 STR_2221    :Park değerlendirmesi: {COMMA16}
 STR_2222    :{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Parkdaki müşteri sayısı: {BLACK}{COMMA32}
+STR_2223    :{WINDOW_COLOUR_2}Parktaki müşteri sayısı: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Para: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Para: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park değeri: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Şirket değeri: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}Geçen ay dükkanlardan ve standlardan kalan kâr: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Geçen ay dükkanlardan ve stantlardan kalan kâr: {BLACK}{CURRENCY}
 STR_2229    :Dikine doğru ray
 STR_2230    :Dik ray
 STR_2231    :Düşüş freni (heyecan arttırmak için)
 STR_2232    :Asansörlü tırmanma zinciri
-STR_2233    :Park biligisi
+STR_2233    :Park bilgisi
 STR_2234    :Son bildirimler
 STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Ocak
@@ -1595,7 +1594,7 @@ STR_2239    :Nisan
 STR_2240    :Mayıs
 STR_2241    :Haziran
 STR_2242    :Temmuz
-STR_2243    :Auğustos
+STR_2243    :Ağustos
 STR_2244    :Eylül
 STR_2245    :Ekim
 STR_2246    :Kasım
@@ -1605,12 +1604,12 @@ STR_2249    :{BABYBLUE}Yeni alet araştırıldı:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}Yeni dekorasyon araştırıldı:{NEWLINE}{STRINGID}
 STR_2251    :Sadece yollara inşa edilir!
 STR_2252    :Sadece yolların üstünde inşa edilir!
-STR_2253    :Toplu taşım araçları
+STR_2253    :Toplu taşıma araçları
 STR_2254    :Ölçülü aletler
 STR_2255    :Hız trenleri
 STR_2256    :Heyecanlı aletler
 STR_2257    :Sulu aletler
-STR_2258    :Dükkanlar ve standlar
+STR_2258    :Dükkanlar ve stantlar
 STR_2259    :Dekorasyon
 STR_2260    :Yok
 STR_2261    :Düşük bütçe
@@ -1622,7 +1621,7 @@ STR_2266    :Araştırma seçenekleri
 STR_2267    :Şu an araştırılan
 STR_2268    :Son araştırma
 STR_2269    :{WINDOW_COLOUR_2}Tür: {BLACK}{STRINGID}
-STR_2270    :{WINDOW_COLOUR_2}Ilerleme: {BLACK}{STRINGID}
+STR_2270    :{WINDOW_COLOUR_2}İlerleme: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Tahmin: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Ürün:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Dekorasyon:{NEWLINE}{BLACK}{STRINGID}
@@ -1630,21 +1629,21 @@ STR_2274    :Bu araştırma üzeri bilgi
 STR_2275    :Araştırma seçenekleri
 STR_2276    :Araştırma durumu
 STR_2277    :Bilinmiyor
-STR_2278    :Toplu taşım araçları
+STR_2278    :Toplu taşıma araçları
 STR_2279    :Ölçülü alet
 STR_2280    :Hız treni
-STR_2281    :Heycanlı alet
+STR_2281    :Heyecanlı alet
 STR_2282    :Sulu alet
-STR_2283    :Dükkan/Stand
+STR_2283    :Dükkan/Stant
 STR_2284    :Dekorasyon
-STR_2285    :Ilk çizimler
+STR_2285    :İlk çizimler
 STR_2286    :Tasarım
 STR_2287    :Tasarım tamamlanıyor
 STR_2288    :Bilinmiyor
 STR_2289    :{STRINGID} {STRINGID}
 STR_2291    :Yeni oyun için senaryoyu seçiniz
 STR_2292    :{WINDOW_COLOUR_2}Bindiği aletler:
-STR_2293    :{BLACK} Hiç birşey
+STR_2293    :{BLACK} Hiçbir şey
 STR_2294    :Zemin türünü değiştir
 STR_2295    :Duvar türünü değiştir
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} park girişi için harcadı
@@ -1669,7 +1668,7 @@ STR_2314    :{WINDOW_COLOUR_2}Alet uzunluğu: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Maliyet: {BLACK} yaklaşık {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Gerekli alan: {BLACK}{COMMA16} × {COMMA16} blok
 STR_2321    :{WINDOW_COLOUR_2}Alet sayısı: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Işci: {BLACK}{COMMA32}
+STR_2322    :{WINDOW_COLOUR_2}İşçi: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Satılık arazi var ise yeni arazi satın alınız
@@ -1679,11 +1678,11 @@ STR_2328    :{WINDOW_COLOUR_2}Para birimi:
 STR_2329    :{WINDOW_COLOUR_2}Mesafe ve hız birimi:
 STR_2330    :{WINDOW_COLOUR_2}Sıcaklık ölçüm birimi:
 STR_2331    :{WINDOW_COLOUR_2}Yükseklik birimi:
-STR_2332    :“General Units”
+STR_2332    :Birimler
 STR_2333    :Ses efektleri
 STR_2334    :Pounds (£)
 STR_2335    :Dollar ($)
-STR_2336    :Franc (F)
+STR_2336    :Frank (F)
 STR_2337    :Alman Markı (DM)
 STR_2338    :Yen (¥)
 STR_2339    :Peseta (Pts)
@@ -1694,22 +1693,22 @@ STR_2343    :Euro (€)
 STR_2344    :Amerikan sistemi
 STR_2345    :Metrik sistemi
 STR_2347    :{RED}{STRINGID} boğuldu!
-STR_2348    :Işci istatikleri
+STR_2348    :İşçi istatistikleri
 STR_2349    :{WINDOW_COLOUR_2}Aylık maaş: {BLACK}{CURRENCY}
-STR_2350    :{WINDOW_COLOUR_2}Işe giriş tarihi: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Biçdiği çim: {BLACK}{COMMA32}
+STR_2350    :{WINDOW_COLOUR_2}İşe giriş tarihi: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}Biçtiği çim: {BLACK}{COMMA32}
 STR_2352    :{WINDOW_COLOUR_2}Suladığı çiçek: {BLACK}{COMMA32}
 STR_2353    :{WINDOW_COLOUR_2}Süpürdüğü yer: {BLACK}{COMMA32}
-STR_2354    :{WINDOW_COLOUR_2}Boşaltığı çöp bidonu: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Boşalttığı çöp bidonu: {BLACK}{COMMA32}
 STR_2355    :{WINDOW_COLOUR_2}Tamir ettiği alet: {BLACK}{COMMA32}
 STR_2356    :{WINDOW_COLOUR_2}Kontrol ettiği alet: {BLACK}{COMMA32}
-STR_2358    :“General Units”
+STR_2358    :Birimler
 STR_2359    :Gerçek birim
 STR_2360    :Ekran çözünürlüğü:
 STR_2361    :Arazi yumuşatma
 STR_2362    :Döşeme kenarı düzleştirmeyi aç/kapat
 STR_2363    :Zemin çizgisini göster
-STR_2364    :Yerin üzerine inşayı kolaylaştırmak için parmaklık şeklinde çizgiler oluşturuluyor 
+STR_2364    :Yerin üzerine inşayı kolaylaştırmak için parmaklık şeklinde çizgiler oluşturuluyor
 STR_2365    :Banka daha fazla kredi vermiyor!
 STR_2366    :Celsius (°C)
 STR_2367    :Fahrenheit (°F)
@@ -1722,7 +1721,7 @@ STR_2373    :Normal
 STR_2374    :Yüksek
 STR_2375    :Çok yüksek
 STR_2376    :Aşırı yüksek
-STR_2377    :Devasal yüksek
+STR_2377    :Devasa yüksek
 STR_2378    :Küçült
 STR_2379    :Büyüt
 STR_2380    :Küçült
@@ -1733,28 +1732,28 @@ STR_2384    :{WINDOW_COLOUR_2}Hedefiniz:
 STR_2385    :{BLACK}Yok
 STR_2386    :{BLACK}Parkınızda en az {COMMA32} müşteri {MONTHYEAR} sonuna kadar bulunması ve park değerlendirmesinin en az 600 olması gerekli
 STR_2387    :{BLACK}Park değeri en az {POP16}{POP16}{CURRENCY} {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR} kadar olmalı
-STR_2388    :{BLACK}Iyi eğlenceler!
+STR_2388    :{BLACK}İyi eğlenceler!
 STR_2389    :{BLACK}Kendinize göre en iyi {STRINGID} inşa ediniz!
-STR_2390    :{BLACK}Parkınızda heyecan oranı en az 6.00 olan, 10 çesitli hız treni inşa edilmeli
+STR_2390    :{BLACK}Parkınızda heyecan oranı en az 6.00 olan, 10 çeşitli hız treni inşa edilmeli
 STR_2391    :{BLACK}Parkınızda en az {COMMA32} müşteri bulunması ve park değerlendirmesinin hiç bir zaman 700’den aşağı düşmemesi gerekli
 STR_2392    :{BLACK}Alet bileti satışlarından aylık en az {POP16}{POP16}{CURRENCY} geliriniz olmalı
 STR_2393    :{BLACK}Parkınızda heyecan oranı en az 7.00 ve uzunluğu en az {LENGTH} olan 10 çeşitli hız treni inşa edilmeli
 STR_2394    :{BLACK}Parkınızda bulunan 5 kısmen inşa edilmiş hız trenlerinin inşasını en az {POP16}{POP16}{COMMA2DP32} heyecan oranı ile tamamlayınız
 STR_2395    :{BLACK}Pakınızın kredi borcunu ödeyip, park değerini en az {POP16}{POP16}{CURRENCY} yükseltiniz
-STR_2396    :{BLACK}Dükkan ve stand gelirleniz aylık en az {POP16}{POP16}{CURRENCY} olmalı
+STR_2396    :{BLACK}Dükkan ve stant gelirleriniz aylık en az {POP16}{POP16}{CURRENCY} olmalı
 STR_2397    :Yok
 STR_2398    :Belirli bir tarihe kadar müşteri sayısı
 STR_2399    :Belirli bir tarihe kadar park değeri
 STR_2400    :Hedefsiz
 STR_2401    :En iyi alet inşası
 STR_2402    :10 çeşitli hız treni inşası
-STR_2403    :Belirli bir müşteri sayısı 
+STR_2403    :Belirli bir müşteri sayısı
 STR_2404    :Aylık alet bileti satışları
 STR_2405    :Belirli bir uzunluk ile 10 çeşitli hız treni
 STR_2406    :5 kısmen inşa edilmiş hız trenini tamamlamak
 STR_2407    :Kedi borcunu geri ödemek ve park değeri yükseltmek
-STR_2408    :Aylık dükkan ve stand satışları
-STR_2409    :{WINDOW_COLOUR_2}Faaliyetde olan pazarlama kampanyaları
+STR_2408    :Aylık dükkan ve stant satışları
+STR_2409    :{WINDOW_COLOUR_2}Faaliyette olan pazarlama kampanyaları
 STR_2410    :{BLACK}Yok
 STR_2411    :{WINDOW_COLOUR_2}Mevcut olan pazarlama kampanyaları
 STR_2412    :Bu pazarlamayı başlatınız
@@ -1801,16 +1800,16 @@ STR_2462    :Park girişini görüntüle
 STR_2463    :Park değerlendirme grafiği
 STR_2464    :Aylık müşteri sayısı grafiği
 STR_2465    :Park ücreti
-STR_2466    :Park istatikleri
+STR_2466    :Park istatistikleri
 STR_2467    :Hedef(ler)
 STR_2468    :Parkın aldığı son ödüller
 STR_2469    :Araştırma için ne kadar para harcamak istediğinizi seçiniz
-STR_2470    :Toplu taşım araçları araştırınız
+STR_2470    :Toplu taşıma araçları araştırınız
 STR_2471    :Ölçülü aletler araştırınız
 STR_2472    :Hız trenleri araştırınız
-STR_2473    :Heyecanlı aletler araştırnız
+STR_2473    :Heyecanlı aletler araştırınız
 STR_2474    :Sulu aletler araştırınız
-STR_2475    :Dükkan/Stand araştırınız
+STR_2475    :Dükkan/Stant araştırınız
 STR_2476    :Yeni dekorasyon araştırınız
 STR_2477    :Alet modunu seçiniz
 STR_2478    :Zamana karşı hız grafiğini göster
@@ -1828,12 +1827,12 @@ STR_2491    :Varsayılan ayarlar
 STR_2492    :
 STR_2493    :Son açılan pencereyi kapat
 STR_2494    :Tüm pencereleri kapat
-STR_2495    :Inşayı kapat
+STR_2495    :İnşayı kapat
 STR_2496    :Oyunu durdur
 STR_2497    :Görüntüyü uzaklaştır
 STR_2498    :Görüntüyü yakınlaştır
 STR_2499    :Görünümü saat yönünde döndür
-STR_2500    :Inşa modunda çevirme
+STR_2500    :İnşa modunda çevirme
 STR_2501    :Yeraltı görüntüsü
 STR_2502    :Tabanı gizle
 STR_2503    :Duvarları gizle
@@ -1854,7 +1853,7 @@ STR_2517    :Araştırma penceresi
 STR_2518    :Aletler listesi
 STR_2519    :Park bilgisi
 STR_2520    :Müşteri listesi
-STR_2521    :Işci listesi
+STR_2521    :İşçi listesi
 STR_2522    :Son bildirimler
 STR_2523    :Harita
 STR_2524    :Screenshot
@@ -1922,7 +1921,7 @@ STR_2704    :30 dakikaya bir
 STR_2705    :Saat başı
 STR_2706    :Hiç
 STR_2707    :Sistem iletişim penceresini kullanınız
-STR_2708    :{WINDOW_COLOUR_1}{STRINGID} adlı dosya zaten bulunmakda. Kaydetmek istediğinizden eminmisiniz?
+STR_2708    :{WINDOW_COLOUR_1}{STRINGID} adlı dosya zaten bulunmakta. Kaydetmek istediğinizden emin misiniz?
 STR_2709    :Kaydet
 STR_2710    :Dosya ismini giriniz.
 STR_2718    :Geri
@@ -1932,7 +1931,7 @@ STR_2721    :{UINT16}saniye
 STR_2722    :{UINT16}dk:{UINT16}san
 STR_2723    :{UINT16}dk:{UINT16}san
 STR_2724    :{UINT16}dk:{UINT16}san
-STR_2725    :{UINT16}dk:{UINT16}ssa
+STR_2725    :{UINT16}dk:{UINT16}san
 STR_2726    :{UINT16}dk
 STR_2727    :{UINT16}dk
 STR_2728    :{UINT16}sa:{UINT16}dk
@@ -1965,8 +1964,8 @@ STR_2767    :Havayı dondur
 STR_2769    :Parkı aç
 STR_2770    :Parkı kapat
 STR_2773    :Pencere modu
-STR_2774    :Fullscreen
-STR_2775    :Fullscreen (kenarsız)
+STR_2774    :Tam ekran
+STR_2775    :Tam ekran (kenarsız)
 STR_2776    :Dil:
 STR_2777    :{MOVE_X}{10}{STRING}
 STR_2778    :»{MOVE_X}{10}{STRING}
@@ -1974,16 +1973,16 @@ STR_2779    :Görüntü alanı #{COMMA16}
 STR_2780    :Ekstra görüntü alanı
 # End of new strings
 STR_2781    :{STRINGID}:
-STR_2782    :SHIFT + 
-STR_2783    :CTRL + 
+STR_2782    :SHIFT +
+STR_2783    :CTRL +
 STR_2784    :Tuş ayarını değiştiriniz
 STR_2785    :{WINDOW_COLOUR_2}Bu kısaltma için yeni tuş giriniz:{NEWLINE}“{STRINGID}”
 STR_2786    :Tuşu değiştirmek için buraya basınız
 STR_2787    :{WINDOW_COLOUR_2}Park değeri: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Tebrikler !{NEWLINE}{BLACK}Park değeri hedefinizi {CURRENCY} ile tamamladınız!
 STR_2789    :{WINDOW_COLOUR_2}Hedeflerinize ulaşamadınız !
-STR_2790    :Isminizi giriniz
-STR_2791    :Isminizi yazınız
+STR_2790    :İsminizi giriniz
+STR_2791    :İsminizi yazınız
 STR_2792    :Senaryo listesi için isminizi yazınız:
 STR_2793    :({STRINGID} tarafından tamamlandı)
 STR_2794    :{BLACK}{STRINGID}{WINDOW_COLOUR_2} tarafından{NEWLINE}{BLACK}{CURRENCY}{WINDOW_COLOUR_2} park değeri ile tamamlandı
@@ -1992,17 +1991,17 @@ STR_2796    :Aletleri kullandığınız bilgiye göre sıralayınız
 STR_2797    :Mouse ekran kenarına getirildiğinde görüntü kaydırılsın
 STR_2798    :Mouse ekran kenarına geldiğinde ekran kaydırılıyor
 STR_2799    :Tuş ayarlarını değiştiriniz
-STR_2800    :{WINDOW_COLOUR_2}Toplam müşteri sayıası: {BLACK}{COMMA32}
+STR_2800    :{WINDOW_COLOUR_2}Toplam müşteri sayısı: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Bilet satışlarından toplam gelir: {BLACK}{CURRENCY2DP}
 STR_2802    :Harita
 STR_2803    :Müşterileri haritada göster
-STR_2804    :Bu işci türünü haritada göster
+STR_2804    :Bu işçi türünü haritada göster
 STR_2805    :Parkı haritasını göster
-STR_2806    :{RED}Müşteriler parkınızdaki pislik ötesi yollardan şikayetciler{NEWLINE}Temizlikcilerin nerede bulunduğunu kontrol ediniz
-STR_2807    :{RED}Müşteriler parkınızdaki çöpden şikayetciler{NEWLINE}Temizlikcilerin nerede bulunduğunu kontrol ediniz
-STR_2808    :{RED}Müşteriler parkınızdaki vandalizmden şikayetciler{NEWLINE}Güvenliğin nerede bulunduğunu kontrol ediniz
-STR_2809    :{RED}Müşteriler karınlarını doyurabilecekleri bir dükkan veya stand bulamıyorlar
-STR_2810    :{RED}Müşteriler susuzluğunu giderebilecek bir dükkan veya stand bulamıyorlar
+STR_2806    :{RED}Müşteriler parkınızdaki pislik ötesi yollardan şikâyetçiler{NEWLINE}Temizlikçilerin nerede bulunduğunu kontrol ediniz
+STR_2807    :{RED}Müşteriler parkınızdaki çöpten şikâyetçiler{NEWLINE}Temizlikçilerin nerede bulunduğunu kontrol ediniz
+STR_2808    :{RED}Müşteriler parkınızdaki vandalizmden şikâyetçiler{NEWLINE}Güvenliğin nerede bulunduğunu kontrol ediniz
+STR_2809    :{RED}Müşteriler karınlarını doyurabilecekleri bir dükkan veya stant bulamıyorlar
+STR_2810    :{RED}Müşteriler susuzluğunu giderebilecek bir dükkan veya stant bulamıyorlar
 STR_2811    :{RED}Müşteriler parkınızda tuvaletleri bulamıyorlar veya tuvaletlere ulaşamıyorlar
 STR_2812    :{RED}Müşteriler parkınızda kayıp oluyorlar veya sıkışıyorlar{NEWLINE}Yollarınızın daha düzenli olmasını sağlayınız
 STR_2813    :{RED}Park giriş fiyatı çok yüksek!{NEWLINE}Müşteri çekmek için giriş fiyatını düşürünüz
@@ -2056,18 +2055,18 @@ STR_2973    :Alternatif renkler 2
 STR_2974    :Alternatif renkler 3
 STR_2975    :Hangi renk şemasını seçmek/değiştirmek istediğinizi seçiniz
 STR_2976    :Seçili renk şemasını kullanarak bu aletin bir alanını boyayın
-STR_2977    :Işci ismi
-STR_2978    :Işciye yeni isim giriniz:
-STR_2979    :Işci ismi değiştirilemiyor…
+STR_2977    :İşçi ismi
+STR_2978    :İşçiye yeni isim giriniz:
+STR_2979    :İşçi ismi değiştirilemiyor…
 STR_2980    :Çok fazla banner bulunmakta
-STR_2981    :{RED}Geçiş yasak - - 
-STR_2982    :Banner metini
+STR_2981    :{RED}Geçiş yasak - -
+STR_2982    :Afiş metni
 STR_2983    :Bu banner için yeni metin giriniz:
-STR_2984    :Banner için yeni metin girilemiyor…
-STR_2985    :Banner
-STR_2986    :Bannerin metinini değiştiriniz
-STR_2987    :Bu banneri yasaklı geçişe getiriniz
-STR_2988    :Bu banneri siliniz
+STR_2984    :Afiş için yeni metin girilemiyor…
+STR_2985    :Afiş
+STR_2986    :Afiş metinini değiştiriniz
+STR_2987    :Bu afişi yasaklı geçişe getiriniz
+STR_2988    :Bu afişi siliniz
 STR_2989    :Ana rengi seçiniz
 STR_2990    :Metin rengini seçiniz
 STR_2991    :Tabela
@@ -2091,7 +2090,7 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Dosya yüklenemiyor…
 STR_3011    :Dosya geçersiz veri içeriyor
-STR_3045    :Bu aletde çalınacak müzik tarzını seçiniz
+STR_3045    :Bu alette çalınacak müzik tarzını seçiniz
 STR_3047    :Yerel makam tarafından bu aletin değiştirilmesi yasaklandı
 STR_3048    :Yerel makam tarafından pazarlama kampanyaları yasaklandı
 STR_3049    :Golf deliği A
@@ -2104,7 +2103,7 @@ STR_3058    :Tuğla duvarları
 STR_3059    :Doğasal çitler
 STR_3060    :Buz blokları
 STR_3061    :Ahşap duvarlar
-STR_3062    :Standard ray
+STR_3062    :Standart ray
 STR_3063    :Sulu ray
 STR_3064    :Acemi parkları
 STR_3065    :Deneyimli parkları
@@ -2113,13 +2112,13 @@ STR_3067    :“Gerçek” parklar
 STR_3068    :Diğer parklar
 STR_3069    :Üst bölüm
 STR_3070    :Eğimli ray
-STR_3071    :{WINDOW_COLOUR_2}Tüm parkda aynı fiyat
+STR_3071    :{WINDOW_COLOUR_2}Tüm parkta aynı fiyat
 STR_3072    :Bu fiyatı tüm park için uygulayınız
-STR_3073    :{RED}UYARI: Park değerlendirmesi 700’ün altına düşdü !{NEWLINE}4 hafta içinde park değerlendirmesini yükseltmeyi başaramazsanız parkınız kapatılacakdır
+STR_3073    :{RED}UYARI: Park değerlendirmesi 700’ün altına düştü!{NEWLINE}4 hafta içinde park değerlendirmesini yükseltmeyi başaramazsanız parkınız kapatılacaktır
 STR_3074    :{RED}UYARI: Park değerlendirmesi halen 700’ün altında !{NEWLINE}Yükseltmek için 3 hafta süreniz kaldı
-STR_3075    :{RED}UYARI: Park değerlendirmesi halen 700’ün altında !{NEWLINE}2 hafta içinde park değerlendirmesini yükseltmeyi başaramazsanız parkınız kapatılacakdır
+STR_3075    :{RED}UYARI: Park değerlendirmesi halen 700’ün altında !{NEWLINE}2 hafta içinde park değerlendirmesini yükseltmeyi başaramazsanız parkınız kapatılacaktır
 STR_3076    :{RED}SON UYARI: Park değerlendirmesi halen 700’ün altında !{NEWLINE}Parkın kapanmasına sadece 7 gün süreniz kaldı
-STR_3077    :{RED}KAPANMA BILGISI: Parkınız kapatıldı !
+STR_3077    :{RED}KAPANMA BILGISI: Parkınız kapatıldı!
 STR_3090    :Giriş kulübesinin hangi tarzda olacağını seçiniz
 STR_3091    :Bu bölümü değiştirmeye izin verilmiyor!
 STR_3092    :Bu aletin istasyonunu değiştiremezsiniz!
@@ -2129,13 +2128,13 @@ STR_3095    :{WINDOW_COLOUR_2}Tırmanma zinciri hızı:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Aletin tırmanma zincirinde hangi hız ile zirveye taşınacağını belirleyiniz
 STR_3099    :Renk seçiniz
-STR_3100    :Ikinci rengi seçiniz
+STR_3100    :İkinci rengi seçiniz
 STR_3101    :Üçüncü rengi seçiniz
-STR_3102    :Dekorsayon rengini değiştiriniz
+STR_3102    :Dekorasyon rengini değiştiriniz
 STR_3103    :Renk değiştirilemiyor…
 STR_3104    :Tüm aletler
-STR_3105    :Tüm dükkanlar ve standlar
-STR_3106    :Tüm danışma standları ve diğer tesisler
+STR_3105    :Tüm dükkanlar ve stantlar
+STR_3106    :Tüm danışma stantları ve diğer tesisler
 STR_3107    :Kapalı
 STR_3108    :Test
 STR_3109    :Açık
@@ -2160,7 +2159,7 @@ STR_3127    :{WINDOW_COLOUR_2}Bulantı oranı: {BLACK}+%{COMMA16}
 STR_3128    :Tasarımı kaydediniz
 STR_3129    :Tasarımı dekorasyon ile kaydediniz
 STR_3130    :Kaydet
-STR_3131    :Iptal
+STR_3131    :İptal
 STR_3132    :{BLACK}Tasarım ile kaydetmek istediğiniz cisimleri seçiniz
 STR_3133    :Bu yokuş aşağı ray üzerine inşa edilemez
 STR_3134    :{RED}(Tasarım senaryoda (henüz) bulunmayan dekorasyon içeriyor)
@@ -2169,26 +2168,26 @@ STR_3136    :Uyarı: Bu tasarım alternatif bir araç tipi ile inşa edilecek ve
 STR_3137    :Yakındaki cisimleri seçiniz
 STR_3138    :Seçiminizi sıfırlayınız
 STR_3139    :Asansörlü tırmanma zinciri bu çalışma modunda kullanılamıyor
-STR_3140    :Asansörlü tırmanma zinciri istansyondan hemen sonra bulunması lazım
+STR_3140    :Asansörlü tırmanma zinciri istasyondan hemen sonra bulunması lazım
 STR_3141    :Asansörlü tırmanma zinciri ile tur modu uygulanamıyor
 STR_3142    :{WINDOW_COLOUR_2}Kapasite: {BLACK}{STRINGID}
 STR_3143    :Müşterileri göster
 STR_3144    :Aletleri ve dükkanları göster
 STR_3160    :Aletin kaç tur yapacağını seçiniz
 STR_3162    :Yeterli bellek ayrılamıyor
-STR_3163    :Yeni dosya kuruluyor: 
+STR_3163    :Yeni dosya kuruluyor:
 STR_3164    :{BLACK}{COMMA16} tane seçildi (en fazla {COMMA16})
 STR_3167    :{WINDOW_COLOUR_2}Cisim miktarı: {BLACK}{COMMA16} cisim içeriyor
-STR_3169    :Bu cisim için dosya bulunamadı: 
+STR_3169    :Bu cisim için dosya bulunamadı:
 STR_3170    :Grafikler için yeterli alan yok
-STR_3171    :Bu cisim türünden yeterince seçdiniz
-STR_3172    :Ilk önce bunlar seçilmeli: {STRING}
-STR_3173    :Şu an kullanılmakda
+STR_3171    :Bu cisim türünden yeterince seçtiniz
+STR_3172    :İlk önce bunlar seçilmeli: {STRING}
+STR_3173    :Şu an kullanılmakta
 STR_3174    :Başka bir alet/dükkan/cisim için gerekli
-STR_3175    :Bu standard olarak gerekli
+STR_3175    :Bu standart olarak gerekli
 STR_3176    :Bu seçilemiyor
 STR_3177    :Bu kaldırılamıyor
-STR_3179    :En az bir alet veya dükkan/stand seçilmeli
+STR_3179    :En az bir alet veya dükkan/stant seçilmeli
 STR_3180    :Olumsuz seçenekler
 STR_3181    :Şu an seçilen - {STRINGID}
 STR_3182    :Park girişi tarzı seçilmeli
@@ -2197,7 +2196,7 @@ STR_3184    :Aletler
 STR_3185    :Küçük dekorasyonlar
 STR_3186    :Büyük dekorasyonlar
 STR_3187    :Duvarlar/Çitler
-STR_3188    :Bannerler
+STR_3188    :Afişler
 STR_3189    :Yollar
 STR_3190    :Yol eklentileri
 STR_3191    :Dekorasyon temaları
@@ -2205,7 +2204,7 @@ STR_3192    :Park girişi tarzı
 STR_3193    :Su tarzı
 STR_3195    :Araştırma listesi
 STR_3196    :{WINDOW_COLOUR_2}Tür: {BLACK}{STRINGID}
-STR_3197    :{WINDOW_COLOUR_2}Başdan araştırılmış ve mevcut olanlar:
+STR_3197    :{WINDOW_COLOUR_2}Baştan araştırılmış ve mevcut olanlar:
 STR_3198    :{WINDOW_COLOUR_2}Sonradan araştırılması gerekenler:
 STR_3199    :Rastgele karıştır
 STR_3200    :Tüm listeyi rastgele karıştırınız
@@ -2216,7 +2215,7 @@ STR_3204    :Park ayarları
 STR_3205    :Hedef ayarları
 STR_3206    :Senaryoyu kaydet
 STR_3207    :Alet Tasarımcısı
-STR_3208    :Alet Meneceri
+STR_3208    :Alet Tasarım Yöneticisi
 STR_3209    :Bir önceki adım:
 STR_3210    :Bir sonraki adım:
 STR_3211    :Harita büyüklüğü:
@@ -2226,7 +2225,7 @@ STR_3214    :Arazi daha fazla yükseltilemiyor
 STR_3215    :Arazi sınırına çok fazla yakın
 STR_3216    :Park sınırı seçenekleri
 STR_3217    :Parka ait alan
-STR_3218    :Inşa izni
+STR_3218    :inşa izni
 STR_3219    :Satılık alan
 STR_3220    :Satılık inşa izni
 STR_3221    :Parka ait olan alanı seçiniz
@@ -2235,7 +2234,7 @@ STR_3223    :Parkın satın alabileceği alanı seçiniz
 STR_3224    :Parkın satın alabileceği inşa izni alanını seçiniz
 STR_3225    :Seçilen konumun etrafına rastgele bir nesne kümesi oluşturmayı aç/kapat
 STR_3226    :Park girişini inşa ediniz
-STR_3227    :Çok fazla park girişi bulunmakda!
+STR_3227    :Çok fazla park girişi bulunmakta!
 STR_3228    :Müşterilerin parka geleceği pozisyonu seçiniz
 STR_3229    :Blok frenler istasyondan hemen sonra inşa edilemez
 STR_3230    :Blok frenler peş peşe inşa edilemez
@@ -2286,18 +2285,18 @@ STR_3274    :Senaryoyu zorlaştırmak için bu ayarı seçiniz
 STR_3275    :Müşteri kazanmayı zorlaştır
 STR_3276    :Senaryoyu zorlaştırmak için bu ayarı seçiniz
 STR_3277    :{WINDOW_COLOUR_2}Alan satın alma fiyatı:
-STR_3278    :{WINDOW_COLOUR_2}Inşa izni satın alma fiyatı:
+STR_3278    :{WINDOW_COLOUR_2}İnşa izni satın alma fiyatı:
 STR_3279    :Ücretsiz park girişi / Ücretli aletler
 STR_3280    :Ücretli park girişi / Ücretsiz aletler
-STR_3281    :{WINDOW_COLOUR_2}Giriş fiyati:
+STR_3281    :{WINDOW_COLOUR_2}Giriş fiyatı:
 STR_3282    :Park hedefi ve ismi seçiniz
 STR_3283    :Korunmasını istediğiniz aletleri seçiniz{NEWLINE}(bu aletler silinemiyor veya değiştirilemiyor)
 STR_3284    :Hedef seçimi
 STR_3285    :Koruma altında olan aletler
 STR_3286    :Bu senaryo için hedef seçiniz
 STR_3287    :{WINDOW_COLOUR_2}Hedef(ler):
-STR_3288    :Iklimi seçiniz
-STR_3289    :{WINDOW_COLOUR_2}Iklim:
+STR_3288    :İklimi seçiniz
+STR_3289    :{WINDOW_COLOUR_2}İklim:
 STR_3290    :Serin ve ıslak
 STR_3291    :Sıcak
 STR_3292    :Sıcak ve kuru
@@ -2338,55 +2337,55 @@ STR_3329    :Park girişi henüz inşa edilmedi
 STR_3330    :Parka ait alan gerekli
 STR_3331    :Arazi sınırından park girişine giden yol ya tamamlanmadı yada çok karışık - Yollar mümkün olduğu kadar tek şeritli ve az geçitli olmalı
 STR_3332    :Park girişi ya ters inşa edildi veya park girişinden arazi sınırına giden yol inşa edilmeli
-STR_3333    :Eklenti aletler/cisimler birlikde kaydedilsin
-STR_3334    :Sonradan eklenmiş aletlerin/cisimlerin oyun ile kaydedilmesini veya edilmemesini şeçiniz. Bir kişiye eklenti bulunan park/alet dosyasını yollamak isterseniz, ve o kişide kullanılan eklentiler yok ise, bu ayarı kapatıp oyunu tekrar kayediniz
+STR_3333    :Eklenti aletler/cisimler birlikte kaydedilsin
+STR_3334    :Sonradan eklenmiş aletlerin/cisimlerin oyun ile kaydedilmesini veya edilmemesini seçiniz. Bir kişiye eklenti bulunan park/alet dosyasını yollamak isterseniz ve o kişide kullanılan eklentiler yok ise, bu ayarı kapatıp oyunu tekrar kaydediniz
 STR_3335    :Alet Tasarımcısı - Alet seçiniz
-STR_3336    :Alet Meneceri - Alet seçiniz
-STR_3338    :{BLACK}Standard tasarım
-STR_3339    :{BLACK}{COMMA16} standard tasarım veya kendi tasarımınız
-STR_3340    :{BLACK}{COMMA16} standard tasarım veya kendi tasarımınız
+STR_3336    :Alet Tasarım Yöneticisi - Alet seçiniz
+STR_3338    :{BLACK}Standart tasarım
+STR_3339    :{BLACK}{COMMA16} standart tasarım veya kendi tasarımınız
+STR_3340    :{BLACK}{COMMA16} standart tasarım veya kendi tasarımınız
 STR_3341    :Oyun Araçları
 STR_3342    :Senaryo editörü
 STR_3343    :Kaydedilen Oyunu Senaryoya Dönüştür
 STR_3344    :Alet Tasarımcısı
-STR_3345    :Alet Meneceri
+STR_3345    :Alet Tasarım Yöneticisi
 STR_3346    :Alet tasarımı kaydedilemiyor…
-STR_3347    :Alet çok büyük, çok fazla cisimli veya dekorasyon çok fazla dışda
+STR_3347    :Alet çok büyük, çok fazla cisimli veya dekorasyon çok fazla dışta
 STR_3348    :Yeni isim
 STR_3349    :Sil
 STR_3350    :Tasarım ismi
 STR_3351    :Bu alet tasarımı için yeni isim giriniz:
-STR_3352    :Isim değiştirilemiyor…
+STR_3352    :İsim değiştirilemiyor…
 STR_3353    :Yeni isim olumsuz harfler/semboller içeriyor
-STR_3354    :Bu isim ile dosya bulunmakda veya dosya ‘Salt okunur’ modunda
+STR_3354    :Bu isim ile dosya bulunmakta veya dosya ‘Salt okunur’ modunda
 STR_3355    :Dosya ya ‘Salt okunur’ modunda veya kilitli
 STR_3356    :Dosyayı sil
-STR_3357    :{WINDOW_COLOUR_2}Bunu silmek istediğinizden eminmisiniz {STRING} ?
+STR_3357    :{WINDOW_COLOUR_2}Bunu silmek istediğinizden emin misiniz {STRING} ?
 STR_3358    :Tasarım silinemiyor…
 STR_3359    :{BLACK}Bu alet türünden tasarım yok
 STR_3360    :Uyarı!
-STR_3361    :Bu alet türünden çok fazla tasarım bulunmakta - Bazıları listede görüntülenmiyecektir
+STR_3361    :Bu alet türünden çok fazla tasarım bulunmakta - Bazıları listede görüntülenmeyecektir
 STR_3364    :Gelişmiş
 STR_3365    :Tema gruplarına ek olarak ayrı tema öğelerinin seçilmesine izin verir
 STR_3366    :{BLACK}= Alet
 STR_3367    :{BLACK}= Yemek standı
-STR_3368    :{BLACK}= Içecek standı
+STR_3368    :{BLACK}= İçecek standı
 STR_3369    :{BLACK}= Hatıra standı
 STR_3370    :{BLACK}= Danışma
-STR_3371    :{BLACK}= Ilk yardım
+STR_3371    :{BLACK}= İlk yardım
 STR_3372    :{BLACK}= ATM
 STR_3373    :{BLACK}= Tuvalet
-STR_3374    :Uyarı: Çok fazla seçdiniz!
+STR_3374    :Uyarı: Çok fazla seçtiniz!
 STR_3375    :Bu tema grubundaki tüm cisimler seçilemedi
 STR_3376    :Yeni kur
 STR_3377    :Yeni alet tasarımı kurunuz
 STR_3378    :Kur
-STR_3379    :Iptal
+STR_3379    :İptal
 STR_3380    :Yeni alet tasarımı kurulamadı…
 STR_3381    :Dosya uyumlu değil veya geçersiz veri içeriyor
 STR_3382    :Dosya kopyalama başarısız
 STR_3383    :Alet tasarımı için yeni isim seçiniz
-STR_3384    :Bu isim kullanılmakda - Yeni isim seçiniz:
+STR_3384    :Bu isim kullanılmakta - Yeni isim seçiniz:
 STR_3389    :Daha fazla cisim seçilemiyor
 STR_3390    :Çok fazla cisim seçildi
 STR_3437    :Büyük ölçüde tema veya cisim siliniz
@@ -2398,11 +2397,11 @@ STR_3446    :Tüm bölgeyi sıfırlayınız
 # New strings, cleaner
 STR_5120    :Finansal bakış
 STR_5121    :Araştırma
-STR_5122    :Select rides by track type (like in RCT1)
+STR_5122    :Pist türüne göre sürüşleri seçin (RCT1'deki gibi)
 STR_5123    :Aletleri yenile
 STR_5125    :Silinebilir aletler
 STR_5126    :Rastgele müzik
-STR_5127    :Zeminin üstünden geçdiğiniz takdirde zemin yükseltilmeden taban değiştirilebiliyor
+STR_5127    :Zeminin üstünden geçtiğiniz takdirde zemin yükseltilmeden taban değiştirilebiliyor
 STR_5128    :Boyut
 STR_5129    :{COMMA16} ile {COMMA16} arası bir boyut seçiniz
 STR_5130    :Harita büyüklüğü
@@ -2421,7 +2420,7 @@ STR_5142    :Normal hız
 STR_5143    :Hızlı
 STR_5144    :Çok hızlı
 STR_5145    :Turbo hızı
-STR_5146    :Devasal hız
+STR_5146    :Devasa hız
 STR_5147    :Hileler
 STR_5148    :Oyunu hızlandırınız
 STR_5149    :Hile seçenekleri
@@ -2429,7 +2428,7 @@ STR_5150    :Debugging araçlarını etkinleştir
 STR_5151    :,
 STR_5152    :.
 STR_5153    :Temayı değiştir…
-STR_5154    :Hardware display
+STR_5154    :Donanım ekranı
 STR_5155    :Tamamen inşa edilmemiş aletleri test etmeyi aç/kapat
 STR_5156    :Tamamen inşa edilmemiş aletlerin test edilmesine bu ayar ile izin veriliyor (bloklu tur modlarına geçerli değildir)
 STR_5158    :Ana ekrana çık
@@ -2440,19 +2439,19 @@ STR_5162    :Gün/Ay/Yıl
 STR_5163    :Ay/Gün/Yıl
 STR_5177    :Ekran modu:
 STR_5178    :Finansal hileleri göster
-STR_5179    :Müşteri hilelerni göster
+STR_5179    :Müşteri hilelerini göster
 STR_5180    :Park hilelerini göster
 STR_5181    :Alet hilelerini göster
 STR_5182    :{INT32}
-STR_5183    :Base height
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
-STR_5185    :Water level
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5183    :Taban yüksekliği
+STR_5184    :{COMMA16} ile {COMMA16} arasında taban yüksekliğini girin
+STR_5185    :Su seviyesi
+STR_5186    :{COMMA16} ile {COMMA16} arasındaki su seviyesini girin
 STR_5187    :Finansal bakış
 STR_5188    :Yeni Pazarlama Kampanyası
 STR_5189    :Araştırma
 STR_5190    :Harita
-STR_5191    :Extra Görüntü Alanı
+STR_5191    :Ekstra Görüntü Alanı
 STR_5192    :Son Bildirimler
 STR_5193    :Zemin/Arazi
 STR_5194    :Su
@@ -2460,7 +2459,7 @@ STR_5195    :Cisim silme
 STR_5196    :Arazi satın alma
 STR_5197    :Dekorasyon
 STR_5198    :Yol
-STR_5199    :Alet Inşaası
+STR_5199    :Alet İnşası
 STR_5200    :Alet Yerleştirme
 STR_5201    :Alet Listesi
 STR_5202    :Tasarım Listesi
@@ -2468,16 +2467,16 @@ STR_5203    :Alet
 STR_5204    :Aletler Listesi
 STR_5205    :Müşteri
 STR_5206    :Müşteri Listesi
-STR_5207    :Işci
-STR_5208    :Işciler Listesi
+STR_5207    :İşçi
+STR_5208    :İşçiler Listesi
 STR_5209    :Banner
 STR_5210    :Alet/Dükkan/Cisim Seçimi
 STR_5211    :Araştırma Listesi
 STR_5212    :Senaryo Editörü Ayarları
 STR_5213    :Senaryo Hedefleri Ayarları
 STR_5214    :Harita Üretimi
-STR_5215    :Alet Meneceri
-STR_5216    :Alet Meneceri Listesi
+STR_5215    :Alet Tasarım Yöneticisi
+STR_5216    :Alet Tasarım Yöneticisi Listesi
 STR_5217    :Hile
 STR_5218    :Tema
 STR_5219    :Seçenekler
@@ -2486,9 +2485,9 @@ STR_5221    :Tuş Değiştirme
 STR_5222    :Yükleme/Kayıtlama
 STR_5223    :Kaydetme
 STR_5224    :Alet/Dükkan silme
-STR_5225    :Işci Kovma
+STR_5225    :İşçi Kovma
 STR_5226    :Hızlı alet silme
-STR_5227    :Kayıdlı Oyunu Değiştirme
+STR_5227    :Kayıtlı Oyunu Değiştirme
 STR_5228    :Ana kullanıcı arayüzü
 STR_5229    :Park
 STR_5230    :Araçlar
@@ -2503,7 +2502,7 @@ STR_5238    :Şu an kullanılan tema:
 STR_5239    :Kopyala
 STR_5240    :Temaya isim giriniz
 STR_5241    :Bu tema değiştirilemiyor
-STR_5242    :Bu tema ismi kullanılmakda
+STR_5242    :Bu tema ismi kullanılmakta
 STR_5243    :Olumsuz harfler/semboller içeriyor
 STR_5244    :Temalar
 STR_5245    :Üst araç çubuğu
@@ -2512,7 +2511,7 @@ STR_5247    :Alet Tasarımcısı üst araç çubuğu
 STR_5248    :Senaryo Editörü üst araç çubuğu
 STR_5249    :Ana ekran seçenekleri
 STR_5250    :Ana ekran oyundan çıkış
-STR_5251    :Ana ekran seçenekler buttonu
+STR_5251    :Ana ekran seçenekler butonu
 STR_5252    :Senaryo listesi
 STR_5253    :Park bilgisi
 STR_5256    :Değiştirmek için kopyalayınız
@@ -2533,8 +2532,8 @@ STR_5270    :Diğer
 STR_5272    :Küçük dekorasyonlar
 STR_5273    :Büyük dekorasyonlar
 STR_5274    :Yollar
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
+STR_5275    :Objeleri Arayın
+STR_5276    :Aranacak objenin adını girin
 STR_5277    :Sıfırla
 STR_5278    :Sandbox modu
 STR_5279    :Sandbox modunu kapat
@@ -2547,7 +2546,7 @@ STR_5287    :Alet zaten arızalı
 STR_5288    :Alet kapalı
 STR_5289    :Bu alet için arıza yok
 STR_5290    :Aleti tamir et
-STR_5291    :Alet zorla bozualmıyor
+STR_5291    :Alet zorla bozulamıyor
 STR_5292    :Aleti zorla bozunuz
 STR_5293    :Aleti kapatınız
 STR_5294    :Aleti test ediniz
@@ -2556,7 +2555,7 @@ STR_5296    :Parkı kapatınız
 STR_5297    :Parkı açınız
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
-STR_5300    :Hızlı işci kovma
+STR_5300    :Hızlı işçi kovma
 STR_5301    :Krediyi sıfırla
 STR_5302    :Krediyi sıfırla
 STR_5303    :Oyun durdurulurken inşa et
@@ -2577,7 +2576,7 @@ STR_5337    :Park girişi
 STR_5338    :Madde türü
 STR_5339    :Taban yüksekliği
 STR_5340    :Açıklık yüksekliği
-STR_5343    :Otomatik işci yerleştirme
+STR_5343    :Otomatik işçi yerleştirme
 STR_5344    :Değişiklik günlüğü
 STR_5345    :Finansal hileler
 STR_5346    :Müşteri hileleri
@@ -2594,12 +2593,12 @@ STR_5356    :{BLACK}Bulantı:
 STR_5357    :{BLACK}Bulantı oranı:
 STR_5358    :{BLACK}Tuvalet:
 STR_5359    :Tüm müşterileri sil
-STR_5360    :Parkdaki tüm müşterileri siliniz
+STR_5360    :Parktaki tüm müşterileri siliniz
 STR_5361    :Tüm müşterilere ver:
 STR_5362    :{BLACK}Müşterilerin kabul edeceği şiddet oranı:
 STR_5363    :1’den fazla
 STR_5364    :15’den az
-STR_5365    :{BLACK}Işci hızı:
+STR_5365    :{BLACK}İşçi hızı:
 STR_5366    :Normal
 STR_5367    :Hızlı
 STR_5368    :Arıza raporunu sil
@@ -2609,7 +2608,7 @@ STR_5373    :Dosya ismi {STRINGID}
 STR_5374    :Tarih {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5404    :Bu isim kullanılmakda
+STR_5404    :Bu isim kullanılmakta
 STR_5440    :Oyun ön planda değilse oyunu simge durumuna getir
 STR_5442    :Park değerlendirmesini:
 STR_5447    :Alet {STRINGID}
@@ -2630,16 +2629,16 @@ STR_5461    :Tüm müşterilerin durumunu değiştir
 STR_5462    :{CURRENCY}
 STR_5463    :Hedefi sil
 STR_5464    :Genel
-STR_5465    :Iklim
-STR_5466    :Işci
-STR_5467    :ALT + 
+STR_5465    :İklim
+STR_5466    :İşçi
+STR_5467    :ALT +
 STR_5468    :Son bildirimler
 STR_5469    :Ekranı yukarı kaydır
 STR_5470    :Ekranı sola kaydır
 STR_5471    :Ekranı aşağı kaydır
 STR_5472    :Ekranı sağa kaydır
 STR_5473    :Gece/Gündüz çevrimi
-STR_5474    :Alet bannerlerini büyük harfler ile yaz
+STR_5474    :Alet afişlerini büyük harfler ile yaz
 STR_5475    :{COMMA16} hafta
 STR_5476    :Donanım
 STR_5477    :Görüntü ayarları
@@ -2668,7 +2667,7 @@ STR_5501    :Server başlat
 STR_5502    :Multiplayer
 STR_5503    :Host ismini veya IP-Adresini giriniz:
 STR_5504    :Multiplayer durumunu göster
-STR_5505    :Server’e bağlanamadı.
+STR_5505    :Sunucuya bağlanamadı.
 STR_5506    :Müşteriler şiddet oranını aldırmasın
 STR_5510    :Varasayılan aygıt
 STR_5511    :(BILINMIYOR)
@@ -2720,7 +2719,7 @@ STR_5556    :Oyuncuyu atınız
 STR_5557    :Desync olduğu takdirde bağlantıda kalınız (Multiplayer)
 STR_5558    :Bu ayarın onaylanması için oyun yeniden başlatılmalı
 STR_5559    :10 dk’ya bir kontrol
-STR_5560    :Tüm aletlerin kontrol sıklılığını 10 dakikaya bire ayarlayınız
+STR_5560    :Tüm aletlerin kontrol sıklığını 10 dakikaya bire ayarlayınız
 STR_5561    :Dil yüklenemedi
 STR_5562    :DIKKAT!
 STR_5563    :Bu seçenek henüz deneyim sürecinde. Dikkat ile kullanmanız tavsiye edilir.
@@ -2739,13 +2738,13 @@ STR_5577    :Güney Kore Wonu (W)
 STR_5578    :Rus Rublesi (₽)
 STR_5579    :Pencere ölçeği:
 STR_5580    :Çek Korunası (Kč)
-STR_5581    :FPS’yi göster
-STR_5582    :Mouse’ı pencere modunda kilitle
+STR_5581    :FPS’i göster
+STR_5582    :Mouse’u pencere modunda kilitle
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
-STR_5585    :Bu hile ile kısıtlı rotasyon sayısı, tırmanma zincirlerinin ve hızlandırıcıların hız kısıtması vs. gibi sınırlandırlmalar kaldırılıyor
-STR_5586    :Otomatik dükkan/stand açma
-STR_5587    :Dükkanlar/Standlar inşa edildiğinde otomatikman açılakakdır
+STR_5585    :Bu hile ile kısıtlı rotasyon sayısı, tırmanma zincirlerinin ve hızlandırıcıların hız kısıtlaması vs. gibi sınırlandırmalar kaldırılıyor
+STR_5586    :Otomatik dükkan/stant açma
+STR_5587    :Dükkanlar/Stantlar inşa edildiğinde otomatikman açılacaktır
 STR_5588    :Multiplayer
 STR_5589    :Bildirme seçenekleri
 STR_5590    :Park ödülleri
@@ -2759,23 +2758,23 @@ STR_5597    :Alet/dekorasyon araştırması
 STR_5598    :Müşteri uyarıları
 STR_5600    :Müşteri parkı terk etti
 STR_5601    :Müşteri bir alet için sırada
-STR_5602    :Müşteri bir aletde
-STR_5603    :Müşteri aletden indi
-STR_5604    :Müşteri birşey satın aldı
+STR_5602    :Müşteri bir alette
+STR_5603    :Müşteri aletten indi
+STR_5604    :Müşteri bir şey satın aldı
 STR_5605    :Müşteri tuvaleti kullandı
 STR_5606    :Müşteri öldü
-STR_5607    :Seçdiğiniz maddeyi zorla siliniz
+STR_5607    :Seçtiğiniz maddeyi zorla siliniz
 STR_5608    :TY
 STR_5609    :AY
-STR_5610    :Seçdiğiniz maddeyi zorla siliniz. Dikkat ile kullanınız
+STR_5610    :Seçtiğiniz maddeyi zorla siliniz. Dikkat ile kullanınız
 STR_5611    :G
 STR_5612    :Ghost flag
 STR_5613    :A
 STR_5614    :Arızalı flag
 STR_5615    :S
 STR_5616    :En son kurulan madde flag’i
-STR_5617    :Seçdiğiniz maddeyi yukarı aktarınız.
-STR_5618    :Seçdiğiniz maddeyi aşağı aktarınız.
+STR_5617    :Seçtiğiniz maddeyi yukarı aktarınız.
+STR_5618    :Seçtiğiniz maddeyi aşağı aktarınız.
 STR_5619    :RollerCoaster Tycoon
 STR_5620    :Added Attractions
 STR_5621    :Loopy Landscapes
@@ -2784,18 +2783,18 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :Gerçek parklar
 STR_5626    :Diğer parklar
-STR_5627    :Senrayo listesi sıralandırması:
-STR_5628    :Standard
+STR_5627    :Senaryo listesi sıralaması:
+STR_5628    :Standart
 STR_5629    :Zorluk seviyesi
 STR_5630    :Aşamalı ilerleme
 STR_5631    :Orijinal DLC Parkları
 STR_5632    :Kendiniz inşa ediniz…
-STR_5633    :CMD + 
-STR_5634    :OPTION + 
+STR_5633    :CMD +
+STR_5634    :OPTION +
 STR_5635    :{WINDOW_COLOUR_2}Harcadığı para: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Yaptığı değişiklikler: {BLACK}{COMMA16}
 STR_5637    :Bu yapılamıyor…
-STR_5638    :Izniniz yok
+STR_5638    :İzniniz yok
 STR_5639    :Oyuncu listesi
 STR_5640    :Oyuncu gruplarını yönetiniz
 STR_5641    :Varsayılan grup:
@@ -2804,8 +2803,8 @@ STR_5643    :Grup ekle
 STR_5644    :Grubu sil
 STR_5645    :Sohbet
 STR_5646    :Arazi değiştirme
-STR_5647    :Oyunu durduma
-STR_5648    :Su değiştrime
+STR_5647    :Oyunu durdurma
+STR_5648    :Su değiştirme
 STR_5649    :Alet tasarımı
 STR_5650    :Alet silme
 STR_5651    :Alet inşası
@@ -2813,7 +2812,7 @@ STR_5652    :Alet ayarları
 STR_5653    :Dekorasyon
 STR_5654    :Yol
 STR_5655    :Müşteri
-STR_5656    :Işci
+STR_5656    :İşçi
 STR_5657    :Park ayarları
 STR_5658    :Finansal park ayarları
 STR_5659    :Oyuncu atmak
@@ -2825,12 +2824,12 @@ STR_5664    :Hile
 STR_5665    :Dekorasyon kümesini aç/kapat
 STR_5666    :Şifresiz giriş
 STR_5701    :{WINDOW_COLOUR_2}Son yaptığı: {BLACK}{STRINGID}
-STR_5702    :Oyuncunun uyguladığı en çok değişiklikere atlayınız
+STR_5702    :Oyuncunun uyguladığı en çok değişikliklere atlayınız
 STR_5703    :Host atılamaz
 STR_5704    :Son yaptığı
 STR_5705    :Bu grup görüntülenemez
-STR_5706    :Bu grupda oyuncu olduğu sürece silinemez
-STR_5707    :Bu grup değiştirlemez
+STR_5706    :Bu grupta oyuncu olduğu sürece silinemez
+STR_5707    :Bu grup değiştirilemez
 STR_5708    :Hostun bağlı olduğu grup değiştirilemez
 STR_5709    :Yeni isim
 STR_5710    :Grup ismi
@@ -2855,8 +2854,8 @@ STR_5726    :Şu anki hava durumunu değiştiriniz
 STR_5734    :Rendering
 STR_5735    :Ağ durumu
 STR_5736    :Oyuncu
-STR_5737    :Kapalı, {COMMA16} kişi halen aletde
-STR_5738    :Kapalı, {COMMA16} kişi halen aletde
+STR_5737    :Kapalı, {COMMA16} kişi halen alette
+STR_5738    :Kapalı, {COMMA16} kişi halen alette
 STR_5739    :{WINDOW_COLOUR_2}Şu anki müşteri sayısı: {BLACK}{COMMA16}
 STR_5740    :Hiç bitmeyen pazarlama kampanyaları
 STR_5741    :Pazarlama kampanyaları hiç bir zaman bitmiyor
@@ -2867,16 +2866,16 @@ STR_5745    :Ağ desync tespit edildi
 STR_5746    :Bağlantı kesildi
 STR_5747    :Bağlantı kesildi: {STRING}
 STR_5748    :Atıldınız
-STR_5749    :Birdaha gelme!
+STR_5749    :Bir daha gelme!
 STR_5750    :Bağlantı kapandı
 STR_5751    :Dosya yok
-STR_5752    :{OUTLINE}{RED}{STRING} serverden çıktı
-STR_5753    :{OUTLINE}{RED}{STRING} serverden çıktı ({STRING})
+STR_5752    :{OUTLINE}{RED}{STRING} sunucudan çıktı
+STR_5753    :{OUTLINE}{RED}{STRING} sunucuda çıktı ({STRING})
 STR_5754    :Geçersiz isim
-STR_5755    :Yanlış yazılım sürümü (Serverda bu kullanılmakda: {STRING})
+STR_5755    :Yanlış yazılım sürümü (Sunucuda bu kullanılmakta: {STRING})
 STR_5756    :Şifre yanlış
 STR_5757    :Server dolu
-STR_5758    :{OUTLINE}{GREEN}{STRING} servere katıldı
+STR_5758    :{OUTLINE}{GREEN}{STRING} sunucuya katıldı
 STR_5759    :Harita indiriliyor …
 STR_5760    :Hong Kong Doları (HK$)
 STR_5761    :Yeni Taiwan Doları (NT$)
@@ -2888,129 +2887,129 @@ STR_5767    :Gelir
 STR_5768    :Toplam müşteri
 STR_5769    :Toplam kâr
 STR_5770    :Saat başı müşteri
-STR_5771    :Işletme maliyeti
-STR_5772    :Inşa yılı
+STR_5771    :İşletme maliyeti
+STR_5772    :İnşa yılı
 STR_5773    :{COMMA32}
 STR_5774    :{CURRENCY2DP}
-STR_5775    :saatde {COMMA32} 
+STR_5775    :Müşteriler: Saatte {COMMA32}
 STR_5776    :Bu yıl
 STR_5777    :Geçen yıl
 STR_5778    :{COMMA16} yıl önce
-STR_5779    :saatde {CURRENCY2DP} 
-STR_5780    :saatde {CURRENCY2DP}
+STR_5779    :Gelir: Saatte {CURRENCY2DP}
+STR_5780    :İşletme maliyeti: Saatte {CURRENCY2DP}
 STR_5781    :Bilinmiyor
-STR_5782    :Servere bağlandınız. Sohbet için ‘{STRING}’ tuşuna basınız
+STR_5782    :Sunucuya bağlandınız. Sohbet için ‘{STRING}’ tuşuna basınız
 STR_5783    :{WINDOW_COLOUR_2}Senaryo kilitli
-STR_5784    :{BLACK}Ilk önce diğer senaryoları kazanınız.
+STR_5784    :{BLACK}İlk önce diğer senaryoları kazanınız.
 STR_5785    :Grup ismi değiştirilemiyor…
 STR_5786    :Grup ismi geçersiz
 STR_5787    :{COMMA32} oyuncu çevrimiçi
 STR_5788    :Varsayılan denetim aralığı:
 STR_5789    :Şimşek çakmasını devre dışı bırak
-STR_5790    :RCT1’deki gibi müşteriler hem park girşi hemde alet ücreti ödesin
+STR_5790    :RCT1’deki gibi müşteriler hem park girişi hem de alet ücreti ödesin
 STR_5791    :Tüm aletlerin güvenirliğini %100’e getiriniz{NEWLINE} ve inşa yılını sıfırlayınız
 STR_5792    :Tüm arızalı aletleri tamir ediniz
-STR_5793    :Tüm aletlerin arıza raporunu sıfırlayınızki{NEWLINE}müşteriler altlerin güvensiz olmasından şikayetci olmasın
+STR_5793    :Tüm aletlerin arıza raporunu sıfırlayınız ki{NEWLINE}müşteriler aletlerin güvensiz olmasından şikâyetçi olmasın
 STR_5794    :Bazı senaryolarda korunmuş durumunda olan aletlerin silinmesine veya değiştirilmesine bu hile ile izin veriliyor
-STR_5795    :Şiddet oranı devasal olasada bu hile ile{NEWLINE}müşteriler yinede alete binecekdir
+STR_5795    :Şiddet oranı devasa olasa da bu hile ile{NEWLINE}müşteriler yine de alete binecektir
 STR_5796    :Park kapatılamıyorsa zorla kapatınız
-STR_5797    :Hava değişimini durdurunuz ve seçdiğiniz havayı sürekli olarak bırakınız
+STR_5797    :Hava değişimini durdurunuz ve seçtiğiniz havayı sürekli olarak bırakınız
 STR_5798    :Oyun durdurulduğunda her türlü inşaya izin veriliyor
 STR_5799    :Alet arızalarını ve fren arızalarından kaynaklanan kazaları sıra dışı bırakınız
 STR_5800    :Aletlerin bozulmasını engelleyiniz
 STR_5801    :Çevre kirliliğini sıra dışı bırak
 STR_5802    :Müşterilerin yere çöp atmasını veya kusmasını sıra dışı bırakınız
-STR_5803    :Seçdiğiniz maddeyi çeviriniz
+STR_5803    :Seçtiğiniz maddeyi çeviriniz
 STR_5804    :Ses kapatma
-STR_5805    :Bu ayar ile serveriniz{NEWLINE}herkes için açık olacakdır
+STR_5805    :Bu ayar ile sunucunuz{NEWLINE}herkes için açık olacaktır
 STR_5806    :Pencere moduna geç
 STR_5807    :{WINDOW_COLOUR_2}Alet sayısı: {BLACK}{COMMA16}
-STR_5808    :{WINDOW_COLOUR_2}Dükkan/Stand sayısı: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}Dükkan/Stant sayısı: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Diğer tesis sayısı: {BLACK}{COMMA16}
 STR_5810    :Araç sınırlamasını sıra dışı bırak
-STR_5811    :Bu hile ile alet başı{NEWLINE}255 vagon ve 31 tren kadar{NEWLINE}araç kullanablirsiniz
+STR_5811    :Bu hile ile alet başı{NEWLINE}255 vagon ve 31 tren kadar{NEWLINE}araç kullanabilirsiniz
 STR_5812    :Multiplayer penceresi
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
-STR_5815    :FPS’yi göster
-STR_5816    :Oyunu ölçekleme oranı{NEWLINE}Yüksek cözünürlükde tavsiye edilir
+STR_5815    :FPS’i göster
+STR_5816    :Oyunu ölçekleme oranı{NEWLINE}Yüksek çözünürlükte tavsiye edilir
 STR_5819    :[Hardware Desteği gerektirir]{NEWLINE}Steam arayüzü kullanıldığında oyun durdurulsun
 STR_5820    :Tam ekran modunda oyun penceresi ön plandan giderse{NEWLINE}oyunu simge durumuna getir
-STR_5822    :Gece ve gündüz değişimi uyuglansın
-STR_5823    :Alet giriş kulübelerindeki bannerlerin metini RCT1’deki büyük harfler ile yaılsın
+STR_5822    :Gece ve gündüz değişimi uygulansın
+STR_5823    :Alet giriş kulübelerindeki afişlerin metini RCT1’deki gibi büyük harfler ile yazılsın
 STR_5824    :Hava durumu sağanak yağışlı ise{NEWLINE}şimşek çakmasını sıra dışı bırakınız
-STR_5825    :Pencere modunda oyandığınız takdirde mouse pencere içinde kalacakdır
-STR_5826    :Sağ mouse tuşun ile ekran kaydırma ters çevrilecekdir (mesela sağa çektiğinizde ekran sola kayacakdır)
+STR_5825    :Pencere modunda oynadığınız takdirde mouse pencere içinde kalacaktır
+STR_5826    :Sağ mouse tuşu ile ekran kaydırma ters çevrilecektir (mesela sağa çektiğinizde ekran sola kayacaktır)
 STR_5827    :Grafiksel kullanıcı arayüzü temasını değiştiriniz
 STR_5828    :Mesafe ve hız biriminin hangi sisteme göre uygulanacağını seçiniz
 STR_5829    :Kullanmak istediğiniz para birimini seçiniz
 STR_5830    :Kullanmak istediğiniz dili seçiniz
 STR_5831    :Kullanmak istediğiniz sıcaklık ölçüm birimini seçiniz
-STR_5832    :Yükseklik birimin “Mesafe ve Hız” bölümünde seçdiğiniz gibi gerçek birim olarak veya “General Units” olarak ölçülmesini seçiniz. “General Units” birimi, yüksekliği blok olarak ölçmekde
+STR_5832    :"Mesafe ve Hız" altında ayarlanan ölçüm biçimi yerine yüksekliği genel birimler olarak gösterme
 STR_5833    :Kullanmak istediğiniz tarih formatını seçiniz
 STR_5834    :Kullanmak istediğiniz ses aygıtını seçiniz
 STR_5835    :Oyun penceresi simge durumuna getirildiğinde oyununu sesini kıs
 STR_5836    :Ana ekran müziğini.{NEWLINE}RCT1 temasını seçmek için ‘Diğer Ayarlar’ penceresinden RCT1 klasörünü belirlemeniz gereklidir.
-STR_5837    :Arayüzü temları değiştiriniz veya oluşturunuz
+STR_5837    :Arayüzü temaları değiştiriniz veya oluşturunuz
 STR_5838    :Üst araç çubuğunda ‘Finansal Bakış’ simgesini göster/gizle
 STR_5839    :Üst araç çubuğunda ‘Araştırma’ simgesini göster/gizle
 STR_5840    :Üst araç çubuğunda ‘Hile’ simgesini göster/gizle
 STR_5841    :Üst araç çubuğunda ‘Son Bildirimler’ simgesini göster/gizle
-STR_5842    :Senaryoları senaryo listesinde ya RCT2’deki gibi zorluk seviyesine göre yada RCT1’deki gibi klassik olarak sıralandır
-STR_5843    :RCT1’deki gibi bir senaryoyu tamamladıkdan sonra kilitli bir senaryoyu açılsın
-STR_5844    :Servere bağşantınız koptuğu halde{NEWLINE}serverden çıkılmasın
-STR_5845    :Üst araç çubuğuna ‘Debugging Araçları’ simgesi eklensin/kaldırısın{NEWLINE}Bu ayar ile konsolda aktif olacakdır
+STR_5842    :Senaryoları senaryo listesinde ya RCT2’deki gibi zorluk seviyesine göre ya da RCT1’deki gibi klasik olarak sırala
+STR_5843    :RCT1’deki gibi bir senaryoyu tamamladıktan sonra kilitli bir senaryoyu açılsın
+STR_5844    :Sunucuya bağlantınız koptuğu halde{NEWLINE}sunucudan çıkılmasın
+STR_5845    :Üst araç çubuğuna ‘Debugging Araçları’ simgesi eklensin/kaldırısın{NEWLINE}Bu ayar ile konsolda aktif olacaktır
 STR_5846    :Oyunun hangi ara ile otomatik kaydedileceğini seçiniz
-STR_5847    :Ana ekrandaki arka planda görüntülünen başlık dizisi seçenekleri{NEWLINE}RCT1 veya RCT2 başlık dizilerini kullanmak isterseniz, ilk önce başlık dizisinde kullanılan senaryoları OpenRCT2’ye yüklemeniz gereklidir
-STR_5849    :Yeni işciler otomatikman{NEWLINE}bir yere yerleştiriliyor
-STR_5851    :Yeni inşa edilen aletlere{NEWLINE}otomatikman seçdiğiniz kontrol süreci ayarlanıyor
+STR_5847    :Ana ekrandaki arka planda görüntülenen başlık dizisi seçenekleri{NEWLINE}RCT1 veya RCT2 başlık dizilerini kullanmak isterseniz, ilk önce başlık dizisinde kullanılan senaryoları OpenRCT2’ye yüklemeniz gereklidir
+STR_5849    :Yeni işçiler otomatikman{NEWLINE}bir yere yerleştiriliyor
+STR_5851    :Yeni inşa edilen aletlere{NEWLINE}otomatikman seçtiğiniz kontrol süreci ayarlanıyor
 STR_5853    :Ses efektlerini aç/kapat
 STR_5854    :Alet müziklerini aç/kapat
 STR_5855    :Ekran modunu seçiniz
 STR_5856    :Tam ekran modunda çözünürlüğü seçiniz
 STR_5857    :Oyun ayarları
-STR_5858    :Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
+STR_5858    :Görüntülemek için CPU yerine GPU kullanın. Ekran yakalama yazılımı ile uyumluluğu artırır. Performansı biraz düşürebilir.
 STR_5859    :FPS sınırlandırması bu ayar ile devre dışı bırakılıyor. Bu ayar kapalı ise FPS 40’dan fazlasına çıkmıyor
-STR_5860    :Toggle original/decompiled track drawing
+STR_5860    :Orijinal/derlenmiş parça çizimini değiştir
 STR_5861    :Kodlama doğrulama hatası.
 STR_5862    :Bilinmeyen oyuncuları engelle
-STR_5863    :Sadece kodlaması bilinen oyuncuların servere girmesine izin veriniz
-STR_5864    :Bu servere sadece belirli oyuncular bağlanabiliyor (Whitelisted players)
+STR_5863    :Sadece kodlaması bilinen oyuncuların sunucuya girmesine izin veriniz
+STR_5864    :Bu sunucuya sadece belirli oyuncular bağlanabiliyor (Whitelisted players)
 STR_5865    :Sohbeti kaydet
-STR_5866    :Tüm sohbeti kullanıcı klasörünüze kayediniz
+STR_5866    :Tüm sohbeti kullanıcı klasörünüze kaydediniz
 STR_5867    :{WINDOW_COLOUR_2}Sağlayıcı ismi: {BLACK}{STRING}
-STR_5868    :{WINDOW_COLOUR_2}Sağlayıcı E-Posta’sı: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}Sağlayıcı E-Postası: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Sağlayıcı Internet sayfası: {BLACK}{STRING}
 STR_5870    :Server bilgisi
 STR_5871    :Çiçeklerin solmasını devre dışı bırak
 STR_5872    :Çiçekler bu hile ile solmadığı için sulanmasına gerek kalmıyor
 STR_5873    :Her türlü ray şekline tırmanma zinciri
-STR_5874    :Bu hile ile her türlü ray şekline tırmanma zinciri inşa edebilirsinz
+STR_5874    :Bu hile ile her türlü ray şekline tırmanma zinciri inşa edebilirsiniz
 STR_5875    :Grafiksel aygıt:
-STR_5876    :Oyunda grafiğin hangi aygıt tarafından görüntüleceğini seçiniz
+STR_5876    :Oyunda grafiğin hangi aygıt tarafından görüntüleneceğini seçiniz
 STR_5877    :Software
 STR_5878    :Software (Hardware desteği ile)
 STR_5879    :OpenGL (deneysel)
 STR_5880    :Seçili olanlar
-STR_5881    :Seçililmemiş olanlar
+STR_5881    :Seçilmemiş olanlar
 STR_5882    :Kendi para biriminiz
 STR_5883    :Kendi para biriminiz
-STR_5884    :{WINDOW_COLOUR_2}Döviz kuru: 
-STR_5885    :{WINDOW_COLOUR_2}eşitdir {COMMA32} GBP (£)
+STR_5884    :{WINDOW_COLOUR_2}Döviz kuru:
+STR_5885    :{WINDOW_COLOUR_2}eşittir {COMMA32} GBP (£)
 STR_5886    :{WINDOW_COLOUR_2}Sembol:
 STR_5887    :Ön ek
 STR_5888    :Son ek
-STR_5889    :Kendi para birimi semboliniz
-STR_5890    :Kullanmak istediğiniz sembolu giriniz
+STR_5889    :Kendi para birimi sembolünüz
+STR_5890    :Kullanmak istediğiniz sembolü giriniz
 STR_5891    :Varsayılan
 STR_5892    :Varsayılan klasöre gidiniz
 STR_5893    :Döviz kuru
 STR_5894    :Döviz kurunu giriniz
 STR_5895    :Tasarımı kaydediniz
 STR_5896    :Tasarım kaydedilemedi!
-STR_5898    :{BLACK}Tasarım yüklenemedi{newline}Dosya ya bozuk, ya hatalı yada eksik!
+STR_5898    :{BLACK}Tasarım yüklenemedi{NEWLINE}Dosya ya bozuk, ya hatalı ya da eksik!
 STR_5899    :Grafiksel Debug penceresi
 STR_5900    :Orijinal çizim kodunu kullan
 STR_5901    :Cisim yüksekliklerini göster
@@ -3019,9 +3018,9 @@ STR_5903    :Grafiksel Debug penceresi
 STR_5904    :Tarihi sıfırla
 STR_5905    :Otomatikman harita üretmek için kullanabileceğiniz bir araç
 STR_5906    :Mouse pozisyonuna doğru yakınlaştır
-STR_5907    :Bu ayar ile ekranı yakınlaştırdığınızda ekran mouse’un bulunduğu yere yakınlaştırılacaktır. Ayar kapalı olduğu takdirde ekranı yakılanştırdığını vakit, ekran bulunduğunuz yere yakınlaştırılacakdır
+STR_5907    :Bu ayar ile ekranı yakınlaştırdığınızda ekran mouse’un bulunduğu yere yakınlaştırılacaktır. Ayar kapalı olduğu takdirde ekranı yakınlaştırdığınız vakit, ekran bulunduğunuz yere yakınlaştırılacaktır
 STR_5908    :Tren türünü değiştir
-STR_5909    :Bu hile ile alet penceresinden tren türünü değiştirebilirsinz. Dikkat oyun çökebilir
+STR_5909    :Bu hile ile alet penceresinden tren türünü değiştirebilirsiniz. Dikkat oyun çökebilir
 STR_5910    :Uygula
 STR_5911    :Yolları gizle
 STR_5912    :Yolları gizleme
@@ -3033,7 +3032,7 @@ STR_5917    :{COMMA16} oyuncu
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Hava durumunu göster
-STR_5921    :Bu ayar kapalı ise yağmur ve şimşek gibi hava durumları gizlenecekdir
+STR_5921    :Bu ayar kapalı ise yağmur ve şimşek gibi hava durumları gizlenecektir
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}En fazla {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Tren başı en fazla {COMMA16} {STRINGID} vagon
 STR_5924    :Madde bilgileri
@@ -3060,7 +3059,7 @@ STR_5944    :Eklenti: {BLACK}Yok
 STR_5945    :Bağlantı noktaları:
 STR_5946    :Tür: {BLACK}{STRINGID}
 STR_5947    :ID: {BLACK}{COMMA16}
-STR_5948    :Isim: {BLACK}{STRINGID}
+STR_5948    :İsim: {BLACK}{STRINGID}
 STR_5949    :Tırmanma zinciri
 STR_5950    :Değişiklikleri tüm raylara uygula
 STR_5951    :Parça ID’si: {BLACK}{COMMA16}
@@ -3074,7 +3073,7 @@ STR_5958    :Kuzeydoğu
 STR_5959    :Güneydoğu
 STR_5960    :Kare içindeki pozisyonu:
 STR_5961    :Kayıt endeksi: {BLACK}{COMMA16}
-STR_5962    :Çarpışma tespidi:
+STR_5962    :Çarpışma tespiti:
 STR_5963    :Kenar yükseltme:
 STR_5964    :Eğimli
 STR_5965    :Giriş türü: {BLACK}{STRINGID}
@@ -3086,7 +3085,7 @@ STR_5970    :Giriş ID’si: {BLACK}{COMMA16}
 STR_5971    :Çıkış ID’si: {BLACK}{COMMA16}
 STR_5972    :Alet ID’si: {BLACK}{COMMA16}
 STR_5973    :Bir sonrakine yapıştır
-STR_5974    :Arızalı maddenin taban ve açıklık yükseğini seçdiğiniz maddeden kopyalayıp arızalı maddeye ekleyiniz
+STR_5974    :Arızalı maddenin taban ve açıklık yükseğini seçtiğiniz maddeden kopyalayıp arızalı maddeye ekleyiniz
 STR_5975    :Eğim:
 STR_5976    :Düz
 STR_5977    :Sağ taraf yukarı
@@ -3096,7 +3095,7 @@ STR_5980    :Banner metni: {BLACK}{STRINGID}
 STR_5981    :Banner değil
 STR_5982    :Büyük dekorasyon türü: {BLACK}{COMMA16}
 STR_5983    :Büyük dekorasyon ID’si: {BLACK}{COMMA16}
-STR_5984    :Blocked paths:
+STR_5984    :Kapalı yollar:
 STR_5985    :Yeni klasör
 STR_5986    :Yeni klasör ismi giriniz
 STR_5987    :Yeni klasör oluşturulamadı
@@ -3105,7 +3104,7 @@ STR_5989    :Satılık inşa izni yok
 STR_5990    :Satılık alan veya inşa izni yok
 STR_5991    :Madde yapıştırılamıyor…
 STR_5992    :Harita maddeleri sınırına ulaşıldı
-STR_5993    :Seçdiğiniz maddeyi kopyalayınız
+STR_5993    :Seçtiğiniz maddeyi kopyalayınız
 STR_5994    :Kopyaladığınız maddeyi yapıştırınız
 STR_5995    :Hızlandırıcı
 STR_5996    :Hız
@@ -3114,21 +3113,21 @@ STR_5998    :Para ekle
 STR_5999    :Parayı belirle
 STR_6000    :Yeni değer giriniz
 STR_6001    :Işıklandırmayı etkinleştir (deneysel)
-STR_6002    :Geceleri lambalar ve aletler ışıklandırılacakdır{NEWLINE}Grafiksel aygıt olarak Hardware desteği seçilmelidir
+STR_6002    :Geceleri lambalar ve aletler ışıklandırılacaktır{NEWLINE}Grafiksel aygıt olarak Hardware desteği seçilmelidir
 STR_6003    :Kesik Görüntüleme
 STR_6004    :Kesik Görüntüleme
 STR_6005    :Etkinleştir
-STR_6006    :Kesik Görüntüleme sadece seçdiğiniz zeminin üzerinde veya altında bulunanları göstermekde
+STR_6006    :Kesik Görüntüleme sadece seçtiğiniz zeminin üzerinde veya altında bulunanları göstermekte
 STR_6007    :Yükseklik
-STR_6008    :Burayı tıklayarak “Raw value” veya gerçek birim arası değiştiriniz{NEWLINE}“Raw value” yüksekliği bloklara benzer bir şekilde gösterir
+STR_6008    :Ölçüm birimlerinde ham değer<->değer arasında geçiş yapmak için tıklayın
 STR_6009    :Kesmek istediğiniz yüksekliğini seçiniz
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
-STR_6013    :Müşteriler sadece park girişine ve tesislere ücret ödiyecekdir{NEWLINE}Aletler ücretsiz
-STR_6014    :Müşteriler sadece alet girişlerine ve tesislere ücret ödiyecekdir{NEWLINE}Park girişi ücretsiz
+STR_6013    :Müşteriler sadece park girişine ve tesislere ücret ödeyecektir{NEWLINE}Aletler ücretsiz
+STR_6014    :Müşteriler sadece alet girişlerine ve tesislere ücret ödeyecektir{NEWLINE}Park girişi ücretsiz
 STR_6015    :Yükselt
-STR_6016    :Maddeyi modife et
+STR_6016    :Maddeyi modifiye et
 STR_6017    :Yavaş lütfen
 STR_6018    :Alet tasarımı - Sol virajlar
 STR_6019    :Alet tasarımı - Sağ virajlar
@@ -3140,9 +3139,9 @@ STR_6024    :Alet tasarımı - Eğimli viraj sol
 STR_6025    :Alet tasarımı - Eğimli viraj sağ
 STR_6026    :Alet tasarımı - Bir önceki ray
 STR_6027    :Alet tasarımı - Bir sonraki ray
-STR_6028    :Alet tasarımı - Inşa et
+STR_6028    :Alet tasarımı - inşa et
 STR_6029    :Alet tasarımı - Sil
-STR_6030    :Dekorasyon seçici. Bu araç ile seçdiğiniz dekorasyonun aynısı kopyalansın
+STR_6030    :Dekorasyon seçici. Bu araç ile seçtiğiniz dekorasyonun aynısı kopyalansın
 STR_6031    :Server açıklaması:
 STR_6032    :Server karşılaması:
 STR_6033    :RCT1 klasörü:
@@ -3163,7 +3162,7 @@ STR_6047    :Kenarları düzleştir
 STR_6048    :Harita arızası
 STR_6049    :PNG dosyası okunamadı
 STR_6050    :Bitmap dosyası okunamadı
-STR_6052    :Harita çok büyük olduğundan dolayı küçültülücekdir
+STR_6052    :Harita çok büyük olduğundan dolayı küçültülüncedir
 STR_6053    :Harita normalleştirilemiyor
 STR_6054    :Sadece 24 bit Bitmap dosyaları destekleniyor
 STR_6055    :OpenRCT2 harita dosyası
@@ -3171,16 +3170,16 @@ STR_6056    :Oyunun sesini kapatınız
 STR_6057    :Üst araç çubuğunda ‘Ses Kapatma’ simgesini göster/gizle
 STR_6058    :Ses kapatma
 STR_6059    :»
-STR_6060    :Müşteriler birşey satın aldığında animasyon göster
-STR_6061    :Müşteriler herhangi birşey satın aldığında{NEWLINE}fiyatlar animasyon olarak gösterilecekdir
+STR_6060    :Müşteriler bir şey satın aldığında animasyon göster
+STR_6061    :Müşteriler herhangi bir şey satın aldığında{NEWLINE}fiyatlar animasyon olarak gösterilecektir
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :Tüm araziyi al
-STR_6065    :Oyuncuların değisikliğini kaydet
+STR_6065    :Oyuncuların değişikliğini kaydet
 STR_6066    :Oyuncuların yaptığı tüm değişiklikleri kaydediniz
 STR_6067    :Server başlatıldı.
 STR_6068    :Server kapandı.
-STR_6069    :{STRING} serverden {STRING} tarafından atıldı
+STR_6069    :{STRING} sunucudan {STRING} tarafından atıldı
 STR_6070    :{STRING} {STRING} tarafından ‘{STRING}’ grubuna alındı
 STR_6071    :{STRING} yeni grup oluşturdu: ‘{STRING}’
 STR_6072    :{STRING} ‘{STRING}’ grubunu sildi
@@ -3193,7 +3192,7 @@ STR_6078    :{STRING} tarafından ‘{STRING}’ aleti inşa edildi
 STR_6079    :{STRING} tarafından ‘{STRING}’ aleti silindi
 STR_6080    :{STRING} tarafından ‘{STRING}’ aletinin görünümü değiştirildi
 STR_6081    :{STRING} ‘{STRING}’ aletini kapattı
-STR_6082    :{STRING} ‘{STRING}’ aletini açdı
+STR_6082    :{STRING} ‘{STRING}’ aletini açtı
 STR_6083    :{STRING} ‘{STRING}’ aletini test ediyor
 STR_6084    :{STRING} tarafından ‘{STRING}’ aletinin araç ayarları değiştirildi
 STR_6085    :{STRING} tarafından ‘{STRING}’ aletinin ayarları değiştirildi
@@ -3201,7 +3200,7 @@ STR_6086    :{STRING} tarafından ‘{STRING}’ aletine yeni isim verildi. Yeni
 STR_6087    :{STRING} tarafından ‘{STRING}’ alet/dükkan fiyatı değiştirildi. Yeni fiyat: {STRING}
 STR_6088    :{STRING} tarafından ‘{STRING}’ alet/dükkan ek fiyatı değiştirildi. Yeni fiyat: {STRING}
 STR_6089    :{STRING} tarafından ‘{STRING}’ park ismi değiştirildi. Yeni isim: ‘{STRING}’
-STR_6090    :{STRING} parkı açdı
+STR_6090    :{STRING} parkı açtı
 STR_6091    :{STRING} parkı kapattı
 STR_6092    :{STRING} park giriş ücretini değiştirdi. Yeni ücret: {STRING}
 STR_6093    :{STRING} yeni bir dekorasyon inşa etti
@@ -3210,38 +3209,38 @@ STR_6095    :{STRING} bir dekorasyonu değiştirdi
 STR_6096    :{STRING} banner ismini değiştirdi. Yeni isin: ‘{STRING}’.
 STR_6097    :{STRING} ‘{STRING}’ aletine yeni ray ekledi
 STR_6098    :{STRING} bir ray sildi
-STR_6099    :Server’e bağlandınız.
-STR_6100    :Server’den çıktınız.
+STR_6099    :Sunucuya bağlandınız.
+STR_6100    :Sunucudan çıktınız.
 STR_6101    :Aletler zamanla değer kayıp etmesin
-STR_6102    :Aletlerin değeri düşmediği sürece müşterilerin gözünde giriş ücreti her zaman ucuz kalacakdır
-STR_6103    :Bu ayar Multiplayer’de sıra dışı bırkalıdı.
-STR_6105    :Hyper Tren
+STR_6102    :Aletlerin değeri düşmediği sürece müşterilerin gözünde giriş ücreti her zaman ucuz kalacaktır
+STR_6103    :Bu ayar Multiplayer’de sıra dışı bırakıldı.
+STR_6105    :Hiper Tren
 STR_6107    :Monster Trucks
 STR_6109    :Hyper Twister
-STR_6111    :Klassik Mini Tren
-STR_6113    :Yüksek düşüşler ve hızlara ulaşan bir tren. Vagonları çok komforlu ve heyecanı artdırmak için güvenlik askısı kalça kısmındadır
+STR_6111    :Klasik Mini Tren
+STR_6113    :Yüksek düşüşler ve hızlara ulaşan bir tren. Vagonları çok konforlu ve heyecanı arttırmak için güvenlik askısı kalça kısmındadır
 STR_6115    :Müşteriler belirli bir yolda Monster Truck ile yavaşça seyahat eder
 STR_6116    :Bu çelik yapılı hız treni farklı kıvrılmalara, yuvarlamalara ve döngülere sahiptir
 STR_6119    :Fazla yüksekliğe ulaşmayan ölçülü bir tren
 STR_6120    :{BABYBLUE}{STRINGID} aleti için yeni vagon/araç araştırıldı:{NEWLINE}{STRINGID}
 STR_6121    :Parkın etrafında bulunan tüm boş araziyi bu hile ile parkınızın sınırlarına katınız
-STR_6122    :Bu senerayo hedefi için yeterince hız treni bulunmuyor
+STR_6122    :Bu senaryo hedefi için yeterince hız treni bulunmuyor
 STR_6123    :Cisimler park için yüklenemedi
 STR_6124    :Cisim ismi
 STR_6125    :Cisim türü
 STR_6126    :Bilinmeyen madde
 STR_6127    :Dosya: {STRING}
-STR_6128    :Dosya bazı cisimlerin eksik veya arızalı olduğundan dolayı yükelenemdi. Bu cisimler aşağı kısımda sıralanacakdır
+STR_6128    :Dosya bazı cisimlerin eksik veya arızalı olduğundan dolayı yüklenemedi. Bu cisimler aşağı kısımda sıralanacaktır
 STR_6129    :Seçilen cisimi kopyala
 STR_6130    :Tüm listeyi kopyala
 STR_6131    :Cisim kaynağı
-STR_6132    :Herşeyi araştır
+STR_6132    :Her şeyi araştır
 STR_6133    :Henüz araştırılmamış aletleri, cisimleri, dekorasyonları vs. inşa ediniz
 STR_6134    :Cisim silme
 STR_6135    :Client geçersiz istek gönderdi
 STR_6136    :Server geçersiz istek gönderdi
 STR_6137    :OpenRCT2, ücretsiz ve kaynağı açık olan Roller Coaster Tycoon 2 kopyasıdır
-STR_6138    :OpenRCT2 bir çok kişinin yardımı ile oluşturulan bir proje. Tüm kişiler listesi “contributors.md” dosyasında bulunmakda. Daha fazla bilgi için http://github.com/OpenRCT2/OpenRCT2 sayfasına giriniz
+STR_6138    :OpenRCT2 bir çok kişinin yardımı ile oluşturulan bir proje. Tüm kişiler listesi “contributors.md” dosyasında bulunmakta. Daha fazla bilgi için http://github.com/OpenRCT2/OpenRCT2 sayfasına giriniz
 STR_6139    :Tüm ürün ve şirket isimleri kendi sahiplerine aittir. Bunların kullanımı, onlar tarafından herhangi bir bağlılık veya onaylama anlamına gelmez.
 STR_6140    :Değişiklikler…
 STR_6141    :RCT1 tarzı alt araç cubuğu
@@ -3250,7 +3249,7 @@ STR_6143    :{WINDOW_COLOUR_2}Alet türü: {BLACK}{STRINGID}
 STR_6144    :Kullanılan bölümleri göster
 STR_6145    :Hızlandırıcı hızını seçiniz
 STR_6146    :Uyumlu raylar
-STR_6147    :Bu hile ile bir aletde bulunmayan fakat o alete uyum sağlayan tüm özel rayları inşa edebilirsiniz
+STR_6147    :Bu hile ile bir alette bulunmayan fakat o alete uyum sağlayan tüm özel rayları inşa edebilirsiniz
 STR_6148    :Master servere bağlanıyor…
 STR_6149    :Master servere bağlanamadı
 STR_6150    :Master serverden geçersiz yanıt (no JSON number)
@@ -3258,13 +3257,13 @@ STR_6151    :Master server geçerli serverler ile yanıt veremedi
 STR_6152    :Master serverden geçersiz yanıt (no JSON array)
 STR_6153    :Ücretli park girişi / Ücretli aletler
 STR_6154    :Güvenlik nedenleriyle, OpenRCT2’yi yükseltilmiş izinlerle çalıştırmak önerilmez.
-STR_6155    :Ne KDialog nede Zenity kurulu. Ya ikisinden birisini kurunuz yada konsol üzeri komut ile ayarlayınız
-STR_6156    :Isim kullanılıyor
+STR_6155    :Ne KDialog nede Zenity kurulu. Ya ikisinden birisini kurunuz ya da konsol üzeri komut ile ayarlayınız
+STR_6156    :İsim kullanılıyor
 STR_6157    :Konsol
 STR_6160    :{WINDOW_COLOUR_2}Mevcut araçlar/tasarımlar: {BLACK}{STRING}
 STR_6161    :Zemin çizgisi
 STR_6162    :Rotasyonlu Vahşi Fare
-STR_6163    :Tekli vagonlar zig zag bir şeritde keskin virajlardan döner ve dik eğilimlerden iner. Ayrıyeten koltuklar heyecanı artdırmak için rotasyon yapar
+STR_6163    :Tekli vagonlar zikzak bir şeritte keskin virajlardan döner ve dik eğilimlerden iner. Ayrıyeten koltuklar heyecanı arttırmak için rotasyon yapar
 STR_6164    :{WHITE}❌
 STR_6165    :Vertical sync aç/kapat
 STR_6166    :Ekranın yırtılmasını önleyerek monitörün yenileme hızına göre her kareyi senkronize eder.
@@ -3289,21 +3288,21 @@ STR_6199    :Tarihi değiştir
 STR_6200    :Tarihi sıfırla
 STR_6201    :{MONTH}
 STR_6202    :Sanal zemin türü:
-STR_6203    :Birşey inşa etdiğinizde Crtl veya Shift tuşunu basılı tuttuğunuz zaman inşayı kolaylaştırmak için saydam veya yarı saydam bir sanal zemin görüntülenecekdir
-STR_6215    :Inşa
-STR_6216    :Işletme
+STR_6203    :Bir şey inşa ettiğinizde Ctrl veya Shift tuşunu basılı tuttuğunuz zaman inşayı kolaylaştırmak için saydam veya yarı saydam bir sanal zemin görüntülenecektir
+STR_6215    :İnşa
+STR_6216    :İşletme
 STR_6217    :Alet/Ray
 STR_6218    :OpenRCT2 Resmi
 STR_6219    :Sadece yolları görüntüle
 STR_6220    :Kullanılır hale getir
-STR_6221    :Bir aletin istasyon başı girşini veya çıkışını başka bir yere yapıştırdığınız takdirde bu ayar ile o giriş/cıkış kullanılabilir hale getirilecekdir
+STR_6221    :Bir aletin istasyon başı girişini veya çıkışını başka bir yere yapıştırdığınız takdirde bu ayar ile o giriş/çıkış kullanılabilir hale getirilecektir
 STR_6222    :Burası müşteri pozisyonu olarak belirlenemiyor…
 STR_6223    :Park sınırlarının dışında bulunmalı
-STR_6224    :{STRING} alet girişi inşa etdi
+STR_6224    :{STRING} alet girişi inşa etti
 STR_6225    :OpenGL Renderer ile desteklenmiyor
 STR_6226    :Erken senaryo kazanması
 STR_6227    :Hedeflerinize ulaşır ulaşmaz belirlenmiş süreye kadar beklemeden senaryoyu  kazanmanızı sağlıyor
-STR_6228    :Scenario ayarları
+STR_6228    :Senaryo ayarları
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
@@ -3312,7 +3311,7 @@ STR_6233    :Kesik Görüntüleme
 STR_6234    :Sadece yolları görüntüle
 STR_6235    :Server Bilgisi
 STR_6236    :Oyuncular
-STR_6237    :Grublar
+STR_6237    :Gruplar
 STR_6238    :Multiplayer seçenekleri
 STR_6239    :Kesme yüksekliği
 STR_6240    :Seçenekler
@@ -3323,9 +3322,9 @@ STR_6244    :Alet yenilenemiyor…
 STR_6245    :Aletin yenilenmesi gerekmiyor
 STR_6246    :Yenile
 STR_6247    :Alet yenileme
-STR_6248    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} için yenilemek istediğinizden eminmisiniz?
-STR_6249    :{WINDOW_COLOUR_1}{STRINGID} aletini yenilemek istiyormusunuz?
-STR_6250    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} geri ödeme ile silmek istediğinizden eminmisiniz?
+STR_6248    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} için yenilemek istediğinizden emin misiniz?
+STR_6249    :{WINDOW_COLOUR_1}{STRINGID} aletini yenilemek istiyor musunuz?
+STR_6250    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} geri ödeme ile silmek istediğinizden emin  misiniz?
 STR_6251    :Alet henüz boş değil
 STR_6255    :Adres geçerli değil
 STR_6256    :Rendering seçenekleri
@@ -3334,13 +3333,13 @@ STR_6258    :Saydam
 STR_6259    :Yok
 STR_6260    :Engelli maddeleri göster
 STR_6261    :Geniş yolları göster
-STR_6262    :Ana Ses		
-STR_6263    :Tüm sesleri aç/kapat		
-STR_6264    :Herzaman sistem iletişim penceresinin kullan		
-STR_6265    :Bu ayar açık ise, OpenRCT2’nin oyun kayıt/yükleme penceresi yerine kullandığınız sistemin iletişim penceresi açılacakdır		
-STR_6266    :Özel içerik klasörünü aç		
-STR_6267    :Zemin deneticisini aç		
-STR_6268    :Bir sonraki tick’e atla		
+STR_6262    :Ana Ses
+STR_6263    :Tüm sesleri aç/kapat
+STR_6264    :Her zaman sistem iletişim penceresinin kullan
+STR_6265    :Bu ayar açık ise, OpenRCT2’nin oyun kayıt/yükleme penceresi yerine kullandığınız sistemin iletişim penceresi açılacaktır
+STR_6266    :Özel içerik klasörünü aç
+STR_6267    :Zemin deneticisini aç
+STR_6268    :Bir sonraki tick’e atla
 STR_6269    :Geçersiz hava ID’si
 STR_6360    :{BLACK}{COMMA32}
 STR_6502    :{COMMA16} ve {COMMA16} arasında değer giriniz.
@@ -3375,7 +3374,7 @@ STR_DTLS    :Ormanın içinde boş bir alanda güzel bir Lunapark inşa ediniz
 <Dynamite Dunes>
 STR_SCNR    :Dynamite Dunes
 STR_PARK    :Dynamite Dunes
-STR_DTLS    :Çölün orta yerine bir Lunapark oluşturunuz. Bu parkda sadece bir hız treni bulunmakta fakat arazi genişletmek için imkanlar var
+STR_DTLS    :Çölün orta yerine bir Lunapark oluşturunuz. Bu parkta sadece bir hız treni bulunmakta fakat arazi genişletmek için imkanlar var
 
 <Leafy Lake>
 STR_SCNR    :Leafy Lake
@@ -3400,7 +3399,7 @@ STR_DTLS    :Bumbly Beach’in küçük lunaparkını güzel bir lunaparka dön�
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :Üç çesitli adanın üstünde lunapark oluşturunuz
+STR_DTLS    :Üç çeşitli adanın üstünde lunapark oluşturunuz
 
 <Katie's Dreamland>
 STR_SCNR    :Katie’s Dreamland
@@ -3420,7 +3419,7 @@ STR_DTLS    :Sulu lunaparkın büyümeye ihtiyacı var
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Bu terk edilmiş maden ocağı uzun süre turislik bir alandı fakat şimdi sizin genişletebileceğiniz küçük bir lunapark kuruldu
+STR_DTLS    :Bu terk edilmiş maden ocağı uzun süre turistlik bir alandı fakat şimdi sizin genişletebileceğiniz küçük bir lunapark kuruldu
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
@@ -3430,7 +3429,7 @@ STR_DTLS    :Ormanın içinde gizlenmiş ve sadece Kart Yarışı ve Ahşap Hız
 <Mel's World>
 STR_SCNR    :Mel’s World
 STR_PARK    :Mel’s World
-STR_DTLS    :Bu lunaparkda modern tasarımlı hız trenleri bulunmakta
+STR_DTLS    :Bu lunaparkta modern tasarımlı hız trenleri bulunmakta
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
@@ -3445,7 +3444,7 @@ STR_DTLS    :Bu tarihi yeri bir lunaparka dönüştürünüz
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
 STR_PARK    :Crumbly Woods
-STR_DTLS    :Bu lunapark güzel alet tasarımları bulunduruyor. Fakat aletler çok eski. Ya aletleri yenileyiniz yada yeni aletler inşa ediniz
+STR_DTLS    :Bu lunapark güzel alet tasarımları bulunduruyor. Fakat aletler çok eski. Ya aletleri yenileyiniz ya da yeni aletler inşa ediniz
 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
@@ -3470,12 +3469,12 @@ STR_DTLS    :Yerel makamlardan arazi değişiklikleri yasaklanmış bir alanda l
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :‘Thunder Rock’ ile adlandırılan bu tepe turistlerin çok ziyaret ettiği bir yer 
+STR_DTLS    :‘Thunder Rock’ ile adlandırılan bu tepe turistlerin çok ziyaret ettiği bir yer
 
 <Mega Park>
 STR_SCNR    :Mega Park
 STR_PARK    :Mega Park
-STR_DTLS    :Iyi eğlenceler!
+STR_DTLS    :İyi eğlenceler!
 
 ## Added Attractions
 <Whispering Cliffs>
@@ -3531,7 +3530,7 @@ STR_DTLS    :Cengelin ortasına bir lunapark oluşturunuz
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :Lunaparkın arazisi dört büyük gölden oluşmakda
+STR_DTLS    :Lunaparkın arazisi dört büyük gölden oluşmakta
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
@@ -3551,7 +3550,7 @@ STR_DTLS    :Meyve çiftliği bulunan bu arazide lunapark oluşturunuz
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :Barajın etrafınaki boş alana lunapark inşa ediniz
+STR_DTLS    :Barajın etrafındaki boş alana lunapark inşa ediniz
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
@@ -3561,12 +3560,12 @@ STR_DTLS    :Bu kanyonda güzel bir lunapark oluşturunuz
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :Iklimin çok yağmurlu olmasından dolayı aletleri yağmurdan korumak için piramid inşa edilmiş
+STR_DTLS    :İklimin çok yağmurlu olmasından dolayı aletleri yağmurdan korumak için piramit inşa edilmiş
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :Yerel makamlar tarafından ağaçlardan daha yüksek alet inşası yasaklanmışdır
+STR_DTLS    :Yerel makamlar tarafından ağaçlardan daha yüksek alet inşası yasaklanmıştır
 
 <Roman Village>
 STR_SCNR    :Roman Village
@@ -3621,7 +3620,7 @@ STR_DTLS    :Bu dağlık bölgeyi geniş bir lunaparka dönüştürmek için sı
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :Şehir içi bulunan bu mikro parkda satılı arazi kısıtlı
+STR_DTLS    :Şehir içi bulunan bu mikro parkta satılı arazi kısıtlı
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
@@ -3643,7 +3642,7 @@ STR_DTLS    :Uyuyan yanardağın içine lunapark inşa ediniz
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Bir çölün ortasını sınırsız bütç ile lunapark inşa ediniz
+STR_DTLS    :Bir çölün ortasını sınırsız bütçe ile lunapark inşa ediniz
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
@@ -3658,7 +3657,7 @@ STR_DTLS    :Sönmüş yanardağın içinde zamanla göl oluşan bu alanda lunap
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :Bu lunaparkda henüz kârlı bir hız treni bulunmakda. Sizin hedefiniz o hız treninin kârını sekize katlamakdır
+STR_DTLS    :Bu lunaparkta henüz kârlı bir hız treni bulunmakta. Sizin hedefiniz o hız treninin kârını sekize katlamaktır
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
@@ -3678,7 +3677,7 @@ STR_DTLS    :Bir adanın üstünde bulunan eski kaleyi lunaparka dönüştürün
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :Yolları genelde yerin altında bulununan bir lunapark
+STR_DTLS    :Yolları genelde yerin altında bulunan bir lunapark
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
@@ -3698,7 +3697,7 @@ STR_DTLS    :Çölün ortasında beş kısmen inşa edilmiş hız treni bulundur
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :Bu tarihi lunaparkda sadece eski tarz aletlerin inşasına izin veriliyor
+STR_DTLS    :Bu tarihi lunaparkta sadece eski tarz aletlerin inşasına izin veriliyor
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
@@ -3718,7 +3717,7 @@ STR_DTLS    :Büyük bir hız treni bulunduran korkunç lunapark
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Iki büyük kayalık üstünde lunapark kurunuz. Bu iki kayalık hız treni ile birbirine bağlı 
+STR_DTLS    :İki büyük kayalık üstünde lunapark kurunuz. Bu iki kayalık hız treni ile birbirine bağlı
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
@@ -3733,7 +3732,7 @@ STR_DTLS    :Uzun ince bir adanın üstüne lunapark inşa ediniz
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :Buzlu bir alana lunaparak inşa ediniz
+STR_DTLS    :Buzlu bir alana lunapark inşa ediniz
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
@@ -3743,7 +3742,7 @@ STR_DTLS    :Çölde bulunan bu lunaparkı geliştiriniz
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :Bu mikro lunaparkda beş kısmen inşa edilmiş hız trenlerini tamamlayınız
+STR_DTLS    :Bu mikro lunaparkta beş kısmen inşa edilmiş hız trenlerini tamamlayınız
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
@@ -3753,7 +3752,7 @@ STR_DTLS    :Büyük bir alanda gölün etrafında bir lunapark. Müşteri taş�
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :Bu tropical adanın üstünde lunapark inşa ediniz
+STR_DTLS    :Bu tropikal adanın üstünde lunapark inşa ediniz
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
@@ -3785,17 +3784,17 @@ STR_DTLS    :Mikro bir alanda park değerinin yüksek olmasını sağlamaya çal
 <Alton Towers>
 STR_SCNR    :Alton Towers
 STR_PARK    :Alton Towers
-STR_DTLS    :Gerçekde Ingilterede bulunan bir lunapark
+STR_DTLS    :Gerçekte İngiltere’de bulunan bir lunapark
 
 <Heide-Park>
 STR_SCNR    :Heide-Park
 STR_PARK    :Heide-Park
-STR_DTLS    :Gerçekde Almanyada bulunan bir lunapark
+STR_DTLS    :Gerçekte Almanya’da bulunan bir lunapark
 
 <Blackpool Pleasure Beach>
 STR_SCNR    :Blackpool Pleasure Beach
 STR_PARK    :Blackpool Pleasure Beach
-STR_DTLS    :Gerçekde Ingilterede bulunan bir lunapark
+STR_DTLS    :Gerçekte İngiltere’de bulunan bir lunapark
 
 ## Misc parks from RCT1
 # Had no details
@@ -3904,7 +3903,7 @@ STR_DTLS    :Bir büyük lunapark zinciri tarafından bu terk edilmiş maden kas
 <Gravity Gardens>
 STR_SCNR    :Gravity Gardens
 STR_PARK    :Gravity Gardens
-STR_DTLS    :Bu lunaparkda sadece hız treni inşa etmenize izin veriliyor
+STR_DTLS    :Bu lunaparkta sadece hız treni inşa etmenize izin veriliyor
 
 <Infernal Views>
 STR_SCNR    :Infernal Views
@@ -3924,27 +3923,27 @@ STR_DTLS    :Bir dağın eteğine lunapark kurunuz. Fakat yüksek aletlerin inş
 <Six Flags Belgium>
 STR_SCNR    :Six Flags Belgium
 STR_PARK    :Six Flags Belgium
-STR_DTLS    :Gerçekde Belçikada bulunan bir lunapark
+STR_DTLS    :Gerçekte Belçika’da bulunan bir lunapark
 
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Gerçekde ABD’nin New Jersey eyaletinde bulunan bir lunapark
+STR_DTLS    :Gerçekte ABD’nin New Jersey eyaletinde bulunan bir lunapark
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holland
 STR_PARK    :Six Flags Holland
-STR_DTLS    :Gerçekde Hollanda’da bulunan bir lunapark
+STR_DTLS    :Gerçekte Hollanda’da bulunan bir lunapark
 
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Gerçekde ABD’nin Kaliforniya eyaletinde bulunan bir lunapark
+STR_DTLS    :Gerçekte ABD’nin Kaliforniya eyaletinde bulunan bir lunapark
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Gerçekde ABD’nin Texas eyaletinde bulunan bir lunapark
+STR_DTLS    :Gerçekte ABD’nin Texas eyaletinde bulunan bir lunapark
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -3957,12 +3956,12 @@ STR_DTLS    :Kullanılmayan bir elmas madeni satın aldınız. Bu madende değer
 <Africa - Oasis>
 STR_SCNR    :Mirage Madness
 STR_PARK    :Mirage Madness
-STR_DTLS    :Afrikada bir vaha buldunuz ve bu vahanın etrafına güzel bir lunapark inşa etmeye karar verdiniz
+STR_DTLS    :Afrika’da bir vaha buldunuz ve bu vahanın etrafına güzel bir lunapark inşa etmeye karar verdiniz
 
 <Africa - Victoria Falls>
 STR_SCNR    :Over The Edge
 STR_PARK    :Over The Edge
-STR_DTLS    :Ucuza ve bol miktarda park için ceyeran üretmek amacıyla bir baraj inşa ettirdiniz. Baraj için çektiğiniz krediyi geri ödediniz bile. Şimdi park değerini yükseltmeye çalışınız
+STR_DTLS    :Ucuza ve bol miktarda park için cereyan üretmek amacıyla bir baraj inşa ettirdiniz. Baraj için çektiğiniz krediyi geri ödediniz bile. Şimdi park değerini yükseltmeye çalışınız
 
 <Antarctic - Ecological Salvage>
 STR_SCNR    :Icy Adventures
@@ -3977,7 +3976,7 @@ STR_DTLS    :Yetkililer, bitişik arazide bir lunapark inşa ederek Çin Seddi �
 <Asia - Japanese Coastal Reclaim>
 STR_SCNR    :Okinawa Coast
 STR_PARK    :Okinawa Coast
-STR_DTLS    :Burada kurulu olan lunaparkın yeri bitmek üzere. Bundan dolayı suyun üstüne inşa etmeniz gerekli. Bu yüzden kredi çekmeniz gerklidi. Deprem riskinden dolayı yüksek inşa yasağı koyulmuştur
+STR_DTLS    :Burada kurulu olan lunaparkın yeri bitmek üzere. Bundan dolayı suyun üstüne inşa etmeniz gerekli. Bu yüzden kredi çekmeniz gereklidir. Deprem riskinden dolayı yüksek inşa yasağı koyulmuştur
 
 <Asia - Maharaja Palace>
 STR_SCNR    :Park Maharaja
@@ -3987,42 +3986,42 @@ STR_DTLS    :Maharaja ailesi sizden yerel halkın eğlenmesi için Maharaja Sara
 <Australasia - Ayers Rock>
 STR_SCNR    :Ayers Adventure
 STR_PARK    :Ayers Adventure
-STR_DTLS    :Aborijin halkının kültürünü anma programı için bir lunapark kurmanız rica edildi.
+STR_DTLS    :Aborjin halkının kültürünü anma programı için bir lunapark kurmanız rica edildi.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :Beach Barbecue Blast
 STR_PARK    :Beach Barbecue Blast
-STR_DTLS    :Yerel bir girişimcinin deniz yaşamı parkı kapandı. Siz henüz küçük bir lunaparka sahipsiniz ve kapalı olan diğer parkıda satın aldınız. Bu parkları birleştiriniz
+STR_DTLS    :Yerel bir girişimcinin deniz yaşamı parkı kapandı. Siz henüz küçük bir lunaparka sahipsiniz ve kapalı olan diğer parkında satın aldınız. Bu parkları birleştiriniz
 
 <Europe - European Cultural Festival>
 STR_SCNR    :European Extravaganza
 STR_PARK    :European Extravaganza
-STR_DTLS    :Avrupa kültürel festivalinin yöneticisi olarak seçildiniz. Sizden festivala daha fazla müşteri getirmeniz bekleniyor
+STR_DTLS    :Avrupa kültürel festivalinin yöneticisi olarak seçildiniz. Sizden festivale daha fazla müşteri getirmeniz bekleniyor
 
 <Europe - Renovation>
 STR_SCNR    :From The Ashes
 STR_PARK    :From The Ashes
-STR_DTLS    :Eski bir lunapark harabeye dönüşdü. Avrupa Birliği size bu parkı eski ihtişamına getirmek dileği ile verdi. Parkı yenilemeniz ve krediyi geri ödemeniz gerekiyor.
+STR_DTLS    :Eski bir lunapark harabeye dönüştü. Avrupa Birliği size bu parkı eski ihtişamına getirmek dileği ile verdi. Parkı yenilemeniz ve krediyi geri ödemeniz gerekiyor.
 
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
-STR_DTLS    :Hawaii’de yaşıyan insanlar bütün gün sörf yapmakdan sıkılmış ve daha heyecanlı birşey yapmak istiyorlar. Sizden turistlerin ziyaret edeceği ve yerel halkı memnun edecek bir park inşa etmeniz bekleniyor
+STR_DTLS    :Hawaii’de yaşayan insanlar bütün gün sörf yapmaktan sıkılmış ve daha heyecanlı bir şey yapmak istiyorlar. Sizden turistlerin ziyaret edeceği ve yerel halkı memnun edecek bir park inşa etmeniz bekleniyor
 
 <North America - Grand Canyon>
 STR_SCNR    :Canyon Calamities
 STR_PARK    :Canyon Calamities
-STR_DTLS    :Bu doğal hazinenin her iki tarafında sınırlı bir alanda bir park inşa etmelisiniz. - Yerli Kızılderililerden toprak satın alma imkanınız var. Yerel kasabanın nüfusunu sürdürmek için hedefi tamamlamanız gerekiyor.
+STR_DTLS    :Bu doğal hazinenin her iki tarafında sınırlı bir alanda bir park inşa etmelisiniz. - Yerli Kızılderililerden toprak satın alma imkânınız var. Yerel kasabanın nüfusunu sürdürmek için hedefi tamamlamanız gerekiyor.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
-STR_DTLS    :Çok başarılı bir iş adamısınız ve uzun bir müddet tatile çıktınız. Bu tatilde şehirin göbeğinde bulunan boş araziye başarılı bir lunapark inşa etmeye karar verdiniz. Paranız sınırsız
+STR_DTLS    :Çok başarılı bir iş adamısınız ve uzun bir müddet tatile çıktınız. Bu tatilde şehrin göbeğinde bulunan boş araziye başarılı bir lunapark inşa etmeye karar verdiniz. Paranız sınırsız
 
 <South America - Inca Lost City>
 STR_SCNR    :Lost City Founder
 STR_PARK    :Lost City Founder
-STR_DTLS    :Yerel turizmi güçlendirmek için çevresiyle uyumlu bir park kurmanız gereklidir. Fakat inşa için yükseklik sınırı koyulmuşdur
+STR_DTLS    :Yerel turizmi güçlendirmek için çevresiyle uyumlu bir park kurmanız gereklidir. Fakat inşa için yükseklik sınırı koyulmuştur
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Rainforest Romp
@@ -4080,7 +4079,7 @@ STR_DTLS    :Jura devri tarzı lunapark inşa etme görevini üstlendiniz. Müş
 <Prehistoric - Stone Age>
 STR_SCNR    :Rocky Rambles
 STR_PARK    :Rocky Rambles
-STR_DTLS    :Karayol kurulmasını engellemek için bu araziyi satın aldınız ve Taş Devri temalı bir lunapark inşa etmeye karar verdiniz
+STR_DTLS    :Karayolu kurulmasını engellemek için bu araziyi satın aldınız ve Taş Devri temalı bir lunapark inşa etmeye karar verdiniz
 
 <Roaring Twenties - Prison Island>
 STR_SCNR    :Alcatraz
@@ -4095,14 +4094,14 @@ STR_DTLS    :Dedeniz 75 yıl önce Schneider Kupasını kazanmış ve onun zafer
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
-STR_DTLS    :Şehirin içinde boş bir araziye sahipsiniz ve bu boş araziye şehir ve yirmili yıllar teamlı bir lunapark inşa etmeye karar verdiniz
+STR_DTLS    :Şehrin içinde boş bir araziye sahipsiniz ve bu boş araziye şehir ve yirmili yıllar temalı bir lunapark inşa etmeye karar verdiniz
 
 <Rock 'n' Roll - Flower Power>
 STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
-STR_DTLS    :Büyük bir müzik festivalının yanına bir lunapark inşa edinizki festival ziyaretcileri daha çok eğlensin
+STR_DTLS    :Büyük bir müzik festivalinin yanına bir lunapark inşa ediniz ki festival ziyaretçileri daha çok eğlensin
 
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :Rock ’n’ Roll Revival
 STR_PARK    :Rock ’n’ Roll Revival
-STR_DTLS    :Bu lunapark zamanında çok başarılımış. Fakat şimdi git gide bu parkın başarısı ve parlaklığı geriliyor. Park sahibi sizden parkı geri canlandırmanızı ve eski parlaklığına getirmenizi diliyor
+STR_DTLS    :Bu lunapark zamanında çok başarılıymış. Fakat şimdi git gide bu parkın başarısı ve parlaklığı geriliyor. Park sahibi sizden parkı geri canlandırmanızı ve eski parlaklığına getirmenizi diliyor
