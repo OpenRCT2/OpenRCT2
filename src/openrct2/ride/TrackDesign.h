@@ -23,12 +23,23 @@ struct ResultWithMessage;
 
 constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
 
+enum class TrackPlaceOperation : uint8_t
+{
+    drawOutlines,
+    placeQuery,
+    place,
+    getPlaceZ,
+    placeGhost,
+    placeTrackPreview,
+    removeGhost,
+};
+
 struct TrackDesignState
 {
     CoordsXYZ PreviewMin;
     CoordsXYZ PreviewMax;
     CoordsXYZ Origin;
-    uint8_t PlaceOperation{};
+    TrackPlaceOperation PlaceOperation{};
     int16_t PlaceZ{};
     int16_t PlaceSceneryZ{};
     bool EntranceExitPlaced{};
@@ -188,19 +199,6 @@ enum
     TRACK_DESIGN_FLAG_HAS_SCENERY = (1 << 1),
     TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE = (1 << 2),
 };
-
-enum
-{
-    PTD_OPERATION_DRAW_OUTLINES,
-    PTD_OPERATION_PLACE_QUERY,
-    PTD_OPERATION_PLACE,
-    PTD_OPERATION_GET_PLACE_Z,
-    PTD_OPERATION_PLACE_GHOST,
-    PTD_OPERATION_PLACE_TRACK_PREVIEW,
-    PTD_OPERATION_REMOVE_GHOST,
-};
-
-static constexpr uint8_t PTD_OPERATION_FLAG_IS_REPLAY = (1 << 7);
 
 extern bool gTrackDesignSceneryToggle;
 
