@@ -217,9 +217,9 @@ declare global {
         readonly mode: GameMode;
 
         /**
-         * Whether the game is currently paused or not.
+         * Whether the game is currently paused or not. Readonly in network mode.
          */
-        readonly paused: boolean;
+        paused: boolean;
 
         /**
          * Render the current state of the map and save to disc.
