@@ -1606,7 +1606,8 @@ static Widget _rideConstructionWidgets[] = {
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION) | (1u << WIDX_PREVIOUS_SECTION);
+            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
+                | (1u << WIDX_PREVIOUS_SECTION);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
