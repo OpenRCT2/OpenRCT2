@@ -4639,6 +4639,8 @@ void InvalidateTestResults(Ride& ride)
 {
     ride.measurement = {};
     ride.excitement = kRideRatingUndefined;
+    ride.nausea = kRideRatingUndefined;
+    ride.intensity = kRideRatingUndefined;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
