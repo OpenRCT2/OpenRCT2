@@ -1169,7 +1169,8 @@ static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
         // Make a new 1 character wide string for measuring the width
         // of the character that the cursor is under. (NOTE: this is broken for multi byte utf8 codepoints)
         width = std::max(
-            GfxGetStringWidthNoFormatting(u8string{ textInput->Buffer[textInput->SelectionStart] }, FontStyle::Medium) - 2, 4);
+            GfxGetStringWidthNoFormatting(u8string{ (*textInput->Buffer)[textInput->SelectionStart] }, FontStyle::Medium) - 2,
+            4);
     }
 
     if (OpenRCT2::Ui::Windows::TextBoxCaretIsFlashed())
