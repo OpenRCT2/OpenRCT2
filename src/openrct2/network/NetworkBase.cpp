@@ -385,7 +385,6 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
 
     IsServerPlayerInvisible = gOpenRCT2Headless;
 
-    CheatsReset();
     LoadGroups();
     BeginChatLog();
     BeginServerLog();
