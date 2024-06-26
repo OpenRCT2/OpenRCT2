@@ -536,7 +536,7 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
 
     auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
-    if (gPaintBoundingBoxes && session.DPI.zoom_level == ZoomLevel{ 0 })
+    if (gPaintBoundingBoxes)
     {
         PaintPSImageWithBoundingBoxes(session, ps, imageId, screenPos.x, screenPos.y);
     }
