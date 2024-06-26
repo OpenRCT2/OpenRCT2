@@ -975,12 +975,6 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_CLOSE:
                     Close();
                     break;
-                case WIDX_NEXT_SECTION:
-                    RideSelectNextSection();
-                    break;
-                case WIDX_PREVIOUS_SECTION:
-                    RideSelectPreviousSection();
-                    break;
                 case WIDX_ROTATE:
                     Rotate();
                     break;
@@ -1025,6 +1019,12 @@ static Widget _rideConstructionWidgets[] = {
                 }
                 case WIDX_DEMOLISH:
                     MouseUpDemolish();
+                    break;
+                case WIDX_NEXT_SECTION:
+                    RideSelectNextSection();
+                    break;
+                case WIDX_PREVIOUS_SECTION:
+                    RideSelectPreviousSection();
                     break;
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
@@ -1606,7 +1606,8 @@ static Widget _rideConstructionWidgets[] = {
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH);
+            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
+                | (1u << WIDX_PREVIOUS_SECTION);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
@@ -4520,7 +4521,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_PREVIOUS_SECTION);
+        w->OnMouseDown(WIDX_PREVIOUS_SECTION);
     }
 
     void WindowRideConstructionKeyboardShortcutNextTrack()
@@ -4532,7 +4533,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_NEXT_SECTION);
+        w->OnMouseDown(WIDX_NEXT_SECTION);
     }
 
     void WindowRideConstructionKeyboardShortcutBuildCurrent()
