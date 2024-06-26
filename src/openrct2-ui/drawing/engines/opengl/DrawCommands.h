@@ -93,7 +93,6 @@ namespace OpenRCT2::Ui
 
     struct DrawLineCommand
     {
-        ivec4 clip;
         ivec4 bounds;
         GLuint colour;
         GLint depth;

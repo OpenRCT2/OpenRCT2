@@ -20,10 +20,16 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
 {
     ScreenCoordsXY offset{ coords.x - dpi.x, coords.y - dpi.y };
 
+    offset.x = dpi.zoom_level.ApplyInversedTo(offset.x);
+    offset.y = dpi.zoom_level.ApplyInversedTo(offset.y);
+    no_pixels = dpi.zoom_level.ApplyInversedTo(no_pixels);
+    const int32_t width = dpi.zoom_level.ApplyInversedTo(dpi.width);
+    const int32_t height = dpi.zoom_level.ApplyInversedTo(dpi.height);
+
     // Check to make sure point is in the y range
     if (offset.y < 0)
         return;
-    if (offset.y >= dpi.height)
+    if (offset.y >= height)
         return;
     // Check to make sure we are drawing at least a pixel
     if (!no_pixels)
@@ -41,18 +47,17 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
     }
 
     // Ensure that the end point of the line is within range
-    if (offset.x + no_pixels - dpi.width > 0)
+    if (offset.x + no_pixels - width > 0)
     {
         // If the end point has any pixels outside range
         // cut them off. If there are now no pixels return.
-        no_pixels -= offset.x + no_pixels - dpi.width;
+        no_pixels -= offset.x + no_pixels - width;
         if (no_pixels <= 0)
             return;
     }
 
     // Get the buffer we are drawing to and move to the first coordinate.
-    uint8_t* bits_pointer = dpi.bits
-        + offset.y * (static_cast<int64_t>(static_cast<int64_t>(dpi.pitch) + static_cast<int64_t>(dpi.width))) + offset.x;
+    uint8_t* bits_pointer = dpi.bits + offset.y * (static_cast<int64_t>(dpi.pitch) + static_cast<int64_t>(width)) + offset.x;
 
     // Draw the line to the specified colour
     for (; no_pixels > 0; --no_pixels, ++bits_pointer)

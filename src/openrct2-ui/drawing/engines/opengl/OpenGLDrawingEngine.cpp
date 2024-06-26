@@ -578,12 +578,17 @@ void OpenGLDrawingContext::FilterRect(
 
 void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
+    // Note: this function does not respect DPI bounds.
     CalculcateClipping(dpi);
 
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
-    command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-    command.bounds = { line.GetX1() + _offsetX, line.GetY1() + _offsetY, line.GetX2() + _offsetX, line.GetY2() + _offsetY };
+    const int32_t x1 = dpi.zoom_level.ApplyInversedTo(line.GetX1() - dpi.x) + _clipLeft;
+    const int32_t y1 = dpi.zoom_level.ApplyInversedTo(line.GetY1() - dpi.y) + _clipTop;
+    const int32_t x2 = dpi.zoom_level.ApplyInversedTo(line.GetX2() - dpi.x) + _clipLeft;
+    const int32_t y2 = dpi.zoom_level.ApplyInversedTo(line.GetY2() - dpi.y) + _clipTop;
+
+    command.bounds = { x1, y1, x2, y2 };
     command.colour = colour & 0xFF;
     command.depth = _drawCount++;
 }
