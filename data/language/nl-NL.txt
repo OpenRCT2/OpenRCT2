@@ -3708,11 +3708,13 @@ STR_6635    :Assetpacks checken…
 STR_6636    :Titelpresentaties checken…
 STR_6637    :Titelpresentatie wordt geladen…
 STR_6638    :Grote UI
-STR_6639    :Maakt sommige UI-elementen groter, om het spel gemakkelijker te kunnen bedienen met een touchscreen.
+STR_6639    :Voert een aantal veranderingen door om het spel gemakkelijker te kunnen bedienen met een touchscreen.
 STR_6640    :Assetpacks instellen…
 STR_6641    :Laadscherm
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Touch-verbeteringen
+STR_6645    :Maakt sommige UI-elementen groter zodat ze gemakkelijker aan te klikken/tikken zijn.
 
 #############
 # Scenarios #

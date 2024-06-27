@@ -3711,6 +3711,8 @@ STR_6640    :Medienpakete bearbeiten …
 STR_6641    :Lade-/Fortschrittsfenster
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Verbesserungen für die Touch-Bedienung
+STR_6645    :Vergrößert einige Bedienelemente, damit sie leichter angeklickt oder angetippt werden können.
 
 #############
 # Scenarios #
