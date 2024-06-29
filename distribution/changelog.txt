@@ -30,6 +30,7 @@
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
 - Change: [#21991] UI themes JSON now use colour names and a translucency bool, instead of a number (old themes still work).
 - Change: [#22057] Reorder Time Twister’s scenarios and adjust their difficulty classification.
+- Change: [#22173] Patrol path selection is visible over existing patrol paths.
 - Change: [#22196] Make track nagivation buttons holdable.
 - Fix: [#13234] Vehicle weight sometimes wrong after using Remove All Guests cheat.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
