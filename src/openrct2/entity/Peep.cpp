@@ -956,6 +956,11 @@ static void GuestUpdateThoughts(Guest* peep)
  */
 void Peep::Update()
 {
+    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+    {
+        return;
+    }
+
     auto* guest = As<Guest>();
     if (guest != nullptr)
     {
