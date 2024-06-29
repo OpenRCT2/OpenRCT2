@@ -14,7 +14,7 @@
 #include <stdexcept>
 #include <vector>
 #ifndef _WIN32
-#    ifndef __FreeBSD__
+#    if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)
 #        include <alloca.h>
 #    endif
 #    include <unicode/ucnv.h>
