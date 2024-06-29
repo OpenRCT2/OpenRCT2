@@ -151,6 +151,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
+                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergy);
                 peep->Energy = value;
             }
         }
@@ -166,6 +167,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
+                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergyTarget);
                 peep->EnergyTarget = value;
             }
         }
