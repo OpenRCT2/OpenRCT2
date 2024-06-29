@@ -898,324 +898,325 @@ void Guest::UpdateConsumptionMotives()
 void Guest::Tick128UpdateGuest(uint32_t index)
 {
     const auto currentTicks = GetGameState().CurrentTicks;
-
-    if ((index & 0x1FF) == (currentTicks & 0x1FF))
+    if ((index & 0x1FF) != (currentTicks & 0x1FF))
     {
-        /* Effect of masking with 0x1FF here vs mask 0x7F,
-         * which is the condition for calling this function, is
-         * to reduce how often the content in this conditional
-         * is executed to once every four calls. */
-        if (PeepFlags & PEEP_FLAGS_CROWDED)
+        UpdateConsumptionMotives();
+        return;
+    }
+
+    /* Effect of masking with 0x1FF here vs mask 0x7F,
+     * which is the condition for calling this function, is
+     * to reduce how often the content in this conditional
+     * is executed to once every four calls. */
+    if (PeepFlags & PEEP_FLAGS_CROWDED)
+    {
+        PeepThoughtType thought_type = crowded_thoughts[ScenarioRand() & 0xF];
+        if (thought_type != PeepThoughtType::None)
         {
-            PeepThoughtType thought_type = crowded_thoughts[ScenarioRand() & 0xF];
-            if (thought_type != PeepThoughtType::None)
-            {
-                InsertNewThought(thought_type);
-            }
+            InsertNewThought(thought_type);
         }
+    }
 
-        if (PeepFlags & PEEP_FLAGS_EXPLODE && x != LOCATION_NULL)
-        {
-            if (State == PeepState::Walking || State == PeepState::Sitting)
-            {
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, GetLocation());
-
-                ExplosionCloud::Create({ x, y, z + 16 });
-                ExplosionFlare::Create({ x, y, z + 16 });
-
-                Remove();
-                return;
-            }
-
-            PeepFlags &= ~PEEP_FLAGS_EXPLODE;
-        }
-
-        if (PeepFlags & PEEP_FLAGS_HUNGER)
-        {
-            if (Hunger >= 15)
-                Hunger -= 15;
-        }
-
-        if (PeepFlags & PEEP_FLAGS_TOILET)
-        {
-            if (Toilet <= 180)
-                Toilet += 50;
-        }
-
-        if (PeepFlags & PEEP_FLAGS_HAPPINESS)
-        {
-            HappinessTarget = 5;
-        }
-
-        if (PeepFlags & PEEP_FLAGS_NAUSEA)
-        {
-            NauseaTarget = 200;
-            if (Nausea <= 130)
-                Nausea = 130;
-        }
-
-        if (Angriness != 0)
-            Angriness--;
-
+    if (PeepFlags & PEEP_FLAGS_EXPLODE && x != LOCATION_NULL)
+    {
         if (State == PeepState::Walking || State == PeepState::Sitting)
         {
-            SurroundingsThoughtTimeout++;
-            if (SurroundingsThoughtTimeout >= 18)
-            {
-                SurroundingsThoughtTimeout = 0;
-                if (x != LOCATION_NULL)
-                {
-                    PeepThoughtType thought_type = PeepAssessSurroundings(x & 0xFFE0, y & 0xFFE0, z);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, GetLocation());
 
-                    if (thought_type != PeepThoughtType::None)
-                    {
-                        InsertNewThought(thought_type);
-                        HappinessTarget = std::min(kPeepMaxHappiness, HappinessTarget + 45);
-                    }
-                }
-            }
+            ExplosionCloud::Create({ x, y, z + 16 });
+            ExplosionFlare::Create({ x, y, z + 16 });
+
+            Remove();
+            return;
         }
 
-        UpdateSpriteType();
+        PeepFlags &= ~PEEP_FLAGS_EXPLODE;
+    }
 
-        if (State == PeepState::OnRide || State == PeepState::EnteringRide)
+    if (PeepFlags & PEEP_FLAGS_HUNGER)
+    {
+        if (Hunger >= 15)
+            Hunger -= 15;
+    }
+
+    if (PeepFlags & PEEP_FLAGS_TOILET)
+    {
+        if (Toilet <= 180)
+            Toilet += 50;
+    }
+
+    if (PeepFlags & PEEP_FLAGS_HAPPINESS)
+    {
+        HappinessTarget = 5;
+    }
+
+    if (PeepFlags & PEEP_FLAGS_NAUSEA)
+    {
+        NauseaTarget = 200;
+        if (Nausea <= 130)
+            Nausea = 130;
+    }
+
+    if (Angriness != 0)
+        Angriness--;
+
+    if (State == PeepState::Walking || State == PeepState::Sitting)
+    {
+        SurroundingsThoughtTimeout++;
+        if (SurroundingsThoughtTimeout >= 18)
         {
-            GuestTimeOnRide = std::min(255, GuestTimeOnRide + 1);
-
-            if (PeepFlags & PEEP_FLAGS_WOW)
+            SurroundingsThoughtTimeout = 0;
+            if (x != LOCATION_NULL)
             {
-                InsertNewThought(PeepThoughtType::Wow2);
-            }
+                PeepThoughtType thought_type = PeepAssessSurroundings(x & 0xFFE0, y & 0xFFE0, z);
 
-            if (GuestTimeOnRide > 15)
-            {
-                HappinessTarget = std::max(0, HappinessTarget - 5);
-
-                if (GuestTimeOnRide > 22)
+                if (thought_type != PeepThoughtType::None)
                 {
-                    auto ride = GetRide(CurrentRide);
-                    if (ride != nullptr)
-                    {
-                        PeepThoughtType thought_type = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE)
-                            ? PeepThoughtType::GetOut
-                            : PeepThoughtType::GetOff;
-
-                        InsertNewThought(thought_type, CurrentRide);
-                    }
+                    InsertNewThought(thought_type);
+                    HappinessTarget = std::min(kPeepMaxHappiness, HappinessTarget + 45);
                 }
             }
         }
+    }
 
-        if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
-            && GuestHeadingToRideId.IsNull())
+    UpdateSpriteType();
+
+    if (State == PeepState::OnRide || State == PeepState::EnteringRide)
+    {
+        GuestTimeOnRide = std::min(255, GuestTimeOnRide + 1);
+
+        if (PeepFlags & PEEP_FLAGS_WOW)
         {
-            uint32_t time_duration = currentTicks - ParkEntryTime;
-            time_duration /= 2048;
+            InsertNewThought(PeepThoughtType::Wow2);
+        }
 
-            if (time_duration >= 5)
+        if (GuestTimeOnRide > 15)
+        {
+            HappinessTarget = std::max(0, HappinessTarget - 5);
+
+            if (GuestTimeOnRide > 22)
             {
-                PickRideToGoOn();
-
-                if (GuestHeadingToRideId.IsNull())
+                auto ride = GetRide(CurrentRide);
+                if (ride != nullptr)
                 {
-                    HappinessTarget = std::max(HappinessTarget - 128, 0);
-                    PeepLeavePark(this);
-                    PeepUpdateHunger(this);
-                    UpdateMotivesIdle();
-                    UpdateConsumptionMotives();
-                    return;
+                    PeepThoughtType thought_type = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE)
+                        ? PeepThoughtType::GetOut
+                        : PeepThoughtType::GetOff;
+
+                    InsertNewThought(thought_type, CurrentRide);
                 }
             }
         }
+    }
 
-        if ((ScenarioRand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
+    if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
+        && GuestHeadingToRideId.IsNull())
+    {
+        uint32_t time_duration = currentTicks - ParkEntryTime;
+        time_duration /= 2048;
+
+        if (time_duration >= 5)
         {
             PickRideToGoOn();
-        }
 
-        if ((index & 0x3FF) == (currentTicks & 0x3FF))
-        {
-            /* Effect of masking with 0x3FF here vs mask 0x1FF,
-             * which is used in the encompassing conditional, is
-             * to reduce how often the content in this conditional
-             * is executed to once every second time the encompassing
-             * conditional executes. */
-
-            if (!OutsideOfPark && (State == PeepState::Walking || State == PeepState::Sitting))
+            if (GuestHeadingToRideId.IsNull())
             {
-                uint8_t num_thoughts = 0;
-                PeepThoughtType possible_thoughts[5];
+                HappinessTarget = std::max(HappinessTarget - 128, 0);
+                PeepLeavePark(this);
+                PeepUpdateHunger(this);
+                UpdateMotivesIdle();
+                UpdateConsumptionMotives();
+                return;
+            }
+        }
+    }
 
-                if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+    if ((ScenarioRand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
+    {
+        PickRideToGoOn();
+    }
+
+    if ((index & 0x3FF) == (currentTicks & 0x3FF))
+    {
+        /* Effect of masking with 0x3FF here vs mask 0x1FF,
+         * which is used in the encompassing conditional, is
+         * to reduce how often the content in this conditional
+         * is executed to once every second time the encompassing
+         * conditional executes. */
+
+        if (!OutsideOfPark && (State == PeepState::Walking || State == PeepState::Sitting))
+        {
+            uint8_t num_thoughts = 0;
+            PeepThoughtType possible_thoughts[5];
+
+            if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+            {
+                possible_thoughts[num_thoughts++] = PeepThoughtType::GoHome;
+            }
+            else
+            {
+                if (Energy <= 70 && Happiness < 128)
                 {
-                    possible_thoughts[num_thoughts++] = PeepThoughtType::GoHome;
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
+                }
+
+                if (Hunger <= 10 && !HasFoodOrDrink())
+                {
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
+                }
+
+                if (Thirst <= 25 && !HasFoodOrDrink())
+                {
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
+                }
+
+                if (Toilet >= 160)
+                {
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
+                }
+
+                if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105
+                    && Energy >= 70)
+                {
+                    /* The energy check was originally a second check on happiness.
+                     * This was superfluous so should probably check something else.
+                     * Guessed that this should really be checking energy, since
+                     * the addresses for happiness and energy are quite close,
+                     * 70 is also the threshold for tired thoughts (see above) and
+                     * it makes sense that a tired peep might not think about getting
+                     * more money. */
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::RunningOut;
+                }
+            }
+
+            if (num_thoughts != 0)
+            {
+                PeepThoughtType chosen_thought = possible_thoughts[ScenarioRand() % num_thoughts];
+
+                InsertNewThought(chosen_thought);
+
+                switch (chosen_thought)
+                {
+                    case PeepThoughtType::Hungry:
+                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_FOOD);
+                        break;
+                    case PeepThoughtType::Thirsty:
+                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_DRINKS);
+                        break;
+                    case PeepThoughtType::Toilet:
+                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_TOILET);
+                        break;
+                    case PeepThoughtType::RunningOut:
+                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+    else
+    {
+        /* This branch of the conditional is executed on the
+         * remaining times the encompassing conditional is
+         * executed (which is also every second time, but
+         * the alternate time to the true branch). */
+        if (Nausea >= 140)
+        {
+            PeepThoughtType thought_type = PeepThoughtType::Sick;
+            if (Nausea >= 200)
+            {
+                thought_type = PeepThoughtType::VerySick;
+                PeepHeadForNearestRideWithFlags(this, true, RIDE_TYPE_FLAG_IS_FIRST_AID);
+            }
+            InsertNewThought(thought_type);
+        }
+    }
+
+    switch (State)
+    {
+        case PeepState::Walking:
+        case PeepState::LeavingPark:
+        case PeepState::EnteringPark:
+            PeepDecideWhetherToLeavePark(this);
+            PeepUpdateHunger(this);
+            break;
+
+        case PeepState::Sitting:
+            if (EnergyTarget <= 135)
+                EnergyTarget += 5;
+
+            if (Thirst >= 5)
+            {
+                Thirst -= 4;
+                Toilet = std::min(255, Toilet + 3);
+            }
+
+            if (NauseaTarget >= 50)
+                NauseaTarget -= 6;
+
+            // In the original this branched differently
+            // but it would mean setting the peep happiness from
+            // a thought type entry which i think is incorrect.
+            PeepUpdateHunger(this);
+            break;
+
+        case PeepState::Queuing:
+            if (TimeInQueue >= 2000)
+            {
+                /* Peep happiness is affected once the peep has been waiting
+                 * too long in a queue. */
+                bool found = false;
+                for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
+                {
+                    if (pathElement->GetBaseZ() != NextLoc.z)
+                        continue;
+
+                    // Check if the footpath has a queue line TV monitor on it
+                    if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
+                    {
+                        auto* pathAddEntry = pathElement->GetAdditionEntry();
+                        if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN))
+                        {
+                            found = true;
+                        }
+                    }
+                    break;
+                }
+
+                if (found)
+                {
+                    /* Queue line TV monitors make the peeps waiting in the queue
+                     * slowly happier, up to a certain level. */
+                    /* Why don't queue line TV monitors start affecting the peeps
+                     * as soon as they join the queue?? */
+                    if (HappinessTarget < 90)
+                        HappinessTarget = 90;
+
+                    if (HappinessTarget < 165)
+                        HappinessTarget += 2;
                 }
                 else
                 {
-                    if (Energy <= 70 && Happiness < 128)
-                    {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
-                    }
-
-                    if (Hunger <= 10 && !HasFoodOrDrink())
-                    {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
-                    }
-
-                    if (Thirst <= 25 && !HasFoodOrDrink())
-                    {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
-                    }
-
-                    if (Toilet >= 160)
-                    {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
-                    }
-
-                    if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105
-                        && Energy >= 70)
-                    {
-                        /* The energy check was originally a second check on happiness.
-                         * This was superfluous so should probably check something else.
-                         * Guessed that this should really be checking energy, since
-                         * the addresses for happiness and energy are quite close,
-                         * 70 is also the threshold for tired thoughts (see above) and
-                         * it makes sense that a tired peep might not think about getting
-                         * more money. */
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::RunningOut;
-                    }
-                }
-
-                if (num_thoughts != 0)
-                {
-                    PeepThoughtType chosen_thought = possible_thoughts[ScenarioRand() % num_thoughts];
-
-                    InsertNewThought(chosen_thought);
-
-                    switch (chosen_thought)
-                    {
-                        case PeepThoughtType::Hungry:
-                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_FOOD);
-                            break;
-                        case PeepThoughtType::Thirsty:
-                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_DRINKS);
-                            break;
-                        case PeepThoughtType::Toilet:
-                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_TOILET);
-                            break;
-                        case PeepThoughtType::RunningOut:
-                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
-                            break;
-                        default:
-                            break;
-                    }
+                    /* Without a queue line TV monitor peeps waiting too long
+                     * in a queue get less happy. */
+                    HappinessTarget = std::max(HappinessTarget - 4, 0);
                 }
             }
-        }
-        else
-        {
-            /* This branch of the conditional is executed on the
-             * remaining times the encompassing conditional is
-             * executed (which is also every second time, but
-             * the alternate time to the true branch). */
-            if (Nausea >= 140)
+            PeepUpdateHunger(this);
+            break;
+        case PeepState::EnteringRide:
+            if (SubState == 17 || SubState == 15)
             {
-                PeepThoughtType thought_type = PeepThoughtType::Sick;
-                if (Nausea >= 200)
-                {
-                    thought_type = PeepThoughtType::VerySick;
-                    PeepHeadForNearestRideWithFlags(this, true, RIDE_TYPE_FLAG_IS_FIRST_AID);
-                }
-                InsertNewThought(thought_type);
-            }
-        }
-
-        switch (State)
-        {
-            case PeepState::Walking:
-            case PeepState::LeavingPark:
-            case PeepState::EnteringPark:
                 PeepDecideWhetherToLeavePark(this);
-                PeepUpdateHunger(this);
-                break;
-
-            case PeepState::Sitting:
-                if (EnergyTarget <= 135)
-                    EnergyTarget += 5;
-
-                if (Thirst >= 5)
-                {
-                    Thirst -= 4;
-                    Toilet = std::min(255, Toilet + 3);
-                }
-
-                if (NauseaTarget >= 50)
-                    NauseaTarget -= 6;
-
-                // In the original this branched differently
-                // but it would mean setting the peep happiness from
-                // a thought type entry which i think is incorrect.
-                PeepUpdateHunger(this);
-                break;
-
-            case PeepState::Queuing:
-                if (TimeInQueue >= 2000)
-                {
-                    /* Peep happiness is affected once the peep has been waiting
-                     * too long in a queue. */
-                    bool found = false;
-                    for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
-                    {
-                        if (pathElement->GetBaseZ() != NextLoc.z)
-                            continue;
-
-                        // Check if the footpath has a queue line TV monitor on it
-                        if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
-                        {
-                            auto* pathAddEntry = pathElement->GetAdditionEntry();
-                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN))
-                            {
-                                found = true;
-                            }
-                        }
-                        break;
-                    }
-
-                    if (found)
-                    {
-                        /* Queue line TV monitors make the peeps waiting in the queue
-                         * slowly happier, up to a certain level. */
-                        /* Why don't queue line TV monitors start affecting the peeps
-                         * as soon as they join the queue?? */
-                        if (HappinessTarget < 90)
-                            HappinessTarget = 90;
-
-                        if (HappinessTarget < 165)
-                            HappinessTarget += 2;
-                    }
-                    else
-                    {
-                        /* Without a queue line TV monitor peeps waiting too long
-                         * in a queue get less happy. */
-                        HappinessTarget = std::max(HappinessTarget - 4, 0);
-                    }
-                }
-                PeepUpdateHunger(this);
-                break;
-            case PeepState::EnteringRide:
-                if (SubState == 17 || SubState == 15)
-                {
-                    PeepDecideWhetherToLeavePark(this);
-                }
-                PeepUpdateHunger(this);
-                break;
-            default:
-                break;
-        }
-
-        UpdateMotivesIdle();
+            }
+            PeepUpdateHunger(this);
+            break;
+        default:
+            break;
     }
 
+    UpdateMotivesIdle();
     UpdateConsumptionMotives();
 }
 
