@@ -377,7 +377,9 @@ public: // Peep
     void Update();
     std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
     std::optional<CoordsXY> UpdateAction();
+    bool UpdateActionAnimation();
     std::optional<CoordsXY> UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance);
+    void UpdateWalkingAnimation();
     void ThrowUp();
     void SetState(PeepState new_state);
     void Remove();
