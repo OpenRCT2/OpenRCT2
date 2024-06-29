@@ -843,11 +843,8 @@ void Guest::UpdateConsumptionMotives()
             newEnergy = newTargetEnergy;
     }
 
-    if (newEnergy < kPeepMinEnergy)
-        newEnergy = kPeepMinEnergy;
-
     /* Previous code here suggested maximum energy is 128. */
-    newEnergy = std::min(kPeepMaxEnergy, newEnergy);
+    newEnergy = std::clamp(newEnergy, kPeepMinEnergy, kPeepMaxEnergy);
 
     if (newEnergy != Energy)
     {
