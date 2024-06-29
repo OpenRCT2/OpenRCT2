@@ -785,9 +785,9 @@ void Guest::Loc68F9F3()
     }
 }
 
-void Guest::Loc68FA89()
+/* rct2: 0x0068FA89*/
+void Guest::UpdateConsumptionMotives()
 {
-    // 68FA89
     if (TimeToConsume == 0 && HasFoodOrDrink())
     {
         TimeToConsume += 3;
@@ -1025,7 +1025,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     PeepLeavePark(this);
                     PeepUpdateHunger(this);
                     Loc68F9F3();
-                    Loc68FA89();
+                    UpdateConsumptionMotives();
                     return;
                 }
             }
@@ -1219,7 +1219,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
         Loc68F9F3();
     }
 
-    Loc68FA89();
+    UpdateConsumptionMotives();
 }
 
 /**
