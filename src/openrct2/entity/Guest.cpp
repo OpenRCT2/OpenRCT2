@@ -740,7 +740,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     return String::IEquals(buffer, gPeepEasterEggNames[index]);
 }
 
-void Guest::Loc68F9F3()
+void Guest::UpdateMotivesIdle()
 {
     // Idle peep happiness tends towards 127 (50%).
     if (HappinessTarget >= 128)
@@ -1024,7 +1024,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     HappinessTarget = std::max(HappinessTarget - 128, 0);
                     PeepLeavePark(this);
                     PeepUpdateHunger(this);
-                    Loc68F9F3();
+                    UpdateMotivesIdle();
                     UpdateConsumptionMotives();
                     return;
                 }
@@ -1216,7 +1216,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                 break;
         }
 
-        Loc68F9F3();
+        UpdateMotivesIdle();
     }
 
     UpdateConsumptionMotives();
