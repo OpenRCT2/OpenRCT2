@@ -617,3 +617,7 @@ namespace AlpineRC
 }
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType);
+namespace SpinningRC
+{
+    TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpinningRC(int32_t trackType);
+}
