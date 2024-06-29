@@ -2743,7 +2743,9 @@ declare global {
         "joy" |
         "angry" |
         "iceCream" |
-        "hereWeAre";
+        "hereWeAre" |
+        "positionStatic" |
+        "animationFrozen";
 
     /**
      * @deprecated since version 34, use EntityType instead.
