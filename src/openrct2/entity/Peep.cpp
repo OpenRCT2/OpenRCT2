@@ -974,10 +974,14 @@ void Peep::Update()
     {
         if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
         {
-            if (IsActionWalking())
-                UpdateWalkingAnimation();
-            else
-                UpdateActionAnimation();
+            // This is circumventing other logic, so only update every few ticks
+            if ((GetGameState().CurrentTicks & 3) == 0)
+            {
+                if (IsActionWalking())
+                    UpdateWalkingAnimation();
+                else
+                    UpdateActionAnimation();
+            }
         }
         return;
     }
