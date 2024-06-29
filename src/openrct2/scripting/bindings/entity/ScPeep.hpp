@@ -149,10 +149,12 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             auto peep = GetPeep();
-            if (peep != nullptr)
-            {
-                peep->Energy = value;
-            }
+            if (peep == nullptr)
+                return;
+            if (value < kPeepMinEnergy || value > kPeepMaxEnergy)
+                return;
+
+            peep->Energy = value;
         }
 
         uint8_t energyTarget_get() const
@@ -164,10 +166,12 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             auto peep = GetPeep();
-            if (peep != nullptr)
-            {
-                peep->EnergyTarget = value;
-            }
+            if (peep == nullptr)
+                return;
+            if (value < kPeepMinEnergy)
+                return;
+
+            peep->EnergyTarget = value;
         }
 
     protected:
