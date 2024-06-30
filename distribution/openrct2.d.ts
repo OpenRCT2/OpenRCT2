@@ -4490,6 +4490,7 @@ declare global {
         type: "textbox";
         text: string;
         maxLength: number;
+        focus(): void;
     }
 
     interface ViewportWidget extends WidgetBase {
