@@ -383,7 +383,7 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr CoordsXY word_981D7C[4] = {
+static constexpr CoordsXY walkingOffsetByDirection[kNumOrthogonalDirections] = {
     { -2, 0 },
     { 0, 2 },
     { 2, 0 },
@@ -469,24 +469,25 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
     int32_t nextDirection = 0;
     if (x_delta < y_delta)
     {
-        nextDirection = 8;
+        nextDirection = 1;
         if (differenceLoc.y >= 0)
         {
-            nextDirection = 24;
+            nextDirection = 3;
         }
     }
     else
     {
-        nextDirection = 16;
+        nextDirection = 2;
         if (differenceLoc.x >= 0)
         {
             nextDirection = 0;
         }
     }
 
-    Orientation = nextDirection;
+    Orientation = nextDirection * 8;
+
     CoordsXY loc = { x, y };
-    loc += word_981D7C[nextDirection / 8];
+    loc += walkingOffsetByDirection[nextDirection];
 
     WalkingFrameNum++;
     const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
