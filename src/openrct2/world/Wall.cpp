@@ -190,7 +190,7 @@ void WallElement::SetAnimationIsBackwards(bool isBackwards)
 
 // clang-format off
 // rct2: 0x009A3FEC
-constexpr static uint8_t LandSlopeToWallSlope[][NumOrthogonalDirections] = {
+constexpr static uint8_t LandSlopeToWallSlope[][kNumOrthogonalDirections] = {
     //  Top right                        Bottom right                   Bottom left                       Top left
     { 0,                             0,                             0,                             0                             },
     { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },

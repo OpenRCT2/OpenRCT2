@@ -28,21 +28,21 @@ static constexpr uint32_t BM_BLOCK_BRAKE_NW_SE_OPEN = 17151;
 static constexpr uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = 17152;
 static constexpr uint32_t BM_BLOCK_BRAKE_NW_SE_CLOSED = 17153;
 
-static constexpr uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _BolligerMabillardBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
     { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
     { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
     { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
-static constexpr const uint32_t BolligerMabillardDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr const uint32_t BolligerMabillardDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_BM_DIAG_BRAKES,
     SPR_G2_BM_DIAG_BRAKES + 1,
     SPR_G2_BM_DIAG_BRAKES,
     SPR_G2_BM_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t BolligerMabillardDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr const uint32_t BolligerMabillardDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_BM_DIAG_BRAKES + 3,
         SPR_G2_BM_DIAG_BRAKES + 5,
@@ -5915,7 +5915,7 @@ static void BolligerMabillardTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 17788, 17789, 17790, 17791 },
         { 17858, 17859, 17860, 17861 },
     };

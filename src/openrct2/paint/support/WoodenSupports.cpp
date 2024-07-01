@@ -55,7 +55,7 @@ constexpr SupportsIdDescriptor GetWoodenSupportIds(WoodenSupportType supportType
     return WoodenSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 }
 
-using ImagesByTransitionTypeArray = std::array<std::array<ImageIndex, NumOrthogonalDirections>, 21>;
+using ImagesByTransitionTypeArray = std::array<std::array<ImageIndex, kNumOrthogonalDirections>, 21>;
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
     { 3465, 3466, 3467, 3468 }, // Flat to gentle
@@ -274,7 +274,7 @@ static constexpr uint16_t word_97B3C4[] = {
 };
 // clang-format on
 
-static WoodenSupportSubType rotatedWoodenSupportSubTypes[kNumWoodenSupportSubTypes][NumOrthogonalDirections] = {
+static WoodenSupportSubType rotatedWoodenSupportSubTypes[kNumWoodenSupportSubTypes][kNumOrthogonalDirections] = {
     {
         WoodenSupportSubType::NeSw,
         WoodenSupportSubType::NwSe,
@@ -353,7 +353,7 @@ static bool WoodenABSupportPaintSetupPaintSpecial(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
     WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
 {
-    const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * NumOrthogonalDirections) + direction;
+    const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
     const UnkSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
     const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 

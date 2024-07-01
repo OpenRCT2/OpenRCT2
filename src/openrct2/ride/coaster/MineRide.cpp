@@ -4241,7 +4241,7 @@ static void MineRideTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[NumOrthogonalDirections] = { 19612, 19613, 19614, 19615 };
+    constexpr ImageIndex images[kNumOrthogonalDirections] = { 19612, 19613, 19614, 19615 };
 
     TrackPaintUtilDiagTilesPaint(
         session, 3, height, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);

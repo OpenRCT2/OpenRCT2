@@ -194,7 +194,7 @@ static constexpr uint8_t kMetalSupportsSlopeImageOffsetMap[] = {
 };
 // clang-format on
 
-static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][NumOrthogonalDirections] = {
+static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][kNumOrthogonalDirections] = {
     { MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner,
       MetalSupportPlace::LeftCorner },
     { MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner,
@@ -215,7 +215,7 @@ static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][NumOrthogonal
 };
 
 constexpr uint8_t MetalSupportTypeCount = 13;
-constexpr MetalSupportType kMetalSupportTypeRotated[MetalSupportTypeCount][NumOrthogonalDirections] = {
+constexpr MetalSupportType kMetalSupportTypeRotated[MetalSupportTypeCount][kNumOrthogonalDirections] = {
     { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
     { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
     { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },

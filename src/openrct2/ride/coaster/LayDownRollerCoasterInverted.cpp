@@ -24,19 +24,19 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
 
-static constexpr ImageIndex kLaydownDiagFlatImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kLaydownDiagFlatImages[2][kNumOrthogonalDirections] = {
     { 26781, 26782, 26783, 26784 },
     { 26809, 26810, 26811, 26812 },
 };
 
-static constexpr ImageIndex kLaydownDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr ImageIndex kLaydownDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 2,
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 2,
 };
 
-static constexpr ImageIndex kLaydownDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kLaydownDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_SLC_DIAG_BRAKES,
         SPR_G2_SLC_DIAG_BRAKES + 2,
@@ -3800,7 +3800,7 @@ static void LayDownRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr CoordsXYZ boundsOffsets[NumOrthogonalDirections] = {
+    constexpr CoordsXYZ boundsOffsets[kNumOrthogonalDirections] = {
         { -16, -16, -2 },
         { -16, -16, -2 },
         { -16, -16, -2 },

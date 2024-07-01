@@ -147,7 +147,7 @@ static void classicStandUpRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[kNumOrthogonalDirections] = {
         kClassicStandUpRcFlatToLeftBank0,
         kClassicStandUpRcFlatToLeftBank1,
         kClassicStandUpRcFlatToLeftBank2,
@@ -171,7 +171,7 @@ static void classicStandUpRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[kNumOrthogonalDirections] = {
         kClassicStandUpRcFlatToRightBank0,
         kClassicStandUpRcFlatToRightBank1,
         kClassicStandUpRcFlatToRightBank2,
@@ -196,7 +196,7 @@ static void classicStandUpRCTrackLeftBankToFlat(
     const TrackElement& trackElement)
 {
     return classicStandUpRCTrackFlatToRightBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrackRightBankToFlat(
@@ -204,7 +204,7 @@ static void classicStandUpRCTrackRightBankToFlat(
     const TrackElement& trackElement)
 {
     return classicStandUpRCTrackFlatToLeftBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrackBankedRightQuarterTurn5(
@@ -215,7 +215,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
     {
         case 0:
         {
-            constexpr ImageIndex map[NumOrthogonalDirections] = {
+            constexpr ImageIndex map[kNumOrthogonalDirections] = {
                 kClassicStandUpRcRightTurn5TilesBanked0_0,
                 kClassicStandUpRcRightTurn5TilesBanked1_0,
                 kClassicStandUpRcRightTurn5TilesBanked2_0,
@@ -354,7 +354,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
 
         case 6:
         {
-            constexpr ImageIndex map[NumOrthogonalDirections] = {
+            constexpr ImageIndex map[kNumOrthogonalDirections] = {
                 kClassicStandUpRcRightTurn5TilesBanked0_4,
                 kClassicStandUpRcRightTurn5TilesBanked1_4,
                 kClassicStandUpRcRightTurn5TilesBanked2_4,
@@ -389,7 +389,7 @@ static void classicStandUpRCTrackBankedLeftQuarterTurn5(
     const TrackElement& trackElement)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    direction = (direction + 1) % NumOrthogonalDirections;
+    direction = (direction + 1) % kNumOrthogonalDirections;
     return classicStandUpRCTrackBankedRightQuarterTurn5(session, ride, trackSequence, direction, height, trackElement);
 }
 
@@ -397,7 +397,7 @@ static void classicStandUpRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[kNumOrthogonalDirections] = {
         kClassicStandUpRcLeftBankedTo25DegUp0,
         kClassicStandUpRcLeftBankedTo25DegUp1,
         kClassicStandUpRcLeftBankedTo25DegUp2,
@@ -428,7 +428,7 @@ static void classicStandUpRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[kNumOrthogonalDirections] = {
         kClassicStandUpRcRightBankedTo25DegUp0,
         kClassicStandUpRcRightBankedTo25DegUp1,
         kClassicStandUpRcRightBankedTo25DegUp2,
@@ -459,7 +459,7 @@ static void classicStandUpRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[kNumOrthogonalDirections] = {
         kClassicStandUpRc25DegUpToFlatLeftBanked0,
         kClassicStandUpRc25DegUpToFlatLeftBanked1,
         kClassicStandUpRc25DegUpToFlatLeftBanked2,
@@ -490,7 +490,7 @@ static void classicStandUpRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[kNumOrthogonalDirections] = {
         kClassicStandUpRc25DegUpToFlatRightBanked0,
         kClassicStandUpRc25DegUpToFlatRightBanked1,
         kClassicStandUpRc25DegUpToFlatRightBanked2,
@@ -522,7 +522,7 @@ static void classicStandUpRCTrackLeftBankTo25DegDown(
     const TrackElement& trackElement)
 {
     classicStandUpRCTrack25DegUpToRightBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrackRightBankTo25DegDown(
@@ -530,7 +530,7 @@ static void classicStandUpRCTrackRightBankTo25DegDown(
     const TrackElement& trackElement)
 {
     classicStandUpRCTrack25DegUpToLeftBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrack25DegDownToLeftBank(
@@ -538,7 +538,7 @@ static void classicStandUpRCTrack25DegDownToLeftBank(
     const TrackElement& trackElement)
 {
     classicStandUpRCTrackRightBankTo25DegUp(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrack25DegDownToRightBank(
@@ -546,14 +546,14 @@ static void classicStandUpRCTrack25DegDownToRightBank(
     const TrackElement& trackElement)
 {
     classicStandUpRCTrackLeftBankTo25DegUp(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[kNumOrthogonalDirections] = {
         kClassicStandUpRcLeftBanked0,
         kClassicStandUpRcLeftBanked1,
         kClassicStandUpRcLeftBanked2,
@@ -578,14 +578,14 @@ static void classicStandUpRCTrackRightBank(
     const TrackElement& trackElement)
 {
     return classicStandUpRCTrackLeftBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[5][NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[5][kNumOrthogonalDirections] = {
         { kClassicStandUpRcLeftBankedOrthogonalToDiag0_0, kClassicStandUpRcLeftBankedOrthogonalToDiag1_0,
           kClassicStandUpRcLeftBankedOrthogonalToDiag2_0, kClassicStandUpRcLeftBankedOrthogonalToDiag3_0 },
         { kClassicStandUpRcLeftBankedOrthogonalToDiag0_1, kClassicStandUpRcLeftBankedOrthogonalToDiag1_1,
@@ -738,7 +738,7 @@ static void classicStandUpRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[5][NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[5][kNumOrthogonalDirections] = {
         { kClassicStandUpRcRightBankedOrthogonalToDiag0_0, kClassicStandUpRcRightBankedOrthogonalToDiag1_0,
           kClassicStandUpRcRightBankedOrthogonalToDiag2_0, kClassicStandUpRcRightBankedOrthogonalToDiag3_0 },
         { kClassicStandUpRcRightBankedOrthogonalToDiag0_1, kClassicStandUpRcRightBankedOrthogonalToDiag1_1,
@@ -892,7 +892,7 @@ static void classicStandUpRCTrackLeftEighthDiagBankToOrthogonal(
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    direction = (direction + 2) % NumOrthogonalDirections;
+    direction = (direction + 2) % kNumOrthogonalDirections;
     classicStandUpRCTrackRightEighthBankToDiag(session, ride, trackSequence, direction, height, trackElement);
 }
 
@@ -901,7 +901,7 @@ static void classicStandUpRCTrackRightEighthDiagBankToOrthogonal(
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    direction = (direction + 3) % NumOrthogonalDirections;
+    direction = (direction + 3) % kNumOrthogonalDirections;
     classicStandUpRCTrackLeftEighthBankToDiag(session, ride, trackSequence, direction, height, trackElement);
 }
 
@@ -909,7 +909,7 @@ static void classicStandUpRCTrackRightBankedQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr ImageIndex map[4][NumOrthogonalDirections] = {
+    static constexpr ImageIndex map[4][kNumOrthogonalDirections] = {
         { kClassicStandUpRcRightTurn3TilesBanked0_0, kClassicStandUpRcRightTurn3TilesBanked1_0,
           kClassicStandUpRcRightTurn3TilesBanked2_0, kClassicStandUpRcRightTurn3TilesBanked3_0 },
         { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined },
@@ -1006,7 +1006,7 @@ static void classicStandUpRCTrackLeftBankedQuarterTurn3(
     const TrackElement& trackElement)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    direction = (direction + 1) % NumOrthogonalDirections;
+    direction = (direction + 1) % kNumOrthogonalDirections;
     classicStandUpRCTrackRightBankedQuarterTurn3(session, ride, trackSequence, direction, height, trackElement);
 }
 
@@ -1093,7 +1093,7 @@ static void classicStandUpRCTrackDiagLeftBankToFlat(
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
     return classicStandUpRCTrackDiagFlatToRightBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrackDiagRightBankToFlat(
@@ -1102,7 +1102,7 @@ static void classicStandUpRCTrackDiagRightBankToFlat(
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
     return classicStandUpRCTrackDiagFlatToLeftBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 static void classicStandUpRCTrackDiagLeftBank(
@@ -1121,7 +1121,7 @@ static void classicStandUpRCTrackDiagRightBank(
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
     return classicStandUpRCTrackDiagLeftBank(
-        session, ride, trackSequence, (direction + 2) % NumOrthogonalDirections, height, trackElement);
+        session, ride, trackSequence, (direction + 2) % kNumOrthogonalDirections, height, trackElement);
 }
 
 template<ImageIndex img0, ImageIndex img1, ImageIndex img2, ImageIndex img3>
@@ -1234,7 +1234,7 @@ static void classicStandUpRCTrackDiag25DegDownToLeftBank(
     const TrackElement& trackElement)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    direction = (direction + 2) % NumOrthogonalDirections;
+    direction = (direction + 2) % kNumOrthogonalDirections;
     classicStandUpRCTrackDiagRightBankTo25DegUp(session, ride, trackSequence, direction, height, trackElement);
 }
 
@@ -1243,7 +1243,7 @@ static void classicStandUpRCTrackDiag25DegDownToRightBank(
     const TrackElement& trackElement)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    direction = (direction + 2) % NumOrthogonalDirections;
+    direction = (direction + 2) % kNumOrthogonalDirections;
     classicStandUpRCTrackDiagLeftBankTo25DegUp(session, ride, trackSequence, direction, height, trackElement);
 }
 
@@ -1357,7 +1357,7 @@ static void classicStandUpRCTrackDiagLeftBankTo25DegDown(
     const TrackElement& trackElement)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    direction = (direction + 2) % NumOrthogonalDirections;
+    direction = (direction + 2) % kNumOrthogonalDirections;
     classicStandUpRCTrackDiag25DegUpToRightBank(session, ride, trackSequence, direction, height, trackElement);
 }
 
@@ -1366,7 +1366,7 @@ static void classicStandUpRCTrackDiagRightBankTo25DegDown(
     const TrackElement& trackElement)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    direction = (direction + 2) % NumOrthogonalDirections;
+    direction = (direction + 2) % kNumOrthogonalDirections;
     classicStandUpRCTrackDiag25DegUpToLeftBank(session, ride, trackSequence, direction, height, trackElement);
 }
 

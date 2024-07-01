@@ -162,7 +162,7 @@ void TrackPaintUtilRightQuarterTurn1TileTunnel(
     int8_t endOffset, TunnelType endTunnel)
 {
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, (direction + 3) % NumOrthogonalDirections, baseHeight, endOffset, endTunnel, startOffset, startTunnel);
+        session, (direction + 3) % kNumOrthogonalDirections, baseHeight, endOffset, endTunnel, startOffset, startTunnel);
 }
 
 void TrackPaintUtilLeftQuarterTurn1TileTunnel(

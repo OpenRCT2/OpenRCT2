@@ -1096,7 +1096,7 @@ static void PaintMiniatureRailwayTrackLeftQuarterTurn5Tiles(
     PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
-static constexpr WoodenSupportSubType s_bend_left_supports_type[NumOrthogonalDirections][4] = {
+static constexpr WoodenSupportSubType s_bend_left_supports_type[kNumOrthogonalDirections][4] = {
     { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
     { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
     { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
@@ -1207,7 +1207,7 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-static constexpr WoodenSupportSubType s_bend_right_supports_type[NumOrthogonalDirections][4] = {
+static constexpr WoodenSupportSubType s_bend_right_supports_type[kNumOrthogonalDirections][4] = {
     { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
     { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
     { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
@@ -1539,7 +1539,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][5] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
           WoodenSupportSubType::NwSe },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
@@ -1705,7 +1705,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][5] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
           WoodenSupportSubType::NwSe },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
@@ -1792,7 +1792,7 @@ static void PaintMiniatureRailwayTrackRightEighthToOrthogonal(
     PaintMiniatureRailwayTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static constexpr WoodenSupportSubType _diagSupportTypes[NumOrthogonalDirections][4] = {
+static constexpr WoodenSupportSubType _diagSupportTypes[kNumOrthogonalDirections][4] = {
     { WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw },
     { WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, WoodenSupportSubType::NwSe },
     { WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },

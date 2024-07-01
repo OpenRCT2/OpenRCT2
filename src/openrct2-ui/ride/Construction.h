@@ -143,7 +143,7 @@ static_assert(TrackElemType::Count == 339, "Reminder to add new track element to
 
 constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
 {
-    return direction >= NumOrthogonalDirections;
+    return direction >= kNumOrthogonalDirections;
 }
 
 struct SpecialElement

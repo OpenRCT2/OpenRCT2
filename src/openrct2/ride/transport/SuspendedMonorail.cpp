@@ -23,7 +23,7 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::Boxed;
 
-static constexpr ImageIndex kSuspendedMonorailDiagFlatImages[NumOrthogonalDirections] = { 25935, 25936, 25935, 25936 };
+static constexpr ImageIndex kSuspendedMonorailDiagFlatImages[kNumOrthogonalDirections] = { 25935, 25936, 25935, 25936 };
 
 /** rct2: 0x008636F4 */
 static void SuspendedMonorailTrackFlat(

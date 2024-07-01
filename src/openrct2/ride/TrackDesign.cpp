@@ -509,7 +509,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
         {
             case ObjectType::Paths:
             {
-                uint8_t slope = (scenery.getSlopeDirection() - _saveDirection) % NumOrthogonalDirections;
+                uint8_t slope = (scenery.getSlopeDirection() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setSlopeDirection(slope);
 
                 uint8_t edges = Numerics::ror4(scenery.getEdges(), _saveDirection);
@@ -518,16 +518,16 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
             }
             case ObjectType::Walls:
             {
-                auto direction = (scenery.getRotation() - _saveDirection) % NumOrthogonalDirections;
+                auto direction = (scenery.getRotation() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setRotation(direction);
                 break;
             }
             default:
             {
-                auto direction = (scenery.getRotation() - _saveDirection) % NumOrthogonalDirections;
+                auto direction = (scenery.getRotation() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setRotation(direction);
 
-                auto quadrant = (scenery.getQuadrant() - _saveDirection) % NumOrthogonalDirections;
+                auto quadrant = (scenery.getQuadrant() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setQuadrant(quadrant);
 
                 break;
@@ -2018,7 +2018,7 @@ void TrackDesignSceneryElement::setHasSlope(bool on)
 
 Direction TrackDesignSceneryElement::getSlopeDirection() const
 {
-    return (flags >> 5) % NumOrthogonalDirections;
+    return (flags >> 5) % kNumOrthogonalDirections;
 }
 
 void TrackDesignSceneryElement::setSlopeDirection(Direction slope)

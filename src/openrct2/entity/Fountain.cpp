@@ -100,7 +100,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
     {
         case PATTERN::CYCLIC_SQUARES:
             // 0, 1, 2, 3
-            for (int32_t i = 0; i < NumOrthogonalDirections; i++)
+            for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
             {
                 JumpingFountain::Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
@@ -110,7 +110,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
         case PATTERN::BOUNCING_PAIRS:
             // random [0, 2 or 1, 3]
             randomIndex = ScenarioRand() & 1;
-            for (int32_t i = randomIndex; i < NumOrthogonalDirections; i += 2)
+            for (int32_t i = randomIndex; i < kNumOrthogonalDirections; i += 2)
             {
                 JumpingFountain::Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],

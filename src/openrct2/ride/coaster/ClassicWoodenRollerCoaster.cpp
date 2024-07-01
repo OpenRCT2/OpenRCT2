@@ -767,7 +767,7 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
             },
         },
     };
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][7] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][7] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
           WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
@@ -1145,7 +1145,7 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
         },
     };
 
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][5] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
           WoodenSupportSubType::Null },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
@@ -1343,7 +1343,7 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
         },
     };
 
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][5] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
           WoodenSupportSubType::Null },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,

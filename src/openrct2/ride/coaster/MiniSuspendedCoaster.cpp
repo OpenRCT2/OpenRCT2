@@ -23,7 +23,7 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
 
-static constexpr ImageIndex kMiniSuspendedRCFlatImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kMiniSuspendedRCFlatImages[2][kNumOrthogonalDirections] = {
     { 28491, 28492, 28493, 28494 },
     { 28507, 28508, 28509, 28510 },
 };

@@ -1380,7 +1380,7 @@ namespace HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+        constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
             { SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 0, SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 1,
               SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 0, SPR_G2_HYBRID_TRACK_FLAT_DIAGONAL + 1 },
             { SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 0, SPR_G2_HYBRID_LIFT_TRACK_FLAT_DIAGONAL + 1,

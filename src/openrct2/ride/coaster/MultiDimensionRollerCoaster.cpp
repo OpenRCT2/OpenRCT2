@@ -38,7 +38,7 @@ static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 26552;
 static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 26553;
 static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 26554;
 
-static constexpr const uint32_t MultidimDiagBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr const uint32_t MultidimDiagBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES,
         SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 1,
@@ -53,7 +53,7 @@ static constexpr const uint32_t MultidimDiagBrakeImages[2][NumOrthogonalDirectio
     },
 };
 
-static constexpr const uint32_t MultidimDiagBlockBrakeImages[2][2][NumOrthogonalDirections] = {
+static constexpr const uint32_t MultidimDiagBlockBrakeImages[2][2][kNumOrthogonalDirections] = {
     {
         {
             SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 3,
@@ -174,7 +174,7 @@ static void MultiDimensionRCTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint32_t imageIds[NumOrthogonalDirections][3] = {
+    static constexpr uint32_t imageIds[kNumOrthogonalDirections][3] = {
         { 15810, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED },
         { 15811, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED },
         { 15810, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -14213,7 +14213,7 @@ static void MultiDimensionRCTrackBlockBrakes(
 
     if (!trackElement.IsInverted())
     {
-        static constexpr uint32_t imageIds[NumOrthogonalDirections][2] = {
+        static constexpr uint32_t imageIds[kNumOrthogonalDirections][2] = {
             { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
             { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
             { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -14230,7 +14230,7 @@ static void MultiDimensionRCTrackBlockBrakes(
     }
     else
     {
-        static constexpr uint32_t imageIds[NumOrthogonalDirections][2] = {
+        static constexpr uint32_t imageIds[kNumOrthogonalDirections][2] = {
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },

@@ -3363,10 +3363,10 @@ static Widget _rideConstructionWidgets[] = {
         if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
             && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         {
-            PathElement* pathsByDir[NumOrthogonalDirections];
+            PathElement* pathsByDir[kNumOrthogonalDirections];
 
             bool keepOrientation = false;
-            for (int8_t i = 0; i < NumOrthogonalDirections; i++)
+            for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
             {
                 const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
                 if (!MapIsLocationOwned(testLoc))
@@ -3408,7 +3408,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (!keepOrientation)
             {
-                for (int8_t i = 0; i < NumOrthogonalDirections; i++)
+                for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
                 {
                     if (pathsByDir[i] != nullptr)
                     {

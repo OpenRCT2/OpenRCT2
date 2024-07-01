@@ -28,21 +28,21 @@ static constexpr uint32_t kCorkscrewRcBlockBrakeNwSeOpen = 16233;
 static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeClosed = 16234;
 static constexpr uint32_t kCorkscrewRcBlockBrakeNwSeClosed = 16235;
 
-static constexpr uint32_t kCorkscrewRcBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t kCorkscrewRcBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { kCorkscrewRcBlockBrakeSwNeOpen, kCorkscrewRcBlockBrakeSwNeClosed },
     { kCorkscrewRcBlockBrakeNwSeOpen, kCorkscrewRcBlockBrakeNwSeClosed },
     { kCorkscrewRcBlockBrakeSwNeOpen, kCorkscrewRcBlockBrakeSwNeClosed },
     { kCorkscrewRcBlockBrakeNwSeOpen, kCorkscrewRcBlockBrakeNwSeClosed },
 };
 
-static constexpr const uint32_t kCorkscrewRcDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr const uint32_t kCorkscrewRcDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_CORKSCREW_DIAG_BRAKES,
     SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
     SPR_G2_CORKSCREW_DIAG_BRAKES,
     SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t kCorkscrewRcDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr const uint32_t kCorkscrewRcDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_CORKSCREW_DIAG_BRAKES + 3,
         SPR_G2_CORKSCREW_DIAG_BRAKES + 5,
@@ -6398,7 +6398,7 @@ static void CorkscrewRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex kImages[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex kImages[2][kNumOrthogonalDirections] = {
         { 16634, 16635, 16636, 16637 },
         { 16696, 16697, 16698, 16699 },
     };

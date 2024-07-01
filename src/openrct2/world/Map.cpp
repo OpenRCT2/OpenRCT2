@@ -791,7 +791,7 @@ int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool 
     if (!isSloped)
         return 0;
 
-    switch (slopeDirection % NumOrthogonalDirections)
+    switch (slopeDirection % kNumOrthogonalDirections)
     {
         case TILE_ELEMENT_DIRECTION_WEST:
             return (31 - (coords.x & 31)) / 2;

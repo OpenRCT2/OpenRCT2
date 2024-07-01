@@ -1101,7 +1101,7 @@ namespace AlpineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+        constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
             { SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL, SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL + 1, SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL + 2,
               SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL + 3 },
             { SPR_G2_ALPINE_LIFT_TRACK_FLAT_DIAGONAL, SPR_G2_ALPINE_LIFT_TRACK_FLAT_DIAGONAL + 1,
