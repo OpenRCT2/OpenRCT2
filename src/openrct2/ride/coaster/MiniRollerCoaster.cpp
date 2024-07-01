@@ -28,7 +28,7 @@ static constexpr uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_OPEN = 18743;
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED = 18744;
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED = 18745;
 
-static constexpr uint32_t _MiniRCBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _MiniRCBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
     { MINI_RC_BLOCK_BRAKE_NW_SE_OPEN, MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED },
     { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -5615,7 +5615,7 @@ static void MiniRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 19124, 19125, 19126, 19127 },
         { 19186, 19187, 19188, 19189 },
     };

@@ -161,7 +161,7 @@ static constexpr uint32_t _wild_mouse_brakes_image_ids[4] = {
     SPR_WILD_MOUSE_BRAKES_NW_SE,
 };
 
-static constexpr uint32_t _wild_mouse_block_brakes_image_ids[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _wild_mouse_block_brakes_image_ids[kNumOrthogonalDirections][2] = {
     { SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_OPEN, SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_CLOSED },
     { SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_OPEN, SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_CLOSED },
     { SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_OPEN, SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_CLOSED },

@@ -1948,11 +1948,11 @@ static void SideFrictionRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 21822, 21823, 21824, 21825 },
         { 21846, 21847, 21848, 21849 },
     };
-    const ImageIndex additionalImages[2][NumOrthogonalDirections] = {
+    const ImageIndex additionalImages[2][kNumOrthogonalDirections] = {
         { 21826, ImageIndexUndefined, 21827, ImageIndexUndefined },
         { 21850, ImageIndexUndefined, 21851, ImageIndexUndefined },
     };

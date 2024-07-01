@@ -648,7 +648,7 @@ static void PaintSplashBoatsTrack25DegDown(
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, (direction + 2) % NumOrthogonalDirections, height,
+        session, kSupportType, WoodenSupportSubType::NeSw, (direction + 2) % kNumOrthogonalDirections, height,
         session.SupportColours, WoodenSupportTransitionType::Up25Deg);
 
     if (direction == 0 || direction == 3)
@@ -681,7 +681,7 @@ static void PaintSplashBoatsTrackFlatTo25DegDown(
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, (direction + 2) % NumOrthogonalDirections, height,
+        session, kSupportType, WoodenSupportSubType::NeSw, (direction + 2) % kNumOrthogonalDirections, height,
         session.SupportColours, WoodenSupportTransitionType::Up25DegToFlat);
 
     if (direction == 0 || direction == 3)
@@ -721,7 +721,7 @@ static void PaintSplashBoatsTrack25DegDownToFlat(
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, (direction + 2) % NumOrthogonalDirections, height,
+        session, kSupportType, WoodenSupportSubType::NeSw, (direction + 2) % kNumOrthogonalDirections, height,
         session.SupportColours, WoodenSupportTransitionType::FlatToUp25Deg);
 
     if (direction == 0 || direction == 3)
@@ -826,7 +826,7 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours, RiverRaftsLeftQuarterTurn5_Side);
 
-    static constexpr WoodenSupportSubType supportTypes[NumOrthogonalDirections][7] = {
+    static constexpr WoodenSupportSubType supportTypes[kNumOrthogonalDirections][7] = {
         {
             WoodenSupportSubType::NeSw,
             WoodenSupportSubType::Null,

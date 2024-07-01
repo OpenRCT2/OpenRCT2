@@ -23,19 +23,19 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
 
-static constexpr ImageIndex kCompactInvertedDiagFlatImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kCompactInvertedDiagFlatImages[2][kNumOrthogonalDirections] = {
     { 26781, 26782, 26783, 26784 },
     { 26809, 26810, 26811, 26812 },
 };
 
-static constexpr ImageIndex kCompactInvertedDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr ImageIndex kCompactInvertedDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 1,
     SPR_G2_SLC_DIAG_BRAKES,
     SPR_G2_SLC_DIAG_BRAKES + 1,
 };
 
-static constexpr ImageIndex kCompactInvertedDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kCompactInvertedDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_SLC_DIAG_BRAKES,
         SPR_G2_SLC_DIAG_BRAKES + 1,

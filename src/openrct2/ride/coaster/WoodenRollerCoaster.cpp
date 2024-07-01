@@ -456,14 +456,14 @@ static constexpr uint32_t _wooden_rc_station_block_brakes_image_ids[4][2] = {
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
 };
 
-static constexpr const uint32_t WoodenRCDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr const uint32_t WoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_WOODEN_RC_DIAG_BRAKES,
     SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
     SPR_G2_WOODEN_RC_DIAG_BRAKES,
     SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t WoodenRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr const uint32_t WoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_WOODEN_RC_DIAG_BRAKES + 3,
         SPR_G2_WOODEN_RC_DIAG_BRAKES + 5,
@@ -1453,7 +1453,7 @@ static void WoodenRCTrackRightQuarterTurn5(
             },
         },
     };
-    static WoodenSupportSubType supportType[NumOrthogonalDirections][7] = {
+    static WoodenSupportSubType supportType[kNumOrthogonalDirections][7] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
           WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
@@ -1927,7 +1927,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
             },
         },
     };
-    static WoodenSupportSubType supportType[NumOrthogonalDirections][7] = {
+    static WoodenSupportSubType supportType[kNumOrthogonalDirections][7] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
           WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
@@ -9605,7 +9605,7 @@ static void WoodenRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr SpriteBoundBox2 imageIds[4][NumOrthogonalDirections][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][kNumOrthogonalDirections][2] = {
         {
             // sequence 0
             {
@@ -9748,7 +9748,7 @@ static void WoodenRCTrackDiagBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr SpriteBoundBox2 imageIds[2][4][NumOrthogonalDirections][2] = {
+    static constexpr SpriteBoundBox2 imageIds[2][4][kNumOrthogonalDirections][2] = {
         {
             {
                 // sequence 0

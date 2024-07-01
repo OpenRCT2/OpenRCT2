@@ -28,21 +28,21 @@ static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_OPEN = 25572;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED = 25573;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED = 25574;
 
-static constexpr uint32_t _StandUpBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _StandUpBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_NW_SE_OPEN, STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_NW_SE_OPEN, STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
-static constexpr const uint32_t StandupRCDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr const uint32_t StandupRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_STANDUP_DIAG_BRAKES,
     SPR_G2_STANDUP_DIAG_BRAKES + 1,
     SPR_G2_STANDUP_DIAG_BRAKES,
     SPR_G2_STANDUP_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t StandupRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+static constexpr const uint32_t StandupRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_STANDUP_DIAG_BRAKES + 3,
         SPR_G2_STANDUP_DIAG_BRAKES + 5,
@@ -5997,7 +5997,7 @@ static void StandUpRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 25691, 25692, 25693, 25694 },
         { 25753, 25754, 25755, 25756 },
     };

@@ -513,7 +513,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 uint8_t intersectingDirections = wallEdges[blockIndex];
                 intersectingDirections ^= 0x0F;
                 intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
-                for (int32_t i = 0; i < NumOrthogonalDirections; i++)
+                for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
                 {
                     if (intersectingDirections & (1 << i))
                     {

@@ -22,7 +22,7 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
 
-static constexpr ImageIndex kSuspendedSwingingRCDiagFlatImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kSuspendedSwingingRCDiagFlatImages[2][kNumOrthogonalDirections] = {
     { 26183, 26184, 26185, 26186 },
     { 26211, 26212, 26213, 26214 },
 };
