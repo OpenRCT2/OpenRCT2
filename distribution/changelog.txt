@@ -23,6 +23,7 @@
 - Improved: [#22065] Joining a network game now indicates progress using coaster trains.
 - Improved: [#22075] [Plugin] Plugins can now use G1 Icons.
 - Improved: [#22084] The game now temporarily pauses while the load/save window is open.
+- Improved: [#22217] See-through items are ignored again in viewport/pointer interaction.
 - Improved: [objects#238] Add preview image for invisible queue.
 - Improved: [objects#329] Add RCT1AA lay-down coaster trains (for import only).
 - Change: [#7248] Small mini-maps are now centred in the map window.
