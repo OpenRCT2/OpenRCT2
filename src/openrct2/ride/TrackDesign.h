@@ -230,17 +230,17 @@ extern RideId gTrackDesignSaveRideIndex;
 
 [[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path);
 
-void TrackDesignMirror(TrackDesign* td6);
+void TrackDesignMirror(TrackDesign* td);
 
-GameActions::Result TrackDesignPlace(TrackDesign* td6, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewRemoveGhosts(TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
-int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
+GameActions::Result TrackDesignPlace(TrackDesign* td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewRemoveGhosts(TrackDesign* td, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, TrackDesign* td, Ride& ride, const CoordsXYZD& coords);
+int32_t TrackDesignGetZPlacement(TrackDesign* td, Ride& ride, const CoordsXYZD& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels);
+void TrackDesignDrawPreview(TrackDesign* td, uint8_t* pixels);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

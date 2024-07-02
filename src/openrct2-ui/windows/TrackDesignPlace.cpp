@@ -350,7 +350,7 @@ static Widget _trackPlaceWidgets[] = {
             _trackDesign = std::move(trackDesign);
         }
 
-        void DrawMiniPreview(TrackDesign* td6)
+        void DrawMiniPreview(TrackDesign* td)
         {
             ClearMiniPreview();
 
@@ -366,14 +366,14 @@ static Widget _trackPlaceWidgets[] = {
                     origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
                 }
 
-                const auto& rtd = GetRideTypeDescriptor(td6->type);
+                const auto& rtd = GetRideTypeDescriptor(td->type);
                 if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 {
-                    DrawMiniPreviewMaze(td6, pass, origin, min, max);
+                    DrawMiniPreviewMaze(td, pass, origin, min, max);
                 }
                 else
                 {
-                    DrawMiniPreviewTrack(td6, pass, origin, min, max);
+                    DrawMiniPreviewTrack(td, pass, origin, min, max);
                 }
             }
         }
@@ -436,9 +436,9 @@ static Widget _trackPlaceWidgets[] = {
         }
 
         void DrawMiniPreviewEntrances(
-            const TrackDesign& td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
+            const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
         {
-            for (const auto& entrance : td6.entranceElements)
+            for (const auto& entrance : td.entranceElements)
             {
                 auto rotatedAndOffsetEntrance = origin + entrance.location.ToCoordsXY().Rotate(rotation);
 
@@ -468,13 +468,13 @@ static Widget _trackPlaceWidgets[] = {
             }
         }
 
-        void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
+        void DrawMiniPreviewTrack(TrackDesign* td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
         {
             const uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
 
             CoordsXY curTrackStart = origin;
             uint8_t curTrackRotation = rotation;
-            for (const auto& trackElement : td6->trackElements)
+            for (const auto& trackElement : td->trackElements)
             {
                 // Follow a single track piece shape
                 const auto& ted = GetTrackElementDescriptor(trackElement.type);
@@ -539,13 +539,13 @@ static Widget _trackPlaceWidgets[] = {
                 }
             }
 
-            DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
+            DrawMiniPreviewEntrances(*td, pass, origin, min, max, rotation);
         }
 
-        void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
+        void DrawMiniPreviewMaze(TrackDesign* td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
         {
             uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
-            for (const auto& mazeElement : td6->mazeElements)
+            for (const auto& mazeElement : td->mazeElements)
             {
                 auto rotatedMazeCoords = origin + mazeElement.location.ToCoordsXY().Rotate(rotation);
 
@@ -575,7 +575,7 @@ static Widget _trackPlaceWidgets[] = {
                 }
             }
 
-            DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
+            DrawMiniPreviewEntrances(*td, pass, origin, min, max, rotation);
         }
 
         ScreenCoordsXY DrawMiniPreviewGetPixelPosition(const CoordsXY& location)
