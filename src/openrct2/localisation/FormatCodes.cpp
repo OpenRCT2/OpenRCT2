@@ -38,6 +38,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "STRINGID",             FormatToken::StringById,          },
     { "STRING",               FormatToken::String,              },
     { "MONTHYEAR",            FormatToken::MonthYear,           },
+    { "MONTHYEAR_SENTENCE",   FormatToken::MonthYearSentence,   },
     { "MONTH",                FormatToken::Month,               },
     { "VELOCITY",             FormatToken::Velocity,            },
     { "POP16",                FormatToken::Pop16,               },
@@ -98,6 +99,7 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::StringById:
         case FormatToken::String:
         case FormatToken::MonthYear:
+        case FormatToken::MonthYearSentence:
         case FormatToken::Month:
         case FormatToken::Velocity:
         case FormatToken::DurationShort:
