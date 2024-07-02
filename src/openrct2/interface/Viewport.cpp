@@ -870,7 +870,7 @@ static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
     CoordsXYZ coords{};
 
     // other != viewport probably triggers on viewports in ride or guest window?
-    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
+    // mapXYCoords is nullopt if middle of viewport is obstructed by another window?
     if (!mapXYCoords.has_value() || other != viewport)
     {
         auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
