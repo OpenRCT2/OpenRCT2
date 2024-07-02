@@ -217,21 +217,21 @@ static Widget window_install_track_widgets[] = {
 
             // Stats
             {
-                fixed32_2dp rating = td6->excitement * 10;
+                fixed32_2dp rating = td6->statistics.excitement * 10;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
                 screenPos.y += kListRowHeight;
             }
             {
-                fixed32_2dp rating = td6->intensity * 10;
+                fixed32_2dp rating = td6->statistics.intensity * 10;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
                 screenPos.y += kListRowHeight;
             }
             {
-                fixed32_2dp rating = td6->nausea * 10;
+                fixed32_2dp rating = td6->statistics.nausea * 10;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
@@ -244,7 +244,7 @@ static Widget window_install_track_widgets[] = {
                 if (td6->type == RIDE_TYPE_MINI_GOLF)
                 {
                     // Holes
-                    uint16_t holes = td6->holes & 0x1F;
+                    uint16_t holes = td6->statistics.holes & 0x1F;
                     auto ft = Formatter();
                     ft.Add<uint16_t>(holes);
                     DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
@@ -254,7 +254,7 @@ static Widget window_install_track_widgets[] = {
                 {
                     // Maximum speed
                     {
-                        uint16_t speed = ((td6->maxSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ((td6->statistics.maxSpeed << 16) * 9) >> 18;
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
@@ -262,7 +262,7 @@ static Widget window_install_track_widgets[] = {
                     }
                     // Average speed
                     {
-                        uint16_t speed = ((td6->averageSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ((td6->statistics.averageSpeed << 16) * 9) >> 18;
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
@@ -273,7 +273,7 @@ static Widget window_install_track_widgets[] = {
                 // Ride length
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
-                ft.Add<uint16_t>(td6->rideLength);
+                ft.Add<uint16_t>(td6->statistics.rideLength);
                 DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
                 screenPos.y += kListRowHeight;
             }
@@ -282,7 +282,7 @@ static Widget window_install_track_widgets[] = {
             {
                 // Maximum positive vertical Gs
                 {
-                    int32_t gForces = td6->maxPositiveVerticalG * 32;
+                    int32_t gForces = td6->statistics.maxPositiveVerticalG * 32;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
@@ -290,7 +290,7 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum negative vertical Gs
                 {
-                    int32_t gForces = td6->maxNegativeVerticalG * 32;
+                    int32_t gForces = td6->statistics.maxNegativeVerticalG * 32;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
@@ -298,16 +298,16 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum lateral Gs
                 {
-                    int32_t gForces = td6->maxLateralG * 32;
+                    int32_t gForces = td6->statistics.maxLateralG * 32;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
                     screenPos.y += kListRowHeight;
                 }
-                if (td6->totalAirTime != 0)
+                if (td6->statistics.totalAirTime != 0)
                 {
                     // Total air time
-                    int32_t airTime = td6->totalAirTime * 25;
+                    int32_t airTime = td6->statistics.totalAirTime * 25;
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
@@ -318,7 +318,7 @@ static Widget window_install_track_widgets[] = {
             if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
             {
                 // Drops
-                uint16_t drops = td6->drops & 0x3F;
+                uint16_t drops = td6->statistics.drops & 0x3F;
                 auto ft = Formatter();
                 ft.Add<uint16_t>(drops);
                 DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
@@ -331,7 +331,7 @@ static Widget window_install_track_widgets[] = {
 
             if (td6->type != RIDE_TYPE_MINI_GOLF)
             {
-                uint16_t inversions = td6->inversions & 0x1F;
+                uint16_t inversions = td6->statistics.inversions & 0x1F;
                 if (inversions != 0)
                 {
                     // Inversions
@@ -343,12 +343,12 @@ static Widget window_install_track_widgets[] = {
             }
             screenPos.y += 4;
 
-            if (td6->spaceRequiredX != 0xFF)
+            if (!td6->statistics.spaceRequired.IsNull())
             {
                 // Space required
                 auto ft = Formatter();
-                ft.Add<uint16_t>(td6->spaceRequiredX);
-                ft.Add<uint16_t>(td6->spaceRequiredY);
+                ft.Add<uint16_t>(td6->statistics.spaceRequired.x);
+                ft.Add<uint16_t>(td6->statistics.spaceRequired.y);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
                 screenPos.y += kListRowHeight;
             }

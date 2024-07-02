@@ -148,30 +148,30 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     numCircuits = ride.num_circuits;
 
     stationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
-    maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
-    averageSpeed = static_cast<int8_t>(ride.average_speed / 65536);
-    rideLength = ride.GetTotalLength() / 65536;
-    maxPositiveVerticalG = ride.max_positive_vertical_g / 32;
-    maxNegativeVerticalG = ride.max_negative_vertical_g / 32;
-    maxLateralG = ride.max_lateral_g / 32;
-    holes = ride.holes & 0x1F;
-    inversions = ride.inversions & 0x1F;
-    inversions |= (ride.sheltered_eighths << 5);
-    drops = ride.drops;
-    highestDropHeight = ride.highest_drop_height;
+    statistics.maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
+    statistics.averageSpeed = static_cast<int8_t>(ride.average_speed / 65536);
+    statistics.rideLength = ride.GetTotalLength() / 65536;
+    statistics.maxPositiveVerticalG = ride.max_positive_vertical_g / 32;
+    statistics.maxNegativeVerticalG = ride.max_negative_vertical_g / 32;
+    statistics.maxLateralG = ride.max_lateral_g / 32;
+    statistics.holes = ride.holes & 0x1F;
+    statistics.inversions = ride.inversions & 0x1F;
+    statistics.inversions |= (ride.sheltered_eighths << 5);
+    statistics.drops = ride.drops;
+    statistics.highestDropHeight = ride.highest_drop_height;
 
     uint16_t _totalAirTime = (ride.total_air_time * 123) / 1024;
     if (_totalAirTime > 255)
     {
         _totalAirTime = 0;
     }
-    totalAirTime = static_cast<uint8_t>(_totalAirTime);
+    statistics.totalAirTime = static_cast<uint8_t>(_totalAirTime);
 
-    excitement = ride.ratings.Excitement / 10;
-    intensity = ride.ratings.Intensity / 10;
-    nausea = ride.ratings.Nausea / 10;
+    statistics.excitement = ride.ratings.Excitement / 10;
+    statistics.intensity = ride.ratings.Intensity / 10;
+    statistics.nausea = ride.ratings.Nausea / 10;
 
-    upkeepCost = ride.upkeep_cost;
+    statistics.upkeepCost = ride.upkeep_cost;
 
     const auto& rtd = GetRideTypeDescriptor(type);
 
@@ -355,8 +355,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 
-    spaceRequiredX = ((tds.previewMax.x - tds.previewMin.x) / 32) + 1;
-    spaceRequiredY = ((tds.previewMax.y - tds.previewMin.y) / 32) + 1;
+    statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
     return { true, warningMessage };
 }
 
@@ -468,8 +467,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 
-    spaceRequiredX = ((tds.previewMax.x - tds.previewMin.x) / 32) + 1;
-    spaceRequiredY = ((tds.previewMax.y - tds.previewMin.y) / 32) + 1;
+    statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
+
     return { true };
 }
 
@@ -570,33 +569,33 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(colourScheme);
     stream << DS_TAG(vehicleColours);
     stream << DS_TAG(stationObjectIdentifier);
-    stream << DS_TAG(totalAirTime);
+    stream << DS_TAG(statistics.totalAirTime);
     stream << DS_TAG(departFlags);
     stream << DS_TAG(numberOfTrains);
     stream << DS_TAG(numberOfCarsPerTrain);
     stream << DS_TAG(minWaitingTime);
     stream << DS_TAG(maxWaitingTime);
     stream << DS_TAG(operationSetting);
-    stream << DS_TAG(maxSpeed);
-    stream << DS_TAG(averageSpeed);
-    stream << DS_TAG(rideLength);
-    stream << DS_TAG(maxPositiveVerticalG);
-    stream << DS_TAG(maxNegativeVerticalG);
-    stream << DS_TAG(maxLateralG);
-    stream << DS_TAG(inversions);
-    stream << DS_TAG(holes);
-    stream << DS_TAG(drops);
-    stream << DS_TAG(highestDropHeight);
-    stream << DS_TAG(excitement);
-    stream << DS_TAG(intensity);
-    stream << DS_TAG(nausea);
-    stream << DS_TAG(upkeepCost);
+    stream << DS_TAG(statistics.maxSpeed);
+    stream << DS_TAG(statistics.averageSpeed);
+    stream << DS_TAG(statistics.rideLength);
+    stream << DS_TAG(statistics.maxPositiveVerticalG);
+    stream << DS_TAG(statistics.maxNegativeVerticalG);
+    stream << DS_TAG(statistics.maxLateralG);
+    stream << DS_TAG(statistics.inversions);
+    stream << DS_TAG(statistics.holes);
+    stream << DS_TAG(statistics.drops);
+    stream << DS_TAG(statistics.highestDropHeight);
+    stream << DS_TAG(statistics.excitement);
+    stream << DS_TAG(statistics.intensity);
+    stream << DS_TAG(statistics.nausea);
+    stream << DS_TAG(statistics.upkeepCost);
     stream << DS_TAG(trackSpineColour);
     stream << DS_TAG(trackRailColour);
     stream << DS_TAG(trackSupportColour);
     stream << DS_TAG(vehicleObject);
-    stream << DS_TAG(spaceRequiredX);
-    stream << DS_TAG(spaceRequiredY);
+    stream << DS_TAG(statistics.spaceRequired.x);
+    stream << DS_TAG(statistics.spaceRequired.y);
     stream << DS_TAG(liftHillSpeed);
     stream << DS_TAG(numCircuits);
 

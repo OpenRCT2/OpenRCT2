@@ -129,6 +129,33 @@ struct TrackDesignMazeElement
 class DataSerialiser;
 enum class RideMode : uint8_t;
 
+struct TrackDesignStatistics
+{
+    uint8_t excitement{};
+    uint8_t intensity{};
+    uint8_t nausea{};
+    int8_t maxSpeed{};
+    int8_t averageSpeed{};
+
+    // TODO: move to a struct of its own, together with rideTime, that can be repeated for multiple stations.
+    uint16_t rideLength;
+
+    uint8_t maxPositiveVerticalG{};
+    int8_t maxNegativeVerticalG{};
+    uint8_t maxLateralG{};
+    uint8_t totalAirTime{};
+    uint8_t drops{};
+    uint8_t highestDropHeight{};
+    union
+    {
+        uint8_t inversions{};
+        uint8_t holes;
+    };
+
+    money64 upkeepCost;
+    TileCoordsXY spaceRequired{};
+};
+
 struct TrackDesign
 {
     uint8_t type;
@@ -139,35 +166,22 @@ struct TrackDesign
     uint8_t colourScheme;
     std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicleColours;
     u8string stationObjectIdentifier{};
-    uint8_t totalAirTime;
     uint8_t departFlags;
     uint8_t numberOfTrains;
     uint8_t numberOfCarsPerTrain;
     uint8_t minWaitingTime;
     uint8_t maxWaitingTime;
     uint8_t operationSetting;
-    int8_t maxSpeed;
-    int8_t averageSpeed;
-    uint16_t rideLength;
-    uint8_t maxPositiveVerticalG;
-    int8_t maxNegativeVerticalG;
-    uint8_t maxLateralG;
-    uint8_t inversions;
-    uint8_t holes;
-    uint8_t drops;
-    uint8_t highestDropHeight;
-    uint8_t excitement;
-    uint8_t intensity;
-    uint8_t nausea;
-    money64 upkeepCost;
+
     uint8_t trackSpineColour[OpenRCT2::Limits::kNumColourSchemes];
     uint8_t trackRailColour[OpenRCT2::Limits::kNumColourSchemes];
     uint8_t trackSupportColour[OpenRCT2::Limits::kNumColourSchemes];
     ObjectEntryDescriptor vehicleObject;
-    uint8_t spaceRequiredX;
-    uint8_t spaceRequiredY;
+
     uint8_t liftHillSpeed;
     uint8_t numCircuits;
+
+    TrackDesignStatistics statistics;
 
     std::vector<TrackDesignMazeElement> mazeElements;
     std::vector<TrackDesignTrackElement> trackElements;

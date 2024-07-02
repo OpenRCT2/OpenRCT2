@@ -208,30 +208,29 @@ namespace RCT1
             td->maxWaitingTime = td4Base.MaxWaitingTime;
             td->operationSetting = std::min(
                 td4Base.OperationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
-            td->maxSpeed = td4Base.MaxSpeed;
-            td->averageSpeed = td4Base.AverageSpeed;
-            td->rideLength = td4Base.RideLength;
-            td->maxPositiveVerticalG = td4Base.MaxPositiveVerticalG;
-            td->maxNegativeVerticalG = td4Base.MaxNegativeVerticalG;
-            td->maxLateralG = td4Base.MaxLateralG;
+            td->statistics.maxSpeed = td4Base.MaxSpeed;
+            td->statistics.averageSpeed = td4Base.AverageSpeed;
+            td->statistics.rideLength = td4Base.RideLength;
+            td->statistics.maxPositiveVerticalG = td4Base.MaxPositiveVerticalG;
+            td->statistics.maxNegativeVerticalG = td4Base.MaxNegativeVerticalG;
+            td->statistics.maxLateralG = td4Base.MaxLateralG;
 
             if (td->type == RIDE_TYPE_MINI_GOLF)
             {
-                td->holes = td4Base.NumHoles;
+                td->statistics.holes = td4Base.NumHoles;
             }
             else
             {
-                td->inversions = td4Base.NumInversions;
+                td->statistics.inversions = td4Base.NumInversions;
             }
 
-            td->drops = td4Base.NumDrops;
-            td->highestDropHeight = td4Base.HighestDropHeight / 2;
-            td->excitement = td4Base.Excitement;
-            td->intensity = td4Base.Intensity;
-            td->nausea = td4Base.Nausea;
-            td->upkeepCost = ToMoney64(td4Base.UpkeepCost);
-            td->spaceRequiredX = 255;
-            td->spaceRequiredY = 255;
+            td->statistics.drops = td4Base.NumDrops;
+            td->statistics.highestDropHeight = td4Base.HighestDropHeight / 2;
+            td->statistics.excitement = td4Base.Excitement;
+            td->statistics.intensity = td4Base.Intensity;
+            td->statistics.nausea = td4Base.Nausea;
+            td->statistics.upkeepCost = ToMoney64(td4Base.UpkeepCost);
+            td->statistics.spaceRequired.SetNull();
             td->liftHillSpeed = 5;
             td->numCircuits = 0;
             td->operationSetting = std::min(td->operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
