@@ -97,26 +97,26 @@ enum class TrackDesignTrackElementFlag : uint8_t
 
 struct TrackDesignTrackElement
 {
-    track_type_t Type = 0;
-    uint8_t Flags = 0;
-    uint8_t ColourScheme = 0;
-    ::StationIndex StationIndex = StationIndex::FromUnderlying(0);
-    uint8_t BrakeBoosterSpeed = 0;
-    uint8_t SeatRotation = 4;
+    track_type_t type = 0;
+    uint8_t flags = 0;
+    uint8_t colourScheme = 0;
+    ::StationIndex stationIndex = StationIndex::FromUnderlying(0);
+    uint8_t brakeBoosterSpeed = 0;
+    uint8_t seatRotation = 4;
 
     constexpr bool HasFlag(const TrackDesignTrackElementFlag flag) const
     {
-        return Flags & EnumValue(flag);
+        return flags & EnumValue(flag);
     }
 
     constexpr void SetFlag(const TrackDesignTrackElementFlag flag)
     {
-        Flags |= EnumValue(flag);
+        flags |= EnumValue(flag);
     }
 
     constexpr void ClearFlag(const TrackDesignTrackElementFlag flag)
     {
-        Flags &= ~EnumValue(flag);
+        flags &= ~EnumValue(flag);
     }
 };
 

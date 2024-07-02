@@ -234,14 +234,14 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         }
 
         TrackDesignTrackElement track{};
-        track.Type = element->GetTrackType();
-        track.ColourScheme = element->GetColourScheme();
-        track.StationIndex = element->GetStationIndex();
-        track.BrakeBoosterSpeed = element->GetBrakeBoosterSpeed();
-        track.SeatRotation = element->GetSeatRotation();
+        track.type = element->GetTrackType();
+        track.colourScheme = element->GetColourScheme();
+        track.stationIndex = element->GetStationIndex();
+        track.brakeBoosterSpeed = element->GetBrakeBoosterSpeed();
+        track.seatRotation = element->GetSeatRotation();
 
         // This warning will not apply to new track design format
-        if (track.Type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        if (track.type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
             warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
         }
@@ -881,8 +881,8 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
 {
     for (auto& track : td6->trackElements)
     {
-        const auto& ted = GetTrackElementDescriptor(track.Type);
-        track.Type = ted.MirrorElement;
+        const auto& ted = GetTrackElementDescriptor(track.type);
+        track.type = ted.MirrorElement;
     }
 }
 
@@ -1572,7 +1572,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
     auto newCoords = origin;
     for (const auto& track : td6->trackElements)
     {
-        auto trackType = track.Type;
+        auto trackType = track.type;
         const auto& ted = GetTrackElementDescriptor(trackType);
 
         TrackDesignUpdatePreviewBounds(tds, newCoords);
@@ -1643,7 +1643,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
 
                 auto trackPlaceAction = TrackPlaceAction(
                     ride.id, trackType, ride.type, { newCoords, tempZ, static_cast<uint8_t>(rotation) },
-                    track.BrakeBoosterSpeed, track.ColourScheme, track.SeatRotation, liftHillAndAlternativeState, true);
+                    track.brakeBoosterSpeed, track.colourScheme, track.seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction)

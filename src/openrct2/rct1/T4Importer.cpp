@@ -258,7 +258,7 @@ namespace RCT1
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
-                    trackElement.Type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
+                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
                     ConvertFromTD46Flags(trackElement, t4TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }

@@ -675,26 +675,26 @@ template<> struct DataSerializerTraitsT<TrackDesignTrackElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignTrackElement& val)
     {
-        stream->Write(&val.Type);
-        stream->Write(&val.Flags);
-        stream->Write(&val.ColourScheme);
-        stream->Write(&val.StationIndex);
-        stream->Write(&val.BrakeBoosterSpeed);
-        stream->Write(&val.SeatRotation);
+        stream->Write(&val.type);
+        stream->Write(&val.flags);
+        stream->Write(&val.colourScheme);
+        stream->Write(&val.stationIndex);
+        stream->Write(&val.brakeBoosterSpeed);
+        stream->Write(&val.seatRotation);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignTrackElement& val)
     {
-        stream->Read(&val.Type);
-        stream->Read(&val.Flags);
-        stream->Read(&val.ColourScheme);
-        stream->Read(&val.StationIndex);
-        stream->Read(&val.BrakeBoosterSpeed);
-        stream->Read(&val.SeatRotation);
+        stream->Read(&val.type);
+        stream->Read(&val.flags);
+        stream->Read(&val.colourScheme);
+        stream->Read(&val.stationIndex);
+        stream->Read(&val.brakeBoosterSpeed);
+        stream->Read(&val.seatRotation);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignTrackElement& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "TrackDesignTrackElement(type = %d, flags = %d)", val.Type, val.Flags);
+        snprintf(msg, sizeof(msg), "TrackDesignTrackElement(type = %d, flags = %d)", val.type, val.flags);
         stream->Write(msg, strlen(msg));
     }
 };

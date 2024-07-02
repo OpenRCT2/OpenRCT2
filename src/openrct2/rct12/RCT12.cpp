@@ -882,26 +882,26 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
 
 void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
 {
-    target.BrakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
-    if (TrackTypeIsStation(target.Type))
+    target.brakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
+    if (TrackTypeIsStation(target.type))
     {
         auto stationIndex = flags & EnumValue(TD46Flags::StationId);
-        target.StationIndex = StationIndex::FromUnderlying(stationIndex);
+        target.stationIndex = StationIndex::FromUnderlying(stationIndex);
     }
     else
     {
         auto speedOrSeatRotation = flags & EnumValue(TD46Flags::SpeedOrSeatRotation);
-        if (TrackTypeHasSpeedSetting(target.Type) && target.Type != TrackElemType::BlockBrakes)
+        if (TrackTypeHasSpeedSetting(target.type) && target.type != TrackElemType::BlockBrakes)
         {
-            target.BrakeBoosterSpeed = speedOrSeatRotation << 1;
+            target.brakeBoosterSpeed = speedOrSeatRotation << 1;
         }
         else
         {
-            target.SeatRotation = speedOrSeatRotation;
+            target.seatRotation = speedOrSeatRotation;
         }
     }
 
-    target.ColourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
+    target.colourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
     if (flags & EnumValue(TD46Flags::IsInverted))
         target.SetFlag(TrackDesignTrackElementFlag::isInverted);
     if (flags & EnumValue(TD46Flags::HasChain))
@@ -911,20 +911,20 @@ void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
 uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
 {
     uint8_t trackFlags = 0;
-    if (TrackTypeIsStation(source.Type))
+    if (TrackTypeIsStation(source.type))
     {
-        trackFlags = (source.StationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
+        trackFlags = (source.stationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
     }
-    else if (TrackTypeHasSpeedSetting(source.Type) && source.Type != TrackElemType::BlockBrakes)
+    else if (TrackTypeHasSpeedSetting(source.type) && source.type != TrackElemType::BlockBrakes)
     {
-        trackFlags = (source.BrakeBoosterSpeed >> 1);
+        trackFlags = (source.brakeBoosterSpeed >> 1);
     }
     else
     {
-        trackFlags = source.SeatRotation;
+        trackFlags = source.seatRotation;
     }
 
-    trackFlags |= source.ColourScheme << 4;
+    trackFlags |= source.colourScheme << 4;
 
     if (source.HasFlag(TrackDesignTrackElementFlag::hasChain))
         trackFlags |= EnumValue(TD46Flags::HasChain);

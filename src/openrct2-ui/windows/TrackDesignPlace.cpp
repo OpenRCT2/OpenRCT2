@@ -477,7 +477,7 @@ static Widget _trackPlaceWidgets[] = {
             for (const auto& trackElement : td6->trackElements)
             {
                 // Follow a single track piece shape
-                const auto& ted = GetTrackElementDescriptor(trackElement.Type);
+                const auto& ted = GetTrackElementDescriptor(trackElement.type);
                 const PreviewTrack* trackBlock = ted.Block;
                 while (trackBlock->index != 255)
                 {
