@@ -41,6 +41,8 @@ namespace OpenRCT2::Scripting
         { "angry", PEEP_FLAGS_ANGRY },
         { "iceCream", PEEP_FLAGS_ICE_CREAM },
         { "hereWeAre", PEEP_FLAGS_HERE_WE_ARE },
+        { "positionFrozen", PEEP_FLAGS_POSITION_FROZEN },
+        { "animationFrozen", PEEP_FLAGS_ANIMATION_FROZEN },
     });
 
     class ScPeep : public ScEntity
@@ -149,6 +151,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
+                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergy);
                 peep->Energy = value;
             }
         }
@@ -164,6 +167,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
+                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergyTarget);
                 peep->EnergyTarget = value;
             }
         }
