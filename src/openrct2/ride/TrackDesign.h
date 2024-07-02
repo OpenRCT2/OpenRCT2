@@ -179,7 +179,6 @@ struct TrackDesignStatistics
 struct TrackDesign
 {
     uint8_t type;
-    uint8_t vehicleType;
     money64 cost;
     uint8_t trackFlags;
     uint8_t numberOfTrains;

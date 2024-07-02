@@ -53,7 +53,7 @@ namespace RCT2
     {
         OpenRCT2::MemoryStream tempStream;
         tempStream.WriteValue<uint8_t>(OpenRCT2RideTypeToRCT2RideType(_trackDesign->type));
-        tempStream.WriteValue<uint8_t>(_trackDesign->vehicleType);
+        tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint32_t>(0);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->operation.rideMode));
         tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign->appearance.vehicleColourSettings) | (2 << 2));
