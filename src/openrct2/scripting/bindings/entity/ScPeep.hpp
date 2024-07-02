@@ -41,7 +41,7 @@ namespace OpenRCT2::Scripting
         { "angry", PEEP_FLAGS_ANGRY },
         { "iceCream", PEEP_FLAGS_ICE_CREAM },
         { "hereWeAre", PEEP_FLAGS_HERE_WE_ARE },
-        { "positionStatic", PEEP_FLAGS_POSITION_STATIC },
+        { "positionFrozen", PEEP_FLAGS_POSITION_FROZEN },
         { "animationFrozen", PEEP_FLAGS_ANIMATION_FROZEN },
     });
 

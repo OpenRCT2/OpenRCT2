@@ -1012,7 +1012,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
         }
     }
 
-    if (PeepFlags & PEEP_FLAGS_POSITION_STATIC)
+    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
     {
         return;
     }

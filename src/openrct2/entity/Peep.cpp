@@ -970,7 +970,7 @@ static void GuestUpdateThoughts(Guest* peep)
  */
 void Peep::Update()
 {
-    if (PeepFlags & PEEP_FLAGS_POSITION_STATIC)
+    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
     {
         if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
         {

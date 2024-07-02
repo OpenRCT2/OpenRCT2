@@ -2744,7 +2744,7 @@ declare global {
         "angry" |
         "iceCream" |
         "hereWeAre" |
-        "positionStatic" |
+        "positionFrozen" |
         "animationFrozen";
 
     /**
