@@ -145,8 +145,6 @@ namespace RCT1
             }
             assert(!vehicleObject.empty());
             td->vehicleObject = ObjectEntryDescriptor(vehicleObject);
-            td->vehicleType = EnumValue(td4Base.VehicleType);
-
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td4Base.VersionAndColourScheme & 0x3);
 
             // Vehicle colours

@@ -560,7 +560,6 @@ void TrackDesign::Serialise(DataSerialiser& stream)
         return;
     }
     stream << DS_TAG(type);
-    stream << DS_TAG(vehicleType);
     stream << DS_TAG(cost);
     stream << DS_TAG(operation.rideMode);
     stream << DS_TAG(trackFlags);

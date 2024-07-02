@@ -72,7 +72,6 @@ namespace RCT2
             _stream.Read(&td6, 0xA3);
 
             td->type = td6.Type; // 0x00
-            td->vehicleType = td6.VehicleType;
 
             td->cost = 0.00_GBP;
             td->operation.rideMode = static_cast<RideMode>(td6.RideMode);
