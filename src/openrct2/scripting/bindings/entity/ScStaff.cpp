@@ -78,6 +78,13 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScStaff::animationOffset_get, &ScStaff::animationOffset_set, "animationOffset");
         dukglue_register_property(ctx, &ScStaff::animationLength_get, nullptr, "animationLength");
         dukglue_register_method(ctx, &ScStaff::getAnimationSpriteIds, "getAnimationSpriteIds");
+        dukglue_register_property(ctx, &ScStaff::lawnsMown_get, &ScStaff::lawnsMown_set, "lawnsMown");
+        dukglue_register_property(ctx, &ScStaff::gardensWatered_get, &ScStaff::gardensWatered_set, "gardensWatered");
+        dukglue_register_property(ctx, &ScStaff::litterSwept_get, &ScStaff::litterSwept_set, "litterSwept");
+        dukglue_register_property(ctx, &ScStaff::binsEmptied_get, &ScStaff::binsEmptied_set, "binsEmptied");
+        dukglue_register_property(ctx, &ScStaff::ridesFixed_get, &ScStaff::ridesFixed_set, "ridesFixed");
+        dukglue_register_property(ctx, &ScStaff::ridesInspected_get, &ScStaff::ridesInspected_set, "ridesInspected");
+        dukglue_register_property(ctx, &ScStaff::vandalsStopped_get, &ScStaff::vandalsStopped_set, "vandalsStopped");
     }
 
     Staff* ScStaff::GetStaff() const
@@ -436,6 +443,188 @@ namespace OpenRCT2::Scripting
 
         auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
+    }
+
+    DukValue ScStaff::lawnsMown_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffLawnsMown);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScStaff::lawnsMown_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            peep->StaffLawnsMown = value;
+        }
+    }
+
+    DukValue ScStaff::gardensWatered_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffGardensWatered);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScStaff::gardensWatered_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            peep->StaffGardensWatered = value;
+        }
+    }
+
+    DukValue ScStaff::litterSwept_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffLitterSwept);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScStaff::litterSwept_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            peep->StaffLitterSwept = value;
+        }
+    }
+
+    DukValue ScStaff::binsEmptied_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffBinsEmptied);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScStaff::binsEmptied_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            peep->StaffBinsEmptied = value;
+        }
+    }
+
+    DukValue ScStaff::ridesFixed_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        {
+            duk_push_uint(ctx, peep->StaffRidesFixed);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScStaff::ridesFixed_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        {
+            peep->StaffRidesFixed = value;
+        }
+    }
+
+    DukValue ScStaff::ridesInspected_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        {
+            duk_push_uint(ctx, peep->StaffRidesInspected);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScStaff::ridesInspected_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        {
+            peep->StaffRidesInspected = value;
+        }
+    }
+
+    DukValue ScStaff::vandalsStopped_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
+        {
+            duk_push_uint(ctx, peep->StaffVandalsStopped);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScStaff::vandalsStopped_set(uint32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
+        {
+            peep->StaffVandalsStopped = value;
+        }
     }
 
     ScPatrolArea::ScPatrolArea(EntityId id)
