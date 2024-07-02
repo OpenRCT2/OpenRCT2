@@ -1316,7 +1316,7 @@ namespace RCT2
             dst->subtype = subtype;
             // Pad002;
             dst->mode = static_cast<RideMode>(src->Mode);
-            dst->colour_scheme_type = src->ColourSchemeType;
+            dst->vehicleColourSettings = src->vehicleColourSettings;
 
             for (uint8_t i = 0; i < Limits::kMaxVehicleColours; i++)
             {

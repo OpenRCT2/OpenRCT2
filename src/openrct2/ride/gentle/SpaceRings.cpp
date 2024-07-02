@@ -55,7 +55,7 @@ static void PaintSpaceRingsStructure(
             frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
-        if ((ride.colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN)
+        if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)
         {
             vehicleIndex = 0;
         }

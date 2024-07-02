@@ -2655,7 +2655,7 @@ static Widget _rideConstructionWidgets[] = {
             tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
             tempTrackTileElement.AsTrack()->SetHasCableLift(false);
             tempTrackTileElement.AsTrack()->SetInverted((liftHillAndInvertedState & CONSTRUCTION_INVERTED_TRACK_SELECTED) != 0);
-            tempTrackTileElement.AsTrack()->SetColourScheme(RIDE_COLOUR_SCHEME_MAIN);
+            tempTrackTileElement.AsTrack()->SetColourScheme(RideColourScheme::main);
             // Skipping seat rotation, should not be necessary for a temporary piece.
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 

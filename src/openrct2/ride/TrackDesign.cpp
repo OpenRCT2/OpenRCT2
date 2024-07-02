@@ -124,18 +124,16 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     }
 
     rideMode = ride.mode;
-    colourScheme = ride.colour_scheme_type & 3;
+    appearance.vehicleColourSettings = ride.vehicleColourSettings;
 
-    for (size_t i = 0; i < std::size(vehicleColours); i++)
+    for (size_t i = 0; i < std::size(appearance.vehicleColours); i++)
     {
-        vehicleColours[i] = ride.vehicle_colours[i];
+        appearance.vehicleColours[i] = ride.vehicle_colours[i];
     }
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
+    for (size_t i = 0; i < std::min(std::size(ride.track_colour), std::size(appearance.trackColours)); i++)
     {
-        trackSpineColour[i] = ride.track_colour[i].main;
-        trackRailColour[i] = ride.track_colour[i].additional;
-        trackSupportColour[i] = ride.track_colour[i].supports;
+        appearance.trackColours[i] = ride.track_colour[i];
     }
 
     departFlags = ride.depart_flags;
@@ -147,7 +145,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     liftHillSpeed = ride.lift_hill_speed;
     numCircuits = ride.num_circuits;
 
-    stationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
+    appearance.stationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
     statistics.maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
     statistics.averageSpeed = static_cast<int8_t>(ride.average_speed / 65536);
     statistics.rideLength = ride.GetTotalLength() / 65536;
@@ -566,9 +564,9 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(cost);
     stream << DS_TAG(rideMode);
     stream << DS_TAG(trackFlags);
-    stream << DS_TAG(colourScheme);
-    stream << DS_TAG(vehicleColours);
-    stream << DS_TAG(stationObjectIdentifier);
+    stream << DS_TAG(appearance.vehicleColourSettings);
+    stream << DS_TAG(appearance.vehicleColours);
+    stream << DS_TAG(appearance.stationObjectIdentifier);
     stream << DS_TAG(statistics.totalAirTime);
     stream << DS_TAG(departFlags);
     stream << DS_TAG(numberOfTrains);
@@ -590,9 +588,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(statistics.intensity);
     stream << DS_TAG(statistics.nausea);
     stream << DS_TAG(statistics.upkeepCost);
-    stream << DS_TAG(trackSpineColour);
-    stream << DS_TAG(trackRailColour);
-    stream << DS_TAG(trackSupportColour);
+    stream << DS_TAG(appearance.trackColours);
     stream << DS_TAG(vehicleObject);
     stream << DS_TAG(statistics.spaceRequired.x);
     stream << DS_TAG(statistics.spaceRequired.y);
@@ -1902,17 +1898,15 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     ride->custom_name = {};
 
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td6->stationObjectIdentifier);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td6->appearance.stationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gameState.LastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
+    for (size_t i = 0; i < std::min(std::size(ride->track_colour), std::size(td6->appearance.trackColours)); i++)
     {
-        ride->track_colour[i].main = td6->trackSpineColour[i];
-        ride->track_colour[i].additional = td6->trackRailColour[i];
-        ride->track_colour[i].supports = td6->trackSupportColour[i];
+        ride->track_colour[i] = td6->appearance.trackColours[i];
     }
 
     // Flat rides need their vehicle colours loaded for display
@@ -1921,7 +1915,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     {
         for (size_t i = 0; i < std::size(ride->vehicle_colours); i++)
         {
-            ride->vehicle_colours[i] = td6->vehicleColours[i];
+            ride->vehicle_colours[i] = td6->appearance.vehicleColours[i];
         }
     }
 

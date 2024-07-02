@@ -624,7 +624,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             trackElement->SetInverted(true);
         }
-        trackElement->SetColourScheme(_colour);
+        trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
         entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)

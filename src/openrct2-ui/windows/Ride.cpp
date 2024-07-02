@@ -506,12 +506,12 @@ static_assert(std::size(RatingNames) == 6);
 
     // Used in other places as well
     const StringId ColourSchemeNames[4] = {
-        STR_MAIN_COLOUR_SCHEME,          // RIDE_COLOUR_SCHEME_MAIN
-        STR_ALTERNATIVE_COLOUR_SCHEME_1, // RIDE_COLOUR_SCHEME_ADDITIONAL_1
-        STR_ALTERNATIVE_COLOUR_SCHEME_2, // RIDE_COLOUR_SCHEME_ADDITIONAL_2
-        STR_ALTERNATIVE_COLOUR_SCHEME_3, // RIDE_COLOUR_SCHEME_ADDITIONAL_3
+        STR_MAIN_COLOUR_SCHEME,          // RideColourScheme::main
+        STR_ALTERNATIVE_COLOUR_SCHEME_1, // RideColourScheme::additional1
+        STR_ALTERNATIVE_COLOUR_SCHEME_2, // RideColourScheme::additional2
+        STR_ALTERNATIVE_COLOUR_SCHEME_3, // RideColourScheme::additional3
     };
-    static_assert(std::size(ColourSchemeNames) == RIDE_COLOUR_SCHEME_COUNT);
+    static_assert(std::size(ColourSchemeNames) == kNumRideColourSchemes);
 
     static constexpr std::array VehicleLoadNames = {
         static_cast<StringId>(STR_QUARTER_LOAD),       //  WAIT_FOR_LOAD_QUARTER
@@ -523,11 +523,11 @@ static_assert(std::size(RatingNames) == 6);
     static_assert(std::size(VehicleLoadNames) == WAIT_FOR_LOAD_COUNT);
 
     static constexpr std::array VehicleColourSchemeNames = {
-        static_cast<StringId>(STR_ALL_VEHICLES_IN_SAME_COLOURS),  // RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
-        static_cast<StringId>(STR_DIFFERENT_COLOURS_PER),         // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
-        static_cast<StringId>(STR_DIFFERENT_COLOURS_PER_VEHICLE), // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
+        static_cast<StringId>(STR_ALL_VEHICLES_IN_SAME_COLOURS),  // VehicleColourSettings::same,
+        static_cast<StringId>(STR_DIFFERENT_COLOURS_PER),         // VehicleColourSettings::perTrain,
+        static_cast<StringId>(STR_DIFFERENT_COLOURS_PER_VEHICLE), // VehicleColourSettings::perCar,
     };
-    static_assert(std::size(VehicleColourSchemeNames) == RIDE_COLOUR_SCHEME_MODE_COUNT);
+    static_assert(std::size(VehicleColourSchemeNames) == kNumVehicleColourSettings);
 
     static constexpr std::array VehicleStatusNames = {
         static_cast<StringId>(STR_MOVING_TO_END_OF),          // Vehicle::Status::MovingToEndOfStation
@@ -1202,7 +1202,7 @@ static_assert(std::size(RatingNames) == 6);
                 const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, rideEntry->TabCar);
                 const auto& carEntry = rideEntry->Cars[vehicle];
 
-                auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->TabCar : 0;
+                auto vehicleId = (ride->vehicleColourSettings == VehicleColourSettings::perCar) ? rideEntry->TabCar : 0;
                 VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleId);
 
                 // imageIndex represents a precision of 64
@@ -2915,15 +2915,15 @@ static_assert(std::size(RatingNames) == 6);
 
                     // Get colour of vehicle
                     int32_t vehicleColourIndex = 0;
-                    switch (ride->colour_scheme_type & 3)
+                    switch (ride->vehicleColourSettings)
                     {
-                        case VEHICLE_COLOUR_SCHEME_SAME:
+                        case VehicleColourSettings::same:
                             vehicleColourIndex = 0;
                             break;
-                        case VEHICLE_COLOUR_SCHEME_PER_TRAIN:
+                        case VehicleColourSettings::perTrain:
                             vehicleColourIndex = i;
                             break;
-                        case VEHICLE_COLOUR_SCHEME_PER_VEHICLE:
+                        case VehicleColourSettings::perCar:
                             vehicleColourIndex = carIndex;
                             break;
                     }
@@ -4176,7 +4176,7 @@ static_assert(std::size(RatingNames) == 6);
         void ColourOnMouseDown(WidgetIndex widgetIndex)
         {
             VehicleColour vehicleColour;
-            int32_t i, numItems;
+            int32_t numItems;
             StringId stringId;
 
             auto ride = GetRide(rideId);
@@ -4193,7 +4193,8 @@ static_assert(std::size(RatingNames) == 6);
             switch (widgetIndex)
             {
                 case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-                    for (i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
+                {
+                    for (size_t i = 0; i < std::size(ColourSchemeNames); i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                         gDropdownItems[i].Args = ColourSchemeNames[i];
@@ -4205,6 +4206,7 @@ static_assert(std::size(RatingNames) == 6);
 
                     Dropdown::SetChecked(colourSchemeIndex, true);
                     break;
+                }
                 case WIDX_TRACK_MAIN_COLOUR:
                     WindowDropdownShowColour(
                         this, &widgets[widgetIndex], colours[1], ride->track_colour[colourSchemeIndex].main);
@@ -4218,7 +4220,8 @@ static_assert(std::size(RatingNames) == 6);
                         this, &widgets[widgetIndex], colours[1], ride->track_colour[colourSchemeIndex].supports);
                     break;
                 case WIDX_MAZE_STYLE_DROPDOWN:
-                    for (i = 0; i < 4; i++)
+                {
+                    for (auto i = 0; i < 4; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                         gDropdownItems[i].Args = MazeOptions[i].text;
@@ -4230,11 +4233,13 @@ static_assert(std::size(RatingNames) == 6);
 
                     Dropdown::SetChecked(ride->track_colour[colourSchemeIndex].supports, true);
                     break;
+                }
                 case WIDX_ENTRANCE_STYLE_DROPDOWN:
                     ShowEntranceStyleDropdown();
                     break;
                 case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
-                    for (i = 0; i < 3; i++)
+                {
+                    for (auto i = 0; i < 3; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                         gDropdownItems[i].Args = (GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle)
@@ -4248,17 +4253,18 @@ static_assert(std::size(RatingNames) == 6);
                         colours[1], 0, Dropdown::Flag::StayOpen, rideEntry->max_cars_in_train > 1 ? 3 : 2,
                         widgets[widgetIndex].right - dropdownWidget->left);
 
-                    Dropdown::SetChecked(ride->colour_scheme_type & 3, true);
+                    Dropdown::SetChecked(EnumValue(ride->vehicleColourSettings), true);
                     break;
+                }
                 case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
+                {
                     numItems = ride->NumTrains;
-                    if ((ride->colour_scheme_type & 3) != VEHICLE_COLOUR_SCHEME_PER_TRAIN)
+                    if (ride->vehicleColourSettings != VehicleColourSettings::perTrain)
                         numItems = ride->num_cars_per_train;
 
-                    stringId = (ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_TRAIN
-                        ? STR_RIDE_COLOUR_TRAIN_OPTION
-                        : STR_RIDE_COLOUR_VEHICLE_OPTION;
-                    for (i = 0; i < std::min(numItems, Dropdown::ItemsMaxSize); i++)
+                    stringId = ride->vehicleColourSettings == VehicleColourSettings::perTrain ? STR_RIDE_COLOUR_TRAIN_OPTION
+                                                                                              : STR_RIDE_COLOUR_VEHICLE_OPTION;
+                    for (auto i = 0; i < std::min(numItems, Dropdown::ItemsMaxSize); i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                         gDropdownItems[i].Args = (static_cast<int64_t>(i + 1) << 32)
@@ -4272,6 +4278,7 @@ static_assert(std::size(RatingNames) == 6);
 
                     Dropdown::SetChecked(_vehicleIndex, true);
                     break;
+                }
                 case WIDX_VEHICLE_BODY_COLOUR:
                     vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
                     WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Body);
@@ -4549,8 +4556,7 @@ static_assert(std::size(RatingNames) == 6);
             if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES)
                 && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS))
             {
-                int32_t vehicleColourSchemeType = ride->colour_scheme_type & 3;
-                if (vehicleColourSchemeType == 0)
+                if (ride->vehicleColourSettings == VehicleColourSettings::same)
                     _vehicleIndex = 0;
 
                 vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
@@ -4611,18 +4617,19 @@ static_assert(std::size(RatingNames) == 6);
                 }
                 ft.Rewind();
                 ft.Increment(6);
-                ft.Add<StringId>(VehicleColourSchemeNames[vehicleColourSchemeType]);
+                ft.Add<StringId>(VehicleColourSchemeNames[EnumValue(ride->vehicleColourSettings)]);
                 ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular);
                 ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).capitalised);
                 ft.Add<uint16_t>(_vehicleIndex + 1);
 
                 // Vehicle index
-                if (vehicleColourSchemeType != 0)
+                if (ride->vehicleColourSettings != VehicleColourSettings::same)
                 {
                     widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WindowWidgetType::DropdownMenu;
                     widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WindowWidgetType::Button;
-                    widgets[WIDX_VEHICLE_COLOUR_INDEX].text = vehicleColourSchemeType == 1 ? STR_RIDE_COLOUR_TRAIN_VALUE
-                                                                                           : STR_RIDE_COLOUR_VEHICLE_VALUE;
+                    widgets[WIDX_VEHICLE_COLOUR_INDEX].text = ride->vehicleColourSettings == VehicleColourSettings::perTrain
+                        ? STR_RIDE_COLOUR_TRAIN_VALUE
+                        : STR_RIDE_COLOUR_VEHICLE_VALUE;
                 }
                 else
                 {
@@ -4788,9 +4795,8 @@ static_assert(std::size(RatingNames) == 6);
             auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
 
             // ?
-            auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR
-                ? _vehicleIndex
-                : rideEntry->TabCar;
+            auto trainCarIndex = ride->vehicleColourSettings == VehicleColourSettings::perCar ? _vehicleIndex
+                                                                                              : rideEntry->TabCar;
 
             const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
                 ride->subtype, ride->num_cars_per_train, trainCarIndex)];
