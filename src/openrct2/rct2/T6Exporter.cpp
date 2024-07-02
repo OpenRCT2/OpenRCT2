@@ -55,7 +55,7 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(OpenRCT2RideTypeToRCT2RideType(_trackDesign->type));
         tempStream.WriteValue<uint8_t>(_trackDesign->vehicleType);
         tempStream.WriteValue<uint32_t>(0);
-        tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->rideMode));
+        tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->operation.rideMode));
         tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign->appearance.vehicleColourSettings) | (2 << 2));
         for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
@@ -66,12 +66,12 @@ namespace RCT2
         auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->appearance.stationObjectIdentifier);
         tempStream.WriteValue<uint8_t>(entranceStyle);
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.totalAirTime);
-        tempStream.WriteValue<uint8_t>(_trackDesign->departFlags);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.departFlags);
         tempStream.WriteValue<uint8_t>(_trackDesign->numberOfTrains);
         tempStream.WriteValue<uint8_t>(_trackDesign->numberOfCarsPerTrain);
-        tempStream.WriteValue<uint8_t>(_trackDesign->minWaitingTime);
-        tempStream.WriteValue<uint8_t>(_trackDesign->maxWaitingTime);
-        tempStream.WriteValue<uint8_t>(_trackDesign->operationSetting);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.minWaitingTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.maxWaitingTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.operationSetting);
         tempStream.WriteValue<int8_t>(_trackDesign->statistics.maxSpeed);
         tempStream.WriteValue<int8_t>(_trackDesign->statistics.averageSpeed);
         tempStream.WriteValue<uint16_t>(_trackDesign->statistics.rideLength);
@@ -106,7 +106,7 @@ namespace RCT2
         {
             tempStream.WriteValue<uint8_t>(_trackDesign->appearance.vehicleColours[i].Tertiary);
         }
-        tempStream.WriteValue<uint8_t>(_trackDesign->liftHillSpeed | (_trackDesign->numCircuits << 5));
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.liftHillSpeed | (_trackDesign->operation.numCircuits << 5));
 
         const auto& rtd = GetRideTypeDescriptor(_trackDesign->type);
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))

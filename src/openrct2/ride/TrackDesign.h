@@ -130,12 +130,23 @@ struct TrackDesignMazeElement
 class DataSerialiser;
 enum class RideMode : uint8_t;
 
+struct TrackDesignOperatingSettings
+{
+    RideMode rideMode{};
+    uint8_t liftHillSpeed{};
+    uint8_t numCircuits{};
+    uint8_t operationSetting{};
+    uint8_t departFlags{};
+    uint8_t minWaitingTime{};
+    uint8_t maxWaitingTime{};
+};
+
 struct TrackDesignAppearanceSettings
 {
-    std::array<TrackColour, kNumRideColourSchemes> trackColours;
+    std::array<TrackColour, kNumRideColourSchemes> trackColours{};
     u8string stationObjectIdentifier{};
     VehicleColourSettings vehicleColourSettings{};
-    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicleColours;
+    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicleColours{};
 };
 
 struct TrackDesignStatistics
@@ -170,20 +181,12 @@ struct TrackDesign
     uint8_t type;
     uint8_t vehicleType;
     money64 cost;
-    RideMode rideMode;
     uint8_t trackFlags;
-    uint8_t departFlags;
     uint8_t numberOfTrains;
     uint8_t numberOfCarsPerTrain;
-    uint8_t minWaitingTime;
-    uint8_t maxWaitingTime;
-    uint8_t operationSetting;
-
     ObjectEntryDescriptor vehicleObject;
 
-    uint8_t liftHillSpeed;
-    uint8_t numCircuits;
-
+    TrackDesignOperatingSettings operation{};
     TrackDesignAppearanceSettings appearance{};
     TrackDesignStatistics statistics{};
 

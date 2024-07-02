@@ -128,10 +128,10 @@ namespace RCT1
             td->type = RCT1::GetRideType(td4Base.Type, td4Base.VehicleType);
 
             // All TD4s that use powered launch use the type that doesn't pass the station.
-            td->rideMode = static_cast<RideMode>(td4Base.Mode);
+            td->operation.rideMode = static_cast<RideMode>(td4Base.Mode);
             if (td4Base.Mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
             {
-                td->rideMode = RideMode::PoweredLaunch;
+                td->operation.rideMode = RideMode::PoweredLaunch;
             }
 
             std::string_view vehicleObject;
@@ -201,12 +201,12 @@ namespace RCT1
             }
 
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
-            td->departFlags = td4Base.DepartFlags;
+            td->operation.departFlags = td4Base.DepartFlags;
             td->numberOfTrains = td4Base.NumberOfTrains;
             td->numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain;
-            td->minWaitingTime = td4Base.MinWaitingTime;
-            td->maxWaitingTime = td4Base.MaxWaitingTime;
-            td->operationSetting = std::min(
+            td->operation.minWaitingTime = td4Base.MinWaitingTime;
+            td->operation.maxWaitingTime = td4Base.MaxWaitingTime;
+            td->operation.operationSetting = std::min(
                 td4Base.OperationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
             td->statistics.maxSpeed = td4Base.MaxSpeed;
             td->statistics.averageSpeed = td4Base.AverageSpeed;
@@ -231,9 +231,10 @@ namespace RCT1
             td->statistics.nausea = td4Base.Nausea;
             td->statistics.upkeepCost = ToMoney64(td4Base.UpkeepCost);
             td->statistics.spaceRequired.SetNull();
-            td->liftHillSpeed = 5;
-            td->numCircuits = 0;
-            td->operationSetting = std::min(td->operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
+            td->operation.liftHillSpeed = 5;
+            td->operation.numCircuits = 0;
+            td->operation.operationSetting = std::min(
+                td->operation.operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
             const auto& rtd = GetRideTypeDescriptor(td->type);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
