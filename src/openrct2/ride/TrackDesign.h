@@ -90,9 +90,9 @@ struct TrackDesignSceneryElement
 
 enum class TrackDesignTrackElementFlag : uint8_t
 {
-    HasChain = (1 << 0),
-    IsInverted = (1 << 1),
-    IsCovered = (1 << 2), // Reserved
+    hasChain = (1 << 0),
+    isInverted = (1 << 1),
+    isCovered = (1 << 2), // Reserved
 };
 
 struct TrackDesignTrackElement

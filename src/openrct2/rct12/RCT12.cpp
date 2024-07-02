@@ -903,9 +903,9 @@ void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
 
     target.ColourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
     if (flags & EnumValue(TD46Flags::IsInverted))
-        target.SetFlag(TrackDesignTrackElementFlag::IsInverted);
+        target.SetFlag(TrackDesignTrackElementFlag::isInverted);
     if (flags & EnumValue(TD46Flags::HasChain))
-        target.SetFlag(TrackDesignTrackElementFlag::HasChain);
+        target.SetFlag(TrackDesignTrackElementFlag::hasChain);
 }
 
 uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
@@ -926,9 +926,9 @@ uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
 
     trackFlags |= source.ColourScheme << 4;
 
-    if (source.HasFlag(TrackDesignTrackElementFlag::HasChain))
+    if (source.HasFlag(TrackDesignTrackElementFlag::hasChain))
         trackFlags |= EnumValue(TD46Flags::HasChain);
-    if (source.HasFlag(TrackDesignTrackElementFlag::IsInverted))
+    if (source.HasFlag(TrackDesignTrackElementFlag::isInverted))
         trackFlags |= EnumValue(TD46Flags::IsInverted);
 
     return trackFlags;
