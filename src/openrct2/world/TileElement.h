@@ -31,6 +31,7 @@ class TerrainEdgeObject;
 class FootpathObject;
 class FootpathSurfaceObject;
 class FootpathRailingsObject;
+enum class RideColourScheme : uint8_t;
 using track_type_t = uint16_t;
 
 constexpr uint8_t MAX_ELEMENT_HEIGHT = 255;
@@ -373,7 +374,7 @@ public:
     void SetRideIndex(RideId newRideIndex);
 
     uint8_t GetColourScheme() const;
-    void SetColourScheme(uint8_t newColourScheme);
+    void SetColourScheme(RideColourScheme newColourScheme);
 
     StationIndex GetStationIndex() const;
     void SetStationIndex(StationIndex newStationIndex);

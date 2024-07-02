@@ -53,51 +53,60 @@ namespace RCT2
     {
         OpenRCT2::MemoryStream tempStream;
         tempStream.WriteValue<uint8_t>(OpenRCT2RideTypeToRCT2RideType(_trackDesign->type));
-        tempStream.WriteValue<uint8_t>(_trackDesign->vehicleType);
+        tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint32_t>(0);
-        tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->rideMode));
-        tempStream.WriteValue<uint8_t>((_trackDesign->colourScheme & 0x3) | (2 << 2));
+        tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->operation.rideMode));
+        tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign->appearance.vehicleColourSettings) | (2 << 2));
         for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicleColours[i].Body);
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicleColours[i].Trim);
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.vehicleColours[i].Body);
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.vehicleColours[i].Trim);
         }
         tempStream.WriteValue<uint8_t>(0);
-        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->stationObjectIdentifier);
+        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->appearance.stationObjectIdentifier);
         tempStream.WriteValue<uint8_t>(entranceStyle);
-        tempStream.WriteValue<uint8_t>(_trackDesign->totalAirTime);
-        tempStream.WriteValue<uint8_t>(_trackDesign->departFlags);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.totalAirTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.departFlags);
         tempStream.WriteValue<uint8_t>(_trackDesign->numberOfTrains);
         tempStream.WriteValue<uint8_t>(_trackDesign->numberOfCarsPerTrain);
-        tempStream.WriteValue<uint8_t>(_trackDesign->minWaitingTime);
-        tempStream.WriteValue<uint8_t>(_trackDesign->maxWaitingTime);
-        tempStream.WriteValue<uint8_t>(_trackDesign->operationSetting);
-        tempStream.WriteValue<int8_t>(_trackDesign->maxSpeed);
-        tempStream.WriteValue<int8_t>(_trackDesign->averageSpeed);
-        tempStream.WriteValue<uint16_t>(_trackDesign->rideLength);
-        tempStream.WriteValue<uint8_t>(_trackDesign->maxPositiveVerticalG);
-        tempStream.WriteValue<int8_t>(_trackDesign->maxNegativeVerticalG);
-        tempStream.WriteValue<uint8_t>(_trackDesign->maxLateralG);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.minWaitingTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.maxWaitingTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.operationSetting);
+        tempStream.WriteValue<int8_t>(_trackDesign->statistics.maxSpeed);
+        tempStream.WriteValue<int8_t>(_trackDesign->statistics.averageSpeed);
+        tempStream.WriteValue<uint16_t>(_trackDesign->statistics.rideLength);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.maxPositiveVerticalG);
+        tempStream.WriteValue<int8_t>(_trackDesign->statistics.maxNegativeVerticalG);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.maxLateralG);
         tempStream.WriteValue<uint8_t>(
-            _trackDesign->type == RIDE_TYPE_MINI_GOLF ? _trackDesign->holes : _trackDesign->inversions);
-        tempStream.WriteValue<uint8_t>(_trackDesign->drops);
-        tempStream.WriteValue<uint8_t>(_trackDesign->highestDropHeight);
-        tempStream.WriteValue<uint8_t>(_trackDesign->excitement);
-        tempStream.WriteValue<uint8_t>(_trackDesign->intensity);
-        tempStream.WriteValue<uint8_t>(_trackDesign->nausea);
-        tempStream.WriteValue<money16>(ToMoney16(_trackDesign->upkeepCost));
-        tempStream.WriteArray(_trackDesign->trackSpineColour, Limits::kNumColourSchemes);
-        tempStream.WriteArray(_trackDesign->trackRailColour, Limits::kNumColourSchemes);
-        tempStream.WriteArray(_trackDesign->trackSupportColour, Limits::kNumColourSchemes);
+            _trackDesign->type == RIDE_TYPE_MINI_GOLF ? _trackDesign->statistics.holes : _trackDesign->statistics.inversions);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.drops);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.highestDropHeight);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.excitement);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.intensity);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.nausea);
+        tempStream.WriteValue<money16>(ToMoney16(_trackDesign->statistics.upkeepCost));
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.trackColours[i].main);
+        }
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.trackColours[i].additional);
+        }
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.trackColours[i].supports);
+        }
         tempStream.WriteValue<uint32_t>(0);
         tempStream.Write(&_trackDesign->vehicleObject.Entry, sizeof(RCTObjectEntry));
-        tempStream.WriteValue<uint8_t>(_trackDesign->spaceRequiredX);
-        tempStream.WriteValue<uint8_t>(_trackDesign->spaceRequiredY);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.spaceRequired.x);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.spaceRequired.y);
         for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicleColours[i].Tertiary);
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.vehicleColours[i].Tertiary);
         }
-        tempStream.WriteValue<uint8_t>(_trackDesign->liftHillSpeed | (_trackDesign->numCircuits << 5));
+        tempStream.WriteValue<uint8_t>(_trackDesign->operation.liftHillSpeed | (_trackDesign->operation.numCircuits << 5));
 
         const auto& rtd = GetRideTypeDescriptor(_trackDesign->type);
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
@@ -124,7 +133,7 @@ namespace RCT2
         {
             for (const auto& trackElement : _trackDesign->trackElements)
             {
-                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.Type);
+                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
                 if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
                 {
                     trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;

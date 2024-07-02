@@ -1322,7 +1322,7 @@ namespace OpenRCT2
 
                     // Colours
                     cs.ReadWrite(ride.entrance_style);
-                    cs.ReadWrite(ride.colour_scheme_type);
+                    cs.ReadWrite(ride.vehicleColourSettings);
                     cs.ReadWriteArray(ride.track_colour, [&cs](TrackColour& tc) {
                         cs.ReadWrite(tc.main);
                         cs.ReadWrite(tc.additional);

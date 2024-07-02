@@ -15,6 +15,8 @@
 #include "../world/Park.h"
 #include "Limits.h"
 
+enum class VehicleColourSettings : uint8_t;
+
 namespace RCT1
 {
     constexpr uint8_t RCT1ResearchFlagsSeparator = 0xFF;
@@ -237,11 +239,11 @@ namespace RCT1
      */
     struct Ride
     {
-        RideType Type;                 // 0x000
-        RCT1::VehicleType VehicleType; // 0x001
-        uint16_t LifecycleFlags;       // 0x002
-        uint8_t OperatingMode;         // 0x004
-        uint8_t ColourScheme;          // 0x005
+        RideType Type;                               // 0x000
+        RCT1::VehicleType VehicleType;               // 0x001
+        uint16_t LifecycleFlags;                     // 0x002
+        uint8_t OperatingMode;                       // 0x004
+        VehicleColourSettings vehicleColourSettings; // 0x005
         struct
         {
             colour_t Body;

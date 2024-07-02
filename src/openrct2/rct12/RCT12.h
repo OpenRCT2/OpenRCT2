@@ -76,6 +76,7 @@ constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max(
 
 struct TrackDesign;
 struct TrackDesignTrackElement;
+enum class RideColourScheme : uint8_t;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -527,7 +528,7 @@ public:
     uint8_t GetTrackType() const;
     uint8_t GetSequenceIndex() const;
     uint8_t GetRideIndex() const;
-    uint8_t GetColourScheme() const;
+    RideColourScheme GetColourScheme() const;
     uint8_t GetStationIndex() const;
     bool HasChain() const;
     bool HasCableLift() const;

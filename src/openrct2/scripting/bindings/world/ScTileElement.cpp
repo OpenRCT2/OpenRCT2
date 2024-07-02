@@ -919,7 +919,7 @@ namespace OpenRCT2::Scripting
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 throw DukException() << "Cannot set 'colourScheme' property, TrackElement belongs to a maze.";
 
-            el->SetColourScheme(value.as_uint());
+            el->SetColourScheme(static_cast<RideColourScheme>(value.as_uint()));
             Invalidate();
         }
         catch (const DukException& e)
