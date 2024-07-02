@@ -524,6 +524,12 @@ namespace OpenRCT2::Scripting
         return ride != nullptr ? ride->GetRideTypeDescriptor().LiftData.minimum_speed : 0;
     }
 
+    uint8_t ScRide::satisfaction_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->satisfaction * 5 : 0;
+    }
+
     void ScRide::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");
@@ -558,6 +564,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::liftHillSpeed_get, &ScRide::lifthillSpeed_set, "liftHillSpeed");
         dukglue_register_property(ctx, &ScRide::maxLiftHillSpeed_get, nullptr, "maxLiftHillSpeed");
         dukglue_register_property(ctx, &ScRide::minLiftHillSpeed_get, nullptr, "minLiftHillSpeed");
+        dukglue_register_property(ctx, &ScRide::satisfaction_get, nullptr, "satisfaction");
     }
 
 } // namespace OpenRCT2::Scripting
