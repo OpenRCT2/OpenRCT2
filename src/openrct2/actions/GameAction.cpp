@@ -210,12 +210,13 @@ namespace GameActions
 
         if (result.Error == GameActions::Status::Ok)
         {
-            if (!FinanceCheckAffordability(result.Cost, action->GetFlags()))
+            auto modifiedCost = FinanceGetModifiedCost(result.Cost, result.Expenditure);
+            if (!FinanceCheckAffordability(modifiedCost, action->GetFlags()))
             {
                 result.Error = GameActions::Status::InsufficientFunds;
                 result.ErrorTitle = STR_CANT_DO_THIS;
                 result.ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
-                Formatter(result.ErrorMessageArgs.data()).Add<uint32_t>(result.Cost);
+                Formatter(result.ErrorMessageArgs.data()).Add<uint32_t>(modifiedCost);
             }
         }
         return result;
@@ -373,10 +374,11 @@ namespace GameActions
                 return result;
 
             // Update money balance
-            if (result.Error == GameActions::Status::Ok && FinanceCheckMoneyRequired(flags) && result.Cost != 0)
+            auto modifiedCost = FinanceGetModifiedCost(result.Cost, result.Expenditure);
+            if (result.Error == GameActions::Status::Ok && FinanceCheckMoneyRequired(flags) && modifiedCost != 0)
             {
-                FinancePayment(result.Cost, result.Expenditure);
-                MoneyEffect::Create(result.Cost, result.Position);
+                FinancePayment(modifiedCost, result.Expenditure);
+                MoneyEffect::Create(modifiedCost, result.Position);
             }
 
             if (!(actionFlags & GameActions::Flags::ClientOnly) && result.Error == GameActions::Status::Ok)
@@ -391,9 +393,9 @@ namespace GameActions
 
                     NetworkSetPlayerLastAction(playerIndex, action->GetType());
                     NetworkIncrementPlayerNumCommands(playerIndex);
-                    if (result.Cost > 0)
+                    if (modifiedCost > 0)
                     {
-                        NetworkAddPlayerMoneySpent(playerIndex, result.Cost);
+                        NetworkAddPlayerMoneySpent(playerIndex, modifiedCost);
                     }
 
                     if (!result.Position.IsNull())
