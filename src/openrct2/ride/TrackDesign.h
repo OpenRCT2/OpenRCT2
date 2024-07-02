@@ -36,16 +36,16 @@ enum class TrackPlaceOperation : uint8_t
 
 struct TrackDesignState
 {
-    CoordsXYZ PreviewMin;
-    CoordsXYZ PreviewMax;
-    CoordsXYZ Origin;
-    TrackPlaceOperation PlaceOperation{};
-    int16_t PlaceZ{};
-    int16_t PlaceSceneryZ{};
-    bool EntranceExitPlaced{};
-    bool HasScenery{};
-    bool PlaceScenery{};
-    bool IsReplay{};
+    CoordsXYZ previewMin;
+    CoordsXYZ previewMax;
+    CoordsXYZ origin;
+    TrackPlaceOperation placeOperation{};
+    int16_t placeZ{};
+    int16_t placeSceneryZ{};
+    bool entranceExitPlaced{};
+    bool hasScenery{};
+    bool placeScenery{};
+    bool isReplay{};
 };
 
 /* Track Entrance entry */
