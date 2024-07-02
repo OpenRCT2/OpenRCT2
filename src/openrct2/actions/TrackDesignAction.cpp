@@ -69,7 +69,7 @@ GameActions::Result TrackDesignAction::Query() const
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicleObject);
     if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
-        // Force a fallback if the entry is not invented yet a td6 of it is selected,
+        // Force a fallback if the entry is not invented yet a track design of it is selected,
         // which can happen in select-by-track-type mode
         if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.IgnoreResearchStatus)
         {
