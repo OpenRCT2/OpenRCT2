@@ -75,7 +75,7 @@ namespace RCT2
             td->vehicleType = td6.VehicleType;
 
             td->cost = 0.00_GBP;
-            td->rideMode = static_cast<RideMode>(td6.RideMode);
+            td->operation.rideMode = static_cast<RideMode>(td6.RideMode);
             td->trackFlags = 0;
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td6.VersionAndColourScheme & 0x3);
             for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
@@ -86,12 +86,12 @@ namespace RCT2
             }
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
             td->statistics.totalAirTime = td6.TotalAirTime;
-            td->departFlags = td6.DepartFlags;
+            td->operation.departFlags = td6.DepartFlags;
             td->numberOfTrains = td6.NumberOfTrains;
             td->numberOfCarsPerTrain = td6.NumberOfCarsPerTrain;
-            td->minWaitingTime = td6.MinWaitingTime;
-            td->maxWaitingTime = td6.MaxWaitingTime;
-            td->operationSetting = td6.OperationSetting;
+            td->operation.minWaitingTime = td6.MinWaitingTime;
+            td->operation.maxWaitingTime = td6.MaxWaitingTime;
+            td->operation.operationSetting = td6.OperationSetting;
             td->statistics.maxSpeed = td6.MaxSpeed;
             td->statistics.averageSpeed = td6.AverageSpeed;
             td->statistics.rideLength = td6.RideLength;
@@ -122,8 +122,8 @@ namespace RCT2
             }
             td->vehicleObject = ObjectEntryDescriptor(td6.VehicleObject);
             td->statistics.spaceRequired = { td6.SpaceRequiredX, td6.SpaceRequiredY };
-            td->liftHillSpeed = td6.LiftHillSpeedNumCircuits & 0b00011111;
-            td->numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
+            td->operation.liftHillSpeed = td6.LiftHillSpeedNumCircuits & 0b00011111;
+            td->operation.numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
 
             auto version = static_cast<RCT12TrackDesignVersion>((td6.VersionAndColourScheme >> 2) & 3);
             if (version != RCT12TrackDesignVersion::TD6)
@@ -132,7 +132,8 @@ namespace RCT2
                 return nullptr;
             }
 
-            td->operationSetting = std::min(td->operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
+            td->operation.operationSetting = std::min(
+                td->operation.operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
             const auto& rtd = GetRideTypeDescriptor(td->type);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))

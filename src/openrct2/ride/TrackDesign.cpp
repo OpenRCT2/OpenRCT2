@@ -123,7 +123,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
         vehicleObject = ObjectEntryDescriptor(entry);
     }
 
-    rideMode = ride.mode;
+    operation.rideMode = ride.mode;
     appearance.vehicleColourSettings = ride.vehicleColourSettings;
 
     for (size_t i = 0; i < std::size(appearance.vehicleColours); i++)
@@ -136,14 +136,14 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
         appearance.trackColours[i] = ride.track_colour[i];
     }
 
-    departFlags = ride.depart_flags;
+    operation.departFlags = ride.depart_flags;
     numberOfTrains = ride.NumTrains;
     numberOfCarsPerTrain = ride.num_cars_per_train;
-    minWaitingTime = ride.min_waiting_time;
-    maxWaitingTime = ride.max_waiting_time;
-    operationSetting = ride.operation_option;
-    liftHillSpeed = ride.lift_hill_speed;
-    numCircuits = ride.num_circuits;
+    operation.minWaitingTime = ride.min_waiting_time;
+    operation.maxWaitingTime = ride.max_waiting_time;
+    operation.operationSetting = ride.operation_option;
+    operation.liftHillSpeed = ride.lift_hill_speed;
+    operation.numCircuits = ride.num_circuits;
 
     appearance.stationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
     statistics.maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
@@ -562,18 +562,18 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(type);
     stream << DS_TAG(vehicleType);
     stream << DS_TAG(cost);
-    stream << DS_TAG(rideMode);
+    stream << DS_TAG(operation.rideMode);
     stream << DS_TAG(trackFlags);
     stream << DS_TAG(appearance.vehicleColourSettings);
     stream << DS_TAG(appearance.vehicleColours);
     stream << DS_TAG(appearance.stationObjectIdentifier);
     stream << DS_TAG(statistics.totalAirTime);
-    stream << DS_TAG(departFlags);
+    stream << DS_TAG(operation.departFlags);
     stream << DS_TAG(numberOfTrains);
     stream << DS_TAG(numberOfCarsPerTrain);
-    stream << DS_TAG(minWaitingTime);
-    stream << DS_TAG(maxWaitingTime);
-    stream << DS_TAG(operationSetting);
+    stream << DS_TAG(operation.minWaitingTime);
+    stream << DS_TAG(operation.maxWaitingTime);
+    stream << DS_TAG(operation.operationSetting);
     stream << DS_TAG(statistics.maxSpeed);
     stream << DS_TAG(statistics.averageSpeed);
     stream << DS_TAG(statistics.rideLength);
@@ -592,8 +592,8 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(vehicleObject);
     stream << DS_TAG(statistics.spaceRequired.x);
     stream << DS_TAG(statistics.spaceRequired.y);
-    stream << DS_TAG(liftHillSpeed);
-    stream << DS_TAG(numCircuits);
+    stream << DS_TAG(operation.liftHillSpeed);
+    stream << DS_TAG(operation.numCircuits);
 
     stream << DS_TAG(mazeElements);
     stream << DS_TAG(trackElements);
