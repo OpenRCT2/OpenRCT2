@@ -245,24 +245,22 @@ GameActions::Result TrackDesignAction::Execute() const
     SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, num_circuits, GAME_COMMAND_FLAG_APPLY);
     ride->SetToDefaultInspectionInterval();
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
-    ride->colour_scheme_type = _td.colourScheme;
+    ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;
 
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.stationObjectIdentifier);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gameState.LastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < Limits::kNumColourSchemes; i++)
+    for (size_t i = 0; i < std::min(std::size(ride->track_colour), std::size(_td.appearance.trackColours)); i++)
     {
-        ride->track_colour[i].main = _td.trackSpineColour[i];
-        ride->track_colour[i].additional = _td.trackRailColour[i];
-        ride->track_colour[i].supports = _td.trackSupportColour[i];
+        ride->track_colour[i] = _td.appearance.trackColours[i];
     }
 
     for (size_t i = 0; i < Limits::kMaxVehicleColours; i++)
     {
-        ride->vehicle_colours[i] = _td.vehicleColours[i];
+        ride->vehicle_colours[i] = _td.appearance.vehicleColours[i];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)

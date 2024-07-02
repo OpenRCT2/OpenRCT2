@@ -89,9 +89,9 @@ namespace RCT1
 
             for (int32_t i = 0; i < Limits::kNumColourSchemes; i++)
             {
-                td->trackSpineColour[i] = RCT1::GetColour(td4aa.TrackSpineColour[i]);
-                td->trackRailColour[i] = RCT1::GetColour(td4aa.TrackRailColour[i]);
-                td->trackSupportColour[i] = RCT1::GetColour(td4aa.TrackSupportColour[i]);
+                td->appearance.trackColours[i].main = RCT1::GetColour(td4aa.TrackSpineColour[i]);
+                td->appearance.trackColours[i].additional = RCT1::GetColour(td4aa.TrackRailColour[i]);
+                td->appearance.trackColours[i].supports = RCT1::GetColour(td4aa.TrackSupportColour[i]);
             }
 
             return ImportTD4Base(std::move(td), td4aa);
@@ -102,21 +102,21 @@ namespace RCT1
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
             TD4 td4{};
             _stream.Read(&td4, sizeof(TD4));
-            for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
+            for (size_t i = 0; i < std::size(td->appearance.trackColours); i++)
             {
-                td->trackSpineColour[i] = RCT1::GetColour(td4.TrackSpineColourV0);
-                td->trackRailColour[i] = RCT1::GetColour(td4.TrackRailColourV0);
-                td->trackSupportColour[i] = RCT1::GetColour(td4.TrackSupportColourV0);
+                td->appearance.trackColours[i].main = RCT1::GetColour(td4.TrackSpineColourV0);
+                td->appearance.trackColours[i].additional = RCT1::GetColour(td4.TrackRailColourV0);
+                td->appearance.trackColours[i].supports = RCT1::GetColour(td4.TrackSupportColourV0);
 
                 // Mazes were only hedges
                 if (td4.Type == RideType::HedgeMaze)
                 {
-                    td->trackSupportColour[i] = MAZE_WALL_TYPE_HEDGE;
+                    td->appearance.trackColours[i].supports = MAZE_WALL_TYPE_HEDGE;
                 }
                 else if (td4.Type == RideType::RiverRapids)
                 {
-                    td->trackSpineColour[i] = COLOUR_WHITE;
-                    td->trackRailColour[i] = COLOUR_WHITE;
+                    td->appearance.trackColours[i].main = COLOUR_WHITE;
+                    td->appearance.trackColours[i].additional = COLOUR_WHITE;
                 }
             }
 
@@ -147,7 +147,7 @@ namespace RCT1
             td->vehicleObject = ObjectEntryDescriptor(vehicleObject);
             td->vehicleType = EnumValue(td4Base.VehicleType);
 
-            td->colourScheme = td4Base.VersionAndColourScheme & 0x3;
+            td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td4Base.VersionAndColourScheme & 0x3);
 
             // Vehicle colours
             for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
@@ -157,50 +157,50 @@ namespace RCT1
                     td4Base.VehicleType);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
-                    td->vehicleColours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
+                    td->appearance.vehicleColours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
                 {
-                    td->vehicleColours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
+                    td->appearance.vehicleColours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
-                    td->vehicleColours[i].Body = colourSchemeCopyDescriptor.colour1;
+                    td->appearance.vehicleColours[i].Body = colourSchemeCopyDescriptor.colour1;
                 }
 
                 if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
                 {
-                    td->vehicleColours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
+                    td->appearance.vehicleColours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
                 {
-                    td->vehicleColours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
+                    td->appearance.vehicleColours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
-                    td->vehicleColours[i].Trim = colourSchemeCopyDescriptor.colour2;
+                    td->appearance.vehicleColours[i].Trim = colourSchemeCopyDescriptor.colour2;
                 }
 
                 if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                 {
-                    td->vehicleColours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
+                    td->appearance.vehicleColours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                 {
-                    td->vehicleColours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
+                    td->appearance.vehicleColours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
-                    td->vehicleColours[i].Tertiary = colourSchemeCopyDescriptor.colour3;
+                    td->appearance.vehicleColours[i].Tertiary = colourSchemeCopyDescriptor.colour3;
                 }
             }
             // Set remaining vehicles to same colour as first vehicle
-            for (size_t i = Limits::kMaxTrainsPerRide; i < std::size(td->vehicleColours); i++)
+            for (size_t i = Limits::kMaxTrainsPerRide; i < std::size(td->appearance.vehicleColours); i++)
             {
-                td->vehicleColours[i] = td->vehicleColours[0];
+                td->appearance.vehicleColours[i] = td->appearance.vehicleColours[0];
             }
 
-            td->stationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
+            td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
             td->departFlags = td4Base.DepartFlags;
             td->numberOfTrains = td4Base.NumberOfTrains;
             td->numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain;

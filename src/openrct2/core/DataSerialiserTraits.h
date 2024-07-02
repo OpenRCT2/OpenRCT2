@@ -779,6 +779,29 @@ template<> struct DataSerializerTraitsT<TrackDesignSceneryElement>
     }
 };
 
+template<> struct DataSerializerTraitsT<TrackColour>
+{
+    static void encode(OpenRCT2::IStream* stream, const TrackColour& val)
+    {
+        stream->Write(&val.main);
+        stream->Write(&val.additional);
+        stream->Write(&val.supports);
+    }
+    static void decode(OpenRCT2::IStream* stream, TrackColour& val)
+    {
+        stream->Read(&val.main);
+        stream->Read(&val.additional);
+        stream->Read(&val.supports);
+    }
+    static void log(OpenRCT2::IStream* stream, const TrackColour& val)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "TrackColour(main = %d, additional = %d, supports = %d)", val.main, val.additional, val.supports);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
 template<> struct DataSerializerTraitsT<VehicleColour>
 {
     static void encode(OpenRCT2::IStream* stream, const VehicleColour& val)

@@ -56,14 +56,14 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign->vehicleType);
         tempStream.WriteValue<uint32_t>(0);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->rideMode));
-        tempStream.WriteValue<uint8_t>((_trackDesign->colourScheme & 0x3) | (2 << 2));
+        tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign->appearance.vehicleColourSettings) | (2 << 2));
         for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicleColours[i].Body);
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicleColours[i].Trim);
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.vehicleColours[i].Body);
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.vehicleColours[i].Trim);
         }
         tempStream.WriteValue<uint8_t>(0);
-        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->stationObjectIdentifier);
+        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->appearance.stationObjectIdentifier);
         tempStream.WriteValue<uint8_t>(entranceStyle);
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.totalAirTime);
         tempStream.WriteValue<uint8_t>(_trackDesign->departFlags);
@@ -86,16 +86,25 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.intensity);
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.nausea);
         tempStream.WriteValue<money16>(ToMoney16(_trackDesign->statistics.upkeepCost));
-        tempStream.WriteArray(_trackDesign->trackSpineColour, Limits::kNumColourSchemes);
-        tempStream.WriteArray(_trackDesign->trackRailColour, Limits::kNumColourSchemes);
-        tempStream.WriteArray(_trackDesign->trackSupportColour, Limits::kNumColourSchemes);
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.trackColours[i].main);
+        }
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.trackColours[i].additional);
+        }
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.trackColours[i].supports);
+        }
         tempStream.WriteValue<uint32_t>(0);
         tempStream.Write(&_trackDesign->vehicleObject.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.spaceRequired.x);
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.spaceRequired.y);
         for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicleColours[i].Tertiary);
+            tempStream.WriteValue<uint8_t>(_trackDesign->appearance.vehicleColours[i].Tertiary);
         }
         tempStream.WriteValue<uint8_t>(_trackDesign->liftHillSpeed | (_trackDesign->numCircuits << 5));
 

@@ -1090,7 +1090,7 @@ namespace RCT1
         void SetRideColourScheme(::Ride* dst, RCT1::Ride* src)
         {
             // Colours
-            dst->colour_scheme_type = src->ColourScheme;
+            dst->vehicleColourSettings = src->vehicleColourSettings;
             if (_gameVersion == FILE_VERSION_RCT1)
             {
                 dst->track_colour[0].main = RCT1::GetColour(src->TrackPrimaryColour);

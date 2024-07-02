@@ -2255,12 +2255,12 @@ void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
     {
         assert(preset_index < presetList->count);
 
-        ride.colour_scheme_type = RIDE_COLOUR_SCHEME_MODE_ALL_SAME;
+        ride.vehicleColourSettings = VehicleColourSettings::same;
         ride.vehicle_colours[0] = presetList->list[preset_index];
     }
     else
     {
-        ride.colour_scheme_type = RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN;
+        ride.vehicleColourSettings = VehicleColourSettings::perTrain;
         for (uint32_t i = 0; i < presetList->count; i++)
         {
             const auto index = i % 32U;
@@ -4318,13 +4318,13 @@ void Ride::SetColourPreset(uint8_t index)
     {
         colours = colourPresets->list[index];
     }
-    for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
+    for (size_t i = 0; i < std::size(track_colour); i++)
     {
         track_colour[i].main = colours.main;
         track_colour[i].additional = colours.additional;
         track_colour[i].supports = colours.supports;
     }
-    colour_scheme_type = 0;
+    vehicleColourSettings = VehicleColourSettings::same;
 }
 
 money64 RideGetCommonPrice(const Ride& forRide)
@@ -4706,15 +4706,15 @@ void RideUpdateVehicleColours(const Ride& ride)
         for (Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
              vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
-            switch (ride.colour_scheme_type & 3)
+            switch (ride.vehicleColourSettings)
             {
-                case RIDE_COLOUR_SCHEME_MODE_ALL_SAME:
+                case VehicleColourSettings::same:
                     colours = ride.vehicle_colours[0];
                     break;
-                case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN:
+                case VehicleColourSettings::perTrain:
                     colours = ride.vehicle_colours[i];
                     break;
-                case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR:
+                case VehicleColourSettings::perCar:
                     if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
                     {
                         colours = ride.vehicle_colours[std::min(

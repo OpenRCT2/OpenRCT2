@@ -128,9 +128,7 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourScheme:
-            ride->colour_scheme_type &= ~(
-                RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR);
-            ride->colour_scheme_type |= _value;
+            ride->vehicleColourSettings = static_cast<VehicleColourSettings>(_value);
             for (uint32_t i = 1; i < std::size(ride->vehicle_colours); i++)
             {
                 ride->vehicle_colours[i] = ride->vehicle_colours[0];

@@ -13,6 +13,7 @@
 #include "../actions/GameActionResult.h"
 #include "../common.h"
 #include "../object/Object.h"
+#include "../ride/RideColour.h"
 #include "../world/Map.h"
 #include "VehicleColour.h"
 
@@ -129,6 +130,14 @@ struct TrackDesignMazeElement
 class DataSerialiser;
 enum class RideMode : uint8_t;
 
+struct TrackDesignAppearanceSettings
+{
+    std::array<TrackColour, kNumRideColourSchemes> trackColours;
+    u8string stationObjectIdentifier{};
+    VehicleColourSettings vehicleColourSettings{};
+    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicleColours;
+};
+
 struct TrackDesignStatistics
 {
     uint8_t excitement{};
@@ -163,9 +172,6 @@ struct TrackDesign
     money64 cost;
     RideMode rideMode;
     uint8_t trackFlags;
-    uint8_t colourScheme;
-    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicleColours;
-    u8string stationObjectIdentifier{};
     uint8_t departFlags;
     uint8_t numberOfTrains;
     uint8_t numberOfCarsPerTrain;
@@ -173,15 +179,13 @@ struct TrackDesign
     uint8_t maxWaitingTime;
     uint8_t operationSetting;
 
-    uint8_t trackSpineColour[OpenRCT2::Limits::kNumColourSchemes];
-    uint8_t trackRailColour[OpenRCT2::Limits::kNumColourSchemes];
-    uint8_t trackSupportColour[OpenRCT2::Limits::kNumColourSchemes];
     ObjectEntryDescriptor vehicleObject;
 
     uint8_t liftHillSpeed;
     uint8_t numCircuits;
 
-    TrackDesignStatistics statistics;
+    TrackDesignAppearanceSettings appearance{};
+    TrackDesignStatistics statistics{};
 
     std::vector<TrackDesignMazeElement> mazeElements;
     std::vector<TrackDesignTrackElement> trackElements;

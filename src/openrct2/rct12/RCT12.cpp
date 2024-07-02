@@ -216,9 +216,9 @@ uint8_t RCT12TrackElement::GetRideIndex() const
     return RideIndex;
 }
 
-uint8_t RCT12TrackElement::GetColourScheme() const
+RideColourScheme RCT12TrackElement::GetColourScheme() const
 {
-    return Colour & 0x3;
+    return static_cast<RideColourScheme>(Colour & 0x3);
 }
 
 uint8_t RCT12TrackElement::GetStationIndex() const

@@ -77,14 +77,14 @@ namespace RCT2
             td->cost = 0.00_GBP;
             td->rideMode = static_cast<RideMode>(td6.RideMode);
             td->trackFlags = 0;
-            td->colourScheme = td6.VersionAndColourScheme & 0x3;
+            td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td6.VersionAndColourScheme & 0x3);
             for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
             {
-                td->vehicleColours[i].Body = td6.VehicleColours[i].BodyColour;
-                td->vehicleColours[i].Trim = td6.VehicleColours[i].TrimColour;
-                td->vehicleColours[i].Tertiary = td6.VehicleAdditionalColour[i];
+                td->appearance.vehicleColours[i].Body = td6.VehicleColours[i].BodyColour;
+                td->appearance.vehicleColours[i].Trim = td6.VehicleColours[i].TrimColour;
+                td->appearance.vehicleColours[i].Tertiary = td6.VehicleAdditionalColour[i];
             }
-            td->stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
+            td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
             td->statistics.totalAirTime = td6.TotalAirTime;
             td->departFlags = td6.DepartFlags;
             td->numberOfTrains = td6.NumberOfTrains;
@@ -116,9 +116,9 @@ namespace RCT2
             td->statistics.upkeepCost = ToMoney64(td6.UpkeepCost);
             for (auto i = 0; i < Limits::kNumColourSchemes; ++i)
             {
-                td->trackSpineColour[i] = td6.TrackSpineColour[i];
-                td->trackRailColour[i] = td6.TrackRailColour[i];
-                td->trackSupportColour[i] = td6.TrackSupportColour[i];
+                td->appearance.trackColours[i].main = td6.TrackSpineColour[i];
+                td->appearance.trackColours[i].additional = td6.TrackRailColour[i];
+                td->appearance.trackColours[i].supports = td6.TrackSupportColour[i];
             }
             td->vehicleObject = ObjectEntryDescriptor(td6.VehicleObject);
             td->statistics.spaceRequired = { td6.SpaceRequiredX, td6.SpaceRequiredY };
