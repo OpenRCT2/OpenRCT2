@@ -51,8 +51,9 @@ namespace RCT2
 
     bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     {
+        auto td6rideType = OpenRCT2RideTypeToRCT2RideType(_trackDesign.trackAndVehicle.rtdIndex);
         OpenRCT2::MemoryStream tempStream;
-        tempStream.WriteValue<uint8_t>(OpenRCT2RideTypeToRCT2RideType(_trackDesign.trackAndVehicle.rtdIndex));
+        tempStream.WriteValue<uint8_t>(td6rideType);
         tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint32_t>(0);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign.operation.rideMode));
@@ -65,7 +66,8 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(0);
         auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign.appearance.stationObjectIdentifier);
         tempStream.WriteValue<uint8_t>(entranceStyle);
-        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.totalAirTime);
+        uint16_t _totalAirTime = std::max<uint16_t>(255, (_trackDesign.statistics.totalAirTime * 123) / 1024);
+        tempStream.WriteValue<uint8_t>(_totalAirTime);
         tempStream.WriteValue<uint8_t>(_trackDesign.operation.departFlags);
         tempStream.WriteValue<uint8_t>(_trackDesign.trackAndVehicle.numberOfTrains);
         tempStream.WriteValue<uint8_t>(_trackDesign.trackAndVehicle.numberOfCarsPerTrain);
@@ -75,12 +77,16 @@ namespace RCT2
         tempStream.WriteValue<int8_t>(_trackDesign.statistics.maxSpeed);
         tempStream.WriteValue<int8_t>(_trackDesign.statistics.averageSpeed);
         tempStream.WriteValue<uint16_t>(_trackDesign.statistics.rideLength);
-        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxPositiveVerticalG);
-        tempStream.WriteValue<int8_t>(_trackDesign.statistics.maxNegativeVerticalG);
-        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxLateralG);
-        // inversions double as hole count for mini golf
-        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.inversions);
-        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.drops);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxPositiveVerticalG / kTD46GForcesMultiplier);
+        tempStream.WriteValue<int8_t>(_trackDesign.statistics.maxNegativeVerticalG / kTD46GForcesMultiplier);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxLateralG / kTD46GForcesMultiplier);
+
+        if (td6rideType == RIDE_TYPE_MINI_GOLF)
+            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.holes & kRCT12InversionAndHoleMask);
+        else
+            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.inversions & kRCT12InversionAndHoleMask);
+
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.drops & kRCT12RideNumDropsMask);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.highestDropHeight);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.excitement / kTD46RatingsMultiplier);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.intensity / kTD46RatingsMultiplier);

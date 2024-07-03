@@ -568,7 +568,7 @@ static Widget _trackListWidgets[] = {
                     {
                         // Holes
                         ft = Formatter();
-                        ft.Add<uint16_t>(_loadedTrackDesign->statistics.holes & 0x1F);
+                        ft.Add<uint16_t>(_loadedTrackDesign->statistics.holes);
                         DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
                         screenPos.y += kListRowHeight;
                     }
@@ -599,19 +599,19 @@ static Widget _trackListWidgets[] = {
                 {
                     // Maximum positive vertical Gs
                     ft = Formatter();
-                    ft.Add<int32_t>(_loadedTrackDesign->statistics.maxPositiveVerticalG * 32);
+                    ft.Add<int32_t>(_loadedTrackDesign->statistics.maxPositiveVerticalG);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
                     screenPos.y += kListRowHeight;
 
                     // Maximum negative vertical Gs
                     ft = Formatter();
-                    ft.Add<int32_t>(_loadedTrackDesign->statistics.maxNegativeVerticalG * 32);
+                    ft.Add<int32_t>(_loadedTrackDesign->statistics.maxNegativeVerticalG);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
                     screenPos.y += kListRowHeight;
 
                     // Maximum lateral Gs
                     ft = Formatter();
-                    ft.Add<int32_t>(_loadedTrackDesign->statistics.maxLateralG * 32);
+                    ft.Add<int32_t>(_loadedTrackDesign->statistics.maxLateralG);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
                     screenPos.y += kListRowHeight;
 
@@ -619,7 +619,7 @@ static Widget _trackListWidgets[] = {
                     {
                         // Total air time
                         ft = Formatter();
-                        ft.Add<int32_t>(_loadedTrackDesign->statistics.totalAirTime * 25);
+                        ft.Add<int32_t>(_loadedTrackDesign->statistics.totalAirTime * 3);
                         DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
                         screenPos.y += kListRowHeight;
                     }
@@ -629,7 +629,7 @@ static Widget _trackListWidgets[] = {
                 {
                     // Drops
                     ft = Formatter();
-                    ft.Add<uint16_t>(_loadedTrackDesign->statistics.drops & 0x3F);
+                    ft.Add<uint16_t>(_loadedTrackDesign->statistics.drops);
                     DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
                     screenPos.y += kListRowHeight;
 
@@ -640,18 +640,14 @@ static Widget _trackListWidgets[] = {
                     screenPos.y += kListRowHeight;
                 }
 
-                if (_loadedTrackDesign->trackAndVehicle.rtdIndex != RIDE_TYPE_MINI_GOLF)
+                if (_loadedTrackDesign->statistics.inversions != 0)
                 {
-                    uint16_t inversions = _loadedTrackDesign->statistics.inversions & 0x1F;
-                    if (inversions != 0)
-                    {
-                        ft = Formatter();
-                        ft.Add<uint16_t>(inversions);
-                        // Inversions
-                        DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
-                        screenPos.y += kListRowHeight;
-                    }
+                    ft = Formatter();
+                    ft.Add<uint16_t>(_loadedTrackDesign->statistics.inversions);
+                    DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
+                    screenPos.y += kListRowHeight;
                 }
+
                 screenPos.y += 4;
             }
 

@@ -5986,3 +5986,25 @@ ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const Coords
 
     return { true };
 }
+
+uint8_t Ride::getNumDrops() const
+{
+    return dropsPoweredLifts & kRideNumDropsMask;
+}
+
+void Ride::setNumDrops(uint8_t newValue)
+{
+    dropsPoweredLifts &= ~kRideNumDropsMask;
+    dropsPoweredLifts |= (newValue & kRideNumDropsMask);
+}
+
+uint8_t Ride::getNumPoweredLifts() const
+{
+    return dropsPoweredLifts >> 6;
+}
+
+void Ride::setPoweredLifts(uint8_t newValue)
+{
+    dropsPoweredLifts &= ~kRideNumPoweredLiftsMask;
+    dropsPoweredLifts |= (newValue << 6);
+}

@@ -5510,17 +5510,15 @@ static_assert(std::size(RatingNames) == 6);
 
                             // Total 'air' time
                             ft = Formatter();
-                            ft.Add<fixed32_2dp>(ride->total_air_time * 3);
+                            ft.Add<fixed32_2dp>(ride->totalAirTime * 3);
                             DrawTextBasic(dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
                             screenCoords.y += kListRowHeight;
                         }
 
                         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
                         {
-                            // Drops
-                            auto drops = ride->drops & 0x3F;
                             ft = Formatter();
-                            ft.Add<uint16_t>(drops);
+                            ft.Add<uint16_t>(ride->getNumDrops());
                             DrawTextBasic(dpi, screenCoords, STR_DROPS, ft);
                             screenCoords.y += kListRowHeight;
 

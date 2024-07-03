@@ -1023,13 +1023,13 @@ namespace RCT1
             dst->turn_count_banked = src->TurnCountBanked;
             dst->turn_count_default = src->TurnCountDefault;
             dst->turn_count_sloped = src->TurnCountSloped;
-            dst->drops = src->NumDrops;
+            dst->dropsPoweredLifts = src->NumDrops;
             dst->start_drop_height = src->StartDropHeight / 2;
             dst->highest_drop_height = src->HighestDropHeight / 2;
             if (dst->type == RIDE_TYPE_MINI_GOLF)
-                dst->holes = src->NumInversions & 0x1F;
+                dst->holes = src->NumInversions & kRCT12InversionAndHoleMask;
             else
-                dst->inversions = src->NumInversions & 0x1F;
+                dst->inversions = src->NumInversions & kRCT12InversionAndHoleMask;
             dst->sheltered_eighths = src->NumInversions >> 5;
             dst->boat_hire_return_direction = src->BoatHireReturnDirection;
             dst->boat_hire_return_position = { src->BoatHireReturnPosition.x, src->BoatHireReturnPosition.y };

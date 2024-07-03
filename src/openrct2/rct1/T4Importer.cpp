@@ -209,20 +209,16 @@ namespace RCT1
             td->statistics.maxSpeed = td4Base.MaxSpeed;
             td->statistics.averageSpeed = td4Base.AverageSpeed;
             td->statistics.rideLength = td4Base.RideLength;
-            td->statistics.maxPositiveVerticalG = td4Base.MaxPositiveVerticalG;
-            td->statistics.maxNegativeVerticalG = td4Base.MaxNegativeVerticalG;
-            td->statistics.maxLateralG = td4Base.MaxLateralG;
+            td->statistics.maxPositiveVerticalG = td4Base.MaxPositiveVerticalG * kTD46GForcesMultiplier;
+            td->statistics.maxNegativeVerticalG = td4Base.MaxNegativeVerticalG * kTD46GForcesMultiplier;
+            td->statistics.maxLateralG = td4Base.MaxLateralG * kTD46GForcesMultiplier;
 
-            if (td->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
-            {
-                td->statistics.holes = td4Base.NumHoles;
-            }
+            if (td4Base.Type == RideType::MiniatureGolf)
+                td->statistics.holes = td4Base.NumHoles & kRCT12InversionAndHoleMask;
             else
-            {
-                td->statistics.inversions = td4Base.NumInversions;
-            }
+                td->statistics.inversions = td4Base.NumInversions & kRCT12InversionAndHoleMask;
 
-            td->statistics.drops = td4Base.NumDrops;
+            td->statistics.drops = td4Base.NumDrops & kRCT12RideNumDropsMask;
             td->statistics.highestDropHeight = td4Base.HighestDropHeight / 2;
             td->statistics.ratings.excitement = td4Base.Excitement * kTD46RatingsMultiplier;
             td->statistics.ratings.intensity = td4Base.Intensity * kTD46RatingsMultiplier;
@@ -230,7 +226,7 @@ namespace RCT1
             td->statistics.upkeepCost = ToMoney64(td4Base.UpkeepCost);
             td->statistics.spaceRequired.SetNull();
             td->operation.liftHillSpeed = 5;
-            td->operation.numCircuits = 0;
+            td->operation.numCircuits = 1;
             td->operation.operationSetting = std::min(
                 td->operation.operationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
 

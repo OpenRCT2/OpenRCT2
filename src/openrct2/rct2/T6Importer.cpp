@@ -82,7 +82,7 @@ namespace RCT2
                 td->appearance.vehicleColours[i].Tertiary = td6.VehicleAdditionalColour[i];
             }
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
-            td->statistics.totalAirTime = td6.TotalAirTime;
+            td->statistics.totalAirTime = (td6.TotalAirTime * 1024) / 123;
             td->operation.departFlags = td6.DepartFlags;
             td->trackAndVehicle.numberOfTrains = td6.NumberOfTrains;
             td->trackAndVehicle.numberOfCarsPerTrain = td6.NumberOfCarsPerTrain;
@@ -92,20 +92,16 @@ namespace RCT2
             td->statistics.maxSpeed = td6.MaxSpeed;
             td->statistics.averageSpeed = td6.AverageSpeed;
             td->statistics.rideLength = td6.RideLength;
-            td->statistics.maxPositiveVerticalG = td6.MaxPositiveVerticalG;
-            td->statistics.maxNegativeVerticalG = td6.MaxNegativeVerticalG;
-            td->statistics.maxLateralG = td6.MaxLateralG;
+            td->statistics.maxPositiveVerticalG = td6.MaxPositiveVerticalG * kTD46GForcesMultiplier;
+            td->statistics.maxNegativeVerticalG = td6.MaxNegativeVerticalG * kTD46GForcesMultiplier;
+            td->statistics.maxLateralG = td6.MaxLateralG * kTD46GForcesMultiplier;
 
-            if (td->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
-            {
-                td->statistics.holes = td6.Holes;
-            }
+            if (td6.Type == RIDE_TYPE_MINI_GOLF)
+                td->statistics.holes = td6.Holes & kRCT12InversionAndHoleMask;
             else
-            {
-                td->statistics.inversions = td6.Inversions;
-            }
+                td->statistics.inversions = td6.Inversions & kRCT12InversionAndHoleMask;
 
-            td->statistics.drops = td6.Drops;
+            td->statistics.drops = td6.Drops & kRCT12RideNumDropsMask;
             td->statistics.highestDropHeight = td6.HighestDropHeight;
             td->statistics.ratings.excitement = td6.Excitement * kTD46RatingsMultiplier;
             td->statistics.ratings.intensity = td6.Intensity * kTD46RatingsMultiplier;

@@ -1193,11 +1193,7 @@ static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
     auto upkeep = ride.GetRideTypeDescriptor().UpkeepCosts.BaseCost;
 
     auto trackCost = ride.GetRideTypeDescriptor().UpkeepCosts.CostPerTrackPiece;
-    uint8_t dropFactor = ride.drops;
-
-    dropFactor >>= 6;
-    dropFactor &= 3;
-    upkeep += trackCost * dropFactor;
+    upkeep += trackCost * ride.getNumPoweredLifts();
 
     uint32_t totalLength = ride.GetTotalLength() >> 16;
 
@@ -1286,7 +1282,7 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple& ratings)
 #ifdef ORIGINAL_RATINGS
     if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_AIR_TIME))
     {
-        uint16_t totalAirTime = ride.total_air_time;
+        uint16_t totalAirTime = ride.totalAirTime;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
         {
             if (totalAirTime >= 96)
@@ -1309,13 +1305,13 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple& ratings)
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
         {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
-            excitementModifier = std::min<uint16_t>(ride.total_air_time, 96) / 8;
+            excitementModifier = std::min<uint16_t>(ride.totalAirTime, 96) / 8;
         }
         else
         {
-            excitementModifier = ride.total_air_time / 8;
+            excitementModifier = ride.totalAirTime / 8;
         }
-        int32_t nauseaModifier = ride.total_air_time / 16;
+        int32_t nauseaModifier = ride.totalAirTime / 16;
 
         RideRatingsAdd(ratings, excitementModifier, 0, nauseaModifier);
     }
@@ -1738,7 +1734,7 @@ static RatingTuple ride_ratings_get_drop_ratings(const Ride& ride)
     };
 
     // Apply number of drops factor
-    int32_t drops = ride.drops & 0x3F;
+    int32_t drops = ride.getNumDrops();
     result.excitement += (std::min(9, drops) * 728177) >> 16;
     result.intensity += (drops * 928426) >> 16;
     result.nausea += (drops * 655360) >> 16;
@@ -2129,7 +2125,7 @@ static void RideRatingsApplyRequirementMaxSpeed(RatingTuple& ratings, const Ride
 
 static void RideRatingsApplyRequirementNumDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if ((ride.drops & 0x3F) < modifier.threshold)
+    if (ride.getNumDrops() < modifier.threshold)
     {
         ratings.excitement /= modifier.excitement;
         ratings.intensity /= modifier.intensity;

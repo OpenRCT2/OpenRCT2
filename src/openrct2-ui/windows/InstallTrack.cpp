@@ -244,9 +244,8 @@ static Widget window_install_track_widgets[] = {
                 if (td.trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
                 {
                     // Holes
-                    uint16_t holes = td.statistics.holes & 0x1F;
                     auto ft = Formatter();
-                    ft.Add<uint16_t>(holes);
+                    ft.Add<uint16_t>(td.statistics.holes);
                     DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
                     screenPos.y += kListRowHeight;
                 }
@@ -282,7 +281,7 @@ static Widget window_install_track_widgets[] = {
             {
                 // Maximum positive vertical Gs
                 {
-                    int32_t gForces = td.statistics.maxPositiveVerticalG * 32;
+                    int32_t gForces = td.statistics.maxPositiveVerticalG;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
@@ -290,7 +289,7 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum negative vertical Gs
                 {
-                    int32_t gForces = td.statistics.maxNegativeVerticalG * 32;
+                    int32_t gForces = td.statistics.maxNegativeVerticalG;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
@@ -298,7 +297,7 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum lateral Gs
                 {
-                    int32_t gForces = td.statistics.maxLateralG * 32;
+                    int32_t gForces = td.statistics.maxLateralG;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
@@ -306,8 +305,7 @@ static Widget window_install_track_widgets[] = {
                 }
                 if (td.statistics.totalAirTime != 0)
                 {
-                    // Total air time
-                    int32_t airTime = td.statistics.totalAirTime * 25;
+                    int32_t airTime = td.statistics.totalAirTime * 3;
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
@@ -317,10 +315,8 @@ static Widget window_install_track_widgets[] = {
 
             if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
             {
-                // Drops
-                uint16_t drops = td.statistics.drops & 0x3F;
                 auto ft = Formatter();
-                ft.Add<uint16_t>(drops);
+                ft.Add<uint16_t>(td.statistics.drops);
                 DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
                 screenPos.y += kListRowHeight;
 
@@ -329,18 +325,15 @@ static Widget window_install_track_widgets[] = {
                 screenPos.y += kListRowHeight;
             }
 
-            if (td.trackAndVehicle.rtdIndex != RIDE_TYPE_MINI_GOLF)
+            if (td.statistics.inversions != 0)
             {
-                uint16_t inversions = td.statistics.inversions & 0x1F;
-                if (inversions != 0)
-                {
-                    // Inversions
-                    auto ft = Formatter();
-                    ft.Add<uint16_t>(inversions);
-                    DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
-                    screenPos.y += kListRowHeight;
-                }
+                // Inversions
+                auto ft = Formatter();
+                ft.Add<uint16_t>(td.statistics.inversions);
+                DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
+                screenPos.y += kListRowHeight;
             }
+
             screenPos.y += 4;
 
             if (!td.statistics.spaceRequired.IsNull())

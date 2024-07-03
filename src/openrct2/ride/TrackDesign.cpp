@@ -149,21 +149,14 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     statistics.maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
     statistics.averageSpeed = static_cast<int8_t>(ride.average_speed / 65536);
     statistics.rideLength = ride.GetTotalLength() / 65536;
-    statistics.maxPositiveVerticalG = ride.max_positive_vertical_g / 32;
-    statistics.maxNegativeVerticalG = ride.max_negative_vertical_g / 32;
-    statistics.maxLateralG = ride.max_lateral_g / 32;
-    statistics.holes = ride.holes & 0x1F;
-    statistics.inversions = ride.inversions & 0x1F;
-    statistics.inversions |= (ride.sheltered_eighths << 5);
-    statistics.drops = ride.drops;
+    statistics.maxPositiveVerticalG = ride.max_positive_vertical_g;
+    statistics.maxNegativeVerticalG = ride.max_negative_vertical_g;
+    statistics.maxLateralG = ride.max_lateral_g;
+    statistics.inversions = ride.inversions;
+    statistics.holes = ride.holes;
+    statistics.drops = ride.getNumDrops();
     statistics.highestDropHeight = ride.highest_drop_height;
-
-    uint16_t _totalAirTime = (ride.total_air_time * 123) / 1024;
-    if (_totalAirTime > 255)
-    {
-        _totalAirTime = 0;
-    }
-    statistics.totalAirTime = static_cast<uint8_t>(_totalAirTime);
+    statistics.totalAirTime = ride.totalAirTime;
 
     statistics.ratings = ride.ratings;
     statistics.upkeepCost = ride.upkeep_cost;

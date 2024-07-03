@@ -174,17 +174,14 @@ struct TrackDesignStatistics
     // TODO: move to a struct of its own, together with rideTime, that can be repeated for multiple stations.
     uint16_t rideLength;
 
-    uint8_t maxPositiveVerticalG{};
-    int8_t maxNegativeVerticalG{};
-    uint8_t maxLateralG{};
-    uint8_t totalAirTime{};
+    fixed16_2dp maxPositiveVerticalG{};
+    fixed16_2dp maxNegativeVerticalG{};
+    fixed16_2dp maxLateralG{};
+    uint16_t totalAirTime{};
     uint8_t drops{};
     uint8_t highestDropHeight{};
-    union
-    {
-        uint8_t inversions{};
-        uint8_t holes;
-    };
+    uint8_t inversions{};
+    uint8_t holes;
 
     money64 upkeepCost;
     TileCoordsXY spaceRequired{};
