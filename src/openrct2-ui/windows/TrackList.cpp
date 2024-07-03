@@ -201,7 +201,7 @@ static Widget _trackListWidgets[] = {
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
             {
-                TrackDesignDrawPreview(_loadedTrackDesign.get(), _trackDesignPreviewPixels.data());
+                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels.data());
                 return true;
             }
             return false;
