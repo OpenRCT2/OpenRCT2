@@ -366,7 +366,7 @@ static Widget _trackPlaceWidgets[] = {
                     origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
                 }
 
-                const auto& rtd = GetRideTypeDescriptor(td->type);
+                const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
                 if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 {
                     DrawMiniPreviewMaze(td, pass, origin, min, max);

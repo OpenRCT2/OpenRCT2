@@ -109,7 +109,7 @@ static u8string_view TrackDesignGetStationObjectIdentifier(const Ride& ride)
 
 ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
-    type = ride.type;
+    trackAndVehicle.rtdIndex = ride.type;
 
     auto object = ObjectEntryGetObject(ObjectType::Ride, ride.subtype);
     if (object != nullptr)
@@ -120,7 +120,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
         {
             return { false, STR_VEHICLE_UNSUPPORTED_TD6 };
         }
-        vehicleObject = ObjectEntryDescriptor(entry);
+        trackAndVehicle.vehicleObject = ObjectEntryDescriptor(entry);
     }
 
     operation.rideMode = ride.mode;
@@ -137,8 +137,8 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     }
 
     operation.departFlags = ride.depart_flags;
-    numberOfTrains = ride.NumTrains;
-    numberOfCarsPerTrain = ride.num_cars_per_train;
+    trackAndVehicle.numberOfTrains = ride.NumTrains;
+    trackAndVehicle.numberOfCarsPerTrain = ride.num_cars_per_train;
     operation.minWaitingTime = ride.min_waiting_time;
     operation.maxWaitingTime = ride.max_waiting_time;
     operation.operationSetting = ride.operation_option;
@@ -168,7 +168,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     statistics.ratings = ride.ratings;
     statistics.upkeepCost = ride.upkeep_cost;
 
-    const auto& rtd = GetRideTypeDescriptor(type);
+    const auto& rtd = GetRideTypeDescriptor(trackAndVehicle.rtdIndex);
 
     if (rtd.DesignCreateMode == TrackDesignCreateMode::Maze)
     {
@@ -556,7 +556,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
         // See sub actions for this information if required.
         return;
     }
-    stream << DS_TAG(type);
+    stream << DS_TAG(trackAndVehicle.rtdIndex);
     stream << DS_TAG(gameStateData.cost);
     stream << DS_TAG(operation.rideMode);
     stream << DS_TAG(gameStateData.flags);
@@ -565,8 +565,8 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(appearance.stationObjectIdentifier);
     stream << DS_TAG(statistics.totalAirTime);
     stream << DS_TAG(operation.departFlags);
-    stream << DS_TAG(numberOfTrains);
-    stream << DS_TAG(numberOfCarsPerTrain);
+    stream << DS_TAG(trackAndVehicle.numberOfTrains);
+    stream << DS_TAG(trackAndVehicle.numberOfCarsPerTrain);
     stream << DS_TAG(operation.minWaitingTime);
     stream << DS_TAG(operation.maxWaitingTime);
     stream << DS_TAG(operation.operationSetting);
@@ -583,7 +583,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(statistics.ratings);
     stream << DS_TAG(statistics.upkeepCost);
     stream << DS_TAG(appearance.trackColours);
-    stream << DS_TAG(vehicleObject);
+    stream << DS_TAG(trackAndVehicle.vehicleObject);
     stream << DS_TAG(statistics.spaceRequired.x);
     stream << DS_TAG(statistics.spaceRequired.y);
     stream << DS_TAG(operation.liftHillSpeed);
@@ -623,9 +623,9 @@ static void TrackDesignLoadSceneryObjects(TrackDesign* td)
     objectManager.UnloadAllTransient();
 
     // Load ride object
-    if (td->vehicleObject.HasValue())
+    if (td->trackAndVehicle.vehicleObject.HasValue())
     {
-        objectManager.LoadObject(td->vehicleObject);
+        objectManager.LoadObject(td->trackAndVehicle.vehicleObject);
     }
 
     // Load scenery objects
@@ -907,7 +907,7 @@ static void TrackDesignMirrorMaze(TrackDesign* td)
  */
 void TrackDesignMirror(TrackDesign* td)
 {
-    const auto& rtd = GetRideTypeDescriptor(td->type);
+    const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         TrackDesignMirrorMaze(td);
@@ -1766,7 +1766,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
     _currentTrackPieceDirection = coords.direction;
 
     GameActions::Result trackPlaceRes;
-    const auto& rtd = GetRideTypeDescriptor(td->type);
+    const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         trackPlaceRes = TrackDesignPlaceMaze(tds, *td, coords, ride);
@@ -1878,11 +1878,11 @@ static bool TrackDesignPlacePreview(
 
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
-    auto entry_index = objManager.GetLoadedObjectEntryIndex(td->vehicleObject);
+    auto entry_index = objManager.GetLoadedObjectEntryIndex(td->trackAndVehicle.vehicleObject);
 
     RideId rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-    if (TrackDesignCreateRide(td->type, entry_index, rideCreateFlags, &rideIndex) == kMoney64Undefined)
+    if (TrackDesignCreateRide(td->trackAndVehicle.rtdIndex, entry_index, rideCreateFlags, &rideIndex) == kMoney64Undefined)
     {
         return false;
     }
@@ -1906,7 +1906,7 @@ static bool TrackDesignPlacePreview(
 
     // Flat rides need their vehicle colours loaded for display
     // in the preview window
-    if (!GetRideTypeDescriptor(td->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         for (size_t i = 0; i < std::size(ride->vehicle_colours); i++)
         {
@@ -2087,7 +2087,7 @@ void TrackDesignDrawPreview(TrackDesign* td, uint8_t* pixels)
 
     // Special case for flat rides - Z-axis info is irrelevant
     // and must be zeroed out lest the preview be off-centre
-    if (!GetRideTypeDescriptor(td->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         centre.z = 0;
         size_z = 0;

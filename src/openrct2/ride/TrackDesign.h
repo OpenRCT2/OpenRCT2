@@ -138,6 +138,14 @@ enum class TrackDesignGameStateFlag
     VehicleUnavailable,
 };
 
+struct TrackDesignTrackAndVehicleSettings
+{
+    ride_type_t rtdIndex{};
+    ObjectEntryDescriptor vehicleObject{};
+    uint8_t numberOfTrains{};
+    uint8_t numberOfCarsPerTrain{};
+};
+
 struct TrackDesignOperatingSettings
 {
     RideMode rideMode{};
@@ -195,11 +203,7 @@ struct TrackDesignGameStateData
 
 struct TrackDesign
 {
-    uint8_t type;
-    uint8_t numberOfTrains;
-    uint8_t numberOfCarsPerTrain;
-    ObjectEntryDescriptor vehicleObject;
-
+    TrackDesignTrackAndVehicleSettings trackAndVehicle{};
     TrackDesignOperatingSettings operation{};
     TrackDesignAppearanceSettings appearance{};
     TrackDesignStatistics statistics{};

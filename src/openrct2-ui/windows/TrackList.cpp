@@ -559,12 +559,12 @@ static Widget _trackListWidgets[] = {
             screenPos.y += kListRowHeight + 4;
 
             // Information for tracked rides.
-            if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             {
-                const auto& rtd = GetRideTypeDescriptor(_loadedTrackDesign->type);
+                const auto& rtd = GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex);
                 if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 {
-                    if (_loadedTrackDesign->type == RIDE_TYPE_MINI_GOLF)
+                    if (_loadedTrackDesign->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
                     {
                         // Holes
                         ft = Formatter();
@@ -595,7 +595,7 @@ static Widget _trackListWidgets[] = {
                     screenPos.y += kListRowHeight;
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
                 {
                     // Maximum positive vertical Gs
                     ft = Formatter();
@@ -625,7 +625,7 @@ static Widget _trackListWidgets[] = {
                     }
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
                 {
                     // Drops
                     ft = Formatter();
@@ -640,7 +640,7 @@ static Widget _trackListWidgets[] = {
                     screenPos.y += kListRowHeight;
                 }
 
-                if (_loadedTrackDesign->type != RIDE_TYPE_MINI_GOLF)
+                if (_loadedTrackDesign->trackAndVehicle.rtdIndex != RIDE_TYPE_MINI_GOLF)
                 {
                     uint16_t inversions = _loadedTrackDesign->statistics.inversions & 0x1F;
                     if (inversions != 0)

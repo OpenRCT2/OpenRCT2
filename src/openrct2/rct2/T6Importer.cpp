@@ -71,7 +71,7 @@ namespace RCT2
             // Rework td6 so that it is just the fields
             _stream.Read(&td6, 0xA3);
 
-            td->type = td6.Type; // 0x00
+            td->trackAndVehicle.rtdIndex = td6.Type; // 0x00
 
             td->operation.rideMode = static_cast<RideMode>(td6.RideMode);
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td6.VersionAndColourScheme & 0x3);
@@ -84,8 +84,8 @@ namespace RCT2
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
             td->statistics.totalAirTime = td6.TotalAirTime;
             td->operation.departFlags = td6.DepartFlags;
-            td->numberOfTrains = td6.NumberOfTrains;
-            td->numberOfCarsPerTrain = td6.NumberOfCarsPerTrain;
+            td->trackAndVehicle.numberOfTrains = td6.NumberOfTrains;
+            td->trackAndVehicle.numberOfCarsPerTrain = td6.NumberOfCarsPerTrain;
             td->operation.minWaitingTime = td6.MinWaitingTime;
             td->operation.maxWaitingTime = td6.MaxWaitingTime;
             td->operation.operationSetting = td6.OperationSetting;
@@ -96,7 +96,7 @@ namespace RCT2
             td->statistics.maxNegativeVerticalG = td6.MaxNegativeVerticalG;
             td->statistics.maxLateralG = td6.MaxLateralG;
 
-            if (td->type == RIDE_TYPE_MINI_GOLF)
+            if (td->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
             {
                 td->statistics.holes = td6.Holes;
             }
@@ -117,7 +117,7 @@ namespace RCT2
                 td->appearance.trackColours[i].additional = td6.TrackRailColour[i];
                 td->appearance.trackColours[i].supports = td6.TrackSupportColour[i];
             }
-            td->vehicleObject = ObjectEntryDescriptor(td6.VehicleObject);
+            td->trackAndVehicle.vehicleObject = ObjectEntryDescriptor(td6.VehicleObject);
             td->statistics.spaceRequired = { td6.SpaceRequiredX, td6.SpaceRequiredY };
             td->operation.liftHillSpeed = td6.LiftHillSpeedNumCircuits & 0b00011111;
             td->operation.numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
@@ -130,9 +130,9 @@ namespace RCT2
             }
 
             td->operation.operationSetting = std::min(
-                td->operation.operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
+                td->operation.operationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
 
-            const auto& rtd = GetRideTypeDescriptor(td->type);
+            const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
                 TD46MazeElement t6MazeElement{};
@@ -155,7 +155,7 @@ namespace RCT2
                     _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
 
-                    track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, td->type, true);
+                    track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, td->trackAndVehicle.rtdIndex, true);
                     if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
                     {
                         trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
@@ -207,17 +207,17 @@ namespace RCT2
 
         void UpdateRideType(std::unique_ptr<TrackDesign>& td)
         {
-            if (RCT2RideTypeNeedsConversion(td->type))
+            if (RCT2RideTypeNeedsConversion(td->trackAndVehicle.rtdIndex))
             {
                 std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-                auto rawObject = ObjectRepositoryLoadObject(&td->vehicleObject.Entry);
+                auto rawObject = ObjectRepositoryLoadObject(&td->trackAndVehicle.vehicleObject.Entry);
                 if (rawObject != nullptr)
                 {
                     const auto* rideEntry = static_cast<const RideObjectEntry*>(
                         static_cast<RideObject*>(rawObject.get())->GetLegacyData());
                     if (rideEntry != nullptr)
                     {
-                        td->type = RCT2RideTypeToOpenRCT2RideType(td->type, *rideEntry);
+                        td->trackAndVehicle.rtdIndex = RCT2RideTypeToOpenRCT2RideType(td->trackAndVehicle.rtdIndex, *rideEntry);
                     }
                     rawObject->Unload();
                 }

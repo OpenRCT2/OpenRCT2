@@ -79,8 +79,8 @@ public:
             TrackRepositoryItem item;
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
-            item.RideType = td->type;
-            item.ObjectEntry = std::string(td->vehicleObject.Entry.name, 8);
+            item.RideType = td->trackAndVehicle.rtdIndex;
+            item.ObjectEntry = std::string(td->trackAndVehicle.vehicleObject.Entry.name, 8);
             item.Flags = 0;
             if (IsTrackReadOnly(path))
             {

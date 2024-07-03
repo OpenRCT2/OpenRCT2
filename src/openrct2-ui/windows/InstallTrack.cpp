@@ -198,17 +198,17 @@ static Widget window_install_track_widgets[] = {
             {
                 auto ft = Formatter();
 
-                const auto* objectEntry = ObjectManagerLoadObject(&td->vehicleObject.Entry);
+                const auto* objectEntry = ObjectManagerLoadObject(&td->trackAndVehicle.vehicleObject.Entry);
                 if (objectEntry != nullptr)
                 {
                     auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(objectEntry);
-                    auto rideName = GetRideNaming(td->type, *GetRideEntryByIndex(groupIndex));
+                    auto rideName = GetRideNaming(td->trackAndVehicle.rtdIndex, *GetRideEntryByIndex(groupIndex));
                     ft.Add<StringId>(rideName.Name);
                 }
                 else
                 {
                     // Fall back on the technical track name if the vehicle object cannot be loaded
-                    ft.Add<StringId>(GetRideTypeDescriptor(td->type).Naming.Name);
+                    ft.Add<StringId>(GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).Naming.Name);
                 }
 
                 DrawTextBasic(dpi, screenPos, STR_TRACK_DESIGN_TYPE, ft);
@@ -238,10 +238,10 @@ static Widget window_install_track_widgets[] = {
                 screenPos.y += kListRowHeight + 4;
             }
 
-            const auto& rtd = GetRideTypeDescriptor(td->type);
+            const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
-                if (td->type == RIDE_TYPE_MINI_GOLF)
+                if (td->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
                 {
                     // Holes
                     uint16_t holes = td->statistics.holes & 0x1F;
@@ -278,7 +278,7 @@ static Widget window_install_track_widgets[] = {
                 screenPos.y += kListRowHeight;
             }
 
-            if (GetRideTypeDescriptor(td->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+            if (GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
             {
                 // Maximum positive vertical Gs
                 {
@@ -315,7 +315,7 @@ static Widget window_install_track_widgets[] = {
                 }
             }
 
-            if (GetRideTypeDescriptor(td->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+            if (GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
             {
                 // Drops
                 uint16_t drops = td->statistics.drops & 0x3F;
@@ -329,7 +329,7 @@ static Widget window_install_track_widgets[] = {
                 screenPos.y += kListRowHeight;
             }
 
-            if (td->type != RIDE_TYPE_MINI_GOLF)
+            if (td->trackAndVehicle.rtdIndex != RIDE_TYPE_MINI_GOLF)
             {
                 uint16_t inversions = td->statistics.inversions & 0x1F;
                 if (inversions != 0)
@@ -417,12 +417,12 @@ static Widget window_install_track_widgets[] = {
         }
 
         ObjectManagerUnloadAllObjects();
-        if (trackDesign->type == RIDE_TYPE_NULL)
+        if (trackDesign->trackAndVehicle.rtdIndex == RIDE_TYPE_NULL)
         {
             LOG_ERROR("Failed to load track (ride type null): %s", path);
             return nullptr;
         }
-        if (ObjectManagerLoadObject(&trackDesign->vehicleObject.Entry) == nullptr)
+        if (ObjectManagerLoadObject(&trackDesign->trackAndVehicle.vehicleObject.Entry) == nullptr)
         {
             LOG_ERROR("Failed to load track (vehicle load fail): %s", path);
             return nullptr;

@@ -125,7 +125,7 @@ namespace RCT1
 
         std::unique_ptr<TrackDesign> ImportTD4Base(std::unique_ptr<TrackDesign> td, TD4& td4Base)
         {
-            td->type = RCT1::GetRideType(td4Base.Type, td4Base.VehicleType);
+            td->trackAndVehicle.rtdIndex = RCT1::GetRideType(td4Base.Type, td4Base.VehicleType);
 
             // All TD4s that use powered launch use the type that doesn't pass the station.
             td->operation.rideMode = static_cast<RideMode>(td4Base.Mode);
@@ -144,7 +144,7 @@ namespace RCT1
                 vehicleObject = RCT1::GetVehicleObject(td4Base.VehicleType);
             }
             assert(!vehicleObject.empty());
-            td->vehicleObject = ObjectEntryDescriptor(vehicleObject);
+            td->trackAndVehicle.vehicleObject = ObjectEntryDescriptor(vehicleObject);
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td4Base.VersionAndColourScheme & 0x3);
 
             // Vehicle colours
@@ -200,12 +200,12 @@ namespace RCT1
 
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
             td->operation.departFlags = td4Base.DepartFlags;
-            td->numberOfTrains = td4Base.NumberOfTrains;
-            td->numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain;
+            td->trackAndVehicle.numberOfTrains = td4Base.NumberOfTrains;
+            td->trackAndVehicle.numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain;
             td->operation.minWaitingTime = td4Base.MinWaitingTime;
             td->operation.maxWaitingTime = td4Base.MaxWaitingTime;
             td->operation.operationSetting = std::min(
-                td4Base.OperationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
+                td4Base.OperationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
             td->statistics.maxSpeed = td4Base.MaxSpeed;
             td->statistics.averageSpeed = td4Base.AverageSpeed;
             td->statistics.rideLength = td4Base.RideLength;
@@ -213,7 +213,7 @@ namespace RCT1
             td->statistics.maxNegativeVerticalG = td4Base.MaxNegativeVerticalG;
             td->statistics.maxLateralG = td4Base.MaxLateralG;
 
-            if (td->type == RIDE_TYPE_MINI_GOLF)
+            if (td->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
             {
                 td->statistics.holes = td4Base.NumHoles;
             }
@@ -232,9 +232,9 @@ namespace RCT1
             td->operation.liftHillSpeed = 5;
             td->operation.numCircuits = 0;
             td->operation.operationSetting = std::min(
-                td->operation.operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
+                td->operation.operationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
 
-            const auto& rtd = GetRideTypeDescriptor(td->type);
+            const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
                 TD46MazeElement t4MazeElement{};
@@ -256,7 +256,7 @@ namespace RCT1
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
-                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
+                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->trackAndVehicle.rtdIndex);
                     ConvertFromTD46Flags(trackElement, t4TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }
