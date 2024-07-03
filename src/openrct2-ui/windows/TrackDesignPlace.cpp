@@ -289,7 +289,7 @@ static Widget _trackPlaceWidgets[] = {
         void OnDraw(DrawPixelInfo& dpi) override
         {
             auto ft = Formatter::Common();
-            ft.Add<char*>(_trackDesign->name.c_str());
+            ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
             WindowDrawWidgets(*this, dpi);
 
             // Draw mini tile preview

@@ -131,6 +131,13 @@ struct TrackDesignMazeElement
 class DataSerialiser;
 enum class RideMode : uint8_t;
 
+enum class TrackDesignGameStateFlag
+{
+    SceneryUnavailable,
+    HasScenery,
+    VehicleUnavailable,
+};
+
 struct TrackDesignOperatingSettings
 {
     RideMode rideMode{};
@@ -175,11 +182,20 @@ struct TrackDesignStatistics
     TileCoordsXY spaceRequired{};
 };
 
+// Not saved in the track design, but calculated when trying to place one.
+struct TrackDesignGameStateData
+{
+    u8string name{};
+    uint8_t flags{};
+    money64 cost = 0.00_GBP;
+
+    bool hasFlag(TrackDesignGameStateFlag flag) const;
+    void setFlag(TrackDesignGameStateFlag flag, bool on);
+};
+
 struct TrackDesign
 {
     uint8_t type;
-    money64 cost;
-    uint8_t trackFlags;
     uint8_t numberOfTrains;
     uint8_t numberOfCarsPerTrain;
     ObjectEntryDescriptor vehicleObject;
@@ -193,7 +209,7 @@ struct TrackDesign
     std::vector<TrackDesignEntranceElement> entranceElements;
     std::vector<TrackDesignSceneryElement> sceneryElements;
 
-    std::string name;
+    TrackDesignGameStateData gameStateData{};
 
 public:
     ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
@@ -205,18 +221,6 @@ private:
     ResultWithMessage CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
     ResultWithMessage CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
     CoordsXYE MazeGetFirstElement(const Ride& ride);
-};
-
-enum
-{
-    TDPF_PLACE_SCENERY = 1 << 0,
-};
-
-enum
-{
-    TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE = (1 << 0),
-    TRACK_DESIGN_FLAG_HAS_SCENERY = (1 << 1),
-    TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE = (1 << 2),
 };
 
 extern bool gTrackDesignSceneryToggle;

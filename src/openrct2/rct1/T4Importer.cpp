@@ -262,7 +262,7 @@ namespace RCT1
                 }
             }
 
-            td->name = _name;
+            td->gameStateData.name = _name;
             return td;
         }
     };

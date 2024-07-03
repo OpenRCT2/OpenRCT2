@@ -73,9 +73,7 @@ namespace RCT2
 
             td->type = td6.Type; // 0x00
 
-            td->cost = 0.00_GBP;
             td->operation.rideMode = static_cast<RideMode>(td6.RideMode);
-            td->trackFlags = 0;
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td6.VersionAndColourScheme & 0x3);
             for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
             {
@@ -200,7 +198,7 @@ namespace RCT2
                 td->sceneryElements.push_back(std::move(sceneryElement));
             }
 
-            td->name = _name;
+            td->gameStateData.name = _name;
 
             UpdateRideType(td);
 

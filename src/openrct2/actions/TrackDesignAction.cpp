@@ -262,7 +262,7 @@ GameActions::Result TrackDesignAction::Execute() const
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)
     {
-        auto name = count == 1 ? _td.name : (_td.name + " " + std::to_string(count));
+        auto name = count == 1 ? _td.gameStateData.name : (_td.gameStateData.name + " " + std::to_string(count));
         auto gameAction = RideSetNameAction(ride->id, name);
         gameAction.SetFlags(GetFlags());
         r = GameActions::ExecuteNested(&gameAction);

@@ -551,15 +551,15 @@ void TrackDesign::Serialise(DataSerialiser& stream)
 {
     if (stream.IsLogging())
     {
-        stream << DS_TAG(name);
+        stream << DS_TAG(gameStateData.name);
         // There is too much information logged.
         // See sub actions for this information if required.
         return;
     }
     stream << DS_TAG(type);
-    stream << DS_TAG(cost);
+    stream << DS_TAG(gameStateData.cost);
     stream << DS_TAG(operation.rideMode);
-    stream << DS_TAG(trackFlags);
+    stream << DS_TAG(gameStateData.flags);
     stream << DS_TAG(appearance.vehicleColourSettings);
     stream << DS_TAG(appearance.vehicleColours);
     stream << DS_TAG(appearance.stationObjectIdentifier);
@@ -594,7 +594,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(entranceElements);
     stream << DS_TAG(sceneryElements);
 
-    stream << DS_TAG(name);
+    stream << DS_TAG(gameStateData.name);
 }
 
 std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path)
@@ -1870,10 +1870,11 @@ static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flag
  * ebx = ride_id
  * cost = edi
  */
-static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td, money64* cost, Ride** outRide, uint8_t* flags)
+static bool TrackDesignPlacePreview(
+    TrackDesignState& tds, TrackDesign* td, Ride** outRide, TrackDesignGameStateData& gameStateData)
 {
     *outRide = nullptr;
-    *flags = 0;
+    gameStateData.flags = 0;
 
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
@@ -1925,7 +1926,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td, mone
 
     if (tds.hasScenery)
     {
-        *flags |= TRACK_DESIGN_FLAG_HAS_SCENERY;
+        gameStateData.setFlag(TrackDesignGameStateFlag::HasScenery, true);
     }
 
     z += 16 - tds.placeSceneryZ;
@@ -1934,7 +1935,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td, mone
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        *flags |= TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE;
+        gameStateData.setFlag(TrackDesignGameStateFlag::SceneryUnavailable, true);
     }
 
     auto res = TrackDesignPlaceVirtual(
@@ -1946,16 +1947,16 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td, mone
     {
         if (entry_index == OBJECT_ENTRY_INDEX_NULL)
         {
-            *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
+            gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }
         else if (!RideEntryIsInvented(entry_index) && !GetGameState().Cheats.IgnoreResearchStatus)
         {
-            *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
+            gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }
 
         _currentTrackPieceDirection = backup_rotation;
         _trackDesignDrawingPreview = false;
-        *cost = res.Cost;
+        gameStateData.cost = res.Cost;
         *outRide = ride;
         return true;
     }
@@ -2067,17 +2068,15 @@ void TrackDesignDrawPreview(TrackDesign* td, uint8_t* pixels)
 
     TrackDesignState tds{};
 
-    money64 cost;
     Ride* ride;
-    uint8_t flags;
-    if (!TrackDesignPlacePreview(tds, td, &cost, &ride, &flags))
+    TrackDesignGameStateData updatedGameStateData = td->gameStateData;
+    if (!TrackDesignPlacePreview(tds, td, &ride, updatedGameStateData))
     {
         std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
         UnstashMap();
         return;
     }
-    td->cost = cost;
-    td->trackFlags = flags & 7;
+    td->gameStateData = updatedGameStateData;
 
     CoordsXYZ centre = { (tds.previewMin.x + tds.previewMax.x) / 2 + 16, (tds.previewMin.y + tds.previewMax.y) / 2 + 16,
                          (tds.previewMin.z + tds.previewMax.z) / 2 };
@@ -2184,3 +2183,16 @@ bool TrackDesignAreEntranceAndExitPlaced()
 }
 
 #pragma endregion
+
+bool TrackDesignGameStateData::hasFlag(TrackDesignGameStateFlag flag) const
+{
+    return flags & EnumToFlag(flag);
+}
+
+void TrackDesignGameStateData::setFlag(TrackDesignGameStateFlag flag, bool on)
+{
+    if (on)
+        flags |= EnumToFlag(flag);
+    else
+        flags &= ~EnumToFlag(flag);
+}

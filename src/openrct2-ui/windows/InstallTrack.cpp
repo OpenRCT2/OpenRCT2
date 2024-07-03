@@ -170,7 +170,7 @@ static Widget window_install_track_widgets[] = {
 
             // Warnings
             const TrackDesign* td = _trackDesign.get();
-            if (td->trackFlags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+            if (td->gameStateData.hasFlag(TrackDesignGameStateFlag::SceneryUnavailable))
             {
                 if (!gTrackDesignSceneryToggle)
                 {
@@ -353,10 +353,10 @@ static Widget window_install_track_widgets[] = {
                 screenPos.y += kListRowHeight;
             }
 
-            if (td->cost != 0)
+            if (td->gameStateData.cost != 0)
             {
                 auto ft = Formatter();
-                ft.Add<money64>(td->cost);
+                ft.Add<money64>(td->gameStateData.cost);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
             }
         }

@@ -136,7 +136,7 @@ static Widget _trackListWidgets[] = {
                 return;
             }
 
-            if (_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+            if (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::SceneryUnavailable))
             {
                 gTrackDesignSceneryToggle = true;
             }
@@ -152,7 +152,7 @@ static Widget _trackListWidgets[] = {
             else
             {
                 if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
-                    && (_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE))
+                    && (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable)))
                 {
                     ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
                 }
@@ -515,7 +515,7 @@ static Widget _trackListWidgets[] = {
             screenPos.y = windowPos.y + tdWidget.bottom - 12;
 
             // Warnings
-            if ((_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)
+            if ((_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable))
                 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
             {
                 // Vehicle design not available
@@ -523,7 +523,7 @@ static Widget _trackListWidgets[] = {
                 screenPos.y -= kScrollableRowHeight;
             }
 
-            if (_loadedTrackDesign->trackFlags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+            if (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::SceneryUnavailable))
             {
                 if (!gTrackDesignSceneryToggle)
                 {
@@ -665,10 +665,10 @@ static Widget _trackListWidgets[] = {
                 screenPos.y += kListRowHeight;
             }
 
-            if (_loadedTrackDesign->cost != 0)
+            if (_loadedTrackDesign->gameStateData.cost != 0)
             {
                 ft = Formatter();
-                ft.Add<uint32_t>(_loadedTrackDesign->cost);
+                ft.Add<uint32_t>(_loadedTrackDesign->gameStateData.cost);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
             }
         }
