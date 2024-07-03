@@ -109,9 +109,9 @@ namespace RCT2
 
             td->statistics.drops = td6.Drops;
             td->statistics.highestDropHeight = td6.HighestDropHeight;
-            td->statistics.excitement = td6.Excitement;
-            td->statistics.intensity = td6.Intensity;
-            td->statistics.nausea = td6.Nausea;
+            td->statistics.ratings.excitement = td6.Excitement * kTD46RatingsMultiplier;
+            td->statistics.ratings.intensity = td6.Intensity * kTD46RatingsMultiplier;
+            td->statistics.ratings.nausea = td6.Nausea * kTD46RatingsMultiplier;
             td->statistics.upkeepCost = ToMoney64(td6.UpkeepCost);
             for (auto i = 0; i < Limits::kNumColourSchemes; ++i)
             {

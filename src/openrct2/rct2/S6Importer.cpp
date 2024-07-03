@@ -1484,7 +1484,7 @@ namespace RCT2
                                                        src->ChairliftBullwheelLocation[i].y, src->ChairliftBullwheelZ[i] };
             }
 
-            dst->ratings = src->Ratings;
+            dst->ratings = src->ratings;
             dst->value = ToMoney64(src->Value);
 
             dst->chairlift_bullwheel_rotation = src->ChairliftBullwheelRotation;

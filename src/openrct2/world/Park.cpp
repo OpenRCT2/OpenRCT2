@@ -143,7 +143,7 @@ namespace OpenRCT2::Park
                     continue;
                 if (ride.GetStation().SegmentLength < (600 << 16))
                     continue;
-                if (ride.excitement < RIDE_RATING(6, 00))
+                if (ride.ratings.excitement < RIDE_RATING(6, 00))
                     continue;
 
                 // Bonus guests for good ride
@@ -438,8 +438,8 @@ namespace OpenRCT2::Park
                 totalRideUptime += 100 - ride.downtime;
                 if (RideHasRatings(ride))
                 {
-                    totalRideExcitement += ride.excitement / 8;
-                    totalRideIntensity += ride.intensity / 8;
+                    totalRideExcitement += ride.ratings.excitement / 8;
+                    totalRideIntensity += ride.ratings.intensity / 8;
                     excitingRideCount++;
                 }
                 rideCount++;

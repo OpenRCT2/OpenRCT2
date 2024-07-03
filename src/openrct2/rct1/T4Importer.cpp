@@ -224,9 +224,9 @@ namespace RCT1
 
             td->statistics.drops = td4Base.NumDrops;
             td->statistics.highestDropHeight = td4Base.HighestDropHeight / 2;
-            td->statistics.excitement = td4Base.Excitement;
-            td->statistics.intensity = td4Base.Intensity;
-            td->statistics.nausea = td4Base.Nausea;
+            td->statistics.ratings.excitement = td4Base.Excitement * kTD46RatingsMultiplier;
+            td->statistics.ratings.intensity = td4Base.Intensity * kTD46RatingsMultiplier;
+            td->statistics.ratings.nausea = td4Base.Nausea * kTD46RatingsMultiplier;
             td->statistics.upkeepCost = ToMoney64(td4Base.UpkeepCost);
             td->statistics.spaceRequired.SetNull();
             td->operation.liftHillSpeed = 5;

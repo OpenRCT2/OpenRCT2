@@ -1010,9 +1010,7 @@ namespace RCT1
             dst->broken_vehicle = src->BrokenVehicle;
 
             // Measurement data
-            dst->excitement = src->Excitement;
-            dst->intensity = src->Intensity;
-            dst->nausea = src->Nausea;
+            dst->ratings = src->ratings;
 
             dst->max_speed = src->MaxSpeed;
             dst->average_speed = src->AverageSpeed;

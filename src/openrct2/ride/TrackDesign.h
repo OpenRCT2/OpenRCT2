@@ -15,6 +15,7 @@
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../world/Map.h"
+#include "RideRatings.h"
 #include "VehicleColour.h"
 
 #include <memory>
@@ -151,9 +152,7 @@ struct TrackDesignAppearanceSettings
 
 struct TrackDesignStatistics
 {
-    uint8_t excitement{};
-    uint8_t intensity{};
-    uint8_t nausea{};
+    RatingTuple ratings{};
     int8_t maxSpeed{};
     int8_t averageSpeed{};
 

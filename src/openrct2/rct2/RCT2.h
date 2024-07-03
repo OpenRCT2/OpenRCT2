@@ -188,16 +188,7 @@ namespace RCT2
         money16 Price;                                       // 0x138
         RCT12xy8 ChairliftBullwheelLocation[2];              // 0x13A
         uint8_t ChairliftBullwheelZ[2];                      // 0x13E
-        union
-        {
-            RatingTuple Ratings; // 0x140
-            struct
-            {
-                ride_rating Excitement; // 0x140
-                ride_rating Intensity;  // 0x142
-                ride_rating Nausea;     // 0x144
-            };
-        };
+        RatingTuple ratings;                                 // 0x140
         money16 Value;                       // 0x146
         uint16_t ChairliftBullwheelRotation; // 0x148
         uint8_t Satisfaction;                // 0x14A

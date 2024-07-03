@@ -544,17 +544,17 @@ static Widget _trackListWidgets[] = {
 
             // Stats
             ft = Formatter();
-            ft.Add<fixed32_2dp>(_loadedTrackDesign->statistics.excitement * 10);
+            ft.Add<fixed32_2dp>(_loadedTrackDesign->statistics.ratings.excitement);
             DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
             screenPos.y += kListRowHeight;
 
             ft = Formatter();
-            ft.Add<fixed32_2dp>(_loadedTrackDesign->statistics.intensity * 10);
+            ft.Add<fixed32_2dp>(_loadedTrackDesign->statistics.ratings.intensity);
             DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
             screenPos.y += kListRowHeight;
 
             ft = Formatter();
-            ft.Add<fixed32_2dp>(_loadedTrackDesign->statistics.nausea * 10);
+            ft.Add<fixed32_2dp>(_loadedTrackDesign->statistics.ratings.nausea);
             DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
             screenPos.y += kListRowHeight + 4;
 

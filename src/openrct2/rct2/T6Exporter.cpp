@@ -82,9 +82,9 @@ namespace RCT2
             _trackDesign->type == RIDE_TYPE_MINI_GOLF ? _trackDesign->statistics.holes : _trackDesign->statistics.inversions);
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.drops);
         tempStream.WriteValue<uint8_t>(_trackDesign->statistics.highestDropHeight);
-        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.excitement);
-        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.intensity);
-        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.nausea);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.ratings.excitement / kTD46RatingsMultiplier);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.ratings.intensity / kTD46RatingsMultiplier);
+        tempStream.WriteValue<uint8_t>(_trackDesign->statistics.ratings.nausea / kTD46RatingsMultiplier);
         tempStream.WriteValue<money16>(ToMoney16(_trackDesign->statistics.upkeepCost));
         for (auto i = 0; i < Limits::kNumColourSchemes; i++)
         {

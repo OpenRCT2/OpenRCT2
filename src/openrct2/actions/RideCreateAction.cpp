@@ -202,7 +202,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->lift_hill_speed = rtd.LiftData.minimum_speed;
 
-    ride->excitement = kRideRatingUndefined;
+    ride->ratings.setNull();
 
     auto& gameState = GetGameState();
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))

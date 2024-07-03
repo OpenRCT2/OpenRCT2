@@ -5296,7 +5296,7 @@ static_assert(std::size(RatingNames) == 6);
                 disabled_widgets |= (1uLL << WIDX_SAVE_TRACK_DESIGN);
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
                 {
-                    if (ride->excitement != kRideRatingUndefined)
+                    if (!ride->ratings.isNull())
                     {
                         disabled_widgets &= ~(1uLL << WIDX_SAVE_TRACK_DESIGN);
                         widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
@@ -5338,9 +5338,9 @@ static_assert(std::size(RatingNames) == 6);
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
                 {
                     // Excitement
-                    StringId ratingName = GetRatingName(ride->excitement);
+                    StringId ratingName = GetRatingName(ride->ratings.excitement);
                     auto ft = Formatter();
-                    ft.Add<uint32_t>(ride->excitement);
+                    ft.Add<uint32_t>(ride->ratings.excitement);
                     ft.Add<StringId>(ratingName);
                     StringId stringId = !RideHasRatings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE
                                                                : STR_EXCITEMENT_RATING;
@@ -5348,24 +5348,24 @@ static_assert(std::size(RatingNames) == 6);
                     screenCoords.y += kListRowHeight;
 
                     // Intensity
-                    ratingName = GetRatingName(ride->intensity);
+                    ratingName = GetRatingName(ride->ratings.intensity);
                     ft = Formatter();
-                    ft.Add<uint32_t>(ride->intensity);
+                    ft.Add<uint32_t>(ride->ratings.intensity);
                     ft.Add<StringId>(ratingName);
 
                     stringId = STR_INTENSITY_RATING;
                     if (!RideHasRatings(*ride))
                         stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
-                    else if (ride->intensity >= RIDE_RATING(10, 00))
+                    else if (ride->ratings.intensity >= RIDE_RATING(10, 00))
                         stringId = STR_INTENSITY_RATING_RED;
 
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
                     screenCoords.y += kListRowHeight;
 
                     // Nausea
-                    ratingName = GetRatingName(ride->nausea);
+                    ratingName = GetRatingName(ride->ratings.nausea);
                     ft = Formatter();
-                    ft.Add<uint32_t>(ride->nausea);
+                    ft.Add<uint32_t>(ride->ratings.nausea);
                     ft.Add<StringId>(ratingName);
                     stringId = !RideHasRatings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
                     DrawTextBasic(dpi, screenCoords, stringId, ft);

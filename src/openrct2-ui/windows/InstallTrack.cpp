@@ -217,21 +217,21 @@ static Widget window_install_track_widgets[] = {
 
             // Stats
             {
-                fixed32_2dp rating = td->statistics.excitement * 10;
+                fixed32_2dp rating = td->statistics.ratings.excitement;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
                 screenPos.y += kListRowHeight;
             }
             {
-                fixed32_2dp rating = td->statistics.intensity * 10;
+                fixed32_2dp rating = td->statistics.ratings.intensity;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
                 screenPos.y += kListRowHeight;
             }
             {
-                fixed32_2dp rating = td->statistics.nausea * 10;
+                fixed32_2dp rating = td->statistics.ratings.nausea;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);

@@ -1461,9 +1461,9 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.num_block_brakes);
                     cs.ReadWrite(ride.total_air_time);
 
-                    cs.ReadWrite(ride.excitement);
-                    cs.ReadWrite(ride.intensity);
-                    cs.ReadWrite(ride.nausea);
+                    cs.ReadWrite(ride.ratings.excitement);
+                    cs.ReadWrite(ride.ratings.intensity);
+                    cs.ReadWrite(ride.ratings.nausea);
 
                     if (version <= 18)
                     {

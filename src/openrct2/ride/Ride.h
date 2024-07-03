@@ -191,16 +191,7 @@ struct Ride
     uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
     money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
-    union
-    {
-        RatingTuple ratings{};
-        struct
-        {
-            ride_rating excitement;
-            ride_rating intensity;
-            ride_rating nausea;
-        };
-    };
+    RatingTuple ratings{};
     money64 value{};
     uint16_t chairlift_bullwheel_rotation{};
     uint8_t satisfaction{};

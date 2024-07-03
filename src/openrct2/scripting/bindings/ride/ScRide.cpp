@@ -333,7 +333,7 @@ namespace OpenRCT2::Scripting
     int32_t ScRide::excitement_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->excitement : 0;
+        return ride != nullptr ? ride->ratings.excitement : 0;
     }
     void ScRide::excitement_set(int32_t value)
     {
@@ -341,14 +341,14 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->excitement = value;
+            ride->ratings.excitement = value;
         }
     }
 
     int32_t ScRide::intensity_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->intensity : 0;
+        return ride != nullptr ? ride->ratings.intensity : 0;
     }
     void ScRide::intensity_set(int32_t value)
     {
@@ -356,14 +356,14 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->intensity = value;
+            ride->ratings.intensity = value;
         }
     }
 
     int32_t ScRide::nausea_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->nausea : 0;
+        return ride != nullptr ? ride->ratings.nausea : 0;
     }
     void ScRide::nausea_set(int32_t value)
     {
@@ -371,7 +371,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->nausea = value;
+            ride->ratings.nausea = value;
         }
     }
 

@@ -165,10 +165,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     }
     statistics.totalAirTime = static_cast<uint8_t>(_totalAirTime);
 
-    statistics.excitement = ride.ratings.Excitement / 10;
-    statistics.intensity = ride.ratings.Intensity / 10;
-    statistics.nausea = ride.ratings.Nausea / 10;
-
+    statistics.ratings = ride.ratings;
     statistics.upkeepCost = ride.upkeep_cost;
 
     const auto& rtd = GetRideTypeDescriptor(type);
@@ -583,9 +580,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(statistics.holes);
     stream << DS_TAG(statistics.drops);
     stream << DS_TAG(statistics.highestDropHeight);
-    stream << DS_TAG(statistics.excitement);
-    stream << DS_TAG(statistics.intensity);
-    stream << DS_TAG(statistics.nausea);
+    stream << DS_TAG(statistics.ratings);
     stream << DS_TAG(statistics.upkeepCost);
     stream << DS_TAG(appearance.trackColours);
     stream << DS_TAG(vehicleObject);
