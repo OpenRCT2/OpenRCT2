@@ -986,6 +986,13 @@ void Peep::Update()
         }
         return;
     }
+    else if (PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
+    {
+        // Animation is frozen while position is not. This allows a peep to walk
+        // around without its sprite being updated, which looks very glitchy.
+        // We'll just remove the flag and continue as normal, in this case.
+        PeepFlags &= ~PEEP_FLAGS_ANIMATION_FROZEN;
+    }
 
     auto* guest = As<Guest>();
     if (guest != nullptr)
