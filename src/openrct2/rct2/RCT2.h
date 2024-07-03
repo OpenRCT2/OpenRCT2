@@ -189,11 +189,11 @@ namespace RCT2
         RCT12xy8 ChairliftBullwheelLocation[2];              // 0x13A
         uint8_t ChairliftBullwheelZ[2];                      // 0x13E
         RatingTuple ratings;                                 // 0x140
-        money16 Value;                       // 0x146
-        uint16_t ChairliftBullwheelRotation; // 0x148
-        uint8_t Satisfaction;                // 0x14A
-        uint8_t SatisfactionTimeOut;         // 0x14B
-        uint8_t SatisfactionNext;            // 0x14C
+        money16 Value;                                       // 0x146
+        uint16_t ChairliftBullwheelRotation;                 // 0x148
+        uint8_t Satisfaction;                                // 0x14A
+        uint8_t SatisfactionTimeOut;                         // 0x14B
+        uint8_t SatisfactionNext;                            // 0x14C
         // Various flags stating whether a window needs to be refreshed
         uint8_t WindowInvalidateFlags; // 0x14D
         uint8_t Pad14E[0x02];          // 0x14E

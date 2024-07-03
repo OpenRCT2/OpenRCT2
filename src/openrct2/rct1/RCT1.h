@@ -325,21 +325,21 @@ namespace RCT1
         RCT12xy8 ChairliftBullwheelLocation[2];              // 0x0EA
         uint8_t ChairliftBullwheelZ[2];                      // 0x0EE
         RatingTuple ratings;                                 // 0x0F0
-        money16 Value;                       // 0x0F6
-        uint16_t ChairliftBullwheelRotation; // 0x0F8
-        uint8_t Satisfaction;                // 0x0FA
-        uint8_t SatisfactionTimeOut;         // 0x0FB
-        uint8_t SatisfactionNext;            // 0x0FC
-        uint8_t WindowInvalidateFlags;       // 0x0FD
-        uint8_t UnkFE[2];                    // 0x0FE
-        uint32_t TotalCustomers;             // 0x100
-        money32 TotalProfit;                 // 0x104
-        uint8_t Popularity;                  // 0x108
-        uint8_t PopularityTimeOut;           // 0x109
-        uint8_t PopularityNext;              // 0x10A
-        uint8_t NumRiders;                   // 0x10B
-        uint8_t MusicTuneID;                 // 0x10C
-        uint8_t SlideInUse;                  // 0x10D
+        money16 Value;                                       // 0x0F6
+        uint16_t ChairliftBullwheelRotation;                 // 0x0F8
+        uint8_t Satisfaction;                                // 0x0FA
+        uint8_t SatisfactionTimeOut;                         // 0x0FB
+        uint8_t SatisfactionNext;                            // 0x0FC
+        uint8_t WindowInvalidateFlags;                       // 0x0FD
+        uint8_t UnkFE[2];                                    // 0x0FE
+        uint32_t TotalCustomers;                             // 0x100
+        money32 TotalProfit;                                 // 0x104
+        uint8_t Popularity;                                  // 0x108
+        uint8_t PopularityTimeOut;                           // 0x109
+        uint8_t PopularityNext;                              // 0x10A
+        uint8_t NumRiders;                                   // 0x10B
+        uint8_t MusicTuneID;                                 // 0x10C
+        uint8_t SlideInUse;                                  // 0x10D
         union
         {
             uint16_t SlidePeep; // 0x10E

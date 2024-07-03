@@ -226,10 +226,12 @@ GameActions::Result TrackDesignAction::Execute() const
 
     SetOperatingSettingNested(
         ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.operation.rideMode), GAME_COMMAND_FLAG_APPLY);
-    auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
+    auto rideSetVehicleAction2 = RideSetVehicleAction(
+        ride->id, RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
     GameActions::ExecuteNested(&rideSetVehicleAction2);
 
-    auto rideSetVehicleAction3 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
+    auto rideSetVehicleAction3 = RideSetVehicleAction(
+        ride->id, RideSetVehicleType::NumCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
     GameActions::ExecuteNested(&rideSetVehicleAction3);
 
     SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.operation.departFlags, GAME_COMMAND_FLAG_APPLY);
