@@ -437,7 +437,7 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
-            trackElement->SetColourScheme(static_cast<uint8_t>(extra_params & 0xFF));
+            trackElement->SetColourScheme(static_cast<RideColourScheme>(extra_params & 0xFF));
         }
         if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {

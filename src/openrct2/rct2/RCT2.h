@@ -23,6 +23,7 @@
 struct RideObjectEntry;
 class ObjectList;
 enum class EditorStep : uint8_t;
+enum class VehicleColourSettings : uint8_t;
 
 namespace RCT2
 {
@@ -77,7 +78,7 @@ namespace RCT2
         RCT12ObjectEntryIndex Subtype;                                 // 0x001
         uint16_t Pad002;                                               // 0x002
         uint8_t Mode;                                                  // 0x004
-        uint8_t ColourSchemeType;                                      // 0x005
+        VehicleColourSettings vehicleColourSettings;                   // 0x005
         RCT12VehicleColour VehicleColours[Limits::kMaxVehicleColours]; // 0x006
         uint8_t Pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test

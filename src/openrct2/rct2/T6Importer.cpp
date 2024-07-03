@@ -72,59 +72,57 @@ namespace RCT2
             _stream.Read(&td6, 0xA3);
 
             td->type = td6.Type; // 0x00
-            td->vehicleType = td6.VehicleType;
 
             td->cost = 0.00_GBP;
-            td->rideMode = static_cast<RideMode>(td6.RideMode);
+            td->operation.rideMode = static_cast<RideMode>(td6.RideMode);
             td->trackFlags = 0;
-            td->colourScheme = td6.VersionAndColourScheme & 0x3;
+            td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td6.VersionAndColourScheme & 0x3);
             for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
             {
-                td->vehicleColours[i].Body = td6.VehicleColours[i].BodyColour;
-                td->vehicleColours[i].Trim = td6.VehicleColours[i].TrimColour;
-                td->vehicleColours[i].Tertiary = td6.VehicleAdditionalColour[i];
+                td->appearance.vehicleColours[i].Body = td6.VehicleColours[i].BodyColour;
+                td->appearance.vehicleColours[i].Trim = td6.VehicleColours[i].TrimColour;
+                td->appearance.vehicleColours[i].Tertiary = td6.VehicleAdditionalColour[i];
             }
-            td->stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
-            td->totalAirTime = td6.TotalAirTime;
-            td->departFlags = td6.DepartFlags;
+            td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
+            td->statistics.totalAirTime = td6.TotalAirTime;
+            td->operation.departFlags = td6.DepartFlags;
             td->numberOfTrains = td6.NumberOfTrains;
             td->numberOfCarsPerTrain = td6.NumberOfCarsPerTrain;
-            td->minWaitingTime = td6.MinWaitingTime;
-            td->maxWaitingTime = td6.MaxWaitingTime;
-            td->operationSetting = td6.OperationSetting;
-            td->maxSpeed = td6.MaxSpeed;
-            td->averageSpeed = td6.AverageSpeed;
-            td->rideLength = td6.RideLength;
-            td->maxPositiveVerticalG = td6.MaxPositiveVerticalG;
-            td->maxNegativeVerticalG = td6.MaxNegativeVerticalG;
-            td->maxLateralG = td6.MaxLateralG;
+            td->operation.minWaitingTime = td6.MinWaitingTime;
+            td->operation.maxWaitingTime = td6.MaxWaitingTime;
+            td->operation.operationSetting = td6.OperationSetting;
+            td->statistics.maxSpeed = td6.MaxSpeed;
+            td->statistics.averageSpeed = td6.AverageSpeed;
+            td->statistics.rideLength = td6.RideLength;
+            td->statistics.maxPositiveVerticalG = td6.MaxPositiveVerticalG;
+            td->statistics.maxNegativeVerticalG = td6.MaxNegativeVerticalG;
+            td->statistics.maxLateralG = td6.MaxLateralG;
 
             if (td->type == RIDE_TYPE_MINI_GOLF)
             {
-                td->holes = td6.Holes;
+                td->statistics.holes = td6.Holes;
             }
             else
             {
-                td->inversions = td6.Inversions;
+                td->statistics.inversions = td6.Inversions;
             }
 
-            td->drops = td6.Drops;
-            td->highestDropHeight = td6.HighestDropHeight;
-            td->excitement = td6.Excitement;
-            td->intensity = td6.Intensity;
-            td->nausea = td6.Nausea;
-            td->upkeepCost = ToMoney64(td6.UpkeepCost);
+            td->statistics.drops = td6.Drops;
+            td->statistics.highestDropHeight = td6.HighestDropHeight;
+            td->statistics.excitement = td6.Excitement;
+            td->statistics.intensity = td6.Intensity;
+            td->statistics.nausea = td6.Nausea;
+            td->statistics.upkeepCost = ToMoney64(td6.UpkeepCost);
             for (auto i = 0; i < Limits::kNumColourSchemes; ++i)
             {
-                td->trackSpineColour[i] = td6.TrackSpineColour[i];
-                td->trackRailColour[i] = td6.TrackRailColour[i];
-                td->trackSupportColour[i] = td6.TrackSupportColour[i];
+                td->appearance.trackColours[i].main = td6.TrackSpineColour[i];
+                td->appearance.trackColours[i].additional = td6.TrackRailColour[i];
+                td->appearance.trackColours[i].supports = td6.TrackSupportColour[i];
             }
             td->vehicleObject = ObjectEntryDescriptor(td6.VehicleObject);
-            td->spaceRequiredX = td6.SpaceRequiredX;
-            td->spaceRequiredY = td6.SpaceRequiredY;
-            td->liftHillSpeed = td6.LiftHillSpeedNumCircuits & 0b00011111;
-            td->numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
+            td->statistics.spaceRequired = { td6.SpaceRequiredX, td6.SpaceRequiredY };
+            td->operation.liftHillSpeed = td6.LiftHillSpeedNumCircuits & 0b00011111;
+            td->operation.numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
 
             auto version = static_cast<RCT12TrackDesignVersion>((td6.VersionAndColourScheme >> 2) & 3);
             if (version != RCT12TrackDesignVersion::TD6)
@@ -133,7 +131,8 @@ namespace RCT2
                 return nullptr;
             }
 
-            td->operationSetting = std::min(td->operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
+            td->operation.operationSetting = std::min(
+                td->operation.operationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
             const auto& rtd = GetRideTypeDescriptor(td->type);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
@@ -164,7 +163,7 @@ namespace RCT2
                         trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
                     }
 
-                    trackElement.Type = trackType;
+                    trackElement.type = trackType;
                     ConvertFromTD46Flags(trackElement, t6TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }

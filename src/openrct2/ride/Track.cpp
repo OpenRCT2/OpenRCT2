@@ -20,6 +20,7 @@
 #include "../network/network.h"
 #include "../platform/Platform.h"
 #include "../rct1/RCT1.h"
+#include "../ride/RideColour.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Footpath.h"
@@ -894,10 +895,10 @@ uint8_t TrackElement::GetColourScheme() const
     return URide.ColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK;
 }
 
-void TrackElement::SetColourScheme(uint8_t newColourScheme)
+void TrackElement::SetColourScheme(RideColourScheme newColourScheme)
 {
     URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_SCHEME_MASK;
-    URide.ColourScheme |= (newColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
+    URide.ColourScheme |= (EnumValue(newColourScheme) & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
 }
 
 bool TrackElement::HasCableLift() const

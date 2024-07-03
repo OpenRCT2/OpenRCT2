@@ -120,7 +120,7 @@ struct Ride
     // 0x4c.
     ObjectEntryIndex subtype{ OBJECT_ENTRY_INDEX_NULL };
     RideMode mode{};
-    uint8_t colour_scheme_type{};
+    VehicleColourSettings vehicleColourSettings{};
     VehicleColour vehicle_colours[OpenRCT2::Limits::kMaxVehicleColours]{};
     // 0 = closed, 1 = open, 2 = test
     RideStatus status{};
@@ -261,7 +261,7 @@ struct Ride
     uint8_t connected_message_throttle{};
     money64 income_per_hour{};
     money64 profit{};
-    TrackColour track_colour[OpenRCT2::Limits::kNumColourSchemes]{};
+    TrackColour track_colour[kNumRideColourSchemes]{};
     ObjectEntryIndex music{ OBJECT_ENTRY_INDEX_NULL };
     ObjectEntryIndex entrance_style{ OBJECT_ENTRY_INDEX_NULL };
     uint16_t vehicle_change_timeout{};
@@ -413,8 +413,6 @@ public:
     bool HasStation() const;
 
     bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
-
-    uint8_t GetEntranceStyle() const;
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);
@@ -674,15 +672,6 @@ RideMode& operator++(RideMode& d, int);
 
 enum
 {
-    RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
-    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
-    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
-
-    RIDE_COLOUR_SCHEME_MODE_COUNT,
-};
-
-enum
-{
     RIDE_CATEGORY_TRANSPORT,
     RIDE_CATEGORY_GENTLE,
     RIDE_CATEGORY_ROLLERCOASTER,
@@ -774,23 +763,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-enum
-{
-    RIDE_COLOUR_SCHEME_MAIN,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_1,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_2,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_3,
-
-    RIDE_COLOUR_SCHEME_COUNT,
-};
-
-enum
-{
-    VEHICLE_COLOUR_SCHEME_SAME,
-    VEHICLE_COLOUR_SCHEME_PER_TRAIN,
-    VEHICLE_COLOUR_SCHEME_PER_VEHICLE
 };
 
 enum
