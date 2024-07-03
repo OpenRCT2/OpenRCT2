@@ -329,49 +329,25 @@ namespace RCT2
     {
         uint8_t Type; // 0x00
         RCT12ObjectEntryIndex VehicleType;
-        union
-        {
-            // After loading the track this is converted to
-            // a cost but before its a flags register
-            money32 Cost;   // 0x02
-            uint32_t Flags; // 0x02
-        };
-        union
-        {
-            // After loading the track this is converted to
-            // a flags register
-            uint8_t RideMode;   // 0x06
-            uint8_t TrackFlags; // 0x06
-        };
+        uint32_t Flags;                                               // 0x02
+        uint8_t RideMode;                                             // 0x06
         uint8_t VersionAndColourScheme;                               // 0x07 0b0000_VVCC
         RCT12VehicleColour VehicleColours[Limits::kMaxTrainsPerRide]; // 0x08
-        union
-        {
-            uint8_t Pad48;
-            uint8_t TrackSpineColourRCT1; // 0x48
-        };
-        union
-        {
-            uint8_t EntranceStyle;       // 0x49
-            uint8_t TrackRailColourRCT1; // 0x49
-        };
-        union
-        {
-            uint8_t TotalAirTime;           // 0x4A
-            uint8_t TrackSupportColourRCT1; // 0x4A
-        };
-        uint8_t DepartFlags;          // 0x4B
-        uint8_t NumberOfTrains;       // 0x4C
-        uint8_t NumberOfCarsPerTrain; // 0x4D
-        uint8_t MinWaitingTime;       // 0x4E
-        uint8_t MaxWaitingTime;       // 0x4F
-        uint8_t OperationSetting;
-        int8_t MaxSpeed;              // 0x51
-        int8_t AverageSpeed;          // 0x52
-        uint16_t RideLength;          // 0x53
-        uint8_t MaxPositiveVerticalG; // 0x55
-        int8_t MaxNegativeVerticalG;  // 0x56
-        uint8_t MaxLateralG;          // 0x57
+        uint8_t Pad48;                                                // 0x48
+        uint8_t EntranceStyle;                                        // 0x49
+        uint8_t TotalAirTime;                                         // 0x4A
+        uint8_t DepartFlags;                                          // 0x4B
+        uint8_t NumberOfTrains;                                       // 0x4C
+        uint8_t NumberOfCarsPerTrain;                                 // 0x4D
+        uint8_t MinWaitingTime;                                       // 0x4E
+        uint8_t MaxWaitingTime;                                       // 0x4F
+        uint8_t OperationSetting;                                     // 0x50
+        int8_t MaxSpeed;                                              // 0x51
+        int8_t AverageSpeed;                                          // 0x52
+        uint16_t RideLength;                                          // 0x53
+        uint8_t MaxPositiveVerticalG;                                 // 0x55
+        int8_t MaxNegativeVerticalG;                                  // 0x56
+        uint8_t MaxLateralG;                                          // 0x57
         union
         {
             uint8_t Inversions; // 0x58
