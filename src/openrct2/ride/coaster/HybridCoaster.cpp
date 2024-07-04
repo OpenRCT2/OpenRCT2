@@ -12391,8 +12391,8 @@ namespace HybridRC
                             { { 0, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                WoodenASupportsPaintSetup(
-                    session, kSupportType, WoodenSupportSubType::Corner0, height + 16, session.SupportColours);
+                WoodenASupportsPaintSetupRotated(
+                    session, kSupportType, WoodenSupportSubType::Corner0, direction, height + 16, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
@@ -12464,7 +12464,7 @@ namespace HybridRC
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
-                    session, kSupportType, WoodenSupportSubType::NeSw, direction, height + 16, session.SupportColours,
+                    session, kSupportType, WoodenSupportSubType::NwSe, DirectionNext(direction), height, session.SupportColours,
                     WoodenSupportTransitionType::Up25Deg);
                 if (direction == 0 || direction == 1)
                 {
@@ -14197,8 +14197,8 @@ namespace HybridRC
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                WoodenASupportsPaintSetup(
-                    session, kSupportType, WoodenSupportSubType::Corner0, height + 16, session.SupportColours);
+                WoodenASupportsPaintSetupRotated(
+                    session, kSupportType, WoodenSupportSubType::Corner0, direction, height + 16, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
@@ -14278,7 +14278,7 @@ namespace HybridRC
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
-                    session, kSupportType, WoodenSupportSubType::NeSw, direction, height + 16, session.SupportColours,
+                    session, kSupportType, WoodenSupportSubType::NwSe, DirectionNext(direction), height, session.SupportColours,
                     WoodenSupportTransitionType::Up25Deg);
                 if (direction == 0 || direction == 1)
                 {
