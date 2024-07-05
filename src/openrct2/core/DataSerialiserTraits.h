@@ -824,6 +824,30 @@ template<> struct DataSerializerTraitsT<VehicleColour>
     }
 };
 
+template<> struct DataSerializerTraitsT<RatingTuple>
+{
+    static void encode(OpenRCT2::IStream* stream, const RatingTuple& val)
+    {
+        stream->Write(&val.excitement);
+        stream->Write(&val.intensity);
+        stream->Write(&val.nausea);
+    }
+    static void decode(OpenRCT2::IStream* stream, RatingTuple& val)
+    {
+        stream->Read(&val.excitement);
+        stream->Read(&val.intensity);
+        stream->Read(&val.nausea);
+    }
+    static void log(OpenRCT2::IStream* stream, const RatingTuple& val)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "RatingTuple(excitement = %d, intensity = %d, nausea = %d)", val.excitement, val.intensity,
+            val.nausea);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
 template<> struct DataSerializerTraitsT<IntensityRange>
 {
     static void encode(OpenRCT2::IStream* stream, const IntensityRange& val)

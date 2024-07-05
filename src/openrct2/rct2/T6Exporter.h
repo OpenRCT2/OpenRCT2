@@ -27,12 +27,12 @@ namespace RCT2
     class T6Exporter final
     {
     public:
-        T6Exporter(TrackDesign* trackDesign);
+        T6Exporter(const TrackDesign& trackDesign);
 
         bool SaveTrack(const utf8* path);
         bool SaveTrack(OpenRCT2::IStream* stream);
 
     private:
-        TrackDesign* _trackDesign;
+        const TrackDesign& _trackDesign;
     };
 } // namespace RCT2

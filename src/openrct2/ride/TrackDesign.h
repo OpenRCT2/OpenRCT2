@@ -15,6 +15,7 @@
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../world/Map.h"
+#include "RideRatings.h"
 #include "VehicleColour.h"
 
 #include <memory>
@@ -130,6 +131,21 @@ struct TrackDesignMazeElement
 class DataSerialiser;
 enum class RideMode : uint8_t;
 
+enum class TrackDesignGameStateFlag
+{
+    SceneryUnavailable,
+    HasScenery,
+    VehicleUnavailable,
+};
+
+struct TrackDesignTrackAndVehicleSettings
+{
+    ride_type_t rtdIndex{};
+    ObjectEntryDescriptor vehicleObject{};
+    uint8_t numberOfTrains{};
+    uint8_t numberOfCarsPerTrain{};
+};
+
 struct TrackDesignOperatingSettings
 {
     RideMode rideMode{};
@@ -151,40 +167,40 @@ struct TrackDesignAppearanceSettings
 
 struct TrackDesignStatistics
 {
-    uint8_t excitement{};
-    uint8_t intensity{};
-    uint8_t nausea{};
+    RatingTuple ratings{};
     int8_t maxSpeed{};
     int8_t averageSpeed{};
 
     // TODO: move to a struct of its own, together with rideTime, that can be repeated for multiple stations.
     uint16_t rideLength;
 
-    uint8_t maxPositiveVerticalG{};
-    int8_t maxNegativeVerticalG{};
-    uint8_t maxLateralG{};
-    uint8_t totalAirTime{};
+    fixed16_2dp maxPositiveVerticalG{};
+    fixed16_2dp maxNegativeVerticalG{};
+    fixed16_2dp maxLateralG{};
+    uint16_t totalAirTime{};
     uint8_t drops{};
     uint8_t highestDropHeight{};
-    union
-    {
-        uint8_t inversions{};
-        uint8_t holes;
-    };
+    uint8_t inversions{};
+    uint8_t holes;
 
     money64 upkeepCost;
     TileCoordsXY spaceRequired{};
 };
 
+// Not saved in the track design, but calculated when trying to place one.
+struct TrackDesignGameStateData
+{
+    u8string name{};
+    uint8_t flags{};
+    money64 cost = 0.00_GBP;
+
+    bool hasFlag(TrackDesignGameStateFlag flag) const;
+    void setFlag(TrackDesignGameStateFlag flag, bool on);
+};
+
 struct TrackDesign
 {
-    uint8_t type;
-    money64 cost;
-    uint8_t trackFlags;
-    uint8_t numberOfTrains;
-    uint8_t numberOfCarsPerTrain;
-    ObjectEntryDescriptor vehicleObject;
-
+    TrackDesignTrackAndVehicleSettings trackAndVehicle{};
     TrackDesignOperatingSettings operation{};
     TrackDesignAppearanceSettings appearance{};
     TrackDesignStatistics statistics{};
@@ -194,7 +210,7 @@ struct TrackDesign
     std::vector<TrackDesignEntranceElement> entranceElements;
     std::vector<TrackDesignSceneryElement> sceneryElements;
 
-    std::string name;
+    TrackDesignGameStateData gameStateData{};
 
 public:
     ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
@@ -208,18 +224,6 @@ private:
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
-enum
-{
-    TDPF_PLACE_SCENERY = 1 << 0,
-};
-
-enum
-{
-    TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE = (1 << 0),
-    TRACK_DESIGN_FLAG_HAS_SCENERY = (1 << 1),
-    TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE = (1 << 2),
-};
-
 extern bool gTrackDesignSceneryToggle;
 
 extern bool _trackDesignDrawingPreview;
@@ -230,17 +234,18 @@ extern RideId gTrackDesignSaveRideIndex;
 
 [[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path);
 
-void TrackDesignMirror(TrackDesign* td);
+void TrackDesignMirror(TrackDesign& td);
 
-GameActions::Result TrackDesignPlace(TrackDesign* td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewRemoveGhosts(TrackDesign* td, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, TrackDesign* td, Ride& ride, const CoordsXYZD& coords);
-int32_t TrackDesignGetZPlacement(TrackDesign* td, Ride& ride, const CoordsXYZD& coords);
+GameActions::Result TrackDesignPlace(
+    const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
+int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void TrackDesignDrawPreview(TrackDesign* td, uint8_t* pixels);
+void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

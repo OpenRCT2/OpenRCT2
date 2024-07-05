@@ -49,6 +49,11 @@ constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsP
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
+constexpr uint8_t kRideMaxDropsCount = 63;
+constexpr uint8_t kRideNumDropsMask = 0b00111111;
+constexpr uint8_t kRideMaxNumPoweredLiftsCount = 3;
+constexpr uint8_t kRideNumPoweredLiftsMask = 0b11000000;
+
 struct RideStation
 {
     static constexpr uint8_t kNoTrain = std::numeric_limits<uint8_t>::max();
@@ -176,7 +181,7 @@ struct Ride
     uint16_t turn_count_banked{};
     uint16_t turn_count_sloped{}; // X = number turns > 3 elements
     // Y is number of powered lifts, X is drops
-    uint8_t drops{}; // (YYXX XXXX)
+    uint8_t dropsPoweredLifts{}; // (YYXX XXXX)
     uint8_t start_drop_height{};
     uint8_t highest_drop_height{};
     int32_t sheltered_length{};
@@ -191,16 +196,7 @@ struct Ride
     uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
     money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
-    union
-    {
-        RatingTuple ratings{};
-        struct
-        {
-            ride_rating excitement;
-            ride_rating intensity;
-            ride_rating nausea;
-        };
-    };
+    RatingTuple ratings{};
     money64 value{};
     uint16_t chairlift_bullwheel_rotation{};
     uint8_t satisfaction{};
@@ -269,7 +265,7 @@ struct Ride
     uint8_t lift_hill_speed{};
     uint32_t guests_favourite{};
     uint32_t lifecycle_flags{};
-    uint16_t total_air_time{};
+    uint16_t totalAirTime{};
     StationIndex current_test_station{ StationIndex::GetNull() };
     uint8_t num_circuits{};
     CoordsXYZ CableLiftLoc{};
@@ -413,6 +409,12 @@ public:
     bool HasStation() const;
 
     bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
+
+    uint8_t getNumDrops() const;
+    void setNumDrops(uint8_t newValue);
+
+    uint8_t getNumPoweredLifts() const;
+    void setPoweredLifts(uint8_t newValue);
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);

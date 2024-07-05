@@ -1852,7 +1852,7 @@ Ride* Guest::FindBestRideToGoOn()
             {
                 if (ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, true) && RideHasRatings(ride))
                 {
-                    if (mostExcitingRide == nullptr || ride.excitement > mostExcitingRide->excitement)
+                    if (mostExcitingRide == nullptr || ride.ratings.excitement > mostExcitingRide->ratings.excitement)
                     {
                         mostExcitingRide = &ride;
                     }
@@ -1909,7 +1909,7 @@ OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> Guest::FindRidesToGoOn()
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
         for (auto& ride : GetRideManager())
         {
-            if (ride.highest_drop_height > 66 || ride.excitement >= RIDE_RATING(8, 00))
+            if (ride.highest_drop_height > 66 || ride.ratings.excitement >= RIDE_RATING(8, 00))
             {
                 rideConsideration[ride.id.ToUnderlying()] = true;
             }
@@ -2048,7 +2048,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
+                    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
                     {
                         PeepRideIsTooIntense(this, ride, peepAtRide);
                         return false;
@@ -2082,7 +2082,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                             // intensity and decrease the min intensity by about 2.5.
                             ride_rating maxIntensity = std::min(Intensity.GetMaximum() * 100, 1000) + Happiness;
                             ride_rating minIntensity = (Intensity.GetMinimum() * 100) - Happiness;
-                            if (ride.intensity < minIntensity)
+                            if (ride.ratings.intensity < minIntensity)
                             {
                                 if (peepAtRide)
                                 {
@@ -2096,7 +2096,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                                 ChoseNotToGoOnRide(ride, peepAtRide, true);
                                 return false;
                             }
-                            if (ride.intensity > maxIntensity)
+                            if (ride.ratings.intensity > maxIntensity)
                             {
                                 PeepRideIsTooIntense(this, ride, peepAtRide);
                                 return false;
@@ -2105,7 +2105,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                             // Nausea calculations.
                             ride_rating maxNausea = NauseaMaximumThresholds[(EnumValue(NauseaTolerance) & 3)] + Happiness;
 
-                            if (ride.nausea > maxNausea)
+                            if (ride.ratings.nausea > maxNausea)
                             {
                                 if (peepAtRide)
                                 {
@@ -2121,7 +2121,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                             }
 
                             // Very nauseous peeps will only go on very gentle rides.
-                            if (ride.nausea >= FIXED_2DP(1, 40) && Nausea > 160)
+                            if (ride.ratings.nausea >= FIXED_2DP(1, 40) && Nausea > 160)
                             {
                                 ChoseNotToGoOnRide(ride, peepAtRide, false);
                                 return false;
@@ -2696,7 +2696,7 @@ static int16_t PeepCalculateRideSatisfaction(Guest* peep, const Ride& ride)
 static void PeepUpdateFavouriteRide(Guest* peep, const Ride& ride)
 {
     peep->PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-    uint8_t peepRideRating = std::clamp((ride.excitement / 4) + peep->Happiness, 0, kPeepMaxHappiness);
+    uint8_t peepRideRating = std::clamp((ride.ratings.excitement / 4) + peep->Happiness, 0, kPeepMaxHappiness);
     if (peepRideRating >= peep->FavouriteRideRating)
     {
         if (peep->Happiness >= 160 && peep->HappinessTarget >= 160)
@@ -2751,19 +2751,19 @@ static int16_t PeepCalculateRideIntensityNauseaSatisfaction(Guest* peep, const R
     uint8_t nauseaSatisfaction = 3;
     ride_rating maxIntensity = peep->Intensity.GetMaximum() * 100;
     ride_rating minIntensity = peep->Intensity.GetMinimum() * 100;
-    if (minIntensity <= ride.intensity && maxIntensity >= ride.intensity)
+    if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
     {
         intensitySatisfaction--;
     }
     minIntensity -= peep->Happiness * 2;
     maxIntensity += peep->Happiness;
-    if (minIntensity <= ride.intensity && maxIntensity >= ride.intensity)
+    if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
     {
         intensitySatisfaction--;
     }
     minIntensity -= peep->Happiness * 2;
     maxIntensity += peep->Happiness;
-    if (minIntensity <= ride.intensity && maxIntensity >= ride.intensity)
+    if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
     {
         intensitySatisfaction--;
     }
@@ -2772,19 +2772,19 @@ static int16_t PeepCalculateRideIntensityNauseaSatisfaction(Guest* peep, const R
     // has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
     ride_rating minNausea = NauseaMinimumThresholds[(EnumValue(peep->NauseaTolerance) & 3)];
     ride_rating maxNausea = NauseaMaximumThresholds[(EnumValue(peep->NauseaTolerance) & 3)];
-    if (minNausea <= ride.nausea && maxNausea >= ride.nausea)
+    if (minNausea <= ride.ratings.nausea && maxNausea >= ride.ratings.nausea)
     {
         nauseaSatisfaction--;
     }
     minNausea -= peep->Happiness * 2;
     maxNausea += peep->Happiness;
-    if (minNausea <= ride.nausea && maxNausea >= ride.nausea)
+    if (minNausea <= ride.ratings.nausea && maxNausea >= ride.ratings.nausea)
     {
         nauseaSatisfaction--;
     }
     minNausea -= peep->Happiness * 2;
     maxNausea += peep->Happiness;
-    if (minNausea <= ride.nausea && maxNausea >= ride.nausea)
+    if (minNausea <= ride.ratings.nausea && maxNausea >= ride.ratings.nausea)
     {
         nauseaSatisfaction--;
     }
@@ -2843,7 +2843,7 @@ static int16_t PeepCalculateRideIntensityNauseaSatisfaction(Guest* peep, const R
 static void PeepUpdateRideNauseaGrowth(Guest* peep, const Ride& ride)
 {
     uint32_t nauseaMultiplier = std::clamp(256 - peep->HappinessTarget, 64, 200);
-    uint32_t nauseaGrowthRateChange = (ride.nausea * nauseaMultiplier) / 512;
+    uint32_t nauseaGrowthRateChange = (ride.ratings.nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->Hunger) / 64;
     nauseaGrowthRateChange >>= (EnumValue(peep->NauseaTolerance) & 3);
     peep->NauseaTarget = static_cast<uint8_t>(std::min(peep->NauseaTarget + nauseaGrowthRateChange, 255u));
@@ -2855,7 +2855,7 @@ static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
+    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     if (peep->Happiness < 180)
         return false;
@@ -2900,7 +2900,7 @@ static bool PeepReallyLikedRide(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
+    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
         return false;
     return true;
 }
@@ -6280,17 +6280,17 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
     }
 
     // This is most likely to have peeps watch new rides
-    if (ride->excitement == kRideRatingUndefined)
+    if (ride->ratings.isNull())
     {
         return true;
     }
 
-    if (ride->excitement >= RIDE_RATING(4, 70))
+    if (ride->ratings.excitement >= RIDE_RATING(4, 70))
     {
         return true;
     }
 
-    if (ride->intensity >= RIDE_RATING(4, 50))
+    if (ride->ratings.intensity >= RIDE_RATING(4, 50))
     {
         return true;
     }
@@ -6324,7 +6324,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
         return false;
 
     *rideToView = ride->id;
-    if (ride->excitement == kRideRatingUndefined)
+    if (ride->ratings.isNull())
     {
         *rideSeatToView = 1;
         if (ride->status != RideStatus::Open)

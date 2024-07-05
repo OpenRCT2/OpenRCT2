@@ -1446,7 +1446,7 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.turn_count_sloped);
 
                     cs.ReadWrite(ride.inversions);
-                    cs.ReadWrite(ride.drops);
+                    cs.ReadWrite(ride.dropsPoweredLifts);
                     cs.ReadWrite(ride.start_drop_height);
                     cs.ReadWrite(ride.highest_drop_height);
                     cs.ReadWrite(ride.sheltered_length);
@@ -1459,11 +1459,11 @@ namespace OpenRCT2
                     }
                     cs.ReadWrite(ride.current_test_station);
                     cs.ReadWrite(ride.num_block_brakes);
-                    cs.ReadWrite(ride.total_air_time);
+                    cs.ReadWrite(ride.totalAirTime);
 
-                    cs.ReadWrite(ride.excitement);
-                    cs.ReadWrite(ride.intensity);
-                    cs.ReadWrite(ride.nausea);
+                    cs.ReadWrite(ride.ratings.excitement);
+                    cs.ReadWrite(ride.ratings.intensity);
+                    cs.ReadWrite(ride.ratings.nausea);
 
                     if (version <= 18)
                     {

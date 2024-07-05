@@ -74,6 +74,12 @@ constexpr uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max()
 constexpr uint8_t RCT12GuestsInParkHistoryFactor = 20;
 constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
 
+constexpr uint8_t kTD46RatingsMultiplier = 10;
+constexpr uint8_t kTD46GForcesMultiplier = 32;
+
+constexpr uint8_t kRCT12InversionAndHoleMask = 0b00011111;
+constexpr uint8_t kRCT12RideNumDropsMask = 0b00111111;
+
 struct TrackDesign;
 struct TrackDesignTrackElement;
 enum class RideColourScheme : uint8_t;

@@ -387,7 +387,7 @@ static Widget window_loadsave_widgets[] =
                 const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
                 String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
 
-                RCT2::T6Exporter t6Export{ _trackDesign };
+                RCT2::T6Exporter t6Export{ *_trackDesign };
 
                 auto success = t6Export.SaveTrack(pathBuffer);
 

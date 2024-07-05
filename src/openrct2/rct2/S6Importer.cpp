@@ -1456,12 +1456,12 @@ namespace RCT2
             dst->turn_count_default = src->TurnCountDefault;
             dst->turn_count_banked = src->TurnCountBanked;
             dst->turn_count_sloped = src->TurnCountSloped;
-            if (dst->type == RIDE_TYPE_MINI_GOLF)
-                dst->holes = src->Inversions & 0x1F;
+            if (src->Type == RIDE_TYPE_MINI_GOLF)
+                dst->holes = src->Inversions & kRCT12InversionAndHoleMask;
             else
-                dst->inversions = src->Inversions & 0x1F;
+                dst->inversions = src->Inversions & kRCT12InversionAndHoleMask;
             dst->sheltered_eighths = src->Inversions >> 5;
-            dst->drops = src->Drops;
+            dst->dropsPoweredLifts = src->Drops;
             dst->start_drop_height = src->StartDropHeight;
             dst->highest_drop_height = src->HighestDropHeight;
             dst->sheltered_length = src->ShelteredLength;
@@ -1484,7 +1484,7 @@ namespace RCT2
                                                        src->ChairliftBullwheelLocation[i].y, src->ChairliftBullwheelZ[i] };
             }
 
-            dst->ratings = src->Ratings;
+            dst->ratings = src->ratings;
             dst->value = ToMoney64(src->Value);
 
             dst->chairlift_bullwheel_rotation = src->ChairliftBullwheelRotation;
@@ -1593,7 +1593,7 @@ namespace RCT2
                 dst->vehicle_colours[i].Tertiary = src->VehicleColoursExtended[i];
             }
 
-            dst->total_air_time = src->TotalAirTime;
+            dst->totalAirTime = src->TotalAirTime;
             dst->current_test_station = StationIndex::FromUnderlying(src->CurrentTestStation);
             dst->num_circuits = src->NumCircuits;
             dst->CableLiftLoc = { src->CableLiftX, src->CableLiftY, src->CableLiftZ * COORDS_Z_STEP };
