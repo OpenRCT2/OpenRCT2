@@ -114,13 +114,10 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     auto object = ObjectEntryGetObject(ObjectType::Ride, ride.subtype);
     if (object != nullptr)
     {
-        auto entry = object->GetObjectEntry();
-        // Remove this check for new track design format
-        if (entry.IsEmpty())
-        {
-            return { false, STR_VEHICLE_UNSUPPORTED_TD6 };
-        }
-        trackAndVehicle.vehicleObject = ObjectEntryDescriptor(entry);
+        if (object->GetGeneration() == ObjectGeneration::DAT)
+            trackAndVehicle.vehicleObject = ObjectEntryDescriptor(object->GetObjectEntry());
+        else
+            trackAndVehicle.vehicleObject = ObjectEntryDescriptor(object->GetIdentifier());
     }
 
     operation.rideMode = ride.mode;
@@ -215,24 +212,12 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         const auto& element = trackElement.element->AsTrack();
 
-        // Remove this check for new track design format
-        if (element->GetTrackType() > TrackElemType::HighestAlias)
-        {
-            return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
-        }
-
         TrackDesignTrackElement track{};
         track.type = element->GetTrackType();
         track.colourScheme = element->GetColourScheme();
         track.stationIndex = element->GetStationIndex();
         track.brakeBoosterSpeed = element->GetBrakeBoosterSpeed();
         track.seatRotation = element->GetSeatRotation();
-
-        // This warning will not apply to new track design format
-        if (track.type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
-        {
-            warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
-        }
 
         if (element->HasChain())
             track.SetFlag(TrackDesignTrackElementFlag::hasChain);
@@ -261,11 +246,6 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         }
         trackElement.x = newCoords->x;
         trackElement.y = newCoords->y;
-
-        if (trackElements.size() > RCT2::Limits::kTD6MaxTrackElements)
-        {
-            return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
-        }
     } while (trackElement.element != initialMap);
 
     // First entrances, second exits
