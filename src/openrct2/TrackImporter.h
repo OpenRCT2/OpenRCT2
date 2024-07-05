@@ -36,6 +36,8 @@ namespace TrackImporter
     [[nodiscard]] std::unique_ptr<ITrackImporter> Create(const std::string& hintPath);
     [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD4();
     [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD6();
+    [[nodiscard]] std::unique_ptr<ITrackImporter> CreateNTDF();
 
-    bool ExtensionIsRCT1(const std::string& extension);
+    bool ExtensionIsRCT1(u8string_view extension);
+    bool ExtensionIsRCT2(u8string_view extension);
 } // namespace TrackImporter

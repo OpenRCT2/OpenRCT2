@@ -24,15 +24,24 @@ namespace TrackImporter
         {
             trackImporter = CreateTD4();
         }
-        else
+        else if (ExtensionIsRCT2(extension))
         {
             trackImporter = CreateTD6();
+        }
+        else
+        {
+            trackImporter = CreateNTDF();
         }
         return trackImporter;
     }
 
-    bool ExtensionIsRCT1(const std::string& extension)
+    bool ExtensionIsRCT1(u8string_view extension)
     {
         return String::IEquals(extension, ".td4");
+    }
+
+    bool ExtensionIsRCT2(u8string_view extension)
+    {
+        return String::IEquals(extension, ".td6");
     }
 } // namespace TrackImporter

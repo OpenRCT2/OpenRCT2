@@ -214,6 +214,7 @@
     <ClInclude Include="core\Meta.hpp" />
     <ClInclude Include="core\Money.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
+    <ClInclude Include="core\OrcaException.h" />
     <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Diagnostic.h" />
+    <ClInclude Include="design\DesignFile.h" />
     <ClInclude Include="drawing\Drawing.h" />
     <ClInclude Include="drawing\Font.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
@@ -754,6 +756,7 @@
     <ClCompile Include="core\StringReader.cpp" />
     <ClCompile Include="core\Zip.cpp" />
     <ClCompile Include="core\ZipAndroid.cpp" />
+    <ClCompile Include="design\DesignFile.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="drawing\AVX2Drawing.cpp" />

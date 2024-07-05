@@ -20,6 +20,7 @@
 #include "../core/Crypt.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
+#include "../core/OrcaException.h"
 #include "../core/OrcaStream.hpp"
 #include "../core/Path.hpp"
 #include "../drawing/Drawing.h"

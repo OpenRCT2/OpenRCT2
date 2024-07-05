@@ -94,16 +94,3 @@ public:
     {
     }
 };
-
-class UnsupportedVersionException : public std::exception
-{
-public:
-    uint32_t const MinVersion;
-    uint32_t const TargetVersion;
-
-    explicit UnsupportedVersionException(uint32_t minVersion, uint32_t targetVersion)
-        : MinVersion(minVersion)
-        , TargetVersion(targetVersion)
-    {
-    }
-};

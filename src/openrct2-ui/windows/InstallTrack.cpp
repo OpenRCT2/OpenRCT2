@@ -376,6 +376,7 @@ static Widget window_install_track_widgets[] = {
                 return;
             }
 
+            // TODO: write extension of actual file!
             destPath = Path::Combine(destPath, _trackName + u8".td6");
 
             if (File::Exists(destPath))

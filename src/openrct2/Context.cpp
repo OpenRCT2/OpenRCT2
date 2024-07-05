@@ -35,6 +35,7 @@
 #include "core/Guard.hpp"
 #include "core/Http.h"
 #include "core/MemoryStream.h"
+#include "core/OrcaException.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "core/Timer.hpp"
