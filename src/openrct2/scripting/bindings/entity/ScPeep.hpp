@@ -59,6 +59,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPeep::peepType_get, nullptr, "peepType");
             dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
             dukglue_register_property(ctx, &ScPeep::destination_get, &ScPeep::destination_set, "destination");
+            dukglue_register_property(ctx, &ScPeep::direction_get, &ScPeep::direction_set, "direction");
             dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");
             dukglue_register_property(ctx, &ScPeep::energyTarget_get, &ScPeep::energyTarget_set, "energyTarget");
             dukglue_register_method(ctx, &ScPeep::getFlag, "getFlag");
@@ -137,6 +138,23 @@ namespace OpenRCT2::Scripting
                 auto pos = FromDuk<CoordsXY>(value);
                 peep->SetDestination(pos);
                 peep->Invalidate();
+            }
+        }
+
+        uint8_t direction_get() const
+        {
+            auto peep = GetPeep();
+            return peep != nullptr ? peep->PeepDirection : 0;
+        }
+
+        void direction_set(const uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetPeep();
+            if (peep != nullptr && value < kNumOrthogonalDirections)
+            {
+                peep->PeepDirection = value;
+                peep->Orientation = value << 3;
             }
         }
 
