@@ -5169,67 +5169,67 @@ static_assert(std::size(RatingNames) == 6);
 
             // draw music data only when music is activated
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
-            if (isMusicActivated)
+            if (!isMusicActivated)
+                return;
+
+            auto screenPos = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
+            screenPos.y += DrawTextWrapped(
+                               dpi, screenPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, 33 }, width,
+                               STR_MUSIC_OBJECT_TRACK_HEADER, {}, { TextAlignment::LEFT })
+                + 2;
+
+            auto musicObj = ride->GetMusicObject();
+
+            bool hasPreview = musicObj->HasPreview();
+            if (hasPreview)
             {
-                auto screenPos = windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
-                screenPos.y += DrawTextWrapped(
-                                   dpi, screenPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, 33 }, width,
-                                   STR_MUSIC_OBJECT_TRACK_HEADER)
-                    + 2;
+                const auto& previewWidget = widgets[WIDX_MUSIC_IMAGE];
 
-                auto musicObj = ride->GetMusicObject();
+                int32_t _width = previewWidget.width() - 1;
+                int32_t _height = previewWidget.height() - 1;
 
-                bool hasPreview = musicObj->HasPreview();
-                if (hasPreview)
+                // draw background rectangle for image preview
+                auto colour = colours[1].colour;
+                GfxFillRect(
+                    dpi,
+                    { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
+                      windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
+                    ColourMapA[colour].darkest);
+
+                // Draw preview image
+                DrawPixelInfo clipDPI;
+                screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
+                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _width, _height))
                 {
-                    const auto& previewWidget = widgets[WIDX_MUSIC_IMAGE];
-
-                    int32_t _width = previewWidget.width() - 1;
-                    int32_t _height = previewWidget.height() - 1;
-
-                    // draw background rectangle for image preview
-                    auto colour = colours[1].colour;
-                    GfxFillRect(
-                        dpi,
-                        { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
-                          windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                        ColourMapA[colour].darkest);
-
-                    // Draw preview image
-                    DrawPixelInfo clipDPI;
-                    screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
-                    if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _width, _height))
-                    {
-                        musicObj->DrawPreview(clipDPI, _width, _height);
-                    }
+                    musicObj->DrawPreview(clipDPI, _width, _height);
                 }
+            }
 
-                // Draw object author (will be blank space if no author in file or a non JSON object)
+            // Draw object author (will be blank space if no author in file or a non JSON object)
+            {
+                auto ft = Formatter();
+                std::string authorsString;
+                for (size_t i = 0; i < musicObj->GetAuthors().size(); i++)
                 {
-                    auto ft = Formatter();
-                    std::string authorsString;
-                    for (size_t i = 0; i < musicObj->GetAuthors().size(); i++)
+                    if (i > 0)
                     {
-                        if (i > 0)
-                        {
-                            authorsString.append(", ");
-                        }
-                        authorsString.append(musicObj->GetAuthors()[i]);
+                        authorsString.append(", ");
                     }
-                    ft.Add<StringId>(STR_STRING);
-                    ft.Add<const char*>(authorsString.c_str());
-
-                    screenPos = windowPos
-                        + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 1, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
-
-                    DrawTextEllipsised(
-                        dpi,
-                        { windowPos.x + widgets[WIDX_PAGE_BACKGROUND].left + widgets[WIDX_MUSIC_DATA].left,
-                          screenPos.y + height - 72 },
-                        widgets[WIDX_MUSIC_DATA].right - widgets[WIDX_MUSIC_DATA].left + 127, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                        { TextAlignment::LEFT });
+                    authorsString.append(musicObj->GetAuthors()[i]);
                 }
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const char*>(authorsString.c_str());
+
+                screenPos = windowPos
+                    + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 1, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
+
+                DrawTextEllipsised(
+                    dpi,
+                    { windowPos.x + widgets[WIDX_PAGE_BACKGROUND].left + widgets[WIDX_MUSIC_DATA].left,
+                      screenPos.y + height - 72 },
+                    widgets[WIDX_MUSIC_DATA].right - widgets[WIDX_MUSIC_DATA].left + 127, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    { TextAlignment::LEFT });
             }
         }
 
@@ -5244,31 +5244,30 @@ static_assert(std::size(RatingNames) == 6);
 
             // draw music data only when music is activated
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
-            if (isMusicActivated)
+            if (!isMusicActivated)
+                return;
+
+            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            GfxFillRect(dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colour].mid_light);
+
+            auto musicObj = ride->GetMusicObject();
+
+            auto y = 0;
+            for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
             {
-                auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-                GfxFillRect(
-                    dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colour].mid_light);
+                const auto* track = musicObj->GetTrack(i);
+                if (track->Name.empty())
+                    continue;
 
-                auto musicObj = ride->GetMusicObject();
+                auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
+                                                        : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
+                auto ft = Formatter();
+                ft.Add<const char*>(track->Name.c_str());
+                ft.Add<const char*>(track->Composer.c_str());
 
-                auto y = 0;
-                for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
-                {
-                    const auto* track = musicObj->GetTrack(i);
-                    if (track->Name.empty())
-                        continue;
+                DrawTextBasic(dpi, { 0, y }, stringId, ft);
 
-                    auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
-                                                            : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
-                    auto ft = Formatter();
-                    ft.Add<const char*>(track->Name.c_str());
-                    ft.Add<const char*>(track->Composer.c_str());
-
-                    DrawTextBasic(dpi, { 0, y }, stringId, ft);
-
-                    y += kScrollableRowHeight;
-                }
+                y += kScrollableRowHeight;
             }
         }
 
