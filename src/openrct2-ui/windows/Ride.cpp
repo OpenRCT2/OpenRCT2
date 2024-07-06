@@ -5174,6 +5174,8 @@ static_assert(std::size(RatingNames) == 6);
 
             auto screenPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
+
+            // 'Tracks' caption
             screenPos.y += DrawTextWrapped(
                                dpi, screenPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, 33 }, width,
                                STR_MUSIC_OBJECT_TRACK_HEADER, {}, { TextAlignment::LEFT })
@@ -5210,13 +5212,12 @@ static_assert(std::size(RatingNames) == 6);
             {
                 auto ft = Formatter();
                 std::string authorsString;
-                for (size_t i = 0; i < musicObj->GetAuthors().size(); i++)
+                for (auto& author : musicObj->GetAuthors())
                 {
-                    if (i > 0)
-                    {
+                    if (!authorsString.empty())
                         authorsString.append(", ");
-                    }
-                    authorsString.append(musicObj->GetAuthors()[i]);
+
+                    authorsString.append(author);
                 }
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(authorsString.c_str());
@@ -5265,7 +5266,7 @@ static_assert(std::size(RatingNames) == 6);
                 ft.Add<const char*>(track->Name.c_str());
                 ft.Add<const char*>(track->Composer.c_str());
 
-                DrawTextBasic(dpi, { 0, y }, stringId, ft);
+                DrawTextBasic(dpi, { 0, y }, stringId, ft, { FontStyle::Small });
 
                 y += kScrollableRowHeight;
             }
