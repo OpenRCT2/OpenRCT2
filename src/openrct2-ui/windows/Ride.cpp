@@ -5040,7 +5040,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Compute scroll height based on number of tracks
-            const int32_t newHeight = musicObj->GetTrackCount() * kScrollableRowHeight;
+            const int32_t newHeight = static_cast<int32_t>(musicObj->GetTrackCount()) * kScrollableRowHeight;
 
             // Do we need a vertical scrollbar?
             auto top = newHeight - widgets[WIDX_MUSIC_DATA].height() + kScrollBarWidth;
