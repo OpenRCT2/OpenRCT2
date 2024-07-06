@@ -49,7 +49,7 @@
 - Fix: [#22152] [Plugin] Negative signed integers are truncated.
 - Fix: [#22161] Using arrow keys in textboxes crashes the game.
 - Fix: [#22174] Cheats are reset when starting a server.
-- Fix: [#22185] Set nausea and intensity after test results are invaildated.
+- Fix: [#22185] Set nausea and intensity after test results are invalidated.
 - Fix: [#22226] Red traffic light shows incorrect sprite when pressed.
 - Fix: [objects#323] Incorrect wall boundaries on large WW/TT scenery objects.
 - Fix: [objects#331] Incorrect hover car capacity string.
