@@ -979,7 +979,10 @@ void Guest::Tick128UpdateGuest(uint32_t index)
         }
     }
 
-    UpdateSpriteType();
+    if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
+    {
+        UpdateSpriteType();
+    }
 
     if (State == PeepState::OnRide || State == PeepState::EnteringRide)
     {
@@ -1007,6 +1010,11 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                 }
             }
         }
+    }
+
+    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+    {
+        return;
     }
 
     if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0

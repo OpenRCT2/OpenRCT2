@@ -2695,6 +2695,11 @@ declare global {
         destination: CoordsXY;
 
         /**
+         * The peep's orthogonal direction, from 0 to 3.
+         */
+        direction: Direction;
+
+        /**
          * How tired the guest is between 32 and 128 where lower is more tired.
          */
         energy: number;
@@ -2743,7 +2748,9 @@ declare global {
         "joy" |
         "angry" |
         "iceCream" |
-        "hereWeAre";
+        "hereWeAre" |
+        "positionFrozen" |
+        "animationFrozen";
 
     /**
      * @deprecated since version 34, use EntityType instead.
