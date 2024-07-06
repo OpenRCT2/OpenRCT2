@@ -5198,38 +5198,46 @@ static_assert(std::size(RatingNames) == 6);
 
         void MusicOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
         {
-            auto colour = colours[1].colour;
-            GfxClear(dpi, ColourMapA[colour].mid_light);
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
 
-            // draw music data only when music is activated
+            // Only draw track listing when music is activated
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
             if (!isMusicActivated)
                 return;
 
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-            GfxFillRect(dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colour].mid_light);
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            GfxClear(dpi, paletteIndex);
 
-            auto musicObj = ride->GetMusicObject();
-
+            auto* musicObj = ride->GetMusicObject();
             auto y = 0;
+
             for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
             {
+                // Skip invisible items
+                if (y + kScrollableRowHeight < dpi.y || y > dpi.y + dpi.height)
+                {
+                    y += kScrollableRowHeight;
+                    continue;
+                }
+
+                // Skip empty items
                 const auto* track = musicObj->GetTrack(i);
                 if (track->Name.empty())
                     continue;
 
-                auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
-                                                        : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
+                // Prepare items for display
                 auto ft = Formatter();
                 ft.Add<const char*>(track->Name.c_str());
                 ft.Add<const char*>(track->Composer.c_str());
 
-                DrawTextBasic(dpi, { 0, y }, stringId, ft, { FontStyle::Small });
+                // Do we have composer info to show?
+                auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
+                                                        : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
 
+                // Draw the track
+                DrawTextBasic(dpi, { 0, y }, stringId, ft, { FontStyle::Small });
                 y += kScrollableRowHeight;
             }
         }
