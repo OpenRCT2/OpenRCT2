@@ -5167,45 +5167,32 @@ static_assert(std::size(RatingNames) == 6);
             if (ride == nullptr)
                 return;
 
-            // draw music data only when music is activated
+            // Draw music data only when music is activated
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
             if (!isMusicActivated)
                 return;
 
-            auto screenPos = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
-
             // 'Tracks' caption
-            screenPos.y += DrawTextWrapped(
-                               dpi, screenPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, 33 }, width,
-                               STR_MUSIC_OBJECT_TRACK_HEADER, {}, { TextAlignment::LEFT })
-                + 2;
+            auto trackLabelPos = windowPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, widgets[WIDX_MUSIC_DATA].top - 13 };
+            DrawTextWrapped(dpi, trackLabelPos, width, STR_MUSIC_OBJECT_TRACK_HEADER, {}, { TextAlignment::LEFT });
 
+            // Do we have a preview image to draw?
             auto musicObj = ride->GetMusicObject();
-
             bool hasPreview = musicObj->HasPreview();
-            if (hasPreview)
+            if (!hasPreview)
+                return;
+
+            // Figure out where the image should go
+            const auto& previewWidget = widgets[WIDX_MUSIC_IMAGE];
+            int32_t clipWidth = previewWidget.width() - 1;
+            int32_t clipHeight = previewWidget.height() - 1;
+
+            // Draw the preview image
+            DrawPixelInfo clipDPI;
+            auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
+            if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, clipWidth, clipHeight))
             {
-                const auto& previewWidget = widgets[WIDX_MUSIC_IMAGE];
-
-                int32_t _width = previewWidget.width() - 1;
-                int32_t _height = previewWidget.height() - 1;
-
-                // draw background rectangle for image preview
-                auto colour = colours[1].colour;
-                GfxFillRect(
-                    dpi,
-                    { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
-                      windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                    ColourMapA[colour].darkest);
-
-                // Draw preview image
-                DrawPixelInfo clipDPI;
-                screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
-                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _width, _height))
-                {
-                    musicObj->DrawPreview(clipDPI, _width, _height);
-                }
+                musicObj->DrawPreview(clipDPI, clipWidth, clipHeight);
             }
         }
 
