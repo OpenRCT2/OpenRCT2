@@ -4873,7 +4873,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // Expand the window when music is playing
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
-            auto minHeight = isMusicActivated ? 211 : 81;
+            auto minHeight = isMusicActivated ? 214 : 81;
             auto maxHeight = isMusicActivated ? 450 : 81;
             WindowSetResize(*this, 316, minHeight, 500, maxHeight);
         }
@@ -5105,8 +5105,7 @@ static_assert(std::size(RatingNames) == 6);
 
             if (isMusicActivated)
             {
-                // resize widgets
-                widgets[WIDX_MUSIC_DATA].bottom = height - 8;
+                widgets[WIDX_MUSIC_DATA].bottom = height - 11;
 
                 if (hasPreviewImage)
                 {
