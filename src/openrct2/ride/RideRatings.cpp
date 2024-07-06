@@ -2262,10 +2262,12 @@ static void RideRatingsApplyPenaltyLateralGs(RatingTuple& ratings, const Ride& r
 
 bool RatingTuple::isNull() const
 {
-    return excitement == kRideRatingUndefined;
+    return excitement == kRideRatingUndefined && intensity == kRideRatingUndefined && nausea == kRideRatingUndefined;
 }
 
 void RatingTuple::setNull()
 {
     excitement = kRideRatingUndefined;
+    intensity = kRideRatingUndefined;
+    nausea = kRideRatingUndefined;
 }
