@@ -29,7 +29,7 @@ static constexpr auto SPR_LOOPING_RC_BOOSTER_NW_SE = 15011;
 static constexpr auto SPR_LOOPING_RC_FLAT_CHAINED_SW_NE = 15016;
 static constexpr auto SPR_LOOPING_RC_FLAT_CHAINED_NW_SE = 15017;
 
-static constexpr const uint32_t LoopingRCDiagBrakeImages[2 * NumOrthogonalDirections] = {
+static constexpr const uint32_t LoopingRCDiagBrakeImages[2 * kNumOrthogonalDirections] = {
     SPR_G2_LOOPING_DIAG_BRAKES,     SPR_G2_LOOPING_DIAG_BRAKES + 2, SPR_G2_LOOPING_DIAG_BRAKES,
     SPR_G2_LOOPING_DIAG_BRAKES + 2, SPR_G2_LOOPING_DIAG_BRAKES + 1, SPR_G2_LOOPING_DIAG_BRAKES + 3,
     SPR_G2_LOOPING_DIAG_BRAKES + 1, SPR_G2_LOOPING_DIAG_BRAKES + 3,
@@ -5717,7 +5717,7 @@ static void LoopingRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 15420, 15421, 15422, 15423 },
         { 15448, 15449, 15450, 15451 },
     };

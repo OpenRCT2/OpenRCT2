@@ -29,7 +29,7 @@ struct SpriteBoundBox2
 };
 
 // Magic number 4 refers to the number of track blocks in a diagonal track element
-static constexpr const WoodenSupportSubType WoodenRCDiagonalSupports[4][NumOrthogonalDirections] = {
+static constexpr const WoodenSupportSubType WoodenRCDiagonalSupports[4][kNumOrthogonalDirections] = {
     { WoodenSupportSubType::Null, WoodenSupportSubType::Null, WoodenSupportSubType::Null,
       WoodenSupportSubType::Null }, // sequence 0
     { WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner2,

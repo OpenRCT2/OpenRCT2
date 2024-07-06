@@ -391,7 +391,7 @@ extern const int8_t defaultEighthToDiagThickness[4][4];
 extern const CoordsXY defaultDiagBoundLengths[4];
 extern const CoordsXY defaultDiagTileOffsets[4];
 
-constexpr bool kDiagSpriteMap[NumOrthogonalDirections][4] = {
+constexpr bool kDiagSpriteMap[kNumOrthogonalDirections][4] = {
     { false, true, false, false },
     { false, false, false, true },
     { false, false, true, false },

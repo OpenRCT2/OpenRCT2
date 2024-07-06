@@ -437,7 +437,7 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
-            trackElement->SetColourScheme(static_cast<uint8_t>(extra_params & 0xFF));
+            trackElement->SetColourScheme(static_cast<RideColourScheme>(extra_params & 0xFF));
         }
         if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {
@@ -499,7 +499,7 @@ void RideRemoveProvisionalTrackPiece()
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
-        const CoordsXYZD quadrants[NumOrthogonalDirections] = {
+        const CoordsXYZD quadrants[kNumOrthogonalDirections] = {
             { x, y, z, 0 },
             { x, y + 16, z, 1 },
             { x + 16, y + 16, z, 2 },

@@ -453,10 +453,10 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
  */
 Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
 {
-    Direction newDirection = ScenarioRand() % NumOrthogonalDirections;
-    for (int32_t i = 0; i < NumOrthogonalDirections; ++i, ++newDirection)
+    Direction newDirection = ScenarioRand() % kNumOrthogonalDirections;
+    for (int32_t i = 0; i < kNumOrthogonalDirections; ++i, ++newDirection)
     {
-        newDirection %= NumOrthogonalDirections;
+        newDirection %= kNumOrthogonalDirections;
         if (!(validDirections & (1 << newDirection)))
             continue;
 
@@ -470,7 +470,7 @@ Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
     // If it tries all directions this is required
     // to make it back to the first direction and
     // override validDirections
-    newDirection %= NumOrthogonalDirections;
+    newDirection %= kNumOrthogonalDirections;
     return newDirection;
 }
 
@@ -804,7 +804,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
     }
 
     direction = ScenarioRand() & 3;
-    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i, direction = DirectionNext(direction))
+    for (uint8_t i = 0; i < kNumOrthogonalDirections; ++i, direction = DirectionNext(direction))
     {
         if (pathDirections & (1 << direction))
             return direction;

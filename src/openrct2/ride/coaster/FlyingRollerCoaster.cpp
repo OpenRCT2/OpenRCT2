@@ -24,7 +24,7 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
 
-static constexpr const uint32_t InvertedRCDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr const uint32_t InvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_BM_INVERT_DIAG_BRAKES,
     SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
     SPR_G2_BM_INVERT_DIAG_BRAKES,

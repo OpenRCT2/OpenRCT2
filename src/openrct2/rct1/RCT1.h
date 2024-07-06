@@ -15,6 +15,8 @@
 #include "../world/Park.h"
 #include "Limits.h"
 
+enum class VehicleColourSettings : uint8_t;
+
 namespace RCT1
 {
     constexpr uint8_t RCT1ResearchFlagsSeparator = 0xFF;
@@ -237,11 +239,11 @@ namespace RCT1
      */
     struct Ride
     {
-        RideType Type;                 // 0x000
-        RCT1::VehicleType VehicleType; // 0x001
-        uint16_t LifecycleFlags;       // 0x002
-        uint8_t OperatingMode;         // 0x004
-        uint8_t ColourScheme;          // 0x005
+        RideType Type;                               // 0x000
+        RCT1::VehicleType VehicleType;               // 0x001
+        uint16_t LifecycleFlags;                     // 0x002
+        uint8_t OperatingMode;                       // 0x004
+        VehicleColourSettings vehicleColourSettings; // 0x005
         struct
         {
             colour_t Body;
@@ -322,31 +324,22 @@ namespace RCT1
         money16 Price;                                       // 0x0E8
         RCT12xy8 ChairliftBullwheelLocation[2];              // 0x0EA
         uint8_t ChairliftBullwheelZ[2];                      // 0x0EE
-        union
-        {
-            RatingTuple Ratings;
-            struct
-            {
-                ride_rating Excitement; // 0x0F0
-                ride_rating Intensity;  // 0x0F2
-                ride_rating Nausea;     // 0x0F4
-            };
-        };
-        money16 Value;                       // 0x0F6
-        uint16_t ChairliftBullwheelRotation; // 0x0F8
-        uint8_t Satisfaction;                // 0x0FA
-        uint8_t SatisfactionTimeOut;         // 0x0FB
-        uint8_t SatisfactionNext;            // 0x0FC
-        uint8_t WindowInvalidateFlags;       // 0x0FD
-        uint8_t UnkFE[2];                    // 0x0FE
-        uint32_t TotalCustomers;             // 0x100
-        money32 TotalProfit;                 // 0x104
-        uint8_t Popularity;                  // 0x108
-        uint8_t PopularityTimeOut;           // 0x109
-        uint8_t PopularityNext;              // 0x10A
-        uint8_t NumRiders;                   // 0x10B
-        uint8_t MusicTuneID;                 // 0x10C
-        uint8_t SlideInUse;                  // 0x10D
+        RatingTuple ratings;                                 // 0x0F0
+        money16 Value;                                       // 0x0F6
+        uint16_t ChairliftBullwheelRotation;                 // 0x0F8
+        uint8_t Satisfaction;                                // 0x0FA
+        uint8_t SatisfactionTimeOut;                         // 0x0FB
+        uint8_t SatisfactionNext;                            // 0x0FC
+        uint8_t WindowInvalidateFlags;                       // 0x0FD
+        uint8_t UnkFE[2];                                    // 0x0FE
+        uint32_t TotalCustomers;                             // 0x100
+        money32 TotalProfit;                                 // 0x104
+        uint8_t Popularity;                                  // 0x108
+        uint8_t PopularityTimeOut;                           // 0x109
+        uint8_t PopularityNext;                              // 0x10A
+        uint8_t NumRiders;                                   // 0x10B
+        uint8_t MusicTuneID;                                 // 0x10C
+        uint8_t SlideInUse;                                  // 0x10D
         union
         {
             uint16_t SlidePeep; // 0x10E

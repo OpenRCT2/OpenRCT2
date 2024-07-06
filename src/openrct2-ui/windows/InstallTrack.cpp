@@ -169,8 +169,8 @@ static Widget window_install_track_widgets[] = {
             screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 
             // Warnings
-            const TrackDesign* td6 = _trackDesign.get();
-            if (td6->trackFlags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+            const TrackDesign& td = *_trackDesign;
+            if (td.gameStateData.hasFlag(TrackDesignGameStateFlag::SceneryUnavailable))
             {
                 if (!gTrackDesignSceneryToggle)
                 {
@@ -198,17 +198,17 @@ static Widget window_install_track_widgets[] = {
             {
                 auto ft = Formatter();
 
-                const auto* objectEntry = ObjectManagerLoadObject(&td6->vehicleObject.Entry);
+                const auto* objectEntry = ObjectManagerLoadObject(&td.trackAndVehicle.vehicleObject.Entry);
                 if (objectEntry != nullptr)
                 {
                     auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(objectEntry);
-                    auto rideName = GetRideNaming(td6->type, *GetRideEntryByIndex(groupIndex));
+                    auto rideName = GetRideNaming(td.trackAndVehicle.rtdIndex, *GetRideEntryByIndex(groupIndex));
                     ft.Add<StringId>(rideName.Name);
                 }
                 else
                 {
                     // Fall back on the technical track name if the vehicle object cannot be loaded
-                    ft.Add<StringId>(GetRideTypeDescriptor(td6->type).Naming.Name);
+                    ft.Add<StringId>(GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).Naming.Name);
                 }
 
                 DrawTextBasic(dpi, screenPos, STR_TRACK_DESIGN_TYPE, ft);
@@ -217,36 +217,35 @@ static Widget window_install_track_widgets[] = {
 
             // Stats
             {
-                fixed32_2dp rating = td6->excitement * 10;
+                fixed32_2dp rating = td.statistics.ratings.excitement;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
                 screenPos.y += kListRowHeight;
             }
             {
-                fixed32_2dp rating = td6->intensity * 10;
+                fixed32_2dp rating = td.statistics.ratings.intensity;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
                 screenPos.y += kListRowHeight;
             }
             {
-                fixed32_2dp rating = td6->nausea * 10;
+                fixed32_2dp rating = td.statistics.ratings.nausea;
                 auto ft = Formatter();
                 ft.Add<int32_t>(rating);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
                 screenPos.y += kListRowHeight + 4;
             }
 
-            const auto& rtd = GetRideTypeDescriptor(td6->type);
+            const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
             if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
-                if (td6->type == RIDE_TYPE_MINI_GOLF)
+                if (td.trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
                 {
                     // Holes
-                    uint16_t holes = td6->holes & 0x1F;
                     auto ft = Formatter();
-                    ft.Add<uint16_t>(holes);
+                    ft.Add<uint16_t>(td.statistics.holes);
                     DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
                     screenPos.y += kListRowHeight;
                 }
@@ -254,7 +253,7 @@ static Widget window_install_track_widgets[] = {
                 {
                     // Maximum speed
                     {
-                        uint16_t speed = ((td6->maxSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ((td.statistics.maxSpeed << 16) * 9) >> 18;
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
@@ -262,7 +261,7 @@ static Widget window_install_track_widgets[] = {
                     }
                     // Average speed
                     {
-                        uint16_t speed = ((td6->averageSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ((td.statistics.averageSpeed << 16) * 9) >> 18;
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
@@ -273,16 +272,16 @@ static Widget window_install_track_widgets[] = {
                 // Ride length
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
-                ft.Add<uint16_t>(td6->rideLength);
+                ft.Add<uint16_t>(td.statistics.rideLength);
                 DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
                 screenPos.y += kListRowHeight;
             }
 
-            if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
             {
                 // Maximum positive vertical Gs
                 {
-                    int32_t gForces = td6->maxPositiveVerticalG * 32;
+                    int32_t gForces = td.statistics.maxPositiveVerticalG;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
@@ -290,7 +289,7 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum negative vertical Gs
                 {
-                    int32_t gForces = td6->maxNegativeVerticalG * 32;
+                    int32_t gForces = td.statistics.maxNegativeVerticalG;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
@@ -298,16 +297,15 @@ static Widget window_install_track_widgets[] = {
                 }
                 // Maximum lateral Gs
                 {
-                    int32_t gForces = td6->maxLateralG * 32;
+                    int32_t gForces = td.statistics.maxLateralG;
                     auto ft = Formatter();
                     ft.Add<int32_t>(gForces);
                     DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
                     screenPos.y += kListRowHeight;
                 }
-                if (td6->totalAirTime != 0)
+                if (td.statistics.totalAirTime != 0)
                 {
-                    // Total air time
-                    int32_t airTime = td6->totalAirTime * 25;
+                    int32_t airTime = td.statistics.totalAirTime * 3;
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
@@ -315,12 +313,10 @@ static Widget window_install_track_widgets[] = {
                 }
             }
 
-            if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
             {
-                // Drops
-                uint16_t drops = td6->drops & 0x3F;
                 auto ft = Formatter();
-                ft.Add<uint16_t>(drops);
+                ft.Add<uint16_t>(td.statistics.drops);
                 DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
                 screenPos.y += kListRowHeight;
 
@@ -329,34 +325,31 @@ static Widget window_install_track_widgets[] = {
                 screenPos.y += kListRowHeight;
             }
 
-            if (td6->type != RIDE_TYPE_MINI_GOLF)
+            if (td.statistics.inversions != 0)
             {
-                uint16_t inversions = td6->inversions & 0x1F;
-                if (inversions != 0)
-                {
-                    // Inversions
-                    auto ft = Formatter();
-                    ft.Add<uint16_t>(inversions);
-                    DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
-                    screenPos.y += kListRowHeight;
-                }
+                // Inversions
+                auto ft = Formatter();
+                ft.Add<uint16_t>(td.statistics.inversions);
+                DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
+                screenPos.y += kListRowHeight;
             }
+
             screenPos.y += 4;
 
-            if (td6->spaceRequiredX != 0xFF)
+            if (!td.statistics.spaceRequired.IsNull())
             {
                 // Space required
                 auto ft = Formatter();
-                ft.Add<uint16_t>(td6->spaceRequiredX);
-                ft.Add<uint16_t>(td6->spaceRequiredY);
+                ft.Add<uint16_t>(td.statistics.spaceRequired.x);
+                ft.Add<uint16_t>(td.statistics.spaceRequired.y);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
                 screenPos.y += kListRowHeight;
             }
 
-            if (td6->cost != 0)
+            if (td.gameStateData.cost != 0)
             {
                 auto ft = Formatter();
-                ft.Add<money64>(td6->cost);
+                ft.Add<money64>(td.gameStateData.cost);
                 DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
             }
         }
@@ -369,7 +362,7 @@ static Widget window_install_track_widgets[] = {
     private:
         void UpdatePreview()
         {
-            TrackDesignDrawPreview(_trackDesign.get(), _trackDesignPreviewPixels.data());
+            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels.data());
         }
 
         void InstallTrackDesign()
@@ -417,12 +410,12 @@ static Widget window_install_track_widgets[] = {
         }
 
         ObjectManagerUnloadAllObjects();
-        if (trackDesign->type == RIDE_TYPE_NULL)
+        if (trackDesign->trackAndVehicle.rtdIndex == RIDE_TYPE_NULL)
         {
             LOG_ERROR("Failed to load track (ride type null): %s", path);
             return nullptr;
         }
-        if (ObjectManagerLoadObject(&trackDesign->vehicleObject.Entry) == nullptr)
+        if (ObjectManagerLoadObject(&trackDesign->trackAndVehicle.vehicleObject.Entry) == nullptr)
         {
             LOG_ERROR("Failed to load track (vehicle load fail): %s", path);
             return nullptr;

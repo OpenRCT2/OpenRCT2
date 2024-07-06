@@ -138,14 +138,14 @@ enum
     SPR_MONORAIL_DIAG_25_DEG_UP_S_N = 23340,
 };
 
-static constexpr uint32_t monorail_track_pieces_flat[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_flat[kNumOrthogonalDirections] = {
     SPR_MONORAIL_FLAT_SW_NE,
     SPR_MONORAIL_FLAT_NW_SE,
     SPR_MONORAIL_FLAT_SW_NE,
     SPR_MONORAIL_FLAT_NW_SE,
 };
 
-static constexpr uint32_t monorail_track_pieces_flat_quarter_turn_5_tiles[NumOrthogonalDirections][5] = {
+static constexpr uint32_t monorail_track_pieces_flat_quarter_turn_5_tiles[kNumOrthogonalDirections][5] = {
     {
         SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0,
         SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1,
@@ -176,28 +176,28 @@ static constexpr uint32_t monorail_track_pieces_flat_quarter_turn_5_tiles[NumOrt
     },
 };
 
-static constexpr uint32_t monorail_track_pieces_25_deg_up[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_25_deg_up[kNumOrthogonalDirections] = {
     SPR_MONORAIL_25_DEG_UP_SW_NE,
     SPR_MONORAIL_25_DEG_UP_NW_SE,
     SPR_MONORAIL_25_DEG_UP_NE_SW,
     SPR_MONORAIL_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t monorail_track_pieces_flat_to_25_deg_up[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_flat_to_25_deg_up[kNumOrthogonalDirections] = {
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t monorail_track_pieces_25_deg_up_to_flat[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_25_deg_up_to_flat[kNumOrthogonalDirections] = {
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static constexpr uint32_t monorail_track_pieces_s_bend_left[2][NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_s_bend_left[2][kNumOrthogonalDirections] = {
     {
         SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_0,
         SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_1,
@@ -212,7 +212,7 @@ static constexpr uint32_t monorail_track_pieces_s_bend_left[2][NumOrthogonalDire
     },
 };
 
-static constexpr uint32_t monorail_track_pieces_s_bend_right[2][NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_s_bend_right[2][kNumOrthogonalDirections] = {
     {
         SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_0,
         SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_1,
@@ -227,7 +227,7 @@ static constexpr uint32_t monorail_track_pieces_s_bend_right[2][NumOrthogonalDir
     },
 };
 
-static constexpr uint32_t monorail_track_pieces_flat_quarter_turn_3_tiles[NumOrthogonalDirections][3] = {
+static constexpr uint32_t monorail_track_pieces_flat_quarter_turn_3_tiles[kNumOrthogonalDirections][3] = {
     {
         SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0,
         SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1,
@@ -360,49 +360,49 @@ static constexpr BoundBoxXY GhostTrainTrackPiecesLeftEightToDiagBoxes[4][4] = {
     },
 };
 
-static constexpr uint32_t monorail_track_pieces_diag_flat[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_diag_flat[kNumOrthogonalDirections] = {
     SPR_MONORAIL_DIAG_FLAT_W_E,
     SPR_MONORAIL_DIAG_FLAT_N_S,
     SPR_MONORAIL_DIAG_FLAT_E_W,
     SPR_MONORAIL_DIAG_FLAT_S_N,
 };
 
-static constexpr uint32_t monorail_track_pieces_diag_flat_to_25_deg_up[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_diag_flat_to_25_deg_up[kNumOrthogonalDirections] = {
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N,
 };
 
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_down_to_flat[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_diag_25_deg_down_to_flat[kNumOrthogonalDirections] = {
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S,
 };
 
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_up_to_flat[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_diag_25_deg_up_to_flat[kNumOrthogonalDirections] = {
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N,
 };
 
-static constexpr uint32_t monorail_track_pieces_diag_flat_to_25_deg_down[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_diag_flat_to_25_deg_down[kNumOrthogonalDirections] = {
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S,
 };
 
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_up[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_diag_25_deg_up[kNumOrthogonalDirections] = {
     SPR_MONORAIL_DIAG_25_DEG_UP_W_E,
     SPR_MONORAIL_DIAG_25_DEG_UP_N_S,
     SPR_MONORAIL_DIAG_25_DEG_UP_E_W,
     SPR_MONORAIL_DIAG_25_DEG_UP_S_N,
 };
 
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_down[NumOrthogonalDirections] = {
+static constexpr uint32_t monorail_track_pieces_diag_25_deg_down[kNumOrthogonalDirections] = {
     SPR_MONORAIL_DIAG_25_DEG_UP_E_W,
     SPR_MONORAIL_DIAG_25_DEG_UP_S_N,
     SPR_MONORAIL_DIAG_25_DEG_UP_W_E,

@@ -98,6 +98,8 @@ STR_0093    :Muntanya russa híbrida
 STR_0094    :Muntanya russa d’un sol rail
 STR_0095    :Muntanya russa alpina
 STR_0096    :Muntanya russa clàssica de fusta
+STR_0097    :Muntanya russa a peu dret clàssica
+STR_0607    :Una muntanya russa d’estil antic i d’acer molt intensa on els passatgers van com si estiguessin de peu.
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
 STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
@@ -3691,6 +3693,34 @@ STR_6614    :El preu de l’entrada al parc no es pot canviar
 STR_6615    :La via d'aquesta casella necessita aigua
 STR_6616    :L’acció no és vàlida per a aquest tipus d’empleat
 STR_6617    :No es pot intercanviar l’element de la casella amb si mateix
+STR_6618    :No es pot restringir ni traure la restricció de l’objecte…
+STR_6619    :El tipus d’objecte no es pot restringir!
+STR_6620    :L’objecte no s’ha trobat!
+STR_6621    :Restringeix
+STR_6622    :Restringeix l’objecte a l’editor d’escenaris i al mode lliure.
+STR_6623    :Escriviu «help» per a obtenir una llista de les ordres disponibles. Escriviu «hide» per a amagar la consola.
+STR_6624    :Inspecció de casella: Ordena els elements
+STR_6625    :Color no vàlid
+STR_6626    :L’animació va a l’inrevés
+STR_6627    :Velocitat de via massa elevada!
+STR_6628    :Només es pot posar a les vores dels camins!
+STR_6629    :Centra els botons de la barra d’eines horitzontalment
+STR_6630    :Aquesta opció alinea els botons de la barra d’eines horitzontalment i la posa al mig de la pantalla. La manera tradicional d’alinear-los és al cantó esquerre o dret.
+STR_6631    :Es carrega…
+STR_6632    :Es comproven els fitxers d’objectes…
+STR_6633    :Es comproven els fitxers d’escenaris…
+STR_6634    :Es comproven els fitxers de dissenys de vies…
+STR_6635    :Es comproven els paquets de recursos…
+STR_6636    :Es comproven les seqüències de títols…
+STR_6637    :Es carrega la seqüència del títol…
+STR_6638    :Interfície ampliada
+STR_6639    :Modifica la interfície per tal que sigui més apropiada per a pantalles tàctils.
+STR_6640    :Edita paquets de recursos…
+STR_6641    :Finestra de càrrega/progrés
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Millores tàctils
+STR_6645    :Fa que alguns elements de la interfície gràfica siguin més grans perquè sigui més fàcil interactuar-hi.
 
 #############
 # Scenarios #

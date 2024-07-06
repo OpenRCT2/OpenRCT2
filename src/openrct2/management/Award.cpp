@@ -468,7 +468,7 @@ static bool AwardIsDeservedBestCustomDesignedRides(int32_t activeAwardTypes)
             continue;
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
-        if (ride.excitement < RIDE_RATING(5, 50))
+        if (ride.ratings.excitement < RIDE_RATING(5, 50))
             continue;
         if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
             continue;

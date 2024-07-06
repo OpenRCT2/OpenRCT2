@@ -1729,7 +1729,7 @@ STR_2382    :地形
 STR_2383    :水
 STR_2384    :{WINDOW_COLOUR_2}あなたの目標:
 STR_2385    :{BLACK}なし
-STR_2386    :{BLACK}{POP16}{MONTHYEAR}の終わりに、 パークの内に{PUSH16}{PUSH16}{COMMA32}以上人の来客し、600以上のパーク評価値を取得する必要があります。
+STR_2386    :{BLACK}{POP16}{POP16}{MONTHYEAR}の終わりに、 パークの内に{PUSH16}{PUSH16}{PUSH16}{COMMA32}以上人の来客し、600以上のパーク評価値を取得する必要があります。
 STR_2387    :{BLACK}{POP16}{MONTHYEAR}の終わりに、 {CURRENCY}以上のパーク評価額を取得する必要があります。
 STR_2388    :{BLACK}楽しんで下さい！
 STR_2389    :{BLACK}最高の{STRINGID}を建設してください！

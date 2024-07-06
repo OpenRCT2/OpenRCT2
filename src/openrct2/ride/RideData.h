@@ -228,11 +228,11 @@ struct RideLegacyBoosterSettings
 
 struct RatingsModifier
 {
-    RatingsModifierType Type;
-    int32_t Threshold;
-    int32_t Excitement;
-    int32_t Intensity;
-    int32_t Nausea;
+    RatingsModifierType type;
+    int32_t threshold;
+    int32_t excitement;
+    int32_t intensity;
+    int32_t nausea;
 };
 
 struct RideRatingsDescriptor

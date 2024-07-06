@@ -858,12 +858,16 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
+    bool selected = gMapSelectFlags & MAP_SELECT_FLAG_ENABLE && gMapSelectType == MAP_SELECT_TYPE_FULL
+        && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
+        && pos.y <= gMapSelectPositionB.y;
+
     auto patrolAreaToRender = GetPatrolAreaToRender();
     if (const auto* staffType = std::get_if<StaffType>(&patrolAreaToRender))
     {
         if (IsPatrolAreaSetForStaffType(*staffType, pos))
         {
-            return COLOUR_GREY;
+            return selected ? COLOUR_WHITE : COLOUR_GREY;
         }
     }
     else
@@ -874,11 +878,11 @@ std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
         {
             if (staff->IsPatrolAreaSet(pos))
             {
-                return COLOUR_LIGHT_BLUE;
+                return selected ? COLOUR_ICY_BLUE : COLOUR_LIGHT_BLUE;
             }
             else if (IsPatrolAreaSetForStaffType(staff->AssignedStaffType, pos))
             {
-                return COLOUR_GREY;
+                return selected ? COLOUR_WHITE : COLOUR_GREY;
             }
         }
     }

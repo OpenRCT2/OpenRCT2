@@ -62,7 +62,7 @@ static RideId _footpathQueueChain[64];
 
 // This is the coordinates that a user of the bin should move to
 // rct2: 0x00992A4C
-const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets = {
+const std::array<CoordsXY, kNumOrthogonalDirections> BinUseOffsets = {
     CoordsXY{ 11, 16 },
     { 16, 21 },
     { 21, 16 },
@@ -71,12 +71,12 @@ const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets = {
 
 // These are the offsets for bench positions on footpaths, 2 for each edge
 // rct2: 0x00981F2C, 0x00981F2E
-const std::array<CoordsXY, NumOrthogonalDirections* 2> BenchUseOffsets = {
+const std::array<CoordsXY, kNumOrthogonalDirections* 2> BenchUseOffsets = {
     CoordsXY{ 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 
 /** rct2: 0x00981D6C, 0x00981D6E */
-const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets = {
+const std::array<CoordsXY, kNumOrthogonalDirections> DirectionOffsets = {
     CoordsXY{ -1, 0 },
     { 0, 1 },
     { 1, 0 },
@@ -513,7 +513,7 @@ static void FootpathConnectCorners(const CoordsXY& footpathPos, PathElement* ini
 
     std::get<0>(tileElements) = { initialTileElement, footpathPos };
     int32_t z = initialTileElement->GetBaseZ();
-    for (int32_t initialDirection = 0; initialDirection < NumOrthogonalDirections; initialDirection++)
+    for (int32_t initialDirection = 0; initialDirection < kNumOrthogonalDirections; initialDirection++)
     {
         int32_t direction = initialDirection;
         auto currentPos = footpathPos + CoordsDirectionDelta[direction];
@@ -2052,7 +2052,7 @@ void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement*
         if (tileElement->AsPath()->IsQueue())
         {
             FootpathQueueChainPush(tileElement->AsPath()->GetRideIndex());
-            for (int32_t direction = 0; direction < NumOrthogonalDirections; direction++)
+            for (int32_t direction = 0; direction < kNumOrthogonalDirections; direction++)
             {
                 if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 {
@@ -2306,7 +2306,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
 
     bool fixCorners = false;
-    for (uint8_t direction = 0; direction < NumOrthogonalDirections; direction++)
+    for (uint8_t direction = 0; direction < kNumOrthogonalDirections; direction++)
     {
         int32_t z1 = tileElement->BaseHeight;
         if (tileElement->GetType() == TileElementType::Path)

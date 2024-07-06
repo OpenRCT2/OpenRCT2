@@ -870,7 +870,7 @@ void Vehicle::UpdateMeasurements()
             curRide->previous_lateral_g = gForces.LateralG;
             if (gForces.VerticalG <= 0)
             {
-                curRide->total_air_time++;
+                curRide->totalAirTime++;
             }
 
             if (gForces.VerticalG > curRide->max_positive_vertical_g)
@@ -899,9 +899,11 @@ void Vehicle::UpdateMeasurements()
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
                 curRide->testing_flags |= RIDE_TESTING_POWERED_LIFT;
-                if (curRide->drops + 64 < 0xFF)
+                auto numPoweredLifts = curRide->getNumPoweredLifts();
+                if (numPoweredLifts < kRideMaxNumPoweredLiftsCount)
                 {
-                    curRide->drops += 64;
+                    numPoweredLifts++;
+                    curRide->setPoweredLifts(numPoweredLifts);
                 }
             }
         }
@@ -1031,11 +1033,10 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
             curRide->testing_flags |= RIDE_TESTING_DROP_DOWN;
 
-            uint8_t drops = curRide->drops & 0x3F;
-            if (drops != 0x3F)
+            uint8_t drops = curRide->getNumDrops();
+            if (drops < kRideMaxDropsCount)
                 drops++;
-            curRide->drops &= ~0x3F;
-            curRide->drops |= drops;
+            curRide->setNumDrops(drops);
 
             curRide->start_drop_height = z / COORDS_Z_STEP;
             testingFlags &= ~RIDE_TESTING_DROP_UP;
@@ -1063,11 +1064,10 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
             curRide->testing_flags |= RIDE_TESTING_DROP_UP;
 
-            uint8_t drops = curRide->drops & 0x3F;
-            if (drops != 0x3F)
+            auto drops = curRide->getNumDrops();
+            if (drops != kRideMaxDropsCount)
                 drops++;
-            curRide->drops &= ~0x3F;
-            curRide->drops |= drops;
+            curRide->setNumDrops(drops);
 
             curRide->start_drop_height = z / COORDS_Z_STEP;
         }
@@ -2352,7 +2352,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.inversions = 0;
     ride.holes = 0;
     ride.sheltered_eighths = 0;
-    ride.drops = 0;
+    ride.dropsPoweredLifts = 0;
     ride.sheltered_length = 0;
     ride.var_11C = 0;
     ride.num_sheltered_sections = 0;
@@ -2363,7 +2363,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
         station.SegmentLength = 0;
         station.SegmentTime = 0;
     }
-    ride.total_air_time = 0;
+    ride.totalAirTime = 0;
     ride.current_test_station = curStation;
     WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }

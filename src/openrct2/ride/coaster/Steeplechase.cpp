@@ -23,7 +23,7 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::Stick;
 
-static constexpr const uint32_t SteeplechaseRCDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr const uint32_t SteeplechaseRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_STEEPLECHASE_DIAG_BRAKES,
     SPR_G2_STEEPLECHASE_DIAG_BRAKES + 1,
     SPR_G2_STEEPLECHASE_DIAG_BRAKES,
@@ -1420,7 +1420,7 @@ static void SteeplechaseTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 28741, 28742, 28743, 28744 },
         { 28757, 28758, 28759, 28760 },
     };

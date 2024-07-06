@@ -2255,12 +2255,12 @@ void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
     {
         assert(preset_index < presetList->count);
 
-        ride.colour_scheme_type = RIDE_COLOUR_SCHEME_MODE_ALL_SAME;
+        ride.vehicleColourSettings = VehicleColourSettings::same;
         ride.vehicle_colours[0] = presetList->list[preset_index];
     }
     else
     {
-        ride.colour_scheme_type = RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN;
+        ride.vehicleColourSettings = VehicleColourSettings::perTrain;
         for (uint32_t i = 0; i < presetList->count; i++)
         {
             const auto index = i % 32U;
@@ -4318,13 +4318,13 @@ void Ride::SetColourPreset(uint8_t index)
     {
         colours = colourPresets->list[index];
     }
-    for (int32_t i = 0; i < OpenRCT2::Limits::kNumColourSchemes; i++)
+    for (size_t i = 0; i < std::size(track_colour); i++)
     {
         track_colour[i].main = colours.main;
         track_colour[i].additional = colours.additional;
         track_colour[i].supports = colours.supports;
     }
-    colour_scheme_type = 0;
+    vehicleColourSettings = VehicleColourSettings::same;
 }
 
 money64 RideGetCommonPrice(const Ride& forRide)
@@ -4638,9 +4638,7 @@ bool RideHasAnyTrackElements(const Ride& ride)
 void InvalidateTestResults(Ride& ride)
 {
     ride.measurement = {};
-    ride.excitement = kRideRatingUndefined;
-    ride.nausea = kRideRatingUndefined;
-    ride.intensity = kRideRatingUndefined;
+    ride.ratings.setNull();
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -4708,15 +4706,15 @@ void RideUpdateVehicleColours(const Ride& ride)
         for (Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
              vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
-            switch (ride.colour_scheme_type & 3)
+            switch (ride.vehicleColourSettings)
             {
-                case RIDE_COLOUR_SCHEME_MODE_ALL_SAME:
+                case VehicleColourSettings::same:
                     colours = ride.vehicle_colours[0];
                     break;
-                case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN:
+                case VehicleColourSettings::perTrain:
                     colours = ride.vehicle_colours[i];
                     break;
-                case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR:
+                case VehicleColourSettings::perCar:
                     if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
                     {
                         colours = ride.vehicle_colours[std::min(
@@ -5441,7 +5439,7 @@ bool RideHasStationShelter(const Ride& ride)
 
 bool RideHasRatings(const Ride& ride)
 {
-    return ride.excitement != kRideRatingUndefined;
+    return !ride.ratings.isNull();
 }
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
@@ -5987,4 +5985,26 @@ ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const Coords
     }
 
     return { true };
+}
+
+uint8_t Ride::getNumDrops() const
+{
+    return dropsPoweredLifts & kRideNumDropsMask;
+}
+
+void Ride::setNumDrops(uint8_t newValue)
+{
+    dropsPoweredLifts &= ~kRideNumDropsMask;
+    dropsPoweredLifts |= (newValue & kRideNumDropsMask);
+}
+
+uint8_t Ride::getNumPoweredLifts() const
+{
+    return dropsPoweredLifts >> 6;
+}
+
+void Ride::setPoweredLifts(uint8_t newValue)
+{
+    dropsPoweredLifts &= ~kRideNumPoweredLiftsMask;
+    dropsPoweredLifts |= (newValue << 6);
 }

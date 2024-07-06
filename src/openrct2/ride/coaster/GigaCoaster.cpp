@@ -33,7 +33,7 @@ static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
 static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
 static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
 
-static constexpr uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2] = {
+static constexpr uint32_t _GigaCoasterBrakeImages[kNumOrthogonalDirections][2][2] = {
     { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
       { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
     { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
@@ -48,7 +48,7 @@ static constexpr uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2]
  * second level: background, foreground
  * third level: direction
  */
-static constexpr uint32_t GigaDiagBrakeImages[2][2][NumOrthogonalDirections] = {
+static constexpr uint32_t GigaDiagBrakeImages[2][2][kNumOrthogonalDirections] = {
     {
         // Open
         {
@@ -5946,7 +5946,7 @@ static void GigaRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    constexpr ImageIndex images[2][NumOrthogonalDirections] = {
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 18462, 18463, 18464, 18465 },
         { 18524, 18525, 18526, 18527 },
     };

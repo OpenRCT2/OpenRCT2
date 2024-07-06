@@ -19,7 +19,7 @@ constexpr int32_t COORDS_XY_HALF_TILE = (COORDS_XY_STEP / 2);
 constexpr int32_t COORDS_Z_STEP = 8;
 constexpr int32_t COORDS_Z_PER_TINY_Z = 16;
 
-constexpr auto NumOrthogonalDirections = 4;
+constexpr auto kNumOrthogonalDirections = 4;
 
 constexpr int32_t COORDS_NULL = 0xFFFF8000;
 
@@ -550,7 +550,7 @@ inline constexpr Direction DirectionReverse(Direction dir)
 
 inline constexpr bool DirectionValid(Direction dir)
 {
-    return dir < NumOrthogonalDirections;
+    return dir < kNumOrthogonalDirections;
 }
 
 /**

@@ -414,8 +414,8 @@ private:
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
     void UpdateRidePrepareForExit();
-    void Loc68F9F3();
-    void Loc68FA89();
+    void UpdateMotivesIdle();
+    void UpdateConsumptionMotives();
     int32_t CheckEasterEggName(int32_t index) const;
     void GivePassingPeepsPurpleClothes(Guest* passingPeep);
     void GivePassingPeepsPizza(Guest* passingPeep);

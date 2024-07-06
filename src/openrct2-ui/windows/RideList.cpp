@@ -720,7 +720,7 @@ static Widget _rideListWidgets[] = {
                         if (RideHasRatings(*ridePtr))
                         {
                             formatSecondary = STR_EXCITEMENT_LABEL;
-                            ft.Add<uint16_t>(ridePtr->excitement);
+                            ft.Add<uint16_t>(ridePtr->ratings.excitement);
                         }
                         break;
                     case INFORMATION_TYPE_INTENSITY:
@@ -728,7 +728,7 @@ static Widget _rideListWidgets[] = {
                         if (RideHasRatings(*ridePtr))
                         {
                             formatSecondary = STR_INTENSITY_LABEL;
-                            ft.Add<uint16_t>(ridePtr->intensity);
+                            ft.Add<uint16_t>(ridePtr->ratings.intensity);
                         }
                         break;
                     case INFORMATION_TYPE_NAUSEA:
@@ -736,7 +736,7 @@ static Widget _rideListWidgets[] = {
                         if (RideHasRatings(*ridePtr))
                         {
                             formatSecondary = STR_NAUSEA_LABEL;
-                            ft.Add<uint16_t>(ridePtr->nausea);
+                            ft.Add<uint16_t>(ridePtr->ratings.nausea);
                         }
                         break;
                 }
@@ -915,17 +915,17 @@ static Widget _rideListWidgets[] = {
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.excitement <= otherRide.excitement;
+                        return thisRide.ratings.excitement <= otherRide.ratings.excitement;
                     });
                     break;
                 case INFORMATION_TYPE_INTENSITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.intensity <= otherRide.intensity;
+                        return thisRide.ratings.intensity <= otherRide.ratings.intensity;
                     });
                     break;
                 case INFORMATION_TYPE_NAUSEA:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.nausea <= otherRide.nausea;
+                        return thisRide.ratings.nausea <= otherRide.ratings.nausea;
                     });
                     break;
             }

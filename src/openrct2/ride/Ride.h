@@ -49,6 +49,14 @@ constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsP
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
+constexpr uint8_t kRideMaxDropsCount = 63;
+constexpr uint8_t kRideNumDropsMask = 0b00111111;
+constexpr uint8_t kRideMaxNumPoweredLiftsCount = 3;
+constexpr uint8_t kRideNumPoweredLiftsMask = 0b11000000;
+
+constexpr money64 kRideMinPrice = 0.00_GBP;
+constexpr money64 kRideMaxPrice = 20.00_GBP;
+
 struct RideStation
 {
     static constexpr uint8_t kNoTrain = std::numeric_limits<uint8_t>::max();
@@ -120,7 +128,7 @@ struct Ride
     // 0x4c.
     ObjectEntryIndex subtype{ OBJECT_ENTRY_INDEX_NULL };
     RideMode mode{};
-    uint8_t colour_scheme_type{};
+    VehicleColourSettings vehicleColourSettings{};
     VehicleColour vehicle_colours[OpenRCT2::Limits::kMaxVehicleColours]{};
     // 0 = closed, 1 = open, 2 = test
     RideStatus status{};
@@ -176,7 +184,7 @@ struct Ride
     uint16_t turn_count_banked{};
     uint16_t turn_count_sloped{}; // X = number turns > 3 elements
     // Y is number of powered lifts, X is drops
-    uint8_t drops{}; // (YYXX XXXX)
+    uint8_t dropsPoweredLifts{}; // (YYXX XXXX)
     uint8_t start_drop_height{};
     uint8_t highest_drop_height{};
     int32_t sheltered_length{};
@@ -191,16 +199,7 @@ struct Ride
     uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
     money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
-    union
-    {
-        RatingTuple ratings{};
-        struct
-        {
-            ride_rating excitement;
-            ride_rating intensity;
-            ride_rating nausea;
-        };
-    };
+    RatingTuple ratings{};
     money64 value{};
     uint16_t chairlift_bullwheel_rotation{};
     uint8_t satisfaction{};
@@ -261,7 +260,7 @@ struct Ride
     uint8_t connected_message_throttle{};
     money64 income_per_hour{};
     money64 profit{};
-    TrackColour track_colour[OpenRCT2::Limits::kNumColourSchemes]{};
+    TrackColour track_colour[kNumRideColourSchemes]{};
     ObjectEntryIndex music{ OBJECT_ENTRY_INDEX_NULL };
     ObjectEntryIndex entrance_style{ OBJECT_ENTRY_INDEX_NULL };
     uint16_t vehicle_change_timeout{};
@@ -269,7 +268,7 @@ struct Ride
     uint8_t lift_hill_speed{};
     uint32_t guests_favourite{};
     uint32_t lifecycle_flags{};
-    uint16_t total_air_time{};
+    uint16_t totalAirTime{};
     StationIndex current_test_station{ StationIndex::GetNull() };
     uint8_t num_circuits{};
     CoordsXYZ CableLiftLoc{};
@@ -414,7 +413,11 @@ public:
 
     bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
 
-    uint8_t GetEntranceStyle() const;
+    uint8_t getNumDrops() const;
+    void setNumDrops(uint8_t newValue);
+
+    uint8_t getNumPoweredLifts() const;
+    void setPoweredLifts(uint8_t newValue);
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);
@@ -674,15 +677,6 @@ RideMode& operator++(RideMode& d, int);
 
 enum
 {
-    RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
-    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
-    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
-
-    RIDE_COLOUR_SCHEME_MODE_COUNT,
-};
-
-enum
-{
     RIDE_CATEGORY_TRANSPORT,
     RIDE_CATEGORY_GENTLE,
     RIDE_CATEGORY_ROLLERCOASTER,
@@ -774,23 +768,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-enum
-{
-    RIDE_COLOUR_SCHEME_MAIN,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_1,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_2,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_3,
-
-    RIDE_COLOUR_SCHEME_COUNT,
-};
-
-enum
-{
-    VEHICLE_COLOUR_SCHEME_SAME,
-    VEHICLE_COLOUR_SCHEME_PER_TRAIN,
-    VEHICLE_COLOUR_SCHEME_PER_VEHICLE
 };
 
 enum

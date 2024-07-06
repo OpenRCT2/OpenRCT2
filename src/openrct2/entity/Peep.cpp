@@ -383,7 +383,7 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr CoordsXY word_981D7C[4] = {
+static constexpr CoordsXY walkingOffsetByDirection[kNumOrthogonalDirections] = {
     { -2, 0 },
     { 0, 2 },
     { 2, 0 },
@@ -428,18 +428,13 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         return UpdateWalkingAction(differenceLoc, xy_distance);
     }
 
-    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
-    ActionFrame++;
-
-    // If last frame of action
-    if (ActionFrame >= peepAnimation.frame_offsets.size())
+    if (!UpdateActionAnimation())
     {
         ActionSpriteImageOffset = 0;
         Action = PeepActionType::Walking;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    ActionSpriteImageOffset = peepAnimation.frame_offsets[ActionFrame];
 
     // Should we throw up, and are we at the frame where sick appears?
     auto* guest = As<Guest>();
@@ -449,6 +444,21 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     }
 
     return { { x, y } };
+}
+
+bool Peep::UpdateActionAnimation()
+{
+    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
+    ActionFrame++;
+
+    // If last frame of action
+    if (ActionFrame >= peepAnimation.frame_offsets.size())
+    {
+        return false;
+    }
+
+    ActionSpriteImageOffset = peepAnimation.frame_offsets[ActionFrame];
+    return true;
 }
 
 std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance)
@@ -469,25 +479,33 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
     int32_t nextDirection = 0;
     if (x_delta < y_delta)
     {
-        nextDirection = 8;
+        nextDirection = 1;
         if (differenceLoc.y >= 0)
         {
-            nextDirection = 24;
+            nextDirection = 3;
         }
     }
     else
     {
-        nextDirection = 16;
+        nextDirection = 2;
         if (differenceLoc.x >= 0)
         {
             nextDirection = 0;
         }
     }
 
-    Orientation = nextDirection;
-    CoordsXY loc = { x, y };
-    loc += word_981D7C[nextDirection / 8];
+    Orientation = nextDirection * 8;
 
+    CoordsXY loc = { x, y };
+    loc += walkingOffsetByDirection[nextDirection];
+
+    UpdateWalkingAnimation();
+
+    return loc;
+}
+
+void Peep::UpdateWalkingAnimation()
+{
     WalkingFrameNum++;
     const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
     if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
@@ -495,8 +513,6 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
         WalkingFrameNum = 0;
     }
     ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingFrameNum];
-
-    return loc;
 }
 
 void Peep::ThrowUp()
@@ -955,6 +971,29 @@ static void GuestUpdateThoughts(Guest* peep)
  */
 void Peep::Update()
 {
+    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+    {
+        if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
+        {
+            // This is circumventing other logic, so only update every few ticks
+            if ((GetGameState().CurrentTicks & 3) == 0)
+            {
+                if (IsActionWalking())
+                    UpdateWalkingAnimation();
+                else
+                    UpdateActionAnimation();
+            }
+        }
+        return;
+    }
+    else if (PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
+    {
+        // Animation is frozen while position is not. This allows a peep to walk
+        // around without its sprite being updated, which looks very glitchy.
+        // We'll just remove the flag and continue as normal, in this case.
+        PeepFlags &= ~PEEP_FLAGS_ANIMATION_FROZEN;
+    }
+
     auto* guest = As<Guest>();
     if (guest != nullptr)
     {

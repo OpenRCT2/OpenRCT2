@@ -22,12 +22,12 @@
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::Boxed;
 
-static constexpr ImageIndex kInvertedRCDiagFlatImages[2][NumOrthogonalDirections] = {
+static constexpr ImageIndex kInvertedRCDiagFlatImages[2][kNumOrthogonalDirections] = {
     { 27555, 27556, 27557, 27558 },
     { 27611, 27612, 27613, 27614 },
 };
 
-static constexpr ImageIndex kInvertedRCDiagBrakeImages[NumOrthogonalDirections] = {
+static constexpr ImageIndex kInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_BM_INVERT_DIAG_BRAKES,
     SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
     SPR_G2_BM_INVERT_DIAG_BRAKES,

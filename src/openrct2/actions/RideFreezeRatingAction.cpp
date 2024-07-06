@@ -55,13 +55,13 @@ GameActions::Result RideFreezeRatingAction::Execute() const
     switch (_type)
     {
         case RideRatingType::Excitement:
-            ride->excitement = _value;
+            ride->ratings.excitement = _value;
             break;
         case RideRatingType::Intensity:
-            ride->intensity = _value;
+            ride->ratings.intensity = _value;
             break;
         case RideRatingType::Nausea:
-            ride->nausea = _value;
+            ride->ratings.nausea = _value;
             break;
     }
 

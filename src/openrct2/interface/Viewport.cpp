@@ -870,7 +870,7 @@ static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
     CoordsXYZ coords{};
 
     // other != viewport probably triggers on viewports in ride or guest window?
-    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
+    // mapXYCoords is nullopt if middle of viewport is obstructed by another window?
     if (!mapXYCoords.has_value() || other != viewport)
     {
         auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
@@ -1888,7 +1888,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
             ps = next_ps;
             if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
                 {
                     info = { ps };
                 }
@@ -1902,7 +1902,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
         {
             if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
                 {
                     info = { ps };
                 }

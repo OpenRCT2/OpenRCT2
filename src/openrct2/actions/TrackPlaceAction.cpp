@@ -513,7 +513,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 uint8_t intersectingDirections = wallEdges[blockIndex];
                 intersectingDirections ^= 0x0F;
                 intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
-                for (int32_t i = 0; i < NumOrthogonalDirections; i++)
+                for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
                 {
                     if (intersectingDirections & (1 << i))
                     {
@@ -624,7 +624,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             trackElement->SetInverted(true);
         }
-        trackElement->SetColourScheme(_colour);
+        trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
         entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)

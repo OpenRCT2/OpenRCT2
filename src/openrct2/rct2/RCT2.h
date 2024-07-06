@@ -23,6 +23,7 @@
 struct RideObjectEntry;
 class ObjectList;
 enum class EditorStep : uint8_t;
+enum class VehicleColourSettings : uint8_t;
 
 namespace RCT2
 {
@@ -77,7 +78,7 @@ namespace RCT2
         RCT12ObjectEntryIndex Subtype;                                 // 0x001
         uint16_t Pad002;                                               // 0x002
         uint8_t Mode;                                                  // 0x004
-        uint8_t ColourSchemeType;                                      // 0x005
+        VehicleColourSettings vehicleColourSettings;                   // 0x005
         RCT12VehicleColour VehicleColours[Limits::kMaxVehicleColours]; // 0x006
         uint8_t Pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
@@ -187,21 +188,12 @@ namespace RCT2
         money16 Price;                                       // 0x138
         RCT12xy8 ChairliftBullwheelLocation[2];              // 0x13A
         uint8_t ChairliftBullwheelZ[2];                      // 0x13E
-        union
-        {
-            RatingTuple Ratings; // 0x140
-            struct
-            {
-                ride_rating Excitement; // 0x140
-                ride_rating Intensity;  // 0x142
-                ride_rating Nausea;     // 0x144
-            };
-        };
-        money16 Value;                       // 0x146
-        uint16_t ChairliftBullwheelRotation; // 0x148
-        uint8_t Satisfaction;                // 0x14A
-        uint8_t SatisfactionTimeOut;         // 0x14B
-        uint8_t SatisfactionNext;            // 0x14C
+        RatingTuple ratings;                                 // 0x140
+        money16 Value;                                       // 0x146
+        uint16_t ChairliftBullwheelRotation;                 // 0x148
+        uint8_t Satisfaction;                                // 0x14A
+        uint8_t SatisfactionTimeOut;                         // 0x14B
+        uint8_t SatisfactionNext;                            // 0x14C
         // Various flags stating whether a window needs to be refreshed
         uint8_t WindowInvalidateFlags; // 0x14D
         uint8_t Pad14E[0x02];          // 0x14E
@@ -337,49 +329,25 @@ namespace RCT2
     {
         uint8_t Type; // 0x00
         RCT12ObjectEntryIndex VehicleType;
-        union
-        {
-            // After loading the track this is converted to
-            // a cost but before its a flags register
-            money32 Cost;   // 0x02
-            uint32_t Flags; // 0x02
-        };
-        union
-        {
-            // After loading the track this is converted to
-            // a flags register
-            uint8_t RideMode;   // 0x06
-            uint8_t TrackFlags; // 0x06
-        };
+        uint32_t Flags;                                               // 0x02
+        uint8_t RideMode;                                             // 0x06
         uint8_t VersionAndColourScheme;                               // 0x07 0b0000_VVCC
         RCT12VehicleColour VehicleColours[Limits::kMaxTrainsPerRide]; // 0x08
-        union
-        {
-            uint8_t Pad48;
-            uint8_t TrackSpineColourRCT1; // 0x48
-        };
-        union
-        {
-            uint8_t EntranceStyle;       // 0x49
-            uint8_t TrackRailColourRCT1; // 0x49
-        };
-        union
-        {
-            uint8_t TotalAirTime;           // 0x4A
-            uint8_t TrackSupportColourRCT1; // 0x4A
-        };
-        uint8_t DepartFlags;          // 0x4B
-        uint8_t NumberOfTrains;       // 0x4C
-        uint8_t NumberOfCarsPerTrain; // 0x4D
-        uint8_t MinWaitingTime;       // 0x4E
-        uint8_t MaxWaitingTime;       // 0x4F
-        uint8_t OperationSetting;
-        int8_t MaxSpeed;              // 0x51
-        int8_t AverageSpeed;          // 0x52
-        uint16_t RideLength;          // 0x53
-        uint8_t MaxPositiveVerticalG; // 0x55
-        int8_t MaxNegativeVerticalG;  // 0x56
-        uint8_t MaxLateralG;          // 0x57
+        uint8_t Pad48;                                                // 0x48
+        uint8_t EntranceStyle;                                        // 0x49
+        uint8_t TotalAirTime;                                         // 0x4A
+        uint8_t DepartFlags;                                          // 0x4B
+        uint8_t NumberOfTrains;                                       // 0x4C
+        uint8_t NumberOfCarsPerTrain;                                 // 0x4D
+        uint8_t MinWaitingTime;                                       // 0x4E
+        uint8_t MaxWaitingTime;                                       // 0x4F
+        uint8_t OperationSetting;                                     // 0x50
+        int8_t MaxSpeed;                                              // 0x51
+        int8_t AverageSpeed;                                          // 0x52
+        uint16_t RideLength;                                          // 0x53
+        uint8_t MaxPositiveVerticalG;                                 // 0x55
+        int8_t MaxNegativeVerticalG;                                  // 0x56
+        uint8_t MaxLateralG;                                          // 0x57
         union
         {
             uint8_t Inversions; // 0x58
