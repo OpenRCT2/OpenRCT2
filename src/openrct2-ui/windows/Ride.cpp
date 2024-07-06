@@ -4994,10 +4994,8 @@ static_assert(std::size(RatingNames) == 6);
 
         ScreenSize MusicScrollGetSize(int32_t scrollIndex)
         {
-            OnPrepareDraw();
-
+            // Figure out minimum size
             ScreenSize size{};
-            // Set minimum size
             size.height = widgets[WIDX_MUSIC_DATA].height() - 2;
             size.width = widgets[WIDX_MUSIC_DATA].width() - 2;
 
@@ -5009,7 +5007,7 @@ static_assert(std::size(RatingNames) == 6);
             if (musicObj == nullptr)
                 return size;
 
-            // scroll width (based on characters in longest row)
+            // Compute scroll width based on track name and composer
             int32_t newWidth = 0;
             for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
             {
@@ -5017,15 +5015,13 @@ static_assert(std::size(RatingNames) == 6);
                 if (track->Name.empty())
                     continue;
 
-                int32_t rowLength = static_cast<int32_t>(track->Name.size() + track->Composer.size());
-                if (rowLength > newWidth)
-                {
-                    newWidth = rowLength;
-                }
+                auto nameWidth = GfxGetStringWidth(track->Name.c_str(), FontStyle::Small);
+                auto composerWidth = GfxGetStringWidth(track->Composer.c_str(), FontStyle::Small);
+                newWidth = std::max(newWidth, nameWidth + composerWidth + 24);
             }
-            newWidth = newWidth * (kScrollableRowHeight - 6) + 10;
 
-            auto left = newWidth - widgets[WIDX_MUSIC_DATA].right + widgets[WIDX_MUSIC_DATA].left + 13;
+            // Do we need a horizontal scrollbar?
+            auto left = newWidth - widgets[WIDX_MUSIC_DATA].width() + kScrollBarWidth;
             if (left < 0)
             {
                 scrolls[0].flags &= ~HSCROLLBAR_VISIBLE;
@@ -5036,15 +5032,18 @@ static_assert(std::size(RatingNames) == 6);
                 scrolls[0].flags |= HSCROLLBAR_VISIBLE;
             }
 
+            // Reset the horizontal scrollbar?
             if (left < scrolls[0].h_left)
             {
                 scrolls[0].h_left = left;
                 Invalidate();
             }
 
-            // scroll height (based on number of rows)
-            const auto newHeight = static_cast<int32_t>(musicObj->GetTrackCount() * kScrollableRowHeight);
-            auto top = newHeight - widgets[WIDX_MUSIC_DATA].bottom + widgets[WIDX_MUSIC_DATA].top + 13;
+            // Compute scroll height based on number of tracks
+            const int32_t newHeight = musicObj->GetTrackCount() * kScrollableRowHeight;
+
+            // Do we need a vertical scrollbar?
+            auto top = newHeight - widgets[WIDX_MUSIC_DATA].height() + kScrollBarWidth;
             if (top < 0)
             {
                 top = 0;
@@ -5055,14 +5054,15 @@ static_assert(std::size(RatingNames) == 6);
                 scrolls[0].flags |= VSCROLLBAR_VISIBLE;
             }
 
+            // Reset the vertical scrollbar?
             if (top < scrolls[0].v_top)
             {
                 scrolls[0].v_top = top;
                 Invalidate();
             }
 
-            size = { newWidth, newHeight };
-            return size;
+            // Return the computed size
+            return { newWidth, newHeight };
         }
 
         void MusicOnPrepareDraw()
