@@ -913,6 +913,11 @@ bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
 
 void ScriptEngine::Tick()
 {
+    if (!_initialised)
+    {
+        return;
+    }
+
     PROFILED_FUNCTION();
 
     CheckAndStartPlugins();

@@ -1357,7 +1357,10 @@ namespace OpenRCT2
 
             ChatUpdate();
 #ifdef ENABLE_SCRIPTING
-            _scriptEngine.Tick();
+            if (GetActiveScene() != GetPreloaderScene())
+            {
+                _scriptEngine.Tick();
+            }
 #endif
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Tick();
