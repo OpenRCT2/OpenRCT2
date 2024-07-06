@@ -5002,68 +5002,66 @@ static_assert(std::size(RatingNames) == 6);
             size.width = widgets[WIDX_MUSIC_DATA].width() - 2;
 
             auto ride = GetRide(rideId);
-            if (ride != nullptr)
+            if (ride == nullptr)
+                return size;
+
+            auto musicObj = ride->GetMusicObject();
+            if (musicObj == nullptr)
+                return size;
+
+            // scroll width (based on characters in longest row)
+            int32_t newWidth = 0;
+            for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
             {
-                auto musicObj = ride->GetMusicObject();
+                const auto* track = musicObj->GetTrack(i);
+                if (track->Name.empty())
+                    continue;
 
-                if (musicObj != nullptr)
+                int32_t rowLength = static_cast<int32_t>(track->Name.size() + track->Composer.size());
+                if (rowLength > newWidth)
                 {
-                    // scroll width (based on characters in longest row)
-                    int32_t newWidth = 0;
-                    for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
-                    {
-                        const auto* track = musicObj->GetTrack(i);
-                        if (track->Name.empty())
-                            continue;
-
-                        int32_t rowLength = static_cast<int32_t>(track->Name.size() + track->Composer.size());
-                        if (rowLength > newWidth)
-                        {
-                            newWidth = rowLength;
-                        }
-                    }
-                    newWidth = newWidth * (kScrollableRowHeight - 6) + 10;
-
-                    auto left = newWidth - widgets[WIDX_MUSIC_DATA].right + widgets[WIDX_MUSIC_DATA].left + 13;
-                    if (left < 0)
-                    {
-                        scrolls[0].flags &= ~HSCROLLBAR_VISIBLE;
-                        left = 0;
-                    }
-                    else
-                    {
-                        scrolls[0].flags |= HSCROLLBAR_VISIBLE;
-                    }
-
-                    if (left < scrolls[0].h_left)
-                    {
-                        scrolls[0].h_left = left;
-                        Invalidate();
-                    }
-
-                    // scroll height (based on number of rows)
-                    const auto newHeight = static_cast<int32_t>(musicObj->GetTrackCount() * kScrollableRowHeight);
-                    auto top = newHeight - widgets[WIDX_MUSIC_DATA].bottom + widgets[WIDX_MUSIC_DATA].top + 13;
-                    if (top < 0)
-                    {
-                        top = 0;
-                        scrolls[0].flags &= ~VSCROLLBAR_VISIBLE;
-                    }
-                    else
-                    {
-                        scrolls[0].flags |= VSCROLLBAR_VISIBLE;
-                    }
-
-                    if (top < scrolls[0].v_top)
-                    {
-                        scrolls[0].v_top = top;
-                        Invalidate();
-                    }
-
-                    size = { newWidth, newHeight };
+                    newWidth = rowLength;
                 }
             }
+            newWidth = newWidth * (kScrollableRowHeight - 6) + 10;
 
+            auto left = newWidth - widgets[WIDX_MUSIC_DATA].right + widgets[WIDX_MUSIC_DATA].left + 13;
+            if (left < 0)
+            {
+                scrolls[0].flags &= ~HSCROLLBAR_VISIBLE;
+                left = 0;
+            }
+            else
+            {
+                scrolls[0].flags |= HSCROLLBAR_VISIBLE;
+            }
+
+            if (left < scrolls[0].h_left)
+            {
+                scrolls[0].h_left = left;
+                Invalidate();
+            }
+
+            // scroll height (based on number of rows)
+            const auto newHeight = static_cast<int32_t>(musicObj->GetTrackCount() * kScrollableRowHeight);
+            auto top = newHeight - widgets[WIDX_MUSIC_DATA].bottom + widgets[WIDX_MUSIC_DATA].top + 13;
+            if (top < 0)
+            {
+                top = 0;
+                scrolls[0].flags &= ~VSCROLLBAR_VISIBLE;
+            }
+            else
+            {
+                scrolls[0].flags |= VSCROLLBAR_VISIBLE;
+            }
+
+            if (top < scrolls[0].v_top)
+            {
+                scrolls[0].v_top = top;
+                Invalidate();
+            }
+
+            size = { newWidth, newHeight };
             return size;
         }
 
