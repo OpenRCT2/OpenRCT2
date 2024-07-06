@@ -2268,4 +2268,6 @@ bool RatingTuple::isNull() const
 void RatingTuple::setNull()
 {
     excitement = kRideRatingUndefined;
+    intensity = kRideRatingUndefined;
+    nausea = kRideRatingUndefined;
 }
