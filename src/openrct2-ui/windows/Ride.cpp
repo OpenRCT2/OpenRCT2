@@ -4207,7 +4207,7 @@ static_assert(std::size(RatingNames) == 6);
                     }
 
                     int32_t numItems = ride->NumTrains;
-                    if ((ride->colour_scheme_type & 3) != VEHICLE_COLOUR_SCHEME_PER_TRAIN)
+                    if (ride->vehicleColourSettings != VehicleColourSettings::perTrain)
                         numItems = ride->num_cars_per_train;
 
                     uint16_t i, colour;
@@ -4626,18 +4626,16 @@ static_assert(std::size(RatingNames) == 6);
                 && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS))
             {
                 if (ride->vehicleColourSettings == VehicleColourSettings::same)
-                    _vehicleIndex = 0;
-
-                vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
-
-                if (vehicleColourSchemeType == 0)
                 {
+                    _vehicleIndex = 0;
                     widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Empty;
                 }
                 else
                 {
                     widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Button;
                 }
+
+                vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
                 widgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
                 widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
