@@ -6032,7 +6032,7 @@ static_assert(std::size(RatingNames) == 6);
                 return;
 
             auto price = ride->price[0];
-            if (price < 20.00_GBP)
+            if (price < kRideMaxPrice)
                 price++;
 
             IncomeSetPrimaryPrice(price);
@@ -6048,7 +6048,7 @@ static_assert(std::size(RatingNames) == 6);
                 return;
 
             auto price = ride->price[0];
-            if (price > 0.00_GBP)
+            if (price > kRideMinPrice)
                 price--;
 
             IncomeSetPrimaryPrice(price);
@@ -6085,7 +6085,7 @@ static_assert(std::size(RatingNames) == 6);
         {
             auto price = IncomeGetSecondaryPrice();
 
-            if (price < 20.00_GBP)
+            if (price < kRideMaxPrice)
                 price++;
 
             IncomeSetSecondaryPrice(price);
@@ -6206,7 +6206,7 @@ static_assert(std::size(RatingNames) == 6);
                 return;
             }
 
-            price = std::clamp(price, 0.00_GBP, 20.00_GBP);
+            price = std::clamp(price, kRideMinPrice, kRideMaxPrice);
 
             if (widgetIndex == WIDX_PRIMARY_PRICE)
             {
