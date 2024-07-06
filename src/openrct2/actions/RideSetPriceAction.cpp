@@ -49,8 +49,6 @@ void RideSetPriceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideSetPriceAction::Query() const
 {
-    GameActions::Result res = GameActions::Result();
-
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
@@ -66,7 +64,13 @@ GameActions::Result RideSetPriceAction::Query() const
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_OBJECT_ENTRY_NOT_FOUND);
     }
 
-    return res;
+    if (_price < kRideMinPrice || _price > kRideMaxPrice)
+    {
+        LOG_ERROR("Attempting to set an invalid price for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_EMPTY);
+    }
+
+    return GameActions::Result();
 }
 
 GameActions::Result RideSetPriceAction::Execute() const
@@ -87,6 +91,12 @@ GameActions::Result RideSetPriceAction::Execute() const
         LOG_ERROR("Ride entry not found for ride subtype %u", ride->subtype);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_OBJECT_ENTRY_NOT_FOUND);
+    }
+
+    if (_price < kRideMinPrice || _price > kRideMaxPrice)
+    {
+        LOG_ERROR("Attempting to set an invalid price for rideIndex %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_EMPTY);
     }
 
     if (!ride->overall_view.IsNull())
