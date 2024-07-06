@@ -5207,31 +5207,6 @@ static_assert(std::size(RatingNames) == 6);
                     musicObj->DrawPreview(clipDPI, _width, _height);
                 }
             }
-
-            // Draw object author (will be blank space if no author in file or a non JSON object)
-            {
-                auto ft = Formatter();
-                std::string authorsString;
-                for (auto& author : musicObj->GetAuthors())
-                {
-                    if (!authorsString.empty())
-                        authorsString.append(", ");
-
-                    authorsString.append(author);
-                }
-                ft.Add<StringId>(STR_STRING);
-                ft.Add<const char*>(authorsString.c_str());
-
-                screenPos = windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 1, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
-
-                DrawTextEllipsised(
-                    dpi,
-                    { windowPos.x + widgets[WIDX_PAGE_BACKGROUND].left + widgets[WIDX_MUSIC_DATA].left,
-                      screenPos.y + height - 72 },
-                    widgets[WIDX_MUSIC_DATA].right - widgets[WIDX_MUSIC_DATA].left + 127, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { TextAlignment::LEFT });
-            }
         }
 
         void MusicOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
