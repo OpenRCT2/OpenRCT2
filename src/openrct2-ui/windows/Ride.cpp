@@ -5026,7 +5026,7 @@ static_assert(std::size(RatingNames) == 6);
                             newWidth = rowLength;
                         }
                     }
-                    newWidth = newWidth * (SCROLLABLE_ROW_HEIGHT - 6) + 10;
+                    newWidth = newWidth * (kScrollableRowHeight - 6) + 10;
 
                     auto left = newWidth - widgets[WIDX_MUSIC_DATA].right + widgets[WIDX_MUSIC_DATA].left + 13;
                     if (left < 0)
@@ -5046,7 +5046,7 @@ static_assert(std::size(RatingNames) == 6);
                     }
 
                     // scroll height (based on number of rows)
-                    const auto newHeight = static_cast<int32_t>(musicObj->GetTrackCount() * SCROLLABLE_ROW_HEIGHT);
+                    const auto newHeight = static_cast<int32_t>(musicObj->GetTrackCount() * kScrollableRowHeight);
                     auto top = newHeight - widgets[WIDX_MUSIC_DATA].bottom + widgets[WIDX_MUSIC_DATA].top + 13;
                     if (top < 0)
                     {
@@ -5189,11 +5189,12 @@ static_assert(std::size(RatingNames) == 6);
                     int32_t _height = previewWidget.height() - 1;
 
                     // draw background rectangle for image preview
+                    auto colour = colours[1].colour;
                     GfxFillRect(
                         dpi,
                         { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                           windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                        ColourMapA[colours[1]].darkest);
+                        ColourMapA[colour].darkest);
 
                     // Draw preview image
                     DrawPixelInfo clipDPI;
@@ -5234,7 +5235,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void MusicOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
         {
-            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+            auto colour = colours[1].colour;
+            GfxClear(dpi, ColourMapA[colour].mid_light);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -5246,7 +5248,7 @@ static_assert(std::size(RatingNames) == 6);
             {
                 auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
                 GfxFillRect(
-                    dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
+                    dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colour].mid_light);
 
                 auto musicObj = ride->GetMusicObject();
 
@@ -5265,7 +5267,7 @@ static_assert(std::size(RatingNames) == 6);
 
                     DrawTextBasic(dpi, { 0, y }, stringId, ft);
 
-                    y += SCROLLABLE_ROW_HEIGHT;
+                    y += kScrollableRowHeight;
                 }
             }
         }
