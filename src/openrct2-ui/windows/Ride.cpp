@@ -4865,21 +4865,17 @@ static_assert(std::size(RatingNames) == 6);
 
         void MusicResize()
         {
-            if (auto ride = GetRide(rideId); ride != nullptr)
-            {
-                // Expand the window when music is playing
-                auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
-                if (isMusicActivated)
-                {
-                    WindowSetResize(*this, 316, 207, 500, 450);
-                }
-                else
-                {
-                    height = 81;
-                    width = 316;
-                    WindowSetResize(*this, 316, 81, 500, 450);
-                }
-            }
+            flags |= WF_RESIZABLE;
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            // Expand the window when music is playing
+            auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
+            auto minHeight = isMusicActivated ? 211 : 81;
+            auto maxHeight = isMusicActivated ? 450 : 81;
+            WindowSetResize(*this, 316, minHeight, 500, maxHeight);
         }
 
         static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
@@ -5118,8 +5114,6 @@ static_assert(std::size(RatingNames) == 6);
                     widgets[WIDX_MUSIC_DATA].right = width - 8;
                     WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, false);
                 }
-                // enable window resize
-                flags |= WF_RESIZABLE;
 
                 widgets[WIDX_MUSIC].right = widgets[WIDX_MUSIC_DATA].right;
                 widgets[WIDX_MUSIC_DROPDOWN].right = widgets[WIDX_MUSIC_DATA].right - 1;
@@ -5139,9 +5133,6 @@ static_assert(std::size(RatingNames) == 6);
                 // hide widgets not applicable
                 WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, false);
                 WidgetSetVisible(*this, WIDX_MUSIC_DATA, false);
-
-                // disable resizing
-                flags &= ~WF_RESIZABLE;
 
                 widgets[WIDX_MUSIC].right = width - 8;
                 widgets[WIDX_MUSIC_DROPDOWN].right = width - 9;
