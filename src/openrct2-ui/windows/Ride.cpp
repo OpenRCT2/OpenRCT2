@@ -345,7 +345,7 @@ static Widget _musicWidgets[] = {
     MakeWidget({  7, 47}, {302,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
     MakeWidget({  7, 62}, {302,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
     MakeWidget({297, 63}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
-    MakeWidget({154, 62}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                ),
+    MakeWidget({154, 90}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                ),
     MakeWidget({  7, 90}, {500, 450}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_BOTH                                   ),
     kWidgetsEnd,
 };
@@ -5085,6 +5085,11 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter::Common();
             ride->FormatNameTo(ft);
 
+            // Align music dropdown
+            widgets[WIDX_MUSIC].right = width - 8;
+            widgets[WIDX_MUSIC_DROPDOWN].right = width - 9;
+            widgets[WIDX_MUSIC_DROPDOWN].left = width - 19;
+
             // Set selected music
             StringId musicName = STR_NONE;
             auto musicObj = ride->GetMusicObject();
@@ -5095,16 +5100,18 @@ static_assert(std::size(RatingNames) == 6);
             widgets[WIDX_MUSIC].text = musicName;
 
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
+            bool hasPreviewImage = musicObj != nullptr && musicObj->HasPreview();
+
+            WidgetSetVisible(*this, WIDX_MUSIC_DATA, isMusicActivated);
+            WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, isMusicActivated && hasPreviewImage);
 
             if (isMusicActivated)
             {
                 // resize widgets
-                widgets[WIDX_MUSIC_DATA].bottom = height - 32;
+                widgets[WIDX_MUSIC_DATA].bottom = height - 8;
 
-                bool hasPreview = musicObj->HasPreview();
-                if (hasPreview)
+                if (hasPreviewImage)
                 {
-                    WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, true);
                     widgets[WIDX_MUSIC_DATA].right = width - 129;
                     widgets[WIDX_MUSIC_IMAGE].left = width - 121;
                     widgets[WIDX_MUSIC_IMAGE].right = width - 8;
@@ -5112,38 +5119,16 @@ static_assert(std::size(RatingNames) == 6);
                 else
                 {
                     widgets[WIDX_MUSIC_DATA].right = width - 8;
-                    WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, false);
                 }
 
-                widgets[WIDX_MUSIC].right = widgets[WIDX_MUSIC_DATA].right;
-                widgets[WIDX_MUSIC_DROPDOWN].right = widgets[WIDX_MUSIC_DATA].right - 1;
-                widgets[WIDX_MUSIC_DROPDOWN].left = widgets[WIDX_MUSIC_DATA].right - 11;
-
-                pressed_widgets |= (1uLL << WIDX_PLAY_MUSIC);
-                pressed_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets &= ~(1uLL << WIDX_MUSIC);
-                disabled_widgets &= ~(1uLL << WIDX_MUSIC_DROPDOWN);
-                disabled_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets &= ~(1uLL << WIDX_MUSIC_DATA);
-
-                WidgetSetVisible(*this, WIDX_MUSIC_DATA, true);
+                pressed_widgets |= (1uLL << WIDX_PLAY_MUSIC) | (1uLL << WIDX_MUSIC_IMAGE);
+                disabled_widgets &= ~((1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA));
             }
             else
             {
-                // hide widgets not applicable
-                WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, false);
-                WidgetSetVisible(*this, WIDX_MUSIC_DATA, false);
-
-                widgets[WIDX_MUSIC].right = width - 8;
-                widgets[WIDX_MUSIC_DROPDOWN].right = width - 9;
-                widgets[WIDX_MUSIC_DROPDOWN].left = width - 19;
-
                 pressed_widgets &= ~(1uLL << WIDX_PLAY_MUSIC);
                 pressed_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets |= (1uLL << WIDX_MUSIC);
-                disabled_widgets |= (1uLL << WIDX_MUSIC_DROPDOWN);
-                disabled_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets |= (1uLL << WIDX_MUSIC_DATA);
+                disabled_widgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
             }
 
             AnchorBorderWidgets();
