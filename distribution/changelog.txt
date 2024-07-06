@@ -33,6 +33,7 @@
 - Change: [#22057] Reorder Time Twister’s scenarios and adjust their difficulty classification.
 - Change: [#22173] Patrol path selection is visible over existing patrol paths.
 - Change: [#22196] Make track navigation buttons holdable.
+- Change: [#22227] [Plugin] Ride prices are now constrained for plugins as well.
 - Fix: [#13234] Vehicle weight sometimes wrong after using Remove All Guests cheat.
 - Fix: [#13294] Map corners are cut off in some directions (original bug).
 - Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
