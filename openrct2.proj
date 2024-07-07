@@ -38,11 +38,11 @@
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
     <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v36/openrct2-libs-v36-arm64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='ARM64'">89f119395c4347f25427990eb47ea8f57bba95d8</LibsSha1>
+    <LibsSha1 Condition="'$(Platform)'=='ARM64'">c3cf49093261e605f3d62c5e82e53ff5e7600661</LibsSha1>
     <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v36/openrct2-libs-v36-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">1303b2423be26f40bdb75fa2c91f1bc7ef1de1ed</LibsSha1>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">3816671560af3571ada728ffeceec0443471c03b</LibsSha1>
     <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v36/openrct2-libs-v36-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">f3636b530110c7592deab23ca0d0c1916fc7e44c</LibsSha1>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">d2b8d98a9711cf319e3bd5330e77aef5395820f1</LibsSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.6/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>80fefc6ebbabc42a6f4703412daa5c62f661420d</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.4.4/objects.zip</ObjectsUrl>
