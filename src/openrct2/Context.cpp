@@ -573,8 +573,7 @@ namespace OpenRCT2
         void InitialiseScriptEngine()
         {
 #ifdef ENABLE_SCRIPTING
-            // TODO: add dedicated string
-            OpenProgress(STR_LOADING_GENERIC);
+            OpenProgress(STR_LOADING_PLUGIN_ENGINE);
             _scriptEngine.Initialise();
             _uiContext->InitialiseScriptExtensions();
 
