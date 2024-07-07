@@ -1,3 +1,6 @@
+0.4.13 (in development)
+------------------------------------------------------------------------
+
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
 - Feature: [#622] Add option to align the top toolbar buttons horizontally centred (off by default).
