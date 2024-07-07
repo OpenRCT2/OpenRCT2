@@ -11,6 +11,9 @@
 
 #include "../config/Config.h"
 #include "../util/Util.h"
+#include "Currency.h"
+#include "Date.h"
+#include "FormatCodes.h"
 #include "Formatter.h"
 #include "Localisation.h"
 #include "StringIds.h"
@@ -284,7 +287,7 @@ namespace OpenRCT2
     {
         if (IsRealNameStringId(id))
         {
-            auto realNameIndex = id - REAL_NAME_START;
+            auto realNameIndex = id - kRealNameStart;
             ss << real_names[realNameIndex % std::size(real_names)];
             ss << ' ';
             ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
@@ -292,14 +295,17 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TSize, typename TIndex> static void AppendSeparator(char (&buffer)[TSize], TIndex& i, std::string_view sep)
+    template<size_t TSize, typename TIndex>
+    static void AppendSeparatorReversed(char (&buffer)[TSize], TIndex& i, std::string_view sep)
     {
-        if (i < TSize)
+        if (i + sep.size() >= TSize)
+            return;
+
+        utf8 sepBuffer[32];
+        std::memcpy(&sepBuffer[0], sep.data(), sep.size());
+        for (int32_t j = static_cast<int32_t>(sep.size()) - 1; j >= 0; j--)
         {
-            auto remainingLen = TSize - i;
-            auto cpyLen = std::min(sep.size(), remainingLen);
-            std::memcpy(&buffer[i], sep.data(), cpyLen);
-            i += static_cast<TIndex>(cpyLen);
+            buffer[i++] = sepBuffer[j];
         }
     }
 
@@ -350,7 +356,7 @@ namespace OpenRCT2
             }
 
             auto decSep = GetDecimalSeparator();
-            AppendSeparator(buffer, i, decSep);
+            AppendSeparatorReversed(buffer, i, decSep);
         }
 
         // Whole digits
@@ -363,7 +369,7 @@ namespace OpenRCT2
                 if (groupLen >= 3)
                 {
                     groupLen = 0;
-                    AppendSeparator(buffer, i, digitSep);
+                    AppendSeparatorReversed(buffer, i, digitSep);
                 }
             }
             buffer[i++] = static_cast<char>('0' + (num % 10));
@@ -383,7 +389,7 @@ namespace OpenRCT2
 
     template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(FormatBuffer& ss, T rawValue)
     {
-        auto currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+        auto currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
 
         // Negative sign
@@ -533,7 +539,7 @@ namespace OpenRCT2
             case FormatToken::Velocity:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (gConfigGeneral.MeasurementFormat)
+                    switch (Config::Get().general.MeasurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:
@@ -563,7 +569,7 @@ namespace OpenRCT2
             case FormatToken::Length:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (gConfigGeneral.MeasurementFormat)
+                    switch (Config::Get().general.MeasurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:
@@ -624,7 +630,7 @@ namespace OpenRCT2
 
     bool IsRealNameStringId(StringId id)
     {
-        return id >= REAL_NAME_START && id <= REAL_NAME_END;
+        return id >= kRealNameStart && id <= kRealNameEnd;
     }
 
     FmtString GetFmtStringById(StringId id)

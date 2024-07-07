@@ -43,6 +43,18 @@ uint16_t TrackRemoveAction::GetActionFlags() const
     return GameAction::GetActionFlags();
 }
 
+static int32_t normaliseTrackType(int32_t trackType)
+{
+    switch (trackType)
+    {
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
+            return TrackElemType::EndStation;
+    }
+
+    return trackType;
+}
+
 void TrackRemoveAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
@@ -58,15 +70,7 @@ GameActions::Result TrackRemoveAction::Query() const
     res.Position.z = _origin.z;
     res.Expenditure = ExpenditureType::RideConstruction;
 
-    // Stations require some massaging of the track type for comparing
-    auto comparableTrackType = _trackType;
-    switch (_trackType)
-    {
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
-            comparableTrackType = TrackElemType::EndStation;
-            break;
-    }
+    auto comparableTrackType = normaliseTrackType(_trackType);
 
     bool found = false;
     bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -92,14 +96,7 @@ GameActions::Result TrackRemoveAction::Query() const
         if (tileElement->IsGhost() != isGhost)
             continue;
 
-        auto tileTrackType = tileElement->AsTrack()->GetTrackType();
-        switch (tileTrackType)
-        {
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
-                tileTrackType = TrackElemType::EndStation;
-                break;
-        }
+        auto tileTrackType = normaliseTrackType(tileElement->AsTrack()->GetTrackType());
 
         if (tileTrackType != comparableTrackType)
             continue;
@@ -265,15 +262,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     res.Position.z = _origin.z;
     res.Expenditure = ExpenditureType::RideConstruction;
 
-    // Stations require some massaging of the track type for comparing
-    auto comparableTrackType = _trackType;
-    switch (_trackType)
-    {
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
-            comparableTrackType = TrackElemType::EndStation;
-            break;
-    }
+    auto comparableTrackType = normaliseTrackType(_trackType);
 
     bool found = false;
     bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -299,14 +288,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         if (tileElement->IsGhost() != isGhost)
             continue;
 
-        auto tileTrackType = tileElement->AsTrack()->GetTrackType();
-        switch (tileTrackType)
-        {
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
-                tileTrackType = TrackElemType::EndStation;
-                break;
-        }
+        auto tileTrackType = normaliseTrackType(tileElement->AsTrack()->GetTrackType());
 
         if (tileTrackType != comparableTrackType)
             continue;

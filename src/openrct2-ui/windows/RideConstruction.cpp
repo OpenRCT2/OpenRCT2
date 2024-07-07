@@ -47,6 +47,9 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
+constexpr int8_t kDefaultSpeedIncrement = 2;
+constexpr int8_t kDefaultMinimumSpeed = 2;
+
 using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
@@ -270,7 +273,7 @@ static Widget _rideConstructionWidgets[] = {
             if (RideTryGetOriginElement(*currentRide, nullptr))
             {
                 // Auto open shops if required.
-                if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.AutoOpenShops)
+                if (currentRide->mode == RideMode::ShopStall && Config::Get().general.AutoOpenShops)
                 {
                     // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                     //       from getting stuck in an infinite loop as opening the currentRide will try to close this window
@@ -972,12 +975,6 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_CLOSE:
                     Close();
                     break;
-                case WIDX_NEXT_SECTION:
-                    RideSelectNextSection();
-                    break;
-                case WIDX_PREVIOUS_SECTION:
-                    RideSelectPreviousSection();
-                    break;
                 case WIDX_ROTATE:
                     Rotate();
                     break;
@@ -1022,6 +1019,12 @@ static Widget _rideConstructionWidgets[] = {
                 }
                 case WIDX_DEMOLISH:
                     MouseUpDemolish();
+                    break;
+                case WIDX_NEXT_SECTION:
+                    RideSelectNextSection();
+                    break;
+                case WIDX_PREVIOUS_SECTION:
+                    RideSelectPreviousSection();
                     break;
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
@@ -1336,9 +1339,10 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
-                        uint8_t brakesSpeed = *brakesSpeedPtr + 2;
-                        if (brakesSpeed <= kMaximumBrakeSpeed)
+                        auto trackSpeedMaximum = kMaximumTrackSpeed;
+                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                        uint8_t brakesSpeed = std::min<int16_t>(trackSpeedMaximum, _currentBrakeSpeed + trackSpeedIncrement);
+                        if (brakesSpeed != _currentBrakeSpeed)
                         {
                             if (_rideConstructionState == RideConstructionState::Selected)
                             {
@@ -1346,7 +1350,7 @@ static Widget _rideConstructionWidgets[] = {
                             }
                             else
                             {
-                                *brakesSpeedPtr = brakesSpeed;
+                                _currentBrakeSpeed = brakesSpeed;
                                 WindowRideConstructionUpdateActiveElements();
                             }
                         }
@@ -1362,9 +1366,14 @@ static Widget _rideConstructionWidgets[] = {
                     }
                     else
                     {
-                        uint8_t* brakesSpeedPtr = &_currentBrakeSpeed;
-                        uint8_t brakesSpeed = *brakesSpeedPtr - 2;
-                        if (brakesSpeed >= 2)
+                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                        auto trackSpeedMinimum = kDefaultMinimumSpeed;
+                        if (GetGameState().Cheats.UnlockOperatingLimits)
+                        {
+                            trackSpeedMinimum = 0;
+                        }
+                        uint8_t brakesSpeed = std::max<int16_t>(trackSpeedMinimum, _currentBrakeSpeed - trackSpeedIncrement);
+                        if (brakesSpeed != _currentBrakeSpeed)
                         {
                             if (_rideConstructionState == RideConstructionState::Selected)
                             {
@@ -1372,7 +1381,7 @@ static Widget _rideConstructionWidgets[] = {
                             }
                             else
                             {
-                                *brakesSpeedPtr = brakesSpeed;
+                                _currentBrakeSpeed = brakesSpeed;
                                 WindowRideConstructionUpdateActiveElements();
                             }
                         }
@@ -1597,7 +1606,8 @@ static Widget _rideConstructionWidgets[] = {
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH);
+            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
+                | (1u << WIDX_PREVIOUS_SECTION);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
@@ -1698,7 +1708,7 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     // Enable helix
                     widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-                    if (currentRide->type != RIDE_TYPE_SPLASH_BOATS && currentRide->type != RIDE_TYPE_RIVER_RAFTS)
+                    if (IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                         widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
                 }
             }
@@ -2645,7 +2655,7 @@ static Widget _rideConstructionWidgets[] = {
             tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
             tempTrackTileElement.AsTrack()->SetHasCableLift(false);
             tempTrackTileElement.AsTrack()->SetInverted((liftHillAndInvertedState & CONSTRUCTION_INVERTED_TRACK_SELECTED) != 0);
-            tempTrackTileElement.AsTrack()->SetColourScheme(RIDE_COLOUR_SCHEME_MAIN);
+            tempTrackTileElement.AsTrack()->SetColourScheme(RideColourScheme::main);
             // Skipping seat rotation, should not be necessary for a temporary piece.
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
@@ -3353,10 +3363,10 @@ static Widget _rideConstructionWidgets[] = {
         if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
             && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         {
-            PathElement* pathsByDir[NumOrthogonalDirections];
+            PathElement* pathsByDir[kNumOrthogonalDirections];
 
             bool keepOrientation = false;
-            for (int8_t i = 0; i < NumOrthogonalDirections; i++)
+            for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
             {
                 const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
                 if (!MapIsLocationOwned(testLoc))
@@ -3398,7 +3408,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (!keepOrientation)
             {
-                for (int8_t i = 0; i < NumOrthogonalDirections; i++)
+                for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
                 {
                     if (pathsByDir[i] != nullptr)
                     {
@@ -4511,7 +4521,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_PREVIOUS_SECTION);
+        w->OnMouseDown(WIDX_PREVIOUS_SECTION);
     }
 
     void WindowRideConstructionKeyboardShortcutNextTrack()
@@ -4523,7 +4533,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
         }
 
-        w->OnMouseUp(WIDX_NEXT_SECTION);
+        w->OnMouseDown(WIDX_NEXT_SECTION);
     }
 
     void WindowRideConstructionKeyboardShortcutBuildCurrent()

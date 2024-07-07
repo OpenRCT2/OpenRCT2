@@ -12,8 +12,6 @@
 #include "../common.h"
 #include "../util/Math.hpp"
 
-#include <algorithm>
-
 constexpr int16_t LOCATION_NULL = -32768;
 
 constexpr int32_t COORDS_XY_STEP = 32;
@@ -21,7 +19,7 @@ constexpr int32_t COORDS_XY_HALF_TILE = (COORDS_XY_STEP / 2);
 constexpr int32_t COORDS_Z_STEP = 8;
 constexpr int32_t COORDS_Z_PER_TINY_Z = 16;
 
-constexpr auto NumOrthogonalDirections = 4;
+constexpr auto kNumOrthogonalDirections = 4;
 
 constexpr int32_t COORDS_NULL = 0xFFFF8000;
 
@@ -552,7 +550,7 @@ inline constexpr Direction DirectionReverse(Direction dir)
 
 inline constexpr bool DirectionValid(Direction dir)
 {
-    return dir < NumOrthogonalDirections;
+    return dir < kNumOrthogonalDirections;
 }
 
 /**
@@ -810,9 +808,14 @@ struct MapRange : public RectRange<CoordsXY>
 
     constexpr MapRange Normalise() const
     {
+        // Don't use std::min/max, as they require <algorithm>, one of C++'s heaviest
+        // in this very common header.
         auto result = MapRange(
-            std::min(GetLeft(), GetRight()), std::min(GetTop(), GetBottom()), std::max(GetLeft(), GetRight()),
-            std::max(GetTop(), GetBottom()));
+            GetLeft() < GetRight() ? GetLeft() : GetRight(), // min
+            GetTop() < GetBottom() ? GetTop() : GetBottom(), // min
+            GetLeft() > GetRight() ? GetLeft() : GetRight(), // max
+            GetTop() > GetBottom() ? GetTop() : GetBottom()  // max
+        );
         return result;
     }
 };

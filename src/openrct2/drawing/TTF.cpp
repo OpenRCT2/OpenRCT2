@@ -19,10 +19,14 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Numerics.hpp"
 #    include "../core/String.hpp"
+#    include "../drawing/Font.h"
 #    include "../localisation/LocalisationService.h"
 #    include "../platform/Platform.h"
+#    include "../util/Util.h"
 #    include "DrawingLock.hpp"
 #    include "TTF.h"
+
+using namespace OpenRCT2;
 
 static bool _ttfInitialised = false;
 
@@ -76,7 +80,7 @@ static void TTFToggleHinting(bool)
     for (int32_t i = 0; i < FontStyleCount; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
-        bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold;
+        bool use_hinting = Config::Get().fonts.EnableHinting && fontDesc->hinting_threshold;
         TTF_SetFontHinting(fontDesc->font, use_hinting ? 1 : 0);
     }
 

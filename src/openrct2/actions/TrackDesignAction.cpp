@@ -66,10 +66,10 @@ GameActions::Result TrackDesignAction::Query() const
 
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
-    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
+    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
     if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
-        // Force a fallback if the entry is not invented yet a td6 of it is selected,
+        // Force a fallback if the entry is not invented yet a track design of it is selected,
         // which can happen in select-by-track-type mode
         if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.IgnoreResearchStatus)
         {
@@ -78,7 +78,7 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gameState.LastEntranceStyle);
+    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.LastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -103,11 +103,11 @@ GameActions::Result TrackDesignAction::Query() const
     if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
         flags |= GAME_COMMAND_FLAG_REPLAY;
 
-    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
+    auto queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
+        queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     }
 
     auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
@@ -140,7 +140,7 @@ GameActions::Result TrackDesignAction::Execute() const
 
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
-    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
+    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
@@ -152,7 +152,7 @@ GameActions::Result TrackDesignAction::Execute() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gameState.LastEntranceStyle);
+    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.LastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -178,11 +178,11 @@ GameActions::Result TrackDesignAction::Execute() const
     if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
         flags |= GAME_COMMAND_FLAG_REPLAY;
 
-    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
+    auto queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
+        queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     }
 
     if (queryRes.Error != GameActions::Status::Ok)
@@ -202,7 +202,7 @@ GameActions::Result TrackDesignAction::Execute() const
     // Execute.
     flags |= GAME_COMMAND_FLAG_APPLY;
 
-    auto execRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
+    auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     if (execRes.Error != GameActions::Status::Ok)
     {
         auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
@@ -224,51 +224,47 @@ GameActions::Result TrackDesignAction::Execute() const
         GameActions::ExecuteNested(&rideSetVehicleAction);
     }
 
-    SetOperatingSettingNested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.ride_mode), GAME_COMMAND_FLAG_APPLY);
-    auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, _td.number_of_trains);
+    SetOperatingSettingNested(
+        ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.operation.rideMode), GAME_COMMAND_FLAG_APPLY);
+    auto rideSetVehicleAction2 = RideSetVehicleAction(
+        ride->id, RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
     GameActions::ExecuteNested(&rideSetVehicleAction2);
 
     auto rideSetVehicleAction3 = RideSetVehicleAction(
-        ride->id, RideSetVehicleType::NumCarsPerTrain, _td.number_of_cars_per_train);
+        ride->id, RideSetVehicleType::NumCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
     GameActions::ExecuteNested(&rideSetVehicleAction3);
 
-    SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.depart_flags, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::MinWaitingTime, _td.min_waiting_time, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::MaxWaitingTime, _td.max_waiting_time, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::Operation, _td.operation_setting, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::LiftHillSpeed, _td.lift_hill_speed & 0x1F, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.operation.departFlags, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::MinWaitingTime, _td.operation.minWaitingTime, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::MaxWaitingTime, _td.operation.maxWaitingTime, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Operation, _td.operation.operationSetting, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::LiftHillSpeed, _td.operation.liftHillSpeed, GAME_COMMAND_FLAG_APPLY);
 
-    uint8_t num_circuits = _td.num_circuits;
-    if (num_circuits == 0)
-    {
-        num_circuits = 1;
-    }
-    SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, num_circuits, GAME_COMMAND_FLAG_APPLY);
+    auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
+    SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, GAME_COMMAND_FLAG_APPLY);
     ride->SetToDefaultInspectionInterval();
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
-    ride->colour_scheme_type = _td.colour_scheme;
+    ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;
 
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.StationObjectIdentifier);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gameState.LastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < Limits::NumColourSchemes; i++)
+    for (size_t i = 0; i < std::min(std::size(ride->track_colour), std::size(_td.appearance.trackColours)); i++)
     {
-        ride->track_colour[i].main = _td.track_spine_colour[i];
-        ride->track_colour[i].additional = _td.track_rail_colour[i];
-        ride->track_colour[i].supports = _td.track_support_colour[i];
+        ride->track_colour[i] = _td.appearance.trackColours[i];
     }
 
-    for (size_t i = 0; i < Limits::MaxVehicleColours; i++)
+    for (size_t i = 0; i < Limits::kMaxVehicleColours; i++)
     {
-        ride->vehicle_colours[i] = _td.vehicle_colours[i];
+        ride->vehicle_colours[i] = _td.appearance.vehicleColours[i];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)
     {
-        auto name = count == 1 ? _td.name : (_td.name + " " + std::to_string(count));
+        auto name = count == 1 ? _td.gameStateData.name : (_td.gameStateData.name + " " + std::to_string(count));
         auto gameAction = RideSetNameAction(ride->id, name);
         gameAction.SetFlags(GetFlags());
         r = GameActions::ExecuteNested(&gameAction);

@@ -12,6 +12,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"
@@ -114,10 +116,10 @@ static void PaintMotionSimulator(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, kFenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)
@@ -134,7 +136,7 @@ static void PaintMotionSimulator(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 /**

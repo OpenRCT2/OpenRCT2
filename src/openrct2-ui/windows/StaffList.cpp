@@ -323,7 +323,7 @@ static Widget _staffListWidgets[] = {
                 Invalidate();
             }
 
-            auto scrollHeight = static_cast<int32_t>(_staffList.size()) * SCROLLABLE_ROW_HEIGHT;
+            auto scrollHeight = static_cast<int32_t>(_staffList.size()) * kScrollableRowHeight;
             auto i = scrollHeight - widgets[WIDX_STAFF_LIST_LIST].bottom + widgets[WIDX_STAFF_LIST_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -339,7 +339,7 @@ static Widget _staffListWidgets[] = {
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto i = static_cast<size_t>(screenCoords.y / SCROLLABLE_ROW_HEIGHT);
+            auto i = static_cast<size_t>(screenCoords.y / kScrollableRowHeight);
             if (i != _highlightedIndex)
             {
                 _highlightedIndex = static_cast<size_t>(i);
@@ -349,7 +349,7 @@ static Widget _staffListWidgets[] = {
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            int32_t i = screenCoords.y / kScrollableRowHeight;
             for (const auto& entry : _staffList)
             {
                 if (i == 0)
@@ -381,7 +381,7 @@ static Widget _staffListWidgets[] = {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
                 dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
-                ColourMapA[colours[1]].mid_light);
+                ColourMapA[colours[1].colour].mid_light);
 
             // How much space do we have for the name and action columns? (Discount scroll area and icons.)
             const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;
@@ -405,12 +405,18 @@ static Widget _staffListWidgets[] = {
                     {
                         continue;
                     }
-                    int32_t format = (_quickFireMode ? STR_RED_STRINGID : STR_BLACK_STRING);
+
+                    StringId format = STR_BLACK_STRING;
+                    if (_quickFireMode)
+                        format = STR_RED_STRINGID;
 
                     if (i == _highlightedIndex)
                     {
-                        GfxFilterRect(dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
-                        format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+                        GfxFilterRect(dpi, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::PaletteDarken1);
+
+                        format = STR_WINDOW_COLOUR_2_STRINGID;
+                        if (_quickFireMode)
+                            format = STR_LIGHTPINK_STRINGID;
                     }
 
                     auto ft = Formatter();
@@ -451,7 +457,7 @@ static Widget _staffListWidgets[] = {
                     }
                 }
 
-                y += SCROLLABLE_ROW_HEIGHT;
+                y += kScrollableRowHeight;
                 i++;
             }
         }
@@ -517,7 +523,7 @@ static Widget _staffListWidgets[] = {
          */
         void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
         {
-            bool autoPosition = gConfigGeneral.AutoStaffPlacement;
+            bool autoPosition = Config::Get().general.AutoStaffPlacement;
             if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
             {
                 autoPosition = autoPosition ^ 1;
@@ -528,7 +534,7 @@ static Widget _staffListWidgets[] = {
             if (staffType == StaffType::Handyman)
             {
                 staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
-                if (gConfigGeneral.HandymenMowByDefault)
+                if (Config::Get().general.HandymenMowByDefault)
                 {
                     staffOrders |= STAFF_ORDERS_MOWING;
                 }
@@ -723,7 +729,6 @@ static Widget _staffListWidgets[] = {
         {
             switch (type)
             {
-                default:
                 case PeepSpriteType::EntertainerPanda:
                     return SPR_STAFF_COSTUME_PANDA;
                 case PeepSpriteType::EntertainerTiger:
@@ -746,6 +751,9 @@ static Widget _staffListWidgets[] = {
                     return SPR_STAFF_COSTUME_SHERIFF;
                 case PeepSpriteType::EntertainerPirate:
                     return SPR_STAFF_COSTUME_PIRATE;
+                case PeepSpriteType::Normal:
+                default:
+                    return SPR_PEEP_SMALL_FACE_HAPPY;
             }
         }
     };

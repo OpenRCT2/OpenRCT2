@@ -227,6 +227,8 @@ enum PeepFlags : uint32_t
     PEEP_FLAGS_INTAMIN_DEPRECATED = (1 << 27),   // Used to make the peep think "I'm so excited - It's an Intamin ride!" while
                                                  // riding on a Intamin ride.
     PEEP_FLAGS_HERE_WE_ARE = (1 << 28),          // Makes the peep think  "...and here we are on X!" while riding a ride
+    PEEP_FLAGS_POSITION_FROZEN = (1 << 29),      // Prevents the peep from moving around, thus keeping them in place
+    PEEP_FLAGS_ANIMATION_FROZEN = (1 << 30),     // Prevents the peep sprite from updating
     PEEP_FLAGS_TWITCH_DEPRECATED = (1u << 31),   // Formerly used for twitch integration
 };
 
@@ -375,11 +377,14 @@ public: // Peep
     void Update();
     std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
     std::optional<CoordsXY> UpdateAction();
+    bool UpdateActionAnimation();
     std::optional<CoordsXY> UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance);
+    void UpdateWalkingAnimation();
     void ThrowUp();
     void SetState(PeepState new_state);
     void Remove();
     void UpdateCurrentActionSpriteType();
+    void UpdateSpriteBoundingBox();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
     [[nodiscard]] uint8_t GetNextDirection() const;

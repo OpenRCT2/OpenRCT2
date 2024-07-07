@@ -98,6 +98,7 @@ STR_0093    :Hybridachterbahn
 STR_0094    :Einschienenachterbahn
 STR_0095    :Alpenachterbahn
 STR_0096    :Klassische Holzachterbahn
+STR_0097    :Klassische Stehachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -181,6 +182,7 @@ STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfa
 STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen
 STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren
 STR_0606    :Eine Holzachterbahn nach älterer Art. Sie ist schnell, rau, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man gelegentlich seitlichen Gs ausgesetzt und häufig „in der Luft“ ist
+STR_0607    :Eine intensive Stahl-Looping-Achterbahn älterer Art, bei der die Fahrer im Stehen fahren
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -2882,7 +2884,7 @@ STR_5755    :Inkompatible Softwareversion (Server benutzt {STRING})
 STR_5756    :Falsches Passwort
 STR_5757    :Server voll
 STR_5758    :{OUTLINE}{GREEN}{STRING} hat das Spiel betreten
-STR_5759    :Karte herunterladen … ({INT32} / {INT32}) KiB
+STR_5759    :Karte herunterladen …
 STR_5760    :Hongkong-Dollar (HK$)
 STR_5761    :Taiwan-Dollar (NT$)
 STR_5762    :Chines. Yuan (CN¥)
@@ -3444,7 +3446,7 @@ STR_6374    :A
 STR_6375    :Unbekannte Attraktion
 STR_6376    :{WINDOW_COLOUR_2}Fahrzeug:{NEWLINE}{BLACK}{STRINGID} für {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} für {STRINGID}
-STR_6378    :Objektliste empfangen: {INT32}/{INT32}
+STR_6378    :Objektliste empfangen:
 STR_6379    :Ungültige Daten empfangen
 STR_6380    :Update verfügbar!
 STR_6381    :OpenRCT2-Discord beitreten!
@@ -3688,6 +3690,29 @@ STR_6619    :Objekttyp kann nicht eingeschränkt werden!
 STR_6620    :Objekt nicht gefunden!
 STR_6621    :Einschränken
 STR_6622    :Objekt auf den Szenario-Editor und dem Sandkastenmodus einschränken
+STR_6623    :Geben Sie „help“ ein, um eine Liste der verfügbaren Befehle zu erhalten. Geben Sie „hide“ ein, um die Konsole auszublenden.
+STR_6624    :Kachelinspektor: Elemente sortieren
+STR_6625    :Ungültige Farbe
+STR_6626    :Animation ist gespiegelt
+STR_6627    :Streckengeschwindigkeit zu hoch!
+STR_6628    :Kann nur auf der Kante von Fußwegen platziert werden!
+STR_6629    :Symbolleisten-Schaltflächen horizontal zentriert ausrichten
+STR_6630    :Mit dieser Einstellung werden die Schaltflächen der Symbolleiste horizontal in der Mitte des Bildschirms ausgerichtet. Normalerweise sind sie in den Ecken angeordnet.
+STR_6631    :Laden …
+STR_6632    :Überprüfen von Objektdateien …
+STR_6633    :Überprüfen von Szenario-Dateien …
+STR_6634    :Überprüfen von Streckenentwurfsdateien …
+STR_6635    :Überprüfen von Medienpaketen …
+STR_6636    :Überprüfen der Titelsequenzen …
+STR_6637    :Laden der Titelsequenzen …
+STR_6638    :Vergrößerte Benutzeroberfläche
+STR_6639    :Verändert die Benutzeroberfläche so, dass sie besser für die Touch-Bedienung geeignet ist
+STR_6640    :Medienpakete bearbeiten …
+STR_6641    :Lade-/Fortschrittsfenster
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Verbesserungen für die Touch-Bedienung
+STR_6645    :Vergrößert einige Bedienelemente, damit sie leichter angeklickt oder angetippt werden können.
 
 #############
 # Scenarios #
@@ -4278,87 +4303,87 @@ STR_DTLS    :Bauen Sie die fehlenden Six-Flags-Bahnen, oder erstellen Sie Ihre e
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Afrika - Diamantenmine
+STR_SCNR    :Die Minen Afrikas
 STR_PARK    :Die Minen Afrikas
 STR_DTLS    :Sie haben eine aufgegebene Diamantenmine geerbt und finden einen wertvollen Diamanten. Sie beschließen, das Geld in einen weltberühmten Themenpark zu investieren.
 
 <Africa - Oasis>
-STR_SCNR    :Afrika - Oase
+STR_SCNR    :Fata Morgana
 STR_PARK    :Fata Morgana
 STR_DTLS    :In der Wüste wurde eine Oase entdeckt, die der ideale Standort für einen Vergnügungspark wäre. Transportmittel zur Oase wurden zur Verfügung gestellt.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Afrika - Victoria-Wasserfälle
+STR_SCNR    :Über die Kante
 STR_PARK    :Über die Kante
 STR_DTLS    :Ein Damm wurde gebaut und erzeugt große Mengen an billigem Strom, mit dem Sie einen Park betreiben können. Sie müssen allerdings einen hohen Park-Verkehrswert erreichen, um das Darlehen für den Damm zurückzahlen zu können.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarktis - Umweltschutzmaßnahmen
+STR_SCNR    :Abenteuer im Eis
 STR_PARK    :Abenteuer im Eis
 STR_DTLS    :Sie sollen eine alte Ölraffinerie, die den Umweltschützern ein Dorn im Auge ist, in eine erstklassige Touristenattraktion verwandeln. Das Land ist günstig, doch die Darlehenszinsen sind hoch. Sie können aber die alten Gebäude verkaufen.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asien - Große Mauer - Tourismusprojekt
+STR_SCNR    :Große Mauer von China
 STR_PARK    :Große Mauer von China
 STR_DTLS    :Die Behörden haben entschieden, noch mehr Touristen zur Großen Mauer zu locken, und wollen auf einem angrenzenden Gebiet einen Themenpark errichten. Geld spielt keine Rolle
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asien - Japanische Landgewinnung
+STR_SCNR    :Okinawa-Küste
 STR_PARK    :Okinawa-Küste
 STR_DTLS    :In einem vorhandenen Park herrscht Platzmangel, Sie müssen also dem Meer neues Land abringen. Dafür haben Sie ein Darlehen aufgenommen. Die maximale Bauhöhe ist aufgrund des instabilen Untergrunds und der Erdbeben beschränkt.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asien - Maharadschas Palast
+STR_SCNR    :Maharadscha-Park
 STR_PARK    :Maharadscha-Park
 STR_DTLS    :Der Maharadscha hat Sie damit beauftragt, die örtlichen Massen zu unterhalten. Errichten Sie einen Park, der seine Inspiration aus dem Palast des Maharadschas bezieht.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasien - Ayers Rock
+STR_SCNR    :Ayers-Abenteuer
 STR_PARK    :Ayers-Abenteuer
 STR_DTLS    :Sie helfen den Aborigines, im Rahmen eines Programms zur Kulturförderung einen Vergnügungspark zu bauen. Sie müssen eine große Besucherzahl erreichen, um den Leuten das einzigartige kulturelle Erbe der Aborigines nahe zu bringen.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasien - Spaß am Strand
+STR_SCNR    :Strand-Party
 STR_PARK    :Strand-Party
 STR_DTLS    :Der Meerespark eines örtlichen Unternehmers hat Bankrott gemacht. Sie besitzen bereits einen kleinen Park und möchten den anderen dazukaufen. Um die benötigten Gelder aufzutreiben, müssen Sie zunächst Ihren kleinen Park ausbauen.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europa - Europäisches Kulturfestival
+STR_SCNR    :Europäisches Happening
 STR_PARK    :Europäisches Happening
 STR_DTLS    :Sie wurden engagiert, um eine kulturelle Besucherattraktion in Europa zu leiten, und müssen die Anzahl der Gäste steigern, um die EU-Subventionen bis zum Ende der Amtsperiode des aktuellen Europäischen Parlaments zurückzahlen zu können.
 
 <Europe - Renovation>
-STR_SCNR    :Europa - Renovierung
+STR_SCNR    :Wie Phönix aus der Asche
 STR_PARK    :Wie Phönix aus der Asche
 STR_DTLS    :Ein alter Vergnügungspark befindet sich in desolatem Zustand. Sie erhalten EU-Fördermittel, um dem verwahrlosten Gebiet wieder zu seinem früheren Glanz zu verhelfen. Sie müssen den Park renovieren und die Fördermittel zurückzahlen.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Nordamerika - Hawaii Extrem
+STR_SCNR    :Verrücktes Waikiki
 STR_PARK    :Verrücktes Waikiki
 STR_DTLS    :Die Bevölkerung von Hawaii hat das Surfen satt und sehnt sich nach etwas Abwechslung. Sie müssen einen Park bauen, um sie bei Laune zu halten und gleichzeitig dafür sorgen, dass die Insel für Touristen attraktiv bleibt.
 
 <North America - Grand Canyon>
-STR_SCNR    :Nordamerika - Grand Canyon
+STR_SCNR    :Canyon-Katastrophen
 STR_PARK    :Canyon-Katastrophen
 STR_DTLS    :Sie müssen neben diesem Naturwunder einen Vergnügungspark errichten. Es herrscht Platzmangel, Sie können aber Land von den Indianern kaufen. Haben Sie Erfolg, sichern Sie damit der örtlichen Bevölkerung den Lebensunterhalt.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Nordamerika - Achterbahnhimmel
+STR_SCNR    :Achterbahnhimmel
 STR_PARK    :Achterbahnhimmel
 STR_DTLS    :Sie sind ein erfolgreicher Geschäftsmann, der sich eine vierjährige Auszeit genommen hat und nun einen Vergnügungspark errichten möchte, bei dem Geld keine Rolle spielt.
 
 <South America - Inca Lost City>
-STR_SCNR    :Südamerika - Verlorene Stadt der Inka
+STR_SCNR    :Gründer der Verlorenen Stadt
 STR_PARK    :Gründer der Verlorenen Stadt
 STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Südamerika - Regenwaldplateau
+STR_SCNR    :Rummel im Regenwald
 STR_PARK    :Rummel im Regenwald
 STR_DTLS    :Platz ist Mangelware im kostbaren Regenwald - Sie müssen so viele Attraktionen wie möglich auf der existierenden Lichtung unterbringen, um eine rentable Alternative zur örtlichen Holzindustrie zu schaffen.
 
 <South America - Rio Carnival>
-STR_SCNR    :Südamerika - Karneval in Rio
+STR_SCNR    :Zauberei am Zuckerhut
 STR_PARK    :Zauberei am Zuckerhut
 STR_DTLS    :Sie leiten einen kleinen Vergnügungspark in der Nähe von Rio. Als die Bank plötzlich das Ihnen gewährte Darlehen zurückfordert, müssen Sie einen Weg finden, Ihre Einnahmen rasch zu steigern, um diese unerwarteten Schulden zurückzuzahlen.
 
@@ -4366,72 +4391,72 @@ STR_DTLS    :Sie leiten einen kleinen Vergnügungspark in der Nähe von Rio. Als
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Finsteres Mittelalter - Schloss
+STR_SCNR    :Felsenschloss
 STR_PARK    :Felsenschloss
 STR_DTLS    :Einige Mitglieder der Gesellschaft zur Nachstellung von Schlachten nehmen ihr Hobby ziemlich ernst. Sie haben Sie damit beauftragt, einen Freizeitpark Finsteres Mittelalter auf den Gründen des Felsenschlosses zu bauen.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Finsteres Mittelalter - Robin Hood
+STR_SCNR    :Sherwood Forest
 STR_PARK    :Sherwood Forest
 STR_DTLS    :Um die Reichen finanziell zu erleichtern und das Geld den Bedürftigen zukommen zu lassen, haben Sie und Ihre Gespielen beschlossen, im Sherwood Forest einen Freizeitpark zu bauen.
 
 <Future - First Encounters>
-STR_SCNR    :Zukunft - Neulinge
+STR_SCNR    :Außerirdische Extravaganz
 STR_PARK    :Außerirdische Extravaganz
 STR_DTLS    :Auf einem fernen Planeten ist Leben entdeckt worden. Bauen Sie einen außerirdischen Freizeitpark, um die unerwartet heftige Hysterie in bare Münze umzuwandeln.
 
 <Future - Future World>
-STR_SCNR    :Zukunft - Welt der Zukunft
+STR_SCNR    :Zwillingsstadt
 STR_PARK    :Zwillingsstadt
 STR_DTLS    :Beweisen Sie Ihre innovative, utopische Vision der Zukunft - errichten Sie einen futuristischen Freizeitpark mit topmodernen Attraktionen.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mythologie - Animatronic-Filmgelände
+STR_SCNR    :Animatronic-Possen
 STR_PARK    :Animatronic-Possen
 STR_DTLS    :Ihre Aufgabe ist, einen bestehenden Freizeitpark zu verbessern, der auf einem alten Filmgelände gebaut wurde. Bauen Sie eine Gedenkstätte für die Pioniere der Stop-Motion, die die Mystikwesen als Erste ins Kino brachten.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mythologie - Wiege der Zivilisation
+STR_SCNR    :Mythologischer Wahnsinn
 STR_PARK    :Mythologischer Wahnsinn
 STR_DTLS    :Sie besitzen eine Insel von besonderem architektonischen Wert. Sie haben beschlossen, ihre Erhaltung durch einen Freizeitpark zu finanzieren, der sich mit dem reichen mythologischen Erbe der Gegend befasst.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Vorgeschichte - Nach dem Asteroiden
+STR_SCNR    :Kratergemetzel
 STR_PARK    :Kratergemetzel
 STR_DTLS    :Sie besitzen einen alten, verstaubten Meteoritenkrater. In Ihrem unternehmerischen Geist haben Sie beschlossen, einen Asteroiden-Freizeitpark zu bauen und Ihr scheinbar wertloses Land in eine Geldanlage umzuwandeln.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Vorgeschichte - Jurassic-Safari
+STR_SCNR    :Achtersaurus
 STR_PARK    :Achtersaurus
 STR_DTLS    :Sie haben die Aufgabe, einen Jurassic-Freizeitpark zu bauen. Damit Ihre Besucher optimalen Zugang zu den exotischen Pflanzen und Tieren haben, müssen Sie Attraktionen errichten, die über und in die Täler führen.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Vorgeschichte - Steinzeit
+STR_SCNR    :Felswanderungen
 STR_PARK    :Felswanderungen
 STR_DTLS    :Um den Autobahnbauern ein Schnippchen zu schlagen und die alten Steinkreise zu erhalten, müssen Sie einen Steinzeitpark bauen und ihn profitabel machen. Besucher anzulocken wird schwer, weil das Gelände unwirtlich ist.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Die Wilden Zwanziger - Gefängnisinsel
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :Die berüchtigte Gefängnisinsel - die einst überquoll vor Schwarzhändlern und Gaunern - steht jetzt zum Verkauf. Sie haben beschlossen, sie in eine 1A-Touristenattraktion zu verwandeln. Geld spielt keine Rolle
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Die Wilden Zwanziger - Schneider-Cup
+STR_SCNR    :Schneider-Ufer
 STR_PARK    :Schneider-Ufer
 STR_DTLS    :In ein paar Jahren ist das 75. Jubiläum des Sieges Ihres Großvaters im Schneider-Cup. Ihm zu Ehren bauen Sie einen Freizeitpark auf der berühmten Wasserflugzeug-Rennstrecke.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Die Wilden Zwanziger - Wolkenkratzer
+STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
 STR_DTLS    :Sie besitzen ein Gelände in der Nähe des flach gebauten Teils der Stadt. Um aus Ihrem Besitz das Beste zu machen, bauen Sie einen Wolkenkratzer-Freizeitpark im hochragenden Stil der Art Déco-Architektur der Zwanziger Jahre.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ’n’ Roll - Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Auf Ihrem Land findet jährlich ein großes Musikfestival statt. Bauen Sie einen hippen Freizeitpark, um das freidenkende Publikum bei Laune zu halten.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_SCNR    :Rock-’n’-Roll-Revival
 STR_PARK    :Rock-’n’-Roll-Revival
 STR_DTLS    :Dieser Freizeitpark ist ein wenig in die Jahre gekommen. Helfen Sie dem Besitzer, ihm einen Rock-’n’-Roll-Anstrich zu geben und ihn zu einem beliebten Ausflugsziel zu machen.
 

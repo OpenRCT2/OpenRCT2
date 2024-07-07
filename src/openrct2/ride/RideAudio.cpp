@@ -23,6 +23,7 @@
 #include "Ride.h"
 #include "RideData.h"
 
+#include <algorithm>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -257,7 +258,7 @@ namespace OpenRCT2::RideAudio
             return;
 
         // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-        if (gGameSoundsOff || !gConfigSound.RideMusicEnabled)
+        if (gGameSoundsOff || !Config::Get().sound.RideMusicEnabled)
             return;
 
         StopInactiveRideMusicChannels();

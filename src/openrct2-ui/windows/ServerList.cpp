@@ -16,7 +16,7 @@
 #    include <openrct2/Context.h>
 #    include <openrct2/config/Config.h>
 #    include <openrct2/core/Json.hpp>
-#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/drawing/Text.h>
 #    include <openrct2/interface/Colour.h>
 #    include <openrct2/localisation/Formatter.h>
 #    include <openrct2/localisation/Localisation.h>
@@ -94,7 +94,7 @@ static Widget _serverListWidgets[] = {
 
         void OnOpen() override
         {
-            _playerName = gConfigNetwork.PlayerName;
+            _playerName = Config::Get().network.PlayerName;
             widgets = _serverListWidgets;
             _serverListWidgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             InitScrollWidgets();
@@ -120,7 +120,7 @@ static Widget _serverListWidgets[] = {
         {
             _serverList = {};
             _fetchFuture = {};
-            ConfigSaveDefault();
+            Config::Save();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -238,7 +238,7 @@ static Widget _serverListWidgets[] = {
                 }
                 auto dropdownPos = ScreenCoordsXY{ windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].h_left,
                                                    windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].v_top };
-                WindowDropdownShowText(dropdownPos, 0, COLOUR_GREY, 0, 2);
+                WindowDropdownShowText(dropdownPos, 0, { COLOUR_GREY }, 0, 2);
             }
         }
 
@@ -284,7 +284,7 @@ static Widget _serverListWidgets[] = {
                         return;
 
                     _playerName = temp;
-                    gConfigNetwork.PlayerName = _playerName;
+                    Config::Get().network.PlayerName = _playerName;
                     widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
 
                     InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
@@ -334,7 +334,7 @@ static Widget _serverListWidgets[] = {
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];
@@ -359,7 +359,7 @@ static Widget _serverListWidgets[] = {
                     _version = serverDetails.Version;
                 }
 
-                colour_t colour = colours[1];
+                auto colour = colours[1];
                 if (serverDetails.Favourite)
                 {
                     colour = COLOUR_YELLOW;
@@ -424,7 +424,7 @@ static Widget _serverListWidgets[] = {
 
                 // Draw number of players
                 screenCoords.x = right - numPlayersStringWidth;
-                GfxDrawString(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { colours[1] });
+                DrawText(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, { colours[1] }, players);
 
                 screenCoords.y += ITEM_HEIGHT;
             }

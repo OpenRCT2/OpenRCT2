@@ -103,6 +103,7 @@ GameActions::Result BannerPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
     res.Cost = bannerEntry->price;
+    res.SetData(BannerPlaceActionResult{});
 
     return res;
 }

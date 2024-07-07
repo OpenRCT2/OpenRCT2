@@ -26,57 +26,6 @@ enum edge_t
     EDGE_TOPRIGHT = EDGE_NE
 };
 
-// This controls in which segment of a tile something is drawn.
-// This is from a screen perspective, e.g. topCorner will always represent the part of top of the screen.
-enum class PaintSegment : uint16_t
-{
-    topCorner = 0,
-    topRightSide = 1,
-    rightCorner = 2,
-    bottomRightSide = 3,
-    bottomCorner = 4,
-    bottomLeftSide = 5,
-    leftCorner = 6,
-    topLeftSide = 7,
-    centre = 8,
-};
-constexpr int32_t kSegmentsAll = EnumsToFlags(
-    PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner,
-    PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
-    PaintSegment::bottomRightSide);
-
-enum
-{
-    TUNNEL_0 = 0,
-    TUNNEL_1 = 1,
-    TUNNEL_2 = 2,
-    TUNNEL_INVERTED_3 = 3,
-    TUNNEL_INVERTED_4 = 4,
-    TUNNEL_INVERTED_5 = 5,
-    TUNNEL_SQUARE_FLAT = 6,
-    TUNNEL_SQUARE_7 = 7,
-    TUNNEL_SQUARE_8 = 8,
-    TUNNEL_SQUARE_INVERTED_9 = 9,
-    TUNNEL_PATH_AND_MINI_GOLF = 0x0A,
-    TUNNEL_PATH_11 = 0x0B,
-    TUNNEL_12 = 0x0C,
-    TUNNEL_13 = 0x0D,
-    TUNNEL_14 = 0x0E,
-    TUNNEL_15 = 0x0F,
-    REGULAR_TUNNEL_TYPE_COUNT,
-
-    // Ghost train doors
-    TUNNEL_DOORS_0 = 16,
-    TUNNEL_DOORS_1 = 17,
-    TUNNEL_DOORS_2 = 18,
-    TUNNEL_DOORS_3 = 19,
-    TUNNEL_DOORS_4 = 20,
-    TUNNEL_DOORS_5 = 21,
-    TUNNEL_DOORS_6 = 22,
-
-    TUNNEL_TYPE_COUNT
-};
-
 extern const uint16_t segment_offsets[9];
 
 extern bool gShowSupportSegmentHeights;
@@ -85,11 +34,7 @@ extern const CoordsXY BannerBoundBoxes[][2];
 
 extern const uint8_t PathSlopeToLandSlope[4];
 
-void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t type);
-void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type);
-void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
-
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height);
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope);
 uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);

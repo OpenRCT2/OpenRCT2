@@ -87,6 +87,8 @@ enum class MetalSupportPlace : uint8_t
     TopRightSide = 6,
     BottomLeftSide = 7,
     BottomRightSide = 8,
+
+    None = 255,
 };
 
 struct FootpathPaintInfo;

@@ -16,8 +16,8 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
@@ -208,7 +208,9 @@ static Widget window_news_widgets[] = {
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(newsItem.Text.c_str());
-                    DrawTextWrapped(dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontStyle::Small });
+                    DrawTextWrapped(
+                        dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
+                        { COLOUR_BRIGHT_GREEN, FontStyle::Small });
                 }
                 // Subject button
                 if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))

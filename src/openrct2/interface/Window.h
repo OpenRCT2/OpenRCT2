@@ -18,6 +18,8 @@
 #include "../windows/TileInspectorGlobals.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
+#include "Colour.h"
+#include "Widget.h"
 #include "WindowClasses.h"
 #include "ZoomLevel.h"
 
@@ -39,20 +41,7 @@ enum class CursorID : uint8_t;
 enum class RideConstructionState : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
-constexpr uint8_t CloseButtonWidth = 10;
-
-#define SCROLLABLE_ROW_HEIGHT 12
-constexpr uint8_t kListRowHeight = 12;
-constexpr uint8_t kTableCellHeight = 12;
-constexpr uint8_t kButtonFaceHeight = 12;
-constexpr uint8_t kSpinnerHeight = 12;
-constexpr uint8_t kDropdownHeight = 12;
-
-constexpr uint16_t kTextInputSize = 1024;
-constexpr uint16_t kTopToolbarHeight = 27;
-
 using rct_windownumber = uint16_t;
-using WidgetIndex = int16_t;
 
 struct WindowIdentifier
 {
@@ -140,6 +129,12 @@ struct Widget
     {
         top += amount;
         bottom += amount;
+    }
+
+    void moveTo(ScreenCoordsXY coords)
+    {
+        moveRight(coords.x - left);
+        moveDown(coords.y - top);
     }
 
     bool IsVisible() const
@@ -490,7 +485,7 @@ extern WindowBase* gWindowAudioExclusive;
 
 extern uint32_t gWindowUpdateTicks;
 
-extern colour_t gCurrentWindowColours[4];
+extern colour_t gCurrentWindowColours[3];
 
 extern bool gDisableErrorWindowSound;
 

@@ -9,7 +9,9 @@
 
 #pragma once
 
-enum
-{
-    SUPPORTS_SLOPE_5 = 1 << 5
-};
+#include <cstdint>
+
+using StringId = uint16_t;
+
+constexpr StringId STR_NONE = 0xFFFF;
+constexpr StringId STR_EMPTY = 0;

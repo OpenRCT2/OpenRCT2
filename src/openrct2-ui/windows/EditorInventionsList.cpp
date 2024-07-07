@@ -230,11 +230,11 @@ static Widget _inventionListDragWidgets[] = {
             ScreenSize size{};
             if (scrollIndex == 0)
             {
-                size.height = static_cast<int32_t>(gameState.ResearchItemsInvented.size()) * SCROLLABLE_ROW_HEIGHT;
+                size.height = static_cast<int32_t>(gameState.ResearchItemsInvented.size()) * kScrollableRowHeight;
             }
             else
             {
-                size.height = static_cast<int32_t>(gameState.ResearchItemsUninvented.size()) * SCROLLABLE_ROW_HEIGHT;
+                size.height = static_cast<int32_t>(gameState.ResearchItemsUninvented.size()) * kScrollableRowHeight;
             }
             return size;
         }
@@ -275,18 +275,18 @@ static Widget _inventionListDragWidgets[] = {
             const auto& gameState = GetGameState();
 
             // Draw background
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
-            int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
+            int32_t itemY = -kScrollableRowHeight;
             auto* dragItem = WindowEditorInventionsListDragGetItem();
 
             const auto& researchList = scrollIndex == 0 ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
             for (const auto& researchItem : researchList)
             {
-                itemY += SCROLLABLE_ROW_HEIGHT;
-                if (itemY + SCROLLABLE_ROW_HEIGHT < dpi.y || itemY >= dpi.y + dpi.height)
+                itemY += kScrollableRowHeight;
+                if (itemY + kScrollableRowHeight < dpi.y || itemY >= dpi.y + dpi.height)
                     continue;
 
                 if (_selectedResearchItem == &researchItem)
@@ -296,7 +296,7 @@ static Widget _inventionListDragWidgets[] = {
                     {
                         // Highlight
                         top = itemY;
-                        bottom = itemY + SCROLLABLE_ROW_HEIGHT - 1;
+                        bottom = itemY + kScrollableRowHeight - 1;
                     }
                     else
                     {
@@ -313,7 +313,7 @@ static Widget _inventionListDragWidgets[] = {
 
                 // TODO: this parameter by itself produces very light text.
                 // It needs a {BLACK} token in the string to work properly.
-                colour_t colour = COLOUR_BLACK;
+                ColourWithFlags colour = { COLOUR_BLACK };
                 FontStyle fontStyle = FontStyle::Medium;
                 auto darkness = TextDarkness::Regular;
 
@@ -323,7 +323,7 @@ static Widget _inventionListDragWidgets[] = {
                         darkness = TextDarkness::ExtraDark;
                     else
                         darkness = TextDarkness::Dark;
-                    colour = colours[1] | COLOUR_FLAG_INSET;
+                    colour = colours[1].withFlag(ColourFlag::inset, true);
                 }
 
                 DrawResearchItem(dpi, researchItem, boxWidth, { 1, itemY }, STR_BLACK_STRING, { colour, fontStyle, darkness });
@@ -379,7 +379,7 @@ static Widget _inventionListDragWidgets[] = {
                 dpi,
                 { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
-                ColourMapA[colours[1]].darkest);
+                ColourMapA[colours[1].colour].darkest);
 
             auto* researchItem = WindowEditorInventionsListDragGetItem();
             if (researchItem == nullptr || researchItem->IsNull())
@@ -559,7 +559,7 @@ static Widget _inventionListDragWidgets[] = {
             auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
             for (auto& researchItem : researchList)
             {
-                y -= SCROLLABLE_ROW_HEIGHT;
+                y -= kScrollableRowHeight;
                 if (y < 0)
                 {
                     return &researchItem;
@@ -575,7 +575,7 @@ static Widget _inventionListDragWidgets[] = {
             auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
             for (auto& researchItem : researchList)
             {
-                y -= SCROLLABLE_ROW_HEIGHT;
+                y -= kScrollableRowHeight;
                 if (y < 0)
                 {
                     return &researchItem;
@@ -658,7 +658,7 @@ static Widget _inventionListDragWidgets[] = {
 
             DrawResearchItem(
                 dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
-                { COLOUR_BLACK | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE) });
+                { ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::withOutline, true) });
         }
 
         void Init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)

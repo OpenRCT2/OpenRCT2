@@ -71,7 +71,9 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::acceleration_get, &ScVehicle::acceleration_set, "acceleration");
         dukglue_register_property(ctx, &ScVehicle::velocity_get, &ScVehicle::velocity_set, "velocity");
         dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
-        dukglue_register_property(ctx, &ScVehicle::isReversed_get, &ScVehicle::isReversed_set, "isReversed");
+        dukglue_register_property(
+            ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
+            "isReversed");
         dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
         dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
         dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
@@ -189,7 +191,7 @@ namespace OpenRCT2::Scripting
         {
             if (value.type() == DukValue::Type::NUMBER)
             {
-                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(value.as_int());
+                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(value.as_uint());
             }
             else
             {
@@ -333,12 +335,13 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    bool ScVehicle::isReversed_get() const
+    template<uint32_t flag> bool ScVehicle::flag_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->HasFlag(VehicleFlags::CarIsReversed) : false;
+        return vehicle != nullptr ? vehicle->HasFlag(flag) : false;
     }
-    void ScVehicle::isReversed_set(bool value)
+
+    template<uint32_t flag> void ScVehicle::flag_set(bool value)
     {
         ThrowIfGameStateNotMutable();
         auto vehicle = GetVehicle();
@@ -346,11 +349,11 @@ namespace OpenRCT2::Scripting
         {
             if (value)
             {
-                vehicle->SetFlag(VehicleFlags::CarIsReversed);
+                vehicle->SetFlag(flag);
             }
             else
             {
-                vehicle->ClearFlag(VehicleFlags::CarIsReversed);
+                vehicle->ClearFlag(flag);
             }
         }
     }

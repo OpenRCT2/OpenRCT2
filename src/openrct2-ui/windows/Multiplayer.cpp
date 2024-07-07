@@ -14,7 +14,7 @@
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
@@ -137,7 +137,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
     static bool IsServerPlayerInvisible()
     {
-        return NetworkIsServerPlayerInvisible() && !gConfigGeneral.DebuggingTools;
+        return NetworkIsServerPlayerInvisible() && !Config::Get().general.DebuggingTools;
     }
 
     class MultiplayerWindow final : public Window
@@ -272,16 +272,16 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 switch (widgetIndex)
                 {
                     case WIDX_LOG_CHAT_CHECKBOX:
-                        gConfigNetwork.LogChat = !gConfigNetwork.LogChat;
-                        ConfigSaveDefault();
+                        Config::Get().network.LogChat = !Config::Get().network.LogChat;
+                        Config::Save();
                         break;
                     case WIDX_LOG_SERVER_ACTIONS_CHECKBOX:
-                        gConfigNetwork.LogServerActions = !gConfigNetwork.LogServerActions;
-                        ConfigSaveDefault();
+                        Config::Get().network.LogServerActions = !Config::Get().network.LogServerActions;
+                        Config::Save();
                         break;
                     case WIDX_KNOWN_KEYS_ONLY_CHECKBOX:
-                        gConfigNetwork.KnownKeysOnly = !gConfigNetwork.KnownKeysOnly;
-                        ConfigSaveDefault();
+                        Config::Get().network.KnownKeysOnly = !Config::Get().network.KnownKeysOnly;
+                        Config::Save();
                         break;
                 }
                 break;
@@ -430,9 +430,9 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WindowWidgetType::Empty;
                 }
 
-                SetCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.LogChat);
-                SetCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.LogServerActions);
-                SetCheckboxValue(WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.KnownKeysOnly);
+                SetCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, Config::Get().network.LogChat);
+                SetCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, Config::Get().network.LogServerActions);
+                SetCheckboxValue(WIDX_KNOWN_KEYS_ONLY_CHECKBOX, Config::Get().network.KnownKeysOnly);
                 break;
             }
         }
@@ -569,7 +569,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     Invalidate();
                 }
 
-                screenSize = { 0, NetworkGetNumPlayers() * SCROLLABLE_ROW_HEIGHT };
+                screenSize = { 0, NetworkGetNumPlayers() * kScrollableRowHeight };
                 int32_t i = screenSize.height - window_multiplayer_players_widgets[WIDX_LIST].bottom
                     + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
@@ -590,7 +590,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     Invalidate();
                 }
 
-                screenSize = { 0, NetworkGetNumActions() * SCROLLABLE_ROW_HEIGHT };
+                screenSize = { 0, NetworkGetNumActions() * kScrollableRowHeight };
                 int32_t i = screenSize.height - window_multiplayer_groups_widgets[WIDX_LIST].bottom
                     + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
@@ -612,7 +612,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
         {
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
-                int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+                int32_t index = screenCoords.y / kScrollableRowHeight;
                 if (index >= no_list_items)
                     return;
 
@@ -626,7 +626,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+                int32_t index = screenCoords.y / kScrollableRowHeight;
                 if (index >= no_list_items)
                     return;
 
@@ -648,7 +648,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+                int32_t index = screenCoords.y / kScrollableRowHeight;
                 if (index >= no_list_items)
                     return;
 
@@ -751,18 +751,18 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 break;
             }
 
-            if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi.y)
+            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.y)
             {
                 thread_local std::string _buffer;
                 _buffer.reserve(512);
                 _buffer.clear();
 
                 // Draw player name
-                colour_t colour = COLOUR_BLACK;
+                auto colour = ColourWithFlags{ COLOUR_BLACK };
                 if (listPosition == selected_list_item)
                 {
                     GfxFilterRect(
-                        dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
+                        dpi, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                         FilterPaletteID::PaletteDarken1);
                     _buffer += NetworkGetPlayerName(player);
                     colour = colours[2];
@@ -781,7 +781,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 }
                 screenCoords.x = 0;
                 GfxClipString(_buffer.data(), 230, FontStyle::Medium);
-                GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+                DrawText(dpi, screenCoords, { colour }, _buffer.c_str());
 
                 // Draw group name
                 _buffer.resize(0);
@@ -792,7 +792,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     screenCoords.x = 173;
                     _buffer += NetworkGetGroupName(group);
                     GfxClipString(_buffer.data(), 80, FontStyle::Medium);
-                    GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+                    DrawText(dpi, screenCoords, { colour }, _buffer.c_str());
                 }
 
                 // Draw last action
@@ -829,9 +829,9 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 _buffer += pingBuffer;
 
                 screenCoords.x = 356;
-                GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+                DrawText(dpi, screenCoords, { colour }, _buffer.c_str());
             }
-            screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+            screenCoords.y += kScrollableRowHeight;
             listPosition++;
         }
     }
@@ -886,14 +886,15 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
-            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+            ColourMapA[colours[1].colour].mid_light);
 
         for (int32_t i = 0; i < NetworkGetNumActions(); i++)
         {
             if (i == selected_list_item)
             {
                 GfxFilterRect(
-                    dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
+                    dpi, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                     FilterPaletteID::PaletteDarken1);
             }
             if (screenCoords.y > dpi.y + dpi.height)
@@ -901,7 +902,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 break;
             }
 
-            if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi.y)
+            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.y)
             {
                 int32_t groupindex = NetworkGetGroupIndex(_selectedGroup);
                 if (groupindex != -1)
@@ -909,7 +910,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     if (NetworkCanPerformAction(groupindex, static_cast<NetworkPermission>(i)))
                     {
                         screenCoords.x = 0;
-                        GfxDrawString(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
+                        DrawText(dpi, screenCoords, {}, u8"{WINDOW_COLOUR_2}✓");
                     }
                 }
 
@@ -918,7 +919,7 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                 ft.Add<uint16_t>(NetworkGetActionNameStringID(i));
                 DrawTextBasic(dpi, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
             }
-            screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+            screenCoords.y += kScrollableRowHeight;
         }
     }
 

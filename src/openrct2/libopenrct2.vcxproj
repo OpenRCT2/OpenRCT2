@@ -176,6 +176,7 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\ConfigEnum.hpp" />
+    <ClInclude Include="config\ConfigTypes.h" />
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="core\FileStream.h" />
     <ClInclude Include="core\FileSystem.hpp" />
     <ClInclude Include="core\FileWatcher.h" />
+    <ClInclude Include="core\FixedPoint.hpp" />
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />
     <ClInclude Include="core\Http.h" />
@@ -210,6 +212,7 @@
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
+    <ClInclude Include="core\Money.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />
@@ -217,6 +220,7 @@
     <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\FixedVector.h" />
+    <ClInclude Include="core\Speed.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
@@ -278,6 +282,7 @@
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\ConversionTables.h" />
     <ClInclude Include="localisation\Currency.h" />
+    <ClInclude Include="localisation\CurrencyTypes.h" />
     <ClInclude Include="localisation\Date.h" />
     <ClInclude Include="localisation\FormatCodes.h" />
     <ClInclude Include="localisation\Formatter.h" />
@@ -363,6 +368,10 @@
     <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
+    <ClInclude Include="paint\tile_element\Segment.h" />
+    <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
+    <ClInclude Include="paint\track\Segment.h" />
+    <ClInclude Include="paint\track\Support.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="park\Legacy.h" />
@@ -383,6 +392,7 @@
     <ClInclude Include="rct12\SawyerChunk.h" />
     <ClInclude Include="rct12\SawyerChunkReader.h" />
     <ClInclude Include="rct12\SawyerChunkWriter.h" />
+    <ClInclude Include="rct1\Csg.h" />
     <ClInclude Include="rct1\Limits.h" />
     <ClInclude Include="rct1\RCT1.h" />
     <ClInclude Include="rct1\Tables.h" />
@@ -393,6 +403,7 @@
     <ClInclude Include="ReplayManager.h" />
     <ClInclude Include="ride\CableLift.h" />
     <ClInclude Include="ride\coaster\BolligerMabillardTrack.hpp" />
+    <ClInclude Include="ride\coaster\CorkscrewRollerCoaster.hpp" />
     <ClInclude Include="ride\coaster\meta\AirPoweredVerticalCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AlpineCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
@@ -461,6 +472,7 @@
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideEntry.h" />
     <ClInclude Include="ride\RideRatings.h" />
+    <ClInclude Include="ride\RideStringIds.h" />
     <ClInclude Include="ride\RideTypes.h" />
     <ClInclude Include="ride\ShopItem.h" />
     <ClInclude Include="ride\shops\meta\CashMachine.h" />
@@ -511,8 +523,9 @@
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
-    <ClInclude Include="scenes\intro\IntroScene.h" />
     <ClInclude Include="scenes\game\GameScene.h" />
+    <ClInclude Include="scenes\intro\IntroScene.h" />
+    <ClInclude Include="scenes\preloader\PreloaderScene.h" />
     <ClInclude Include="scenes\title\Command\End.h" />
     <ClInclude Include="scenes\title\Command\FollowEntity.h" />
     <ClInclude Include="scenes\title\Command\LoadPark.h" />
@@ -529,6 +542,7 @@
     <ClInclude Include="scenes\title\TitleSequencePlayer.h" />
     <ClInclude Include="scripting\bindings\entity\ScGuest.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScLitter.hpp" />
+    <ClInclude Include="scripting\bindings\entity\ScParticle.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScVehicle.hpp" />
@@ -578,6 +592,7 @@
     <ClInclude Include="windows\Intent.h" />
     <ClInclude Include="windows\TileInspectorGlobals.h" />
     <ClInclude Include="world\tile_element\TileElementType.h" />
+    <ClInclude Include="world\tile_element\Slope.h" />
     <ClInclude Include="world\Banner.h" />
     <ClInclude Include="world\Climate.h" />
     <ClInclude Include="world\ConstructionClearance.h" />
@@ -873,6 +888,7 @@
     <ClCompile Include="paint\tile_element\Paint.Surface.cpp" />
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Wall.cpp" />
+    <ClCompile Include="paint\tile_element\Paint.Tunnel.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="park\Legacy.cpp" />
@@ -892,6 +908,7 @@
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />
     <ClCompile Include="rct12\SawyerChunkWriter.cpp" />
+    <ClCompile Include="rct1\Csg.cpp" />
     <ClCompile Include="rct1\S4Importer.cpp" />
     <ClCompile Include="rct1\T4Importer.cpp" />
     <ClCompile Include="rct1\Tables.cpp" />
@@ -909,7 +926,6 @@
     <ClCompile Include="ride\coaster\ClassicStandUpRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\ClassicWoodenRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
-    <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\GigaCoaster.cpp" />
     <ClCompile Include="ride\coaster\HeartlineTwisterCoaster.cpp" />
@@ -1003,6 +1019,7 @@
     <ClCompile Include="scenes\Scene.cpp" />
     <ClCompile Include="scenes\game\GameScene.cpp" />
     <ClCompile Include="scenes\intro\IntroScene.cpp" />
+    <ClCompile Include="scenes\preloader\PreloaderScene.cpp" />
     <ClCompile Include="scenes\title\Command\End.cpp" />
     <ClCompile Include="scenes\title\Command\FollowEntity.cpp" />
     <ClCompile Include="scenes\title\Command\LoadPark.cpp" />
@@ -1018,6 +1035,7 @@
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScParticle.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScVehicle.cpp" />
     <ClCompile Include="scripting\bindings\network\ScNetwork.cpp" />

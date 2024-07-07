@@ -13,6 +13,8 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
@@ -53,7 +55,7 @@ static void PaintSpaceRingsStructure(
             frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
-        if ((ride.colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN)
+        if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)
         {
             vehicleIndex = 0;
         }
@@ -99,7 +101,7 @@ static void PaintSpaceRings(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
@@ -179,7 +181,7 @@ static void PaintSpaceRings(
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /**

@@ -16,7 +16,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -381,7 +380,7 @@ static Widget _windowFinancesResearchWidgets[] =
                         dpi,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
                           screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1]].lighter | 0x1000000);
+                        ColourMapA[colours[1].colour].lighter | 0x1000000);
 
                 screenCoords.y += kTableCellHeight;
             }
@@ -554,7 +553,7 @@ static Widget _windowFinancesResearchWidgets[] =
                     GfxFillRect(
                         dpi,
                         { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1]].lighter | 0x1000000);
+                        ColourMapA[colours[1].colour].lighter | 0x1000000);
 
                 DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
                 screenCoords.y += kTableCellHeight;
@@ -604,7 +603,7 @@ static Widget _windowFinancesResearchWidgets[] =
 
         uint16_t SummaryMaxAvailableMonth()
         {
-            return std::min<uint16_t>(GetDate().GetMonthsElapsed(), EXPENDITURE_TABLE_MONTH_COUNT - 1);
+            return std::min<uint16_t>(GetDate().GetMonthsElapsed(), kExpenditureTableMonthCount - 1);
         }
 
 #pragma endregion
@@ -806,7 +805,7 @@ static Widget _windowFinancesResearchWidgets[] =
         void OnPrepareDrawMarketing()
         {
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(gMarketingCampaigns.size());
+            int32_t numActiveCampaigns = static_cast<int32_t>(GetGameState().MarketingCampaigns.size());
             int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
 
             // Update group box positions

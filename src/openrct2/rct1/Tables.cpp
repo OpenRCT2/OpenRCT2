@@ -118,7 +118,7 @@ namespace RCT1
 
     std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)
     {
-        static constexpr std::string_view map[Limits::NumTerrainSurfaces] =
+        static constexpr std::string_view map[Limits::kNumTerrainSurfaces] =
         {
             "rct2.terrain_surface.grass",
             "rct2.terrain_surface.sand",
@@ -142,7 +142,7 @@ namespace RCT1
 
     std::string_view GetTerrainEdgeObject(uint8_t terrainEdge)
     {
-        static constexpr std::string_view map[Limits::NumTerrainEdges] =
+        static constexpr std::string_view map[Limits::kNumTerrainEdges] =
         {
             "rct2.terrain_edge.rock",
             "rct1.terrain_edge.brick",
@@ -278,7 +278,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 },    // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_SPINNING_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS,
-            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_YELLOW },    // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_DARK_BLUE }, // RCT1_VEHICLE_TYPE_LARGE_MONORAIL_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_CANOES,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_ROWING_BOATS,
@@ -339,7 +339,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_REVERSER_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_GOLFERS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_RIVER_RIDE_BOATS,
-            { COPY_COLOUR_1, COLOUR_BLACK, COPY_COLOUR_2 },     // RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 },    // RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_1 },    // RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK },     // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED,
@@ -686,13 +686,13 @@ namespace RCT1
 
         if (rct1VehicleType == VehicleType::HeartlineTwisterCars)
         {
-            return vehicleSubEntry == HEARTLINE_TWISTER_FORWARDS ? 0 : 1;    
+            return vehicleSubEntry == HEARTLINE_TWISTER_FORWARDS ? 0 : 1;
         }
         if (rct1VehicleType == VehicleType::HeartlineTwisterCarsReversed)
         {
-            return vehicleSubEntry == HEARTLINE_TWISTER_BACKWARDS ? 0 : 1;    
+            return vehicleSubEntry == HEARTLINE_TWISTER_BACKWARDS ? 0 : 1;
         }
-    
+
         return map[vehicleSubEntry];
     }
 
@@ -766,7 +766,7 @@ namespace RCT1
             "rct1aa.ride.virginia_reel_tubs",        // RCT1_RIDE_TYPE_VIRGINIA_REEL
             "rct1aa.ride.splash_boats",              // RCT1_RIDE_TYPE_RIVER_RIDE
             "rct1aa.ride.mini_helicopters",          // RCT1_RIDE_TYPE_CYCLE_MONORAIL
-            "rct2.ride.vekst",                       // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
+            "rct1aa.ride.lay_down_trains",           // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
             "rct1aa.ride.suspended_monorail_trains", // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
             "",                                      // RCT1_RIDE_TYPE_40
             "rct1aa.ride.reverser_cars",             // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
@@ -871,7 +871,7 @@ namespace RCT1
             "rct1aa.ride.reverser_cars",                   //  VehicleType::ReverserCars
             "rct2.ride.golf1",                             //  VehicleType::Golfers
             "rct1aa.ride.splash_boats",                    //  VehicleType::RiverRideBoats
-            "rct2.ride.vekst",                             //  VehicleType::FlyingRollerCoasterTrain
+            "rct1aa.ride.lay_down_trains",                 //  VehicleType::FlyingRollerCoasterTrain
             "rct1aa.ride.hyper_twister_trains",            //  VehicleType::NonLoopingSteelTwisterRollerCoasterTrain
             "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCars
             "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCarsReversed
@@ -1255,7 +1255,7 @@ namespace RCT1
 
         if (wallType < std::size(map))
             return map[wallType];
-        
+
         return -1;
     }
 
@@ -1455,9 +1455,9 @@ namespace RCT1
             { "rct2.scenery_small.tic", "rct2.scenery_small.tlc", "rct2.scenery_small.tmc", "rct2.scenery_small.tmp", "rct2.scenery_small.titc", "rct2.scenery_small.tghc", "rct2.scenery_small.tac", "rct2.scenery_small.tghc2", "rct2.scenery_small.tcj", "rct2.scenery_small.tmbj", "rct2.scenery_small.tcf", "rct2.scenery_small.tcl", "rct2.scenery_small.trf", "rct2.scenery_small.trf2", "rct2.scenery_small.tel", "rct2.scenery_small.tap", "rct2.scenery_small.tsp", "rct2.scenery_small.tmzp", "rct2.scenery_small.tcrp", "rct2.scenery_small.tbp", "rct2.scenery_small.tlp", "rct2.scenery_small.twp", "rct2.scenery_small.tas", "rct2.scenery_small.tmg", "rct2.scenery_small.tww", "rct2.scenery_small.tsb", "rct2.scenery_small.tvl", "rct2.scenery_small.tcy", "rct2.scenery_small.tns", "rct2.scenery_small.twn", "rct2.scenery_small.tce", "rct2.scenery_small.tco", "rct2.scenery_small.thl", "rct2.scenery_small.tcc", "rct2.scenery_small.tf1", "rct2.scenery_small.tf2", "rct2.scenery_small.tct", "rct2.scenery_small.th1", "rct2.scenery_small.th2", "rct2.scenery_small.tpm", "rct2.scenery_small.tropt1",
               "rct2.scenery_small.ts0", "rct2.scenery_small.ts1", "rct2.scenery_small.ts2", "rct2.scenery_small.ts3", "rct2.scenery_small.ts4", "rct2.scenery_small.ts5", "rct2.scenery_small.ts6", "rct2.scenery_small.tef", "rct2.scenery_small.tal", "rct2.scenery_small.tsq", "rct2.scenery_small.tht", "rct2.scenery_small.tcb", "rct2.scenery_small.tdm", "rct2.scenery_small.tsd", "rct2.scenery_small.torn1", "rct2.scenery_small.torn2", "rct2.scenery_small.tgs", "rct2.scenery_small.tus", "rct2.scenery_small.tbc", "rct2.scenery_small.tsc", "rct2.scenery_small.twf", "rct2.scenery_small.tsh0", "rct2.scenery_small.tsh1", "rct2.scenery_small.tsh2", "rct2.scenery_small.tsh3", "rct2.scenery_small.tsh4", "rct2.scenery_small.tsh5", "rct2.scenery_small.tdf", "rct2.scenery_small.tsh", "rct2.scenery_small.thrs", "rct2.scenery_small.tstd", "rct2.scenery_small.tbr", "rct2.scenery_small.ttf", "rct2.scenery_wall.whg", "rct2.scenery_wall.whgg", "rct2.scenery_wall.wch", "rct2.scenery_wall.wchg",
               "rct2.scenery_small.tg1", "rct2.scenery_small.tg2", "rct2.scenery_small.tg3", "rct2.scenery_small.tg4", "rct2.scenery_small.tg5", "rct2.scenery_small.tg6", "rct2.scenery_small.tg7", "rct2.scenery_small.tg8", "rct2.scenery_small.tg9", "rct2.scenery_small.tg10", "rct2.scenery_small.tg11", "rct2.scenery_small.tg12", "rct2.scenery_small.tg13", "rct2.scenery_small.tg14", "rct2.scenery_small.tg15", "rct2.scenery_small.tg16", "rct2.scenery_small.tg17", "rct2.scenery_small.tg18", "rct2.scenery_small.tg19", "rct2.scenery_small.tg20", "rct2.scenery_small.tg21",
-              "rct2.scenery_wall.wbr1a", "rct2.scenery_wall.wbr2a", "rct2.scenery_wall.wallbb34", "rct2.scenery_wall.walltn32", "rct2.scenery_small.tntroof1", "rct2.scenery_wall.wallbb33", "toontowner.scenery_small.xxbbbr01_fix", "rct2.scenery_wall.wallbb32", "rct2.scenery_wall.wallbb16", "rct2.scenery_wall.wallbb8", "rct2.scenery_small.roof5", "rct2.scenery_small.roof7", "rct2.scenery_wall.wallrs32", "rct2.scenery_wall.wallrs16", "rct2.scenery_wall.wallrs8", "rct2.scenery_wall.wallbr32", "rct2.scenery_wall.wallbr16", "rct2.scenery_wall.wallbr8", "rct2.scenery_wall.wallbrdr", "rct2.scenery_wall.wallbrwn", "rct2.scenery_small.brbase", "rct2.scenery_small.roof1", "toontowner.scenery_small.ttrftl02", "toontowner.scenery_small.ttrftl03", "toontowner.scenery_small.ttrftl04", "rct2.scenery_small.roof2", "rct2.scenery_small.roof3", "toontowner.scenery_small.ttrftl07", "toontowner.scenery_small.ttrftl08", "rct2.scenery_small.roof4", "rct2.scenery_wall.wallcb32", "rct2.scenery_wall.wallcb16", "rct2.scenery_wall.wallcb8", "rct2.scenery_wall.wallcbdr", "rct2.scenery_wall.wallcbwn", "rct2.scenery_small.brbase2", "rct2.scenery_small.cwbcrv33", "rct2.scenery_small.cwbcrv32", "rct2.scenery_small.brcrrf1", "rct2.scenery_small.roof6", "rct2.scenery_small.roof8", "rct2.scenery_wall.wallcf32", "rct2.scenery_wall.wallcf16", "rct2.scenery_wall.wallcf8", "rct2.scenery_wall.wallcfdr", "rct2.scenery_wall.wallcfwn", "rct2.scenery_wall.wallcfar", "rct2.scenery_small.brbase3", "rct2.scenery_small.cwfcrv33", "rct2.scenery_small.cwfcrv32", "rct2.scenery_small.brcrrf2", "rct2.scenery_small.roof9", "rct2.scenery_small.roof11", "rct2.scenery_small.roof10", "rct2.scenery_small.roof12", "rct2.scenery_small.corroof2", "rct2.scenery_wall.wallco16", "rct2.scenery_small.corroof", "rct2.scenery_wall.walllt32", "rct2.scenery_wall.wallsk16", "rct2.scenery_wall.wallsk32", "rct2.scenery_small.sktdw2", "rct2.scenery_small.sktdw", "rct2.scenery_small.sktbase", "rct2.scenery_small.sktbaset", "rct2.scenery_small.suppw2", "rct2.scenery_small.suppw1", "rct2.scenery_small.suppw3", "rct2.scenery_small.suppleg1", "rct2.scenery_small.suppleg2", "rct2.scenery_small.sumrf", "rct2.scenery_wall.wallrh32",
+              "rct2.scenery_wall.wbr1a", "rct2.scenery_wall.wbr2a", "rct2.scenery_wall.wallbb34", "rct2.scenery_wall.walltn32", "rct2.scenery_small.tntroof1", "rct2.scenery_wall.wallbb33", "toontowner.scenery_small.xxbbbr01_fix", "rct2.scenery_wall.wallbb32", "rct2.scenery_wall.wallbb16", "rct2.scenery_wall.wallbb8", "rct2.scenery_small.roof5", "rct2.scenery_small.roof7", "rct2.scenery_wall.wallrs32", "rct2.scenery_wall.wallrs16", "rct2.scenery_wall.wallrs8", "rct2.scenery_wall.wallbr32", "rct2.scenery_wall.wallbr16", "rct2.scenery_wall.wallbr8", "rct2.scenery_wall.wallbrdr", "rct2.scenery_wall.wallbrwn", "rct2.scenery_small.brbase", "rct2.scenery_small.roof1", "toontowner.scenery_small.ttrftl02", "toontowner.scenery_small.ttrftl03", "toontowner.scenery_small.ttrftl04", "rct2.scenery_small.roof2", "rct2.scenery_small.roof3", "toontowner.scenery_small.ttrftl07", "toontowner.scenery_small.ttrftl08", "rct2.scenery_small.roof4", "rct2.scenery_wall.wallcb32", "rct2.scenery_wall.wallcb16", "rct2.scenery_wall.wallcb8", "rct2.scenery_wall.wallcbdr", "rct2.scenery_wall.wallcbwn", "rct2.scenery_small.brbase2", "rct2.scenery_small.cwbcrv33", "rct2.scenery_small.cwbcrv32", "rct2.scenery_small.brcrrf1", "rct2.scenery_small.roof6", "rct2.scenery_small.roof8", "rct2.scenery_wall.wallcf32", "rct2.scenery_wall.wallcf16", "rct2.scenery_wall.wallcf8", "rct2.scenery_wall.wallcfdr", "rct2.scenery_wall.wallcfwn", "rct2.scenery_wall.wallcfar", "rct2.scenery_small.brbase3", "rct2.scenery_small.cwfcrv33", "rct2.scenery_small.cwfcrv32", "rct2.scenery_small.brcrrf2", "rct2.scenery_small.roof9", "rct2.scenery_small.roof11", "rct2.scenery_small.roof10", "rct2.scenery_small.roof12", "rct2.scenery_small.corroof2", "rct2.scenery_wall.wallco16", "rct2.scenery_small.corroof", "rct2.scenery_wall.walllt32", "rct2.scenery_wall.wallsk16", "rct2.scenery_wall.wallsk32", "rct2.scenery_small.sktdw2", "rct2.scenery_small.sktdw", "rct2.scenery_small.sktbase", "rct2.scenery_small.sktbaset", "official.scenery_wall.support_structure_full", "official.scenery_wall.support_structure_half", "rct2.scenery_small.suppw2", "official.scenery_small.support_structure_half", "rct2.scenery_small.suppw1", "rct2.scenery_small.suppw3", "rct2.scenery_small.suppleg1", "rct2.scenery_small.suppleg2", "rct2.scenery_small.sumrf", "rct2.scenery_wall.wallrh32",
               "rct2.scenery_wall.wmf", "rct2.scenery_wall.wmfg", "rct2.scenery_wall.wsw", "rct2.scenery_wall.wswg", "rct2.scenery_wall.wfw1", "rct2.scenery_wall.wfwg", "rct1.scenery_wall.wooden_fence_brown", "rct1.scenery_wall.wooden_fence_brown_gate", "rct1.scenery_wall.wooden_fence_red", "rct1.scenery_wall.wooden_fence_white", "rct2.scenery_wall.wpf", "rct2.scenery_wall.wpfg", "rct2.scenery_wall.wsw1", "rct2.scenery_wall.wsw2", "rct2.scenery_wall.wbr1", "rct2.scenery_wall.wbrg", "rct2.scenery_wall.wbr2", "rct2.scenery_wall.wbr3", "rct2.scenery_wall.wallmm16", "rct2.scenery_wall.wallmm17",
-              "rct2.footpath_item.lamp1", "rct2.footpath_item.lamp2", "rct2.footpath_item.litter1", "rct2.footpath_item.bench1", "rct2.footpath_item.qtv1", "rct2.footpath_banner.bn1", "rct2.scenery_wall.wallpost", "rct2.scenery_wall.wallsign", "rct2.scenery_large.ssig1", "rct2.scenery_large.ssig2", "rct2.scenery_large.ssig3", "rct2.scenery_large.ssig4" },
+              "rct2.footpath_item.lamp1", "rct2.footpath_item.lamp2", "rct2.footpath_item.litter1", "rct2.footpath_item.bench1", "rct2.footpath_item.qtv1", "rct2.footpath_banner.bn1", "rct2.scenery_wall.wallpost", "official.scenery_wall.post_flipped", "rct2.scenery_wall.wallsign", "rct2.scenery_large.ssig1", "rct2.scenery_large.ssig2", "rct2.scenery_large.ssig3", "rct2.scenery_large.ssig4" },
             // RCT1_SCENERY_THEME_MINE
             { "rct2.scenery_large.smh1", "rct2.scenery_large.smh2", "rct2.scenery_large.smn1", "rct2.scenery_small.tbw", "rct2.scenery_small.tbr1", "rct2.scenery_small.tbr2", "rct2.scenery_small.tml", "rct2.scenery_small.tmw", "rct2.scenery_small.tbr3", "rct2.scenery_small.tbr4", "rct2.scenery_small.tmj", "rct2.footpath_banner.bn5", "rct2.scenery_wall.wallwd8", "rct2.scenery_wall.wallwd16", "rct2.scenery_wall.wallwd32", "rct2.scenery_wall.wallwd33", "rct2.scenery_wall.wallmn32", "rct2.scenery_small.wdbase", "rct2.scenery_small.minroof1", "rct2.scenery_small.roof13", "toontowner.scenery_small.ttrfwd01", "toontowner.scenery_small.ttrfwd02", "toontowner.scenery_small.ttrfwd03", "toontowner.scenery_small.ttrfwd04", "toontowner.scenery_small.ttrfwd06", "toontowner.scenery_small.ttrfwd07", "toontowner.scenery_small.ttrfwd08", "rct2.footpath_item.littermn" },
             // RCT1_SCENERY_THEME_CLASSICAL_ROMAN

@@ -181,9 +181,9 @@ extern uint8_t gFootpathConstructSlope;
 extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.
-extern const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets;
-extern const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets;
-extern const std::array<CoordsXY, NumOrthogonalDirections * 2> BenchUseOffsets;
+extern const std::array<CoordsXY, kNumOrthogonalDirections> DirectionOffsets;
+extern const std::array<CoordsXY, kNumOrthogonalDirections> BinUseOffsets;
+extern const std::array<CoordsXY, kNumOrthogonalDirections * 2> BenchUseOffsets;
 
 PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);

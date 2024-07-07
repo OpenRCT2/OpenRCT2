@@ -40,8 +40,6 @@ static constexpr uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
     400, 300, 200, 200, 250, 200,
 };
 
-std::vector<MarketingCampaign> gMarketingCampaigns;
-
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
 {
     auto campaign = MarketingGetCampaign(campaignType);
@@ -74,7 +72,7 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
 
 static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign)
 {
-    if (gConfigNotifications.ParkMarketingCampaignFinished)
+    if (Config::Get().notifications.ParkMarketingCampaignFinished)
     {
         Formatter ft;
         // This sets the string parameters for the marketing types that have an argument.
@@ -103,10 +101,12 @@ void MarketingUpdate()
 {
     PROFILED_FUNCTION();
 
-    if (GetGameState().Cheats.NeverendingMarketing)
+    auto& gameState = GetGameState();
+
+    if (gameState.Cheats.NeverendingMarketing)
         return;
 
-    for (auto it = gMarketingCampaigns.begin(); it != gMarketingCampaigns.end();)
+    for (auto it = gameState.MarketingCampaigns.begin(); it != gameState.MarketingCampaigns.end();)
     {
         auto& campaign = *it;
         if (campaign.Flags & MarketingCampaignFlags::FIRST_WEEK)
@@ -123,7 +123,7 @@ void MarketingUpdate()
         if (campaign.WeeksLeft == 0)
         {
             MarketingRaiseFinishedNotification(campaign);
-            it = gMarketingCampaigns.erase(it);
+            it = gameState.MarketingCampaigns.erase(it);
         }
         else
         {
@@ -222,7 +222,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 {
-    for (auto& campaign : gMarketingCampaigns)
+    for (auto& campaign : GetGameState().MarketingCampaigns)
     {
         if (campaign.Type == campaignType)
         {
@@ -242,7 +242,7 @@ void MarketingNewCampaign(const MarketingCampaign& campaign)
     }
     else
     {
-        gMarketingCampaigns.push_back(campaign);
+        GetGameState().MarketingCampaigns.push_back(campaign);
     }
 }
 
@@ -256,7 +256,7 @@ void MarketingCancelCampaignsForRide(const RideId rideId)
         return false;
     };
 
-    auto& v = gMarketingCampaigns;
+    auto& v = GetGameState().MarketingCampaigns;
     auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
     v.erase(removedIt, v.end());
 }

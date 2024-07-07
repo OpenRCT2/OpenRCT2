@@ -31,6 +31,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/Slope.h>
 #include <vector>
 
 using namespace OpenRCT2::TrackMetaData;
@@ -115,14 +116,14 @@ static Widget _trackPlaceWidgets[] = {
                     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
                     Invalidate();
                     _placementLoc.SetNull();
-                    DrawMiniPreview(_trackDesign.get());
+                    DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_MIRROR:
-                    TrackDesignMirror(_trackDesign.get());
+                    TrackDesignMirror(*_trackDesign);
                     _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
                     Invalidate();
                     _placementLoc.SetNull();
-                    DrawMiniPreview(_trackDesign.get());
+                    DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_SELECT_DIFFERENT_DESIGN:
                     Close();
@@ -164,7 +165,7 @@ static Widget _trackPlaceWidgets[] = {
             if (mapCoords == _placementLoc)
             {
                 TrackDesignPreviewDrawOutlines(
-                    tds, _trackDesign.get(), RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
+                    tds, *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
                 return;
             }
 
@@ -204,7 +205,7 @@ static Widget _trackPlaceWidgets[] = {
                 WidgetInvalidate(*this, WIDX_PRICE);
             }
 
-            TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), RideGetTemporaryForPreview(), trackLoc);
+            TrackDesignPreviewDrawOutlines(tds, *_trackDesign, RideGetTemporaryForPreview(), trackLoc);
         }
 
         void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -277,18 +278,18 @@ static Widget _trackPlaceWidgets[] = {
 
         void OnViewportRotate() override
         {
-            DrawMiniPreview(_trackDesign.get());
+            DrawMiniPreview(*_trackDesign);
         }
 
         void OnPrepareDraw() override
         {
-            DrawMiniPreview(_trackDesign.get());
+            DrawMiniPreview(*_trackDesign);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
             auto ft = Formatter::Common();
-            ft.Add<char*>(_trackDesign->name.c_str());
+            ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
             WindowDrawWidgets(*this, dpi);
 
             // Draw mini tile preview
@@ -301,7 +302,7 @@ static Widget _trackPlaceWidgets[] = {
                 g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
                 GfxSetG1Element(SPR_TEMP, &g1temp);
                 DrawingEngineInvalidateImage(SPR_TEMP);
-                GfxDrawSprite(clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(this->colours[0])), { 0, 0 });
+                GfxDrawSprite(clippedDpi, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
             }
 
             // Price
@@ -325,7 +326,7 @@ static Widget _trackPlaceWidgets[] = {
                 auto provRide = GetRide(_placementGhostRideId);
                 if (provRide != nullptr)
                 {
-                    TrackDesignPreviewRemoveGhosts(_trackDesign.get(), *provRide, _placementGhostLoc);
+                    TrackDesignPreviewRemoveGhosts(*_trackDesign, *provRide, _placementGhostLoc);
                 }
             }
         }
@@ -349,7 +350,7 @@ static Widget _trackPlaceWidgets[] = {
             _trackDesign = std::move(trackDesign);
         }
 
-        void DrawMiniPreview(TrackDesign* td6)
+        void DrawMiniPreview(const TrackDesign& td)
         {
             ClearMiniPreview();
 
@@ -365,14 +366,14 @@ static Widget _trackPlaceWidgets[] = {
                     origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
                 }
 
-                const auto& rtd = GetRideTypeDescriptor(td6->type);
+                const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
                 if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 {
-                    DrawMiniPreviewMaze(td6, pass, origin, min, max);
+                    DrawMiniPreviewMaze(td, pass, origin, min, max);
                 }
                 else
                 {
-                    DrawMiniPreviewTrack(td6, pass, origin, min, max);
+                    DrawMiniPreviewTrack(td, pass, origin, min, max);
                 }
             }
         }
@@ -401,7 +402,7 @@ static Widget _trackPlaceWidgets[] = {
                 auto newRide = GetRide(_placementGhostRideId);
                 if (newRide != nullptr)
                 {
-                    TrackDesignPreviewRemoveGhosts(_trackDesign.get(), *newRide, _placementGhostLoc);
+                    TrackDesignPreviewRemoveGhosts(*_trackDesign, *newRide, _placementGhostLoc);
                     _hasPlacementGhost = false;
                 }
             }
@@ -416,12 +417,12 @@ static Widget _trackPlaceWidgets[] = {
             auto z = surfaceElement->GetBaseZ();
 
             // Increase Z above slope
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
                 z += 16;
 
                 // Increase Z above double slope
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     z += 16;
             }
 
@@ -431,15 +432,15 @@ static Widget _trackPlaceWidgets[] = {
 
             return z
                 + TrackDesignGetZPlacement(
-                       _trackDesign.get(), RideGetTemporaryForPreview(), { loc, z, _currentTrackPieceDirection });
+                       *_trackDesign, RideGetTemporaryForPreview(), { loc, z, _currentTrackPieceDirection });
         }
 
         void DrawMiniPreviewEntrances(
-            const TrackDesign& td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
+            const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
         {
-            for (const auto& entrance : td6.entrance_elements)
+            for (const auto& entrance : td.entranceElements)
             {
-                auto rotatedAndOffsetEntrance = origin + entrance.Location.ToCoordsXY().Rotate(rotation);
+                auto rotatedAndOffsetEntrance = origin + entrance.location.ToCoordsXY().Rotate(rotation);
 
                 if (pass == 0)
                 {
@@ -454,7 +455,7 @@ static Widget _trackPlaceWidgets[] = {
                     if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
                         uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                        uint8_t colour = entrance.IsExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                        uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2
@@ -467,16 +468,16 @@ static Widget _trackPlaceWidgets[] = {
             }
         }
 
-        void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
+        void DrawMiniPreviewTrack(const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
         {
             const uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
 
             CoordsXY curTrackStart = origin;
             uint8_t curTrackRotation = rotation;
-            for (const auto& trackElement : td6->track_elements)
+            for (const auto& trackElement : td.trackElements)
             {
                 // Follow a single track piece shape
-                const auto& ted = GetTrackElementDescriptor(trackElement.Type);
+                const auto& ted = GetTrackElementDescriptor(trackElement.type);
                 const PreviewTrack* trackBlock = ted.Block;
                 while (trackBlock->index != 255)
                 {
@@ -538,15 +539,15 @@ static Widget _trackPlaceWidgets[] = {
                 }
             }
 
-            DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
+            DrawMiniPreviewEntrances(td, pass, origin, min, max, rotation);
         }
 
-        void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
+        void DrawMiniPreviewMaze(const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
         {
             uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
-            for (const auto& mazeElement : td6->maze_elements)
+            for (const auto& mazeElement : td.mazeElements)
             {
-                auto rotatedMazeCoords = origin + TileCoordsXY{ mazeElement.x, mazeElement.y }.ToCoordsXY().Rotate(rotation);
+                auto rotatedMazeCoords = origin + mazeElement.location.ToCoordsXY().Rotate(rotation);
 
                 if (pass == 0)
                 {
@@ -574,7 +575,7 @@ static Widget _trackPlaceWidgets[] = {
                 }
             }
 
-            DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
+            DrawMiniPreviewEntrances(td, pass, origin, min, max, rotation);
         }
 
         ScreenCoordsXY DrawMiniPreviewGetPixelPosition(const CoordsXY& location)

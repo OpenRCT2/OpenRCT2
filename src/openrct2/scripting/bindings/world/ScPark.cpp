@@ -12,6 +12,7 @@
 #    include "ScPark.hpp"
 
 #    include "../../../Context.h"
+#    include "../../../Date.h"
 #    include "../../../GameState.h"
 #    include "../../../common.h"
 #    include "../../../core/String.hpp"
@@ -390,7 +391,7 @@ namespace OpenRCT2::Scripting
                 auto dukSubject = message["subject"];
                 if (dukSubject.type() == DukValue::Type::NUMBER)
                 {
-                    assoc = static_cast<uint32_t>(dukSubject.as_int());
+                    assoc = static_cast<uint32_t>(dukSubject.as_uint());
                 }
             }
             News::AddItemToQueue(type, text.c_str(), assoc);
@@ -399,6 +400,23 @@ namespace OpenRCT2::Scripting
         {
             duk_error(message.context(), DUK_ERR_ERROR, "Invalid message argument.");
         }
+    }
+
+    std::vector<int32_t> ScPark::getMonthlyExpenditure(const std::string& expenditureType) const
+    {
+        auto recordedMonths = std::clamp(
+            GetDate().GetMonthsElapsed() + 1, static_cast<uint32_t>(0), static_cast<uint32_t>(kExpenditureTableMonthCount));
+        std::vector<int32_t> result(recordedMonths, 0);
+        auto type = ScriptEngine::StringToExpenditureType(expenditureType);
+        if (type != ExpenditureType::Count)
+        {
+            auto& gameState = GetGameState();
+            for (size_t i = 0; i < recordedMonths; ++i)
+            {
+                result[i] = gameState.ExpenditureTable[i][EnumValue(type)];
+            }
+        }
+        return result;
     }
 
     void ScPark::Register(duk_context* ctx)
@@ -432,6 +450,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");
         dukglue_register_method(ctx, &ScPark::setFlag, "setFlag");
         dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
+        dukglue_register_method(ctx, &ScPark::getMonthlyExpenditure, "getMonthlyExpenditure");
     }
 
 } // namespace OpenRCT2::Scripting

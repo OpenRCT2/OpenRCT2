@@ -95,6 +95,12 @@ size_t JobPool::CountPending()
     return _pending.size();
 }
 
+size_t JobPool::CountProcessing()
+{
+    unique_lock lock(_mutex);
+    return _processing;
+}
+
 void JobPool::ProcessQueue()
 {
     unique_lock lock(_mutex);

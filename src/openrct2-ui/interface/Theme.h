@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2/common.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Window.h>
 
 enum
@@ -35,9 +36,8 @@ size_t ThemeManagerGetAvailableThemeIndex();
 void ThemeManagerSetActiveAvailableTheme(size_t index);
 size_t ThemeGetIndexForName(const utf8* name);
 
-colour_t ThemeGetColour(WindowClass wc, uint8_t index);
-void ThemeSetColour(WindowClass wc, uint8_t index, colour_t colour);
-colour_t ThemeOverrideExtendedColour(colour_t inputColour);
+ColourWithFlags ThemeGetColour(WindowClass wc, uint8_t index);
+void ThemeSetColour(WindowClass wc, uint8_t index, ColourWithFlags colour);
 uint8_t ThemeGetFlags();
 void ThemeSetFlags(uint8_t flags);
 void ThemeSave();

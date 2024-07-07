@@ -98,6 +98,7 @@ STR_0093    :Ottovolante ibrido
 STR_0094    :Ottovolante a binario singolo
 STR_0095    :Ottovolante Alpino
 STR_0096    :Ottovolante di legno classico
+STR_0097    :Ottovolante in piedi classico
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l’ottovolante, durante le curve oscillano lateralmente
@@ -181,6 +182,7 @@ STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere 
 STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, attraverso strette inversioni e cambi di direzione.
 STR_0605    :I visitatori scendono lungo una rotaia piena di curve, frenando per controllare la velocità del loro vagone
 STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettato per farti sentire “fuori controllo”
+STR_0607    :Un intenso ottovolante d’acciaio vecchio stile, nel quale i passeggeri sono in posizione eretta
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -2889,7 +2891,7 @@ STR_5755    :Versione del software errata (il server usa {STRING})
 STR_5756    :Password errata
 STR_5757    :Server pieno
 STR_5758    :{OUTLINE}{GREEN}{STRING} è entrato in gioco
-STR_5759    :Scaricamento mappa … ({INT32} / {INT32}) KiB
+STR_5759    :Scaricamento mappa …
 STR_5760    :Dollari di Hong Kong (HK$)
 STR_5761    :Nuovi dollari taiwanesi (NT$)
 STR_5762    :Yuan cinesi (CN¥)
@@ -3453,7 +3455,7 @@ STR_6374    :M
 STR_6375    :Attrazione sconosciuta
 STR_6376    :{WINDOW_COLOUR_2}Veicolo attrazione:{NEWLINE}{BLACK}{STRINGID} per {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} per {STRINGID}
-STR_6378    :Scaricamento lista oggetti: {INT32} / {INT32}
+STR_6378    :Scaricamento lista oggetti:
 STR_6379    :Ricevuti dati non validi
 STR_6380    :Aggiornamento disponibile!
 STR_6381    :Unisciti al Discord di OpenRCT2!
@@ -3693,6 +3695,34 @@ STR_6614    :Non è possibile modificare il prezzo di ingresso
 STR_6615    :Il tracciato su questa cella necessita acqua
 STR_6616    :Azione non valida per quel tipo di staff
 STR_6617    :Non è possibile scambiare l’elemento della cella con sé stesso
+STR_6618    :Impossibile cambiare la limitazione dell’oggetto…
+STR_6619    :Il tipo di oggetto non può essere sottoposto a limitazione!
+STR_6620    :Oggetto non trovato!
+STR_6621    :Limitato
+STR_6622    :Limita l’oggetto all’editor degli scenari e alla modalità sandbox
+STR_6623    :Digita ‘help’ per una lista dei comandi disponibili. Digita ‘hide’ per nascondere la console.
+STR_6624    :Analizzatore celle: ordina elementi
+STR_6625    :Colore non valido
+STR_6626    :L’animazione è invertita
+STR_6627    :Velocità percorso troppo alta!
+STR_6628    :Può essere posizionato solo sui bordi dei sentieri!
+STR_6629    :Allinea barra degli strumenti al centro
+STR_6630    :Questa impostazione allinea orizzontalmente i bottoni della barra degli strumenti al centro dello schermo. L’allineamento tradizionale è negli angoli a sinistra e a destra.
+STR_6631    :Caricamento…
+STR_6632    :Verifica file degli oggetti…
+STR_6633    :Verifica file degli scenari…
+STR_6634    :Verifica file dei modelli di percorsi…
+STR_6635    :Verifica pacchetti di risorse…
+STR_6636    :Verifica sequenze del titolo…
+STR_6637    :Caricamento sequenze del titolo…
+STR_6638    :UI ingrandita
+STR_6639    :Modifica l’interfaccia per renderla più adatta a schermi touch
+STR_6640    :Modifica pacchetti di risorse…
+STR_6641    :Finestra caricamento/progresso
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Migliorie touch
+STR_6645    :Rende alcuni elementi della UI più grandi per renderli più semplici da cliccare o premere.
 
 
 #############
@@ -4285,87 +4315,87 @@ STR_DTLS    :Costruisci le attrazioni Six Flags mancanti o crea dei progetti tut
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Africa - Miniera di diamanti
+STR_SCNR    :Miniere africane
 STR_PARK    :Miniere africane
 STR_DTLS    :Hai ereditato una miniera di diamanti abbandonata, da cui è stato estratto l’ultimo prezioso diamante. Decidi di investire il ricavato per creare un parco che diventi famoso in tutto il mondo.
 
 <Africa - Oasis>
-STR_SCNR    :Africa - Oasi
+STR_SCNR    :Il miraggio
 STR_PARK    :Il miraggio
 STR_DTLS    :Nel deserto è stata scoperta un’oasi che costituirebbe una splendida ambientazione per un parco. I mezzi di trasporto per raggiungerla esistono già.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Africa - Cascate Vittoria
+STR_SCNR    :Tuffo nel vuoto
 STR_PARK    :Tuffo nel vuoto
 STR_DTLS    :È stata costruita una diga che eroga energia idroelettrica a basso prezzo e in quantità, con la quale è possibile alimentare un parco. Per rimborsare il prestito della diga, dovrai creare un parco di grande valore.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antartide - Recupero ecologico
+STR_SCNR    :Avventure fra i ghiacci
 STR_PARK    :Avventure fra i ghiacci
 STR_DTLS    :L’agenzia dei servizi ambientali si è rivolta a te per trasformare una vecchia raffineria, vero pugno nell’occhio, in rinomata attrazione turistica. La terra costa poco ma l’interesse sui prestiti è alto. Puoi vendere i vecchi edifici.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asia - Turismo alla Grande Muraglia
+STR_SCNR    :La Grande Muraglia Cinese
 STR_PARK    :La Grande Muraglia Cinese
 STR_DTLS    :Le autorità hanno deciso di promuovere il turismo presso la Grande Muraglia costruendo un parco a tema nei paraggi. I soldi non sono un problema
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asia - Sfruttamento costiero in Giappone
+STR_SCNR    :Costa di Okinawa
 STR_PARK    :Costa di Okinawa
 STR_DTLS    :Un parco esistente ha esaurito lo spazio a sua disposizione. L’unica possibilità è costruire in mare aperto e per riuscirci hai chiesto un prestito. Le limitazioni di altezza sono piuttosto restrittive, a causa del terreno cedevole.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia - Palazzo del Maragià
+STR_SCNR    :Il parco del Maragià
 STR_PARK    :Il parco del Maragià
 STR_DTLS    :Il Maragià ti ha incaricato di creare qualcosa che intrattenga la vasta popolazione locale. Costruisci un parco ispirato al palazzo del Maragià.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australia - Ayers Rock
+STR_SCNR    :Avventura all’Ayers
 STR_PARK    :Avventura all’Ayers
 STR_DTLS    :Nell’ambito di un programma di rivalutazione culturale, stai aiutando gli aborigeni a creare un parco. Devi attrarre un numero elevato di visitatori per trasmettergli l’eredità culturale degli aborigeni.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australia - Divertimento in spiaggia
+STR_SCNR    :Barbecue balneare
 STR_PARK    :Barbecue balneare
 STR_DTLS    :Il parco marino di un imprenditore locale è fallito. Tu possiedi già un piccolo parco e per comprare l’altro devi trovare dei soldi, sviluppando poi entrambi in una grossa struttura combinata.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europa - Festival culturale europeo
+STR_SCNR    :Festival europeo
 STR_PARK    :Festival europeo
 STR_DTLS    :Ti è stato chiesto di gestire una grande attrazione culturale europea. Devi incrementare il numero di visite per ripagare i sussidi UE prima che scada il termine stabilito dal Parlamento Europeo.
 
 <Europe - Renovation>
-STR_SCNR    :Europa - Rinnovo
+STR_SCNR    :Rinascita dalle ceneri
 STR_PARK    :Rinascita dalle ceneri
 STR_DTLS    :Un vecchio parco è in sfacelo. Ti viene concesso un prestito dall’Unione Europea per riportare questa zona desolata alla sua bellezza originaria. Dovrai rinnovare il parco e ripagare il prestito.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Nordamerica - Hawaii estreme
+STR_SCNR    :Brivido a Waikiki
 STR_PARK    :Brivido a Waikiki
 STR_DTLS    :Gli abitanti delle Hawaii sono stufi del surf e cercano qualcosa di più eccitante. Devi costruire un parco che soddisfi le loro aspettative, mantenendo alto il livello di attrazione turistica locale.
 
 <North America - Grand Canyon>
-STR_SCNR    :Nordamerica - Grand Canyon
+STR_SCNR    :Calamità nel canyon
 STR_PARK    :Calamità nel canyon
 STR_DTLS    :Devi costruire un parco ai due lati di questa meraviglia naturale. Hai dei limiti di spazio da rispettare, ma potrai acquistare terreno dagli indiani locali. Dovrai raggiungere l’obiettivo per sostenere la popolazione locale.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Nordamerica - Paradiso dell’ottovolante
+STR_SCNR    :Paradiso dell’ottovolante
 STR_PARK    :Paradiso dell’ottovolante
 STR_DTLS    :Sei un magnate della finanza di grande successo, che si è preso 4 anni di vacanza dagli affari e desidera costruire un parco senza badare a spese.
 
 <South America - Inca Lost City>
-STR_SCNR    :Sudamerica - Città perduta Inca
+STR_SCNR    :Il fondatore della città perduta
 STR_PARK    :Il fondatore della città perduta
 STR_DTLS    :Per potenziare il turismo, devi creare un parco intonato all’ambiente.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Sudamerica - La foresta pluviale
+STR_SCNR    :Scorribanda nella foresta
 STR_PARK    :Scorribanda nella foresta
 STR_DTLS    :Nella preziosa foresta pluviale, lo spazio è limitato. Devi sfruttare al meglio la radura già esistente per creare una valida alternativa all’industria locale del legno.
 
 <South America - Rio Carnival>
-STR_SCNR    :Sudamerica - Carnevale di Rio
+STR_SCNR    :Pan di zucchero
 STR_PARK    :Pan di zucchero
 STR_DTLS    :Gestisci un piccolo parco presso Rio e la banca ti ha chiesto di rimborsare un debito. Devi aumentare rapidamente le tue entrate per fronteggiare questa situazione imprevista.
 
@@ -4373,72 +4403,72 @@ STR_DTLS    :Gestisci un piccolo parco presso Rio e la banca ti ha chiesto di ri
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Età Oscura - Castello
+STR_SCNR    :Castello di Cliffside
 STR_PARK    :Castello di Cliffside
 STR_DTLS    :I membri locali della società per il ripristino delle leggi sulle battaglie prendono seriamente il loro hobby. Ti hanno affidato l’incarico di costruire un parco a tema sull’Età Oscura, da erigere sulle fondamenta del Castello di Cliffside.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Età Oscura - Robin Hood
+STR_SCNR    :Foresta di Sherwood
 STR_PARK    :Foresta di Sherwood
 STR_DTLS    :Per sottrarre i beni ai ricchi e donarli ai poveri, tu e i tuoi uomini avete deciso di costruire un parco a tema nella Foresta di Sherwood.
 
 <Future - First Encounters>
-STR_SCNR    :Futuro - Primi incontri
+STR_SCNR    :Stravaganza extraterrestre
 STR_PARK    :Stravaganza extraterrestre
 STR_DTLS    :Su un lontano pianeta è stata scoperta la vita Costruisci un parco a tema sugli alieni e goditi un successo di visitatori senza precedenti.
 
 <Future - Future World>
-STR_SCNR    :Futuro - Il mondo del futuro
+STR_SCNR    :Città di Gemini
 STR_PARK    :Città di Gemini
 STR_DTLS    :Metti in gioco la tua fantastica e utopistica visione del futuro e costruisci un parco futuristico composto dalle attrazioni più all’avanguardia.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mitologico - Set cinematografico animatronico
+STR_SCNR    :Animatronica antichità
 STR_PARK    :Animatronica antichità
 STR_DTLS    :Hai ricevuto l’incarico di gestire un parco a tema esistente, costruito sul set di un vecchio film. Rendi omaggio ai pionieri dell’animazione cinematografica che per primi hanno portato sul grande schermo e creature mitologiche.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mitologico - La culla della civiltà
+STR_SCNR    :Follia mitologica
 STR_PARK    :Follia mitologica
 STR_DTLS    :Possiedi un’isola di eccezionale valore archeologico. Hai deciso di preservarne le origini costruendo un parco a tema basato sull’eredità mitologica della zona.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Preistoria - Dopo l’asteroide
+STR_SCNR    :Il massacro del cratere
 STR_PARK    :Il massacro del cratere
 STR_DTLS    :Possiedi un vecchio cratere meteoritico. Con lo spirito che ti contraddistingue, hai deciso di costruire un parco sugli asteroidi, tramutando così la tua terra in una fonte di ingente guadagno.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Preistoria - Safari Giurassico
+STR_SCNR    :Ottovolantosauro
 STR_PARK    :Ottovolantosauro
 STR_DTLS    :Hai ricevuto l’incarico di costruire un parco preistorico ispirato al Giurassico. Per ottimizzare l’accesso dei visitatori, dovrai costruire tragitti che sovrastano la valle e vi si inoltrano.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Preistoria - Età della Pietra
+STR_SCNR    :Passeggiata tra le rocce
 STR_PARK    :Passeggiata tra le rocce
 STR_DTLS    :Per scoraggiare i costruttori di autostrade e conservare i misteriosi e antichi cerchi di pietra, dovrai costruire un parco a tema sull’Età della Pietra e farlo fruttare. L’impresa è una vera e propria sfida, dato il territorio inospitale.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Ruggenti Anni Venti - Isola carceraria
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :L’infame isola carceraria, la cui popolazione un tempo si dedicava al contrabbando e alle attività illecite, è in vendita. Hai deciso di trasformarla in un’importante attrazione turistica e il denaro non è un problema.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Ruggenti Anni Venti - Coppa Schneider
+STR_SCNR    :Costa di Schneider
 STR_PARK    :Costa di Schneider
 STR_DTLS    :Manca poco aI 75° anniversario della conquista della Coppa Schneider da parte di tuo nonno. Hai deciso di onorare la sua impresa costruendo un parco a tema basato sulla famosa corsa di idrovolanti.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Ruggenti Anni Venti
+STR_SCNR    :Metropoli
 STR_PARK    :Metropoli
 STR_DTLS    :Possiedi un lotto di terra vuoto vicino alla parte meno sviluppata della città. Per sfruttare al meglio la tua proprietà, costruisci un parco caratterizzato da grattacieli ispirandoti all’architettura art decò degli anni Venti.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock & Roll - Gli anni dei fiori
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :Un importante festival musicale si tiene ogni anno sulla tua proprietà. Costruisci un parco a tema di ispirazione hippy per attrarre gli spiriti liberi.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock & Roll - Rock & Roll
+STR_SCNR    :La rinascita del Rock & Roll
 STR_PARK    :La rinascita del Rock & Roll
 STR_DTLS    :Questo vecchio parco a tema ha vissuto tempi migliori. Aiuta il proprietario a ristrutturarlo in stile Rock & Roll e trasformalo in un luogo di successo.
 

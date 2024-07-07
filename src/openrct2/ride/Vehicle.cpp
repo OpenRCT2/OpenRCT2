@@ -19,7 +19,9 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/FixedPoint.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Particle.h"
 #include "../entity/Yaw.hpp"
@@ -780,7 +782,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
     {
-        if (ride.inversions < OpenRCT2::Limits::MaxInversions)
+        if (ride.inversions < OpenRCT2::Limits::kMaxInversions)
             ride.inversions++;
     }
 }
@@ -791,7 +793,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
     {
-        if (ride.holes < OpenRCT2::Limits::MaxGolfHoles)
+        if (ride.holes < OpenRCT2::Limits::kMaxGolfHoles)
             ride.holes++;
     }
 }
@@ -846,14 +848,14 @@ void Vehicle::UpdateMeasurements()
 
         if (curRide->average_speed_test_timeout == 0 && absVelocity > 0x8000)
         {
-            curRide->average_speed = AddClamp_int32_t(curRide->average_speed, absVelocity);
+            curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity);
             stationForTestSegment.SegmentTime++;
         }
 
         int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
         if (NumLaps == 0)
         {
-            stationForTestSegment.SegmentLength = AddClamp_int32_t(stationForTestSegment.SegmentLength, distance);
+            stationForTestSegment.SegmentLength = AddClamp<int32_t>(stationForTestSegment.SegmentLength, distance);
         }
 
         if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -868,7 +870,7 @@ void Vehicle::UpdateMeasurements()
             curRide->previous_lateral_g = gForces.LateralG;
             if (gForces.VerticalG <= 0)
             {
-                curRide->total_air_time++;
+                curRide->totalAirTime++;
             }
 
             if (gForces.VerticalG > curRide->max_positive_vertical_g)
@@ -897,9 +899,11 @@ void Vehicle::UpdateMeasurements()
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
                 curRide->testing_flags |= RIDE_TESTING_POWERED_LIFT;
-                if (curRide->drops + 64 < 0xFF)
+                auto numPoweredLifts = curRide->getNumPoweredLifts();
+                if (numPoweredLifts < kRideMaxNumPoweredLiftsCount)
                 {
-                    curRide->drops += 64;
+                    numPoweredLifts++;
+                    curRide->setPoweredLifts(numPoweredLifts);
                 }
             }
         }
@@ -1029,11 +1033,10 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
             curRide->testing_flags |= RIDE_TESTING_DROP_DOWN;
 
-            uint8_t drops = curRide->drops & 0x3F;
-            if (drops != 0x3F)
+            uint8_t drops = curRide->getNumDrops();
+            if (drops < kRideMaxDropsCount)
                 drops++;
-            curRide->drops &= ~0x3F;
-            curRide->drops |= drops;
+            curRide->setNumDrops(drops);
 
             curRide->start_drop_height = z / COORDS_Z_STEP;
             testingFlags &= ~RIDE_TESTING_DROP_UP;
@@ -1061,11 +1064,10 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
             curRide->testing_flags |= RIDE_TESTING_DROP_UP;
 
-            uint8_t drops = curRide->drops & 0x3F;
-            if (drops != 0x3F)
+            auto drops = curRide->getNumDrops();
+            if (drops != kRideMaxDropsCount)
                 drops++;
-            curRide->drops &= ~0x3F;
-            curRide->drops |= drops;
+            curRide->setNumDrops(drops);
 
             curRide->start_drop_height = z / COORDS_Z_STEP;
         }
@@ -1073,7 +1075,7 @@ void Vehicle::UpdateMeasurements()
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
             uint8_t helixes = RideGetHelixSections(*curRide);
-            if (helixes != OpenRCT2::Limits::MaxHelices)
+            if (helixes != OpenRCT2::Limits::kMaxHelices)
                 helixes++;
 
             curRide->special_track_elements &= ~0x1F;
@@ -1162,7 +1164,7 @@ void Vehicle::UpdateMeasurements()
     if (distance < 0)
         return;
 
-    curRide->sheltered_length = AddClamp_int32_t(curRide->sheltered_length, distance);
+    curRide->sheltered_length = AddClamp<int32_t>(curRide->sheltered_length, distance);
 }
 
 struct SoundIdVolume
@@ -2350,7 +2352,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.inversions = 0;
     ride.holes = 0;
     ride.sheltered_eighths = 0;
-    ride.drops = 0;
+    ride.dropsPoweredLifts = 0;
     ride.sheltered_length = 0;
     ride.var_11C = 0;
     ride.num_sheltered_sections = 0;
@@ -2361,7 +2363,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
         station.SegmentLength = 0;
         station.SegmentTime = 0;
     }
-    ride.total_air_time = 0;
+    ride.totalAirTime = 0;
     ride.current_test_station = curStation;
     WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }
@@ -2535,7 +2537,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::UpwardLaunch:
             if ((curRide->launch_speed << 16) > velocity)
             {
-                acceleration = curRide->launch_speed << rtd.OperatingSettings.AccelerationFactor;
+                acceleration = curRide->launch_speed << rtd.BoosterSettings.AccelerationFactor;
             }
             break;
         case RideMode::DownwardLaunch:
@@ -2762,7 +2764,7 @@ void Vehicle::CheckIfMissing()
 
     curRide->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
-    if (gConfigNotifications.RideStalledVehicles)
+    if (Config::Get().notifications.RideStalledVehicles)
     {
         Formatter ft;
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).number);
@@ -4520,7 +4522,7 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
 
     if (numFatalities != 0)
     {
-        if (gConfigNotifications.RideCasualties)
+        if (Config::Get().notifications.RideCasualties)
         {
             ride.FormatNameTo(ft);
             News::AddItemToQueue(
@@ -7108,7 +7110,7 @@ Loc6DAEB9:
         auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
         {
-            acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration
+            acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration
                 << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
@@ -7117,10 +7119,10 @@ Loc6DAEB9:
         acceleration += CalculateRiderBraking();
     }
 
-    if ((trackType == TrackElemType::Flat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+    if ((trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT))
         || (trackType == TrackElemType::PoweredLift))
     {
-        acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.PoweredLiftAcceleration << 16;
+        acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration << 16;
     }
     if (trackType == TrackElemType::BrakeForDrop)
     {
@@ -7465,7 +7467,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::Flat && curRide.type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+        if (trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT))
         {
             int32_t unkVelocity = _vehicleVelocityF64E08;
             if (unkVelocity < -524288)
@@ -7490,7 +7492,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
             if (boosterSpeed < _vehicleVelocityF64E08)
             {
-                acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration << 16;
+                acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration << 16;
             }
         }
 

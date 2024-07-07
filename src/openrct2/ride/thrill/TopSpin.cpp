@@ -13,6 +13,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
@@ -192,10 +194,10 @@ static void PaintTopSpin(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, stationColour, height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, stationColour, height, kFenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)
@@ -244,7 +246,7 @@ static void PaintTopSpin(
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 112, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 112);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(int32_t trackType)

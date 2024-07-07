@@ -28,6 +28,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
+#include "../world/tile_element/Slope.h"
 #include "GameAction.h"
 #include "SmallSceneryRemoveAction.h"
 
@@ -205,8 +206,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     if (!GetGameState().Cheats.DisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
-        && !supportsRequired && !isOnWater && surfaceElement != nullptr
-        && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
+        && !supportsRequired && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != kTileSlopeFlat))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
     }
@@ -271,7 +271,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+        { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -411,7 +411,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
-        CREATE_CROSSING_MODE_NONE, isTree);
+        CreateCrossingMode::none, isTree);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;

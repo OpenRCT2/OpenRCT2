@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -18,7 +20,6 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -40,6 +41,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
+#include <openrct2/world/tile_element/Slope.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -993,7 +995,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return ScreenSize(WW - 30, windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT);
+            return ScreenSize(WW - 30, windowTileInspectorElementCount * kScrollableRowHeight);
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -1003,7 +1005,7 @@ static uint64_t PageDisabledWidgets[] = {
                 return;
 
             // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
-            const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
+            const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / kScrollableRowHeight - 1;
             const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
             if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
             { // Checkbox was clicked
@@ -1017,7 +1019,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
+            int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / kScrollableRowHeight - 1;
             if (index < 0 || index >= windowTileInspectorElementCount)
                 _highlightedIndex = -1;
             else
@@ -1031,8 +1033,8 @@ static uint64_t PageDisabledWidgets[] = {
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
 
             // Draw coordinates
-            GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 24), "X:", { colours[1] });
-            GfxDrawString(dpi, screenCoords + ScreenCoordsXY(74, 24), "Y:", { colours[1] });
+            DrawText(dpi, screenCoords + ScreenCoordsXY(5, 24), { colours[1] }, "X:");
+            DrawText(dpi, screenCoords + ScreenCoordsXY(74, 24), { colours[1] }, "Y:");
             if (_tileSelected)
             {
                 auto tileCoords = TileCoordsXY{ _toolMap };
@@ -1048,8 +1050,8 @@ static uint64_t PageDisabledWidgets[] = {
             }
             else
             {
-                GfxDrawString(dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), "-", { colours[1] });
-                GfxDrawString(dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), "-", { colours[1] });
+                DrawText(dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), { colours[1] }, "-");
+                DrawText(dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), { colours[1] }, "-");
             }
 
             if (windowTileInspectorSelectedIndex != -1)
@@ -1466,10 +1468,10 @@ static uint64_t PageDisabledWidgets[] = {
                         DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME, {}, { colours[1] });
 
                         // Current animation frame
-                        colour_t colour = colours[1];
+                        auto colour = colours[1];
                         if (IsWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME))
                         {
-                            colour = colours[0] | COLOUR_FLAG_INSET;
+                            colour = colours[0].withFlag(ColourFlag::inset, true);
                         }
                         screenCoords.x = windowPos.x + widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3;
                         ft = Formatter();
@@ -1569,7 +1571,8 @@ static uint64_t PageDisabledWidgets[] = {
         {
             const int32_t listWidth = widgets[WIDX_LIST].width();
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                ColourMapA[colours[1].colour].mid_light);
 
             // Show usage hint when nothing is selected
             if (!_tileSelected)
@@ -1584,7 +1587,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
 
             ScreenCoordsXY screenCoords{};
-            screenCoords.y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
+            screenCoords.y = kScrollableRowHeight * (windowTileInspectorElementCount - 1);
             int32_t i = 0;
             char buffer[256];
 
@@ -1601,16 +1604,19 @@ static uint64_t PageDisabledWidgets[] = {
 
                 // Draw row background colour
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
-                                                 { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
+                                                 { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 if (selectedRow)
-                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 else if (hoveredRow)
-                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark | 0x1000000);
+                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
                 // Zebra stripes
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
-                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].light | 0x1000000);
+                    GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].light | 0x1000000);
 
-                const StringId stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+                StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
+                if (selectedRow || hoveredRow)
+                    stringFormat = STR_WHITE_STRING;
+
                 auto checkboxFormatter = Formatter();
                 checkboxFormatter.Add<StringId>(STR_STRING);
                 checkboxFormatter.Add<char*>(CheckBoxMarkString);
@@ -1718,7 +1724,7 @@ static uint64_t PageDisabledWidgets[] = {
                 if (last)
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
 
-                screenCoords.y -= SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y -= kScrollableRowHeight;
                 i++;
             } while (!(tileElement++)->IsLastForTile());
         }
@@ -2177,7 +2183,7 @@ static uint64_t PageDisabledWidgets[] = {
                         WIDX_SURFACE_CHECK_CORNER_W,
                         tileElement->AsSurface()->GetSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     SetCheckboxValue(
-                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
+                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag);
                     break;
 
                 case TileElementType::Path:

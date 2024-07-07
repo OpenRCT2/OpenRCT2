@@ -210,7 +210,12 @@ namespace OpenRCT2::Scripting
 
         void Invalidate();
 
+        void RemoveBannerEntryIfNeeded();
+        void CreateBannerEntryIfNeeded();
+
     public:
+        static const LargeSceneryElement* GetOtherLargeSceneryElement(
+            const CoordsXY& loc, const LargeSceneryElement* const largeScenery);
         static void Register(duk_context* ctx);
     };
 

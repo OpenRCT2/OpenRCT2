@@ -13,6 +13,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"
@@ -100,10 +102,10 @@ static void PaintEnterprise(
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)
@@ -167,7 +169,7 @@ static void PaintEnterprise(
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 160, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 160);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(int32_t trackType)

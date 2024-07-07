@@ -28,3 +28,16 @@ GameState_t& Scene::GetGameState()
 {
     return OpenRCT2::GetGameState();
 }
+
+void Scene::FinishScene()
+{
+    if (_onComplete != nullptr)
+    {
+        _onComplete();
+    }
+}
+
+void Scene::SetOnComplete(std::function<void()> onComplete)
+{
+    _onComplete = onComplete;
+}

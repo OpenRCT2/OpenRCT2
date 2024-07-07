@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_IS_SUSPENDED,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 7, 27, 0, 0, 0, 0 },
+    .OperatingSettings = { 7, 27 },
     .Naming = { STR_RIDE_NAME_COMPACT_INVERTED_COASTER, STR_RIDE_DESCRIPTION_COMPACT_INVERTED_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = nameof(RIDE_TYPE_COMPACT_INVERTED_COASTER),

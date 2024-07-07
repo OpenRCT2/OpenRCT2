@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <cmath>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -33,6 +35,7 @@
 #include <openrct2/world/Scenery.h>
 #include <optional>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui::Windows;
 
 struct RCTMouseData
@@ -221,8 +224,10 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, WindowBa
     WidgetScrollUpdateThumbs(*w, widgetIndex);
     WindowInvalidateByNumber(w->classification, w->number);
 
-    ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLast.x * gConfigGeneral.WindowScale)),
-                                           static_cast<int32_t>(std::ceil(gInputDragLast.y * gConfigGeneral.WindowScale)) };
+    ScreenCoordsXY fixedCursorPosition = {
+        static_cast<int32_t>(std::ceil(gInputDragLast.x * Config::Get().general.WindowScale)),
+        static_cast<int32_t>(std::ceil(gInputDragLast.y * Config::Get().general.WindowScale))
+    };
 
     ContextSetCursorPosition(fixedCursorPosition);
 }
@@ -474,7 +479,7 @@ static void InputWindowPositionContinue(
 {
     int32_t snapProximity;
 
-    snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.WindowSnapProximity;
+    snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : Config::Get().general.WindowSnapProximity;
     WindowMoveAndSnap(w, newScreenCoords - lastScreenCoords, snapProximity);
 }
 
@@ -529,7 +534,7 @@ static void InputViewportDragBegin(WindowBase& w)
     _ticksSinceDragStart = gCurrentRealTimeTicks;
     auto cursorPosition = ContextGetCursorPosition();
     gInputDragLast = cursorPosition;
-    if (!gConfigGeneral.InvertViewportDrag)
+    if (!Config::Get().general.InvertViewportDrag)
     {
         ContextHideCursor();
     }
@@ -577,7 +582,7 @@ static void InputViewportDragContinue()
 
             differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
             differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
-            if (gConfigGeneral.InvertViewportDrag)
+            if (Config::Get().general.InvertViewportDrag)
             {
                 w->savedViewPos -= differentialCoords;
             }
@@ -589,7 +594,7 @@ static void InputViewportDragContinue()
     }
 
     const CursorState* cursorState = ContextGetCursorState();
-    if (cursorState->touch || gConfigGeneral.InvertViewportDrag)
+    if (cursorState->touch || Config::Get().general.InvertViewportDrag)
     {
         gInputDragLast = newDragCoords;
     }
@@ -1062,6 +1067,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
         case WindowWidgetType::LabelCentred:
         case WindowWidgetType::Label:
         case WindowWidgetType::Groupbox:
+        case WindowWidgetType::ProgressBar:
         case WindowWidgetType::Placeholder:
         case WindowWidgetType::Last:
             // Non-interactive widget type
@@ -1675,7 +1681,7 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
     if (viewport == nullptr)
         return;
 
-    const int32_t speed = gConfigGeneral.EdgeScrollingSpeed;
+    const int32_t speed = Config::Get().general.EdgeScrollingSpeed;
 
     int32_t multiplier = viewport->zoom.ApplyTo(speed);
     int32_t dx = scrollScreenCoords.x * multiplier;

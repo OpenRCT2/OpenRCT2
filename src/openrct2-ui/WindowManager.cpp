@@ -28,6 +28,7 @@
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
 
@@ -161,7 +162,7 @@ public:
             case WV_FINANCES_RESEARCH:
                 return FinancesResearchOpen();
             case WV_RIDE_RESEARCH:
-                if (gConfigInterface.ToolbarShowResearch)
+                if (Config::Get().interface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::Research);
                 }
@@ -209,14 +210,14 @@ public:
         }
     }
 
-    WindowBase* ShowError(StringId title, StringId message, const Formatter& args) override
+    WindowBase* ShowError(StringId title, StringId message, const Formatter& args, bool autoClose /* = false */) override
     {
-        return ErrorOpen(title, message, args);
+        return ErrorOpen(title, message, args, autoClose);
     }
 
-    WindowBase* ShowError(std::string_view title, std::string_view message) override
+    WindowBase* ShowError(std::string_view title, std::string_view message, bool autoClose /* = false */) override
     {
-        return ErrorOpen(title, message);
+        return ErrorOpen(title, message, autoClose);
     }
 
     WindowBase* OpenIntent(Intent* intent) override
@@ -332,6 +333,28 @@ public:
                 // Switch to new scenery tab
                 WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
                 return window;
+            }
+
+            case INTENT_ACTION_PROGRESS_OPEN:
+            {
+                std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
+                close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
+                return ProgressWindowOpen(message, callback);
+            }
+
+            case INTENT_ACTION_PROGRESS_SET:
+            {
+                uint32_t currentProgress = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_OFFSET);
+                uint32_t totalCount = intent->GetUIntExtra(INTENT_EXTRA_PROGRESS_TOTAL);
+                StringId format = intent->GetUIntExtra(INTENT_EXTRA_STRING_ID);
+                ProgressWindowSet(currentProgress, totalCount, format);
+                return nullptr;
+            }
+
+            case INTENT_ACTION_PROGRESS_CLOSE:
+            {
+                ProgressWindowClose();
+                return nullptr;
             }
 
             case INTENT_ACTION_NULL:
@@ -550,6 +573,10 @@ public:
         {
             case WindowClass::NetworkStatus:
                 WindowNetworkStatusClose();
+                break;
+
+            case WindowClass::ProgressWindow:
+                ProgressWindowClose();
                 break;
 
             default:

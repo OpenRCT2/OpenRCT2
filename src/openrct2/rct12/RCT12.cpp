@@ -25,6 +25,7 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 #include "EntryList.h"
 
 using namespace OpenRCT2;
@@ -74,7 +75,7 @@ bool RCT12TileElementBase::IsGhost() const
 
 uint8_t RCT12SurfaceElement::GetSlope() const
 {
-    return (Slope & kTileElementSurfaceSlopeMask);
+    return (Slope & kTileSlopeMask);
 }
 
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
@@ -215,9 +216,9 @@ uint8_t RCT12TrackElement::GetRideIndex() const
     return RideIndex;
 }
 
-uint8_t RCT12TrackElement::GetColourScheme() const
+RideColourScheme RCT12TrackElement::GetColourScheme() const
 {
-    return Colour & 0x3;
+    return static_cast<RideColourScheme>(Colour & 0x3);
 }
 
 uint8_t RCT12TrackElement::GetStationIndex() const
@@ -759,16 +760,6 @@ static constexpr std::string_view _musicStyles[] = {
     "rct2.music.pirate",
     "rct2.music.rock3",
     "rct2.music.candy",
-    "openrct2.music.galaxy",
-    "openrct2.music.acid",
-    "openrct2.music.dodgems",
-    "openrct2.music.blizzard",
-    "openrct2.music.extraterrestrial",
-    "openrct2.music.fairground2",
-    "openrct2.music.ragtime2",
-    "openrct2.music.prehistoric",
-    "openrct2.music.mystic",
-    "openrct2.music.rock4",
 };
 
 std::string_view GetStationIdentifierFromStyle(uint8_t style)
@@ -881,53 +872,53 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
 
 void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
 {
-    target.BrakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
-    if (TrackTypeIsStation(target.Type))
+    target.brakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
+    if (TrackTypeIsStation(target.type))
     {
         auto stationIndex = flags & EnumValue(TD46Flags::StationId);
-        target.StationIndex = StationIndex::FromUnderlying(stationIndex);
+        target.stationIndex = StationIndex::FromUnderlying(stationIndex);
     }
     else
     {
         auto speedOrSeatRotation = flags & EnumValue(TD46Flags::SpeedOrSeatRotation);
-        if (TrackTypeHasSpeedSetting(target.Type) && target.Type != TrackElemType::BlockBrakes)
+        if (TrackTypeHasSpeedSetting(target.type) && target.type != TrackElemType::BlockBrakes)
         {
-            target.BrakeBoosterSpeed = speedOrSeatRotation << 1;
+            target.brakeBoosterSpeed = speedOrSeatRotation << 1;
         }
         else
         {
-            target.SeatRotation = speedOrSeatRotation;
+            target.seatRotation = speedOrSeatRotation;
         }
     }
 
-    target.ColourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
+    target.colourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
     if (flags & EnumValue(TD46Flags::IsInverted))
-        target.SetFlag(TrackDesignTrackElementFlag::IsInverted);
+        target.SetFlag(TrackDesignTrackElementFlag::isInverted);
     if (flags & EnumValue(TD46Flags::HasChain))
-        target.SetFlag(TrackDesignTrackElementFlag::HasChain);
+        target.SetFlag(TrackDesignTrackElementFlag::hasChain);
 }
 
 uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
 {
     uint8_t trackFlags = 0;
-    if (TrackTypeIsStation(source.Type))
+    if (TrackTypeIsStation(source.type))
     {
-        trackFlags = (source.StationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
+        trackFlags = (source.stationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
     }
-    else if (TrackTypeHasSpeedSetting(source.Type) && source.Type != TrackElemType::BlockBrakes)
+    else if (TrackTypeHasSpeedSetting(source.type) && source.type != TrackElemType::BlockBrakes)
     {
-        trackFlags = (source.BrakeBoosterSpeed >> 1);
+        trackFlags = (source.brakeBoosterSpeed >> 1);
     }
     else
     {
-        trackFlags = source.SeatRotation;
+        trackFlags = source.seatRotation;
     }
 
-    trackFlags |= source.ColourScheme << 4;
+    trackFlags |= source.colourScheme << 4;
 
-    if (source.HasFlag(TrackDesignTrackElementFlag::HasChain))
+    if (source.HasFlag(TrackDesignTrackElementFlag::hasChain))
         trackFlags |= EnumValue(TD46Flags::HasChain);
-    if (source.HasFlag(TrackDesignTrackElementFlag::IsInverted))
+    if (source.HasFlag(TrackDesignTrackElementFlag::isInverted))
         trackFlags |= EnumValue(TD46Flags::IsInverted);
 
     return trackFlags;
@@ -938,18 +929,17 @@ void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
     if (td46MazeElement.IsEntrance() || td46MazeElement.IsExit())
     {
         TrackDesignEntranceElement element{};
-        element.Location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
-        element.IsExit = td46MazeElement.IsExit();
-        td.entrance_elements.push_back(element);
+        element.location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
+        element.isExit = td46MazeElement.IsExit();
+        td.entranceElements.push_back(element);
     }
     else
     {
         TrackDesignMazeElement mazeElement{};
-        mazeElement.x = td46MazeElement.x;
-        mazeElement.y = td46MazeElement.y;
-        mazeElement.direction = td46MazeElement.Direction;
-        mazeElement.type = td46MazeElement.Type;
-        td.maze_elements.push_back(mazeElement);
+        mazeElement.location.x = td46MazeElement.x;
+        mazeElement.location.y = td46MazeElement.y;
+        mazeElement.mazeEntry = td46MazeElement.MazeEntry;
+        td.mazeElements.push_back(mazeElement);
     }
 }
 

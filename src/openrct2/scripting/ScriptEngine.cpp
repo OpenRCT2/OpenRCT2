@@ -12,10 +12,13 @@
 #    include "ScriptEngine.h"
 
 #    include "../PlatformEnvironment.h"
+#    include "../actions/BannerPlaceAction.h"
 #    include "../actions/CustomAction.h"
 #    include "../actions/GameAction.h"
+#    include "../actions/LargeSceneryPlaceAction.h"
 #    include "../actions/RideCreateAction.h"
 #    include "../actions/StaffHireNewAction.h"
+#    include "../actions/WallPlaceAction.h"
 #    include "../config/Config.h"
 #    include "../core/EnumMap.hpp"
 #    include "../core/File.h"
@@ -27,6 +30,7 @@
 #    include "bindings/entity/ScEntity.hpp"
 #    include "bindings/entity/ScGuest.hpp"
 #    include "bindings/entity/ScLitter.hpp"
+#    include "bindings/entity/ScParticle.hpp"
 #    include "bindings/entity/ScPeep.hpp"
 #    include "bindings/entity/ScStaff.hpp"
 #    include "bindings/entity/ScVehicle.hpp"
@@ -433,6 +437,7 @@ void ScriptEngine::Initialise()
     ScEntity::Register(ctx);
     ScLitter::Register(ctx);
     ScVehicle::Register(ctx);
+    ScCrashedVehicleParticle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
     ScThought::Register(ctx);
@@ -572,7 +577,7 @@ void ScriptEngine::RefreshPlugins()
     }
 
     // Turn on hot reload if not already enabled
-    if (!_hotReloadingInitialised && gConfigPlugin.EnableHotReloading && NetworkGetMode() == NETWORK_MODE_NONE)
+    if (!_hotReloadingInitialised && Config::Get().plugin.EnableHotReloading && NetworkGetMode() == NETWORK_MODE_NONE)
     {
         SetupHotReloading();
     }
@@ -1219,6 +1224,26 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
                 obj.Set("peep", actionResult.StaffEntityId.ToUnderlying());
             }
         }
+    }
+    // BannerPlaceAction, LargeSceneryPlaceAction, WallPlaceAction
+    auto bannerId = BannerIndex::GetNull();
+    switch (action.GetType())
+    {
+        case GameCommand::PlaceBanner:
+            bannerId = result.GetData<BannerPlaceActionResult>().bannerId;
+            break;
+        case GameCommand::PlaceLargeScenery:
+            bannerId = result.GetData<LargeSceneryPlaceActionResult>().bannerId;
+            break;
+        case GameCommand::PlaceWall:
+            bannerId = result.GetData<WallPlaceActionResult>().BannerId;
+            break;
+        default:
+            break;
+    }
+    if (!bannerId.IsNull())
+    {
+        obj.Set("bannerIndex", bannerId.ToUnderlying());
     }
 
     return obj.Take();

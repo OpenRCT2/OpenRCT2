@@ -1741,7 +1741,7 @@ STR_2382    :土地
 STR_2383    :水塘
 STR_2384    :{WINDOW_COLOUR_2}你的目標:
 STR_2385    :{BLACK}無
-STR_2386    :{BLACK}在{POP16}{MONTHYEAR}尾之前, 樂園裡至少有{PUSH16}{PUSH16}{COMMA32}個遊客, 而且樂園評價並不低於600
+STR_2386    :{BLACK}在{POP16}{POP16}{MONTHYEAR}尾之前, 樂園裡至少有{PUSH16}{PUSH16}{PUSH16}{COMMA32}個遊客, 而且樂園評價並不低於600
 STR_2387    :{BLACK}在{POP16}{MONTHYEAR}尾之前, 樂園價值必需達到{CURRENCY}
 STR_2388    :{BLACK}盡情玩吧!
 STR_2389    :{BLACK}建造你的最佳{STRINGID}吧!
@@ -2889,7 +2889,7 @@ STR_5755    :不合適的遊戲版本 (伺服器版本為{STRING})
 STR_5756    :密碼錯誤
 STR_5757    :伺服器人數已滿
 STR_5758    :{OUTLINE}{GREEN}{STRING}已加入遊戲
-STR_5759    :下載劇情中… ({INT32} / {INT32}) KiB
+STR_5759    :下載劇情中…
 STR_5760    :港幣 (HK$)
 STR_5761    :新台幣 (NT$)
 STR_5762    :人民幣 (CN¥)
@@ -3452,7 +3452,7 @@ STR_6374    :阻礙檢查已關閉
 STR_6375    :未知遊樂設施
 STR_6376    :{WINDOW_COLOUR_2}遊樂設施車輛:{NEWLINE}{BLACK}{STRINGID}於{STRINGID}內
 STR_6377    :{WINDOW_COLOUR_2}種類: {BLACK}{STRINGID}於{STRINGID}內
-STR_6378    :正在接收物件列表: {INT32} / {INT32}
+STR_6378    :正在接收物件列表:
 STR_6379    :已接收不正確的資料
 STR_6380    :有可用的更新!
 STR_6381    :加入OpenRCT2的Discord!
@@ -4191,87 +4191,87 @@ STR_DTLS    :建造缺少的六旗遊樂設施,或建造你自己設計的以改
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Africa - African Diamond Mine
+STR_SCNR    :Mines of Africa
 STR_PARK    :Mines of Africa
 STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond.  You decide to invest that money to build a world-famous theme park.
 
 <Africa - Oasis>
-STR_SCNR    :Africa - Oasis
+STR_SCNR    :Mirage Madness
 STR_PARK    :Mirage Madness
 STR_DTLS    :A desert Oasis has been discovered and would provide a beautiful location for a park. Transport to the oasis has been provided.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Africa - Victoria Falls
+STR_SCNR    :Over The Edge
 STR_PARK    :Over The Edge
 STR_DTLS    :A dam has been built offering abundant, cheap hydroelectric power with which to run a park. You need to reach a high park value to help repay the loan for the dam.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarctic - Ecological Salvage
+STR_SCNR    :Icy Adventures
 STR_PARK    :Icy Adventures
 STR_DTLS    :The environment agency has turned to you to transform an old oil refinery ecological eyesore into a top tourist attraction. Land is cheap but loan interest is high. You can sell the old buildings for salvage.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_SCNR    :Great Wall of China
 STR_PARK    :Great Wall of China
 STR_DTLS    :The authorities have decided to enhance tourism around the Great Wall by building a theme park on the adjacent land. Money is no object!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_SCNR    :Okinawa Coast
 STR_PARK    :Okinawa Coast
 STR_DTLS    :An existing park has run out of space. Your only option is to build out into the sea, and so you have taken out a loan. Height restrictions on your building are enforced due to foundations and earthquake risk.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia - Maharaja Palace
+STR_SCNR    :Park Maharaja
 STR_PARK    :Park Maharaja
 STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja’s palace.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasia - Ayers Rock
+STR_SCNR    :Ayers Adventure
 STR_PARK    :Ayers Adventure
 STR_DTLS    :You are helping Aboriginal people to build a park as part of a cultural awareness program. You need to get a large number of guests to educate them in the unique heritage of the Aboriginal people.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasia - Fun at the Beach
+STR_SCNR    :Beach Barbecue Blast
 STR_PARK    :Beach Barbecue Blast
 STR_DTLS    :A local entrepreneur’s sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europe - European Cultural Festival
+STR_SCNR    :European Extravaganza
 STR_PARK    :European Extravaganza
 STR_DTLS    :You have been brought in to take over a European Cultural Visitor Attraction and must increase the number of guests in order to pay back the EU subsidy by the end of the current European parliament term.
 
 <Europe - Renovation>
-STR_SCNR    :Europe - Renovation
+STR_SCNR    :From The Ashes
 STR_PARK    :From The Ashes
 STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area’s tourist attraction rating high.
 
 <North America - Grand Canyon>
-STR_SCNR    :North America - Grand Canyon
+STR_SCNR    :Canyon Calamities
 STR_PARK    :Canyon Calamities
 STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town’s population.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :North America - Rollercoaster Heaven
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :You are a successful business tycoon on long sabbatical who desires to use this time transforming the city park into Rollercoaster Heaven. Money is no object!
 
 <South America - Inca Lost City>
-STR_SCNR    :South America - Inca Lost City
+STR_SCNR    :Lost City Founder
 STR_PARK    :Lost City Founder
 STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings, and has height restrictions.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :South America - Rain Forest Plateau
+STR_SCNR    :Rainforest Romp
 STR_PARK    :Rainforest Romp
 STR_DTLS    :Space is limited in the precious rainforest - you must cram as much as possible into the existing clearing, in order to provide a viable alternative to the local timber industry.
 
 <South America - Rio Carnival>
-STR_SCNR    :South America - Rio Carnival
+STR_SCNR    :Sugarloaf Shores
 STR_PARK    :Sugarloaf Shores
 STR_DTLS    :You run a small park near Rio but the bank has called in your loan. You need to quickly increase your earning capacity to repay this unexpected debt.
 
@@ -4279,72 +4279,72 @@ STR_DTLS    :You run a small park near Rio but the bank has called in your loan.
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :黑暗時代-城堡
+STR_SCNR    :克利弗塞德城堡
 STR_PARK    :克利弗塞德城堡
 STR_DTLS    :本地的戰役重現協會成員對他們的這項嗜好相當認真。他們授權您建造一座以克利弗塞德城堡為主題的黑暗時代主題樂園。
 
 <Dark Age - Robin Hood>
-STR_SCNR    :黑暗時代-羅賓漢
+STR_SCNR    :舍伍德森林
 STR_PARK    :舍伍德森林
 STR_DTLS    :為了劫富濟貧,您與您的伙伴們決定要在舍伍德森林中建造一座主題樂園。
 
 <Future - First Encounters>
-STR_SCNR    :未來-第一次接觸
+STR_SCNR    :外星文明博覽會
 STR_PARK    :外星文明博覽會
 STR_DTLS    :在遙遠的行星上發現了生命 建築一個外星主題樂園,在這個史無前例的風潮中大撈一票。
 
 <Future - Future World>
-STR_SCNR    :未來-未來世界
+STR_SCNR    :雙子星城市
 STR_PARK    :雙子星城市
 STR_DTLS    :展現您對於未來的創造力與想像力-設計出以最先進科技為特色的未來主題樂園。
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :神話-機械偶影片組
+STR_SCNR    :機械偶動作
 STR_PARK    :機械偶動作
 STR_DTLS    :您被賦予經營並改善現有主題樂園的工作,樂園建築在舊片場上。為首先將神話生物帶到銀幕中的定格動畫家們獻上崇高敬意
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :神話-文明起源
+STR_SCNR    :神話狂熱
 STR_PARK    :神話狂熱
 STR_DTLS    :您擁有一個具有特殊考古價值的小島。您決定透過建造一座以這個區域非常豐富的神話遺產為主題的樂園。
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :史前時代-小行星撞擊之後
+STR_SCNR    :隕石坑大屠殺
 STR_PARK    :隕石坑大屠殺
 STR_DTLS    :您擁有滿是灰塵的老舊隕石坑。您的企業家精神讓您決定建立小行星主題樂園,並將看來毫無價值的土地轉變成巨大的財富。
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :史前時代 - 侏羅紀探險
+STR_SCNR    :Coastersaurus
 STR_PARK    :Coastersaurus
 STR_DTLS    :您被賦予建立侏羅紀主題公園的工作。為了讓您的訪客能更容易接近觀賞各種動植物,您必須在河谷中建立交通工具
 
 <Prehistoric - Stone Age>
-STR_SCNR    :史前時代-石器時代
+STR_SCNR    :石間漫步
 STR_PARK    :石間漫步
 STR_DTLS    :為了阻止高速公路開發者並保存神秘的古代石頭環,您必須建立石器時代主題公園並獲利。但很難吸引到遊客,因為地形荒涼
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :喧騰的20年代-監獄島
+STR_SCNR    :惡魔島
 STR_PARK    :惡魔島
 STR_DTLS    :惡名昭彰的監獄島-島上居名曾以販賣私酒者或騙徒為主-現在正待價而沽中。您決定要將這個小島轉變為觀光勝地,錢不是問題
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :喧騰的20年代-施耐德盃
+STR_SCNR    :施耐德海岸
 STR_PARK    :施耐德海岸
 STR_DTLS    :令祖父在施耐德盃優勝的75週年紀念再過幾年就要到了。您決定建造以著名的水上飛機競速賽為主題的樂園來紀念他的成就。
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :喧騰的20年代-摩天大樓
+STR_SCNR    :大都會
 STR_PARK    :大都會
 STR_DTLS    :您在市鎮低層數建築區中擁有空地。為了讓地產發揮最大價值,請建造以喧騰的20年代裝飾藝術為主題的摩天大樓主題樂園
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :搖滾-花的魅力
+STR_SCNR    :伍斯托克音樂會
 STR_PARK    :伍斯托克音樂會
 STR_DTLS    :您的土地上將舉辦大型的年度音樂嘉年華。請建立一個能讓這些崇尚心靈自由的人們感到愉快的主題樂園。
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :搖滾-搖滾
+STR_SCNR    :搖滾復興
 STR_PARK    :搖滾復興
 STR_DTLS    :這個過時的主題樂園曾經有過輝煌的日子。請協助所有者將讓這個主題樂園再次搖滾起來,讓這個地方成為成功的企業。
 

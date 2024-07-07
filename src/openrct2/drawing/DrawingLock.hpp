@@ -11,6 +11,8 @@
 
 #include "../config/Config.h"
 
+using namespace OpenRCT2;
+
 template<typename T> class DrawingUniqueLock
 {
     T& _mutex;
@@ -19,7 +21,7 @@ template<typename T> class DrawingUniqueLock
 public:
     DrawingUniqueLock(T& mutex)
         : _mutex(mutex)
-        , _enabled(gConfigGeneral.MultiThreading)
+        , _enabled(Config::Get().general.MultiThreading)
     {
         if (_enabled)
             _mutex.lock();
@@ -39,7 +41,7 @@ template<typename T> class DrawingSharedLock
 public:
     DrawingSharedLock(T& mutex)
         : _mutex(mutex)
-        , _enabled(gConfigGeneral.MultiThreading)
+        , _enabled(Config::Get().general.MultiThreading)
     {
         if (_enabled)
             _mutex.lock_shared();

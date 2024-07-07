@@ -30,7 +30,7 @@
 
 namespace RCT2
 {
-    T6Exporter::T6Exporter(TrackDesign* trackDesign)
+    T6Exporter::T6Exporter(const TrackDesign& trackDesign)
         : _trackDesign(trackDesign)
     {
     }
@@ -51,78 +51,95 @@ namespace RCT2
 
     bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     {
+        auto td6rideType = OpenRCT2RideTypeToRCT2RideType(_trackDesign.trackAndVehicle.rtdIndex);
         OpenRCT2::MemoryStream tempStream;
-        tempStream.WriteValue<uint8_t>(OpenRCT2RideTypeToRCT2RideType(_trackDesign->type));
-        tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_type);
-        tempStream.WriteValue<uint32_t>(_trackDesign->flags);
-        tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
-        tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
+        tempStream.WriteValue<uint8_t>(td6rideType);
+        tempStream.WriteValue<uint8_t>(0);
+        tempStream.WriteValue<uint32_t>(0);
+        tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign.operation.rideMode));
+        tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign.appearance.vehicleColourSettings) | (2 << 2));
+        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Body);
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Trim);
+            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Body);
+            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Trim);
         }
         tempStream.WriteValue<uint8_t>(0);
-        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->StationObjectIdentifier);
+        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign.appearance.stationObjectIdentifier);
         tempStream.WriteValue<uint8_t>(entranceStyle);
-        tempStream.WriteValue<uint8_t>(_trackDesign->total_air_time);
-        tempStream.WriteValue<uint8_t>(_trackDesign->depart_flags);
-        tempStream.WriteValue<uint8_t>(_trackDesign->number_of_trains);
-        tempStream.WriteValue<uint8_t>(_trackDesign->number_of_cars_per_train);
-        tempStream.WriteValue<uint8_t>(_trackDesign->min_waiting_time);
-        tempStream.WriteValue<uint8_t>(_trackDesign->max_waiting_time);
-        tempStream.WriteValue<uint8_t>(_trackDesign->operation_setting);
-        tempStream.WriteValue<int8_t>(_trackDesign->max_speed);
-        tempStream.WriteValue<int8_t>(_trackDesign->average_speed);
-        tempStream.WriteValue<uint16_t>(_trackDesign->ride_length);
-        tempStream.WriteValue<uint8_t>(_trackDesign->max_positive_vertical_g);
-        tempStream.WriteValue<int8_t>(_trackDesign->max_negative_vertical_g);
-        tempStream.WriteValue<uint8_t>(_trackDesign->max_lateral_g);
-        tempStream.WriteValue<uint8_t>(
-            _trackDesign->type == RIDE_TYPE_MINI_GOLF ? _trackDesign->holes : _trackDesign->inversions);
-        tempStream.WriteValue<uint8_t>(_trackDesign->drops);
-        tempStream.WriteValue<uint8_t>(_trackDesign->highest_drop_height);
-        tempStream.WriteValue<uint8_t>(_trackDesign->excitement);
-        tempStream.WriteValue<uint8_t>(_trackDesign->intensity);
-        tempStream.WriteValue<uint8_t>(_trackDesign->nausea);
-        tempStream.WriteValue<money16>(ToMoney16(_trackDesign->upkeep_cost));
-        tempStream.WriteArray(_trackDesign->track_spine_colour, Limits::NumColourSchemes);
-        tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::NumColourSchemes);
-        tempStream.WriteArray(_trackDesign->track_support_colour, Limits::NumColourSchemes);
-        tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
-        tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
-        tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
-        tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
-        {
-            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Tertiary);
-        }
-        tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
+        uint16_t _totalAirTime = std::max<uint16_t>(255, (_trackDesign.statistics.totalAirTime * 123) / 1024);
+        tempStream.WriteValue<uint8_t>(_totalAirTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign.operation.departFlags);
+        tempStream.WriteValue<uint8_t>(_trackDesign.trackAndVehicle.numberOfTrains);
+        tempStream.WriteValue<uint8_t>(_trackDesign.trackAndVehicle.numberOfCarsPerTrain);
+        tempStream.WriteValue<uint8_t>(_trackDesign.operation.minWaitingTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign.operation.maxWaitingTime);
+        tempStream.WriteValue<uint8_t>(_trackDesign.operation.operationSetting);
+        tempStream.WriteValue<int8_t>(_trackDesign.statistics.maxSpeed);
+        tempStream.WriteValue<int8_t>(_trackDesign.statistics.averageSpeed);
+        tempStream.WriteValue<uint16_t>(_trackDesign.statistics.rideLength);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxPositiveVerticalG / kTD46GForcesMultiplier);
+        tempStream.WriteValue<int8_t>(_trackDesign.statistics.maxNegativeVerticalG / kTD46GForcesMultiplier);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxLateralG / kTD46GForcesMultiplier);
 
-        const auto& rtd = GetRideTypeDescriptor(_trackDesign->type);
+        if (td6rideType == RIDE_TYPE_MINI_GOLF)
+            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.holes & kRCT12InversionAndHoleMask);
+        else
+            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.inversions & kRCT12InversionAndHoleMask);
+
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.drops & kRCT12RideNumDropsMask);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.highestDropHeight);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.excitement / kTD46RatingsMultiplier);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.intensity / kTD46RatingsMultiplier);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.nausea / kTD46RatingsMultiplier);
+        tempStream.WriteValue<money16>(ToMoney16(_trackDesign.statistics.upkeepCost));
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.trackColours[i].main);
+        }
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.trackColours[i].additional);
+        }
+        for (auto i = 0; i < Limits::kNumColourSchemes; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.trackColours[i].supports);
+        }
+        tempStream.WriteValue<uint32_t>(0);
+        tempStream.Write(&_trackDesign.trackAndVehicle.vehicleObject.Entry, sizeof(RCTObjectEntry));
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.spaceRequired.x);
+        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.spaceRequired.y);
+        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
+        {
+            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Tertiary);
+        }
+        tempStream.WriteValue<uint8_t>(_trackDesign.operation.liftHillSpeed | (_trackDesign.operation.numCircuits << 5));
+
+        const auto& rtd = GetRideTypeDescriptor(_trackDesign.trackAndVehicle.rtdIndex);
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         {
-            for (const auto& mazeElement : _trackDesign->maze_elements)
+            for (const auto& mazeElement : _trackDesign.mazeElements)
             {
-                tempStream.WriteValue<uint32_t>(mazeElement.all);
+                tempStream.WriteValue<int8_t>(mazeElement.location.x);
+                tempStream.WriteValue<int8_t>(mazeElement.location.y);
+                tempStream.WriteValue<uint16_t>(mazeElement.mazeEntry);
             }
 
-            for (const auto& entranceElement : _trackDesign->entrance_elements)
+            for (const auto& entranceElement : _trackDesign.entranceElements)
             {
-                tempStream.WriteValue<int8_t>(entranceElement.Location.x);
-                tempStream.WriteValue<int8_t>(entranceElement.Location.y);
-                tempStream.WriteValue<int8_t>(entranceElement.Location.direction);
+                tempStream.WriteValue<int8_t>(entranceElement.location.x);
+                tempStream.WriteValue<int8_t>(entranceElement.location.y);
+                tempStream.WriteValue<int8_t>(entranceElement.location.direction);
                 tempStream.WriteValue<int8_t>(
-                    EnumValue(entranceElement.IsExit ? TD46MazeElementType::Exit : TD46MazeElementType::Entrance));
+                    EnumValue(entranceElement.isExit ? TD46MazeElementType::Exit : TD46MazeElementType::Entrance));
             }
 
             tempStream.WriteValue<uint32_t>(0);
         }
         else
         {
-            for (const auto& trackElement : _trackDesign->track_elements)
+            for (const auto& trackElement : _trackDesign.trackElements)
             {
-                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.Type);
+                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
                 if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
                 {
                     trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
@@ -134,12 +151,12 @@ namespace RCT2
 
             tempStream.WriteValue<uint8_t>(0xFF);
 
-            for (const auto& entranceElement : _trackDesign->entrance_elements)
+            for (const auto& entranceElement : _trackDesign.entranceElements)
             {
                 tempStream.WriteValue<uint8_t>(
-                    entranceElement.Location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.Location.z);
-                tempStream.WriteValue<uint8_t>(entranceElement.Location.direction | (entranceElement.IsExit << 7));
-                auto xy = entranceElement.Location.ToCoordsXY();
+                    entranceElement.location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.location.z);
+                tempStream.WriteValue<uint8_t>(entranceElement.location.direction | (entranceElement.isExit << 7));
+                auto xy = entranceElement.location.ToCoordsXY();
                 tempStream.WriteValue<int16_t>(xy.x);
                 tempStream.WriteValue<int16_t>(xy.y);
             }
@@ -147,15 +164,23 @@ namespace RCT2
             tempStream.WriteValue<uint8_t>(0xFF);
         }
 
-        for (const auto& sceneryElement : _trackDesign->scenery_elements)
+        for (const auto& sceneryElement : _trackDesign.sceneryElements)
         {
-            tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(RCTObjectEntry));
-            tempStream.WriteValue<int8_t>(sceneryElement.loc.x / COORDS_XY_STEP);
-            tempStream.WriteValue<int8_t>(sceneryElement.loc.y / COORDS_XY_STEP);
-            tempStream.WriteValue<int8_t>(sceneryElement.loc.z / COORDS_Z_STEP);
-            tempStream.WriteValue<uint8_t>(sceneryElement.flags);
-            tempStream.WriteValue<uint8_t>(sceneryElement.primary_colour);
-            tempStream.WriteValue<uint8_t>(sceneryElement.secondary_colour);
+            auto flags = sceneryElement.flags;
+            if (sceneryElement.sceneryObject.Entry.GetType() == ObjectType::Walls)
+            {
+                flags &= ~0xFC;
+                flags |= (sceneryElement.tertiaryColour << 2);
+            }
+
+            tempStream.Write(&sceneryElement.sceneryObject.Entry, sizeof(RCTObjectEntry));
+            auto tileCoords = TileCoordsXYZ(sceneryElement.loc);
+            tempStream.WriteValue<int8_t>(tileCoords.x);
+            tempStream.WriteValue<int8_t>(tileCoords.y);
+            tempStream.WriteValue<int8_t>(tileCoords.z);
+            tempStream.WriteValue<uint8_t>(flags);
+            tempStream.WriteValue<uint8_t>(sceneryElement.primaryColour);
+            tempStream.WriteValue<uint8_t>(sceneryElement.secondaryColour);
         }
 
         tempStream.WriteValue<uint8_t>(0xFF);

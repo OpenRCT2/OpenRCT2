@@ -818,7 +818,7 @@ namespace OpenRCT2
                     // Finances
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
-                        auto numMonths = std::min<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT, cs.Read<uint32_t>());
+                        auto numMonths = std::min<uint32_t>(kExpenditureTableMonthCount, cs.Read<uint32_t>());
                         auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::Count), cs.Read<uint32_t>());
                         for (uint32_t i = 0; i < numMonths; i++)
                         {
@@ -830,7 +830,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        auto numMonths = static_cast<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT);
+                        auto numMonths = static_cast<uint32_t>(kExpenditureTableMonthCount);
                         auto numTypes = static_cast<uint32_t>(ExpenditureType::Count);
 
                         cs.Write(numMonths);
@@ -846,7 +846,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.HistoricalProfit);
 
                     // Marketing
-                    cs.ReadWriteVector(gMarketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                    cs.ReadWriteVector(gameState.MarketingCampaigns, [&cs](MarketingCampaign& campaign) {
                         cs.ReadWrite(campaign.Type);
                         cs.ReadWrite(campaign.WeeksLeft);
                         cs.ReadWrite(campaign.Flags);
@@ -857,7 +857,7 @@ namespace OpenRCT2
                     auto& currentAwards = gameState.CurrentAwards;
                     if (version <= 6)
                     {
-                        Award awards[RCT2::Limits::MaxAwards]{};
+                        Award awards[RCT2::Limits::kMaxAwards]{};
                         cs.ReadWriteArray(awards, [&cs, &currentAwards](Award& award) {
                             if (award.Time != 0)
                             {
@@ -1322,7 +1322,7 @@ namespace OpenRCT2
 
                     // Colours
                     cs.ReadWrite(ride.entrance_style);
-                    cs.ReadWrite(ride.colour_scheme_type);
+                    cs.ReadWrite(ride.vehicleColourSettings);
                     cs.ReadWriteArray(ride.track_colour, [&cs](TrackColour& tc) {
                         cs.ReadWrite(tc.main);
                         cs.ReadWrite(tc.additional);
@@ -1446,7 +1446,7 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.turn_count_sloped);
 
                     cs.ReadWrite(ride.inversions);
-                    cs.ReadWrite(ride.drops);
+                    cs.ReadWrite(ride.dropsPoweredLifts);
                     cs.ReadWrite(ride.start_drop_height);
                     cs.ReadWrite(ride.highest_drop_height);
                     cs.ReadWrite(ride.sheltered_length);
@@ -1459,11 +1459,11 @@ namespace OpenRCT2
                     }
                     cs.ReadWrite(ride.current_test_station);
                     cs.ReadWrite(ride.num_block_brakes);
-                    cs.ReadWrite(ride.total_air_time);
+                    cs.ReadWrite(ride.totalAirTime);
 
-                    cs.ReadWrite(ride.excitement);
-                    cs.ReadWrite(ride.intensity);
-                    cs.ReadWrite(ride.nausea);
+                    cs.ReadWrite(ride.ratings.excitement);
+                    cs.ReadWrite(ride.ratings.intensity);
+                    cs.ReadWrite(ride.ratings.nausea);
 
                     if (version <= 18)
                     {
@@ -1617,7 +1617,7 @@ namespace OpenRCT2
         static std::vector<RideId> LegacyGetRidesBeenOn(const std::array<uint8_t, 32>& srcArray)
         {
             std::vector<RideId> ridesBeenOn;
-            for (uint16_t i = 0; i < RCT2::Limits::MaxRidesInPark; i++)
+            for (uint16_t i = 0; i < RCT2::Limits::kMaxRidesInPark; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {

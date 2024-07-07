@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
 #include "../interface/Dropdown.h"
 #include "../interface/Widget.h"
 #include "../interface/Window.h"
@@ -16,13 +17,12 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -949,7 +949,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                         ft.Add<money64>(gameState.ScenarioObjective.Currency);
                         break;
                 }
-                DrawTextBasic(dpi, screenCoords, stringId, ft, COLOUR_BLACK);
+                DrawTextBasic(dpi, screenCoords, stringId, ft, { COLOUR_BLACK });
             }
 
             if (widgets[WIDX_OBJECTIVE_ARG_2].type != WindowWidgetType::Empty)
@@ -1142,7 +1142,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
          */
         void OnScrollDrawRides(DrawPixelInfo& dpi, int32_t scrollIndex)
         {
-            int32_t colour = ColourMapA[colours[1]].mid_light;
+            int32_t colour = ColourMapA[colours[1].colour].mid_light;
             GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
@@ -1170,9 +1170,9 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                     if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
                     {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
-                        GfxDrawString(
-                            dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
-                            { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, darkness });
+                        DrawText(
+                            dpi, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
+                            static_cast<const char*>(CheckBoxMarkString));
                     }
 
                     // Ride name

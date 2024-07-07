@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../UiStringIds.h"
+
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -17,7 +19,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -359,7 +360,7 @@ static StringId window_cheats_page_titles[] = {
     class CheatsWindow final : public Window
     {
     private:
-        char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
+        char _moneySpinnerText[kMoneyStringMaxlength]{};
         money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
         int32_t _parkRatingSpinnerValue{};
         int32_t _yearSpinnerValue = 1;
@@ -479,8 +480,10 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_MISC:
-                    widgets[WIDX_OPEN_CLOSE_PARK].text = (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
-                                                                                                       : STR_CHEAT_OPEN_PARK;
+                    widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
+                    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+                        widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
+
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
                     SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.FreezeWeather);
                     SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.NeverendingMarketing);
@@ -537,7 +540,7 @@ static StringId window_cheats_page_titles[] = {
                 ft.Add<money64>(_moneySpinnerValue);
                 if (IsWidgetDisabled(WIDX_MONEY_SPINNER))
                 {
-                    colour |= COLOUR_FLAG_INSET;
+                    colour.setFlag(ColourFlag::inset, true);
                 }
                 int32_t actual_month = _monthSpinnerValue - 1;
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
@@ -710,13 +713,13 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_MONEY_SPINNER_INCREMENT:
-                    _moneySpinnerValue = AddClamp_money64(
+                    _moneySpinnerValue = AddClamp<money64>(
                         CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV),
                         CHEATS_MONEY_INCREMENT_DIV);
                     InvalidateWidget(WIDX_MONEY_SPINNER);
                     break;
                 case WIDX_MONEY_SPINNER_DECREMENT:
-                    _moneySpinnerValue = AddClamp_money64(
+                    _moneySpinnerValue = AddClamp<money64>(
                         CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV),
                         -CHEATS_MONEY_INCREMENT_DIV);
                     InvalidateWidget(WIDX_MONEY_SPINNER);
@@ -790,10 +793,10 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::NoMoney, GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
-                    MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
+                    MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
                         this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
-                        MONEY_STRING_MAXLENGTH);
+                        kMoneyStringMaxlength);
                     break;
                 case WIDX_SET_MONEY:
                     CheatsSet(CheatType::SetMoney, _moneySpinnerValue);

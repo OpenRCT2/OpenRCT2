@@ -13,6 +13,8 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../world/Location.hpp"
 #include "../TrackPaint.h"
 
@@ -27,7 +29,7 @@ struct SpriteBoundBox2
 };
 
 // Magic number 4 refers to the number of track blocks in a diagonal track element
-static constexpr const WoodenSupportSubType WoodenRCDiagonalSupports[4][NumOrthogonalDirections] = {
+static constexpr const WoodenSupportSubType WoodenRCDiagonalSupports[4][kNumOrthogonalDirections] = {
     { WoodenSupportSubType::Null, WoodenSupportSubType::Null, WoodenSupportSubType::Null,
       WoodenSupportSubType::Null }, // sequence 0
     { WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner2,

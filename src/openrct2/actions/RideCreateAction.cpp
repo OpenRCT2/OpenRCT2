@@ -176,7 +176,7 @@ GameActions::Result RideCreateAction::Execute() const
     {
         ride->ProposedNumTrains = 32;
     }
-    ride->max_trains = OpenRCT2::Limits::MaxTrainsPerRide;
+    ride->max_trains = OpenRCT2::Limits::kMaxTrainsPerRide;
     ride->num_cars_per_train = 1;
     ride->proposed_num_cars_per_train = rideEntry->max_cars_in_train;
     ride->min_waiting_time = 10;
@@ -202,7 +202,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->lift_hill_speed = rtd.LiftData.minimum_speed;
 
-    ride->excitement = kRideRatingUndefined;
+    ride->ratings.setNull();
 
     auto& gameState = GetGameState();
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))

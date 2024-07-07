@@ -27,11 +27,14 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 #include "../VirtualFloor.h"
-#include "../support/WoodenSupports.h"
 #include "Paint.Surface.h"
+#include "Segment.h"
+
+using namespace OpenRCT2;
 
 static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
 static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
@@ -124,8 +127,8 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     session.LeftTunnelCount = 0;
     session.RightTunnelCount = 0;
-    session.LeftTunnels[0] = { 0xFF, 0xFF };
-    session.RightTunnels[0] = { 0xFF, 0xFF };
+    session.LeftTunnels[0] = { 0xFF, TunnelType::Null };
+    session.RightTunnels[0] = { 0xFF, TunnelType::Null };
     session.VerticalTunnelHeight = 0xFF;
     session.MapPosition.x = coords.x;
     session.MapPosition.y = coords.y;
@@ -137,7 +140,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     bool partOfVirtualFloor = false;
 
-    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
+    if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
     }
@@ -283,7 +286,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         session.MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
 
-    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
+    if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
         VirtualFloorPaint(session);
     }
@@ -331,39 +334,14 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     }
 }
 
-void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t type)
-{
-    session.LeftTunnels[session.LeftTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
-    if (session.LeftTunnelCount < TUNNEL_MAX_COUNT - 1)
-    {
-        session.LeftTunnels[session.LeftTunnelCount + 1] = { 0xFF, 0xFF };
-        session.LeftTunnelCount++;
-    }
-}
-
-void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type)
-{
-    session.RightTunnels[session.RightTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
-    if (session.RightTunnelCount < TUNNEL_MAX_COUNT - 1)
-    {
-        session.RightTunnels[session.RightTunnelCount + 1] = { 0xFF, 0xFF };
-        session.RightTunnelCount++;
-    }
-}
-
-void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
-{
-    session.VerticalTunnelHeight = height / 16;
-}
-
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
 {
     if (session.Support.height >= height)
     {
         return;
     }
 
-    PaintUtilForceSetGeneralSupportHeight(session, height, slope);
+    PaintUtilForceSetGeneralSupportHeight(session, height, kTileSlopeAboveTrackOrScenery);
 }
 
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)

@@ -15,6 +15,7 @@
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
@@ -465,19 +466,19 @@ static Widget window_object_load_error_widgets[] = {
 
         ScreenSize OnScrollGetSize(const int32_t scrollIndex) override
         {
-            return ScreenSize(0, no_list_items * SCROLLABLE_ROW_HEIGHT);
+            return ScreenSize(0, no_list_items * kScrollableRowHeight);
         }
 
         void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            const auto selectedItem = screenCoords.y / kScrollableRowHeight;
             SelectObjectFromList(selectedItem);
         }
 
         void OnScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             // Highlight item that the cursor is over, or remove highlighting if none
-            const auto selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            const auto selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem < 0 || selectedItem >= no_list_items)
                 _highlightedIndex = -1;
             else
@@ -507,28 +508,28 @@ static Widget window_object_load_error_widgets[] = {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
                 dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
-                ColourMapA[colours[1]].mid_light);
+                ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
             for (int32_t i = 0; i < no_list_items; i++)
             {
                 ScreenCoordsXY screenCoords;
-                screenCoords.y = i * SCROLLABLE_ROW_HEIGHT;
+                screenCoords.y = i * kScrollableRowHeight;
                 if (screenCoords.y > dpi.y + dpi.height)
                     break;
 
-                if (screenCoords.y + SCROLLABLE_ROW_HEIGHT < dpi.y)
+                if (screenCoords.y + kScrollableRowHeight < dpi.y)
                     continue;
 
                 const auto screenRect = ScreenRect{ { 0, screenCoords.y },
-                                                    { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
+                                                    { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 // If hovering over item, change the color and fill the backdrop.
                 if (i == selected_list_item)
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].darker);
+                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].darker);
                 else if (i == _highlightedIndex)
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].mid_dark);
+                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].mid_dark);
                 else if ((i & 1) != 0) // odd / even check
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].light);
+                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].light);
 
                 // Draw the actual object entry's name...
                 screenCoords.x = NAME_COL_LEFT - 3;
@@ -538,7 +539,7 @@ static Widget window_object_load_error_widgets[] = {
                 auto name = entry.GetName();
                 char buffer[256];
                 String::Set(buffer, sizeof(buffer), name.data(), name.size());
-                GfxDrawString(dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+                DrawText(dpi, screenCoords, { COLOUR_DARK_GREEN }, buffer);
 
                 if (entry.Generation == ObjectGeneration::DAT)
                 {

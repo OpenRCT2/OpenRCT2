@@ -13,6 +13,7 @@
 #include "../actions/ResultWithMessage.h"
 #include "../common.h"
 #include "../core/BitSet.hpp"
+#include "../core/FixedPoint.hpp"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
@@ -44,9 +45,17 @@ constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
-constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
+constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
+
+constexpr uint8_t kRideMaxDropsCount = 63;
+constexpr uint8_t kRideNumDropsMask = 0b00111111;
+constexpr uint8_t kRideMaxNumPoweredLiftsCount = 3;
+constexpr uint8_t kRideNumPoweredLiftsMask = 0b11000000;
+
+constexpr money64 kRideMinPrice = 0.00_GBP;
+constexpr money64 kRideMaxPrice = 20.00_GBP;
 
 struct RideStation
 {
@@ -119,14 +128,14 @@ struct Ride
     // 0x4c.
     ObjectEntryIndex subtype{ OBJECT_ENTRY_INDEX_NULL };
     RideMode mode{};
-    uint8_t colour_scheme_type{};
-    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxVehicleColours]{};
+    VehicleColourSettings vehicleColourSettings{};
+    VehicleColour vehicle_colours[OpenRCT2::Limits::kMaxVehicleColours]{};
     // 0 = closed, 1 = open, 2 = test
     RideStatus status{};
     std::string custom_name;
     uint16_t default_name_number{};
     CoordsXY overall_view;
-    EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]{}; // Points to the first car in the train
+    EntityId vehicles[OpenRCT2::Limits::kMaxTrainsPerRide + 1]{}; // Points to the first car in the train
     uint8_t depart_flags{};
     uint8_t num_stations{};
     uint8_t NumTrains{};
@@ -175,7 +184,7 @@ struct Ride
     uint16_t turn_count_banked{};
     uint16_t turn_count_sloped{}; // X = number turns > 3 elements
     // Y is number of powered lifts, X is drops
-    uint8_t drops{}; // (YYXX XXXX)
+    uint8_t dropsPoweredLifts{}; // (YYXX XXXX)
     uint8_t start_drop_height{};
     uint8_t highest_drop_height{};
     int32_t sheltered_length{};
@@ -187,19 +196,10 @@ struct Ride
     // Counts ticks to update customer intervals, resets each 960 game ticks.
     uint16_t num_customers_timeout{};
     // Customer count in the last 10 * 960 game ticks (sliding window)
-    uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize]{};
+    uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
     money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
-    union
-    {
-        RatingTuple ratings{};
-        struct
-        {
-            ride_rating excitement;
-            ride_rating intensity;
-            ride_rating nausea;
-        };
-    };
+    RatingTuple ratings{};
     money64 value{};
     uint16_t chairlift_bullwheel_rotation{};
     uint8_t satisfaction{};
@@ -249,7 +249,7 @@ struct Ride
     uint8_t downtime{};
     uint8_t inspection_interval{};
     uint8_t last_inspection{};
-    uint8_t downtime_history[OpenRCT2::Limits::DowntimeHistorySize]{};
+    uint8_t downtime_history[OpenRCT2::Limits::kDowntimeHistorySize]{};
     uint32_t no_primary_items_sold{};
     uint32_t no_secondary_items_sold{};
     uint8_t breakdown_sound_modifier{};
@@ -260,7 +260,7 @@ struct Ride
     uint8_t connected_message_throttle{};
     money64 income_per_hour{};
     money64 profit{};
-    TrackColour track_colour[OpenRCT2::Limits::NumColourSchemes]{};
+    TrackColour track_colour[kNumRideColourSchemes]{};
     ObjectEntryIndex music{ OBJECT_ENTRY_INDEX_NULL };
     ObjectEntryIndex entrance_style{ OBJECT_ENTRY_INDEX_NULL };
     uint16_t vehicle_change_timeout{};
@@ -268,7 +268,7 @@ struct Ride
     uint8_t lift_hill_speed{};
     uint32_t guests_favourite{};
     uint32_t lifecycle_flags{};
-    uint16_t total_air_time{};
+    uint16_t totalAirTime{};
     StationIndex current_test_station{ StationIndex::GetNull() };
     uint8_t num_circuits{};
     CoordsXYZ CableLiftLoc{};
@@ -285,13 +285,13 @@ struct Ride
     friend void UpdateChairlift(Ride& ride);
 
 private:
-    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide> stations{};
+    std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide> stations{};
 
 public:
     RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0));
     const RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0)) const;
-    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations();
-    const std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations() const;
+    std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations();
+    const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations() const;
     StationIndex GetStationIndex(const RideStation* station) const;
 
     // Returns the logical station number from the given station. Index 0 = station 1, index 1 = station 2. It accounts for gaps
@@ -413,7 +413,11 @@ public:
 
     bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
 
-    uint8_t GetEntranceStyle() const;
+    uint8_t getNumDrops() const;
+    void setNumDrops(uint8_t newValue);
+
+    uint8_t getNumPoweredLifts() const;
+    void setPoweredLifts(uint8_t newValue);
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);
@@ -673,15 +677,6 @@ RideMode& operator++(RideMode& d, int);
 
 enum
 {
-    RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
-    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
-    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
-
-    RIDE_COLOUR_SCHEME_MODE_COUNT,
-};
-
-enum
-{
     RIDE_CATEGORY_TRANSPORT,
     RIDE_CATEGORY_GENTLE,
     RIDE_CATEGORY_ROLLERCOASTER,
@@ -773,23 +768,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-enum
-{
-    RIDE_COLOUR_SCHEME_MAIN,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_1,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_2,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_3,
-
-    RIDE_COLOUR_SCHEME_COUNT,
-};
-
-enum
-{
-    VEHICLE_COLOUR_SCHEME_SAME,
-    VEHICLE_COLOUR_SCHEME_PER_TRAIN,
-    VEHICLE_COLOUR_SCHEME_PER_VEHICLE
 };
 
 enum

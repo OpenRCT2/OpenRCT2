@@ -31,6 +31,7 @@
 #include "RideConstruction.h"
 #include "RideEntry.h"
 #include "RideRatings.h"
+#include "RideStringIds.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
@@ -199,21 +200,39 @@ struct RideOperatingSettings
 {
     uint8_t MinValue;
     uint8_t MaxValue;
-    uint8_t MaxBrakesSpeed;
-    uint8_t PoweredLiftAcceleration;
-    uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
-    uint16_t AccelerationFactor = 12;
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+};
+
+struct RideTrackSpeedSettings
+{
+    int8_t BrakesMaxSpeed = 30;
+    int8_t BoosterMaxSpeed = 30;
+};
+
+struct RideBoosterSettings
+{
+    uint8_t PoweredLiftAcceleration = 0;
+    uint8_t BoosterAcceleration = 0;
+    uint8_t AccelerationFactor = 12; // the amount to right-shift the launch speed for powered launch from a station
+};
+
+struct RideLegacyBoosterSettings
+// These values that must be kept for backwards compatibility. New ride types should set the acceleration values equal to
+// BoosterSettings' and leave BoosterSpeedFactor at default.
+{
+    uint8_t PoweredLiftAcceleration = 0; // PoweredLiftAcceleration value before unified-speed update
+    uint8_t BoosterAcceleration = 0;     // BoosterAcceleration value before unified-speed update
+    int8_t BoosterSpeedFactor = 2; // Multiplier representing how much to multiply booster speed by, scaled to 2x the final
+                                   // multiplier.
 };
 
 struct RatingsModifier
 {
-    RatingsModifierType Type;
-    int32_t Threshold;
-    int32_t Excitement;
-    int32_t Intensity;
-    int32_t Nausea;
+    RatingsModifierType type;
+    int32_t threshold;
+    int32_t excitement;
+    int32_t intensity;
+    int32_t nausea;
 };
 
 struct RideRatingsDescriptor
@@ -317,6 +336,9 @@ struct RideTypeDescriptor
     RideMode DefaultMode{};
     /** rct2: 0x0097CF40 */
     RideOperatingSettings OperatingSettings{};
+    RideTrackSpeedSettings TrackSpeedSettings{};
+    RideBoosterSettings BoosterSettings{};
+    RideLegacyBoosterSettings LegacyBoosterSettings{};
     RideNaming Naming{};
     RideNameConvention NameConvention{};
     const char* EnumName{};
@@ -407,6 +429,7 @@ enum ride_type_flags : uint64_t
                                                                      // coaster
     RIDE_TYPE_FLAG_NO_VEHICLES = (1uLL << 13),                       // used only by maze, spiral slide and shops
     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = (1uLL << 14),
+    RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT = (1uLL << 15),
     RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1uLL << 16), // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
     RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1uLL << 17),
@@ -425,6 +448,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_CHECK_FOR_STALLING = (1uLL << 27),
     RIDE_TYPE_FLAG_HAS_TRACK = (1uLL << 28),
     RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = (1uLL << 29), // Only set by lift
+    RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW = (1uLL << 30), // Only set by reverser coaster
     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = (1uLL << 31),
 
     RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK = (1uLL << 32),
@@ -538,7 +562,10 @@ constexpr RideTypeDescriptor DummyRTD =
     .Flags = 0,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
-    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
+    .OperatingSettings = {},
+    .TrackSpeedSettings = {},
+    .BoosterSettings = {},
+    .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .EnumName = "(INVALID)",

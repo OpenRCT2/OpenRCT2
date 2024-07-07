@@ -336,9 +336,9 @@ void VirtualFloorPaint(PaintSession& session)
 
     // Try the four tiles next to us for the same parameters as above,
     //  if our parameters differ we set an edge towards that tile
-    for (uint8_t i = 0; i < NumOrthogonalDirections; i++)
+    for (uint8_t i = 0; i < kNumOrthogonalDirections; i++)
     {
-        uint8_t effectiveRotation = (NumOrthogonalDirections + i - direction) % NumOrthogonalDirections;
+        uint8_t effectiveRotation = (kNumOrthogonalDirections + i - direction) % kNumOrthogonalDirections;
         CoordsXY theirLocation = session.MapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;
@@ -352,7 +352,7 @@ void VirtualFloorPaint(PaintSession& session)
             theirLocation, virtualFloorClipHeight, &theyAreOccupied, &theyAreOwned, &theirOccupiedEdges, &theyAreBelowGround,
             &theyAreAboveGround, &theyAreLit);
 
-        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % NumOrthogonalDirections)) && (weAreOwned && !theyAreOwned))
+        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % kNumOrthogonalDirections)) && (weAreOwned && !theyAreOwned))
         {
             occupiedEdges |= 1 << i;
         }
@@ -405,7 +405,7 @@ void VirtualFloorPaint(PaintSession& session)
             { { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) }, { 0, 0, 1 } });
     }
 
-    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Glassy)
+    if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Glassy)
         return;
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)

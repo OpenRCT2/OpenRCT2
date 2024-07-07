@@ -13,7 +13,9 @@
 #include "../actions/GameActionResult.h"
 #include "../common.h"
 #include "../object/Object.h"
+#include "../ride/RideColour.h"
 #include "../world/Map.h"
+#include "RideRatings.h"
 #include "VehicleColour.h"
 
 #include <memory>
@@ -23,147 +25,192 @@ struct ResultWithMessage;
 
 constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
 
+enum class TrackPlaceOperation : uint8_t
+{
+    drawOutlines,
+    placeQuery,
+    place,
+    getPlaceZ,
+    placeGhost,
+    placeTrackPreview,
+    removeGhost,
+};
+
 struct TrackDesignState
 {
-    CoordsXYZ PreviewMin;
-    CoordsXYZ PreviewMax;
-    CoordsXYZ Origin;
-    uint8_t PlaceOperation{};
-    int16_t PlaceZ{};
-    int16_t PlaceSceneryZ{};
-    bool EntranceExitPlaced{};
-    bool HasScenery{};
-    bool PlaceScenery{};
-    bool IsReplay{};
+    CoordsXYZ previewMin;
+    CoordsXYZ previewMax;
+    CoordsXYZ origin;
+    TrackPlaceOperation placeOperation{};
+    int16_t placeZ{};
+    int16_t placeSceneryZ{};
+    bool entranceExitPlaced{};
+    bool hasScenery{};
+    bool placeScenery{};
+    bool isReplay{};
 };
 
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
-    TileCoordsXYZD Location{};
-    bool IsExit{};
+    TileCoordsXYZD location{};
+    bool isExit{};
 };
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor scenery_object;
-    CoordsXYZ loc;
-    uint8_t flags;
-    uint8_t primary_colour;
-    uint8_t secondary_colour;
+    ObjectEntryDescriptor sceneryObject{};
+    CoordsXYZ loc{};
+    uint8_t flags{};
+    colour_t primaryColour{};
+    colour_t secondaryColour{};
+    colour_t tertiaryColour = COLOUR_DARK_BROWN;
 
-    bool IsQueue() const
-    {
-        return (flags & (1 << 7)) != 0;
-    }
+    Direction getRotation() const;
+    void setRotation(Direction rotation);
+
+    // Small scenery
+    uint8_t getQuadrant() const;
+    void setQuadrant(uint8_t quadrant);
+
+    // Path
+    bool hasSlope() const;
+    void setHasSlope(bool on);
+
+    Direction getSlopeDirection() const;
+    void setSlopeDirection(Direction slope);
+
+    uint8_t getEdges() const;
+    void setEdges(uint8_t edges);
+
+    bool isQueue() const;
+    void setIsQueue(bool on);
+
+    bool operator==(const TrackDesignSceneryElement& rhs);
+    bool operator!=(const TrackDesignSceneryElement& rhs);
 };
 
 enum class TrackDesignTrackElementFlag : uint8_t
 {
-    HasChain = (1 << 0),
-    IsInverted = (1 << 1),
-    IsCovered = (1 << 2), // Reserved
+    hasChain = (1 << 0),
+    isInverted = (1 << 1),
+    isCovered = (1 << 2), // Reserved
 };
 
 struct TrackDesignTrackElement
 {
-    track_type_t Type = 0;
-    uint8_t Flags = 0;
-    uint8_t ColourScheme = 0;
-    ::StationIndex StationIndex = StationIndex::FromUnderlying(0);
-    uint8_t BrakeBoosterSpeed = 0;
-    uint8_t SeatRotation = 4;
+    track_type_t type = 0;
+    uint8_t flags = 0;
+    uint8_t colourScheme = 0;
+    ::StationIndex stationIndex = StationIndex::FromUnderlying(0);
+    uint8_t brakeBoosterSpeed = 0;
+    uint8_t seatRotation = 4;
 
     constexpr bool HasFlag(const TrackDesignTrackElementFlag flag) const
     {
-        return Flags & EnumValue(flag);
+        return flags & EnumValue(flag);
     }
 
     constexpr void SetFlag(const TrackDesignTrackElementFlag flag)
     {
-        Flags |= EnumValue(flag);
+        flags |= EnumValue(flag);
     }
 
     constexpr void ClearFlag(const TrackDesignTrackElementFlag flag)
     {
-        Flags &= ~EnumValue(flag);
+        flags &= ~EnumValue(flag);
     }
 };
 
-/* Maze Element entry   size: 0x04 */
 struct TrackDesignMazeElement
 {
-    union
-    {
-        uint32_t all;
-        struct
-        {
-            int8_t x;
-            int8_t y;
-            union
-            {
-                uint16_t maze_entry;
-                struct
-                {
-                    uint8_t direction;
-                    uint8_t type;
-                };
-            };
-        };
-    };
+    TileCoordsXY location{};
+    uint16_t mazeEntry{};
 };
 
 class DataSerialiser;
 enum class RideMode : uint8_t;
 
+enum class TrackDesignGameStateFlag
+{
+    SceneryUnavailable,
+    HasScenery,
+    VehicleUnavailable,
+};
+
+struct TrackDesignTrackAndVehicleSettings
+{
+    ride_type_t rtdIndex{};
+    ObjectEntryDescriptor vehicleObject{};
+    uint8_t numberOfTrains{};
+    uint8_t numberOfCarsPerTrain{};
+};
+
+struct TrackDesignOperatingSettings
+{
+    RideMode rideMode{};
+    uint8_t liftHillSpeed{};
+    uint8_t numCircuits{};
+    uint8_t operationSetting{};
+    uint8_t departFlags{};
+    uint8_t minWaitingTime{};
+    uint8_t maxWaitingTime{};
+};
+
+struct TrackDesignAppearanceSettings
+{
+    std::array<TrackColour, kNumRideColourSchemes> trackColours{};
+    u8string stationObjectIdentifier{};
+    VehicleColourSettings vehicleColourSettings{};
+    std::array<VehicleColour, OpenRCT2::Limits::kMaxVehicleColours> vehicleColours{};
+};
+
+struct TrackDesignStatistics
+{
+    RatingTuple ratings{};
+    int8_t maxSpeed{};
+    int8_t averageSpeed{};
+
+    // TODO: move to a struct of its own, together with rideTime, that can be repeated for multiple stations.
+    uint16_t rideLength;
+
+    fixed16_2dp maxPositiveVerticalG{};
+    fixed16_2dp maxNegativeVerticalG{};
+    fixed16_2dp maxLateralG{};
+    uint16_t totalAirTime{};
+    uint8_t drops{};
+    uint8_t highestDropHeight{};
+    uint8_t inversions{};
+    uint8_t holes;
+
+    money64 upkeepCost;
+    TileCoordsXY spaceRequired{};
+};
+
+// Not saved in the track design, but calculated when trying to place one.
+struct TrackDesignGameStateData
+{
+    u8string name{};
+    uint8_t flags{};
+    money64 cost = 0.00_GBP;
+
+    bool hasFlag(TrackDesignGameStateFlag flag) const;
+    void setFlag(TrackDesignGameStateFlag flag, bool on);
+};
+
 struct TrackDesign
 {
-    uint8_t type;
-    uint8_t vehicle_type;
-    money64 cost;
-    uint32_t flags;
-    RideMode ride_mode;
-    uint8_t track_flags;
-    uint8_t colour_scheme;
-    std::array<VehicleColour, OpenRCT2::Limits::MaxVehicleColours> vehicle_colours;
-    u8string StationObjectIdentifier{};
-    uint8_t total_air_time;
-    uint8_t depart_flags;
-    uint8_t number_of_trains;
-    uint8_t number_of_cars_per_train;
-    uint8_t min_waiting_time;
-    uint8_t max_waiting_time;
-    uint8_t operation_setting;
-    int8_t max_speed;
-    int8_t average_speed;
-    uint16_t ride_length;
-    uint8_t max_positive_vertical_g;
-    int8_t max_negative_vertical_g;
-    uint8_t max_lateral_g;
-    uint8_t inversions;
-    uint8_t holes;
-    uint8_t drops;
-    uint8_t highest_drop_height;
-    uint8_t excitement;
-    uint8_t intensity;
-    uint8_t nausea;
-    money64 upkeep_cost;
-    uint8_t track_spine_colour[OpenRCT2::Limits::NumColourSchemes];
-    uint8_t track_rail_colour[OpenRCT2::Limits::NumColourSchemes];
-    uint8_t track_support_colour[OpenRCT2::Limits::NumColourSchemes];
-    uint32_t flags2;
-    ObjectEntryDescriptor vehicle_object;
-    uint8_t space_required_x;
-    uint8_t space_required_y;
-    uint8_t lift_hill_speed;
-    uint8_t num_circuits;
+    TrackDesignTrackAndVehicleSettings trackAndVehicle{};
+    TrackDesignOperatingSettings operation{};
+    TrackDesignAppearanceSettings appearance{};
+    TrackDesignStatistics statistics{};
 
-    std::vector<TrackDesignMazeElement> maze_elements;
-    std::vector<TrackDesignTrackElement> track_elements;
-    std::vector<TrackDesignEntranceElement> entrance_elements;
-    std::vector<TrackDesignSceneryElement> scenery_elements;
+    std::vector<TrackDesignMazeElement> mazeElements;
+    std::vector<TrackDesignTrackElement> trackElements;
+    std::vector<TrackDesignEntranceElement> entranceElements;
+    std::vector<TrackDesignSceneryElement> sceneryElements;
 
-    std::string name;
+    TrackDesignGameStateData gameStateData{};
 
 public:
     ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
@@ -177,31 +224,6 @@ private:
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
-enum
-{
-    TDPF_PLACE_SCENERY = 1 << 0,
-};
-
-enum
-{
-    TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE = (1 << 0),
-    TRACK_DESIGN_FLAG_HAS_SCENERY = (1 << 1),
-    TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE = (1 << 2),
-};
-
-enum
-{
-    PTD_OPERATION_DRAW_OUTLINES,
-    PTD_OPERATION_PLACE_QUERY,
-    PTD_OPERATION_PLACE,
-    PTD_OPERATION_GET_PLACE_Z,
-    PTD_OPERATION_PLACE_GHOST,
-    PTD_OPERATION_PLACE_TRACK_PREVIEW,
-    PTD_OPERATION_REMOVE_GHOST,
-};
-
-static constexpr uint8_t PTD_OPERATION_FLAG_IS_REPLAY = (1 << 7);
-
 extern bool gTrackDesignSceneryToggle;
 
 extern bool _trackDesignDrawingPreview;
@@ -212,17 +234,18 @@ extern RideId gTrackDesignSaveRideIndex;
 
 [[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path);
 
-void TrackDesignMirror(TrackDesign* td6);
+void TrackDesignMirror(TrackDesign& td);
 
-GameActions::Result TrackDesignPlace(TrackDesign* td6, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewRemoveGhosts(TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
-int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
+GameActions::Result TrackDesignPlace(
+    const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
+int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels);
+void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

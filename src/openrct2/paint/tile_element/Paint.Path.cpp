@@ -19,6 +19,7 @@
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../localisation/StringIds.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
 #include "../../object/FootpathSurfaceObject.h"
@@ -33,6 +34,7 @@
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "../support/MetalSupports.h"
@@ -40,16 +42,17 @@
 #include "Paint.PathAddition.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
 using namespace OpenRCT2;
 
 bool gPaintWidePathsAsGhost = false;
 
 const uint8_t PathSlopeToLandSlope[] = {
-    TILE_ELEMENT_SLOPE_SW_SIDE_UP,
-    TILE_ELEMENT_SLOPE_NW_SIDE_UP,
-    TILE_ELEMENT_SLOPE_NE_SIDE_UP,
-    TILE_ELEMENT_SLOPE_SE_SIDE_UP,
+    kTileSlopeSWSideUp,
+    kTileSlopeNWSideUp,
+    kTileSlopeNESideUp,
+    kTileSlopeSESideUp,
 };
 
 static constexpr uint8_t Byte98D6E0[] = {
@@ -159,7 +162,7 @@ static void PathPaintQueueBanner(
         {
             ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
         }
-        if (gConfigGeneral.UpperCaseBanners)
+        if (Config::Get().general.UpperCaseBanners)
         {
             FormatStringToUpper(
                 gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
@@ -637,17 +640,17 @@ static void Sub6A3F61(
         if (sloped && direction == EDGE_NE)
         {
             // Path going down into the tunnel
-            PaintUtilPushTunnelRight(session, height + 16, TUNNEL_PATH_AND_MINI_GOLF);
+            PaintUtilPushTunnelRight(session, height + 16, TunnelType::PathAndMiniGolf);
         }
         else if (connectedEdges & EDGE_NE)
         {
             // Flat path with edge to the right (north-east)
-            PaintUtilPushTunnelRight(session, height, TUNNEL_PATH_11);
+            PaintUtilPushTunnelRight(session, height, TunnelType::Path11);
         }
         else
         {
             // Path going up, or flat and not connected to the right
-            PaintUtilPushTunnelRight(session, height, TUNNEL_PATH_AND_MINI_GOLF);
+            PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
         }
     }
 
@@ -660,17 +663,17 @@ static void Sub6A3F61(
     if (sloped && direction == EDGE_SE)
     {
         // Path going down into the tunnel
-        PaintUtilPushTunnelLeft(session, height + 16, TUNNEL_PATH_AND_MINI_GOLF);
+        PaintUtilPushTunnelLeft(session, height + 16, TunnelType::PathAndMiniGolf);
     }
     else if (connectedEdges & EDGE_NW)
     {
         // Flat path with edge to the left (north-west)
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_PATH_11);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::Path11);
     }
     else
     {
         // Path going up, or flat and not connected to the left
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_PATH_AND_MINI_GOLF);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
     }
 }
 
@@ -722,7 +725,7 @@ static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl,
             return true;
         }
     }
-    else if (surface->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+    else if (surface->GetSlope() != kTileSlopeFlat)
     {
         return true;
     }
@@ -909,7 +912,7 @@ static void PathPaintSegmentSupportHeight(
         height += 16;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height);
 
     if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
     {

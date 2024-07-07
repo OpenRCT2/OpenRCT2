@@ -19,6 +19,7 @@
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
 #include "../common.h"
+#include "../core/FixedVector.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
@@ -179,7 +180,7 @@ void Ride::RemoveVehicles()
         lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
         lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
-        for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+        for (size_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
         {
             auto spriteIndex = vehicles[i];
             while (!spriteIndex.IsNull())
@@ -197,7 +198,7 @@ void Ride::RemoveVehicles()
             vehicles[i] = EntityId::GetNull();
         }
 
-        for (size_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+        for (size_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             stations[i].TrainAtStation = RideStation::kNoTrain;
 
         // Also clean up orphaned vehicles for good measure.
@@ -436,7 +437,7 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
-            trackElement->SetColourScheme(static_cast<uint8_t>(extra_params & 0xFF));
+            trackElement->SetColourScheme(static_cast<RideColourScheme>(extra_params & 0xFF));
         }
         if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {
@@ -498,7 +499,7 @@ void RideRemoveProvisionalTrackPiece()
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
-        const CoordsXYZD quadrants[NumOrthogonalDirections] = {
+        const CoordsXYZD quadrants[kNumOrthogonalDirections] = {
             { x, y, z, 0 },
             { x, y + 16, z, 1 },
             { x + 16, y + 16, z, 2 },

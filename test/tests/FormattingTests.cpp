@@ -18,6 +18,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/ride/RideStringIds.h>
 #include <sstream>
 #include <string>
 
@@ -139,7 +140,7 @@ TEST_F(FormattingTests, comma_large)
 
 TEST_F(FormattingTests, currency)
 {
-    gConfigGeneral.CurrencyFormat = CurrencyType::Pounds;
+    Config::Get().general.CurrencyFormat = CurrencyType::Pounds;
     ASSERT_EQ(u8"-£251", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 4));
     ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 5));
@@ -150,7 +151,7 @@ TEST_F(FormattingTests, currency)
 
 TEST_F(FormattingTests, currency2dp)
 {
-    gConfigGeneral.CurrencyFormat = CurrencyType::Pounds;
+    Config::Get().general.CurrencyFormat = CurrencyType::Pounds;
     ASSERT_EQ(u8"-£251.00", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ(u8"£0.40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"£0.50", FormatString("{CURRENCY2DP}", 5));
@@ -161,7 +162,7 @@ TEST_F(FormattingTests, currency2dp)
 
 TEST_F(FormattingTests, currency_yen)
 {
-    gConfigGeneral.CurrencyFormat = CurrencyType::Yen;
+    Config::Get().general.CurrencyFormat = CurrencyType::Yen;
     ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
@@ -172,7 +173,7 @@ TEST_F(FormattingTests, currency_yen)
 
 TEST_F(FormattingTests, currency2dp_yen)
 {
-    gConfigGeneral.CurrencyFormat = CurrencyType::Yen;
+    Config::Get().general.CurrencyFormat = CurrencyType::Yen;
     ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
@@ -183,14 +184,14 @@ TEST_F(FormattingTests, currency2dp_yen)
 
 TEST_F(FormattingTests, currency_pts)
 {
-    gConfigGeneral.CurrencyFormat = CurrencyType::Peseta;
+    Config::Get().general.CurrencyFormat = CurrencyType::Peseta;
     ASSERT_EQ("-251Pts", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ("112Pts", FormatString("{CURRENCY}", 1111));
 }
 
 TEST_F(FormattingTests, currency2dp_pts)
 {
-    gConfigGeneral.CurrencyFormat = CurrencyType::Peseta;
+    Config::Get().general.CurrencyFormat = CurrencyType::Peseta;
     ASSERT_EQ("-251.00Pts", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ("0.40Pts", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ("111.10Pts", FormatString("{CURRENCY2DP}", 1111));
@@ -210,42 +211,42 @@ TEST_F(FormattingTests, escaped_braces)
 
 TEST_F(FormattingTests, velocity_mph)
 {
-    gConfigGeneral.MeasurementFormat = MeasurementFormat::Imperial;
+    Config::Get().general.MeasurementFormat = MeasurementFormat::Imperial;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 1,024 mph.", actual);
 }
 
 TEST_F(FormattingTests, velocity_kph)
 {
-    gConfigGeneral.MeasurementFormat = MeasurementFormat::Metric;
+    Config::Get().general.MeasurementFormat = MeasurementFormat::Metric;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 1,648 km/h.", actual);
 }
 
 TEST_F(FormattingTests, velocity_mps)
 {
-    gConfigGeneral.MeasurementFormat = MeasurementFormat::SI;
+    Config::Get().general.MeasurementFormat = MeasurementFormat::SI;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 457.7 m/s.", actual);
 }
 
 TEST_F(FormattingTests, length_imperial)
 {
-    gConfigGeneral.MeasurementFormat = MeasurementFormat::Imperial;
+    Config::Get().general.MeasurementFormat = MeasurementFormat::Imperial;
     auto actual = FormatString("Height: {LENGTH}", 1024);
     ASSERT_EQ("Height: 3,360 ft", actual);
 }
 
 TEST_F(FormattingTests, length_metric)
 {
-    gConfigGeneral.MeasurementFormat = MeasurementFormat::Metric;
+    Config::Get().general.MeasurementFormat = MeasurementFormat::Metric;
     auto actual = FormatString("Height: {LENGTH}", 1024);
     ASSERT_EQ("Height: 1,024 m", actual);
 }
 
 TEST_F(FormattingTests, length_si)
 {
-    gConfigGeneral.MeasurementFormat = MeasurementFormat::SI;
+    Config::Get().general.MeasurementFormat = MeasurementFormat::SI;
     auto actual = FormatString("Height: {LENGTH}", 2048);
     ASSERT_EQ("Height: 2,048 m", actual);
 }

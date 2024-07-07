@@ -414,15 +414,15 @@ private:
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
     void UpdateRidePrepareForExit();
-    void Loc68F9F3();
-    void Loc68FA89();
+    void UpdateMotivesIdle();
+    void UpdateConsumptionMotives();
     int32_t CheckEasterEggName(int32_t index) const;
     void GivePassingPeepsPurpleClothes(Guest* passingPeep);
     void GivePassingPeepsPizza(Guest* passingPeep);
     void MakePassingPeepsSick(Guest* passingPeep);
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
-    OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> FindRidesToGoOn();
+    OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> FindRidesToGoOn();
     bool FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array);
     void GoToRideEntrance(const Ride& ride);
 };

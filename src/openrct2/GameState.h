@@ -16,6 +16,7 @@
 #include "interface/ZoomLevel.h"
 #include "management/Award.h"
 #include "management/Finance.h"
+#include "management/Marketing.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -52,7 +53,7 @@ namespace OpenRCT2
         ClimateState ClimateNext;
         uint16_t ClimateUpdateTimer;
         money64 Cash;
-        money64 CashHistory[FINANCE_GRAPH_SIZE];
+        money64 CashHistory[kFinanceGraphSize];
         money64 InitialCash;
         money64 GuestInitialCash;
         uint8_t GuestInitialHappiness;
@@ -68,7 +69,7 @@ namespace OpenRCT2
         money64 TotalIncomeFromAdmissions;
         money64 TotalRideValueForMoney;
         uint16_t WeeklyProfitAverageDivisor;
-        money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+        money64 WeeklyProfitHistory[kFinanceGraphSize];
         Objective ScenarioObjective;
         uint16_t ScenarioParkRatingWarningDays;
         money64 ScenarioCompletedCompanyValue;
@@ -76,7 +77,7 @@ namespace OpenRCT2
         money64 BankLoan;
         uint8_t BankLoanInterestRate;
         money64 MaxBankLoan;
-        money64 ExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][EnumValue(ExpenditureType::Count)];
+        money64 ExpenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
         random_engine_t ScenarioRand;
         TileCoordsXY MapSize;
         money64 LandPrice;
@@ -91,7 +92,7 @@ namespace OpenRCT2
         std::vector<Banner> Banners;
         Entity_t Entities[MAX_ENTITIES]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-        std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
+        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
         ::RideRatingUpdateStates RideRatingUpdateStates;
         std::vector<TileElement> TileElements;
 
@@ -130,6 +131,8 @@ namespace OpenRCT2
         ObjectEntryIndex LastEntranceStyle;
 
         std::vector<Award> CurrentAwards;
+
+        std::vector<MarketingCampaign> MarketingCampaigns;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.

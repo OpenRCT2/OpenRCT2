@@ -12,12 +12,17 @@
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 #include "WoodenRollerCoaster.h"
+
+static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
 
 enum
 {
@@ -253,10 +258,10 @@ static void ClassicWoodenRCTrackFlatToLeftBank(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackFlatToRightBank(
@@ -287,10 +292,10 @@ static void ClassicWoodenRCTrackFlatToRightBank(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackLeftBankToFlat(
@@ -334,10 +339,10 @@ static void ClassicWoodenRCTrackLeftBank(
     };
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackRightBank(
@@ -375,18 +380,18 @@ static void ClassicWoodenRCTrackLeftBankTo25DegUp(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::FlatToUp25Deg);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 static void ClassicWoodenRCTrackRightBankTo25DegUp(
@@ -418,18 +423,18 @@ static void ClassicWoodenRCTrackRightBankTo25DegUp(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::FlatToUp25Deg);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 static void ClassicWoodenRCTrack25DegUpToLeftBank(
@@ -461,18 +466,18 @@ static void ClassicWoodenRCTrack25DegUpToLeftBank(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToFlat);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void ClassicWoodenRCTrack25DegUpToRightBank(
@@ -504,18 +509,18 @@ static void ClassicWoodenRCTrack25DegUpToRightBank(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToFlat);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void ClassicWoodenRCTrackLeftBankTo25DegDown(
@@ -762,7 +767,7 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
             },
         },
     };
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][7] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][7] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
           WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
@@ -791,22 +796,21 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
 
     if (supportType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
-        WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType[direction][trackSequence], height, session.SupportColours);
+        WoodenASupportsPaintSetup(session, kSupportType, supportType[direction][trackSequence], height, session.SupportColours);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     ClassicWoodenRCTrackBankedRightQuarterTurn5(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
@@ -954,23 +958,23 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
 
     if (trackSequence == 0 || trackSequence == 3)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+    trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     ClassicWoodenRCTrackRightQuarterTurn3Bank(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
@@ -1141,7 +1145,7 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
         },
     };
 
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][5] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
           WoodenSupportSubType::Null },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
@@ -1158,19 +1162,18 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     }
 
     if (supportType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
-        WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType[direction][trackSequence], height, session.SupportColours);
+        WoodenASupportsPaintSetup(session, kSupportType, supportType[direction][trackSequence], height, session.SupportColours);
     }
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackRightEighthBankToDiag(
@@ -1340,7 +1343,7 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
         },
     };
 
-    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+    static constexpr WoodenSupportSubType supportType[kNumOrthogonalDirections][5] = {
         { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
           WoodenSupportSubType::Null },
         { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
@@ -1357,19 +1360,18 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     }
 
     if (supportType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
-        WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType[direction][trackSequence], height, session.SupportColours);
+        WoodenASupportsPaintSetup(session, kSupportType, supportType[direction][trackSequence], height, session.SupportColours);
     }
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackLeftEighthBankToOrthogonal(
@@ -1488,18 +1490,18 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
     if (trackSequence == 1)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
     }
     else if (trackSequence == 2)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackDiagFlatToRightBank(
@@ -1602,18 +1604,18 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
     if (trackSequence == 1)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
     }
     else if (trackSequence == 2)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackDiagLeftBankToFlat(
@@ -1718,18 +1720,18 @@ static void ClassicWoodenRCTrackDiagLeftBank(
     if (trackSequence == 1)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
     }
     else if (trackSequence == 2)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackDiagRightBank(
@@ -1839,18 +1841,18 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
     if (trackSequence == 1)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
     }
     else if (trackSequence == 2)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
@@ -1953,18 +1955,18 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
     if (trackSequence == 1)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
     }
     else if (trackSequence == 2)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
@@ -2067,18 +2069,18 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
     if (trackSequence == 1)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
     }
     else if (trackSequence == 2)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
@@ -2181,18 +2183,18 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
     if (trackSequence == 1)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
     }
     else if (trackSequence == 2)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
+            session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void ClassicWoodenRCTrackDiagLeftBankTo25DegDown(

@@ -151,8 +151,8 @@ static Widget _scenarioSelectWidgets[] = {
             {
                 selected_tab = widgetIndex - 4;
                 _highlightedScenario = nullptr;
-                gConfigInterface.ScenarioselectLastTab = selected_tab;
-                ConfigSaveDefault();
+                Config::Get().interface.ScenarioselectLastTab = selected_tab;
+                Config::Save();
                 InitialiseListItems();
                 Invalidate();
                 OnResize();
@@ -164,13 +164,18 @@ static Widget _scenarioSelectWidgets[] = {
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            int32_t format;
             const ScenarioIndexEntry* scenario;
 
             DrawWidgets(dpi);
 
-            format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
-            FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
+            StringId format = STR_WINDOW_COLOUR_2_STRINGID;
+            FontStyle fontStyle = FontStyle::Medium;
+
+            if (ScenarioSelectUseSmallFont())
+            {
+                format = STR_SMALL_WINDOW_COLOUR_2_STRINGID;
+                fontStyle = FontStyle::Small;
+            }
 
             // Text for each tab
             for (uint32_t i = 0; i < std::size(kScenarioOriginStringIds); i++)
@@ -180,7 +185,7 @@ static Widget _scenarioSelectWidgets[] = {
                     continue;
 
                 auto ft = Formatter();
-                if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
                     ft.Add<StringId>(kScenarioOriginStringIds[i]);
                 }
@@ -219,7 +224,7 @@ static Widget _scenarioSelectWidgets[] = {
             }
 
             // Scenario path
-            if (gConfigGeneral.DebuggingTools)
+            if (Config::Get().general.DebuggingTools)
             {
                 const auto shortPath = ShortenPath(scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
 
@@ -282,7 +287,7 @@ static Widget _scenarioSelectWidgets[] = {
             pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
 
             ResizeFrameWithPage();
-            const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? 17 : 5;
+            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - 179;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
         }
@@ -388,11 +393,16 @@ static Widget _scenarioSelectWidgets[] = {
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
 
-            StringId highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
-            StringId unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
+            StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
+            StringId unhighlighted_format = STR_BLACK_STRING;
+            if (ScenarioSelectUseSmallFont())
+            {
+                highlighted_format = STR_WHITE_STRING;
+                unhighlighted_format = STR_WHITE_STRING;
+            }
 
             const auto& listWidget = widgets[WIDX_SCENARIOLIST];
             int32_t listWidth = listWidget.width() - 12;
@@ -441,7 +451,8 @@ static Widget _scenarioSelectWidgets[] = {
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<char*>(buffer);
-                        colour_t colour = isDisabled ? colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
+                        auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
+                                                 : ColourWithFlags{ COLOUR_BLACK };
                         auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
@@ -480,9 +491,9 @@ static Widget _scenarioSelectWidgets[] = {
     private:
         void DrawCategoryHeading(DrawPixelInfo& dpi, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
-            colour_t baseColour = colours[1];
-            colour_t lightColour = ColourMapA[baseColour].lighter;
-            colour_t darkColour = ColourMapA[baseColour].mid_dark;
+            auto baseColour = colours[1];
+            colour_t lightColour = ColourMapA[baseColour.colour].lighter;
+            colour_t darkColour = ColourMapA[baseColour.colour].mid_dark;
 
             // Draw string
             int32_t centreX = (left + right) / 2;
@@ -538,7 +549,7 @@ static Widget _scenarioSelectWidgets[] = {
 
                 // Category heading
                 StringId headingStringId = STR_NONE;
-                if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
                     if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
                     {
@@ -618,7 +629,7 @@ static Widget _scenarioSelectWidgets[] = {
                 bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios)
                     != rct1RequiredCompletedScenarios;
                 _listItems[megaParkListItemIndex.value()].scenario.is_locked = megaParkLocked;
-                if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
+                if (megaParkLocked && Config::Get().general.ScenarioHideMegaPark)
                 {
                     // Remove mega park
                     _listItems.pop_back();
@@ -644,7 +655,7 @@ static Widget _scenarioSelectWidgets[] = {
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
                 if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
                 {
@@ -668,9 +679,9 @@ static Widget _scenarioSelectWidgets[] = {
 
         bool IsLockingEnabled() const
         {
-            if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
                 return false;
-            if (!gConfigGeneral.ScenarioUnlockingEnabled)
+            if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
             if (selected_tab >= 6)
                 return false;
@@ -685,7 +696,7 @@ static Widget _scenarioSelectWidgets[] = {
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-                if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
                     showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
                 }
@@ -700,9 +711,9 @@ static Widget _scenarioSelectWidgets[] = {
                 }
             }
 
-            if (showPages & (1 << gConfigInterface.ScenarioselectLastTab))
+            if (showPages & (1 << Config::Get().interface.ScenarioselectLastTab))
             {
-                selected_tab = gConfigInterface.ScenarioselectLastTab;
+                selected_tab = Config::Get().interface.ScenarioselectLastTab;
             }
             else
             {

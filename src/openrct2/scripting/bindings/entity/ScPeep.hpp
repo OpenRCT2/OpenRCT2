@@ -41,6 +41,8 @@ namespace OpenRCT2::Scripting
         { "angry", PEEP_FLAGS_ANGRY },
         { "iceCream", PEEP_FLAGS_ICE_CREAM },
         { "hereWeAre", PEEP_FLAGS_HERE_WE_ARE },
+        { "positionFrozen", PEEP_FLAGS_POSITION_FROZEN },
+        { "animationFrozen", PEEP_FLAGS_ANIMATION_FROZEN },
     });
 
     class ScPeep : public ScEntity
@@ -57,6 +59,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPeep::peepType_get, nullptr, "peepType");
             dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
             dukglue_register_property(ctx, &ScPeep::destination_get, &ScPeep::destination_set, "destination");
+            dukglue_register_property(ctx, &ScPeep::direction_get, &ScPeep::direction_set, "direction");
             dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");
             dukglue_register_property(ctx, &ScPeep::energyTarget_get, &ScPeep::energyTarget_set, "energyTarget");
             dukglue_register_method(ctx, &ScPeep::getFlag, "getFlag");
@@ -138,6 +141,23 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint8_t direction_get() const
+        {
+            auto peep = GetPeep();
+            return peep != nullptr ? peep->PeepDirection : 0;
+        }
+
+        void direction_set(const uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetPeep();
+            if (peep != nullptr && value < kNumOrthogonalDirections)
+            {
+                peep->PeepDirection = value;
+                peep->Orientation = value << 3;
+            }
+        }
+
         uint8_t energy_get() const
         {
             auto peep = GetPeep();
@@ -149,6 +169,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
+                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergy);
                 peep->Energy = value;
             }
         }
@@ -164,6 +185,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
+                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergyTarget);
                 peep->EnergyTarget = value;
             }
         }

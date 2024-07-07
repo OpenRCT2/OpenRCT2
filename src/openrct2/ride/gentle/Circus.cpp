@@ -11,6 +11,8 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
 #include "../../ride/Vehicle.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
@@ -60,10 +62,10 @@ static void PaintCircus(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, kFenceSpritesRope,
         session.CurrentRotation);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
@@ -113,7 +115,7 @@ static void PaintCircus(
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCircus(int32_t trackType)

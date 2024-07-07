@@ -18,7 +18,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
@@ -386,7 +385,7 @@ static Widget _rideListWidgets[] = {
          */
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            const auto newHeight = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
+            const auto newHeight = static_cast<int32_t>(_rideList.size() * kScrollableRowHeight);
             if (selected_list_item != -1)
             {
                 selected_list_item = -1;
@@ -411,7 +410,7 @@ static Widget _rideListWidgets[] = {
          */
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            const auto index = screenCoords.y / kScrollableRowHeight;
             if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
                 return;
 
@@ -437,7 +436,7 @@ static Widget _rideListWidgets[] = {
          */
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            const auto index = screenCoords.y / kScrollableRowHeight;
             if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
                 return;
 
@@ -543,17 +542,23 @@ static Widget _rideListWidgets[] = {
         {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
+                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } },
+                ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
             {
-                StringId format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
+                StringId format = STR_BLACK_STRING;
+                if (_quickDemolishMode)
+                    format = STR_RED_STRINGID;
+
                 if (i == static_cast<size_t>(selected_list_item))
                 {
                     // Background highlight
-                    GfxFilterRect(dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
-                    format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+                    GfxFilterRect(dpi, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    format = STR_WINDOW_COLOUR_2_STRINGID;
+                    if (_quickDemolishMode)
+                        format = STR_LIGHTPINK_STRINGID;
                 }
 
                 // Get ride
@@ -715,7 +720,7 @@ static Widget _rideListWidgets[] = {
                         if (RideHasRatings(*ridePtr))
                         {
                             formatSecondary = STR_EXCITEMENT_LABEL;
-                            ft.Add<uint16_t>(ridePtr->excitement);
+                            ft.Add<uint16_t>(ridePtr->ratings.excitement);
                         }
                         break;
                     case INFORMATION_TYPE_INTENSITY:
@@ -723,7 +728,7 @@ static Widget _rideListWidgets[] = {
                         if (RideHasRatings(*ridePtr))
                         {
                             formatSecondary = STR_INTENSITY_LABEL;
-                            ft.Add<uint16_t>(ridePtr->intensity);
+                            ft.Add<uint16_t>(ridePtr->ratings.intensity);
                         }
                         break;
                     case INFORMATION_TYPE_NAUSEA:
@@ -731,7 +736,7 @@ static Widget _rideListWidgets[] = {
                         if (RideHasRatings(*ridePtr))
                         {
                             formatSecondary = STR_NAUSEA_LABEL;
-                            ft.Add<uint16_t>(ridePtr->nausea);
+                            ft.Add<uint16_t>(ridePtr->ratings.nausea);
                         }
                         break;
                 }
@@ -742,7 +747,7 @@ static Widget _rideListWidgets[] = {
                     ft.Add<StringId>(formatSecondary);
                 }
                 DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
-                y += SCROLLABLE_ROW_HEIGHT;
+                y += kScrollableRowHeight;
             }
         }
 
@@ -910,17 +915,17 @@ static Widget _rideListWidgets[] = {
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.excitement <= otherRide.excitement;
+                        return thisRide.ratings.excitement <= otherRide.ratings.excitement;
                     });
                     break;
                 case INFORMATION_TYPE_INTENSITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.intensity <= otherRide.intensity;
+                        return thisRide.ratings.intensity <= otherRide.ratings.intensity;
                     });
                     break;
                 case INFORMATION_TYPE_NAUSEA:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.nausea <= otherRide.nausea;
+                        return thisRide.ratings.nausea <= otherRide.ratings.nausea;
                     });
                     break;
             }

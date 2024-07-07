@@ -91,16 +91,6 @@ enum
     MAP_SELECT_TYPE_EDGE_3,
 };
 
-// Used when calling MapCanConstructWithClearAt();
-// This assumes that the caller has already done the check on the element it wants to place,
-// as this function can only check the element the player wants to build through.
-enum
-{
-    CREATE_CROSSING_MODE_NONE,
-    CREATE_CROSSING_MODE_TRACK_OVER_PATH,
-    CREATE_CROSSING_MODE_PATH_OVER_TRACK,
-};
-
 extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
@@ -256,3 +246,4 @@ void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(
     std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
 MapRange ClampRangeWithinMap(const MapRange& range);
+void ShiftMap(const TileCoordsXY& amount);

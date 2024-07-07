@@ -425,17 +425,26 @@ bool ObjectTypeCanBeRestricted(ObjectType objectType)
     }
 }
 
-static std::vector<ScenerySelection> GetAllMiscScenery()
+struct MiscScenery
 {
-    std::vector<ScenerySelection> miscScenery;
-    std::vector<ScenerySelection> nonMiscScenery;
+    // Scenery that will end up on the ‘?’ tab
+    std::vector<ScenerySelection> miscScenery{};
+    // Scenery that has attached itself to an existing group, but is not referenced directly.
+    std::vector<ScenerySelection> additionalGroupScenery{};
+};
+
+static MiscScenery GetAllMiscScenery()
+{
+    MiscScenery ret;
+    std::vector<ScenerySelection> referencedBySceneryGroups;
     std::vector<ObjectEntryIndex> sceneryGroupIds;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)
         {
-            nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
+            referencedBySceneryGroups.insert(
+                referencedBySceneryGroups.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
             sceneryGroupIds.emplace_back(i);
         }
     }
@@ -487,48 +496,64 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
                     break;
             }
 
-            // An object may be link itself against a scenery group, in which case it should not be marked as miscellaneous.
+            const ScenerySelection sceneryItem = { sceneryType, i };
+            if (!IsSceneryEntryValid(sceneryItem))
+                continue;
+
+            const bool isReferencedBySceneryGroup = std::find(
+                                                        std::begin(referencedBySceneryGroups),
+                                                        std::end(referencedBySceneryGroups), sceneryItem)
+                != std::end(referencedBySceneryGroups);
+            if (isReferencedBySceneryGroup)
+                continue;
+
+            // An object may link itself against a scenery group, in which case it should not be marked as miscellaneous.
+            bool isLinkedToKnownSceneryGroup = false;
             if (linkedSceneryGroup != OBJECT_ENTRY_INDEX_NULL)
             {
                 if (std::find(std::begin(sceneryGroupIds), std::end(sceneryGroupIds), linkedSceneryGroup)
                     != std::end(sceneryGroupIds))
                 {
-                    continue;
+                    isLinkedToKnownSceneryGroup = true;
                 }
             }
 
-            const ScenerySelection sceneryItem = { sceneryType, i };
-            if (IsSceneryEntryValid(sceneryItem))
-            {
-                if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
-                {
-                    miscScenery.push_back(sceneryItem);
-                }
-            }
+            if (isLinkedToKnownSceneryGroup)
+                ret.additionalGroupScenery.push_back(sceneryItem);
+            else
+                ret.miscScenery.push_back(sceneryItem);
         }
     }
-    return miscScenery;
+    return ret;
 }
 
 void RestrictAllMiscScenery()
 {
     auto& gameState = GetGameState();
-    auto miscScenery = GetAllMiscScenery();
+    auto miscScenery = GetAllMiscScenery().miscScenery;
     gameState.RestrictedScenery.insert(gameState.RestrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
 }
 
-void MarkAllUnrestrictedSceneryAsInvented()
+static void MarkAllUnrestrictedSceneryInVectorInvented(const std::vector<ScenerySelection>& vector)
 {
-    auto& gameState = GetGameState();
-    auto miscScenery = GetAllMiscScenery();
-    for (const auto& sceneryItem : miscScenery)
+    auto& restrictedScenery = GetGameState().RestrictedScenery;
+
+    for (const auto& sceneryItem : vector)
     {
-        if (std::find(gameState.RestrictedScenery.begin(), gameState.RestrictedScenery.end(), sceneryItem)
-            == gameState.RestrictedScenery.end())
+        const bool isNotRestricted = std::find(restrictedScenery.begin(), restrictedScenery.end(), sceneryItem)
+            == restrictedScenery.end();
+        if (isNotRestricted)
         {
             ScenerySetInvented(sceneryItem);
         }
     }
+}
+
+void MarkAllUnrestrictedSceneryAsInvented()
+{
+    auto scenery = GetAllMiscScenery();
+    MarkAllUnrestrictedSceneryInVectorInvented(scenery.miscScenery);
+    MarkAllUnrestrictedSceneryInVectorInvented(scenery.additionalGroupScenery);
 }
 
 ObjectType GetObjectTypeFromSceneryType(uint8_t type)

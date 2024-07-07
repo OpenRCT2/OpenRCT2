@@ -9,8 +9,10 @@
 
 #include "InGameConsole.h"
 
+#include "../UiStringIds.h"
 #include "Theme.h"
 
+#include <algorithm>
 #include <cstring>
 #include <openrct2/Context.h>
 #include <openrct2/Version.h>
@@ -20,15 +22,15 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
-#include <openrct2/localisation/StringIds.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 static InGameConsole _inGameConsole;
 
 static FontStyle InGameConsoleGetFontStyle()
 {
-    return (gConfigInterface.ConsoleSmallFont ? FontStyle::Small : FontStyle::Medium);
+    return (Config::Get().interface.ConsoleSmallFont ? FontStyle::Small : FontStyle::Medium);
 }
 
 static int32_t InGameConsoleGetLineHeight()
@@ -278,7 +280,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
         return;
 
     // Set font
-    uint8_t textColour = NOT_TRANSLUCENT(ThemeGetColour(WindowClass::Console, 1));
+    ColourWithFlags textColour = { ThemeGetColour(WindowClass::Console, 1).colour, 0 };
     const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t maxLines = GetNumVisibleLines();
 
@@ -286,7 +288,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     // as opposed to a desaturated grey
     thread_local std::string _colourFormatStr;
     _colourFormatStr.clear();
-    if (textColour == COLOUR_BLACK)
+    if (textColour.colour == COLOUR_BLACK)
     {
         _colourFormatStr = "{BLACK}";
     }
@@ -294,7 +296,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     // TTF looks far better without the outlines
     if (!LocalisationService_UseTrueTypeFont())
     {
-        textColour |= COLOUR_FLAG_OUTLINE;
+        textColour.setFlag(ColourFlag::withOutline, true);
     }
 
     Invalidate();
@@ -308,7 +310,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
         FilterPaletteID::Palette51);
 
     // Paint background colour.
-    uint8_t backgroundColour = ThemeGetColour(WindowClass::Console, 0);
+    auto backgroundColour = ThemeGetColour(WindowClass::Console, 0);
     GfxFillRectInset(dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     GfxFillRectInset(
         dpi, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
@@ -322,7 +324,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = _colourFormatStr + _consoleLines[index];
-        GfxDrawString(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
+        DrawText(dpi, screenCoords, { textColour, InGameConsoleGetFontStyle() }, lineBuffer.c_str());
         screenCoords.y += lineHeight;
     }
 
@@ -336,13 +338,13 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
-        uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
+        uint8_t caretColour = ColourMapA[textColour.colour].lightest;
         GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
     }
 
     // What about border colours?
-    uint8_t borderColour1 = ColourMapA[BASE_COLOUR(backgroundColour)].light;
-    uint8_t borderColour2 = ColourMapA[BASE_COLOUR(backgroundColour)].mid_dark;
+    uint8_t borderColour1 = ColourMapA[backgroundColour.colour].light;
+    uint8_t borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
 
     // Input area top border
     GfxFillRect(

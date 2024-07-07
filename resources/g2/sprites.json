@@ -60,7 +60,7 @@
         "path": "icons/rct1_close_on.png"
     },
     {
-        "path": "icons/rct1_close_off_pressed.png"
+        "path": "icons/rct1_close_on_pressed.png"
     },
     {
         "path": "icons/rct1_test_off.png"
@@ -310,6 +310,39 @@
     },
     {
         "path": "icons/colour_invisible_pressed.png"
+    },
+    {
+        "path": "loader/loader_hybrid_supports.png",
+        "y": 10
+    },
+    {
+        "path": "loader/loader_hybrid_track.png",
+        "y": 15
+    },
+    {
+        "path": "loader/loader_hybrid_vehicle.png"
+    },
+    {
+        "path": "loader/loader_steel_supports.png",
+        "y": 27
+    },
+    {
+        "path": "loader/loader_steel_track.png",
+        "y": 16
+    },
+    {
+        "path": "loader/loader_steel_vehicle.png"
+    },
+    {
+        "path": "loader/loader_wooden_supports.png",
+        "y": 3
+    },
+    {
+        "path": "loader/loader_wooden_track.png",
+        "y": 3
+    },
+    {
+        "path": "loader/loader_wooden_vehicle.png"
     },
     {
         "path": "palette_map/palette_map_dark_olive_dark.png",
@@ -24912,12 +24945,12 @@
         "palette": "keep"
     },
     {
-    	"path": "icons/medium-curve-left.png",
+        "path": "icons/medium-curve-left.png",
         "x": 2,
         "y": 6
     },
     {
-    	"path": "icons/medium-curve-right.png",
+        "path": "icons/medium-curve-right.png",
         "x": 1,
         "y": 6
     }

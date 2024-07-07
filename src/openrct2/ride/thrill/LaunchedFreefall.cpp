@@ -8,10 +8,12 @@
  *****************************************************************************/
 
 #include "../../common.h"
-#include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
@@ -101,10 +103,10 @@ static void PaintLaunchedFreefallBase(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, floorSpritesMetal, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetal, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesMetal,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesMetal,
         session.CurrentRotation);
 
     if (trackSequence == 0)
@@ -167,7 +169,7 @@ static void PaintLaunchedFreefallBase(
     }
     PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~blockedSegments, height + 2, 0x20);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006FD208 */
@@ -193,7 +195,7 @@ static void PaintLaunchedFreefallTowerSection(
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     PaintUtilSetVerticalTunnel(session, height + 32);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

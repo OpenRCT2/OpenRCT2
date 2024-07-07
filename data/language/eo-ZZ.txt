@@ -2885,7 +2885,7 @@ STR_5755    :Malĝusta Versio de Programo (Servilo uzas je {STRING})
 STR_5756    :Malbona Pasvorto
 STR_5757    :Servilo Plena
 STR_5758    :{OUTLINE}{GREEN}{STRING} aliĝis al la ludo
-STR_5759    :Elŝutas mapon … ({INT32} / {INT32}) KiB
+STR_5759    :Elŝutas mapon …
 STR_5760    :Honkongaj Dolaroj (HK$)
 STR_5761    :Nova Tajvana Dolaro (NT$)
 STR_5762    :Ĉina Juano (CN¥)
@@ -3449,7 +3449,7 @@ STR_6374    :I
 STR_6375    :Nekonata Atrakcio
 STR_6376    :{WINDOW_COLOUR_2}Atrakcioveturilo:{NEWLINE}{BLACK}{STRINGID} por {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} por {STRINGID}
-STR_6378    :Ricevas liston de objektoj: {INT32} / {INT32}
+STR_6378    :Ricevas liston de objektoj:
 STR_6379    :Ricevis nevalidan datumon
 STR_6380    :Ĝisdatigo disponeblas!
 STR_6381    :Aliĝi al la Diskordo de OpenRCT2!
@@ -3698,6 +3698,24 @@ STR_6624    :Inspektilo de Bloko: Ordigi elementojn
 STR_6625    :Nevalida koloro
 STR_6626    :Animacio movas malantaŭen
 STR_6627    :Rapideco de trako estas tro alta!
+STR_6628    :Nur meteblas sur bordoj de trotuaroj!
+STR_6629    :Ĝisrandigi butonojn de ilobreto horizontale centren
+STR_6630    :Ĉi tiu agordo ĝisrandigos la butonojn de ilobreto horizontale centren de la ekrano. La tradicia maniero ĝisrandigi ilin estas al la dekstre kaj maldeksre anguloj.
+STR_6631    :Ŝargado…
+STR_6632    :Kontrolas dosierojn de objektoj…
+STR_6633    :Kontrolas dosierojn de scenaroj…
+STR_6634    :Kontrolas dosierojn de trakdesegnaĵoj…
+STR_6635    :Kontrolas havaĵo-pakojn…
+STR_6636    :Kontrolas titolosekvencojn…
+STR_6637    :Ŝargas titolosekvencon…
+STR_6638    :Pligrandigita fasado
+STR_6639    :Modifas la fasadon por esti pli taŭga por tuŝekranoj
+STR_6640    :Redakti havaĵo-pakojn…
+STR_6641    :Ŝargado/progreso-fenestro
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Tuŝekranaj plibonigoj
+STR_6645    :Pligrandigas kelkajn elementojn de la fasado, por ke ili estas pli facile klakeblaj aŭ tuŝeblaj.
 
 #############
 # Scenarios #
@@ -4287,87 +4305,87 @@ STR_DTLS    :Konstruu la mankantajn atrakciojn de Six Flags, aŭ kreu viajn prop
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Afriko - Afrika Diamanto-Mino
+STR_SCNR    :Minoj de Afriko
 STR_PARK    :Minoj de Afriko
 STR_DTLS    :Vi heredis ne plu uzitan diamanto-minejon, kaj trovis valoran diamanton. Vi decidas investi tiun monon por konstrui mondfaman amuzparkon.
 
 <Africa - Oasis>
-STR_SCNR    :Afriko - Oazo
+STR_SCNR    :Miraĝo-Frenezo
 STR_PARK    :Miraĝo-Frenezo
 STR_DTLS    :Dezerta oazo estis malkovrita kaj provizus belan lokon por parko. Transporto al la oazo estis provizita.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Afriko - Akvofaloj de Viktoria
+STR_SCNR    :Super La Rando
 STR_PARK    :Super La Rando
 STR_DTLS    :Digo konstruita oferas abundan malmultekostan hidroelektran potencon por administri parkon. Vi devas atingi altan parkvaloron por helpi repagi la prunton de la digo.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarkto - Ekologia Savo
+STR_SCNR    :Glaciaj Aventuroj
 STR_PARK    :Glaciaj Aventuroj
 STR_DTLS    :La biomedia agentejo komisiis vin por transformi malnovan nafto-rafinejon, ekologian malbelaĵon, en supran turismo-vidindaĵon. Tereno estas malmultekosta sed pruntinterezo estas alta. Vi povas vendi la malnovajn konstruaĵojn por savado.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Azio - Plibonigo de Turismo de la Granda Ĉina Muro
+STR_SCNR    :La Granda Ĉina Muro
 STR_PARK    :La Granda Ĉina Muro
 STR_DTLS    :La aŭtoritatoj decidis plibonigi turismon ĉirkaŭ la Granda Muro per konstrui amuzparkon sur la apuda tereno. Mono estas neniu problemo!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Azio - Japana Marborda Reakiro
+STR_SCNR    :Okinavo-Marbordo
 STR_PARK    :Okinavo-Marbordo
 STR_DTLS    :Ekzistanta parko elĉerpiĝis de spaco. Via sola eblo estas konstrui sur la maron, kaj tial vi elprenis prunton. Alteco-limigoj de viaj konstruaĵoj estas observigitaj pro fondaĵoj kaj tertremo-risko.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Azio - Maharaĝo-Palaco
+STR_SCNR    :Parko-Maharaĝo
 STR_PARK    :Parko-Maharaĝo
 STR_DTLS    :Vi estis komisiita de la Maharaĝo por alporti amuzadon al la granda loka loĝantaro. Konstruu parkon inspiritan de la palaco de Maharaĝo.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Aŭstralazio - Uluruo
+STR_SCNR    :Uluru-Aventuro
 STR_PARK    :Uluru-Aventuro
 STR_DTLS    :Vi helpas aborigenojn per konstrui parkon kiel parto de programo de kultura konscio. Vi bezonas akiri multajn gastojn por eduki ilin pri la unika heredaĵo de la aborigenoj.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Aŭstralazio - Amuzo ĉe la Plaĝo
+STR_SCNR    :Kradostado-Festo ĉe la Plaĝo
 STR_PARK    :Kradostado-Festo ĉe la Plaĝo
 STR_DTLS    :La marvivo-parko de loka entreprenisto eksenmoniĝis. Vi jam funkciigas malgrandan parkon, kaj aĉetas la alian parkon de la konstruo-kompanio. Ellaboru grandan kombinitan parkon.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Eŭropo - Eŭropa Kultura Festivalo
+STR_SCNR    :Eŭropa Ekstravagancaĵo
 STR_PARK    :Eŭropa Ekstravagancaĵo
 STR_DTLS    :Vi estis alportita por transpreni Eŭropan Kulturan Vizitanto-Vidindaĵon kaj devas pliigi la nombron de gastoj por repagi la EU-subvencion antaŭ la fino de la aktuala Eŭropa parlamento-oficdaŭro.
 
 <Europe - Renovation>
-STR_SCNR    :Eŭropo - Renovigo
+STR_SCNR    :El La Cindroj
 STR_PARK    :El La Cindroj
 STR_DTLS    :Malnova parko falis je kadukiĝo. Vi akiras subvencion de Eŭropa Unio por redoni ĉi tiun senigitan areon al sia iama gloro! Vi bezonas renovigi la parkon kaj repagi la subvencion.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :Nordameriko - Ekstrema Havaja Insulo
+STR_SCNR    :Komika Waikiki
 STR_PARK    :Komika Waikiki
 STR_DTLS    :La homoj de Havajo estas enuigitaj de surfado kaj serĉas ion pli intensan. Vi devas konstrui parkon ĉi-rilate por subteni la vidindaĵo-valoron de la areo alta.
 
 <North America - Grand Canyon>
-STR_SCNR    :Nordameriko - Granda Kanjono
+STR_SCNR    :Kanjono-Katastrofoj
 STR_PARK    :Kanjono-Katastrofoj
 STR_DTLS    :Vi devas konstrui parkon sur limigita tereno ambaŭflanke de ĉi tiu natura trezoro - vi havas la oportunecon por aĉeti najbaran terenon de la Indiĝenaj Amerikanoj. Vi devas kompletigi la celon por daŭrigi la loĝantaron de la loka vilaĝo.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :Nordameriko - Paradizo de Ondaj Fervojoj
+STR_SCNR    :Paradizo de Ondaj Fervojoj
 STR_PARK    :Paradizo de Ondaj Fervojoj
 STR_DTLS    :Vi estas sukcesa komerca magnato prenanta longan libertempon, kiu deziras uzi ĉi tiun tempon per transformi la urban parkon en Onda-Fervojo-Paradizon. Mono estas neniu problemo!
 
 <South America - Inca Lost City>
-STR_SCNR    :Sudameriko - La Perdita Inkaa Urbo
+STR_SCNR    :Fondinto de la Perdita Urbo
 STR_PARK    :Fondinto de la Perdita Urbo
 STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu akordas kun sia ĉirkaŭaĵo.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :Sudameriko - Pluvarbaro-Altebenaĵo
+STR_SCNR    :Pluvarbaro-Kapriolo
 STR_PARK    :Pluvarbaro-Kapriolo
 STR_DTLS    :Spaco estas limigita en la altvalora pluvarbaro - vi devas plenegigi kiel eble plej multe en la ekzistantan senarbejon, por havigi vivipovan alternativon je la loka ligno-industrio.
 
 <South America - Rio Carnival>
-STR_SCNR    :Sudameriko - La Karnavalo de Rio
+STR_SCNR    :Sukerpano-Marbordoj
 STR_PARK    :Sukerpano-Marbordoj
 STR_DTLS    :Vi administras malgrandan parkon proksime de Rio-de-Ĵanejro, sed la banko alvokis vian prunton. Vi devas rapide pliigi vian enspezado-kapablon por repagi ĉi tiun neatenditan ŝuldon.
 
@@ -4375,72 +4393,72 @@ STR_DTLS    :Vi administras malgrandan parkon proksime de Rio-de-Ĵanejro, sed l
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Malluma Epoko - Kastelo
+STR_SCNR    :Klifoflanko-Kastelo
 STR_PARK    :Klifoflanko-Kastelo
 STR_DTLS    :Lokaj anoj de la socio de batalo-rekonstruoj estas sufiĉe seriozaj pri ilia ŝatokupo. Ili konfidis al vi la laboron de konstrui amuzparkon kun temo de Malluma Epoko sur la tereno de Klifoflanko-Kastelo.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Malluma Epoko - Robin Hood
+STR_SCNR    :Arbaro Sherwood
 STR_PARK    :Arbaro Sherwood
 STR_DTLS    :Por liberigi la riĉaĵon de riĉuloj kaj disdoni ĝin al senhavuloj, vi kaj viaj Gajaj Viroj decidis konstrui amuzparkon en Arbaro Sherwood.
 
 <Future - First Encounters>
-STR_SCNR    :Estonto - Unuaj Renkontoj
+STR_SCNR    :Ekstertera Ekstravagancaĵo
 STR_PARK    :Ekstertera Ekstravagancaĵo
 STR_DTLS    :Vivo estis malkovrita ĉe malproksima planedo. Konstruu eksterteran parkon por profiti de la senprecedenca ondo de intereso.
 
 <Future - Future World>
-STR_SCNR    :Estonto - Estonta Mondo
+STR_SCNR    :Ĝemeloj-Urbo
 STR_PARK    :Ĝemeloj-Urbo
 STR_DTLS    :Montru vian inventeman, utopian konceptadon de la estonteco - kreu futurisman parko-dezegnaĵon, kiu enkorpigas la plej modernajn atrakciojn.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mitologia - Animatronika Filmado-Loko
+STR_SCNR    :Animatronikaj Burleskaĵoj
 STR_PARK    :Animatronikaj Burleskaĵoj
 STR_DTLS    :Vi ricevis la taskon de funkciigi kaj plibonigi ekzistantan amuzparkon, kiu estis konstruita ĉe malnova filmado-loko. Konstruu tributon al la pioniraj haltmovado-animistoj, kiuj unue vivigis mitajn kreitojn sur la film-ekranon.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mitologia - Naskiĝejo de Civilizo
+STR_SCNR    :Mitologia Frenezo
 STR_PARK    :Mitologia Frenezo
 STR_DTLS    :Vi posedas insulon de aparta arkeologia valoro. Vi decidis financi ĝian konservadon per konstrui amuzparkon surbaze de la riĉa Mitologia heredaĵo de la areo.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prahistoria - Post la Asteroido
+STR_SCNR    :Kratero-Buĉado
 STR_PARK    :Kratero-Buĉado
 STR_DTLS    :Vi posedas polvan malnovan meteor-krateron. Per vera entreprenema vigleco, vi decidis konstrui asteroidan amuzparkon kaj konverti vian ŝajne senvaloran bienon en konsiderindan riĉaĵon.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prahistoria - Ĵurasa Safario
+STR_SCNR    :Onda-Fervojo-Dinosaŭro
 STR_PARK    :Onda-Fervojo-Dinosaŭro
 STR_DTLS    :Vi ricevis la taskon de konstrui Ĵurasa-epokan amuzparkon. Por optimumigi la aliron de viaj vizitantoj al la ekzotikaj ekspoziciaĵoj da kreskaĵoj kaj bestoj, vi bezonos konstrui atrakciojn irantajn super kaj en la valon.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prahistoria - Ŝtonepoko
+STR_SCNR    :Rokaj Vagaĵoj
 STR_PARK    :Rokaj Vagaĵoj
 STR_DTLS    :Por malhelpi la ŝoseo-ellaborantojn kaj konservi la misterajn antikvajn ŝtono-rondojn, vi bezonos konstrui Ŝtonepokan amuzparkon kaj gajni profiton. Tamen, eble estos defio por allogi vizitantojn, ĉar la tereno estas iom negastema.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Muĝadaj Dudekaj - Prizono-Insulo
+STR_SCNR    :Alkatrazo
 STR_PARK    :Alkatrazo
 STR_DTLS    :La fifama Mallibereja Insulo - kies loĝantaro iam ŝveliĝis per piratistoj kaj eldevigantoj - nun estas aĉetebla. Vi decidis transformi ĝin en supran turisman vidindaĵon, kaj mono estas neniu problemo.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Muĝadaj Dudekaj - Schneider-Trofeo
+STR_SCNR    :Schneider-Marbordoj
 STR_PARK    :Schneider-Marbordoj
 STR_DTLS    :La 75-a datreveno de la Schneider-Trofeo-venko de via avo venas en kelkaj jaroj. Vi honoros lian atingon per konstrui amuzparkon surbaze de la fama hidroplano-vetkuro.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Muĝadaj Dudekaj - Ĉielskrapantoj
+STR_SCNR    :Metropolo
 STR_PARK    :Metropolo
 STR_DTLS    :Vi posedas malplenan teron proksime de la malaltaĵo-parto de la urbo. Por akiri la plej grandan parton de via urba propraĵo, konstruu ĉielskrapanto-temitan amuzparkon inspiritan de la altegiĝia artodekora arkitekturo de la dudekaj.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rokenrolo - La Potenco de Floroj
+STR_SCNR    :Woodstock-Festivalo
 STR_PARK    :Woodstock-Festivalo
 STR_DTLS    :Granda jara muzikfestivalo okazas sur via tereno. Konstruu mojosan amuzparkon por teni la liberaniman spektantaron amuzita.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rokenrolo - Rokenrolo
+STR_SCNR    :La Revivigo de Rokenrolo
 STR_PARK    :La Revivigo de Rokenrolo
 STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la posedanton doni al ĝi eksmodan rokenrolan renovigon, kaj transformi la lokon en sukcesan ejon.
 

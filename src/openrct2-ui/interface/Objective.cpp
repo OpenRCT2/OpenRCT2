@@ -10,8 +10,8 @@
 #include "Objective.h"
 
 #include <cstdint>
+#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>

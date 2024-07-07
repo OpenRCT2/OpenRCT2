@@ -82,10 +82,10 @@ static Widget _windowServerStartWidgets[] = {
             page = 0;
             list_information_type = 0;
 
-            snprintf(_port, 7, "%u", gConfigNetwork.DefaultPort);
-            SafeStrCpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
-            SafeStrCpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
-            SafeStrCpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
+            snprintf(_port, 7, "%u", Config::Get().network.DefaultPort);
+            SafeStrCpy(_name, Config::Get().network.ServerName.c_str(), sizeof(_name));
+            SafeStrCpy(_description, Config::Get().network.ServerDescription.c_str(), sizeof(_description));
+            SafeStrCpy(_greeting, Config::Get().network.ServerGreeting.c_str(), sizeof(_greeting));
         }
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
@@ -110,24 +110,24 @@ static Widget _windowServerStartWidgets[] = {
                     WindowStartTextbox(*this, widgetIndex, _password, 32);
                     break;
                 case WIDX_MAXPLAYERS_INCREASE:
-                    if (gConfigNetwork.Maxplayers < 255)
+                    if (Config::Get().network.Maxplayers < 255)
                     {
-                        gConfigNetwork.Maxplayers++;
+                        Config::Get().network.Maxplayers++;
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_MAXPLAYERS_DECREASE:
-                    if (gConfigNetwork.Maxplayers > 1)
+                    if (Config::Get().network.Maxplayers > 1)
                     {
-                        gConfigNetwork.Maxplayers--;
+                        Config::Get().network.Maxplayers--;
                     }
-                    ConfigSaveDefault();
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_ADVERTISE_CHECKBOX:
-                    gConfigNetwork.Advertise = !gConfigNetwork.Advertise;
-                    ConfigSaveDefault();
+                    Config::Get().network.Advertise = !Config::Get().network.Advertise;
+                    Config::Save();
                     Invalidate();
                     break;
                 case WIDX_START_SERVER:
@@ -147,10 +147,10 @@ static Widget _windowServerStartWidgets[] = {
         {
             ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-            WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.Advertise);
+            WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
             auto ft = Formatter::Common();
             ft.Increment(18);
-            ft.Add<uint16_t>(gConfigNetwork.Maxplayers);
+            ft.Add<uint16_t>(Config::Get().network.Maxplayers);
         }
         void OnUpdate() override
         {
@@ -180,8 +180,8 @@ static Widget _windowServerStartWidgets[] = {
                     tempPort = atoi(_port);
                     if (tempPort > 0)
                     {
-                        gConfigNetwork.DefaultPort = tempPort;
-                        ConfigSaveDefault();
+                        Config::Get().network.DefaultPort = tempPort;
+                        Config::Save();
                     }
 
                     WidgetInvalidate(*this, WIDX_PORT_INPUT);
@@ -195,8 +195,8 @@ static Widget _windowServerStartWidgets[] = {
                     // Don't allow empty server names
                     if (_name[0] != '\0')
                     {
-                        gConfigNetwork.ServerName = _name;
-                        ConfigSaveDefault();
+                        Config::Get().network.ServerName = _name;
+                        Config::Save();
                     }
 
                     WidgetInvalidate(*this, WIDX_NAME_INPUT);
@@ -206,8 +206,8 @@ static Widget _windowServerStartWidgets[] = {
                         return;
 
                     SafeStrCpy(_description, temp.c_str(), sizeof(_description));
-                    gConfigNetwork.ServerDescription = _description;
-                    ConfigSaveDefault();
+                    Config::Get().network.ServerDescription = _description;
+                    Config::Save();
 
                     WidgetInvalidate(*this, WIDX_DESCRIPTION_INPUT);
                     break;
@@ -216,8 +216,8 @@ static Widget _windowServerStartWidgets[] = {
                         return;
 
                     SafeStrCpy(_greeting, temp.c_str(), sizeof(_greeting));
-                    gConfigNetwork.ServerGreeting = _greeting;
-                    ConfigSaveDefault();
+                    Config::Get().network.ServerGreeting = _greeting;
+                    Config::Save();
 
                     WidgetInvalidate(*this, WIDX_GREETING_INPUT);
                     break;
@@ -266,7 +266,7 @@ static Widget _windowServerStartWidgets[] = {
             GameNotifyMapChange();
             if (GetContext()->LoadParkFromFile(path, false, true))
             {
-                NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
+                NetworkBeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
             }
         }
 
@@ -276,7 +276,7 @@ static Widget _windowServerStartWidgets[] = {
             {
                 GameNotifyMapChange();
                 GetContext()->LoadParkFromFile(path);
-                NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
+                NetworkBeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
             }
         }
     };

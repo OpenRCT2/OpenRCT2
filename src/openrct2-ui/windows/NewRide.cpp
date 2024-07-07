@@ -364,8 +364,8 @@ static Widget window_new_ride_widgets[] = {
                     ContextOpenWindowView(WV_FINANCES_RESEARCH);
                     break;
                 case WIDX_GROUP_BY_TRACK_TYPE:
-                    gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
-                    ConfigSaveDefault();
+                    Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;
+                    Config::Save();
                     SetPage(_currentTab);
                     break;
                 case WIDX_FILTER_TEXT_BOX:
@@ -391,7 +391,7 @@ static Widget window_new_ride_widgets[] = {
         {
             SetPressedTab();
 
-            if (!gConfigInterface.ListRideVehiclesSeparately)
+            if (!Config::Get().interface.ListRideVehiclesSeparately)
                 pressed_widgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
             else
                 pressed_widgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
@@ -479,7 +479,7 @@ static Widget window_new_ride_widgets[] = {
                 return;
             }
 
-            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
@@ -684,7 +684,7 @@ static Widget window_new_ride_widgets[] = {
                 const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
-                if (!gConfigInterface.ListRideVehiclesSeparately
+                if (!Config::Get().interface.ListRideVehiclesSeparately
                     && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                     && highestVehiclePriority > rideEntry->BuildMenuPriority)
                 {
@@ -699,7 +699,7 @@ static Widget window_new_ride_widgets[] = {
                 highestVehiclePriority = rideEntry->BuildMenuPriority;
 
                 // Determines how and where to draw a button for this ride type/vehicle.
-                if (gConfigInterface.ListRideVehiclesSeparately
+                if (Config::Get().interface.ListRideVehiclesSeparately
                     || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                 {
                     // Separate, draw apart
@@ -931,7 +931,7 @@ static Widget window_new_ride_widgets[] = {
 
             if (!_vehicleAvailability.empty())
             {
-                if (gConfigInterface.ListRideVehiclesSeparately)
+                if (Config::Get().interface.ListRideVehiclesSeparately)
                 {
                     ft = Formatter();
                     ft.Add<StringId>(rideEntry->naming.Name);
@@ -986,7 +986,7 @@ static Widget window_new_ride_widgets[] = {
                 spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex, colours[1]),
+                    dpi, ImageId(spriteIndex, colours[1].colour),
                     windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }

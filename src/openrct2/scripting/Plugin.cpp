@@ -68,7 +68,7 @@ void Plugin::Load()
     {
         auto val = std::string(duk_safe_to_string(_context, -1));
         duk_pop(_context);
-        throw std::runtime_error("Failed to load plug-in script: " + val);
+        throw std::runtime_error("Failed to load plug-in script: " + val + " at " + _path);
     }
 
     _metadata = GetMetadata(DukValue::take_from_stack(_context));
@@ -160,13 +160,13 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         auto dukMinApiVersion = dukMetadata["minApiVersion"];
         if (dukMinApiVersion.type() == DukValue::Type::NUMBER)
         {
-            metadata.MinApiVersion = dukMinApiVersion.as_int();
+            metadata.MinApiVersion = dukMinApiVersion.as_uint();
         }
 
         auto dukTargetApiVersion = dukMetadata["targetApiVersion"];
         if (dukTargetApiVersion.type() == DukValue::Type::NUMBER)
         {
-            metadata.TargetApiVersion = dukTargetApiVersion.as_int();
+            metadata.TargetApiVersion = dukTargetApiVersion.as_uint();
         }
         else
         {

@@ -15,7 +15,6 @@
 #include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
-#include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
@@ -44,6 +43,7 @@
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/Slope.h"
 #include "PatrolArea.h"
 #include "Peep.h"
 
@@ -413,7 +413,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
             if (surfaceElement->GetSlope() != PathSlopeToLandSlope[GetNextDirection()])
                 return INVALID_DIRECTION;
         }
-        else if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+        else if (surfaceElement->GetSlope() != kTileSlopeFlat)
             return INVALID_DIRECTION;
     }
 
@@ -453,10 +453,10 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
  */
 Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
 {
-    Direction newDirection = ScenarioRand() % NumOrthogonalDirections;
-    for (int32_t i = 0; i < NumOrthogonalDirections; ++i, ++newDirection)
+    Direction newDirection = ScenarioRand() % kNumOrthogonalDirections;
+    for (int32_t i = 0; i < kNumOrthogonalDirections; ++i, ++newDirection)
     {
-        newDirection %= NumOrthogonalDirections;
+        newDirection %= kNumOrthogonalDirections;
         if (!(validDirections & (1 << newDirection)))
             continue;
 
@@ -470,7 +470,7 @@ Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
     // If it tries all directions this is required
     // to make it back to the first direction and
     // override validDirections
-    newDirection %= NumOrthogonalDirections;
+    newDirection %= kNumOrthogonalDirections;
     return newDirection;
 }
 
@@ -804,7 +804,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
     }
 
     direction = ScenarioRand() & 3;
-    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i, direction = DirectionNext(direction))
+    for (uint8_t i = 0; i < kNumOrthogonalDirections; ++i, direction = DirectionNext(direction))
     {
         if (pathDirections & (1 << direction))
             return direction;
@@ -945,18 +945,6 @@ bool Staff::DoPathFinding()
             assert(false);
             return 0;
     }
-}
-
-uint8_t Staff::GetCostume() const
-{
-    return EnumValue(SpriteType) - EnumValue(PeepSpriteType::EntertainerPanda);
-}
-
-void Staff::SetCostume(uint8_t value)
-{
-    auto costume = static_cast<EntertainerCostume>(value);
-    SpriteType = EntertainerCostumeToSprite(costume);
-    UpdateAction();
 }
 
 void Staff::SetHireDate(int32_t hireDate)

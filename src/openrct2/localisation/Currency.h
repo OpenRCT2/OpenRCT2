@@ -12,41 +12,10 @@
 #include "../common.h"
 #include "../core/String.hpp"
 #include "../util/Util.h"
+#include "CurrencyTypes.h"
 
-// List of currencies
-enum class CurrencyType : uint8_t
-{
-    Pounds,       // British Pound
-    Dollars,      // US Dollar
-    Franc,        // French Franc
-    DeutscheMark, // Deutsche Mark
-    Yen,          // Japanese Yen
-    Peseta,       // Spanish Peseta
-    Lira,         // Italian Lira
-    Guilders,     // Dutch Gilder
-    Krona,        // Swedish Krona
-    Euros,        // Euro
-    Won,          // South Korean Won
-    Rouble,       // Russian Rouble
-    CzechKoruna,  // Czech koruna
-    HKD,          // Hong Kong Dollar
-    TWD,          // New Taiwan Dollar
-    Yuan,         // Chinese Yuan
-    Forint,       // Hungarian Forint
-
-    Custom, // Custom currency
-
-    Count // Last item
-};
-
-enum class CurrencyAffix
-{
-    Prefix,
-    Suffix
-};
-
-#define CURRENCY_SYMBOL_MAX_SIZE 8
-#define CURRENCY_RATE_MAX_NUM_DIGITS 9
+constexpr size_t kCurrencySymbolMaxSize = 8;
+constexpr size_t kCurrencyRateMaxNumDigits = 9;
 
 // Currency format specification - inspired by OpenTTD
 struct CurrencyDescriptor
@@ -55,13 +24,14 @@ struct CurrencyDescriptor
     // Rate is relative to 0.10 GBP
     int32_t rate;
     CurrencyAffix affix_unicode;
-    utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
+    utf8 symbol_unicode[kCurrencySymbolMaxSize];
     CurrencyAffix affix_ascii;
-    char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
+    char symbol_ascii[kCurrencySymbolMaxSize];
     StringId stringId;
 };
 
 // List of currency formats
+// TODO: refactor into getter
 extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)];
 
 /**

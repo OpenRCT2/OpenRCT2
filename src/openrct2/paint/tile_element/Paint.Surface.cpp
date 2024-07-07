@@ -28,9 +28,11 @@
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Surface.h"
+#include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "Paint.TileElement.h"
+#include "Segment.h"
 
 #include <cstring>
 #include <iterator>
@@ -152,63 +154,42 @@ static constexpr uint8_t Byte97B55D[] = {
     1, 5, 1, 3, 2, 3, 1, 5, 0,
 };
 
-static constexpr uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
-    { 2, 2 },
-    { 3, 3 },
-    { 3, 5 },
-    { 3, 3 },
-    { 4, 4 },
-    { 4, 6 },
-    { 2, 2 },
-    { 3, 3 },
-    { 3, 5 },
-    { 3, 3 },
-    { 2, 3 },
-    { 2, 3 },
-    { 2, 3 },
-    { 3, 4 },
-    { 2, 3 },
-    { 3, 4 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
-    { 2, 2 },
+struct TunnelDescriptor
+{
+    uint8_t height;
+    uint8_t boundBoxLength;
+    int16_t boundBoxZOffset;
+    TunnelType lowClearanceAlternative;
+    uint8_t imageOffset;
 };
-
-static constexpr int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
-    0,
-    0,
-    -32,
-    0,
-    0,
-    -48,
-    0,
-    0,
-    -32,
-    0,
-    -16,
-    -16,
-    -16,
-    -16,
-    -16,
-    -16,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
+static constexpr TunnelDescriptor kTunnels[] = {
+    { 2, 2, 0,   TunnelType::StandardFlat,     36 },  // TunnelType::StandardFlat
+    { 3, 3, 0,   TunnelType::StandardFlat,     40 },  // TunnelType::StandardSlopeStart
+    { 3, 5, -32, TunnelType::StandardFlat,     44 },  // TunnelType::StandardSlopeEnd
+    { 3, 3, 0,   TunnelType::InvertedFlat,     48 },  // TunnelType::InvertedFlat
+    { 4, 4, 0,   TunnelType::InvertedFlat,     52 },  // TunnelType::InvertedSlopeStart
+    { 4, 6, -48, TunnelType::InvertedFlat,     56 },  // TunnelType::InvertedSlopeEnd
+    { 2, 2, 0,   TunnelType::SquareFlat,       60 },  // TunnelType::SquareFlat
+    { 3, 3, 0,   TunnelType::SquareFlat,       64 },  // TunnelType::SquareSlopeStart
+    { 3, 5, -32, TunnelType::SquareFlat,       68 },  // TunnelType::SquareSlopeEnd
+    { 3, 3, 0,   TunnelType::SquareFlat,       72 },  // TunnelType::InvertedSquare
+    { 2, 3, -16, TunnelType::PathAndMiniGolf,  76 },  // TunnelType::PathAndMiniGolf
+    { 2, 3, -16, TunnelType::Path11,           80 },  // TunnelType::Path11
+    { 2, 3, -16, TunnelType::_12,              36 },  // TunnelType::_12
+    { 3, 4, -16, TunnelType::_13,              48 },  // TunnelType::_13
+    { 2, 3, -16, TunnelType::_14,              60 },  // TunnelType::_14
+    { 3, 4, -16, TunnelType::_14,              72 },  // TunnelType::_15
+    { 2, 2, 0,   TunnelType::Doors0,           76 },  // TunnelType::Doors0
+    { 2, 2, 0,   TunnelType::Doors1,           80 },  // TunnelType::Doors1
+    { 2, 2, 0,   TunnelType::Doors2,           84 },  // TunnelType::Doors2
+    { 2, 2, 0,   TunnelType::Doors3,           88 },  // TunnelType::Doors3
+    { 2, 2, 0,   TunnelType::Doors4,           92 },  // TunnelType::Doors4
+    { 2, 2, 0,   TunnelType::Doors5,           96 },  // TunnelType::Doors5
+    { 2, 2, 0,   TunnelType::Doors6,          100 }, // TunnelType::Doors6
 };
 
 // clang-format on
 // tunnel offset
-static constexpr uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
-    0, 0, 0, 3, 3, 3, 6, 6, 6, 6, 10, 11, 12, 13, 14, 14, 16, 17, 18, 19, 20, 21, 22,
-};
 
 static constexpr uint8_t Byte97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
@@ -358,33 +339,28 @@ static ImageId GetEdgeImage(const TerrainEdgeObject* edgeObject, uint8_t type)
     return result;
 }
 
-static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, uint8_t type, edge_t edge)
+static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType type, edge_t edge)
 {
-    static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
-                                                             36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
-
     bool hasDoors = false;
     if (edgeObject != nullptr)
     {
         hasDoors = edgeObject->HasDoors && !edgeObject->UsesFallbackImages();
     }
 
-    if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
-        type = TUNNEL_0;
+    if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount)
+        type = TunnelType::StandardFlat;
 
-    ImageId result;
-    if (type < std::size(offsets))
-    {
-        result = GetEdgeImageWithOffset(edgeObject, offsets[type]).WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
-    }
+    ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
+                         .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+
     return result;
 }
 
 static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& surfaceElement, int32_t rotation)
 {
     const uint8_t slope = surfaceElement.GetSlope();
-    const uint8_t slopeHeight = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-    uint16_t slopeCorners = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
+    const uint8_t slopeHeight = slope & kTileSlopeDiagonalFlag;
+    uint16_t slopeCorners = (slope & kTileSlopeRaisedCornersMask) << rotation;
     slopeCorners = ((slopeCorners >> 4) | slopeCorners) & 0x0F;
     return slopeHeight | slopeCorners;
 }
@@ -628,7 +604,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     neighbourCornerHeight1 = cornerHeight2;
 
-    for (uint32_t tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT;)
+    for (auto tunnelIndex = 0; tunnelIndex < kTunnelMaxCount;)
     {
         if (curHeight >= cornerHeight1 || curHeight >= cornerHeight2)
         {
@@ -668,19 +644,22 @@ static void ViewportSurfaceDrawTileSideBottom(
         }
 
         // Tunnels
-        uint8_t tunnelType = tunnelArray[tunnelIndex].type;
-        uint8_t tunnelHeight = _tunnelHeights[tunnelType][0];
+        auto tunnelType = tunnelArray[tunnelIndex].type;
+        auto td = kTunnels[EnumValue(tunnelType)];
+        uint8_t tunnelHeight = td.height;
         int16_t zOffset = curHeight;
 
+        // When dealing with flat land but a sloped track, we fall back to the non-sloped variant.
         if ((zOffset + tunnelHeight) > neighbourCornerHeight1 || (zOffset + tunnelHeight) > cornerHeight1)
         {
-            tunnelType = Byte97B5B0[tunnelType];
+            tunnelType = td.lowClearanceAlternative;
+            td = kTunnels[EnumValue(tunnelType)];
         }
 
         zOffset *= 16;
 
-        int16_t boundBoxOffsetZ = zOffset + _boundBoxZOffsets[tunnelType];
-        int8_t boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
+        int16_t boundBoxOffsetZ = zOffset + td.boundBoxZOffset;
+        int8_t boundBoxLength = td.boundBoxLength * 16;
         if (boundBoxOffsetZ < 16)
         {
             boundBoxOffsetZ += 16;
@@ -689,12 +668,11 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         auto imageId = GetTunnelImage(edgeObject, tunnelType, edge);
         PaintAddImageAsParent(
-            session, imageId, { offset, zOffset },
-            { { 0, 0, boundBoxOffsetZ }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
+            session, imageId, { offset, zOffset }, { { 0, 0, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
         boundBoxOffsetZ = curHeight * COORDS_Z_PER_TINY_Z;
-        boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
-        boundBoxOffsetZ += _boundBoxZOffsets[tunnelType];
+        boundBoxLength = td.boundBoxLength * 16;
+        boundBoxOffsetZ += td.boundBoxZOffset;
         if (boundBoxOffsetZ == 0)
         {
             boundBoxOffsetZ += 16;
@@ -704,10 +682,9 @@ static void ViewportSurfaceDrawTileSideBottom(
         imageId = GetTunnelImage(edgeObject, tunnelType, edge).WithIndexOffset(1);
         PaintAddImageAsParent(
             session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z },
-            { { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ },
-              { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
+            { { tunnelTopBoundBoxOffset, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
-        curHeight += _tunnelHeights[tunnelType][0];
+        curHeight += td.height;
         tunnelIndex++;
     }
 }
@@ -864,14 +841,14 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
         {
             localHeight += LAND_HEIGHT_STEP;
 
-            if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileElementSurfaceDiagonalFlag)))
+            if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileSlopeDiagonalFlag)))
             {
                 localHeight = waterHeight;
-                localSurfaceShape = TILE_ELEMENT_SLOPE_FLAT;
+                localSurfaceShape = kTileSlopeFlat;
             }
             else
             {
-                localSurfaceShape = Numerics::ror4(surfaceShape ^ static_cast<int8_t>(kTileElementSurfaceRaisedCornersMask), 2);
+                localSurfaceShape = Numerics::ror4(surfaceShape ^ static_cast<int8_t>(kTileSlopeRaisedCornersMask), 2);
             }
         }
     }
@@ -881,12 +858,16 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
+    bool selected = gMapSelectFlags & MAP_SELECT_FLAG_ENABLE && gMapSelectType == MAP_SELECT_TYPE_FULL
+        && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
+        && pos.y <= gMapSelectPositionB.y;
+
     auto patrolAreaToRender = GetPatrolAreaToRender();
     if (const auto* staffType = std::get_if<StaffType>(&patrolAreaToRender))
     {
         if (IsPatrolAreaSetForStaffType(*staffType, pos))
         {
-            return COLOUR_GREY;
+            return selected ? COLOUR_WHITE : COLOUR_GREY;
         }
     }
     else
@@ -897,11 +878,11 @@ std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
         {
             if (staff->IsPatrolAreaSet(pos))
             {
-                return COLOUR_LIGHT_BLUE;
+                return selected ? COLOUR_ICY_BLUE : COLOUR_LIGHT_BLUE;
             }
             else if (IsPatrolAreaSetForStaffType(staff->AssignedStaffType, pos))
             {
-                return COLOUR_GREY;
+                return selected ? COLOUR_WHITE : COLOUR_GREY;
             }
         }
     }
@@ -1268,7 +1249,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.LandscapeSmoothing)
+        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.LandscapeSmoothing)
     {
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
@@ -1317,7 +1298,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
         PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
-        const bool transparent = gConfigGeneral.TransparentWater || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        const bool transparent = Config::Get().general.TransparentWater
+            || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
         const uint32_t overlayStart = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;
         PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
 

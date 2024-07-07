@@ -16,6 +16,9 @@
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <string_view>
 
+// TODO: only for WINDOW_SHIM_RAW below; we can do better.
+#include "../UiStringIds.h"
+
 struct Peep;
 struct TileElement;
 struct Vehicle;
@@ -107,8 +110,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ScenarioselectOpen(scenarioselect_callback callback);
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback);
 
-    WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter);
-    WindowBase* ErrorOpen(std::string_view title, std::string_view message);
+    WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter, bool autoClose = false);
+    WindowBase* ErrorOpen(std::string_view title, std::string_view message, bool autoClose = false);
 
     WindowBase* LoadsaveOpen(
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
@@ -163,6 +166,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NetworkStatusOpen(const std::string& text, close_callback onClose);
     WindowBase* NetworkStatusOpenPassword();
     void WindowNetworkStatusClose();
+
+    WindowBase* ProgressWindowOpen(const std::string& text, close_callback onClose = nullptr);
+    void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE);
+    void ProgressWindowClose();
 
     void WindowTextInputKey(WindowBase* w, uint32_t keycode);
     void WindowTextInputOpen(

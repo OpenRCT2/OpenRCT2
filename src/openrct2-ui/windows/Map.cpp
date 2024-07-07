@@ -37,6 +37,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/Slope.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
@@ -53,12 +54,38 @@ namespace OpenRCT2::Ui::Windows
     {
         return MapColour2((colour & 0xFF00) >> 8, PALETTE_INDEX_10);
     }
-
-    constexpr int32_t MAP_WINDOW_MAP_SIZE = kMaximumMapSizeTechnical * 2;
+    static int32_t getTechnicalMapSize()
+    {
+        // Take non-square maps into account
+        return std::max(GetGameState().MapSize.x, GetGameState().MapSize.y) - 2;
+    }
+    static int32_t getTechnicalMapSizeBig()
+    {
+        return getTechnicalMapSize() * COORDS_XY_STEP;
+    }
+    static int32_t getMaxTileStartXY()
+    {
+        return getTechnicalMapSizeBig() - COORDS_XY_STEP;
+    }
+    static int32_t getMiniMapWidth()
+    {
+        return getTechnicalMapSize() * 2;
+    }
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
     static constexpr int32_t WH = 259;
     static constexpr int32_t WW = 245;
+
+    static constexpr uint16_t kReservedHSpace = 6;
+    static constexpr uint16_t kReservedTopSpace = 46;
+    static constexpr uint16_t kScenarioEditorReservedSpace = 72;
+    static constexpr uint16_t kRidesTabReservedSpace = 4 * kListRowHeight + 4;
+    static constexpr uint16_t kDefaultReservedSpace = 14;
+
+    static int32_t getMapOffset(int16_t width)
+    {
+        return (width - getMiniMapWidth() - kReservedHSpace - SCROLLBAR_SIZE) / 2;
+    }
 
     // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
     // minimap. In order to distinguish those from actual coordinates, we use a separate name.
@@ -126,16 +153,17 @@ static Widget window_map_widgets[] = {
     MakeWidget        ({110, 189}, {131,  14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
     kWidgetsEnd,
 };
-
-// used in transforming viewport view coordinates to minimap coordinates
-// rct2: 0x00981BBC
-static constexpr ScreenCoordsXY MiniMapOffsets[] = {
-    {     kMaximumMapSizeTechnical - 8,                              0 },
-    { 2 * kMaximumMapSizeTechnical - 8,     kMaximumMapSizeTechnical },
-    {     kMaximumMapSizeTechnical - 8, 2 * kMaximumMapSizeTechnical },
-    {                              0 - 8,     kMaximumMapSizeTechnical },
-};
     // clang-format on
+
+    // These represent a coefficient for the map size to be multiplied
+    // Used in transforming viewport view coordinates to minimap coordinates
+    // rct2: 0x00981BBC (analogous)
+    static constexpr ScreenCoordsXY MiniMapOffsetFactors[] = {
+        { 1, 0 },
+        { 2, 1 },
+        { 1, 2 },
+        { 0, 1 },
+    };
 
     static constexpr StringId MapLabels[] = {
         STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
@@ -209,11 +237,6 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         uint16_t _flashingFlags = 0;
 
     public:
-        MapWindow()
-        {
-            _mapImageData.resize(MAP_WINDOW_MAP_SIZE * MAP_WINDOW_MAP_SIZE);
-        }
-
         void OnOpen() override
         {
             widgets = window_map_widgets;
@@ -224,11 +247,11 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
             flags |= WF_RESIZABLE;
             min_width = WW;
-            max_width = 800;
             min_height = WH;
-            max_height = 560;
 
-            ResizeMap();
+            SetInitialWindowDimensions();
+            ResetMaxWindowDimensions();
+            ResizeMiniMap();
             InitScrollWidgets();
             CalculateTextLayout();
 
@@ -353,6 +376,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                         selected_tab = widgetIndex;
                         list_information_type = 0;
                         _recalculateScrollbars = true;
+                        ResetMaxWindowDimensions();
                     }
             }
         }
@@ -561,10 +585,10 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             if (parkEntranceMapPosition.z == 0)
             {
                 parkEntranceMapPosition.z = surfaceElement->GetBaseZ();
-                if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+                if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
                 {
                     parkEntranceMapPosition.z += 16;
-                    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                    if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     {
                         parkEntranceMapPosition.z += 16;
                     }
@@ -649,9 +673,9 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             int32_t mapZ = tileElement->GetBaseZ();
             if (tileElement->GetType() == TileElementType::Surface)
             {
-                if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+                if ((tileElement->AsSurface()->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
                     mapZ += 16;
-                if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag)
                     mapZ += 16;
             }
 
@@ -734,14 +758,22 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return ScreenSize(MAP_WINDOW_MAP_SIZE, MAP_WINDOW_MAP_SIZE);
+            return ScreenSize(getMiniMapWidth(), getMiniMapWidth());
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            CoordsXY c = ScreenToMap(screenCoords);
-            auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1),
-                                       std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
+            // Adjust coordinates for any map offset to centre
+            auto adjCoords = screenCoords;
+            auto mapOffset = getMapOffset(width);
+            if (mapOffset > 0)
+            {
+                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
+            }
+
+            CoordsXY c = ScreenToMap(adjCoords);
+            auto mapCoords = CoordsXY{ std::clamp(c.x, 0, getTechnicalMapSizeBig() - 1),
+                                       std::clamp(c.y, 0, getTechnicalMapSizeBig() - 1) };
             auto mapZ = TileElementHeight(mapCoords);
 
             WindowBase* mainWindow = WindowGetMain();
@@ -801,25 +833,29 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         {
             GfxClear(dpi, PALETTE_INDEX_10);
 
+            // Ensure small maps are centred
+            auto screenOffset = ScreenCoordsXY(0, 0);
+            auto mapOffset = getMapOffset(width);
+            if (mapOffset > 0)
+                screenOffset += ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
+
             G1Element g1temp = {};
             g1temp.offset = _mapImageData.data();
-            g1temp.width = MAP_WINDOW_MAP_SIZE;
-            g1temp.height = MAP_WINDOW_MAP_SIZE;
-            g1temp.x_offset = -8;
-            g1temp.y_offset = -8;
+            g1temp.width = getMiniMapWidth();
+            g1temp.height = getMiniMapWidth();
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
+            GfxDrawSprite(dpi, ImageId(SPR_TEMP), screenOffset);
 
             if (selected_tab == PAGE_PEEPS)
             {
-                PaintPeepOverlay(dpi);
+                PaintPeepOverlay(dpi, screenOffset);
             }
             else
             {
-                PaintTrainOverlay(dpi);
+                PaintTrainOverlay(dpi, screenOffset);
             }
-            PaintHudRectangle(dpi);
+            PaintHudRectangle(dpi, screenOffset);
         }
 
         void OnPrepareDraw() override
@@ -848,7 +884,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
             // Resize widgets to window size
             ResizeFrameWithPage();
-            ResizeMap();
+            ResizeMiniMap();
 
             widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
             widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height - 4;
@@ -1017,6 +1053,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
     private:
         void InitMap()
         {
+            _mapImageData.resize(getMiniMapWidth() * getMiniMapWidth());
             std::fill(_mapImageData.begin(), _mapImageData.end(), PALETTE_INDEX_10);
             _currentLine = 0;
         }
@@ -1030,14 +1067,14 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             if (mainWindow == nullptr || mainWindow->viewport == nullptr)
                 return;
 
-            auto offset = MiniMapOffsets[GetCurrentRotation()];
+            auto offset = MiniMapOffsetFactors[GetCurrentRotation()];
 
             // calculate centre view point of viewport and transform it to minimap coordinates
 
             cx = ((mainWindow->viewport->view_width >> 1) + mainWindow->viewport->viewPos.x) >> 5;
             dx = ((mainWindow->viewport->view_height >> 1) + mainWindow->viewport->viewPos.y) >> 4;
-            cx += offset.x;
-            dx += offset.y;
+            cx += offset.x * getTechnicalMapSize();
+            dx += offset.y * getTechnicalMapSize();
 
             // calculate width and height of minimap
 
@@ -1093,9 +1130,9 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
         {
             int32_t x = 0, y = 0, dx = 0, dy = 0;
 
-            int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + kMaximumMapSizeTechnical - 1;
-            auto destinationPosition = ScreenCoordsXY{ pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE };
-            auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
+            int32_t pos = (_currentLine * (getMiniMapWidth() - 1)) + getTechnicalMapSize() - 1;
+            auto destinationPosition = ScreenCoordsXY{ pos % getMiniMapWidth(), pos / getMiniMapWidth() };
+            auto destination = _mapImageData.data() + (destinationPosition.y * getMiniMapWidth()) + destinationPosition.x;
             switch (GetCurrentRotation())
             {
                 case 0:
@@ -1105,26 +1142,26 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                     dy = COORDS_XY_STEP;
                     break;
                 case 1:
-                    x = MAXIMUM_TILE_START_XY;
+                    x = getMaxTileStartXY();
                     y = _currentLine * COORDS_XY_STEP;
                     dx = -COORDS_XY_STEP;
                     dy = 0;
                     break;
                 case 2:
-                    x = MAXIMUM_MAP_SIZE_BIG - ((_currentLine + 1) * COORDS_XY_STEP);
-                    y = MAXIMUM_TILE_START_XY;
+                    x = getTechnicalMapSizeBig() - ((_currentLine + 1) * COORDS_XY_STEP);
+                    y = getMaxTileStartXY();
                     dx = 0;
                     dy = -COORDS_XY_STEP;
                     break;
                 case 3:
                     x = 0;
-                    y = MAXIMUM_MAP_SIZE_BIG - ((_currentLine + 1) * COORDS_XY_STEP);
+                    y = getTechnicalMapSizeBig() - ((_currentLine + 1) * COORDS_XY_STEP);
                     dx = COORDS_XY_STEP;
                     dy = 0;
                     break;
             }
 
-            for (int32_t i = 0; i < kMaximumMapSizeTechnical; i++)
+            for (int32_t i = 0; i < getTechnicalMapSize(); i++)
             {
                 if (!MapIsEdge({ x, y }))
                 {
@@ -1146,10 +1183,10 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
                 destinationPosition.x++;
                 destinationPosition.y++;
-                destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
+                destination = _mapImageData.data() + (destinationPosition.y * getMiniMapWidth()) + destinationPosition.x;
             }
             _currentLine++;
-            if (_currentLine >= kMaximumMapSizeTechnical)
+            if (_currentLine >= static_cast<uint32_t>(getTechnicalMapSize()))
                 _currentLine = 0;
         }
 
@@ -1256,27 +1293,27 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             return colourB;
         }
 
-        void PaintPeepOverlay(DrawPixelInfo& dpi)
+        void PaintPeepOverlay(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
         {
             auto flashColour = GetGuestFlashColour();
             for (auto guest : EntityList<Guest>())
             {
-                DrawMapPeepPixel(guest, flashColour, dpi);
+                DrawMapPeepPixel(guest, flashColour, dpi, offset);
             }
             flashColour = GetStaffFlashColour();
             for (auto staff : EntityList<Staff>())
             {
-                DrawMapPeepPixel(staff, flashColour, dpi);
+                DrawMapPeepPixel(staff, flashColour, dpi, offset);
             }
         }
 
-        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi)
+        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
         {
             if (peep->x == LOCATION_NULL)
                 return;
 
             MapCoordsXY c = TransformToMapCoords({ peep->x, peep->y });
-            auto leftTop = ScreenCoordsXY{ c.x, c.y };
+            auto leftTop = ScreenCoordsXY{ c.x, c.y } + offset;
             auto rightBottom = leftTop;
             uint8_t colour = DefaultPeepMapColour;
             if (EntityGetFlashing(peep))
@@ -1316,7 +1353,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             return colour;
         }
 
-        void PaintTrainOverlay(DrawPixelInfo& dpi)
+        void PaintTrainOverlay(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
         {
             for (auto train : TrainManager::View())
             {
@@ -1325,9 +1362,10 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                     if (vehicle->x == LOCATION_NULL)
                         continue;
 
-                    MapCoordsXY c = TransformToMapCoords({ vehicle->x, vehicle->y });
+                    auto mapCoord = TransformToMapCoords({ vehicle->x, vehicle->y });
+                    auto pixelCoord = ScreenCoordsXY{ mapCoord.x, mapCoord.y } + offset;
 
-                    GfxFillRect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
+                    GfxFillRect(dpi, { pixelCoord, pixelCoord }, PALETTE_INDEX_171);
                 }
             }
         }
@@ -1336,7 +1374,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
          * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
          * but it doesn't look like it's ever necessary here so the call was removed.
          */
-        void PaintHudRectangle(DrawPixelInfo& dpi)
+        void PaintHudRectangle(DrawPixelInfo& dpi, const ScreenCoordsXY& widgetOffset)
         {
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -1346,11 +1384,13 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             if (mainViewport == nullptr)
                 return;
 
-            auto offset = MiniMapOffsets[GetCurrentRotation()];
-            auto leftTop = ScreenCoordsXY{ (mainViewport->viewPos.x >> 5) + offset.x,
-                                           (mainViewport->viewPos.y >> 4) + offset.y };
-            auto rightBottom = ScreenCoordsXY{ ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x,
-                                               ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y };
+            auto mapOffset = MiniMapOffsetFactors[GetCurrentRotation()];
+            mapOffset.x *= getTechnicalMapSize();
+            mapOffset.y *= getTechnicalMapSize();
+
+            auto leftTop = widgetOffset + mapOffset
+                + ScreenCoordsXY{ (mainViewport->viewPos.x >> 5), (mainViewport->viewPos.y >> 4) };
+            auto rightBottom = leftTop + ScreenCoordsXY{ mainViewport->view_width >> 5, mainViewport->view_height >> 4 };
             auto rightTop = ScreenCoordsXY{ rightBottom.x, leftTop.y };
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
@@ -1438,7 +1478,7 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
         {
-            screenCoords.x = ((screenCoords.x + 8) - kMaximumMapSizeTechnical) / 2;
+            screenCoords.x = ((screenCoords.x + 8) - getTechnicalMapSize()) / 2;
             screenCoords.y = ((screenCoords.y + 8)) / 2;
             auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
@@ -1447,11 +1487,11 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
                 case 0:
                     return location;
                 case 1:
-                    return { MAXIMUM_MAP_SIZE_BIG - 1 - location.y, location.x };
+                    return { getTechnicalMapSizeBig() - 1 - location.y, location.x };
                 case 2:
-                    return { MAXIMUM_MAP_SIZE_BIG - 1 - location.x, MAXIMUM_MAP_SIZE_BIG - 1 - location.y };
+                    return { getTechnicalMapSizeBig() - 1 - location.x, getTechnicalMapSizeBig() - 1 - location.y };
                 case 3:
-                    return { location.y, MAXIMUM_MAP_SIZE_BIG - 1 - location.x };
+                    return { location.y, getTechnicalMapSizeBig() - 1 - location.x };
             }
 
             return { 0, 0 }; // unreachable
@@ -1465,15 +1505,15 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             {
                 case 3:
                     std::swap(x, y);
-                    x = MAXIMUM_MAP_SIZE_BIG - 1 - x;
+                    x = getTechnicalMapSizeBig() - 1 - x;
                     break;
                 case 2:
-                    x = MAXIMUM_MAP_SIZE_BIG - 1 - x;
-                    y = MAXIMUM_MAP_SIZE_BIG - 1 - y;
+                    x = getTechnicalMapSizeBig() - 1 - x;
+                    y = getTechnicalMapSizeBig() - 1 - y;
                     break;
                 case 1:
                     std::swap(x, y);
-                    y = MAXIMUM_MAP_SIZE_BIG - 1 - y;
+                    y = getTechnicalMapSizeBig() - 1 - y;
                     break;
                 case 0:
                     break;
@@ -1481,19 +1521,42 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
             x /= 32;
             y /= 32;
 
-            return { -x + y + kMaximumMapSizeTechnical - 8, x + y - 8 };
+            return { -x + y + getTechnicalMapSize(), x + y };
         }
 
-        void ResizeMap()
+        uint16_t GetReservedBottomSpace()
+        {
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+                return kScenarioEditorReservedSpace;
+            else if (selected_tab == PAGE_RIDES)
+                return kRidesTabReservedSpace;
+            else
+                return kDefaultReservedSpace;
+        }
+
+        void SetInitialWindowDimensions()
+        {
+            // The initial mini map size should be able to show a reasonably sized map
+            auto initSize = std::clamp(getTechnicalMapSize(), 100, 254) * 2;
+            width = initSize + kReservedHSpace + SCROLLBAR_SIZE;
+            height = initSize + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE;
+
+            auto maxWindowHeight = ContextGetHeight() - 68;
+            width = std::min<int16_t>(width, ContextGetWidth());
+            height = std::min<int16_t>(height, maxWindowHeight);
+        }
+
+        void ResetMaxWindowDimensions()
+        {
+            max_width = std::clamp(getMiniMapWidth() + kReservedHSpace + SCROLLBAR_SIZE, WW, ContextGetWidth());
+            max_height = std::clamp(
+                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE, WH, ContextGetHeight() - 68);
+        }
+
+        void ResizeMiniMap()
         {
             widgets[WIDX_MAP].right = width - 4;
-
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
-                widgets[WIDX_MAP].bottom = height - 1 - 72;
-            else if (selected_tab == PAGE_RIDES)
-                widgets[WIDX_MAP].bottom = height - 1 - (4 * kListRowHeight + 4);
-            else
-                widgets[WIDX_MAP].bottom = height - 1 - 14;
+            widgets[WIDX_MAP].bottom = height - 1 - GetReservedBottomSpace();
         }
 
         void CalculateTextLayout()

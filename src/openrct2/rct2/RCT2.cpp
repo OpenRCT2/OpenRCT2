@@ -263,4 +263,9 @@ namespace RCT2
             return result;
         return {};
     }
+
+    colour_t TD6SceneryElement::getTertiaryWallColour() const
+    {
+        return (Flags & 0xFC) >> 2;
+    }
 } // namespace RCT2

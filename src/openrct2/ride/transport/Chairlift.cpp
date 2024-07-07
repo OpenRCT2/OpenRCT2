@@ -11,6 +11,9 @@
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Segment.h"
+#include "../../paint/track/Segment.h"
+#include "../../paint/track/Support.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
 #include "../RideData.h"
@@ -18,6 +21,8 @@
 #include "../TrackPaint.h"
 
 #include <iterator>
+
+static constexpr MetalSupportType kSupportType = MetalSupportType::Truss;
 
 enum
 {
@@ -90,7 +95,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
 
         if (MetalASupportsPaintSetup(
-                session, MetalSupportType::Truss, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
+                session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
         {
             success = true;
         }
@@ -110,8 +115,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
         uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session.Support.height;
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Truss, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
         supportSegments[s].height = temp;
     }
 }
@@ -267,8 +271,8 @@ static void ChairliftPaintStationNeSw(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ChairliftPaintStationSeNw(
@@ -360,11 +364,11 @@ static void ChairliftPaintStationSeNw(
         PaintAddImageAsParent(
             session, imageId, { 16, 30, height + 2 }, { { 16, 1, height + 2 }, { 1, 1, 7 } }); // bound offset x is wrong?
 
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00744068 */
@@ -391,17 +395,17 @@ static void ChairliftPaintFlat(
     {
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_CABLE_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 13, 0, height + 28 }, { 6, 32, 2 } });
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
     }
     else
     {
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_CABLE_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 13, height + 28 }, { 32, 6, 2 } });
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00743FD8 */
@@ -416,30 +420,30 @@ static void ChairliftPaint25DegUp(
         case 0:
             imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_CABLE_UP_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 13, height + 28 }, { 32, 6, 2 } });
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareSlopeStart);
             break;
 
         case 1:
             imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_CABLE_UP_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 13, 0, height + 28 }, { 6, 32, 2 } });
-            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
             break;
 
         case 2:
             imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_CABLE_UP_NE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 13, height + 28 }, { 32, 6, 2 } });
-            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
             break;
 
         case 3:
             imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_CABLE_UP_SE_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 13, 0, height + 28 }, { 6, 32, 2 } });
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareSlopeStart);
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x00743FD8 */
@@ -458,7 +462,7 @@ static void ChairliftPaintFlatTo25DegUp(
             imageId = session.SupportColours.WithIndex(SPR_20520);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
             break;
 
         case 1:
@@ -468,7 +472,7 @@ static void ChairliftPaintFlatTo25DegUp(
             imageId = session.SupportColours.WithIndex(SPR_20521);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareSlopeEnd);
             break;
 
         case 2:
@@ -478,7 +482,7 @@ static void ChairliftPaintFlatTo25DegUp(
             imageId = session.SupportColours.WithIndex(SPR_20522);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareSlopeEnd);
             break;
 
         case 3:
@@ -488,13 +492,13 @@ static void ChairliftPaintFlatTo25DegUp(
             imageId = session.SupportColours.WithIndex(SPR_20523);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
             break;
     }
 
     ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00743FF8 */
@@ -513,7 +517,7 @@ static void ChairliftPaint25DegUpToFlat(
             imageId = session.SupportColours.WithIndex(SPR_20524);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareFlat);
             break;
 
         case 1:
@@ -523,7 +527,7 @@ static void ChairliftPaint25DegUpToFlat(
             imageId = session.SupportColours.WithIndex(SPR_20525);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::_14);
             break;
 
         case 2:
@@ -533,7 +537,7 @@ static void ChairliftPaint25DegUpToFlat(
             imageId = session.SupportColours.WithIndex(SPR_20526);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::_14);
             break;
 
         case 3:
@@ -543,13 +547,13 @@ static void ChairliftPaint25DegUpToFlat(
             imageId = session.SupportColours.WithIndex(SPR_20527);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
 
-            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareFlat);
             break;
     }
 
     ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x00744008 */
@@ -595,7 +599,7 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
             imageId = session.SupportColours.WithIndex(SPR_20536);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 4, height }, { 2, 2, 27 } });
 
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
             break;
 
         case 1:
@@ -619,7 +623,7 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
             imageId = session.SupportColours.WithIndex(SPR_20538);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 16, 28, height }, { 2, 2, 27 } });
 
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
             break;
 
         case 3:
@@ -632,8 +636,8 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
             imageId = session.SupportColours.WithIndex(SPR_20539);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 16, 28, height }, { 2, 2, 27 } });
 
-            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
-            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+            PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
             break;
     }
 
@@ -642,7 +646,7 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
         height);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00744048 */

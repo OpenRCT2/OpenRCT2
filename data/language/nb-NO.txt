@@ -2883,7 +2883,7 @@ STR_5755    :Feil Software-versjon (Server bruker {STRING})
 STR_5756    :Dårlig passord
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har blitt med i spillet
-STR_5759    :Laster ned kart … ({INT32} / {INT32}) KiB
+STR_5759    :Laster ned kart …
 STR_5760    :Hong Kong Dollar (HK$)
 STR_5761    :Nye Taiwanske Dollar (NT$)
 STR_5762    :Kinesisk Yuan (CN¥)
@@ -3447,7 +3447,7 @@ STR_6374    :K
 STR_6375    :Ukjent attraksjon
 STR_6376    :{WINDOW_COLOUR_2}Kjøretøy:{NEWLINE}{BLACK}{STRINGID} for {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} for {STRINGID}
-STR_6378    :Mottar liste over objekter: {INT32} / {INT32}
+STR_6378    :Mottar liste over objekter:
 STR_6379    :Mottok ugyldig data
 STR_6380    :Oppdatering tilgjengelig!
 STR_6381    :Bli med i OpenRCT2 på Discord!
@@ -3687,7 +3687,7 @@ STR_6614    :Kan ikke endre inngangsavgift til parken
 STR_6615    :Spor på denne ruten trenger vann
 STR_6616    :Handling ugyldig for denne personaltypen
 STR_6617    :Kan ikke bytte ut rute-element med seg selv
-STR_6618    :Kan ikke begrense eller frigjøre objekt...
+STR_6618    :Kan ikke begrense eller frigjøre objekt…
 STR_6619    :Objekt-type kan ikke bli begrenset!
 STR_6620    :Kunne ikke finne objekt!
 STR_6621    :Begrens
@@ -4272,87 +4272,87 @@ STR_DTLS    :Bygg de savnede Six Flags attraksjonene, eller skap dine egne desig
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Africa - African Diamond Mine
+STR_SCNR    :Mines of Africa
 STR_PARK    :Mines of Africa
 STR_DTLS    :Du arvet en forlatt diamantgruve, og finner en verdifull diamant. Du bestemmer deg for å investere pengene i å bygge en verdensberømt fornøyelsespark.
 
 <Africa - Oasis>
-STR_SCNR    :Africa - Oasis
+STR_SCNR    :Mirage Madness
 STR_PARK    :Mirage Madness
 STR_DTLS    :En ørkenoase har blitt oppdaget og vil være et vakkert sted for å bygge en park. Transport til oasen har blitt sørget for.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Africa - Victoria Falls
+STR_SCNR    :Over The Edge
 STR_PARK    :Over The Edge
 STR_DTLS    :En demning har blitt bygd, som tilbyr store mengder billig strøm som kan drive en park. Du trenger å nå en høy parkverdi for å hjelpe deg betale ned lånet for demningen.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :Antarctic - Ecological Salvage
+STR_SCNR    :Icy Adventures
 STR_PARK    :Icy Adventures
 STR_DTLS    :Miljøbyrået har kontaktet deg for å få transformert et gammelt, stygt oljeraffineri til en populær turistattraksjon. Land er billig men lånerentene er høye. Du kan selge de gamle bygningene for å hjelpe med betalingen.
 
 <Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_SCNR    :Great Wall of China
 STR_PARK    :Great Wall of China
 STR_DTLS    :Myndighetene har bestemt seg for å øke turismen rundt Den Kinesiske Mur ved å bygge en fornøyelsespark ved siden av. Penger er ikke noe problem!
 
 <Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_SCNR    :Okinawa Coast
 STR_PARK    :Okinawa Coast
 STR_DTLS    :En eksisterende park har gått tom for plass. Din eneste mulighet er å bygge ut i sjøen, og så har du tatt ut et lån. Høyderestriksjoner på bygningene blir vernet om pga. fundamenter og jordskjelvsfare.
 
 <Asia - Maharaja Palace>
-STR_SCNR    :Asia - Maharaja Palace
+STR_SCNR    :Park Maharaja
 STR_PARK    :Park Maharaja
 STR_DTLS    :Du har fått i oppdrag av Maharajaen å bringe underholdning til den store lokale befolkningen. Bygg en park inspirert av Maharajaen's palass.
 
 <Australasia - Ayers Rock>
-STR_SCNR    :Australasia - Ayers Rock
+STR_SCNR    :Ayers Adventure
 STR_PARK    :Ayers Adventure
 STR_DTLS    :Du hjelper Aboriginske folk å bygge en park som del av et kulturelt kunnskapsprogram. Du trenger en stor mengde gjester for å utdanne de om den unike arven til Aboriginerne.
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :Australasia - Fun at the Beach
+STR_SCNR    :Beach Barbecue Blast
 STR_PARK    :Beach Barbecue Blast
 STR_DTLS    :En lokal entreprenør's marinepark har gått konkurs. Du driver allerede en liten park og kjøper den andre parken fra konstruksjonsfirmaet. Utvikle en stor, kombinert park.
 
 <Europe - European Cultural Festival>
-STR_SCNR    :Europe - European Cultural Festival
+STR_SCNR    :European Extravaganza
 STR_PARK    :European Extravaganza
 STR_DTLS    :Du har blitt brakt inn for å overta en European Cultural Visitor Attraction og må øke antall gjester slik at du kan betale tilbake pengestøtten til EU ved slutten av det nåværende Europeiske stortingets termin.
 
 <Europe - Renovation>
-STR_SCNR    :Europe - Renovation
+STR_SCNR    :From The Ashes
 STR_PARK    :From The Ashes
 STR_DTLS    :En gammel park har forfalt. Du mottar et stipend fra den Europeiske Union for å returne dette forfalne området tilbake til sin tidligere prakt! Du må renovere parken og betale tilbake stipendet.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :North America - Extreme Hawaiian Island
+STR_SCNR    :Wacky Waikiki
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Folket på Hawaii er lei av surfing og ser etter noe mer intenst. Du trenger å bygge en park med tanke på dette for å holde tiltrekningen av turister til området på et høyt nivå.
 
 <North America - Grand Canyon>
-STR_SCNR    :North America - Grand Canyon
+STR_SCNR    :Canyon Calamities
 STR_PARK    :Canyon Calamities
 STR_DTLS    :Du må bygge en park på et begrenset område på hver side av denne naturlige skjønnheten - du har muligheten til å kjøpe land fra de innfødte Amerikanske Indianerne. Du trenger å fullføre oppdraget for å opprettholde den lokale landsbyens befolkning.
 
 <North America - Rollercoaster Heaven>
-STR_SCNR    :North America - Rollercoaster Heaven
+STR_SCNR    :Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
 STR_DTLS    :Du er en suksessfull forretningsmagnat på en lang ferie som ønsker å bruke denne tiden til å transformere byparken til Rollercoaster Heaven. Penger er ikke noe problem!
 
 <South America - Inca Lost City>
-STR_SCNR    :South America - Inca Lost City
+STR_SCNR    :Lost City Founder
 STR_PARK    :Lost City Founder
 STR_DTLS    :For å videre øke turisme må du konstruere en park som tar hensyn til sine omgivelser.
 
 <South America - Rain Forest Plateau>
-STR_SCNR    :South America - Rain Forest Plateau
+STR_SCNR    :Rainforest Romp
 STR_PARK    :Rainforest Romp
 STR_DTLS    :Plass er begrenset i den faretruede regnskogen - du må klemme så mye som mulig inn i den eksisterende klaringen, for å bringe et lønnsomt alternativ til den lokale tømmerindustrien.
 
 <South America - Rio Carnival>
-STR_SCNR    :South America - Rio Carnival
+STR_SCNR    :Sugarloaf Shores
 STR_PARK    :Sugarloaf Shores
 STR_DTLS    :Du driver en liten park nær Rio, men banken krever du skal betale ned lånet ditt. Du trenger å raskt øke din inntekt for å betale denne overraskende gjelden.
 
@@ -4360,72 +4360,72 @@ STR_DTLS    :Du driver en liten park nær Rio, men banken krever du skal betale 
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :Dark Age - Castle
+STR_SCNR    :Cliffside Castle
 STR_PARK    :Cliffside Castle
 STR_DTLS    :Lokale medlemmer av krigs-gjenskapelsesforeningen are svært seriøse med sin hobby. De har betrodd deg med jobben av å lage en middelaldersk fornøyelsespark på marken til Cliffside Castle.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Dark Age - Robin Hood
+STR_SCNR    :Sherwood Forest
 STR_PARK    :Sherwood Forest
 STR_DTLS    :Å ta fra de rike og gi til de fattige, du og dine Glade Menn har bestemt dere for å bygge en fornøyelsespark i Sherwood Forest.
 
 <Future - First Encounters>
-STR_SCNR    :Future - First Encounters
+STR_SCNR    :Extraterrestrial Extravaganza
 STR_PARK    :Extraterrestrial Extravaganza
 STR_DTLS    :Liv har blitt funnet på en fjern planet. Bygg en utenomjordisk fornøyelsespark for å utnytte den enestående bølgen av interesse.
 
 <Future - Future World>
-STR_SCNR    :Future - Future World
+STR_SCNR    :Gemini City
 STR_PARK    :Gemini City
 STR_DTLS    :Vis fram din oppfinnsomme, utopiske visjon av fremtiden - skap en futuristisk parkdesign som inneholder toppmoderne attraksjoner.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mythological - Animatronic Film Set
+STR_SCNR    :Animatronic Antics
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Du har blitt gitt oppgaven av å drive og forbedre en eksisterende fornøyelsespark, som har blitt bygd på et gammelt filmstudio. Bygg en hyllest til pionerene av stop-motion animatører som først brakte mytiske skapninger til liv på filmlerretet.
 
 <Mythological - Cradle of Civilisation>
-STR_SCNR    :Mythological - Cradle of Civilisation
+STR_SCNR    :Mythological Madness
 STR_PARK    :Mythological Madness
 STR_DTLS    :Du eier en øy av spesiell arkeologisk verdi. Du har bestemt deg for å finansiere dens bevaring ved å bygge en fornøyelsespark basert på områdets rike mytologiske arv.
 
 <Prehistoric - After the Asteroid>
-STR_SCNR    :Prehistoric - After the Asteroid
+STR_SCNR    :Crater Carnage
 STR_PARK    :Crater Carnage
 STR_DTLS    :Du eier et støvete gammelt metorittkrater. I sann gründer-ånd, har du bestemt deg for å bygge en fornøyelsespark med asteroide-tema og konvertere din tilsynelatende verdiløse tomt til en stor formue.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Prehistoric - Jurassic Safari
+STR_SCNR    :Coastersaurus
 STR_PARK    :Coastersaurus
 STR_DTLS    :Du har blitt gitt oppgaven av å bygge en fornøyelsepark med Juratids-tema. For å optimalisere besøkendes adgang til eksotiske plante- og dyre-utstillinger, trenger du å bygge attraksjoner som går over og ned i dalen.
 
 <Prehistoric - Stone Age>
-STR_SCNR    :Prehistoric - Stone Age
+STR_SCNR    :Rocky Rambles
 STR_PARK    :Rocky Rambles
 STR_DTLS    :For å stanse byggingen av motorveier og å bevare de mystiske eldgamle steinsirklene, må du bygge en fornøyelsespark med steinalder-tema og skape en profitt. Derimot, å tiltrekke gjester vil være utfordrende pga. det grove terrenget.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Roaring Twenties - Prison Island
+STR_SCNR    :Alcatraz
 STR_PARK    :Alcatraz
 STR_DTLS    :Den berømte fengselsøya - som en gang huset smuglere og andre kriminelle - er nå til salgs. Du har bestemt deg for å konvertere den til en populær turist-attraksjon, og penger er ikke noe problem
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Roaring Twenties - Schneider Cup
+STR_SCNR    :Schneider Shores
 STR_PARK    :Schneider Shores
 STR_DTLS    :75års dagen til din bestefars Schneider Cup seiere kommer om et par år. Du har tenkt til å hedre hans prestasjon ved å bygge en fornøyelsespark basert på det berømte sjøfly-løpet.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Roaring Twenties - Skyscrapers
+STR_SCNR    :Metropolis
 STR_PARK    :Metropolis
 STR_DTLS    :Du eier en øde tomt nær utkanten av byen. For å skvise mest mulig ut av din urbane eiendom, bygg en fornøyelsespark med skyskraper-tema inspirert av art deco arkitekturen til tjuetallet.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ‘n’ Roll - Flower Power
+STR_SCNR    :Woodstock
 STR_PARK    :Woodstock
 STR_DTLS    :En stor, årlig musikkfestival finner sted på din tomt. Bygg en hipp fornøyelsespark for å holde det frisinnede publikummet underholdt.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock ‘n’ Roll - Rock ‘n’ Roll
+STR_SCNR    :Rock ‘n’ Roll Revival
 STR_PARK    :Rock ‘n’ Roll Revival
 STR_DTLS    :Denne aldrende fornøyelsesparken har sett bedre dager. Hjelp eieren å gi den en retro rock ‘n’ roll makeover og forvandle stedet til en suksessfull møteplass.
 

@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
-#include "../config/Config.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/File.h"
@@ -74,14 +73,14 @@ public:
 public:
     std::optional<TrackRepositoryItem> Create(int32_t, const std::string& path) const override
     {
-        auto td6 = TrackDesignImport(path.c_str());
-        if (td6 != nullptr)
+        auto td = TrackDesignImport(path.c_str());
+        if (td != nullptr)
         {
             TrackRepositoryItem item;
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
-            item.RideType = td6->type;
-            item.ObjectEntry = std::string(td6->vehicle_object.Entry.name, 8);
+            item.RideType = td->trackAndVehicle.rtdIndex;
+            item.ObjectEntry = std::string(td->trackAndVehicle.vehicleObject.Entry.name, 8);
             item.Flags = 0;
             if (IsTrackReadOnly(path))
             {

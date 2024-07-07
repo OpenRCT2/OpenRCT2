@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/FixedPoint.hpp"
 #include "../world/Location.hpp"
 #include "RideTypes.h"
 
@@ -26,9 +27,12 @@ constexpr ride_rating kRideRatingUndefined = 0xFFFFu;
 // Used for return values, for functions that modify all three.
 struct RatingTuple
 {
-    ride_rating Excitement;
-    ride_rating Intensity;
-    ride_rating Nausea;
+    ride_rating excitement{};
+    ride_rating intensity{};
+    ride_rating nausea{};
+
+    bool isNull() const;
+    void setNull();
 };
 assert_struct_size(RatingTuple, 6);
 

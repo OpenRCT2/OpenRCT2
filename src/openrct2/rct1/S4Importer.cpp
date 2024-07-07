@@ -320,7 +320,7 @@ namespace RCT1
             // Avoid reusing the value used for last import
             _parkValueConversionFactor = 0;
 
-            uint16_t mapSize = _s4.MapSize == 0 ? Limits::MaxMapSize : _s4.MapSize;
+            uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
             gScenarioFileName = GetRCT1ScenarioName();
 
@@ -465,7 +465,7 @@ namespace RCT1
 
         void AddAvailableEntriesFromMap()
         {
-            size_t maxTiles = Limits::MaxMapSize * Limits::MaxMapSize;
+            size_t maxTiles = Limits::kMaxMapSize * Limits::kMaxMapSize;
             size_t tileIndex = 0;
             RCT12TileElement* tileElement = _s4.TileElements;
 
@@ -798,7 +798,7 @@ namespace RCT1
 
         void ImportRides()
         {
-            for (int32_t i = 0; i < Limits::MaxRidesInPark; i++)
+            for (int32_t i = 0; i < Limits::kMaxRidesInPark; i++)
             {
                 if (_s4.Rides[i].Type != RideType::Null)
                 {
@@ -873,7 +873,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->OverallView.x, src->OverallView.y }.ToCoordsXY();
             }
 
-            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 if (src->StationStarts[i].IsNull())
@@ -885,7 +885,7 @@ namespace RCT1
                     auto tileStartLoc = TileCoordsXY{ src->StationStarts[i].x, src->StationStarts[i].y };
                     dstStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                dstStation.SetBaseZ(src->StationHeights[i] * Limits::CoordsZStep);
+                dstStation.SetBaseZ(src->StationHeights[i] * Limits::kCoordsZStep);
                 dstStation.Length = src->StationLengths[i];
                 dstStation.Depart = src->StationLights[i];
 
@@ -910,7 +910,7 @@ namespace RCT1
                 dstStation.SegmentLength = src->Length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 dstStation.Start.SetNull();
@@ -923,11 +923,11 @@ namespace RCT1
             dst->num_stations = src->NumStations;
 
             // Vehicle links (indexes converted later)
-            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::FromUnderlying(src->Vehicles[i]);
             }
-            for (int32_t i = Limits::MaxTrainsPerRide; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+            for (int32_t i = Limits::kMaxTrainsPerRide; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::GetNull();
             }
@@ -1010,9 +1010,7 @@ namespace RCT1
             dst->broken_vehicle = src->BrokenVehicle;
 
             // Measurement data
-            dst->excitement = src->Excitement;
-            dst->intensity = src->Intensity;
-            dst->nausea = src->Nausea;
+            dst->ratings = src->ratings;
 
             dst->max_speed = src->MaxSpeed;
             dst->average_speed = src->AverageSpeed;
@@ -1025,13 +1023,13 @@ namespace RCT1
             dst->turn_count_banked = src->TurnCountBanked;
             dst->turn_count_default = src->TurnCountDefault;
             dst->turn_count_sloped = src->TurnCountSloped;
-            dst->drops = src->NumDrops;
+            dst->dropsPoweredLifts = src->NumDrops;
             dst->start_drop_height = src->StartDropHeight / 2;
             dst->highest_drop_height = src->HighestDropHeight / 2;
             if (dst->type == RIDE_TYPE_MINI_GOLF)
-                dst->holes = src->NumInversions & 0x1F;
+                dst->holes = src->NumInversions & kRCT12InversionAndHoleMask;
             else
-                dst->inversions = src->NumInversions & 0x1F;
+                dst->inversions = src->NumInversions & kRCT12InversionAndHoleMask;
             dst->sheltered_eighths = src->NumInversions >> 5;
             dst->boat_hire_return_direction = src->BoatHireReturnDirection;
             dst->boat_hire_return_position = { src->BoatHireReturnPosition.x, src->BoatHireReturnPosition.y };
@@ -1090,7 +1088,7 @@ namespace RCT1
         void SetRideColourScheme(::Ride* dst, RCT1::Ride* src)
         {
             // Colours
-            dst->colour_scheme_type = src->ColourScheme;
+            dst->vehicleColourSettings = src->vehicleColourSettings;
             if (_gameVersion == FILE_VERSION_RCT1)
             {
                 dst->track_colour[0].main = RCT1::GetColour(src->TrackPrimaryColour);
@@ -1109,7 +1107,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::NumColourSchemes; i++)
+                for (int i = 0; i < Limits::kNumColourSchemes; i++)
                 {
                     dst->track_colour[i].main = RCT1::GetColour(src->TrackColourMain[i]);
                     dst->track_colour[i].additional = RCT1::GetColour(src->TrackColourAdditional[i]);
@@ -1139,7 +1137,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::MaxTrainsPerRide; i++)
+                for (int i = 0; i < Limits::kMaxTrainsPerRide; i++)
                 {
                     // RCT1 had no third colour
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->VehicleType);
@@ -1233,7 +1231,7 @@ namespace RCT1
 
         void ImportEntities()
         {
-            for (int i = 0; i < Limits::MaxEntities; i++)
+            for (int i = 0; i < Limits::kMaxEntities; i++)
             {
                 ImportEntity(_s4.Entities[i].Unknown);
             }
@@ -1321,7 +1319,7 @@ namespace RCT1
 
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
-            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * Limits::CoordsZStep };
+            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * Limits::kCoordsZStep };
             dst->NextFlags = src->NextFlags;
             dst->Var37 = src->Var37;
             dst->StepProgress = src->StepProgress;
@@ -1410,7 +1408,7 @@ namespace RCT1
         {
             auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
-            for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
+            for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
                 if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
@@ -1477,7 +1475,7 @@ namespace RCT1
                     {
                         campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
-                    gMarketingCampaigns.push_back(campaign);
+                    gameState.MarketingCampaigns.push_back(campaign);
                 }
             }
         }
@@ -1522,10 +1520,10 @@ namespace RCT1
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-                Limits::MaxMapSize, _s4.TileElements, std::size(_s4.TileElements));
+                Limits::kMaxMapSize, _s4.TileElements, std::size(_s4.TileElements));
 
             std::vector<TileElement> tileElements;
-            const auto maxSize = _s4.MapSize == 0 ? Limits::MaxMapSize : _s4.MapSize;
+            const auto maxSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
             for (TileCoordsXY coords = { 0, 0 }; coords.y < kMaximumMapSizeTechnical; coords.y++)
             {
                 for (coords.x = 0; coords.x < kMaximumMapSizeTechnical; coords.x++)
@@ -1583,8 +1581,8 @@ namespace RCT1
             // This flag will be set by the caller.
             dst->SetLastForTile(false);
 
-            dst->SetBaseZ(src->BaseHeight * Limits::CoordsZStep);
-            dst->SetClearanceZ(src->ClearanceHeight * Limits::CoordsZStep);
+            dst->SetBaseZ(src->BaseHeight * Limits::kCoordsZStep);
+            dst->SetClearanceZ(src->ClearanceHeight * Limits::kCoordsZStep);
 
             switch (tileElementType)
             {
@@ -1668,6 +1666,7 @@ namespace RCT1
                     auto src2 = src->AsTrack();
                     const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
+                    auto rct1RideType = _s4.Rides[src2->GetRideIndex()].Type;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
                     dst2->SetRideType(rideType);
@@ -1680,7 +1679,7 @@ namespace RCT1
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
-                    if (rideType == RIDE_TYPE_GHOST_TRAIN)
+                    if (rct1RideType == RideType::GhostTrain)
                     {
                         dst2->SetDoorAState(src2->GetDoorAState());
                         dst2->SetDoorBState(src2->GetDoorBState());
@@ -1704,8 +1703,7 @@ namespace RCT1
                     }
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                    const auto& rtd = GetRideTypeDescriptor(rideType);
-                    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                    if (rct1RideType == RideType::HedgeMaze)
                     {
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
@@ -1793,8 +1791,8 @@ namespace RCT1
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
-                        auto baseZ = src->BaseHeight * Limits::CoordsZStep;
-                        auto clearanceZ = src->ClearanceHeight * Limits::CoordsZStep;
+                        auto baseZ = src->BaseHeight * Limits::kCoordsZStep;
+                        auto clearanceZ = src->ClearanceHeight * Limits::kCoordsZStep;
                         auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
@@ -2447,7 +2445,7 @@ namespace RCT1
             gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2509,7 +2507,7 @@ namespace RCT1
         {
             const auto originalString = _s4.StringTable[stringId % 1024];
             auto originalStringView = std::string_view(
-                originalString, RCT12::GetRCTStringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT12::GetRCTStringBufferLen(originalString, kUserStringMaxLength));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
@@ -2674,9 +2672,9 @@ namespace RCT1
          */
         void CountBlockSections()
         {
-            for (int32_t x = 0; x < Limits::MaxMapSize; x++)
+            for (int32_t x = 0; x < Limits::kMaxMapSize; x++)
             {
-                for (int32_t y = 0; y < Limits::MaxMapSize; y++)
+                for (int32_t y = 0; y < Limits::kMaxMapSize; y++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)

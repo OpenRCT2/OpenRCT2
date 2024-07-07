@@ -27,6 +27,7 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
+#include "core/Money.hpp"
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
@@ -105,7 +106,7 @@ void GameResetSpeed()
 
 void GameIncreaseGameSpeed()
 {
-    auto newSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
+    auto newSpeed = std::min(Config::Get().general.DebuggingTools ? 5 : 4, gGameSpeed + 1);
     if (newSpeed == 5)
         newSpeed = 8;
 
@@ -228,7 +229,7 @@ static void FixPeepsWithInvalidRideReference()
     // Fix possibly invalid field values
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->CurrentRideStation.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
+        if (peep->CurrentRideStation.ToUnderlying() >= OpenRCT2::Limits::kMaxStationsPerRide)
         {
             const auto srcStation = peep->CurrentRideStation;
             const auto rideIdx = peep->CurrentRide;
@@ -479,7 +480,7 @@ void SaveGameWithName(u8string_view name)
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
 
     auto& gameState = GetGameState();
-    if (ScenarioSave(gameState, name, gConfigGeneral.SavePluginData ? 1 : 0))
+    if (ScenarioSave(gameState, name, Config::Get().general.SavePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -585,7 +586,7 @@ void GameAutosave()
         timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
-    int32_t autosavesToKeep = gConfigGeneral.AutosaveAmount;
+    int32_t autosavesToKeep = Config::Get().general.AutosaveAmount;
     LimitAutosaveCount(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
     auto env = GetContext()->GetPlatformEnvironment();

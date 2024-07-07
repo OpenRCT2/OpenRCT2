@@ -196,7 +196,7 @@ void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t w
     viewport->flags = 0;
     viewport->rotation = GetCurrentRotation();
 
-    if (gConfigGeneral.AlwaysShowGridlines)
+    if (Config::Get().general.AlwaysShowGridlines)
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
@@ -870,7 +870,7 @@ static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
     CoordsXYZ coords{};
 
     // other != viewport probably triggers on viewports in ride or guest window?
-    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
+    // mapXYCoords is nullopt if middle of viewport is obstructed by another window?
     if (!mapXYCoords.has_value() || other != viewport)
     {
         auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
@@ -991,7 +991,7 @@ static void ViewportPaintColumn(PaintSession& session)
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
+    if (Config::Get().general.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         ViewportPaintWeatherGloom(session.DPI);
@@ -1055,7 +1055,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
 
     _paintColumns.clear();
 
-    bool useMultithreading = gConfigGeneral.MultiThreading;
+    bool useMultithreading = Config::Get().general.MultiThreading;
     if (useMultithreading && _paintJobs == nullptr)
     {
         _paintJobs = std::make_unique<JobPool>();
@@ -1256,7 +1256,7 @@ void HideGridlines()
         WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            if (!gConfigGeneral.AlwaysShowGridlines)
+            if (!Config::Get().general.AlwaysShowGridlines)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                 mainWindow->Invalidate();
@@ -1888,7 +1888,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
             ps = next_ps;
             if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
                 {
                     info = { ps };
                 }
@@ -1902,7 +1902,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
         {
             if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
                 {
                     info = { ps };
                 }
@@ -2194,11 +2194,11 @@ uint8_t GetCurrentRotation()
 int32_t GetHeightMarkerOffset()
 {
     // Height labels in units
-    if (gConfigGeneral.ShowHeightAsUnits)
+    if (Config::Get().general.ShowHeightAsUnits)
         return 0;
 
     // Height labels in feet
-    if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
+    if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
         return 1 * 256;
 
     // Height labels in metres
