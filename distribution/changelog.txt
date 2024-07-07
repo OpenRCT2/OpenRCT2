@@ -1,4 +1,4 @@
-0.4.12 (in development)
+0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
 - Feature: [#622] Add option to align the top toolbar buttons horizontally centred (off by default).
 - Feature: [#20263] Ability to increase the size of the map in the (0, 0) direction.

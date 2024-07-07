@@ -1,4 +1,63 @@
-openrct2 (0.4.11-develop-1) unstable; urgency=medium
+openrct2 (0.4.12-develop-1) unstable; urgency=medium
+
+ * Feature: [#622] Add option to align the top toolbar buttons horizontally centred (off by default).
+ * Feature: [#20263] Ability to increase the size of the map in the (0, 0) direction.
+ * Feature: [#21714] [Plugin] Costume assignment is now tailored to each staff type.
+ * Feature: [#21853] Enlarged UI mode.
+ * Feature: [#21893, #22065] On launch, the game now indicates what system is being initialised.
+ * Feature: [#21913] [Plugin] Allow precise and safe control of peep animations.
+ * Feature: [#22046] [Plugin] Add interface for crashed vehicle particle.
+ * Feature: [#22085] [Plugin] The result of actions that create banners now includes the bannerIndex.
+ * Feature: [#22087] [Plugin] Expose guests’ favourite rides to the plugin API.
+ * Feature: [#22090] [Plugin] Allow writing of paused state in non-networked settings.
+ * Feature: [#22140] Add option to automatically close dropdown menus if Enlarged UI is enabled.
+ * Feature: [#22150] [Plugin] Expose monthly expenditure history to the plugin API.
+ * Feature: [#22210] [Plugin] Peeps can now be made stationary or completely frozen.
+ * Feature: [#22210] [Plugin] The direction in which a peep is facing can now be manipulated.
+ * Improved: [#19870] Allow using new colours in UI themes.
+ * Improved: [#21774] The Alpine Coaster now supports using the alternative colour schemes.
+ * Improved: [#21853] Dropdowns now automatically use multiple columns if they are too tall for the screen.
+ * Improved: [#21981] Rendering performance of the map window has been improved considerably.
+ * Improved: [#21981] The map window now defaults to showing as much of the map as fits the screen.
+ * Improved: [#21983] Taking a screenshot now shows a message again, closing when taking another.
+ * Improved: [#22026] The options window now stays centred when window scaling is changed.
+ * Improved: [#22060] [Plugin] The scroll wheel can now be used to modify spinner widget values in custom/script windows.
+ * Improved: [#22065] Joining a network game now indicates progress using coaster trains.
+ * Improved: [#22075] [Plugin] Plugins can now use G1 Icons.
+ * Improved: [#22084] The game now temporarily pauses while the load/save window is open.
+ * Improved: [#22217] See-through items are ignored again in viewport/pointer interaction.
+ * Improved: [objects#238] Add preview image for invisible queue.
+ * Improved: [objects#329] Add RCT1AA lay-down coaster trains (for import only).
+ * Change: [#7248] Small mini-maps are now centred in the map window.
+ * Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
+ * Change: [#21043] The new music styles are no longer added to old parks automatically.
+ * Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
+ * Change: [#21991] UI themes JSON now use colour names and a translucency bool, instead of a number (old themes still work).
+ * Change: [#22057] Reorder Time Twister’s scenarios and adjust their difficulty classification.
+ * Change: [#22173] Patrol path selection is visible over existing patrol paths.
+ * Change: [#22196] Make track navigation buttons holdable.
+ * Change: [#22227] [Plugin] Ride prices are now constrained for plugins as well.
+ * Fix: [#13234] Vehicle weight sometimes wrong after using Remove All Guests cheat.
+ * Fix: [#13294] Map corners are cut off in some directions (original bug).
+ * Fix: [#14630] Non-ASCII thousands and decimal separators not processed correctly.
+ * Fix: [#21496] Some RCT1 scenery is hidden after saving and reloading.
+ * Fix: [#21533] Support glitches on Hybrid Coaster.
+ * Fix: [#21974] No reason specified when attempting to place benches, lamps, or bins on path with no unconnected edges (original bug).
+ * Fix: [#21987] [Plugin] API cannot handle negative removal prices.
+ * Fix: [#22008] Uninverted Lay-down roller coaster uses the wrong support type.
+ * Fix: [#22012] [Plugin] Images on ImgButton widgets cannot be updated.
+ * Fix: [#22121] Some news items in the “Recent Messages” window have the wrong text colour.
+ * Fix: [#22152] [Plugin] Negative signed integers are truncated.
+ * Fix: [#22161] Using arrow keys in textboxes crashes the game.
+ * Fix: [#22174] Cheats are reset when starting a server.
+ * Fix: [#22185] Intensity and nausea are incorrectly sorted in the rides list after ratings invalidation.
+ * Fix: [#22226] Red traffic light shows incorrect sprite when pressed.
+ * Fix: [objects#323] Incorrect wall boundaries on large WW/TT scenery objects.
+ * Fix: [objects#331] Incorrect hover car capacity string.
+ * Fix: [objects#334] Incorrect school bus capacity string.
+ * Fix: [objects#337] Swan Boats use an incorrect third remap colour (original bug).
+
+ openrct2 (0.4.11-develop-1) unstable; urgency=medium
 
  * Feature: [#11512] Coloured usernames by group on multiplayer servers.
  * Feature: [#21734] Park admittance price can now be set via text input.
