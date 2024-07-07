@@ -1,5 +1,6 @@
 0.4.13 (in development)
 ------------------------------------------------------------------------
+- Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
@@ -15,7 +16,6 @@
 - Feature: [#22090] [Plugin] Allow writing of paused state in non-networked settings.
 - Feature: [#22140] Add option to automatically close dropdown menus if Enlarged UI is enabled.
 - Feature: [#22150] [Plugin] Expose monthly expenditure history to the plugin API.
-- Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22210] [Plugin] Peeps can now be made stationary or completely frozen.
 - Feature: [#22210] [Plugin] The direction in which a peep is facing can now be manipulated.
 - Improved: [#19870] Allow using new colours in UI themes.
