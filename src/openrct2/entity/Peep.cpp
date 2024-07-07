@@ -982,6 +982,7 @@ void Peep::Update()
                     UpdateWalkingAnimation();
                 else
                     UpdateActionAnimation();
+                Invalidate();
             }
         }
         return;
