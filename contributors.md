@@ -120,6 +120,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Fredrik Tegnell (fredriktegnell) - Misc.
 * Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
 * Arnold Zhou (mrmagic2020) - Various plugin additions, new game option, misc.
+* John Dolph (johnwdolph) - Ride music UI, misc.
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)

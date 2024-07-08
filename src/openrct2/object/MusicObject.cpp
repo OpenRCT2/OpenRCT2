@@ -98,6 +98,11 @@ void MusicObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height)
         DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }
 
+bool MusicObject::HasPreview() const
+{
+    return _hasPreview;
+}
+
 void MusicObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     _originalStyleId = {};
