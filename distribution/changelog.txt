@@ -3,6 +3,7 @@
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
+- Change: [#22251] Author on the scenery window is now hidden behind debug.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
