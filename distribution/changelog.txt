@@ -1,5 +1,6 @@
 0.4.13 (in development)
 ------------------------------------------------------------------------
+- Feature: [#20831] The ride selection window now shows object authors if debugging tools are active.
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
