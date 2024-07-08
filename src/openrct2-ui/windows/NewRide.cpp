@@ -39,6 +39,7 @@
 #include <openrct2/world/Park.h>
 
 using namespace OpenRCT2::TrackMetaData;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = STR_NONE;
@@ -970,6 +971,32 @@ static Widget window_new_ride_widgets[] = {
                 ft = Formatter();
                 ft.Add<money64>(price);
                 DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
+            }
+
+            // Draw object author(s) if debugging tools are active
+            if (Config::Get().general.DebuggingTools)
+            {
+                auto rideObject = static_cast<RideObject*>(rideEntry->obj);
+                auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject->GetObjectEntry()));
+
+                StringId authorStringId = repoItem->Authors.size() > 1 ? STR_AUTHORS_STRING : STR_AUTHOR_STRING;
+
+                std::string authorsString;
+                for (auto& author : repoItem->Authors)
+                {
+                    if (!authorsString.empty())
+                        authorsString.append(", ");
+
+                    authorsString.append(author);
+                }
+
+                ft = Formatter();
+                ft.Add<StringId>(authorStringId);
+                ft.Add<const char*>(authorsString.c_str());
+
+                DrawTextEllipsised(
+                    dpi, screenPos + ScreenCoordsXY{ textWidth, 0 }, WindowWidth - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    { TextAlignment::RIGHT });
             }
         }
 
