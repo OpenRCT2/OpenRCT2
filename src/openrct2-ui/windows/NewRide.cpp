@@ -39,6 +39,7 @@
 #include <openrct2/world/Park.h>
 
 using namespace OpenRCT2::TrackMetaData;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = STR_NONE;
@@ -972,7 +973,8 @@ static Widget window_new_ride_widgets[] = {
                 DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
             }
 
-            // Draw object author (will be blank space if no author in file or a non JSON object)
+            // Draw object author(s) if debugging tools are active
+            if (Config::Get().general.DebuggingTools)
             {
                 auto rideObject = static_cast<RideObject*>(rideEntry->obj);
                 auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject->GetObjectEntry()));
