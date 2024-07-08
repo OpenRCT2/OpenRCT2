@@ -969,8 +969,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                WindowStartTextbox(
-                    *w, _widgetIndex, GetWidget()->string, OpenRCT2::Ui::Windows::GetWidgetMaxLength(w, _widgetIndex));
+                WindowStartTextbox(*w, _widgetIndex, GetWidget()->string, Ui::Windows::GetWidgetMaxLength(w, _widgetIndex));
             }
         }
     };
