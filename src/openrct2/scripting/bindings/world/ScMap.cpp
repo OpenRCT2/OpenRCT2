@@ -159,20 +159,27 @@ namespace OpenRCT2::Scripting
             for (auto sprite : EntityList<Staff>())
             {
                 auto staff = GetEntity<Staff>(sprite->Id);
-                switch (staff->AssignedStaffType)
+                if (staff != nullptr)
                 {
-                    case StaffType::Handyman:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
-                        break;
-                    case StaffType::Mechanic:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
-                        break;
-                    case StaffType::Security:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
-                        break;
-                    default:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
-                        break;
+                    switch (staff->AssignedStaffType)
+                    {
+                        case StaffType::Handyman:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
+                            break;
+                        case StaffType::Mechanic:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
+                            break;
+                        case StaffType::Security:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
+                            break;
+                        default:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
+                            break;
+                    }
+                }
+                else
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
                 }
             }
         }
@@ -241,20 +248,27 @@ namespace OpenRCT2::Scripting
             for (auto sprite : EntityTileList<Staff>(pos))
             {
                 auto staff = GetEntity<Staff>(sprite->Id);
-                switch (staff->AssignedStaffType)
+                if (staff != nullptr)
                 {
-                    case StaffType::Handyman:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
-                        break;
-                    case StaffType::Mechanic:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
-                        break;
-                    case StaffType::Security:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
-                        break;
-                    default:
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
-                        break;
+                    switch (staff->AssignedStaffType)
+                    {
+                        case StaffType::Handyman:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
+                            break;
+                        case StaffType::Mechanic:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
+                            break;
+                        case StaffType::Security:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
+                            break;
+                        default:
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
+                            break;
+                    }
+                }
+                else
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
                 }
             }
         }
@@ -389,16 +403,23 @@ namespace OpenRCT2::Scripting
             case EntityType::Staff:
             {
                 auto staff = GetEntity<Staff>(spriteId);
-                switch (staff->AssignedStaffType)
+                if (staff != nullptr)
                 {
-                    case StaffType::Handyman:
-                        return GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(spriteId));
-                    case StaffType::Mechanic:
-                        return GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(spriteId));
-                    case StaffType::Security:
-                        return GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(spriteId));
-                    default:
-                        return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
+                    switch (staff->AssignedStaffType)
+                    {
+                        case StaffType::Handyman:
+                            return GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(spriteId));
+                        case StaffType::Mechanic:
+                            return GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(spriteId));
+                        case StaffType::Security:
+                            return GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(spriteId));
+                        default:
+                            return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
+                    }
+                }
+                else
+                {
+                    return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
                 }
             }
             case EntityType::Guest:
