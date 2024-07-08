@@ -4994,6 +4994,9 @@ static_assert(std::size(RatingNames) == 6);
 
         ScreenSize MusicScrollGetSize(int32_t scrollIndex)
         {
+            // Hack: can be removed when widgets are no longer shared globally
+            OnPrepareDraw();
+
             // Figure out minimum size
             ScreenSize size{};
             size.height = widgets[WIDX_MUSIC_DATA].height() - 2;
