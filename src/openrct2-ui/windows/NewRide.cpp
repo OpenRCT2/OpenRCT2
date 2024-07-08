@@ -977,19 +977,19 @@ static Widget window_new_ride_widgets[] = {
                 auto rideObject = static_cast<RideObject*>(rideEntry->obj);
                 auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject->GetObjectEntry()));
 
+                StringId authorStringId = repoItem->Authors.size() > 1 ? STR_AUTHORS_STRING : STR_AUTHOR_STRING;
+
                 std::string authorsString;
-                authorsString.append("Author(s): ");
-                for (size_t i = 0; i < repoItem->Authors.size(); i++)
+                for (auto& author : repoItem->Authors)
                 {
-                    if (i > 0)
-                    {
+                    if (!authorsString.empty())
                         authorsString.append(", ");
-                    }
-                    authorsString.append(repoItem->Authors[i]);
+
+                    authorsString.append(author);
                 }
 
                 ft = Formatter();
-                ft.Add<StringId>(STR_STRING);
+                ft.Add<StringId>(authorStringId);
                 ft.Add<const char*>(authorsString.c_str());
 
                 DrawTextEllipsised(
