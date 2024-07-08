@@ -76,6 +76,17 @@ namespace OpenRCT2::Scripting
         uint8_t animationOffset_get() const;
         void animationOffset_set(uint8_t offset);
         uint8_t animationLength_get() const;
+    };
+
+    class ScHandyman : public ScStaff
+    {
+    public:
+        ScHandyman(EntityId Id);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        Staff* GetHandyman() const;
 
         DukValue lawnsMown_get() const;
         void lawnsMown_set(uint32_t value);
@@ -88,12 +99,34 @@ namespace OpenRCT2::Scripting
 
         DukValue binsEmptied_get() const;
         void binsEmptied_set(uint32_t value);
+    };
+
+    class ScMechanic : public ScStaff
+    {
+    public:
+        ScMechanic(EntityId Id);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        Staff* GetMechanic() const;
 
         DukValue ridesFixed_get() const;
         void ridesFixed_set(uint32_t value);
 
         DukValue ridesInspected_get() const;
         void ridesInspected_set(uint32_t value);
+    };
+
+    class ScSecurity : public ScStaff
+    {
+    public:
+        ScSecurity(EntityId Id);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        Staff* GetSecurity() const;
 
         DukValue vandalsStopped_get() const;
         void vandalsStopped_set(uint32_t value);

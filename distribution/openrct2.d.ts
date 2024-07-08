@@ -3340,23 +3340,59 @@ declare global {
          * The total number of frames in the current animation.
          */
         readonly animationLength: number;
-
-        lawnsMown: number | null;
-
-        gardensWatered: number | null;
-
-        litterSwept: number | null;
-
-        binsEmptied: number | null;
-
-        ridesFixed: number | null;
-
-        ridesInspected: number | null;
-
-        vandalsStopped: number | null;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
+
+    /**
+     * Represents a handyman.
+     */
+    interface Handyman extends Staff {
+        /**
+         * The number of lawns mown by the handyman.
+         */
+        lawnsMown: number;
+
+        /**
+         * The number of gardens watered by the handyman.
+         */
+        gardensWatered: number;
+
+        /**
+         * The number of litter swept by the handyman.
+         */
+        litterSwept: number;
+
+        /**
+         * The number of bins emptied by the handyman.
+         */
+        binsEmptied: number;
+    }
+
+    /**
+     * Represents a mechanic.
+     */
+    interface Mechanic extends Staff {
+        /**
+         * The number of rides fixed by the mechanic.
+         */
+        ridesFixed: number;
+
+        /**
+         * The number of inspections performed by the mechanic.
+         */
+        ridesInspected: number;
+    }
+
+    /**
+     * Represents a security guard.
+     */
+    interface Security extends Staff {
+        /**
+         * The number of vandals stopped by the security guard.
+         */
+        vandalsStopped: number;
+    }
 
     interface PatrolArea {
         /**

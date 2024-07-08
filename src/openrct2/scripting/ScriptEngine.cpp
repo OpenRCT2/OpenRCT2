@@ -450,6 +450,9 @@ void ScriptEngine::Initialise()
     ScScenarioObjective::Register(ctx);
     ScPatrolArea::Register(ctx);
     ScStaff::Register(ctx);
+    ScHandyman::Register(ctx);
+    ScMechanic::Register(ctx);
+    ScSecurity::Register(ctx);
     ScPlugin::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
