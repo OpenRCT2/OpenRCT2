@@ -1,6 +1,7 @@
 0.4.13 (in development)
 ------------------------------------------------------------------------
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
+- Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
