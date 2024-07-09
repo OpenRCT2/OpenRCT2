@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace PaintSessionFlags
 {
     constexpr uint8_t PassedSurface = 1u << 0;

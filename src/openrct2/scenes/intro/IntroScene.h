@@ -11,6 +11,8 @@
 
 #include "../Scene.h"
 
+#include <cstdint>
+
 struct DrawPixelInfo;
 
 namespace OpenRCT2

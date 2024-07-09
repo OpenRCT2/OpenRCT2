@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 struct CoordsXY;
 struct Vehicle;
 struct DrawPixelInfo;

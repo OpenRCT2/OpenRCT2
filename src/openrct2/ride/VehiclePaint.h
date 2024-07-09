@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 struct PaintSession;
 struct CarEntry;
 struct Vehicle;

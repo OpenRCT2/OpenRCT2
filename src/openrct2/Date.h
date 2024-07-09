@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 constexpr int32_t kMaxYear = 8192;
 constexpr int32_t kTicksPerMonth = 0x10000;
 

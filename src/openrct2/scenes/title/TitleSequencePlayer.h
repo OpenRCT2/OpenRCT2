@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <cstddef>
+#include <cstdint>
+
 struct ITitleSequencePlayer
 {
     virtual ~ITitleSequencePlayer() = default;

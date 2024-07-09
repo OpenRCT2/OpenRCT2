@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <cstddef>
+#include <cstdint>
+
 #pragma pack(push, 1)
 struct SawyerCodingChunkHeader
 {

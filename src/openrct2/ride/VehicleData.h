@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 extern const uint8_t* Rotation1TimeToSpriteMaps[];
 extern const uint8_t* Rotation2TimeToSpriteMaps[];
 extern const uint8_t* Rotation3TimeToSpriteMaps[];

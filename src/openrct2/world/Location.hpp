@@ -11,6 +11,8 @@
 
 #include "../util/Math.hpp"
 
+#include <cstdint>
+
 constexpr int16_t LOCATION_NULL = -32768;
 
 constexpr int32_t COORDS_XY_STEP = 32;

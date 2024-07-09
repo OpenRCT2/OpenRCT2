@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 struct DrawPixelInfo;
 
 namespace OpenRCT2::Drawing

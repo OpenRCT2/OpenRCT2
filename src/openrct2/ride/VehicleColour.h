@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 struct VehicleColour
 {
     uint8_t Body;

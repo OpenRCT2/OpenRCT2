@@ -11,6 +11,7 @@
 
 #include "../core/String.hpp"
 
+#include <cstdint>
 #include <string_view>
 
 using colour_t = uint8_t;

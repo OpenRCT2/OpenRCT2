@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 struct CoordsXY;
 
 enum class VirtualFloorStyles : int32_t
