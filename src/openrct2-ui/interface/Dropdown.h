@@ -14,7 +14,7 @@
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/util/Util.h>
 
-// TODO: only because of STR_EMPTY. We can do better.
+// TODO: needed for STR_TOGGLE_OPTION
 #include <openrct2/localisation/StringIds.h>
 
 namespace Dropdown

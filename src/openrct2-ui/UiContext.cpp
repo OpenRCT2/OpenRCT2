@@ -47,9 +47,6 @@
 #include <openrct2/world/Location.hpp>
 #include <vector>
 
-// TODO: only because of STR_NONE. We can do better.
-#include <openrct2/localisation/StringIds.h>
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Scripting;
