@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/DateTime.h"
 #include "../core/String.hpp"
 #include "../scenario/Scenario.h"

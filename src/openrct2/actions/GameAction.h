@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Game.h"
-#include "../common.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Identifier.hpp"
 #include "../localisation/StringIds.h"

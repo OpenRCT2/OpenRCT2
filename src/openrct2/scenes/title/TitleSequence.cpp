@@ -10,7 +10,6 @@
 #include "TitleSequence.h"
 
 #include "../../Diagnostic.h"
-#include "../../common.h"
 #include "../../core/Collections.hpp"
 #include "../../core/Console.hpp"
 #include "../../core/File.h"

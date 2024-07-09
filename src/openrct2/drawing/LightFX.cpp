@@ -12,7 +12,6 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../common.h"
 #include "../config/Config.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"

@@ -13,7 +13,6 @@
 #include "OpenGLAPI.h"
 #include "OpenGLFramebuffer.h"
 
-#include <openrct2/common.h>
 namespace OpenRCT2::Ui
 {
     /**

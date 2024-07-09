@@ -9,6 +9,4 @@
 
 #pragma once
 
-#include "../common.h"
-
 wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str);

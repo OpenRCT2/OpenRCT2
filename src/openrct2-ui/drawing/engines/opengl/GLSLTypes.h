@@ -11,8 +11,6 @@
 
 #include "OpenGLAPI.h"
 
-#include <openrct2/common.h>
-
 namespace OpenRCT2::Ui
 {
 #pragma pack(push, 1)

@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
-#    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
 #    include "../../../entity/EntityRegistry.h"
 #    include "../../../ride/Track.h"

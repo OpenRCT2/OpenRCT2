@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../actions/GameAction.h"
-#include "../common.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
 #include "../interface/Window_internal.h"

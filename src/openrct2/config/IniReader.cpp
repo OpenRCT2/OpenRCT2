@@ -9,7 +9,6 @@
 
 #include "IniReader.hpp"
 
-#include "../common.h"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.h"

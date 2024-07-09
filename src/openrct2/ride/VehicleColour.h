@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 struct VehicleColour
 {
     uint8_t Body;

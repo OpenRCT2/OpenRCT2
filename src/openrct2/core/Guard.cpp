@@ -13,7 +13,6 @@
 #endif
 
 #include "../Version.h"
-#include "../common.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"

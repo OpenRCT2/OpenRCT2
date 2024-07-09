@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../localisation/FormatCodes.h"
 
 #include <string>

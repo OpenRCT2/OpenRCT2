@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 struct CoordsXY;
 
 enum class VirtualFloorStyles : int32_t

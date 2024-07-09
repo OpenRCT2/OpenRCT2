@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../drawing/Drawing.h"
 
 #include <functional>

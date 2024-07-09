@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/FixedPoint.hpp"
 #include "../world/Location.hpp"
 #include "RideTypes.h"

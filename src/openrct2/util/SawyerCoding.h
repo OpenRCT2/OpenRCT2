@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #pragma pack(push, 1)
 struct SawyerCodingChunkHeader
 {

@@ -23,7 +23,6 @@
 #include "../actions/RideSetVehicleAction.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
-#include "../common.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedVector.h"

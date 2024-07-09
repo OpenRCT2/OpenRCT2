@@ -10,7 +10,6 @@
 #pragma once
 
 #include <memory>
-#include <openrct2/common.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 
 namespace OpenRCT2::Ui

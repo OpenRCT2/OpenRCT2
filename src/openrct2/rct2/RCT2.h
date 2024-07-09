@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/FileSystem.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../rct12/RCT12.h"

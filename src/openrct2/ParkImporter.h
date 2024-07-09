@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "common.h"
 #include "core/String.hpp"
 #include "object/Object.h"
 #include "object/ObjectList.h"

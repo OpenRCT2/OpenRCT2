@@ -16,7 +16,6 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/TileModifyAction.h>
-#include <openrct2/common.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>

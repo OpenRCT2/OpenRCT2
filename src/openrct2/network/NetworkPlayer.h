@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Game.h"
-#include "../common.h"
 #include "../world/Map.h"
 
 #include <string>

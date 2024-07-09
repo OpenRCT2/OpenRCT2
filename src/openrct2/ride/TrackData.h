@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "Track.h"
 
 constexpr uint8_t MaxSequencesPerPiece = 16;

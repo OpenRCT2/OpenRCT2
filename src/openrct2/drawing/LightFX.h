@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 struct CoordsXY;
 struct Vehicle;
 struct DrawPixelInfo;

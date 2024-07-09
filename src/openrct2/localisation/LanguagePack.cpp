@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../common.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/RTL.h"

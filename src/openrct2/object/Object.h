@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/JsonFwd.hpp"
 #include "../core/String.hpp"
 #include "../util/Util.h"

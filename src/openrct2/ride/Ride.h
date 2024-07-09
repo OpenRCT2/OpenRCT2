@@ -11,7 +11,6 @@
 
 #include "../Limits.h"
 #include "../actions/ResultWithMessage.h"
-#include "../common.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../object/MusicObject.h"

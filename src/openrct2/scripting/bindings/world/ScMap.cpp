@@ -12,7 +12,6 @@
 #    include "ScMap.hpp"
 
 #    include "../../../GameState.h"
-#    include "../../../common.h"
 #    include "../../../entity/Balloon.h"
 #    include "../../../entity/Duck.h"
 #    include "../../../entity/EntityList.h"

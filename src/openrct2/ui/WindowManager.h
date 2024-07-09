@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../interface/Window.h"
 #include "../windows/Intent.h"
 

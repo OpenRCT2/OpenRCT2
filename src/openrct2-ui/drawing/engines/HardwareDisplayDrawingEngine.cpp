@@ -14,7 +14,6 @@
 #include <memory>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
-#include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/LightFX.h>

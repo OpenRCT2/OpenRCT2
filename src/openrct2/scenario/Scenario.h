@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/Random.hpp"
 #include "../entity/EntityList.h"
 #include "../management/Finance.h"

@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "common.h"
-
 constexpr int32_t kMaxYear = 8192;
 constexpr int32_t kTicksPerMonth = 0x10000;
 

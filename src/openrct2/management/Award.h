@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #include <vector>
 
 enum class AwardType : uint16_t

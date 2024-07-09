@@ -11,7 +11,6 @@
 
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Window.h>
-#include <openrct2/common.h>
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/util/Util.h>
 

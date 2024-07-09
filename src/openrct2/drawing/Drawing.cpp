@@ -14,7 +14,6 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"

@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #include <memory>
 
 enum class ADVERTISE_STATUS

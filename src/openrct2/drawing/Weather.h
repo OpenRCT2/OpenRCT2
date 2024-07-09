@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 struct DrawPixelInfo;
 
 namespace OpenRCT2::Drawing

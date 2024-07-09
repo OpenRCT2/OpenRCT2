@@ -11,7 +11,6 @@
 
 #include "OpenGLAPI.h"
 
-#include <openrct2/common.h>
 #include <openrct2/drawing/Drawing.h>
 #include <vector>
 

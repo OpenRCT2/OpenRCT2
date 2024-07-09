@@ -10,7 +10,6 @@
 #pragma once
 
 #include <openrct2/Diagnostic.h>
-#include <openrct2/common.h>
 
 #ifdef OPENGL_NO_LINK
 

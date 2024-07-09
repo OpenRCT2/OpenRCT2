@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../common.h"
 #include "Console.hpp"
 #include "DataSerialiser.h"
 #include "File.h"

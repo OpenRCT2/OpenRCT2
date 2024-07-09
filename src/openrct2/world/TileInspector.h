@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "Map.h"
 
 namespace GameActions

@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #include <cstring>
 #include <type_traits>
 

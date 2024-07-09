@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../common.h"
 #include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/String.hpp"

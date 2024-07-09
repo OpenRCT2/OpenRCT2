@@ -11,7 +11,6 @@
 
 // Structures shared between both RCT1 and RCT2.
 
-#include "../common.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"

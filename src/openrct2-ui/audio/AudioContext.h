@@ -12,7 +12,6 @@
 #include <memory>
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioSource.h>
-#include <openrct2/common.h>
 #include <string>
 
 struct SDL_RWops;

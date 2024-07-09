@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #include <istream>
 #include <memory>
 #include <optional>

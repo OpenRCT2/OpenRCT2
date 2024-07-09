@@ -12,7 +12,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
-#include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Window.h"

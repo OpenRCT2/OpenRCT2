@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../management/Finance.h"
 #include "Map.h"
 

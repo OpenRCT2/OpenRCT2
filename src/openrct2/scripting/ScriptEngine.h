@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../actions/CustomAction.h"
-#    include "../common.h"
 #    include "../core/FileWatcher.h"
 #    include "../management/Finance.h"
 #    include "../world/Location.hpp"

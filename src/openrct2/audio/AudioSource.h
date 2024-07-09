@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "AudioMixer.h"
 
 namespace OpenRCT2::Audio

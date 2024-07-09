@@ -29,7 +29,6 @@
 
 #    include "../Date.h"
 #    include "../OpenRCT2.h"
-#    include "../common.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"

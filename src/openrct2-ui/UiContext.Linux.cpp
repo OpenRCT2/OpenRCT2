@@ -17,7 +17,6 @@
 #    include <algorithm>
 #    include <dlfcn.h>
 #    include <openrct2/Diagnostic.h>
-#    include <openrct2/common.h>
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/core/StringBuilder.h>

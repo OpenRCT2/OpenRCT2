@@ -15,7 +15,6 @@
 #    include <algorithm>
 #    include <cassert>
 #    include <memory>
-#    include <openrct2/common.h>
 
 using namespace OpenRCT2::Ui;
 

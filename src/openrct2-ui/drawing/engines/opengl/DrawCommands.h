@@ -13,7 +13,6 @@
 #include "OpenGLAPI.h"
 #include "TextureCache.h"
 
-#include <openrct2/common.h>
 #include <vector>
 namespace OpenRCT2::Ui
 {
