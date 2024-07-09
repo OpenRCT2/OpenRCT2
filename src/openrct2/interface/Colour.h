@@ -14,6 +14,7 @@
 
 #include <string_view>
 
+using colour_t = uint8_t;
 using PaletteIndex = uint8_t;
 
 /**

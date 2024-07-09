@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../common.h"
+#include "../../interface/Colour.h"
 #include "../../sprites.h"
 #include "../../world/Location.hpp"
 
