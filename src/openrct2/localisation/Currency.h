@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/String.hpp"
+#include "../localisation/StringIdType.h"
 #include "../util/Util.h"
 #include "CurrencyTypes.h"
 

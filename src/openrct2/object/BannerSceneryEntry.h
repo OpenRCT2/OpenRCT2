@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/Money.hpp"
+#include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
 enum

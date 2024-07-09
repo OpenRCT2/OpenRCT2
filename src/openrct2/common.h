@@ -19,7 +19,6 @@
 #endif
 
 #include "Diagnostic.h"
-#include "localisation/StringIdType.h"
 
 #include <cassert>
 #include <cstddef>

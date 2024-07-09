@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Date.h"
-#include "../common.h"
+#include "../localisation/StringIdType.h"
 
 extern const StringId DateFormatStringIDs[];
 extern const StringId DateFormatStringFormatIds[];

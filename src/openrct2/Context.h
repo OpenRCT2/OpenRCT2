@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "common.h"
 #include "core/String.hpp"
 #include "interface/WindowClasses.h"
+#include "localisation/StringIdType.h"
 #include "world/Location.hpp"
 
 #include <memory>

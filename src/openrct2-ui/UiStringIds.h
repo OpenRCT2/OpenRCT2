@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <openrct2/common.h>
+#include <openrct2/localisation/StringIdType.h>
 
 namespace OpenRCT2
 {

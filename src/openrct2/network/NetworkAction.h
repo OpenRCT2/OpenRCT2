@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Game.h"
-#include "../common.h"
+#include "../localisation/StringIdType.h"
 
 #include <array>
 #include <string>

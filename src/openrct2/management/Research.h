@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../localisation/StringIdType.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"

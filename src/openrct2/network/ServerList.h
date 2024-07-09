@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/JsonFwd.hpp"
+#include "../localisation/StringIdType.h"
 
 #include <future>
 #include <optional>

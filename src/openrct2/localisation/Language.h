@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../drawing/Font.h"
 #include "../interface/FontFamilies.h"
+#include "../localisation/StringIdType.h"
 
 #include <string>
 #include <string_view>

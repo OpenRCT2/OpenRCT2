@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../management/Marketing.h"
+#include "StringIdType.h"
 
 #include <string>
 
