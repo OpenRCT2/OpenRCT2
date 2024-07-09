@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../audio/audio.h"
 #include "../interface/Viewport.h"

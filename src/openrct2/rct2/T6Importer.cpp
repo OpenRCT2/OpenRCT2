@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Diagnostic.h"
 #include "../TrackImporter.h"
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"

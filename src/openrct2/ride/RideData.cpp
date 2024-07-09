@@ -20,6 +20,7 @@
 #include "RideData.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../audio/audio.h"
 #include "../interface/Colour.h"

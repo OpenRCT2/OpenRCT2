@@ -9,6 +9,7 @@
 
 #include "TileElement.h"
 
+#include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"

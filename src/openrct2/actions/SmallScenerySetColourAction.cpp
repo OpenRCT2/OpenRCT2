@@ -10,6 +10,7 @@
 #include "SmallScenerySetColourAction.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../common.h"

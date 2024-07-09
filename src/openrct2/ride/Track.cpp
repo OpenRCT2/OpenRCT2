@@ -10,6 +10,7 @@
 #include "Track.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../audio/audio.h"

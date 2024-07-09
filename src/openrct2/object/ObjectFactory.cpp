@@ -10,6 +10,7 @@
 #include "ObjectFactory.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../audio/audio.h"

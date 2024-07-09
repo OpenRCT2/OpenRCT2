@@ -10,6 +10,7 @@
 #include "Object.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"

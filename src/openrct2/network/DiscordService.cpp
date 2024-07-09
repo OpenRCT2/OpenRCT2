@@ -11,6 +11,7 @@
 #    include "DiscordService.h"
 
 #    include "../Context.h"
+#    include "../Diagnostic.h"
 #    include "../GameState.h"
 #    include "../OpenRCT2.h"
 #    include "../core/Console.hpp"

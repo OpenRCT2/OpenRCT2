@@ -9,6 +9,7 @@
 
 #include "GuestPathfinding.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/Guard.hpp"
 #include "../entity/Guest.h"

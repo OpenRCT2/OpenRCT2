@@ -10,6 +10,7 @@
 #include "NewsItem.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"

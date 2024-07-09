@@ -10,6 +10,7 @@
 #include "TileInspector.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../actions/GameAction.h"
 #include "../common.h"

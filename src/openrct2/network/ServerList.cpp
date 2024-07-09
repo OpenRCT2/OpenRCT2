@@ -12,6 +12,7 @@
 #    include "ServerList.h"
 
 #    include "../Context.h"
+#    include "../Diagnostic.h"
 #    include "../PlatformEnvironment.h"
 #    include "../config/Config.h"
 #    include "../core/File.h"

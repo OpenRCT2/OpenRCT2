@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../common.h"
 #include "Console.hpp"
 #include "DataSerialiser.h"

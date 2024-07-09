@@ -9,6 +9,7 @@
 
 #include "WallPlaceAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"

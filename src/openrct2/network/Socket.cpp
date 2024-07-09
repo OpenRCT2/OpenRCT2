@@ -9,6 +9,8 @@
 
 #ifndef DISABLE_NETWORK
 
+#    include "../Diagnostic.h"
+
 #    include <atomic>
 #    include <chrono>
 #    include <cmath>

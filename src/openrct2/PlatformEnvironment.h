@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Diagnostic.h"
 #include "common.h"
 #include "core/String.hpp"
 

@@ -9,6 +9,7 @@
 
 #include "GameSetSpeedAction.h"
 
+#include "../Diagnostic.h"
 #include "../config/Config.h"
 
 using namespace OpenRCT2;

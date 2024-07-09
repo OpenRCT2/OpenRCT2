@@ -9,6 +9,7 @@
 
 #include "LightFX.h"
 
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../common.h"

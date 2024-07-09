@@ -9,6 +9,8 @@
 
 #include "RideFreezeRatingAction.h"
 
+#include "../Diagnostic.h"
+
 RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType type, ride_rating value)
     : _rideIndex(rideIndex)
     , _type(type)

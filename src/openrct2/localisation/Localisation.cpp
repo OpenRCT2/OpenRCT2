@@ -9,6 +9,7 @@
 
 #include "Localisation.h"
 
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../common.h"
 #include "../config/Config.h"

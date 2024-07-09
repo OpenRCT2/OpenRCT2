@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"

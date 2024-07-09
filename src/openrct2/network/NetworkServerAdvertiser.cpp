@@ -11,6 +11,7 @@
 
 #    include "NetworkServerAdvertiser.h"
 
+#    include "../Diagnostic.h"
 #    include "../GameState.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"

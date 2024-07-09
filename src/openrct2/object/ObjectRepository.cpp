@@ -10,6 +10,7 @@
 #include "ObjectRepository.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../common.h"

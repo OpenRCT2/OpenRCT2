@@ -10,6 +10,7 @@
 #include "ParkSetEntranceFeeAction.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"

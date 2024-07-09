@@ -15,6 +15,7 @@
 
 #include <SDL.h>
 #include <memory>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/common.h>

@@ -13,6 +13,8 @@
 #    ifndef WIN32_LEAN_AND_MEAN
 #        define WIN32_LEAN_AND_MEAN
 #    endif
+#    include "../Diagnostic.h"
+
 #    include <windows.h>
 
 // Then the rest

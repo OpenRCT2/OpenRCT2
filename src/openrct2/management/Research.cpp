@@ -10,6 +10,7 @@
 #include "Research.h"
 
 #include "../Date.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"

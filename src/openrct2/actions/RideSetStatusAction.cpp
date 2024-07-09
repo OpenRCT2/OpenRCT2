@@ -10,6 +10,7 @@
 #include "RideSetStatusAction.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../common.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"

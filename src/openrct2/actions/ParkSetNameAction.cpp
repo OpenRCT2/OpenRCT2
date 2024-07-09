@@ -10,6 +10,7 @@
 #include "ParkSetNameAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"

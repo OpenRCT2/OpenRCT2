@@ -9,6 +9,7 @@
 
 #include "ScenarioSetSettingAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../entity/Peep.h"

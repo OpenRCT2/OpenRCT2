@@ -10,6 +10,7 @@
 #include "BannerSetNameAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"

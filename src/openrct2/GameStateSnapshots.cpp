@@ -9,6 +9,7 @@
 
 #include "GameStateSnapshots.h"
 
+#include "Diagnostic.h"
 #include "core/CircularBuffer.h"
 #include "entity/Balloon.h"
 #include "entity/Duck.h"

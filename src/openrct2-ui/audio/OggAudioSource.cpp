@@ -9,6 +9,7 @@
 
 #include "SDLAudioSource.h"
 
+#include <openrct2/Diagnostic.h>
 #include <stdexcept>
 
 #ifndef DISABLE_VORBIS

@@ -14,8 +14,6 @@
 #    define _CRT_NONSTDC_NO_WARNINGS
 #endif
 
-#include "Diagnostic.h"
-
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
