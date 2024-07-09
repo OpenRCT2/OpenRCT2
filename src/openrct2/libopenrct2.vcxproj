@@ -191,6 +191,7 @@
     <ClInclude Include="core\DataSerialiser.h" />
     <ClInclude Include="core\DataSerialiserTag.h" />
     <ClInclude Include="core\DataSerialiserTraits.h" />
+    <ClInclude Include="core\DateTime.h" />
     <ClInclude Include="core\Diagnostics.hpp" />
     <ClInclude Include="core\Endianness.h" />
     <ClInclude Include="core\EnumMap.hpp" />

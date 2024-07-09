@@ -9,13 +9,13 @@
 
 #pragma once
 
-// Ignore isatty warning on WIN32
-#ifndef _CRT_NONSTDC_NO_WARNINGS
-#    define _CRT_NONSTDC_NO_WARNINGS
+#ifdef _MSC_VER
+#    include <ctime>
 #endif
 
-#include "Diagnostic.h"
-
-#include <cassert>
-#include <cstddef>
 #include <cstdint>
+
+// Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
+using datetime64 = uint64_t;
+
+constexpr datetime64 DATETIME64_MIN = 0;

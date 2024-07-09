@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../config/ConfigTypes.h"
+#include "../core/DateTime.h"
 #include "../core/String.hpp"
 
 #include <ctime>
