@@ -58,6 +58,7 @@
 #include "../world/Scenery.h"
 #include "Legacy.h"
 
+#include <cassert>
 #include <cstdint>
 #include <ctime>
 #include <numeric>

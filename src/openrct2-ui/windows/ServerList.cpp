@@ -9,6 +9,7 @@
 
 #ifndef DISABLE_NETWORK
 
+#    include <cassert>
 #    include <chrono>
 #    include <openrct2-ui/interface/Dropdown.h>
 #    include <openrct2-ui/interface/Widget.h>

@@ -32,6 +32,7 @@
 #include "MoneyEffect.h"
 #include "Particle.h"
 
+#include <cassert>
 #include <cmath>
 #include <iterator>
 #include <numeric>

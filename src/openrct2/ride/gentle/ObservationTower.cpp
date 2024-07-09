@@ -21,6 +21,8 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
+#include <cassert>
+
 enum
 {
     SprObservationTowerSegmentBase = 14986,

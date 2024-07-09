@@ -20,6 +20,8 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
+#include <cassert>
+
 enum
 {
     SPR_LAUNCHED_FREEFALL_TOWER_BASE = 14564,

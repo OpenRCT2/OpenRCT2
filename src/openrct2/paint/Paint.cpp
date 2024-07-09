@@ -28,6 +28,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 
 using namespace OpenRCT2;
 

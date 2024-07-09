@@ -15,6 +15,7 @@
 #    endif
 #    include "../Diagnostic.h"
 
+#    include <cassert>
 #    include <windows.h>
 
 // Then the rest

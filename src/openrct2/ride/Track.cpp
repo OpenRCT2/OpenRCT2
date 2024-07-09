@@ -37,6 +37,8 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 
+#include <cassert>
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 

@@ -21,6 +21,7 @@
 #include "../scenario/Scenario.h"
 #include "CommandLine.hpp"
 
+#include <cassert>
 #include <memory>
 
 using namespace OpenRCT2;

@@ -31,6 +31,8 @@
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
 
+#include <cassert>
+
 using namespace OpenRCT2;
 
 News::Item& News::ItemQueues::Current()

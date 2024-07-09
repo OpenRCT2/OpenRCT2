@@ -39,6 +39,7 @@
 #include "../world/Location.hpp"
 #include "network.h"
 
+#include <cassert>
 #include <iterator>
 #include <stdexcept>
 

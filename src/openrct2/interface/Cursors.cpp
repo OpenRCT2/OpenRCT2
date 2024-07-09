@@ -11,6 +11,7 @@
 
 #include "../core/EnumMap.hpp"
 
+#include <cassert>
 #include <string>
 
 namespace Cursor

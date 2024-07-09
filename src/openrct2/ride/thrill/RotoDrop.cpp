@@ -20,6 +20,7 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
+#include <cassert>
 #include <cstring>
 
 enum

@@ -17,6 +17,8 @@
 #include "../world/Banner.h"
 #include "TileElement.h"
 
+#include <cassert>
+
 colour_t LargeSceneryElement::GetPrimaryColour() const
 {
     return Colour[0];

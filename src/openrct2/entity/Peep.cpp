@@ -59,6 +59,7 @@
 #include "PatrolArea.h"
 #include "Staff.h"
 
+#include <cassert>
 #include <iterator>
 #include <limits>
 #include <map>

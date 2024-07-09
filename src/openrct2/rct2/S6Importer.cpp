@@ -74,6 +74,8 @@
 #include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
 
+#include <cassert>
+
 using namespace OpenRCT2;
 
 namespace RCT2

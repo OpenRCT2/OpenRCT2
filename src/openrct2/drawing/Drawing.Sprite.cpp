@@ -23,6 +23,7 @@
 #include "../ui/UiContext.h"
 #include "ScrollingText.h"
 
+#include <cassert>
 #include <memory>
 #include <stdexcept>
 #include <vector>

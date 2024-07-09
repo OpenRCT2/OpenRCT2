@@ -25,6 +25,7 @@
 
 #include <bit>
 #include <bitset>
+#include <cassert>
 #include <cstring>
 
 bool gPeepPathFindIgnoreForeignQueues;

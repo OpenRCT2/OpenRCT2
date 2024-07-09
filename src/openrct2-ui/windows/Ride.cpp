@@ -10,6 +10,7 @@
 #include "../UiStringIds.h"
 #include "../interface/Theme.h"
 
+#include <cassert>
 #include <cmath>
 #include <iterator>
 #include <limits>

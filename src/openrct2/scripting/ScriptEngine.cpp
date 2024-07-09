@@ -59,6 +59,7 @@
 #    include "bindings/world/ScTile.hpp"
 #    include "bindings/world/ScTileElement.hpp"
 
+#    include <cassert>
 #    include <iostream>
 #    include <memory>
 #    include <stdexcept>

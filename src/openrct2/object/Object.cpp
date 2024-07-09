@@ -25,6 +25,7 @@
 #include "ObjectRepository.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstring>
 #include <stdexcept>
 

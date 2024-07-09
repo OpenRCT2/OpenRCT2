@@ -19,6 +19,8 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
+#include <cassert>
+
 static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
 
 // 0x009927E6:

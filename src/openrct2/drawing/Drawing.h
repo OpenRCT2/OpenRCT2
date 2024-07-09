@@ -18,6 +18,7 @@
 #include "ImageId.hpp"
 #include "Text.h"
 
+#include <cassert>
 #include <memory>
 #include <optional>
 #include <vector>

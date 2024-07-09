@@ -14,6 +14,7 @@
 #include "../scenario/Scenario.h"
 #include "Util.h"
 
+#include <cassert>
 #include <cstring>
 #include <stdexcept>
 

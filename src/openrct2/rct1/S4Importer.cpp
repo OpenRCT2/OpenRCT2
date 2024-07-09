@@ -72,6 +72,7 @@
 #include "RCT1.h"
 #include "Tables.h"
 
+#include <cassert>
 #include <iterator>
 #include <memory>
 #include <vector>

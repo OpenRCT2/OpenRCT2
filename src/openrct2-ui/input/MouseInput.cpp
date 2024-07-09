@@ -9,6 +9,7 @@
 
 #include "../UiStringIds.h"
 
+#include <cassert>
 #include <cmath>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>

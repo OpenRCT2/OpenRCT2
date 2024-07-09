@@ -21,6 +21,8 @@
 #include "../ride/TrackDesign.h"
 #include "../ride/TrackDesignRepository.h"
 
+#include <cassert>
+
 namespace RCT1
 {
     /**

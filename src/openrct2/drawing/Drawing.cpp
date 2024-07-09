@@ -26,6 +26,7 @@
 #include "../world/Location.hpp"
 #include "LightFX.h"
 
+#include <cassert>
 #include <cstring>
 
 using namespace OpenRCT2;

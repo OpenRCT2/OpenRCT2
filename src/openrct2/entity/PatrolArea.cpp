@@ -13,6 +13,8 @@
 #include "EntityList.h"
 #include "Staff.h"
 
+#include <cassert>
+
 static PatrolArea _consolidatedPatrolArea[EnumValue(StaffType::Count)];
 static std::variant<StaffType, EntityId> _patrolAreaToRender;
 

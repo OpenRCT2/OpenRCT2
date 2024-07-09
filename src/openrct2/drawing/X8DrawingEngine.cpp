@@ -24,6 +24,7 @@
 #include "Weather.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstring>
 
 using namespace OpenRCT2;
