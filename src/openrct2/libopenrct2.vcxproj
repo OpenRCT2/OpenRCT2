@@ -182,6 +182,7 @@
     <ClInclude Include="Context.h" />
     <ClInclude Include="core\Algorithm.hpp" />
     <ClInclude Include="core\BitSet.hpp" />
+    <ClInclude Include="core\CallingConventions.h" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
     <ClInclude Include="core\Collections.hpp" />

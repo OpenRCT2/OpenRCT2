@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../core/CallingConventions.h"
 #include "../core/Money.hpp"
 #include "../core/String.hpp"
 
