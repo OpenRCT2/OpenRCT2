@@ -391,7 +391,7 @@ namespace String
     {
         if (delimiter.empty())
         {
-            throw std::invalid_argument(nameof(delimiter) " can not be empty.");
+            throw std::invalid_argument("delimiter can not be empty.");
         }
 
         std::vector<std::string> results;

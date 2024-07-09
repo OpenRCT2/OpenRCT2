@@ -24,9 +24,6 @@
 #include <cstddef>
 #include <cstdint>
 
-// Gets the name of a symbol as a C string
-#define nameof(symbol) #symbol
-
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
 using datetime64 = uint64_t;
 
