@@ -359,7 +359,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
     auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
     auto f = p->get_future();
 
-    std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
+    std::string masterServerUrl = kMasterServerURL;
     if (!Config::Get().network.MasterServerUrl.empty())
     {
         masterServerUrl = Config::Get().network.MasterServerUrl;

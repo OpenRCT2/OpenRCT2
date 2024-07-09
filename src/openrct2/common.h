@@ -32,8 +32,6 @@ using colour_t = uint8_t;
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol
 
-#define OPENRCT2_MASTER_SERVER_URL "https://servers.openrct2.io"
-
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
 using datetime64 = uint64_t;
 

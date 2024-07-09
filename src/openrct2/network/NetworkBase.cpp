@@ -930,7 +930,7 @@ std::string NetworkBase::GetMasterServerUrl()
 {
     if (Config::Get().network.MasterServerUrl.empty())
     {
-        return OPENRCT2_MASTER_SERVER_URL;
+        return kMasterServerURL;
     }
 
     return Config::Get().network.MasterServerUrl;

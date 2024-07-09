@@ -344,7 +344,7 @@ private:
 
     static std::string GetMasterServerUrl()
     {
-        std::string result = OPENRCT2_MASTER_SERVER_URL;
+        std::string result = kMasterServerURL;
         if (!Config::Get().network.MasterServerUrl.empty())
         {
             result = Config::Get().network.MasterServerUrl;
