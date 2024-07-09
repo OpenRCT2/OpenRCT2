@@ -789,7 +789,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto mapTile = info.Loc.ToTileCentre();
+            auto mapTile = info.Loc;
 
             uint8_t state_changed = 0;
 
@@ -805,14 +805,12 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            int16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
-            int16_t tool_length = (tool_size - 1) * 32;
+            uint16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
+            uint16_t tool_length = (tool_size - 1) * COORDS_XY_STEP;
 
             // Move to tool bottom left
-            mapTile.x -= (tool_size - 1) * 16;
-            mapTile.y -= (tool_size - 1) * 16;
-            mapTile.x &= 0xFFE0;
-            mapTile.y &= 0xFFE0;
+            mapTile.x -= tool_length / 2;
+            mapTile.y -= tool_length / 2;
 
             if (gMapSelectPositionA.x != mapTile.x)
             {

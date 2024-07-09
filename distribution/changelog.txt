@@ -5,6 +5,7 @@
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
+- Fix: [#22209] Water tool selection may disappear near edge of map.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
