@@ -21,21 +21,22 @@ namespace OpenRCT2::Drawing
     {
         virtual ~IDrawingContext() = default;
 
-        virtual void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) abstract;
-        virtual void FillRect(
-            DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
+        virtual void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) = 0;
+        virtual void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+            = 0;
         virtual void FilterRect(
-            DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
-        virtual void DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line) abstract;
-        virtual void DrawSprite(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y) abstract;
+            DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+            = 0;
+        virtual void DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line) = 0;
+        virtual void DrawSprite(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y) = 0;
         virtual void DrawSpriteRawMasked(
-            DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) abstract;
-        virtual void DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) abstract;
-        virtual void DrawGlyph(
-            DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
+            DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
+            = 0;
+        virtual void DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) = 0;
+        virtual void DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) = 0;
         virtual void DrawTTFBitmap(
-            DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
-            uint8_t hintingThreshold) abstract;
+            DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+            = 0;
     };
 
 } // namespace OpenRCT2::Drawing

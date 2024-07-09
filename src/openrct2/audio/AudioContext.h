@@ -29,25 +29,25 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioContext() = default;
 
-        virtual IAudioMixer* GetMixer() abstract;
+        virtual IAudioMixer* GetMixer() = 0;
 
-        virtual std::vector<std::string> GetOutputDevices() abstract;
-        virtual void SetOutputDevice(const std::string& deviceName) abstract;
+        virtual std::vector<std::string> GetOutputDevices() = 0;
+        virtual void SetOutputDevice(const std::string& deviceName) = 0;
 
-        virtual IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) abstract;
-        virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) abstract;
+        virtual IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) = 0;
+        virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) = 0;
 
-        virtual void StartTitleMusic() abstract;
+        virtual void StartTitleMusic() = 0;
 
-        virtual void ToggleAllSounds() abstract;
-        virtual void PauseSounds() abstract;
-        virtual void UnpauseSounds() abstract;
+        virtual void ToggleAllSounds() = 0;
+        virtual void PauseSounds() = 0;
+        virtual void UnpauseSounds() = 0;
 
-        virtual void StopAll() abstract;
-        virtual void StopCrowdSound() abstract;
-        virtual void StopRideMusic() abstract;
-        virtual void StopTitleMusic() abstract;
-        virtual void StopVehicleSounds() abstract;
+        virtual void StopAll() = 0;
+        virtual void StopCrowdSound() = 0;
+        virtual void StopRideMusic() = 0;
+        virtual void StopTitleMusic() = 0;
+        virtual void StopVehicleSounds() = 0;
     };
 
     [[nodiscard]] std::unique_ptr<IAudioContext> CreateDummyAudioContext();

@@ -81,24 +81,24 @@ struct IObjectRepository
 {
     virtual ~IObjectRepository() = default;
 
-    virtual void LoadOrConstruct(int32_t language) abstract;
-    virtual void Construct(int32_t language) abstract;
-    [[nodiscard]] virtual size_t GetNumObjects() const abstract;
-    [[nodiscard]] virtual const ObjectRepositoryItem* GetObjects() const abstract;
-    [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const abstract;
-    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
-    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const abstract;
-    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
+    virtual void LoadOrConstruct(int32_t language) = 0;
+    virtual void Construct(int32_t language) = 0;
+    [[nodiscard]] virtual size_t GetNumObjects() const = 0;
+    [[nodiscard]] virtual const ObjectRepositoryItem* GetObjects() const = 0;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const = 0;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const = 0;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const = 0;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const = 0;
 
-    [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
-    virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) abstract;
-    virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
+    [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) = 0;
+    virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) = 0;
+    virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) = 0;
 
-    virtual void AddObject(const RCTObjectEntry* objectEntry, const void* data, size_t dataSize) abstract;
-    virtual void AddObjectFromFile(
-        ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) abstract;
+    virtual void AddObject(const RCTObjectEntry* objectEntry, const void* data, size_t dataSize) = 0;
+    virtual void AddObjectFromFile(ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize)
+        = 0;
 
-    virtual void ExportPackedObject(OpenRCT2::IStream* stream) abstract;
+    virtual void ExportPackedObject(OpenRCT2::IStream* stream) = 0;
 };
 
 [[nodiscard]] std::unique_ptr<IObjectRepository> CreateObjectRepository(

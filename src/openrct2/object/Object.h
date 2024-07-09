@@ -168,15 +168,15 @@ struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
 
-    virtual std::string_view GetObjectIdentifier() abstract;
-    virtual IObjectRepository& GetObjectRepository() abstract;
-    virtual bool ShouldLoadImages() abstract;
-    virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
-    virtual ObjectAsset GetAsset(std::string_view path) abstract;
+    virtual std::string_view GetObjectIdentifier() = 0;
+    virtual IObjectRepository& GetObjectRepository() = 0;
+    virtual bool ShouldLoadImages() = 0;
+    virtual std::vector<uint8_t> GetData(std::string_view path) = 0;
+    virtual ObjectAsset GetAsset(std::string_view path) = 0;
 
-    virtual void LogVerbose(ObjectError code, const utf8* text) abstract;
-    virtual void LogWarning(ObjectError code, const utf8* text) abstract;
-    virtual void LogError(ObjectError code, const utf8* text) abstract;
+    virtual void LogVerbose(ObjectError code, const utf8* text) = 0;
+    virtual void LogWarning(ObjectError code, const utf8* text) = 0;
+    virtual void LogError(ObjectError code, const utf8* text) = 0;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -285,8 +285,8 @@ public:
     {
     }
     virtual void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream);
-    virtual void Load() abstract;
-    virtual void Unload() abstract;
+    virtual void Load() = 0;
+    virtual void Unload() = 0;
 
     virtual void DrawPreview(DrawPixelInfo& /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
     {

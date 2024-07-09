@@ -50,8 +50,8 @@
 struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
-    virtual std::vector<uint8_t> GetData(std::string_view path) const abstract;
-    virtual ObjectAsset GetAsset(std::string_view path) const abstract;
+    virtual std::vector<uint8_t> GetData(std::string_view path) const = 0;
+    virtual ObjectAsset GetAsset(std::string_view path) const = 0;
 };
 
 class FileSystemDataRetriever : public IFileDataRetriever

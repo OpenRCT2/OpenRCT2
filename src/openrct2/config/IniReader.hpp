@@ -26,14 +26,14 @@ struct IIniReader
 {
     virtual ~IIniReader() = default;
 
-    virtual bool ReadSection(const std::string& name) abstract;
+    virtual bool ReadSection(const std::string& name) = 0;
 
-    virtual bool GetBoolean(const std::string& name, bool defaultValue) const abstract;
-    virtual int32_t GetInt32(const std::string& name, int32_t defaultValue) const abstract;
-    virtual int64_t GetInt64(const std::string& name, int64_t defaultValue) const abstract;
-    virtual float GetFloat(const std::string& name, float defaultValue) const abstract;
-    virtual std::string GetString(const std::string& name, const std::string& defaultValue) const abstract;
-    virtual bool TryGetString(const std::string& name, std::string* outValue) const abstract;
+    virtual bool GetBoolean(const std::string& name, bool defaultValue) const = 0;
+    virtual int32_t GetInt32(const std::string& name, int32_t defaultValue) const = 0;
+    virtual int64_t GetInt64(const std::string& name, int64_t defaultValue) const = 0;
+    virtual float GetFloat(const std::string& name, float defaultValue) const = 0;
+    virtual std::string GetString(const std::string& name, const std::string& defaultValue) const = 0;
+    virtual bool TryGetString(const std::string& name, std::string* outValue) const = 0;
 
     template<typename T> T GetEnum(const std::string& name, T defaultValue, const IConfigEnum<T>& configEnum) const
     {

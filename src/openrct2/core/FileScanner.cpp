@@ -149,7 +149,7 @@ public:
         return false;
     }
 
-    virtual void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) abstract;
+    virtual void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) = 0;
 
 private:
     void PushState(const std::string& directory)

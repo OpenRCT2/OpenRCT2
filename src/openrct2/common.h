@@ -32,6 +32,4 @@ using datetime64 = uint64_t;
 
 constexpr datetime64 DATETIME64_MIN = 0;
 
-#define abstract = 0
-
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")

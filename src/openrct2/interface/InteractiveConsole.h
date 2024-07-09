@@ -41,8 +41,8 @@ public:
     void WriteLineWarning(const std::string& s);
     void WriteFormatLine(const char* format, ...);
 
-    virtual void Clear() abstract;
-    virtual void Close() abstract;
-    virtual void Hide() abstract;
-    virtual void WriteLine(const std::string& s, FormatToken colourFormat) abstract;
+    virtual void Clear() = 0;
+    virtual void Close() = 0;
+    virtual void Hide() = 0;
+    virtual void WriteLine(const std::string& s, FormatToken colourFormat) = 0;
 };
