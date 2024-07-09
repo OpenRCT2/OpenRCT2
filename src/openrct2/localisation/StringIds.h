@@ -1692,6 +1692,8 @@ enum : StringId
     STR_STRING_M_OF_N = 6642,
     STR_STRING_M_OF_N_KIB = 6643,
 
+    STR_LOADING_PLUGIN_ENGINE = 6648,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

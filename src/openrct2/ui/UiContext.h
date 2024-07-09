@@ -99,7 +99,7 @@ namespace OpenRCT2
         {
             virtual ~IUiContext() = default;
 
-            virtual void Initialise() abstract;
+            virtual void InitialiseScriptExtensions() abstract;
             virtual void Tick() abstract;
             virtual void Draw(DrawPixelInfo& dpi) abstract;
 
