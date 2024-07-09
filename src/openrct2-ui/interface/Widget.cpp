@@ -10,6 +10,7 @@
 #include "Widget.h"
 
 #include <cmath>
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -21,7 +22,6 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2-ui/UiStringIds.h>
 
 using namespace OpenRCT2;
 
