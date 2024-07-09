@@ -101,7 +101,7 @@ struct RCTObjectEntry
     bool operator==(const RCTObjectEntry& rhs) const;
     bool operator!=(const RCTObjectEntry& rhs) const;
 };
-assert_struct_size(RCTObjectEntry, 0x10);
+static_assert(sizeof(RCTObjectEntry) == 0x10);
 
 #pragma pack(pop)
 

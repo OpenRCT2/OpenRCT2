@@ -437,7 +437,7 @@ struct TrackBeginEnd
     TileElement* end_element;
 };
 #ifdef PLATFORM_32BIT
-assert_struct_size(TrackBeginEnd, 36);
+static_assert(sizeof(TrackBeginEnd) == 36);
 #endif
 
 #pragma pack(pop)

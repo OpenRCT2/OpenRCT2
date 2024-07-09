@@ -34,7 +34,7 @@ struct RatingTuple
     bool isNull() const;
     void setNull();
 };
-assert_struct_size(RatingTuple, 6);
+static_assert(sizeof(RatingTuple) == 6);
 
 #pragma pack(pop)
 
