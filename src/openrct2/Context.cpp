@@ -523,17 +523,13 @@ namespace OpenRCT2
 
                 // TODO: preload the title scene in another (parallel) job.
                 preloaderScene->AddJob([this]() { InitialiseRepositories(); });
+                preloaderScene->AddJob([this]() { InitialiseScriptEngine(); });
             }
             else
             {
                 InitialiseRepositories();
+                InitialiseScriptEngine();
             }
-
-#ifdef ENABLE_SCRIPTING
-            _scriptEngine.Initialise();
-#endif
-
-            _uiContext->Initialise();
 
             return true;
         }
@@ -572,6 +568,17 @@ namespace OpenRCT2
             TitleSequenceManager::Scan();
 
             OpenProgress(STR_LOADING_GENERIC);
+        }
+
+        void InitialiseScriptEngine()
+        {
+#ifdef ENABLE_SCRIPTING
+            OpenProgress(STR_LOADING_PLUGIN_ENGINE);
+            _scriptEngine.Initialise();
+            _uiContext->InitialiseScriptExtensions();
+
+            OpenProgress(STR_LOADING_GENERIC);
+#endif
         }
 
     public:
@@ -1349,7 +1356,10 @@ namespace OpenRCT2
 
             ChatUpdate();
 #ifdef ENABLE_SCRIPTING
-            _scriptEngine.Tick();
+            if (GetActiveScene() != GetPreloaderScene())
+            {
+                _scriptEngine.Tick();
+            }
 #endif
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Tick();

@@ -3719,6 +3719,7 @@ STR_6644    :Touch enhancements
 STR_6645    :Makes some UI elements bigger so they are easier to click or tap.
 STR_6646    :Author: {STRING}
 STR_6647    :Authors: {STRING}
+STR_6648    :Loading plugin engine…
 
 #############
 # Scenarios #
