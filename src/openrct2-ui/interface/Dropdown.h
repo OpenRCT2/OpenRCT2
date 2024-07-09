@@ -9,13 +9,13 @@
 
 #pragma once
 
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/util/Util.h>
 
-// TODO: needed for STR_TOGGLE_OPTION
-#include <openrct2/localisation/StringIds.h>
+using namespace OpenRCT2;
 
 namespace Dropdown
 {

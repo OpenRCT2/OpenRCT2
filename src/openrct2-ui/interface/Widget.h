@@ -11,11 +11,11 @@
 
 #include "Window.h"
 
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Widget.h>
 
-// TODO: needed for STR_DROPDOWN_GLYPH, STR_NUMERIC_DOWN, STR_NUMERIC_UP
-#include <openrct2/localisation/StringIds.h>
+using namespace OpenRCT2;
 
 ImageId GetColourButtonImage(colour_t colour);
 Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);

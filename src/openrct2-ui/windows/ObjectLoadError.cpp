@@ -19,6 +19,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
@@ -28,6 +29,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+
 namespace OpenRCT2::Ui::Windows
 {
 #ifndef DISABLE_HTTP
