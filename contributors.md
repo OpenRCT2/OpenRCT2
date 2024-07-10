@@ -313,6 +313,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Herman Riddering - Owner of the 35er Voigt, which provided new recordings for the Fairground organ styles.
 * (Skyshard)
 * (Blackend Blue)
+* Andrew Sinclair (Approaching Nirvana) - Progressive style
 
 ## Sound Effects
 * Karst van Galen Last (AuraSpecs)
