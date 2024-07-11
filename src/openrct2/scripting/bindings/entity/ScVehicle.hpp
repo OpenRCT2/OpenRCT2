@@ -96,6 +96,9 @@ namespace OpenRCT2::Scripting
         DukValue gForces_get() const;
 
         void travelBy(int32_t value);
+
+        track_type_t trackType_get() const;
+        void trackType_set(track_type_t value);
     };
 
 } // namespace OpenRCT2::Scripting

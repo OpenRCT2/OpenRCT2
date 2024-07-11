@@ -2545,6 +2545,11 @@ declare global {
         trackLocation: CoordsXYZD;
 
         /**
+         * The current track type used by the car, used in travelBy().
+         */
+        trackType: number;
+
+        /**
          * The current g-forces of this car.
          */
         readonly gForces: GForces;

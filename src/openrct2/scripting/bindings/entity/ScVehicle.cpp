@@ -87,6 +87,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
         dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
+        dukglue_register_property(ctx, &ScVehicle::trackType_get, &ScVehicle::trackType_set, "trackType");
     }
 
     Vehicle* ScVehicle::GetVehicle() const
@@ -516,6 +517,21 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    track_type_t ScVehicle::trackType_get() const
+    {
+        auto vehicle = GetVehicle();
+        return vehicle != nullptr ? vehicle->GetTrackType() : 0;
+    }
+
+    void ScVehicle::trackType_set(track_type_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto vehicle = GetVehicle();
+        if (vehicle != nullptr)
+        {
+            vehicle->SetTrackType(value);
+        }
+    }
 } // namespace OpenRCT2::Scripting
 
 #endif
