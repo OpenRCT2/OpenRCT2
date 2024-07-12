@@ -26,9 +26,6 @@ void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes);
  */
 void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytesPerSec);
 
-utf8* GetStringEnd(const utf8* text);
-size_t GetStringSize(const utf8* text);
-
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
 constexpr size_t kMoneyStringMaxlength = 14;
 money64 StringToMoney(const char* string_to_monetise);

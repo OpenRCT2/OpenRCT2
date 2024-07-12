@@ -9,8 +9,9 @@
 
 #include "Font.h"
 
+#include "../Diagnostic.h"
+#include "../core/UTF8.h"
 #include "../localisation/FormatCodes.h"
-#include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../sprites.h"
 #include "../util/Util.h"

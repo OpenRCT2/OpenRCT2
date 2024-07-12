@@ -9,6 +9,7 @@
 
 #include "Text.h"
 
+#include "../core/UTF8.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"

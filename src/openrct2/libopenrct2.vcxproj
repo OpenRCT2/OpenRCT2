@@ -225,6 +225,7 @@
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
     <ClInclude Include="core\Timer.hpp" />
+    <ClInclude Include="core\UTF8.h" />
     <ClInclude Include="core\Zip.h" />
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
@@ -752,6 +753,7 @@
     <ClCompile Include="core\String.cpp" />
     <ClCompile Include="core\StringBuilder.cpp" />
     <ClCompile Include="core\StringReader.cpp" />
+    <ClCompile Include="core\UTF8.cpp" />
     <ClCompile Include="core\Zip.cpp" />
     <ClCompile Include="core\ZipAndroid.cpp" />
     <ClCompile Include="Date.cpp" />
@@ -820,7 +822,6 @@
     <ClCompile Include="localisation\Localisation.Date.cpp" />
     <ClCompile Include="localisation\LocalisationService.cpp" />
     <ClCompile Include="localisation\RealNames.cpp" />
-    <ClCompile Include="localisation\UTF8.cpp" />
     <ClCompile Include="management\Award.cpp" />
     <ClCompile Include="management\Finance.cpp" />
     <ClCompile Include="management\Marketing.cpp" />
