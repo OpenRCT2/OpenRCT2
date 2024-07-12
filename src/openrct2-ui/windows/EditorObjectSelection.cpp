@@ -756,7 +756,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
                         DrawText(
                             dpi, screenCoords, { colour2, FontStyle::Medium, darkness },
-                            static_cast<const char*>(CheckBoxMarkString));
+                            static_cast<const char*>(kCheckMarkString));
                     }
 
                     screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;

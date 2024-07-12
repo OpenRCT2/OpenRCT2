@@ -26,6 +26,13 @@ constexpr auto kBarBlink = (1u << 31);
 constexpr uint8_t kScrollBarWidth = 10;
 constexpr ScreenSize kTabSize = { 31, 27 };
 
+constexpr const char* kBlackUpArrowString = u8"{BLACK}▲";
+constexpr const char* kBlackDownArrowString = u8"{BLACK}▼";
+constexpr const char* kBlackLeftArrowString = u8"{BLACK}◀";
+constexpr const char* kBlackRightArrowString = u8"{BLACK}▶";
+constexpr const char* kCheckMarkString = u8"✓";
+constexpr const char* kEyeString = u8"👁";
+
 enum class WindowColour : uint8_t
 {
     Primary,

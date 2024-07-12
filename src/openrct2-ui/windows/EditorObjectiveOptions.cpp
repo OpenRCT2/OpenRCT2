@@ -1172,7 +1172,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                         DrawText(
                             dpi, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
-                            static_cast<const char*>(CheckBoxMarkString));
+                            static_cast<const char*>(kCheckMarkString));
                     }
 
                     // Ride name
