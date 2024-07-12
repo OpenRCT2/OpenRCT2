@@ -12,7 +12,7 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Date.h"
+#include "../../localisation/Localisation.Date.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"

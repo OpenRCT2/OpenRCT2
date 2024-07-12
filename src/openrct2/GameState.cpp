@@ -26,7 +26,7 @@
 #include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Screenshot.h"
-#include "localisation/Date.h"
+#include "localisation/Localisation.Date.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"

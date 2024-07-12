@@ -284,12 +284,12 @@
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\Currency.h" />
     <ClInclude Include="localisation\CurrencyTypes.h" />
-    <ClInclude Include="localisation\Date.h" />
     <ClInclude Include="localisation\FormatCodes.h" />
     <ClInclude Include="localisation\Formatter.h" />
     <ClInclude Include="localisation\Formatting.h" />
     <ClInclude Include="localisation\Language.h" />
     <ClInclude Include="localisation\LanguagePack.h" />
+    <ClInclude Include="localisation\Localisation.Date.h" />
     <ClInclude Include="localisation\Localisation.h" />
     <ClInclude Include="localisation\LocalisationService.h" />
     <ClInclude Include="localisation\StringIds.h" />
