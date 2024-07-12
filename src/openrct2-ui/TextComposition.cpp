@@ -18,8 +18,7 @@
 #include <openrct2/common.h>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/localisation/Language.h>
-#include <openrct2/localisation/StringIdType.h>
+#include <openrct2/core/UTF8.h>
 
 #ifdef __MACOSX__
 // macOS uses COMMAND rather than CTRL for many keyboard shortcuts

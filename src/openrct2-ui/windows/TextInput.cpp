@@ -14,8 +14,8 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/util/Util.h>

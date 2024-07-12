@@ -13,6 +13,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+
 #ifndef _WIN32
 #    if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)
 #        include <alloca.h>
@@ -20,19 +21,15 @@
 #    include <unicode/ucnv.h>
 #    include <unicode/unistr.h>
 #    include <unicode/utypes.h>
-#endif
-
-#ifdef _WIN32
+#else
 #    include <windows.h>
 #endif
 
-#include "../common.h"
-#include "../localisation/ConversionTables.h"
-#include "../localisation/Language.h"
 #include "../util/Util.h"
 #include "Memory.hpp"
 #include "String.hpp"
 #include "StringBuilder.h"
+#include "UTF8.h"
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #    include <strings.h>

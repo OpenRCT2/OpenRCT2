@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
+#include "../core/UTF8.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
