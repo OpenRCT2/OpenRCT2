@@ -10,6 +10,7 @@
 #include "ObjectManager.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"

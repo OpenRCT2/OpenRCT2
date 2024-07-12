@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "../world/Location.hpp"
 
 enum class EntityType : uint8_t

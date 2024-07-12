@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../Input.h"
@@ -58,6 +59,7 @@
 #include "PatrolArea.h"
 #include "Staff.h"
 
+#include <cassert>
 #include <iterator>
 #include <limits>
 #include <map>

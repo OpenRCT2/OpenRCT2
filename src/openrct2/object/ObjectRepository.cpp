@@ -10,9 +10,9 @@
 #include "ObjectRepository.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
 #include "../core/FileIndex.hpp"

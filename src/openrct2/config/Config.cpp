@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Date.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"

@@ -10,6 +10,7 @@
 #include "Window.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -34,6 +35,7 @@
 #include "Widget.h"
 #include "Window_internal.h"
 
+#include <cassert>
 #include <cmath>
 #include <functional>
 #include <iterator>

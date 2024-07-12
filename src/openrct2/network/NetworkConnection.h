@@ -10,7 +10,7 @@
 #pragma once
 
 #ifndef DISABLE_NETWORK
-#    include "../common.h"
+
 #    include "NetworkKey.h"
 #    include "NetworkPacket.h"
 #    include "NetworkTypes.h"

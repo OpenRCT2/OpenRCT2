@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Cheats.h"
-#include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
 

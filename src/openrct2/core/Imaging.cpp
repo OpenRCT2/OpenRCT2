@@ -11,6 +11,7 @@
 
 #include "Imaging.h"
 
+#include "../Diagnostic.h"
 #include "../Version.h"
 #include "../drawing/Drawing.h"
 #include "FileSystem.hpp"

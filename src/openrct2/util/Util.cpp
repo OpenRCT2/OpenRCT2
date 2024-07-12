@@ -9,7 +9,7 @@
 
 #include "Util.h"
 
-#include "../common.h"
+#include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/UTF8.h"
@@ -19,6 +19,7 @@
 #include "zlib.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cctype>
 #include <cmath>
 #include <ctime>

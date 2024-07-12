@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/FileSystem.hpp"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"

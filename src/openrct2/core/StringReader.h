@@ -9,17 +9,16 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/String.hpp"
 
 struct IStringReader
 {
     virtual ~IStringReader() = default;
 
-    virtual bool TryPeek(codepoint_t* outCodepoint) abstract;
-    virtual bool TryRead(codepoint_t* outCodepoint) abstract;
-    virtual void Skip() abstract;
-    virtual bool CanRead() const abstract;
+    virtual bool TryPeek(codepoint_t* outCodepoint) = 0;
+    virtual bool TryRead(codepoint_t* outCodepoint) = 0;
+    virtual void Skip() = 0;
+    virtual bool CanRead() const = 0;
 };
 
 class UTF8StringReader final : public IStringReader

@@ -30,6 +30,8 @@
 #include "../world/Park.h"
 #include "Paint.h"
 
+#include <cassert>
+
 /**
  * Paint Quadrant
  *  rct2: 0x0069E8B0

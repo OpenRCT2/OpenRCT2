@@ -10,6 +10,7 @@
 #include "ScenarioRepository.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"

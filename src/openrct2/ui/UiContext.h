@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Context.h"
-#include "../common.h"
 #include "../config/ConfigTypes.h"
 #include "../interface/Cursors.h"
 
@@ -99,72 +98,75 @@ namespace OpenRCT2
         {
             virtual ~IUiContext() = default;
 
-            virtual void InitialiseScriptExtensions() abstract;
-            virtual void Tick() abstract;
-            virtual void Draw(DrawPixelInfo& dpi) abstract;
+            virtual void InitialiseScriptExtensions() = 0;
+            virtual void Tick() = 0;
+            virtual void Draw(DrawPixelInfo& dpi) = 0;
 
             // Window
-            virtual void CreateWindow() abstract;
-            virtual void CloseWindow() abstract;
-            virtual void RecreateWindow() abstract;
-            virtual void* GetWindow() abstract;
-            virtual int32_t GetWidth() abstract;
-            virtual int32_t GetHeight() abstract;
-            virtual ScaleQuality GetScaleQuality() abstract;
-            virtual void SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
-            virtual const std::vector<Resolution>& GetFullscreenResolutions() abstract;
-            virtual bool HasFocus() abstract;
-            virtual bool IsMinimised() abstract;
-            virtual bool IsSteamOverlayActive() abstract;
-            virtual void ProcessMessages() abstract;
-            virtual void TriggerResize() abstract;
+            virtual void CreateWindow() = 0;
+            virtual void CloseWindow() = 0;
+            virtual void RecreateWindow() = 0;
+            virtual void* GetWindow() = 0;
+            virtual int32_t GetWidth() = 0;
+            virtual int32_t GetHeight() = 0;
+            virtual ScaleQuality GetScaleQuality() = 0;
+            virtual void SetFullscreenMode(FULLSCREEN_MODE mode) = 0;
+            virtual const std::vector<Resolution>& GetFullscreenResolutions() = 0;
+            virtual bool HasFocus() = 0;
+            virtual bool IsMinimised() = 0;
+            virtual bool IsSteamOverlayActive() = 0;
+            virtual void ProcessMessages() = 0;
+            virtual void TriggerResize() = 0;
 
-            virtual void ShowMessageBox(const std::string& message) abstract;
+            virtual void ShowMessageBox(const std::string& message) = 0;
             virtual int32_t ShowMessageBox(
-                const std::string& title, const std::string& message, const std::vector<std::string>& options) abstract;
+                const std::string& title, const std::string& message, const std::vector<std::string>& options)
+                = 0;
 
-            virtual bool HasMenuSupport() abstract;
+            virtual bool HasMenuSupport() = 0;
             // Creates a menu with a series of options, returns the index of the selected option
             virtual int32_t ShowMenuDialog(
-                const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
-            virtual void OpenFolder(const std::string& path) abstract;
-            virtual void OpenURL(const std::string& url) abstract;
-            virtual std::string ShowFileDialog(const FileDialogDesc& desc) abstract;
-            virtual std::string ShowDirectoryDialog(const std::string& title) abstract;
-            virtual bool HasFilePicker() const abstract;
+                const std::vector<std::string>& options, const std::string& title, const std::string& text)
+                = 0;
+            virtual void OpenFolder(const std::string& path) = 0;
+            virtual void OpenURL(const std::string& url) = 0;
+            virtual std::string ShowFileDialog(const FileDialogDesc& desc) = 0;
+            virtual std::string ShowDirectoryDialog(const std::string& title) = 0;
+            virtual bool HasFilePicker() const = 0;
 
             // Input
-            virtual const CursorState* GetCursorState() abstract;
-            virtual CursorID GetCursor() abstract;
-            virtual void SetCursor(CursorID cursor) abstract;
-            virtual void SetCursorScale(uint8_t scale) abstract;
-            virtual void SetCursorVisible(bool value) abstract;
-            virtual ScreenCoordsXY GetCursorPosition() abstract;
-            virtual void SetCursorPosition(const ScreenCoordsXY& cursorPosition) abstract;
-            virtual void SetCursorTrap(bool value) abstract;
-            virtual const uint8_t* GetKeysState() abstract;
-            virtual const uint8_t* GetKeysPressed() abstract;
-            virtual void SetKeysPressed(uint32_t keysym, uint8_t scancode) abstract;
+            virtual const CursorState* GetCursorState() = 0;
+            virtual CursorID GetCursor() = 0;
+            virtual void SetCursor(CursorID cursor) = 0;
+            virtual void SetCursorScale(uint8_t scale) = 0;
+            virtual void SetCursorVisible(bool value) = 0;
+            virtual ScreenCoordsXY GetCursorPosition() = 0;
+            virtual void SetCursorPosition(const ScreenCoordsXY& cursorPosition) = 0;
+            virtual void SetCursorTrap(bool value) = 0;
+            virtual const uint8_t* GetKeysState() = 0;
+            virtual const uint8_t* GetKeysPressed() = 0;
+            virtual void SetKeysPressed(uint32_t keysym, uint8_t scancode) = 0;
 
             // Drawing
-            [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() abstract;
+            [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() = 0;
             virtual void DrawWeatherAnimation(
                 OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi,
-                OpenRCT2::Drawing::DrawWeatherFunc drawFunc) abstract;
+                OpenRCT2::Drawing::DrawWeatherFunc drawFunc)
+                = 0;
 
             // Text input
-            virtual bool IsTextInputActive() abstract;
-            virtual TextInputSession* StartTextInput(u8string& buffer, size_t maxLength) abstract;
-            virtual void StopTextInput() abstract;
+            virtual bool IsTextInputActive() = 0;
+            virtual TextInputSession* StartTextInput(u8string& buffer, size_t maxLength) = 0;
+            virtual void StopTextInput() = 0;
 
             // In-game UI
-            virtual IWindowManager* GetWindowManager() abstract;
+            virtual IWindowManager* GetWindowManager() = 0;
 
             // Clipboard
-            virtual bool SetClipboardText(const utf8* target) abstract;
+            virtual bool SetClipboardText(const utf8* target) = 0;
 
             // HACK Until all title logic is moved to libopenrct2ui, we will need to provide some services
-            virtual ITitleSequencePlayer* GetTitleSequencePlayer() abstract;
+            virtual ITitleSequencePlayer* GetTitleSequencePlayer() = 0;
         };
 
         [[nodiscard]] std::shared_ptr<IUiContext> CreateDummyUiContext();

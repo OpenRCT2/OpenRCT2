@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #ifdef __EMSCRIPTEN__
+#    include <cassert>
 #    include <emscripten.h>
 #endif // __EMSCRIPTEN__
 

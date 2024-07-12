@@ -10,6 +10,7 @@
 #include "VirtualFloor.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../Input.h"
 #include "../config/Config.h"

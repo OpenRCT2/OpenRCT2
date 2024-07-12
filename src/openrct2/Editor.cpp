@@ -49,6 +49,7 @@
 #include "world/Scenery.h"
 
 #include <array>
+#include <cassert>
 #include <vector>
 
 using namespace OpenRCT2;

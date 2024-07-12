@@ -11,8 +11,6 @@
 
 #ifndef DISABLE_HTTP
 
-#    include "../common.h"
-
 #    include <functional>
 #    include <map>
 #    include <string>

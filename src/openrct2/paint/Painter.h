@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "Paint.h"
 
 #include <ctime>

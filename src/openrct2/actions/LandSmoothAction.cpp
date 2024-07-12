@@ -10,6 +10,7 @@
 #include "LandSmoothAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandLowerAction.h"
 #include "../actions/LandRaiseAction.h"

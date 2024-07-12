@@ -34,6 +34,7 @@
 #include "Paint.TileElement.h"
 #include "Segment.h"
 
+#include <cassert>
 #include <cstring>
 #include <iterator>
 

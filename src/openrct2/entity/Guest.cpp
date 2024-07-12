@@ -10,6 +10,7 @@
 #include "Guest.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -61,6 +62,7 @@
 #include "Peep.h"
 #include "Staff.h"
 
+#include <cassert>
 #include <functional>
 #include <iterator>
 

@@ -10,6 +10,7 @@
 #include "Drawing.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
@@ -22,6 +23,7 @@
 #include "../ui/UiContext.h"
 #include "ScrollingText.h"
 
+#include <cassert>
 #include <memory>
 #include <stdexcept>
 #include <vector>

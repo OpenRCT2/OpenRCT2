@@ -9,6 +9,7 @@
 
 #include "Json.hpp"
 
+#include "../Diagnostic.h"
 #include "FileStream.h"
 #include "Memory.hpp"
 #include "String.hpp"

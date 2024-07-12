@@ -10,6 +10,7 @@
 #include "Vehicle.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -57,6 +58,7 @@
 #include "VehicleData.h"
 #include "VehicleSubpositionData.h"
 
+#include <cassert>
 #include <iterator>
 
 using namespace OpenRCT2;

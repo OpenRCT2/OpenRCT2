@@ -9,6 +9,7 @@
 
 #include "TrackSetBrakeSpeedAction.h"
 
+#include "../Diagnostic.h"
 #include "../management/Finance.h"
 
 TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)

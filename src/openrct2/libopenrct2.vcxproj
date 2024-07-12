@@ -173,7 +173,6 @@
     <ClInclude Include="Cheats.h" />
     <ClInclude Include="CommandLineSprite.h" />
     <ClInclude Include="command_line\CommandLine.hpp" />
-    <ClInclude Include="common.h" />
     <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\ConfigEnum.hpp" />
     <ClInclude Include="config\ConfigTypes.h" />
@@ -191,6 +190,7 @@
     <ClInclude Include="core\DataSerialiser.h" />
     <ClInclude Include="core\DataSerialiserTag.h" />
     <ClInclude Include="core\DataSerialiserTraits.h" />
+    <ClInclude Include="core\DateTime.h" />
     <ClInclude Include="core\Diagnostics.hpp" />
     <ClInclude Include="core\Endianness.h" />
     <ClInclude Include="core\EnumMap.hpp" />

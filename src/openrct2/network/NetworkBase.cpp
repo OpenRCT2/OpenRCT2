@@ -10,6 +10,7 @@
 #include "NetworkBase.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../GameStateSnapshots.h"
@@ -38,6 +39,7 @@
 #include "../world/Location.hpp"
 #include "network.h"
 
+#include <cassert>
 #include <iterator>
 #include <stdexcept>
 
@@ -930,7 +932,7 @@ std::string NetworkBase::GetMasterServerUrl()
 {
     if (Config::Get().network.MasterServerUrl.empty())
     {
-        return OPENRCT2_MASTER_SERVER_URL;
+        return kMasterServerURL;
     }
 
     return Config::Get().network.MasterServerUrl;

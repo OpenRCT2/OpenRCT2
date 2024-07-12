@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/String.hpp"
+#include "../localisation/StringIdType.h"
 
 #include <memory>
 #include <string>
@@ -20,13 +20,13 @@ struct ILanguagePack
 {
     virtual ~ILanguagePack() = default;
 
-    virtual uint16_t GetId() const abstract;
-    virtual uint32_t GetCount() const abstract;
+    virtual uint16_t GetId() const = 0;
+    virtual uint32_t GetCount() const = 0;
 
-    virtual void RemoveString(StringId stringId) abstract;
-    virtual void SetString(StringId stringId, const std::string& str) abstract;
-    virtual const utf8* GetString(StringId stringId) const abstract;
-    virtual StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) abstract;
+    virtual void RemoveString(StringId stringId) = 0;
+    virtual void SetString(StringId stringId, const std::string& str) = 0;
+    virtual const utf8* GetString(StringId stringId) const = 0;
+    virtual StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) = 0;
 };
 
 namespace LanguagePackFactory

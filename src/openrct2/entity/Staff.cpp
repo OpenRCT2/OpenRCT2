@@ -10,6 +10,7 @@
 #include "Staff.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../Input.h"
@@ -47,6 +48,7 @@
 #include "PatrolArea.h"
 #include "Peep.h"
 
+#include <cassert>
 #include <iterator>
 
 using namespace OpenRCT2;

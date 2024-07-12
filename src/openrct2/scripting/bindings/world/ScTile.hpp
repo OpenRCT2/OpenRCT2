@@ -11,7 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../common.h"
 #    include "../../Duktape.hpp"
 #    include "ScTileElement.hpp"
 

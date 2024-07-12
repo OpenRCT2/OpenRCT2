@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
-
+#include <cstdint>
 #include <string>
 
 enum class CursorID : uint8_t

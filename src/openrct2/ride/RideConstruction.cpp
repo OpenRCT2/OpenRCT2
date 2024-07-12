@@ -18,7 +18,6 @@
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
-#include "../common.h"
 #include "../core/FixedVector.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
@@ -49,6 +48,8 @@
 #include "TrackData.h"
 #include "TrainManager.h"
 #include "Vehicle.h"
+
+#include <cassert>
 
 using namespace OpenRCT2::TrackMetaData;
 

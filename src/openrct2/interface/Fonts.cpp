@@ -9,6 +9,7 @@
 
 #include "Fonts.h"
 
+#include "../Diagnostic.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../drawing/TTF.h"

@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/String.hpp"
 
 #include <memory>
@@ -30,12 +29,12 @@ struct IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const FileScanner::FileInfo& GetFileInfo() const abstract;
-    virtual const u8string& GetPath() const abstract;
-    virtual u8string GetPathRelative() const abstract;
+    virtual const FileScanner::FileInfo& GetFileInfo() const = 0;
+    virtual const u8string& GetPath() const = 0;
+    virtual u8string GetPathRelative() const = 0;
 
-    virtual void Reset() abstract;
-    virtual bool Next() abstract;
+    virtual void Reset() = 0;
+    virtual bool Next() = 0;
 };
 
 struct QueryDirectoryResult

@@ -29,6 +29,7 @@
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Input.h>
 #include <openrct2/Version.h>
 #include <openrct2/audio/AudioContext.h>

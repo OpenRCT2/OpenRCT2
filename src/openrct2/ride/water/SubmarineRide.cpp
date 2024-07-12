@@ -19,6 +19,8 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
+#include <cassert>
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Stick;
 
 static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const CarEntry* carEntry, int32_t imageDirection)

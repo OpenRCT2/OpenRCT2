@@ -10,6 +10,7 @@
 #include "T6Exporter.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"

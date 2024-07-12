@@ -19,7 +19,6 @@
 
 #    include <memory>
 #    include <openrct2/Context.h>
-#    include <openrct2/common.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/scripting/IconNames.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>

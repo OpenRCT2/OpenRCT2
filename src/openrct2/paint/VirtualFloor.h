@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include <cstdint>
 
 struct CoordsXY;
 

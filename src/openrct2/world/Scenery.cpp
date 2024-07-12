@@ -19,7 +19,6 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../common.h"
 #include "../core/String.hpp"
 #include "../entity/Fountain.h"
 #include "../localisation/Localisation.h"

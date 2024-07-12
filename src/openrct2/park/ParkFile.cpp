@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -57,6 +58,7 @@
 #include "../world/Scenery.h"
 #include "Legacy.h"
 
+#include <cassert>
 #include <cstdint>
 #include <ctime>
 #include <numeric>

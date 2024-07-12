@@ -12,7 +12,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
-#include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Window.h"
@@ -21,6 +20,7 @@
 #include "../scenario/Scenario.h"
 #include "CommandLine.hpp"
 
+#include <cassert>
 #include <memory>
 
 using namespace OpenRCT2;

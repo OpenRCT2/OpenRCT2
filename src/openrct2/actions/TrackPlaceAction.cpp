@@ -9,6 +9,7 @@
 
 #include "TrackPlaceAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/Numerics.hpp"
 #include "../management/Finance.h"

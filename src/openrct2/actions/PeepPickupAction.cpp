@@ -9,6 +9,7 @@
 
 #include "PeepPickupAction.h"
 
+#include "../Diagnostic.h"
 #include "../Input.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"

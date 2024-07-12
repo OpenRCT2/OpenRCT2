@@ -10,6 +10,7 @@
 #include "../UiStringIds.h"
 #include "../interface/Theme.h"
 
+#include <cassert>
 #include <cmath>
 #include <iterator>
 #include <limits>
@@ -20,6 +21,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>

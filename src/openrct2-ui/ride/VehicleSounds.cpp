@@ -3,6 +3,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 
+#include <cassert>
 #include <numeric>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>

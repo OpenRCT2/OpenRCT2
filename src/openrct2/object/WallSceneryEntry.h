@@ -11,6 +11,7 @@
 
 #include "../core/Money.hpp"
 #include "../interface/Cursors.h"
+#include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
 enum WALL_SCENERY_FLAGS

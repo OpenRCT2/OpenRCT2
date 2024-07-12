@@ -41,7 +41,7 @@ template<typename T> constexpr T AddClamp(T value, T valueToAdd)
 {
     if (std::is_same_v<decltype(value), money64>)
     {
-        assert_struct_size(money64, sizeof(int64_t));
+        static_assert(sizeof(money64) == sizeof(int64_t));
     }
     auto maxCap = std::numeric_limits<T>::max();
     auto minCap = std::numeric_limits<T>::lowest();

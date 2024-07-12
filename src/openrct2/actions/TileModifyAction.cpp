@@ -10,6 +10,7 @@
 #include "TileModifyAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../windows/Intent.h"
 #include "../world/TileInspector.h"
 

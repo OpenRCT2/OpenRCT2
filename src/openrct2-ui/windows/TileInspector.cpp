@@ -16,7 +16,6 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/TileModifyAction.h>
-#include <openrct2/common.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -2024,7 +2023,7 @@ static uint64_t PageDisabledWidgets[] = {
         void BannerToggleBlock(int32_t elementIndex, int32_t edgeIndex)
         {
             Guard::Assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
-            // Make edgeIndex abstract
+            // Make edgeIndex  = 0
             edgeIndex = (edgeIndex - GetCurrentRotation()) & 3;
             auto modifyTile = TileModifyAction(_toolMap, TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
             GameActions::Execute(&modifyTile);

@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/FileSystem.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../rct12/RCT12.h"
@@ -283,7 +282,7 @@ namespace RCT2
         void SetMinCarsPerTrain(uint8_t newValue);
         void SetMaxCarsPerTrain(uint8_t newValue);
     };
-    assert_struct_size(Ride, 0x260);
+    static_assert(sizeof(Ride) == 0x260);
 
     /* Track Entrance entry size: 0x06 */
     struct TD6EntranceElement
@@ -303,7 +302,7 @@ namespace RCT2
             return !!(direction >> 7);
         }
     };
-    assert_struct_size(TD6EntranceElement, 0x06);
+    static_assert(sizeof(TD6EntranceElement) == 0x06);
 
     /* Track Scenery entry  size: 0x16 */
     struct TD6SceneryElement
@@ -319,7 +318,7 @@ namespace RCT2
         colour_t getTertiaryWallColour() const;
         void setTertiaryWallColour(colour_t colour);
     };
-    assert_struct_size(TD6SceneryElement, 0x16);
+    static_assert(sizeof(TD6SceneryElement) == 0x16);
 
     /**
      * Track design structure.
@@ -370,7 +369,7 @@ namespace RCT2
         uint8_t LiftHillSpeedNumCircuits;                           // 0xA2 0bCCCL_LLLL
         // 0xA3 (data starts here in file)
     };
-    assert_struct_size(TD6Track, 0xA3);
+    static_assert(sizeof(TD6Track) == 0xA3);
 
     /**
      * scores.dat file header.
@@ -383,7 +382,7 @@ namespace RCT2
         uint32_t Var8;
         uint32_t ScenarioCount;
     };
-    assert_struct_size(ScoresHeader, 0x10);
+    static_assert(sizeof(ScoresHeader) == 0x10);
 
     /**
      * An entry of scores.dat
@@ -404,7 +403,7 @@ namespace RCT2
         money32 CompanyValue;
         char CompletedBy[64];
     };
-    assert_struct_size(ScoresEntry, 0x02B0);
+    static_assert(sizeof(ScoresEntry) == 0x02B0);
 
     struct Vehicle : RCT12EntityBase
     {
@@ -529,7 +528,7 @@ namespace RCT2
             TrackTypeAndDirection |= trackDirection & RCT12VehicleTrackDirectionMask;
         }
     };
-    assert_struct_size(Vehicle, 0xDA);
+    static_assert(sizeof(Vehicle) == 0xDA);
 
     struct Peep : RCT12EntityBase
     {
@@ -690,7 +689,7 @@ namespace RCT2
             return ItemStandardFlags | (static_cast<uint64_t>(ItemExtraFlags) << 32);
         }
     };
-    assert_struct_size(Peep, 0x100);
+    static_assert(sizeof(Peep) == 0x100);
 
     enum class StaffMode : uint8_t
     {
@@ -718,7 +717,7 @@ namespace RCT2
         RCT12EntitySteamParticle SteamParticle;
         RCT12EntityParticle MiscParticle;
     };
-    assert_struct_size(Entity, 0x100);
+    static_assert(sizeof(Entity) == 0x100);
 
     struct RideRatingCalculationData
     {
@@ -738,7 +737,7 @@ namespace RCT2
         uint16_t NumReversers;
         uint16_t StationFlags;
     };
-    assert_struct_size(RideRatingCalculationData, 76);
+    static_assert(sizeof(RideRatingCalculationData) == 76);
 
     /**
      * SV6/SC6 header chunk
@@ -753,7 +752,7 @@ namespace RCT2
         uint32_t MagicNumber;      // 0x08
         uint8_t Pad0C[0x14];
     };
-    assert_struct_size(S6Header, 0x20);
+    static_assert(sizeof(S6Header) == 0x20);
 
     /**
      * SC6 information chunk
@@ -772,7 +771,7 @@ namespace RCT2
         char Details[256];    // 0x88
         RCTObjectEntry Entry; // 0x188
     };
-    assert_struct_size(S6Info, 0x198);
+    static_assert(sizeof(S6Info) == 0x198);
 
     struct S6Data
     {
@@ -1002,7 +1001,7 @@ namespace RCT2
         uint16_t WidePathTileLoopY;
         uint8_t Pad13CE778[434];
     };
-    assert_struct_size(S6Data, 0x5a3c4a);
+    static_assert(sizeof(S6Data) == 0x5a3c4a);
 
     struct StexEntry
     {
@@ -1011,7 +1010,7 @@ namespace RCT2
         StringId Details;      // 0x04
         uint8_t Var06;
     };
-    assert_struct_size(StexEntry, 7);
+    static_assert(sizeof(StexEntry) == 7);
 #pragma pack(pop)
 
     ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const RideObjectEntry& rideEntry);

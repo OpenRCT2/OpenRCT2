@@ -9,6 +9,7 @@
 
 #ifdef __ANDROID__
 
+#    include "../Diagnostic.h"
 #    include "../platform/Platform.h"
 #    include "IStream.hpp"
 #    include "MemoryStream.h"

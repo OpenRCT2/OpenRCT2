@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "common.h"
 #include "object/Object.h"
 #include "util/Util.h"
 

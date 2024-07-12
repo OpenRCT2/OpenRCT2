@@ -13,7 +13,6 @@
 
 #    include "../../../Context.h"
 #    include "../../../GameState.h"
-#    include "../../../common.h"
 #    include "../../../core/String.hpp"
 #    include "../../../scenario/Scenario.h"
 #    include "../../../world/Park.h"

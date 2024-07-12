@@ -17,6 +17,8 @@
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 
+#include <cassert>
+
 constexpr auto kNumWoodenSupportTypes = 2;
 constexpr auto kNumWoodenSupportSubTypes = 6;
 

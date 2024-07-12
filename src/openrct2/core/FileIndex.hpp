@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Context.h"
-#include "../common.h"
+#include "../Diagnostic.h"
 #include "Console.hpp"
 #include "DataSerialiser.h"
 #include "File.h"
@@ -129,12 +129,12 @@ protected:
     /**
      * Loads the given file and creates the item representing the data to store in the index.
      */
-    virtual std::optional<TItem> Create(int32_t language, const std::string& path) const abstract;
+    virtual std::optional<TItem> Create(int32_t language, const std::string& path) const = 0;
 
     /**
      * Serialises/DeSerialises an index item to/from the given stream.
      */
-    virtual void Serialise(DataSerialiser& ds, const TItem& item) const abstract;
+    virtual void Serialise(DataSerialiser& ds, const TItem& item) const = 0;
 
 private:
     ScanResult Scan() const

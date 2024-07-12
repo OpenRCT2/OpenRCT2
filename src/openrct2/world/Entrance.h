@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "Location.hpp"
 #include "Map.h"
 

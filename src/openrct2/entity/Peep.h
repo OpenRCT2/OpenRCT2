@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "../entity/EntityBase.h"
+#include "../localisation/StringIdType.h"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
 #include "../util/Util.h"

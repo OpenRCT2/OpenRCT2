@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../localisation/StringIdType.h"
 #include "EntityBase.h"
 
 class DataSerialiser;

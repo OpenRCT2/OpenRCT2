@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Diagnostic.h"
+
 #include <cctype>
 #include <cwctype>
 #include <iomanip>
@@ -391,7 +393,7 @@ namespace String
     {
         if (delimiter.empty())
         {
-            throw std::invalid_argument(nameof(delimiter) " can not be empty.");
+            throw std::invalid_argument("delimiter can not be empty.");
         }
 
         std::vector<std::string> results;

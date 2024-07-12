@@ -10,7 +10,7 @@
 #include "LanguagePack.h"
 
 #include "../Context.h"
-#include "../common.h"
+#include "../Diagnostic.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/RTL.h"

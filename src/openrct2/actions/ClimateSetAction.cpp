@@ -9,6 +9,7 @@
 
 #include "ClimateSetAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 
 ClimateSetAction::ClimateSetAction(ClimateType climate)

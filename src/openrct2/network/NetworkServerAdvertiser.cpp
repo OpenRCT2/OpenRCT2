@@ -11,6 +11,7 @@
 
 #    include "NetworkServerAdvertiser.h"
 
+#    include "../Diagnostic.h"
 #    include "../GameState.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
@@ -344,7 +345,7 @@ private:
 
     static std::string GetMasterServerUrl()
     {
-        std::string result = OPENRCT2_MASTER_SERVER_URL;
+        std::string result = kMasterServerURL;
         if (!Config::Get().network.MasterServerUrl.empty())
         {
             result = Config::Get().network.MasterServerUrl;

@@ -11,7 +11,6 @@
 
 // Structures shared between both RCT1 and RCT2.
 
-#include "../common.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
@@ -219,7 +218,7 @@ struct RCT12xy8
         xy = RCT12_XY8_UNDEFINED;
     }
 };
-assert_struct_size(RCT12xy8, 2);
+static_assert(sizeof(RCT12xy8) == 2);
 
 enum class TD46MazeElementType : uint8_t
 {
@@ -259,7 +258,7 @@ struct TD46MazeElement
         return Type == EnumValue(TD46MazeElementType::Exit);
     }
 };
-assert_struct_size(TD46MazeElement, 0x04);
+static_assert(sizeof(TD46MazeElement) == 0x04);
 
 /* Track Element entry  size: 0x02 */
 struct TD46TrackElement
@@ -267,14 +266,14 @@ struct TD46TrackElement
     uint8_t Type;  // 0x00
     uint8_t Flags; // 0x01
 };
-assert_struct_size(TD46TrackElement, 0x02);
+static_assert(sizeof(TD46TrackElement) == 0x02);
 
 struct RCT12Award
 {
     uint16_t Time;
     uint16_t Type;
 };
-assert_struct_size(RCT12Award, 4);
+static_assert(sizeof(RCT12Award) == 4);
 
 /**
  * A single news item / message.
@@ -291,13 +290,13 @@ struct RCT12NewsItem
     uint8_t Pad0B;
     char Text[256];
 };
-assert_struct_size(RCT12NewsItem, 0x10C);
+static_assert(sizeof(RCT12NewsItem) == 0x10C);
 
 struct RCT12xyzd8
 {
     uint8_t x, y, z, direction;
 };
-assert_struct_size(RCT12xyzd8, 4);
+static_assert(sizeof(RCT12xyzd8) == 4);
 
 struct RCT12PeepSpawn
 {
@@ -306,7 +305,7 @@ struct RCT12PeepSpawn
     uint8_t z;
     uint8_t direction;
 };
-assert_struct_size(RCT12PeepSpawn, 6);
+static_assert(sizeof(RCT12PeepSpawn) == 6);
 
 enum class RCT12TileElementType : uint8_t
 {
@@ -451,7 +450,7 @@ struct RCT12TileElement : public RCT12TileElementBase
         return as<RCT12BannerElement, RCT12TileElementType::Banner>();
     }
 };
-assert_struct_size(RCT12TileElement, 8);
+static_assert(sizeof(RCT12TileElement) == 8);
 struct RCT12SurfaceElement : RCT12TileElementBase
 {
 private:
@@ -469,7 +468,7 @@ public:
     uint8_t GetParkFences() const;
     bool HasTrackThatNeedsWater() const;
 };
-assert_struct_size(RCT12SurfaceElement, 8);
+static_assert(sizeof(RCT12SurfaceElement) == 8);
 struct RCT12PathElement : RCT12TileElementBase
 {
 private:
@@ -504,7 +503,7 @@ public:
 
     bool IsBlockedByVehicle() const;
 };
-assert_struct_size(RCT12PathElement, 8);
+static_assert(sizeof(RCT12PathElement) == 8);
 struct RCT12TrackElement : RCT12TileElementBase
 {
 private:
@@ -551,7 +550,7 @@ public:
     bool BlockBrakeClosed() const;
     bool IsIndestructible() const;
 };
-assert_struct_size(RCT12TrackElement, 8);
+static_assert(sizeof(RCT12TrackElement) == 8);
 struct RCT12SmallSceneryElement : RCT12TileElementBase
 {
 private:
@@ -567,7 +566,7 @@ public:
     colour_t GetSecondaryColour() const;
     bool NeedsSupports() const;
 };
-assert_struct_size(RCT12SmallSceneryElement, 8);
+static_assert(sizeof(RCT12SmallSceneryElement) == 8);
 struct RCT12LargeSceneryElement : RCT12TileElementBase
 {
 private:
@@ -580,7 +579,7 @@ public:
     colour_t GetSecondaryColour() const;
     uint8_t GetBannerIndex() const;
 };
-assert_struct_size(RCT12LargeSceneryElement, 8);
+static_assert(sizeof(RCT12LargeSceneryElement) == 8);
 struct RCT12WallElement : RCT12TileElementBase
 {
 private:
@@ -606,7 +605,7 @@ public:
     colour_t GetRCT1WallColour() const;
     uint8_t GetRCT1Slope() const;
 };
-assert_struct_size(RCT12WallElement, 8);
+static_assert(sizeof(RCT12WallElement) == 8);
 struct RCT12EntranceElement : RCT12TileElementBase
 {
 private:
@@ -621,7 +620,7 @@ public:
     uint8_t GetSequenceIndex() const;
     uint8_t GetPathType() const;
 };
-assert_struct_size(RCT12EntranceElement, 8);
+static_assert(sizeof(RCT12EntranceElement) == 8);
 struct RCT12BannerElement : RCT12TileElementBase
 {
 private:
@@ -637,25 +636,25 @@ public:
     uint8_t GetPosition() const;
     uint8_t GetAllowedEdges() const;
 };
-assert_struct_size(RCT12BannerElement, 8);
+static_assert(sizeof(RCT12BannerElement) == 8);
 
 struct RCT12CorruptElement : RCT12TileElementBase
 {
     uint8_t Pad[4];
 };
-assert_struct_size(RCT12CorruptElement, 8);
+static_assert(sizeof(RCT12CorruptElement) == 8);
 
 struct RCT12EightCarsCorruptElement14 : RCT12TileElementBase
 {
     uint8_t Pad[4];
 };
-assert_struct_size(RCT12EightCarsCorruptElement14, 8);
+static_assert(sizeof(RCT12EightCarsCorruptElement14) == 8);
 
 struct RCT12EightCarsCorruptElement15 : RCT12TileElementBase
 {
     uint8_t Pad[4];
 };
-assert_struct_size(RCT12EightCarsCorruptElement15, 8);
+static_assert(sizeof(RCT12EightCarsCorruptElement15) == 8);
 
 // Offset into EntityListHead and EntityListCount
 enum class RCT12EntityLinkListOffset : uint8_t
@@ -721,7 +720,7 @@ struct RCT12EntityBase
     int16_t SpriteBottom;                           // 0x1C
     uint8_t EntityDirection;                        // 0x1E
 };
-assert_struct_size(RCT12EntityBase, 0x1F);
+static_assert(sizeof(RCT12EntityBase) == 0x1F);
 
 struct RCT12EntityBalloon : RCT12EntityBase
 {
@@ -732,7 +731,7 @@ struct RCT12EntityBalloon : RCT12EntityBase
     uint8_t Pad28[4];
     uint8_t Colour; // 0x2C
 };
-assert_struct_size(RCT12EntityBalloon, 0x2D);
+static_assert(sizeof(RCT12EntityBalloon) == 0x2D);
 
 struct RCT12EntityDuck : RCT12EntityBase
 {
@@ -744,21 +743,21 @@ struct RCT12EntityDuck : RCT12EntityBase
     uint8_t Pad34[0x14];
     uint8_t State; // 0x48
 };
-assert_struct_size(RCT12EntityDuck, 0x49);
+static_assert(sizeof(RCT12EntityDuck) == 0x49);
 
 struct RCT12EntityLitter : RCT12EntityBase
 {
     uint8_t Pad1F[0x24 - 0x1F];
     uint32_t CreationTick; // 0x24
 };
-assert_struct_size(RCT12EntityLitter, 0x28);
+static_assert(sizeof(RCT12EntityLitter) == 0x28);
 
 struct RCT12EntityParticle : RCT12EntityBase
 {
     uint8_t Pad1F[0x26 - 0x1F];
     uint16_t Frame; // 0x26
 };
-assert_struct_size(RCT12EntityParticle, 0x28);
+static_assert(sizeof(RCT12EntityParticle) == 0x28);
 
 struct RCT12EntityJumpingFountain : RCT12EntityBase
 {
@@ -772,7 +771,7 @@ struct RCT12EntityJumpingFountain : RCT12EntityBase
     uint8_t Pad34[0x46 - 0x34];
     uint16_t Iteration; // 0x46
 };
-assert_struct_size(RCT12EntityJumpingFountain, 0x48);
+static_assert(sizeof(RCT12EntityJumpingFountain) == 0x48);
 
 struct RCT12EntityMoneyEffect : RCT12EntityBase
 {
@@ -785,7 +784,7 @@ struct RCT12EntityMoneyEffect : RCT12EntityBase
     int16_t OffsetX; // 0x44
     uint16_t Wiggle; // 0x46
 };
-assert_struct_size(RCT12EntityMoneyEffect, 0x48);
+static_assert(sizeof(RCT12EntityMoneyEffect) == 0x48);
 
 struct RCT12EntityCrashedVehicleParticle : RCT12EntityBase
 {
@@ -803,14 +802,14 @@ struct RCT12EntityCrashedVehicleParticle : RCT12EntityBase
     int32_t AccelerationY; // 0x3C
     int32_t AccelerationZ; // 0x40
 };
-assert_struct_size(RCT12EntityCrashedVehicleParticle, 0x44);
+static_assert(sizeof(RCT12EntityCrashedVehicleParticle) == 0x44);
 
 struct RCT12EntityCrashSplash : RCT12EntityBase
 {
     uint8_t Pad1F[0x26 - 0x1F];
     uint16_t Frame; // 0x26
 };
-assert_struct_size(RCT12EntityCrashSplash, 0x28);
+static_assert(sizeof(RCT12EntityCrashSplash) == 0x28);
 
 struct RCT12EntitySteamParticle : RCT12EntityBase
 {
@@ -818,7 +817,7 @@ struct RCT12EntitySteamParticle : RCT12EntityBase
     uint16_t TimeToMove; // 0x24
     uint16_t Frame;      // 0x26
 };
-assert_struct_size(RCT12EntitySteamParticle, 0x28);
+static_assert(sizeof(RCT12EntitySteamParticle) == 0x28);
 
 struct RCT12PeepThought
 {
@@ -827,7 +826,7 @@ struct RCT12PeepThought
     uint8_t Freshness;
     uint8_t FreshTimeout;
 };
-assert_struct_size(RCT12PeepThought, 4);
+static_assert(sizeof(RCT12PeepThought) == 4);
 
 struct RCT12RideMeasurement
 {
@@ -843,7 +842,7 @@ struct RCT12RideMeasurement
     uint8_t Velocity[RCT12::Limits::RideMeasurementMaxItems]; // 0x258C
     uint8_t Altitude[RCT12::Limits::RideMeasurementMaxItems]; // 0x384C
 };
-assert_struct_size(RCT12RideMeasurement, 0x4B0C);
+static_assert(sizeof(RCT12RideMeasurement) == 0x4B0C);
 
 struct RCT12Banner
 {
@@ -859,7 +858,7 @@ struct RCT12Banner
     uint8_t x;          // 0x06
     uint8_t y;          // 0x07
 };
-assert_struct_size(RCT12Banner, 8);
+static_assert(sizeof(RCT12Banner) == 8);
 
 struct RCT12MapAnimation
 {
@@ -868,7 +867,7 @@ struct RCT12MapAnimation
     uint16_t x;
     uint16_t y;
 };
-assert_struct_size(RCT12MapAnimation, 6);
+static_assert(sizeof(RCT12MapAnimation) == 6);
 
 struct RCT12ResearchItem
 {
@@ -892,14 +891,14 @@ struct RCT12ResearchItem
 
     ResearchItem ToResearchItem() const;
 };
-assert_struct_size(RCT12ResearchItem, 5);
+static_assert(sizeof(RCT12ResearchItem) == 5);
 
 struct RCT12VehicleColour
 {
     uint8_t BodyColour;
     uint8_t TrimColour;
 };
-assert_struct_size(RCT12VehicleColour, 2);
+static_assert(sizeof(RCT12VehicleColour) == 2);
 
 #pragma pack(pop)
 

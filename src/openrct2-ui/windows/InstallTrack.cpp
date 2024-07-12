@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/core/File.h>

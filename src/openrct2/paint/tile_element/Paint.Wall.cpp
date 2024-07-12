@@ -11,7 +11,6 @@
 
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../common.h"
 #include "../../config/Config.h"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"

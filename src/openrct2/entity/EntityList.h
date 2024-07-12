@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../rct12/RCT12.h"
 #include "../world/Location.hpp"
 #include "EntityBase.h"

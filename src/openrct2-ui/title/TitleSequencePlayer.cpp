@@ -13,11 +13,11 @@
 
 #include <memory>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>

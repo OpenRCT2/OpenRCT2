@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../object/Object.h"
 #include "Memory.hpp"
 
@@ -48,20 +47,20 @@ namespace OpenRCT2
         {
         }
 
-        virtual bool CanRead() const abstract;
-        virtual bool CanWrite() const abstract;
+        virtual bool CanRead() const = 0;
+        virtual bool CanWrite() const = 0;
 
-        virtual uint64_t GetLength() const abstract;
-        virtual uint64_t GetPosition() const abstract;
-        virtual void SetPosition(uint64_t position) abstract;
-        virtual void Seek(int64_t offset, int32_t origin) abstract;
+        virtual uint64_t GetLength() const = 0;
+        virtual uint64_t GetPosition() const = 0;
+        virtual void SetPosition(uint64_t position) = 0;
+        virtual void Seek(int64_t offset, int32_t origin) = 0;
 
-        virtual void Read(void* buffer, uint64_t length) abstract;
-        virtual void Write(const void* buffer, uint64_t length) abstract;
+        virtual void Read(void* buffer, uint64_t length) = 0;
+        virtual void Write(const void* buffer, uint64_t length) = 0;
 
-        virtual uint64_t TryRead(void* buffer, uint64_t length) abstract;
+        virtual uint64_t TryRead(void* buffer, uint64_t length) = 0;
 
-        virtual const void* GetData() const abstract;
+        virtual const void* GetData() const = 0;
 
         ///////////////////////////////////////////////////////////////////////////
         // Fast path methods, class can override them to use specialised copies.

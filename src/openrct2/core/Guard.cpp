@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #ifdef _WIN32
+#    include <cassert>
 #    include <windows.h>
 #endif
 
 #include "../Version.h"
-#include "../common.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"

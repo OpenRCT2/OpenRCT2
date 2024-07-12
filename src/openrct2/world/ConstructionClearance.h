@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../actions/GameActionResult.h"
-#include "../common.h"
 #include "Map.h"
 
 #include <cstdint>

@@ -10,6 +10,7 @@
 #include "Track.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../audio/audio.h"
@@ -35,6 +36,8 @@
 #include "Station.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
+
+#include <cassert>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;

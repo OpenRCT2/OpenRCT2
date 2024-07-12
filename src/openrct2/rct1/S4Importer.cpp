@@ -9,6 +9,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -71,6 +72,7 @@
 #include "RCT1.h"
 #include "Tables.h"
 
+#include <cassert>
 #include <iterator>
 #include <memory>
 #include <vector>

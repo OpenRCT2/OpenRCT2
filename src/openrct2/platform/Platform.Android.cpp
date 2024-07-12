@@ -11,6 +11,7 @@
 
 #    include "Platform.h"
 
+#    include "../Diagnostic.h"
 #    include "../core/Guard.hpp"
 #    include "../localisation/Language.h"
 

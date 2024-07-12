@@ -10,10 +10,10 @@
 #include "Drawing.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
@@ -25,6 +25,7 @@
 #include "../world/Location.hpp"
 #include "LightFX.h"
 
+#include <cassert>
 #include <cstring>
 
 using namespace OpenRCT2;
