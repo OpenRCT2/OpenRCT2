@@ -21,7 +21,6 @@
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
-#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "LightFX.h"
@@ -668,12 +667,12 @@ ImageCatalogue ImageId::GetCatalogue() const
 
 static auto GetMaskFunction()
 {
-    if (AVX2Available())
+    if (Platform::AVX2Available())
     {
         LOG_VERBOSE("registering AVX2 mask function");
         return MaskAvx2;
     }
-    else if (SSE41Available())
+    else if (Platform::SSE41Available())
     {
         LOG_VERBOSE("registering SSE4.1 mask function");
         return MaskSse4_1;

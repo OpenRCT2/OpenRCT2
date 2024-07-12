@@ -24,9 +24,6 @@ int32_t MetresToFeet(int32_t metres);
 int32_t MphToKmph(int32_t mph);
 int32_t MphToDmps(int32_t mph);
 
-bool SSE41Available();
-bool AVX2Available();
-
 int32_t UtilBitScanForward(int32_t source);
 int32_t UtilBitScanForward(int64_t source);
 int32_t StrLogicalCmp(char const* a, char const* b);

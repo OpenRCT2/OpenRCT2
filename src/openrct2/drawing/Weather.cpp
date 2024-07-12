@@ -16,7 +16,6 @@
 #include "../ride/TrackDesign.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
-#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "Drawing.h"
 #include "IDrawingEngine.h"
