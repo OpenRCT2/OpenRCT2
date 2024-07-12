@@ -50,6 +50,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"

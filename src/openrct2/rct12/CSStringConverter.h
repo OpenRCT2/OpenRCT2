@@ -9,4 +9,10 @@
 
 #pragma once
 
+#include <string_view>
+
+enum class RCT2LanguageId : uint8_t;
+
 wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str);
+
+std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId);
