@@ -11,6 +11,7 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../core/UTF8.h"
+#include "../core/UnicodeChar.h"
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"

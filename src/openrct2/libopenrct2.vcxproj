@@ -227,6 +227,7 @@
     <ClInclude Include="core\StringReader.h" />
     <ClInclude Include="core\Timer.hpp" />
     <ClInclude Include="core\UTF8.h" />
+    <ClInclude Include="core\UnicodeChar.h" />
     <ClInclude Include="core\Zip.h" />
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
@@ -387,6 +388,7 @@
     <ClInclude Include="platform\Platform.h" />
     <ClInclude Include="profiling\Profiling.h" />
     <ClInclude Include="profiling\ProfilingMacros.hpp" />
+    <ClInclude Include="rct12\CSChar.h" />
     <ClInclude Include="rct12\CSStringConverter.h" />
     <ClInclude Include="rct12\EntryList.h" />
     <ClInclude Include="rct12\Limits.h" />
