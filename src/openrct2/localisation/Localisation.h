@@ -17,11 +17,6 @@
 std::string FormatStringIDLegacy(StringId format, const void* args);
 void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
 
-// The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
-constexpr size_t kMoneyStringMaxlength = 14;
-money64 StringToMoney(const char* string_to_monetise);
-void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
-
 constexpr size_t kUserStringMaxLength = 32;
 
 constexpr uint16_t kRealNameStart = 0xA000;
