@@ -1619,7 +1619,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                 auto checkboxFormatter = Formatter();
                 checkboxFormatter.Add<StringId>(STR_STRING);
-                checkboxFormatter.Add<char*>(CheckBoxMarkString);
+                checkboxFormatter.Add<char*>(kCheckMarkString);
 
                 // Draw checkbox and check if visible
                 GfxFillRectInset(dpi, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_E0);
@@ -1627,7 +1627,7 @@ static uint64_t PageDisabledWidgets[] = {
                 {
                     auto eyeFormatter = Formatter();
                     eyeFormatter.Add<StringId>(STR_STRING);
-                    eyeFormatter.Add<char*>(EyeString);
+                    eyeFormatter.Add<char*>(kEyeString);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 2, 1 }, stringFormat, eyeFormatter);
                 }
 

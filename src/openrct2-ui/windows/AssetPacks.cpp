@@ -265,7 +265,7 @@ static Widget WindowAssetPacksWidgets[] = {
             {
                 auto checkmark = Formatter();
                 checkmark.Add<StringId>(STR_STRING);
-                checkmark.Add<char*>(CheckBoxMarkString);
+                checkmark.Add<char*>(kCheckMarkString);
                 DrawTextBasic(
                     dpi, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
             }
