@@ -35,6 +35,8 @@ static uint8_t _additionalSpriteFontCharacterWidth[FontStyleCount][SPR_G2_GLYPH_
 TTFFontSetDescriptor* gCurrentTTFFontSet;
 #endif // NO_TTF
 
+constexpr uint8_t CS_SPRITE_FONT_OFFSET = 32;
+
 static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::ae_uc, SPR_G2_AE_UPPER - SPR_CHAR_START },
     { UnicodeChar::o_stroke_uc, SPR_G2_O_STROKE_UPPER - SPR_CHAR_START },

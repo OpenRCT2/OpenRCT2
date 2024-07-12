@@ -82,8 +82,6 @@ bool FormatTokenIsColour(FormatToken token);
 size_t FormatTokenGetTextColourIndex(FormatToken token);
 FormatToken FormatTokenFromTextColour(size_t textColour);
 
-constexpr uint8_t CS_SPRITE_FONT_OFFSET = 32;
-
 namespace CSChar
 {
     constexpr char32_t quote_close = 0x22;
