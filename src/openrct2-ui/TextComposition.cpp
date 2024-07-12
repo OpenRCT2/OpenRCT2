@@ -18,7 +18,6 @@
 #include <openrct2/common.h>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIdType.h>
 
