@@ -20,7 +20,6 @@
 #include "../rct1/Csg.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
-#include "../util/Util.h"
 #include "ScrollingText.h"
 
 #include <memory>

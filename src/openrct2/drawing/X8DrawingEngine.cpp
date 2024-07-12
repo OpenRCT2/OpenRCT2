@@ -17,7 +17,6 @@
 #include "../interface/Window.h"
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
-#include "../util/Util.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
