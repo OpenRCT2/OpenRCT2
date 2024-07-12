@@ -25,8 +25,6 @@
 #    include <windows.h>
 #endif
 
-#include "../localisation/ConversionTables.h"
-#include "../localisation/Language.h"
 #include "../util/Util.h"
 #include "Memory.hpp"
 #include "String.hpp"
