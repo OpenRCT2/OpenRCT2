@@ -28,12 +28,6 @@ using namespace OpenRCT2;
 
 thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 
-#ifdef DEBUG
-// Set to true before a string format call to see details of the formatting.
-// Set to false after the call.
-bool gDebugStringFormatting = false;
-#endif
-
 // clang-format off
 const StringId ObjectiveNames[] = {
     STR_OBJECTIVE_NONE,
@@ -289,13 +283,6 @@ std::string FormatStringIDLegacy(StringId format, const void* args)
  */
 void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* args)
 {
-#ifdef DEBUG
-    if (gDebugStringFormatting)
-    {
-        printf("FormatStringToUpper(%hu)\n", format);
-    }
-#endif
-
     if (size == 0)
     {
         return;

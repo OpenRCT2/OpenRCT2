@@ -44,7 +44,6 @@ extern const char real_name_initials[16];
 extern const char* real_names[1024];
 
 extern thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
-extern bool gDebugStringFormatting;
 
 extern const StringId ObjectiveNames[12];
 extern const StringId ResearchFundingLevelNames[4];
