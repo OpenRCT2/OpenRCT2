@@ -1125,7 +1125,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             ft = Formatter();
             formatObjective(ft, gameState.ScenarioObjective);
 
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gameState.ScenarioObjective.Type], ft);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, kObjectiveNames[gameState.ScenarioObjective.Type], ft);
             screenCoords.y += 5;
 
             // Objective outcome

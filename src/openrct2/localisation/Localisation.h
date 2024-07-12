@@ -23,7 +23,6 @@ constexpr size_t CommonTextBufferSize = 512;
 
 extern thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 
-extern const StringId ObjectiveNames[12];
 extern const StringId ResearchFundingLevelNames[4];
 extern const StringId MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
 extern const StringId RideInspectionIntervalNames[];

@@ -256,7 +256,7 @@ static Widget _scenarioSelectWidgets[] = {
                                     .Currency = scenario->ObjectiveArg2 };
 
             ft = Formatter();
-            ft.Add<StringId>(ObjectiveNames[scenario->ObjectiveType]);
+            ft.Add<StringId>(kObjectiveNames[scenario->ObjectiveType]);
             formatObjective(ft, objective);
             screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
