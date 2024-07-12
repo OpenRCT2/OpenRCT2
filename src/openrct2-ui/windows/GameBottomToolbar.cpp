@@ -23,6 +23,7 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/peep/PeepAnimationData.h>
@@ -359,6 +360,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
             std::memcpy(&stringId, ft.Data(), sizeof(StringId));
             if (stringId == STR_NONE)
             {
+                // TODO: this string probably shouldn't be reused for this
                 DrawTextWrapped(
                     dpi, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft,
                     { colours[0], TextAlignment::CENTRE });
