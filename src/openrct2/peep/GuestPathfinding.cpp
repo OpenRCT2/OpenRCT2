@@ -22,6 +22,7 @@
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 
+#include <bit>
 #include <bitset>
 #include <cstring>
 
@@ -848,7 +849,7 @@ namespace OpenRCT2::PathFinding
 
                     searchResult = PathSearchResult::Thin;
 
-                    uint8_t numEdges = BitCount(tileElement->AsPath()->GetEdges());
+                    uint8_t numEdges = std::popcount(tileElement->AsPath()->GetEdges());
 
                     if (numEdges < 2)
                     {
@@ -1371,7 +1372,7 @@ namespace OpenRCT2::PathFinding
              * edge that gives the best (i.e. smallest) value (best_score)
              * or for different edges with equal value, the edge with the
              * least steps (best_sub). */
-            int32_t numEdges = BitCount(edges);
+            int32_t numEdges = std::popcount(edges);
             for (int32_t testEdge = chosenEdge; testEdge != -1; testEdge = UtilBitScanForward(edges))
             {
                 edges &= ~(1 << testEdge);
@@ -1994,7 +1995,7 @@ namespace OpenRCT2::PathFinding
         if (peep.HasItem(ShopItem::Map))
         {
             // If at least 2 directions consult map
-            if (BitCount(edges) >= 2)
+            if (std::popcount(edges) >= 2)
             {
                 uint16_t probability = 1638;
                 if (peep.HeadingForRideOrParkExit())

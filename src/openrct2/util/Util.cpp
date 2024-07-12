@@ -172,56 +172,6 @@ bool AVX2Available()
     return false;
 }
 
-static bool BitCountPopcntAvailable()
-{
-#ifdef OPENRCT2_X86
-    // POPCNT support is declared as the 23rd bit of ECX with CPUID(EAX = 1).
-    uint32_t regs[4] = { 0 };
-    if (CPUIDX86(regs, 1))
-    {
-        return (regs[2] & (1 << 23));
-    }
-#endif
-    return false;
-}
-
-static int32_t BitCountPopcnt(uint32_t source)
-{
-// Use CPUID defines to figure out calling style
-#if defined(OpenRCT2_CPUID_GNUC_X86)
-    // use asm directly in order to actually emit the instruction : using
-    // __builtin_popcount results in an extra call to a library function.
-    int32_t rv;
-    asm volatile("popcnt %1,%0" : "=r"(rv) : "rm"(source) : "cc");
-    return rv;
-#elif defined(OpenRCT2_CPUID_MSVC_X86)
-    return _mm_popcnt_u32(source);
-#else
-    Guard::Fail("bitcount_popcnt() called, without support compiled in");
-    return INT_MAX;
-#endif
-}
-
-static int32_t BitCountLut(uint32_t source)
-{
-    // https://graphics.stanford.edu/~seander/bithacks.html
-    static constexpr uint8_t BitsSetTable256[256] = {
-#define B2(n) n, (n) + 1, (n) + 1, (n) + 2
-#define B4(n) B2(n), B2((n) + 1), B2((n) + 1), B2((n) + 2)
-#define B6(n) B4(n), B4((n) + 1), B4((n) + 1), B4((n) + 2)
-        B6(0), B6(1), B6(1), B6(2)
-    };
-    return BitsSetTable256[source & 0xff] + BitsSetTable256[(source >> 8) & 0xff] + BitsSetTable256[(source >> 16) & 0xff]
-        + BitsSetTable256[source >> 24];
-}
-
-static const auto BitCountFn = BitCountPopcntAvailable() ? BitCountPopcnt : BitCountLut;
-
-int32_t BitCount(uint32_t source)
-{
-    return BitCountFn(source);
-}
-
 /* Case insensitive logical compare */
 // Example:
 // - Guest 10
