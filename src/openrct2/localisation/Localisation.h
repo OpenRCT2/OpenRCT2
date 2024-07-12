@@ -19,14 +19,7 @@ void FormatStringToUpper(char* dest, size_t size, StringId format, const void* a
 
 constexpr size_t kUserStringMaxLength = 32;
 
-constexpr uint16_t kRealNameStart = 0xA000;
-constexpr uint16_t kRealNameEnd = 0xDFFF;
-
 constexpr size_t CommonTextBufferSize = 512;
-
-// Real name data
-extern const char real_name_initials[16];
-extern const char* real_names[1024];
 
 extern thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 

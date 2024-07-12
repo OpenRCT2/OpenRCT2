@@ -10,6 +10,7 @@
 #include "Formatting.h"
 
 #include "../config/Config.h"
+#include "../peep/RealNames.h"
 #include "../util/Util.h"
 #include "Currency.h"
 #include "FormatCodes.h"
