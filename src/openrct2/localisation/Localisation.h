@@ -17,16 +17,6 @@
 std::string FormatStringIDLegacy(StringId format, const void* args);
 void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
 
-/**
- * Formats sizeBytes into buf as a human readable text, e.x.: "1024 MB"
- */
-void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes);
-
-/**
- * Formats sizeBytesPerSec into buf as a human readable text, e.x.: "1024 MB/sec"
- */
-void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytesPerSec);
-
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
 constexpr size_t kMoneyStringMaxlength = 14;
 money64 StringToMoney(const char* string_to_monetise);

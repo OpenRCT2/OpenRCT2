@@ -303,37 +303,6 @@ void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* a
     dest[upperString.size()] = '\0';
 }
 
-void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes)
-{
-    constexpr uint32_t SizeTable[] = {
-        STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE, STR_SIZE_TERABYTE,
-    };
-
-    double size = sizeBytes;
-    size_t idx = 0;
-    while (size >= 1024.0)
-    {
-        size /= 1024.0;
-        idx++;
-    }
-
-    char sizeType[128] = {};
-    OpenRCT2::FormatStringLegacy(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
-
-    snprintf(buf, bufSize, "%.03f %s", size, sizeType);
-}
-
-void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytes)
-{
-    char sizeText[128] = {};
-    FormatReadableSize(sizeText, sizeof(sizeText), sizeBytes);
-
-    const char* args[1] = {
-        sizeText,
-    };
-    OpenRCT2::FormatStringLegacy(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
-}
-
 money64 StringToMoney(const char* string_to_monetise)
 {
     const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
