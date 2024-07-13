@@ -17,7 +17,6 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
 namespace OpenRCT2::Ui::Windows

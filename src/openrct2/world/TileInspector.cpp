@@ -16,7 +16,6 @@
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Localisation.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"

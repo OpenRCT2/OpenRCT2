@@ -23,7 +23,6 @@
 #include "../../interface/Screenshot.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
-#include "../../localisation/Localisation.h"
 #include "../../network/NetworkBase.h"
 #include "../../network/network.h"
 #include "../../scenario/Scenario.h"

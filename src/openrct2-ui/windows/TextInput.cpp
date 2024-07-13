@@ -16,7 +16,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/util/Util.h>
 

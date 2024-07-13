@@ -31,10 +31,9 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/localisation/Currency.h>
-#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/Platform.h>
@@ -1783,7 +1782,7 @@ static Widget *window_options_page_widgets[] = {
                     for (size_t i = 0; i < 7; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = RideInspectionIntervalNames[i];
+                        gDropdownItems[i].Args = kRideInspectionIntervalNames[i];
                     }
 
                     ShowDropdown(widget, 7);
@@ -1886,7 +1885,7 @@ static Widget *window_options_page_widgets[] = {
                 disabled_widgets |= (1uLL << WIDX_SCENARIO_UNLOCKING);
             }
 
-            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
+            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames
                 [Config::Get().general.DefaultInspectionInterval];
         }
 

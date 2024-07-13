@@ -14,7 +14,6 @@
 #include <cstring>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
 #include <unordered_map>
 

@@ -12,7 +12,6 @@
 #include "../Game.h"
 #include "../audio/audio.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"

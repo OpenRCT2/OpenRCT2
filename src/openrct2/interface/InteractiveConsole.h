@@ -11,6 +11,7 @@
 
 #include "../localisation/FormatCodes.h"
 
+#include <cstdint>
 #include <string>
 
 struct DrawPixelInfo;

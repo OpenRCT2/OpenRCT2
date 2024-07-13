@@ -25,9 +25,9 @@
 #include <openrct2/actions/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/localisation/Date.h>
-#include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Currency.h>
+#include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Award.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/ride/RideData.h>
@@ -1125,7 +1125,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             ft = Formatter();
             formatObjective(ft, gameState.ScenarioObjective);
 
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gameState.ScenarioObjective.Type], ft);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, kObjectiveNames[gameState.ScenarioObjective.Type], ft);
             screenCoords.y += 5;
 
             // Objective outcome

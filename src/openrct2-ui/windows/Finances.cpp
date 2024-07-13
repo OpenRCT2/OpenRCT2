@@ -16,9 +16,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
-#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
@@ -873,7 +872,7 @@ static Widget _windowFinancesResearchWidgets[] =
                     }
                 }
                 // Advertisement
-                DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
+                DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, kMarketingCampaignNames[i][1], ft);
 
                 // Duration
                 uint16_t weeksRemaining = marketingCampaign->WeeksLeft;
@@ -900,7 +899,7 @@ static Widget _windowFinancesResearchWidgets[] =
                 if (campaignButton->type != WindowWidgetType::Empty)
                 {
                     // Draw button text
-                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
+                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, kMarketingCampaignNames[i][0]);
                     auto ft = Formatter();
                     ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);

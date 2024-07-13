@@ -12,8 +12,8 @@
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Context.h>
 #include <openrct2/Date.h>
-#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Localisation.Date.h>
 
 using namespace OpenRCT2;
 
