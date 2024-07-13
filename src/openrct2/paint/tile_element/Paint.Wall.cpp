@@ -16,7 +16,6 @@
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatting.h"
-#include "../../localisation/Localisation.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../../profiling/Profiling.h"

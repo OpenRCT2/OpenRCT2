@@ -9,6 +9,7 @@
 
 #include "Formatting.h"
 
+#include "../Diagnostic.h"
 #include "../config/Config.h"
 #include "../peep/RealNames.h"
 #include "../util/Util.h"
@@ -813,15 +814,6 @@ namespace OpenRCT2
         }
     }
 
-    size_t FormatStringLegacy(char* buffer, size_t bufferLen, StringId id, const void* args)
-    {
-        thread_local std::vector<FormatArg_t> anyArgs;
-        anyArgs.clear();
-        auto fmt = GetFmtStringById(id);
-        BuildAnyArgListFromLegacyArgBuffer(fmt, anyArgs, args);
-        return FormatStringAny(buffer, bufferLen, fmt, anyArgs);
-    }
-
     static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year)
     {
         thread_local std::vector<FormatArg_t> tempArgs;
@@ -837,4 +829,67 @@ namespace OpenRCT2
         FormatStringAny(ss, fmt, tempArgs, argIndex);
     }
 
+    size_t FormatStringLegacy(char* buffer, size_t bufferLen, StringId id, const void* args)
+    {
+        thread_local std::vector<FormatArg_t> anyArgs;
+        anyArgs.clear();
+        auto fmt = GetFmtStringById(id);
+        BuildAnyArgListFromLegacyArgBuffer(fmt, anyArgs, args);
+        return FormatStringAny(buffer, bufferLen, fmt, anyArgs);
+    }
+
+    std::string FormatStringIDLegacy(StringId format, const void* args)
+    {
+        std::string buffer(256, 0);
+        size_t len{};
+        for (;;)
+        {
+            FormatStringLegacy(buffer.data(), buffer.size(), format, args);
+            len = buffer.find('\0');
+            if (len == std::string::npos)
+            {
+                len = buffer.size();
+            }
+            if (len >= buffer.size() - 1)
+            {
+                // Null terminator to close to end of buffer, grow buffer and try again
+                buffer.resize(buffer.size() * 2);
+            }
+            else
+            {
+                buffer.resize(len);
+                break;
+            }
+        }
+        return buffer;
+    }
+
+    /**
+     * Writes a formatted string to a buffer and converts it to upper case.
+     *  rct2: 0x006C2538
+     * dest (edi)
+     * format (ax)
+     * args (ecx)
+     */
+    void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* args)
+    {
+        if (size == 0)
+        {
+            return;
+        }
+
+        FormatStringLegacy(dest, size, format, args);
+
+        std::string upperString = String::ToUpper(dest);
+
+        if (upperString.size() + 1 >= size)
+        {
+            upperString.resize(size - 1);
+            dest[size - 1] = '\0';
+            LOG_WARNING("Truncating formatted string \"%s\" to %d bytes.", dest, size);
+        }
+
+        upperString.copy(dest, upperString.size());
+        dest[upperString.size()] = '\0';
+    }
 } // namespace OpenRCT2

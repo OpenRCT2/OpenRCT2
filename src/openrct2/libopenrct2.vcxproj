@@ -291,7 +291,6 @@
     <ClInclude Include="localisation\Language.h" />
     <ClInclude Include="localisation\LanguagePack.h" />
     <ClInclude Include="localisation\Localisation.Date.h" />
-    <ClInclude Include="localisation\Localisation.h" />
     <ClInclude Include="localisation\LocalisationService.h" />
     <ClInclude Include="localisation\StringIds.h" />
     <ClInclude Include="management\Award.h" />
@@ -821,7 +820,6 @@
     <ClCompile Include="localisation\Formatting.cpp" />
     <ClCompile Include="localisation\Language.cpp" />
     <ClCompile Include="localisation\LanguagePack.cpp" />
-    <ClCompile Include="localisation\Localisation.cpp" />
     <ClCompile Include="localisation\Localisation.Date.cpp" />
     <ClCompile Include="localisation\LocalisationService.cpp" />
     <ClCompile Include="management\Award.cpp" />

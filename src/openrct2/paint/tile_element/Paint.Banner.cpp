@@ -15,7 +15,6 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
-#include "../../localisation/Localisation.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/BannerObject.h"
 #include "../../object/ObjectEntryManager.h"

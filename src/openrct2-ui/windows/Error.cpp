@@ -17,8 +17,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Formatting.h>
 
 namespace OpenRCT2::Ui::Windows
 {
