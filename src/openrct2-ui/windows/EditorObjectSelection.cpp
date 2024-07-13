@@ -760,7 +760,8 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
                     screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
-                    auto bufferWithColour = strcpy(gCommonStringFormatBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
+                    utf8 itemBuffer[512]{};
+                    auto bufferWithColour = strcpy(itemBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
                     auto buffer = strchr(bufferWithColour, '\0');
 
                     colour_t colour = COLOUR_BLACK;
@@ -780,7 +781,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
                         SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                         auto ft = Formatter();
-                        ft.Add<const char*>(gCommonStringFormatBuffer);
+                        ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
                             dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                         screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
@@ -796,7 +797,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         *buffer = 0;
                     }
                     auto ft = Formatter();
-                    ft.Add<const char*>(gCommonStringFormatBuffer);
+                    ft.Add<const char*>(itemBuffer);
                     DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                 }
                 screenCoords.y += kScrollableRowHeight;

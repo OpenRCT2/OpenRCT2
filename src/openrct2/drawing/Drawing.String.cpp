@@ -261,7 +261,7 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
 void GfxDrawStringLeftCentred(
     DrawPixelInfo& dpi, StringId format, void* args, ColourWithFlags colour, const ScreenCoordsXY& coords)
 {
-    char buffer[CommonTextBufferSize];
+    char buffer[512];
     auto bufferPtr = buffer;
     FormatStringLegacy(bufferPtr, sizeof(buffer), format, args);
     int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::Medium);

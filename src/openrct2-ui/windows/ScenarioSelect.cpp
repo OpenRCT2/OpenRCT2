@@ -500,7 +500,7 @@ static Widget _scenarioSelectWidgets[] = {
             DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
             // Get string dimensions
-            utf8 buffer[CommonTextBufferSize];
+            utf8 buffer[512];
             auto bufferPtr = buffer;
             OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
             int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;

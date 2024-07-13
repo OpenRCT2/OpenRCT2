@@ -25,8 +25,6 @@
 
 using namespace OpenRCT2;
 
-thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
-
 std::string FormatStringIDLegacy(StringId format, const void* args)
 {
     std::string buffer(256, 0);
