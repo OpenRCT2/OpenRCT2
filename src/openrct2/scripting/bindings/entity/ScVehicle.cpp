@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
         { "stopping_1b", Vehicle::Status::Stopping1B },
         { "unloading_passengers_1c", Vehicle::Status::UnloadingPassengers1C },
         { "stopped_by_block_brake", Vehicle::Status::StoppedByBlockBrakes },
-        });
+    });
 
     ScVehicle::ScVehicle(EntityId id)
         : ScEntity(id)
@@ -73,8 +73,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::pitch_get, &ScVehicle::pitch_set, "pitch");
         dukglue_register_property(ctx, &ScVehicle::roll_get, &ScVehicle::roll_set, "bankRotation");
         dukglue_register_property(ctx, &ScVehicle::roll_get, &ScVehicle::roll_set, "roll");
-        dukglue_register_property<ScVehicle, uint8_t, uint8_t>(
-            ctx, &ScVehicle::rotation_get, &ScVehicle::rotation_set, "yaw");
+        dukglue_register_property<ScVehicle, uint8_t, uint8_t>(ctx, &ScVehicle::rotation_get, &ScVehicle::rotation_set, "yaw");
         dukglue_register_property(
             ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
             "isReversed");
