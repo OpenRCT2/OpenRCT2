@@ -915,16 +915,28 @@ static Widget _rideListWidgets[] = {
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                        if (thisRide.ratings.isNull())
+                            return true;
+                        if (otherRide.ratings.isNull())
+                            return false;
                         return thisRide.ratings.excitement <= otherRide.ratings.excitement;
                     });
                     break;
                 case INFORMATION_TYPE_INTENSITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                        if (thisRide.ratings.isNull())
+                            return true;
+                        if (otherRide.ratings.isNull())
+                            return false;
                         return thisRide.ratings.intensity <= otherRide.ratings.intensity;
                     });
                     break;
                 case INFORMATION_TYPE_NAUSEA:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                        if (thisRide.ratings.isNull())
+                            return true;
+                        if (otherRide.ratings.isNull())
+                            return false;
                         return thisRide.ratings.nausea <= otherRide.ratings.nausea;
                     });
                     break;
