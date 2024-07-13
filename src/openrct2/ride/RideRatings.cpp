@@ -2276,6 +2276,6 @@ void RatingTuple::setNull()
     *   also made it so guests would get sick on untested rides
     *   at a very high rate
     */
-    //intensity = kRideRatingUndefined;
-    //nausea = kRideRatingUndefined;
+    // intensity = kRideRatingUndefined;
+    // nausea = kRideRatingUndefined;
 }
