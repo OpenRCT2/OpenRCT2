@@ -16,11 +16,12 @@
 - Change: [#21494] Display pixel density is now taken into account for the initial window scale setting.
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
+- Change: [#22283] Let heavy snow and blizzard increase chance of brakes failure.
 - Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
 - Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
 - Fix: [#22056] Potential crash upon exiting the game.
-- Fix: [#22101] Wrong tunnel shapes on Log Flume and Giga, Hybrid, Single-Rail and Alpine Coasters. 
+- Fix: [#22101] Wrong tunnel shapes on Log Flume and Giga, Hybrid, Single-Rail and Alpine Coasters.
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
 - Fix: [#22209] Water tool selection may disappear near edge of map.
 - Fix: [#22222] Staff list may remain invalid when changing tabs.
