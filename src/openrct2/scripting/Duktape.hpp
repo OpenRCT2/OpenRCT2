@@ -411,6 +411,22 @@ namespace OpenRCT2::Scripting
         return dukCoords.Take();
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const CarTrackLocation& value)
+    {
+        if (value.IsNull())
+        {
+            return ToDuk(ctx, nullptr);
+        }
+
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", value.x);
+        dukCoords.Set("y", value.y);
+        dukCoords.Set("z", value.z);
+        dukCoords.Set("direction", value.direction);
+        dukCoords.Set("trackType", value.trackType);
+        return dukCoords.Take();
+    }
+
     template<> inline DukValue ToDuk(duk_context* ctx, const GForces& value)
     {
         DukObject dukGForces(ctx);
@@ -436,6 +452,24 @@ namespace OpenRCT2::Scripting
             result.y = AsOrDefault(value["y"], 0);
             result.z = AsOrDefault(value["z"], 0);
             result.direction = AsOrDefault(value["direction"], 0);
+        }
+        else
+        {
+            result.SetNull();
+        }
+        return result;
+    }
+
+    template<> inline CarTrackLocation FromDuk(const DukValue& value)
+    {
+        CarTrackLocation result;
+        if (value.type() == DukValue::Type::OBJECT)
+        {
+            result.x = AsOrDefault(value["x"], 0);
+            result.y = AsOrDefault(value["y"], 0);
+            result.z = AsOrDefault(value["z"], 0);
+            result.direction = AsOrDefault(value["direction"], 0);
+            result.trackType = AsOrDefault(value["trackType"], 0);
         }
         else
         {

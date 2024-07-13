@@ -87,7 +87,6 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
         dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
-        dukglue_register_property(ctx, &ScVehicle::trackType_get, &ScVehicle::trackType_set, "trackType");
     }
 
     Vehicle* ScVehicle::GetVehicle() const
@@ -385,8 +384,8 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            auto coords = CoordsXYZD(vehicle->TrackLocation, vehicle->GetTrackDirection());
-            return ToDuk<CoordsXYZD>(ctx, coords);
+            auto coords = CarTrackLocation(vehicle->TrackLocation, vehicle->GetTrackDirection(), vehicle->GetTrackType());
+            return ToDuk<CarTrackLocation>(ctx, coords);
         }
         return ToDuk(ctx, nullptr);
     }
@@ -396,9 +395,10 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            auto coords = FromDuk<CoordsXYZD>(value);
+            auto coords = FromDuk<CarTrackLocation>(value);
             vehicle->TrackLocation = CoordsXYZ(coords.x, coords.y, coords.z);
             vehicle->SetTrackDirection(coords.direction);
+            vehicle->SetTrackType(coords.trackType);
         }
     }
 
@@ -514,22 +514,6 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->MoveRelativeDistance(value);
-        }
-    }
-
-    track_type_t ScVehicle::trackType_get() const
-    {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->GetTrackType() : 0;
-    }
-
-    void ScVehicle::trackType_set(track_type_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
-        {
-            vehicle->SetTrackType(value);
         }
     }
 } // namespace OpenRCT2::Scripting
