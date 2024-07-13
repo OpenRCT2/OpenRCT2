@@ -848,9 +848,12 @@ void Vehicle::UpdateMeasurements()
             curRide->max_speed = absVelocity;
         }
 
-        if (curRide->average_speed_test_timeout == 0 && absVelocity > 0x8000)
+        if (curRide->average_speed_test_timeout == 0)
         {
-            curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity);
+            if (absVelocity > 0x8000)
+            {
+                curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity); 
+            }
             stationForTestSegment.SegmentTime++;
         }
 
