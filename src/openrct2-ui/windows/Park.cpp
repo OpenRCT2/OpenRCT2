@@ -28,6 +28,7 @@
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Award.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/ride/RideData.h>

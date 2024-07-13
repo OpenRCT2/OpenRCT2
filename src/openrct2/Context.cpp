@@ -50,7 +50,6 @@
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
 #include "localisation/Localisation.Date.h"
-#include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/NetworkBase.h"

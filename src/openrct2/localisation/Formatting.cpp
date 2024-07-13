@@ -16,7 +16,6 @@
 #include "FormatCodes.h"
 #include "Formatter.h"
 #include "Localisation.Date.h"
-#include "Localisation.h"
 #include "StringIds.h"
 
 #include <cmath>

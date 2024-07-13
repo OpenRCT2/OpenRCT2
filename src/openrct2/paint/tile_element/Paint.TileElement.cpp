@@ -15,7 +15,6 @@
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Localisation.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackData.h"

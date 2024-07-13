@@ -43,7 +43,6 @@
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"

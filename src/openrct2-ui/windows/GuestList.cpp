@@ -19,7 +19,6 @@
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>

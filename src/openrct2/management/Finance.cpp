@@ -17,7 +17,6 @@
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
-#include "../localisation/Localisation.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"

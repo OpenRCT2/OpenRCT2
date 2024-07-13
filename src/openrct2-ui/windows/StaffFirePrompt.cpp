@@ -16,7 +16,6 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 
 namespace OpenRCT2::Ui::Windows
 {

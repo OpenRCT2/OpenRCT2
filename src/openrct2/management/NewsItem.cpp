@@ -22,7 +22,6 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.Date.h"
-#include "../localisation/Localisation.h"
 #include "../management/Research.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"

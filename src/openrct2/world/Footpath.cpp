@@ -21,7 +21,6 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"

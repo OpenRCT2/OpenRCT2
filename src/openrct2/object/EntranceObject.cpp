@@ -13,7 +13,6 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../localisation/Localisation.h"
 
 void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {

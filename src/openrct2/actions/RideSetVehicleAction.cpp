@@ -16,7 +16,6 @@
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"

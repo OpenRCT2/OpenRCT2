@@ -34,7 +34,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.Date.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/Platform.h>

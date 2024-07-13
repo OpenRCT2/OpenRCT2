@@ -17,7 +17,6 @@
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"

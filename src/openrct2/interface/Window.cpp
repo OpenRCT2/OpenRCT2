@@ -22,7 +22,6 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../platform/Platform.h"
 #include "../ride/RideAudio.h"

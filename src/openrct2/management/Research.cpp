@@ -22,7 +22,6 @@
 #include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.Date.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"

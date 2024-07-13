@@ -32,7 +32,6 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/platform/Platform.h>
