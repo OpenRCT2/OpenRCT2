@@ -117,6 +117,8 @@ enum
 
 extern bool gSilentResearch;
 
+extern const StringId kResearchFundingLevelNames[4];
+
 void ResearchResetItems(OpenRCT2::GameState_t& gameState);
 void ResearchUpdateUncompletedTypes();
 void ResearchUpdate();

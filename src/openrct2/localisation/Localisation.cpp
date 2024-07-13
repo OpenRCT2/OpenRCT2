@@ -29,13 +29,6 @@ using namespace OpenRCT2;
 thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 
 // clang-format off
-const StringId ResearchFundingLevelNames[] = {
-    STR_RESEARCH_FUNDING_NONE,
-    STR_RESEARCH_FUNDING_MINIMUM,
-    STR_RESEARCH_FUNDING_NORMAL,
-    STR_RESEARCH_FUNDING_MAXIMUM,
-};
-
 const StringId RideInspectionIntervalNames[] = {
     STR_EVERY_10_MINUTES,
     STR_EVERY_20_MINUTES,

@@ -57,6 +57,15 @@ static bool _researchedSceneryItems[SCENERY_TYPE_COUNT][UINT16_MAX];
 
 bool gSilentResearch = false;
 
+// clang-format off
+const StringId kResearchFundingLevelNames[] = {
+    STR_RESEARCH_FUNDING_NONE,
+    STR_RESEARCH_FUNDING_MINIMUM,
+    STR_RESEARCH_FUNDING_NORMAL,
+    STR_RESEARCH_FUNDING_MAXIMUM,
+};
+// clang-format on
+
 /**
  *
  *  rct2: 0x006671AD, part of 0x00667132

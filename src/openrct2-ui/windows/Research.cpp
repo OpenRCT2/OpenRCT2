@@ -493,10 +493,10 @@ static Widget *window_research_page_widgets[] = {
 
         Widget* dropdownWidget = &w->widgets[widgetIndex - 1];
 
-        for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
+        for (std::size_t i = 0; i < std::size(kResearchFundingLevelNames); i++)
         {
             gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItems[i].Args = ResearchFundingLevelNames[i];
+            gDropdownItems[i].Args = kResearchFundingLevelNames[i];
         }
         WindowDropdownShowTextCustomWidth(
             { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -560,7 +560,7 @@ static Widget *window_research_page_widgets[] = {
 
         // Current funding
         int32_t currentResearchLevel = gameState.ResearchFundingLevel;
-        w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].text = ResearchFundingLevelNames[currentResearchLevel];
+        w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].text = kResearchFundingLevelNames[currentResearchLevel];
 
         // Checkboxes
         uint8_t activeResearchTypes = gameState.ResearchPriorities;
