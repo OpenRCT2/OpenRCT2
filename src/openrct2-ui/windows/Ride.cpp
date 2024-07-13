@@ -3724,7 +3724,7 @@ static_assert(std::size(RatingNames) == 6);
                     for (int32_t i = 0; i < 7; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = RideInspectionIntervalNames[i];
+                        gDropdownItems[i].Args = kRideInspectionIntervalNames[i];
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -3936,7 +3936,7 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter::Common();
             ride->FormatNameTo(ft);
 
-            widgets[WIDX_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[ride->inspection_interval];
+            widgets[WIDX_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[ride->inspection_interval];
 
             AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);

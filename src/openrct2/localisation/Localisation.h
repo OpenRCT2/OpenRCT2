@@ -21,5 +21,3 @@ constexpr size_t kUserStringMaxLength = 32;
 constexpr size_t CommonTextBufferSize = 512;
 
 extern thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
-
-extern const StringId RideInspectionIntervalNames[];

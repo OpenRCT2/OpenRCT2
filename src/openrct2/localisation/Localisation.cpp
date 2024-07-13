@@ -20,25 +20,12 @@
 #include "FormatCodes.h"
 #include "Formatting.h"
 #include "Localisation.Date.h"
-#include "StringIds.h"
 
 #include <cstring>
 
 using namespace OpenRCT2;
 
 thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
-
-// clang-format off
-const StringId RideInspectionIntervalNames[] = {
-    STR_EVERY_10_MINUTES,
-    STR_EVERY_20_MINUTES,
-    STR_EVERY_30_MINUTES,
-    STR_EVERY_45_MINUTES,
-    STR_EVERY_HOUR,
-    STR_EVERY_2_HOURS,
-    STR_NEVER,
-};
-// clang-format on
 
 std::string FormatStringIDLegacy(StringId format, const void* args)
 {

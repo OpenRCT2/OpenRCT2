@@ -35,7 +35,6 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.Date.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -94,6 +93,18 @@ RideMode& operator++(RideMode& d, int)
 static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
+
+// clang-format off
+const StringId kRideInspectionIntervalNames[] = {
+    STR_EVERY_10_MINUTES,
+    STR_EVERY_20_MINUTES,
+    STR_EVERY_30_MINUTES,
+    STR_EVERY_45_MINUTES,
+    STR_EVERY_HOUR,
+    STR_EVERY_2_HOURS,
+    STR_NEVER,
+};
+// clang-format on
 
 // This is the highest used index + 1 of the GameState_t::Rides array.
 static size_t _endOfUsedRange = 0;
