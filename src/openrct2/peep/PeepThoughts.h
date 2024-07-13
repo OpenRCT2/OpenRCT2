@@ -9,17 +9,6 @@
 
 #pragma once
 
-#include "StringIdType.h"
+#include "../localisation/StringIdType.h"
 
-#include <string>
-
-std::string FormatStringIDLegacy(StringId format, const void* args);
-void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
-
-constexpr size_t kUserStringMaxLength = 32;
-
-constexpr size_t CommonTextBufferSize = 512;
-
-extern thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
-
-extern const StringId RideInspectionIntervalNames[];
+extern const StringId kPeepThoughtIds[174];

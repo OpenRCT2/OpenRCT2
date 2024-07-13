@@ -382,6 +382,7 @@
     <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\PeepAnimationData.h" />
     <ClInclude Include="peep\PeepSpriteIds.h" />
+    <ClInclude Include="peep\PeepThoughts.h" />
     <ClInclude Include="peep\RealNames.h" />
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
@@ -897,6 +898,7 @@
     <ClCompile Include="park\ParkFile.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
     <ClCompile Include="peep\PeepAnimationData.cpp" />
+    <ClCompile Include="peep\PeepThoughts.cpp" />
     <ClCompile Include="peep\RealNames.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
