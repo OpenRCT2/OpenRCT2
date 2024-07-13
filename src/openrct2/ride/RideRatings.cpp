@@ -2268,12 +2268,4 @@ bool RatingTuple::isNull() const
 void RatingTuple::setNull()
 {
     excitement = kRideRatingUndefined;
-    /* reverting #22199 changes:
-     * It seems like excitement set to 0xFFFFu was intended
-     * (guests going to untested rides is intended RCT behaviour)
-     * but setting intensity and nausea to 0xFFFFu to sort them
-     * also made it so guests would get sick on untested rides
-     * at a very high rate. */
-    // intensity = kRideRatingUndefined;
-    // nausea = kRideRatingUndefined;
 }
