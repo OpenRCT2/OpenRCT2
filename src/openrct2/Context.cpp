@@ -671,7 +671,7 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless && forceDraw)
             {
                 _uiContext->ProcessMessages();
-                WindowUpdateAll();
+                WindowInvalidateByClass(WindowClass::ProgressWindow);
                 Draw();
             }
         }
@@ -766,6 +766,9 @@ namespace OpenRCT2
                     parkImporter = ParkImporter::CreateS6(*_objectRepository);
                 }
 
+                // Inhibit viewport rendering while we're loading
+                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+
                 OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
                 SetProgress(0, 100, STR_STRING_M_PERCENT, true);
 
@@ -784,6 +787,9 @@ namespace OpenRCT2
                 auto& gameState = ::GetGameState();
                 parkImporter->Import(gameState);
                 SetProgress(100, 100, STR_STRING_M_PERCENT, true);
+
+                // Reset viewport rendering inhibition
+                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
 
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
@@ -935,6 +941,7 @@ namespace OpenRCT2
             }
 
             CloseProgress();
+            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
             return false;
         }
 

@@ -66,6 +66,7 @@ enum : uint32_t
     VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1u << 29),
 
     VIEWPORT_FLAG_INDEPEDENT_ROTATION = (1u << 30),
+    VIEWPORT_FLAG_RENDERING_INHIBITED = (1u << 31),
 };
 
 enum class VisibilityKind
