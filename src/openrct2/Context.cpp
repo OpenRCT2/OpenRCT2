@@ -669,7 +669,11 @@ namespace OpenRCT2
             // from the main thread, though, so this cannot be invoked when off main thread.
             // It's fine (and indeed useful!) for synchronous calls, so we keep it as an option.
             if (!gOpenRCT2Headless && forceDraw)
+            {
+                _uiContext->ProcessMessages();
+                WindowUpdateAll();
                 Draw();
+            }
         }
 
         void CloseProgress() override
