@@ -18,7 +18,6 @@
 #include "../core/MemoryStream.h"
 #include "../entity/MoneyEffect.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"

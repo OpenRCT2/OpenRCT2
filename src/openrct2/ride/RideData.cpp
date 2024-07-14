@@ -24,7 +24,6 @@
 #include "../GameState.h"
 #include "../audio/audio.h"
 #include "../interface/Colour.h"
-#include "../localisation/Localisation.h"
 #include "../management/Research.h"
 #include "../sprites.h"
 #include "Ride.h"

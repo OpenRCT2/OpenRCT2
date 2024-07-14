@@ -13,7 +13,6 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
-#include "../localisation/Localisation.h"
 #include "../object/Object.h"
 #include "../object/ObjectRepository.h"
 #include "ObjectList.h"

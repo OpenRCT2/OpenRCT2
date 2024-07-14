@@ -27,7 +27,6 @@
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -38,6 +37,7 @@
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
+#include "../peep/PeepThoughts.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
@@ -6918,7 +6918,7 @@ bool Guest::HeadingForRideOrParkExit() const
  */
 void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft)
 {
-    ft.Add<StringId>(PeepThoughts[EnumValue(thought->type)]);
+    ft.Add<StringId>(kPeepThoughtIds[EnumValue(thought->type)]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[EnumValue(thought->type)].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)

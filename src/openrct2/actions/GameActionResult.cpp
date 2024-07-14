@@ -1,8 +1,10 @@
 #include "GameActionResult.h"
 
-#include "../localisation/Localisation.h"
+#include "../localisation/Formatting.h"
 
 #include <algorithm>
+
+using namespace OpenRCT2;
 
 namespace GameActions
 {

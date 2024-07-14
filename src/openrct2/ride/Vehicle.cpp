@@ -28,7 +28,6 @@
 #include "../entity/Yaw.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../math/Trigonometry.hpp"
 #include "../object/SmallSceneryEntry.h"

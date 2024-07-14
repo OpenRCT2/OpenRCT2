@@ -12,7 +12,6 @@
 #include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"

@@ -10,11 +10,10 @@
 #pragma once
 
 #include <cstdint>
-#include <openrct2/localisation/StringIdType.h>
 
-class Formatter;
-struct Objective;
+constexpr uint16_t kRealNameStart = 0xA000;
+constexpr uint16_t kRealNameEnd = 0xDFFF;
 
-void formatObjective(Formatter& ft, Objective objective);
-
-extern const StringId kObjectiveNames[12];
+// Real name data
+extern const char real_name_initials[16];
+extern const char* real_names[1024];

@@ -10,8 +10,10 @@
 #include "CSStringConverter.h"
 
 #include "../core/String.hpp"
+#include "../core/UnicodeChar.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
+#include "../rct12/CSChar.h"
 
 #include <cstdlib>
 #include <iterator>

@@ -9,12 +9,6 @@
 
 #pragma once
 
-#include <cstdint>
-#include <openrct2/localisation/StringIdType.h>
+#include "../localisation/StringIdType.h"
 
-class Formatter;
-struct Objective;
-
-void formatObjective(Formatter& ft, Objective objective);
-
-extern const StringId kObjectiveNames[12];
+extern const StringId kPeepThoughtIds[174];

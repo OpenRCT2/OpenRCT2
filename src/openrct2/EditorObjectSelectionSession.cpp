@@ -17,7 +17,6 @@
 #include "OpenRCT2.h"
 #include "drawing/Drawing.h"
 #include "localisation/Formatter.h"
-#include "localisation/Localisation.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
 #include "object/FootpathEntry.h"
