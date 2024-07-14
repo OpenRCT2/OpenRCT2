@@ -22,11 +22,11 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
+#include <openrct2/ride/RideRatings.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/ride/RideRatings.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -915,8 +915,7 @@ static Widget _rideListWidgets[] = {
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined
-                                                                         : thisRide.ratings.excitement;
+                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined : thisRide.ratings.excitement;
                         const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined
                                                                            : otherRide.ratings.excitement;
                         return leftValue <= rightValue;
@@ -924,19 +923,15 @@ static Widget _rideListWidgets[] = {
                     break;
                 case INFORMATION_TYPE_INTENSITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined
-                                                                         : thisRide.ratings.intensity;
-                        const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined
-                                                                           : otherRide.ratings.intensity;
+                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined : thisRide.ratings.intensity;
+                        const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined : otherRide.ratings.intensity;
                         return leftValue <= rightValue;
                     });
                     break;
                 case INFORMATION_TYPE_NAUSEA:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined
-                                                                         : thisRide.ratings.nausea;
-                        const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined
-                                                                           : otherRide.ratings.nausea;
+                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined : thisRide.ratings.nausea;
+                        const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined : otherRide.ratings.nausea;
                         return leftValue <= rightValue;
                     });
                     break;
