@@ -65,7 +65,7 @@ void Painter::Paint(IDrawingEngine& de)
     auto* replayManager = GetContext()->GetReplayManager();
     const char* text = nullptr;
 
-    if (replayManager->IsReplaying())
+    if (replayManager->IsReplaying() && !Config::Get().interface.UseUnobtrusiveReplays)
         text = "Replaying...";
     else if (replayManager->ShouldDisplayNotice())
         text = "Recording...";

@@ -870,7 +870,7 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && !result.Position.IsNull())
+                if (!Config::Get().interface.UseUnobtrusiveReplays && isPositionValid && !result.Position.IsNull())
                 {
                     auto* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
