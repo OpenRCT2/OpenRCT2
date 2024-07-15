@@ -9,7 +9,6 @@
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
 - Fix: [#22056] Potential crash upon exiting the game.
-- Fix: [#22208] Cursor may fail to register hits in some cases.
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
 - Fix: [#22284] Unrated rides cause high amount of nausea.
 
