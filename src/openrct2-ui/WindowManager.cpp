@@ -129,6 +129,8 @@ public:
                 return TitleMenuOpen();
             case WindowClass::TitleOptions:
                 return TitleOptionsOpen();
+            case WindowClass::TitleVersion:
+                return TitleVersionOpen();
             case WindowClass::TopToolbar:
                 return TopToolbarOpen();
             case WindowClass::ViewClipping:

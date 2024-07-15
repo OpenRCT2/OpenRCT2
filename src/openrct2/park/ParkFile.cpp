@@ -1470,7 +1470,7 @@ namespace OpenRCT2
                     {
                         uint16_t tempRideValue{};
                         cs.ReadWrite(tempRideValue);
-                        if (tempRideValue == 0xFFFFU)
+                        if (tempRideValue == 0xFFFFu)
                         {
                             ride.value = RIDE_VALUE_UNDEFINED;
                         }
@@ -1483,7 +1483,7 @@ namespace OpenRCT2
                     {
                         money64 tempRideValue{};
                         cs.ReadWrite(tempRideValue);
-                        if (tempRideValue == 0xFFFFU)
+                        if (tempRideValue == 0xFFFFu)
                         {
                             ride.value = RIDE_VALUE_UNDEFINED;
                         }

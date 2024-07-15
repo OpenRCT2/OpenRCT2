@@ -201,7 +201,7 @@ void PeepUpdateAll()
 
     const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
 
-    constexpr auto kTicks128Mask = 128U - 1U;
+    constexpr auto kTicks128Mask = 128u - 1u;
     const auto currentTicksMasked = currentTicks & kTicks128Mask;
 
     uint32_t index = 0;

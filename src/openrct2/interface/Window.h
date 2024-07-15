@@ -255,7 +255,7 @@ enum WINDOW_FLAGS
     WF_SCROLLING_TO_LOCATION = (1 << 3),
     WF_TRANSPARENT = (1 << 4),
     WF_NO_BACKGROUND = (1 << 5), // Instead of half transparency, completely remove the window background
-    WF_DEAD = (1U << 6),         // Window is closed and will be deleted in the next update.
+    WF_DEAD = (1u << 6),         // Window is closed and will be deleted in the next update.
     WF_7 = (1 << 7),
     WF_RESIZABLE = (1 << 8),
     WF_NO_AUTO_CLOSE = (1 << 9), // Don't auto close this window if too many windows are open

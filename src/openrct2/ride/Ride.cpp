@@ -2274,7 +2274,7 @@ void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
         ride.vehicleColourSettings = VehicleColourSettings::perTrain;
         for (uint32_t i = 0; i < presetList->count; i++)
         {
-            const auto index = i % 32U;
+            const auto index = i % 32u;
             ride.vehicle_colours[i] = presetList->list[index];
         }
     }

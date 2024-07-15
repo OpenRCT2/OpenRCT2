@@ -15,7 +15,6 @@
 #include "../../GameState.h"
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
-#include "../../Version.h"
 #include "../../audio/audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
@@ -89,16 +88,6 @@ void TitleScene::StopPreviewingSequence()
 bool TitleScene::IsPreviewingSequence()
 {
     return _previewingSequence;
-}
-
-bool TitleScene::ShouldHideVersionInfo()
-{
-    return _hideVersionInfo;
-}
-
-void TitleScene::SetHideVersionInfo(bool value)
-{
-    _hideVersionInfo = value;
 }
 
 void TitleScene::Load()
@@ -210,8 +199,8 @@ void TitleScene::CreateWindows()
     ContextOpenWindow(WindowClass::TitleExit);
     ContextOpenWindow(WindowClass::TitleOptions);
     ContextOpenWindow(WindowClass::TitleLogo);
+    ContextOpenWindow(WindowClass::TitleVersion);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
-    _hideVersionInfo = false;
 }
 
 void TitleScene::TitleInitialise()
@@ -370,27 +359,6 @@ void TitleSequenceChangePreset(size_t preset)
     }
 }
 
-bool TitleShouldHideVersionInfo()
-{
-    auto* context = OpenRCT2::GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
-    if (titleScene != nullptr)
-    {
-        return titleScene->ShouldHideVersionInfo();
-    }
-    return false;
-}
-
-void TitleSetHideVersionInfo(bool value)
-{
-    auto* context = OpenRCT2::GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
-    if (titleScene != nullptr)
-    {
-        titleScene->SetHideVersionInfo(value);
-    }
-}
-
 size_t TitleGetConfigSequence()
 {
     return TitleSequenceManagerGetIndexForConfigID(Config::Get().interface.CurrentTitleSequencePreset.c_str());
@@ -437,31 +405,4 @@ bool TitleIsPreviewingSequence()
         return titleScene->IsPreviewingSequence();
     }
     return false;
-}
-
-void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
-{
-    thread_local std::string buffer;
-    buffer.clear();
-    buffer.assign("{OUTLINE}{WHITE}");
-
-    // Write name and version information
-    buffer += gVersionInfoFull;
-
-    DrawText(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), { COLOUR_BLACK }, buffer.c_str());
-    int16_t width = static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium));
-
-    // Write platform information
-    buffer.assign("{OUTLINE}{WHITE}");
-    buffer.append(OPENRCT2_PLATFORM);
-    buffer.append(" (");
-    buffer.append(OPENRCT2_ARCHITECTURE);
-    buffer.append(")");
-
-    DrawText(dpi, screenCoords + ScreenCoordsXY(5, 5), { COLOUR_BLACK }, buffer.c_str());
-    width = std::max(width, static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium)));
-
-    // Invalidate screen area
-    GfxSetDirtyBlocks({ screenCoords - ScreenCoordsXY(0, 13),
-                        screenCoords + ScreenCoordsXY{ width + 5, 30 } }); // 30 is an arbitrary height to catch both strings
 }
