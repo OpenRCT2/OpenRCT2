@@ -3355,22 +3355,22 @@ declare global {
         /**
          * The number of lawns mown by the handyman.
          */
-        lawnsMown: number;
+        readonly lawnsMown: number;
 
         /**
          * The number of gardens watered by the handyman.
          */
-        gardensWatered: number;
+        readonly gardensWatered: number;
 
         /**
          * The number of litter swept by the handyman.
          */
-        litterSwept: number;
+        readonly litterSwept: number;
 
         /**
          * The number of bins emptied by the handyman.
          */
-        binsEmptied: number;
+        readonly binsEmptied: number;
     }
 
     /**
@@ -3382,12 +3382,12 @@ declare global {
         /**
          * The number of rides fixed by the mechanic.
          */
-        ridesFixed: number;
+        readonly ridesFixed: number;
 
         /**
          * The number of inspections performed by the mechanic.
          */
-        ridesInspected: number;
+        readonly ridesInspected: number;
     }
 
     /**
@@ -3399,7 +3399,7 @@ declare global {
         /**
          * The number of vandals stopped by the security guard.
          */
-        vandalsStopped: number;
+        readonly vandalsStopped: number;
     }
 
     interface Entertainer extends BaseStaff {

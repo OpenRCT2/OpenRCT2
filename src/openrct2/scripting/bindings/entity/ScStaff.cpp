@@ -446,10 +446,10 @@ namespace OpenRCT2::Scripting
     void ScHandyman::Register(duk_context* ctx)
     {
         dukglue_set_base_class<ScStaff, ScHandyman>(ctx);
-        dukglue_register_property(ctx, &ScHandyman::lawnsMown_get, &ScHandyman::lawnsMown_set, "lawnsMown");
-        dukglue_register_property(ctx, &ScHandyman::gardensWatered_get, &ScHandyman::gardensWatered_set, "gardensWatered");
-        dukglue_register_property(ctx, &ScHandyman::litterSwept_get, &ScHandyman::litterSwept_set, "litterSwept");
-        dukglue_register_property(ctx, &ScHandyman::binsEmptied_get, &ScHandyman::binsEmptied_set, "binsEmptied");
+        dukglue_register_property(ctx, &ScHandyman::lawnsMown_get, nullptr, "lawnsMown");
+        dukglue_register_property(ctx, &ScHandyman::gardensWatered_get, nullptr, "gardensWatered");
+        dukglue_register_property(ctx, &ScHandyman::litterSwept_get, nullptr, "litterSwept");
+        dukglue_register_property(ctx, &ScHandyman::binsEmptied_get, nullptr, "binsEmptied");
     }
 
     Staff* ScHandyman::GetHandyman() const
@@ -473,16 +473,6 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
-    void ScHandyman::lawnsMown_set(uint32_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
-        {
-            peep->StaffLawnsMown = value;
-        }
-    }
-
     DukValue ScHandyman::gardensWatered_get() const
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -497,16 +487,6 @@ namespace OpenRCT2::Scripting
             duk_push_undefined(ctx);
         }
         return DukValue::take_from_stack(ctx);
-    }
-
-    void ScHandyman::gardensWatered_set(uint32_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
-        {
-            peep->StaffGardensWatered = value;
-        }
     }
 
     DukValue ScHandyman::litterSwept_get() const
@@ -525,16 +505,6 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
-    void ScHandyman::litterSwept_set(uint32_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
-        {
-            peep->StaffLitterSwept = value;
-        }
-    }
-
     DukValue ScHandyman::binsEmptied_get() const
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -551,16 +521,6 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
-    void ScHandyman::binsEmptied_set(uint32_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
-        {
-            peep->StaffBinsEmptied = value;
-        }
-    }
-
     ScMechanic::ScMechanic(EntityId Id)
         : ScStaff(Id)
     {
@@ -569,8 +529,8 @@ namespace OpenRCT2::Scripting
     void ScMechanic::Register(duk_context* ctx)
     {
         dukglue_set_base_class<ScStaff, ScMechanic>(ctx);
-        dukglue_register_property(ctx, &ScMechanic::ridesFixed_get, &ScMechanic::ridesFixed_set, "ridesFixed");
-        dukglue_register_property(ctx, &ScMechanic::ridesInspected_get, &ScMechanic::ridesInspected_set, "ridesInspected");
+        dukglue_register_property(ctx, &ScMechanic::ridesFixed_get, nullptr, "ridesFixed");
+        dukglue_register_property(ctx, &ScMechanic::ridesInspected_get, nullptr, "ridesInspected");
     }
 
     Staff* ScMechanic::GetMechanic() const
@@ -594,16 +554,6 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
-    void ScMechanic::ridesFixed_set(uint32_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetMechanic();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
-        {
-            peep->StaffRidesFixed = value;
-        }
-    }
-
     DukValue ScMechanic::ridesInspected_get() const
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -620,16 +570,6 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
-    void ScMechanic::ridesInspected_set(uint32_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetMechanic();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
-        {
-            peep->StaffRidesInspected = value;
-        }
-    }
-
     ScSecurity::ScSecurity(EntityId Id)
         : ScStaff(Id)
     {
@@ -638,7 +578,7 @@ namespace OpenRCT2::Scripting
     void ScSecurity::Register(duk_context* ctx)
     {
         dukglue_set_base_class<ScStaff, ScSecurity>(ctx);
-        dukglue_register_property(ctx, &ScSecurity::vandalsStopped_get, &ScSecurity::vandalsStopped_set, "vandalsStopped");
+        dukglue_register_property(ctx, &ScSecurity::vandalsStopped_get, nullptr, "vandalsStopped");
     }
 
     Staff* ScSecurity::GetSecurity() const
@@ -660,16 +600,6 @@ namespace OpenRCT2::Scripting
             duk_push_undefined(ctx);
         }
         return DukValue::take_from_stack(ctx);
-    }
-
-    void ScSecurity::vandalsStopped_set(uint32_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetSecurity();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
-        {
-            peep->StaffVandalsStopped = value;
-        }
     }
 
     ScPatrolArea::ScPatrolArea(EntityId id)

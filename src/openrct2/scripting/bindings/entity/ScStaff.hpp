@@ -89,16 +89,12 @@ namespace OpenRCT2::Scripting
         Staff* GetHandyman() const;
 
         DukValue lawnsMown_get() const;
-        void lawnsMown_set(uint32_t value);
 
         DukValue gardensWatered_get() const;
-        void gardensWatered_set(uint32_t value);
 
         DukValue litterSwept_get() const;
-        void litterSwept_set(uint32_t value);
 
         DukValue binsEmptied_get() const;
-        void binsEmptied_set(uint32_t value);
     };
 
     class ScMechanic : public ScStaff
@@ -112,10 +108,8 @@ namespace OpenRCT2::Scripting
         Staff* GetMechanic() const;
 
         DukValue ridesFixed_get() const;
-        void ridesFixed_set(uint32_t value);
 
         DukValue ridesInspected_get() const;
-        void ridesInspected_set(uint32_t value);
     };
 
     class ScSecurity : public ScStaff
@@ -129,7 +123,6 @@ namespace OpenRCT2::Scripting
         Staff* GetSecurity() const;
 
         DukValue vandalsStopped_get() const;
-        void vandalsStopped_set(uint32_t value);
     };
 
 } // namespace OpenRCT2::Scripting
