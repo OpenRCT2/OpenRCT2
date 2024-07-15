@@ -195,6 +195,7 @@ namespace OpenRCT2
 #endif
 
             GameActions::ClearQueue();
+            _replayManager->StopRecording(true);
 #ifndef DISABLE_NETWORK
             _network.Close();
 #endif
