@@ -812,7 +812,6 @@ void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const track_
  *
  *  rct2: 0x006D6D1F
  */
-uint8_t test_speed_timeout = 0;
 void Vehicle::UpdateMeasurements()
 {
     auto curRide = GetRide();
