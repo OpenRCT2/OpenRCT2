@@ -1315,7 +1315,7 @@ void Guest::UpdateSitting()
 
         if (HasFoodOrDrink())
         {
-            if ((ScenarioRand() & 0xFFFFU) > 1310u)
+            if ((ScenarioRand() & 0xFFFFu) > 1310u)
             {
                 TryGetUpFromSitting();
                 return;
@@ -1328,7 +1328,7 @@ void Guest::UpdateSitting()
         }
 
         const auto rand = ScenarioRand();
-        if ((rand & 0xFFFFU) > 131u)
+        if ((rand & 0xFFFFu) > 131u)
         {
             TryGetUpFromSitting();
             return;
