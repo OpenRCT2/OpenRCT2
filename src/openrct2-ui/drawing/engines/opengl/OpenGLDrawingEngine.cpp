@@ -50,6 +50,12 @@ struct OpenGLVersion
 
 constexpr OpenGLVersion OPENGL_MINIMUM_REQUIRED_VERSION = { 3, 3 };
 
+constexpr uint8_t kCSInside = 0b0000;
+constexpr uint8_t kCSLeft = 0b0001;
+constexpr uint8_t kCSRight = 0b0010;
+constexpr uint8_t kCSTop = 0b0100;
+constexpr uint8_t kCSBottom = 0b1000;
+
 class OpenGLDrawingEngine;
 
 class OpenGLDrawingContext final : public IDrawingContext
@@ -81,6 +87,9 @@ private:
         RectCommandBatch rects;
         RectCommandBatch transparent;
     } _commandBuffers;
+
+    static uint8_t ComputeOutCode(ScreenCoordsXY, ScreenCoordsXY, ScreenCoordsXY);
+    static bool CohenSutherlandLineClip(ScreenLine&, const DrawPixelInfo&);
 
 public:
     explicit OpenGLDrawingContext(OpenGLDrawingEngine& engine);
@@ -576,17 +585,104 @@ void OpenGLDrawingContext::FilterRect(
     command.depth = _drawCount++;
 }
 
+// Compute the bit code for a point p relative to the clip rectangle defined by topLeft and bottomRight
+uint8_t OpenGLDrawingContext::ComputeOutCode(
+    const ScreenCoordsXY p, const ScreenCoordsXY topLeft, const ScreenCoordsXY bottomRight)
+{
+    uint8_t code = kCSInside;
+
+    if (p.x < topLeft.x)
+        code |= kCSLeft;
+    else if (p.x > bottomRight.x)
+        code |= kCSRight;
+    if (p.y < topLeft.y)
+        code |= kCSTop;
+    else if (p.y > bottomRight.y)
+        code |= kCSBottom;
+
+    return code;
+}
+
+// Trims the line to be within the bounds of the dpi.
+// based on: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
+bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawPixelInfo& dpi)
+{
+    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
+    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
+    uint8_t outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
+    uint8_t outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
+
+    while (true)
+    {
+        if (outcode1 == kCSInside && outcode2 == kCSInside)
+        {
+            // both points inside dpi
+            return true;
+        }
+        if (outcode1 & outcode2)
+        {
+            // both points share an outside zone so both must be outside dpi
+            return false;
+        }
+
+        // At least one endpoint is outside the clip rectangle; pick it.
+        uint8_t outcodeOut = outcode2 > outcode1 ? outcode2 : outcode1;
+        ScreenCoordsXY clipped;
+
+        // clang-format off
+        if (outcodeOut & kCSBottom)
+        {
+            clipped.x = line.Point1.x + (line.Point2.x - line.Point1.x) *
+                (bottomRight.y - line.Point1.y) / (line.Point2.y - line.Point1.y);
+            clipped.y = bottomRight.y;
+        }
+        else if (outcodeOut & kCSTop)
+        {
+            clipped.x = line.Point1.x + (line.Point2.x - line.Point1.x) *
+                (topLeft.y - line.Point1.y) / (line.Point2.y - line.Point1.y);
+            clipped.y = topLeft.y;
+        }
+        else if (outcodeOut & kCSRight)
+        {
+            clipped.y = line.Point1.y + (line.Point2.y - line.Point1.y) *
+                (bottomRight.x - line.Point1.x) / (line.Point2.x - line.Point1.x);
+            clipped.x = bottomRight.x;
+        }
+        else if (outcodeOut & kCSLeft)
+        {
+            clipped.y = line.Point1.y + (line.Point2.y - line.Point1.y) *
+                (topLeft.x - line.Point1.x) / (line.Point2.x - line.Point1.x);
+            clipped.x = topLeft.x;
+        }
+        // clang-format on
+
+        if (outcodeOut == outcode1)
+        {
+            line.Point1 = clipped;
+            outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
+        }
+        else
+        {
+            line.Point2 = clipped;
+            outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
+        }
+    }
+}
+
 void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
-    // Note: this function does not respect DPI bounds.
+    ScreenLine trimmedLine = line;
+    if (!CohenSutherlandLineClip(trimmedLine, dpi))
+        return;
+
     CalculcateClipping(dpi);
 
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
-    const int32_t x1 = dpi.zoom_level.ApplyInversedTo(line.GetX1() - dpi.x) + _clipLeft;
-    const int32_t y1 = dpi.zoom_level.ApplyInversedTo(line.GetY1() - dpi.y) + _clipTop;
-    const int32_t x2 = dpi.zoom_level.ApplyInversedTo(line.GetX2() - dpi.x) + _clipLeft;
-    const int32_t y2 = dpi.zoom_level.ApplyInversedTo(line.GetY2() - dpi.y) + _clipTop;
+    const int32_t x1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX1() - dpi.x) + _clipLeft;
+    const int32_t y1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY1() - dpi.y) + _clipTop;
+    const int32_t x2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX2() - dpi.x) + _clipLeft;
+    const int32_t y2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY2() - dpi.y) + _clipTop;
 
     command.bounds = { x1, y1, x2, y2 };
     command.colour = colour & 0xFF;
