@@ -3285,7 +3285,7 @@ declare global {
     /**
      * Represents a staff member.
      */
-    interface Staff extends Peep {
+    interface BaseStaff extends Peep {
         /**
          * The type of staff member, e.g. handyman, mechanic.
          */
@@ -3344,10 +3344,14 @@ declare global {
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
 
+    type Staff = Handyman | Mechanic | Security | Entertainer;
+
     /**
      * Represents a handyman.
      */
-    interface Handyman extends Staff {
+    interface Handyman extends BaseStaff {
+        staffType: "handyman";
+
         /**
          * The number of lawns mown by the handyman.
          */
@@ -3372,7 +3376,9 @@ declare global {
     /**
      * Represents a mechanic.
      */
-    interface Mechanic extends Staff {
+    interface Mechanic extends BaseStaff {
+        staffType: "mechanic";
+
         /**
          * The number of rides fixed by the mechanic.
          */
@@ -3387,11 +3393,17 @@ declare global {
     /**
      * Represents a security guard.
      */
-    interface Security extends Staff {
+    interface Security extends BaseStaff {
+        staffType: "security";
+
         /**
          * The number of vandals stopped by the security guard.
          */
         vandalsStopped: number;
+    }
+
+    interface Entertainer extends BaseStaff {
+        staffType: "entertainer";
     }
 
     interface PatrolArea {
