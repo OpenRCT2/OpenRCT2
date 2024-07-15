@@ -1395,8 +1395,8 @@ void NetworkBase::ServerSendScripts(NetworkConnection& connection)
 
 #    else
     NetworkPacket packetScriptHeader(NetworkCommand::ScriptsHeader);
-    packetScriptHeader << static_cast<uint32_t>(0U);
-    packetScriptHeader << static_cast<uint32_t>(0U);
+    packetScriptHeader << static_cast<uint32_t>(0u);
+    packetScriptHeader << static_cast<uint32_t>(0u);
 #    endif
 }
 

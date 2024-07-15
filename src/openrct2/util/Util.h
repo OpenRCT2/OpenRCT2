@@ -88,5 +88,5 @@ constexpr uint8_t HiByte(uint16_t value)
 
 constexpr uint8_t LoByte(uint16_t value)
 {
-    return static_cast<uint8_t>(value & 0xFFU);
+    return static_cast<uint8_t>(value & 0xFFu);
 }

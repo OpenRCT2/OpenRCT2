@@ -1315,7 +1315,7 @@ void Guest::UpdateSitting()
 
         if (HasFoodOrDrink())
         {
-            if ((ScenarioRand() & 0xFFFFU) > 1310U)
+            if ((ScenarioRand() & 0xFFFFu) > 1310u)
             {
                 TryGetUpFromSitting();
                 return;
@@ -1328,7 +1328,7 @@ void Guest::UpdateSitting()
         }
 
         const auto rand = ScenarioRand();
-        if ((rand & 0xFFFFU) > 131U)
+        if ((rand & 0xFFFFu) > 131u)
         {
             TryGetUpFromSitting();
             return;
@@ -1340,12 +1340,12 @@ void Guest::UpdateSitting()
         }
 
         Action = PeepActionType::SittingLookAroundLeft;
-        if (rand & 0x80000000U)
+        if (rand & 0x80000000u)
         {
             Action = PeepActionType::SittingLookAroundRight;
         }
 
-        if (rand & 0x40000000U)
+        if (rand & 0x40000000u)
         {
             Action = PeepActionType::SittingCheckWatch;
         }
@@ -2145,7 +2145,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             // there's a 90% chance that the peep will ignore it.
             if (!RideHasRatings(ride) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES))
             {
-                if ((ScenarioRand() & 0xFFFF) > 0x1999U)
+                if ((ScenarioRand() & 0xFFFF) > 0x1999u)
                 {
                     ChoseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
@@ -3647,7 +3647,7 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     const auto& rtd = ride.GetRideTypeDescriptor();
     CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
 
-    const auto waypointIndex = Var37 / 4U;
+    const auto waypointIndex = Var37 / 4u;
     if (waypointIndex < carEntry->peep_loading_waypoints.size())
     {
         Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
@@ -4317,7 +4317,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     CoordsXYZ exitWaypointLoc = waypointLoc;
 
-    const auto waypointIndex = Var37 / 4U;
+    const auto waypointIndex = Var37 / 4u;
     if (waypointIndex < carEntry->peep_loading_waypoints.size())
     {
         exitWaypointLoc.x += carEntry->peep_loading_waypoints[waypointIndex][2].x;
@@ -4494,7 +4494,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     }
 
     const auto& vehicle_type = rideEntry->Cars[vehicle->vehicle_type];
-    const auto waypointIndex = Var37 / 4U;
+    const auto waypointIndex = Var37 / 4u;
     if (waypointIndex < vehicle_type.peep_loading_waypoints.size())
     {
         Guard::Assert(waypoint < 3);

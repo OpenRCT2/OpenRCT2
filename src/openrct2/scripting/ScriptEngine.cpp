@@ -1634,7 +1634,7 @@ IntervalHandle ScriptEngine::AllocateHandle()
     const auto nextHandle = _nextIntervalHandle;
 
     // In case of overflow start from 1 again
-    _nextIntervalHandle = std::max(_nextIntervalHandle + 1U, 1U);
+    _nextIntervalHandle = std::max(_nextIntervalHandle + 1u, 1u);
 
     return nextHandle;
 }
