@@ -812,6 +812,7 @@ void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const track_
  *
  *  rct2: 0x006D6D1F
  */
+uint8_t test_speed_timeout = 0;
 void Vehicle::UpdateMeasurements()
 {
     auto curRide = GetRide();
@@ -851,10 +852,9 @@ void Vehicle::UpdateMeasurements()
         if (curRide->average_speed_test_timeout == 0)
         {
             if (absVelocity > 0x8000)
-            {
-                curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity); 
-            }
-            stationForTestSegment.SegmentTime++;
+                curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity);
+            if (absVelocity > 0)
+                stationForTestSegment.SegmentTime++;
         }
 
         int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
