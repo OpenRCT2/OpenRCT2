@@ -155,7 +155,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             WindowCloseByClass(WindowClass::TitleOptions);
             WindowCloseByClass(WindowClass::TitleMenu);
             WindowCloseByClass(WindowClass::TitleExit);
-            TitleSetHideVersionInfo(true);
+            WindowCloseByClass(WindowClass::TitleVersion);
         }
         else
         {

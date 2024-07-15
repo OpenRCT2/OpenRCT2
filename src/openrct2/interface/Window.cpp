@@ -1389,6 +1389,10 @@ void WindowResizeGui(int32_t width, int32_t height)
         titleWind->windowPos.y = height - 182;
     }
 
+    WindowBase* versionWind = WindowFindByClass(WindowClass::TitleVersion);
+    if (versionWind != nullptr)
+        versionWind->windowPos.y = height - 30;
+
     WindowBase* exitWind = WindowFindByClass(WindowClass::TitleExit);
     if (exitWind != nullptr)
     {
