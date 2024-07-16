@@ -101,6 +101,19 @@ void WindowVisitEach(std::function<void(WindowBase*)> func)
     }
 }
 
+void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled)
+{
+    WindowVisitEach([&](WindowBase* w) {
+        if (w->viewport != nullptr)
+        {
+            if (enabled)
+                w->viewport->flags |= viewportFlag;
+            else
+                w->viewport->flags &= ~viewportFlag;
+        }
+    });
+}
+
 /**
  *
  *  rct2: 0x006ED7B0

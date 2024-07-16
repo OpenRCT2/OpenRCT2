@@ -36,7 +36,7 @@ struct IObjectManager
     virtual Object* LoadObject(const RCTObjectEntry* entry) = 0;
     virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor) = 0;
     virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor, ObjectEntryIndex slot) = 0;
-    virtual void LoadObjects(const ObjectList& entries) = 0;
+    virtual void LoadObjects(const ObjectList& entries, const bool reportProgress = false) = 0;
     virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) = 0;
     virtual void UnloadAllTransient() = 0;
     virtual void UnloadAll() = 0;
