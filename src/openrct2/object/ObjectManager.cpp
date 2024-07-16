@@ -14,6 +14,7 @@
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
+#include "../core/JobPool.h"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
@@ -37,6 +38,8 @@
 #include <mutex>
 #include <thread>
 #include <unordered_set>
+
+using namespace OpenRCT2;
 
 /**
  * Represents an object that is to be loaded or is loaded and ready
@@ -556,30 +559,6 @@ private:
         return requiredObjects;
     }
 
-    template<typename T, typename TFunc> static void ParallelFor(const std::vector<T>& items, TFunc func)
-    {
-        auto partitions = std::thread::hardware_concurrency();
-        auto partitionSize = (items.size() + (partitions - 1)) / partitions;
-        std::vector<std::thread> threads;
-        for (size_t n = 0; n < partitions; n++)
-        {
-            auto begin = n * partitionSize;
-            auto end = std::min(items.size(), begin + partitionSize);
-            threads.emplace_back(
-                [func](size_t pbegin, size_t pend) {
-                    for (size_t i = pbegin; i < pend; i++)
-                    {
-                        func(i);
-                    }
-                },
-                begin, end);
-        }
-        for (auto& t : threads)
-        {
-            t.join();
-        }
-    }
-
     void LoadObjects(std::vector<ObjectToLoad>& requiredObjects)
     {
         std::vector<Object*> objects;
@@ -607,11 +586,11 @@ private:
         std::sort(objectsToLoad.begin(), objectsToLoad.end());
         objectsToLoad.erase(std::unique(objectsToLoad.begin(), objectsToLoad.end()), objectsToLoad.end());
 
-        // Load the objects.
+        // Prepare for loading objects multi-threaded
+        auto numProcessed = 0;
+        auto numRequired = objectsToLoad.size();
         std::mutex commonMutex;
-        ParallelFor(objectsToLoad, [&](size_t i) {
-            const auto* requiredObject = objectsToLoad[i];
-
+        auto loadSingleObject = [&](const ObjectRepositoryItem* requiredObject) {
             // Object requires to be loaded, if the object successfully loads it will register it
             // as a loaded object otherwise placed into the badObjects list.
             auto newObject = _objectRepository.LoadObject(requiredObject);
@@ -628,7 +607,19 @@ private:
                 // Connect the ori to the registered object
                 _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
             }
-        });
+
+            numProcessed++;
+        };
+
+        // Dispatch loading the objects
+        JobPool jobs{};
+        for (auto* object : objectsToLoad)
+        {
+            jobs.AddTask([object, &loadSingleObject]() { loadSingleObject(object); });
+        }
+
+        // Wait until all jobs are fully completed
+        jobs.Join();
 
         // Assign the loaded objects to the required objects
         for (auto& requiredObject : requiredObjects)
