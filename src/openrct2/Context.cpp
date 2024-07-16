@@ -773,7 +773,7 @@ namespace OpenRCT2
                 SetProgress(0, 100, STR_STRING_M_PERCENT, true);
 
                 auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                SetProgress(30, 100, STR_STRING_M_PERCENT, true);
+                SetProgress(10, 100, STR_STRING_M_PERCENT, true);
 
                 // From this point onwards the currently loaded park will be corrupted if loading fails
                 // so reload the title screen if that happens.
@@ -781,7 +781,7 @@ namespace OpenRCT2
 
                 GameUnloadScripts();
                 _objectManager->LoadObjects(result.RequiredObjects, true);
-                SetProgress(70, 100, STR_STRING_M_PERCENT, true);
+                SetProgress(90, 100, STR_STRING_M_PERCENT, true);
 
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = ::GetGameState();

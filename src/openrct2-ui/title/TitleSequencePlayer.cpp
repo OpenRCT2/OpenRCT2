@@ -318,11 +318,11 @@ namespace OpenRCT2::Title
                     auto parkImporter = ParkImporter::Create(path);
 
                     auto result = parkImporter->Load(path);
-                    ReportProgress(30);
+                    ReportProgress(10);
 
                     auto& objectManager = GetContext()->GetObjectManager();
                     objectManager.LoadObjects(result.RequiredObjects, true);
-                    ReportProgress(70);
+                    ReportProgress(90);
 
                     // TODO: Have a separate GameState and exchange once loaded.
                     auto& gameState = GetGameState();

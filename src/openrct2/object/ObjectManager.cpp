@@ -561,8 +561,8 @@ private:
 
     void ReportProgress(size_t numLoaded, size_t numRequired)
     {
-        constexpr auto kObjectLoadMinProgress = 30;
-        constexpr auto kObjectLoadMaxProgress = 70;
+        constexpr auto kObjectLoadMinProgress = 10;
+        constexpr auto kObjectLoadMaxProgress = 90;
         constexpr auto kObjectLoadProgressRange = kObjectLoadMaxProgress - kObjectLoadMinProgress;
 
         const auto currentProgress = kObjectLoadMinProgress + (numLoaded * kObjectLoadProgressRange / numRequired);
