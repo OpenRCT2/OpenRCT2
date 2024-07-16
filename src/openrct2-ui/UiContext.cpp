@@ -739,15 +739,16 @@ private:
         if (!config.InferDisplayDPI)
             return;
 
-        float ddpi, hdpi, vdpi;
-        if (SDL_GetDisplayDPI(0, &ddpi, &hdpi, &vdpi) == 0)
-        {
-            constexpr auto regularDPI = 96.0f;
-            config.WindowScale = std::round(ddpi / regularDPI * 2.0) / 2.0;
+        int wWidth, wHeight;
+        SDL_GetWindowSize(_window, &wWidth, &wHeight);
+        LOG_INFO("SDL_GetWindowSize: %d, %d", wWidth, wHeight);
 
-            LOG_VERBOSE("Changing DPI scaling to %f\n", config.WindowScale);
-        }
+        auto renderer = SDL_GetRenderer(_window);
+        int rWidth, rHeight;
+        SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight);
+        LOG_INFO("SDL_GetRendererOutputSize: %d, %d", rWidth, rHeight);
 
+        config.WindowScale = rWidth / wWidth;
         config.InferDisplayDPI = false;
         Config::Save();
     }
@@ -775,7 +776,6 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
-        InferDisplayDPI();
         ApplyScreenSaverLockSetting();
 
         SDL_SetWindowMinimumSize(_window, 720, 480);
@@ -784,6 +784,7 @@ private:
 
         // Initialise the surface, palette and draw buffer
         DrawingEngineInit();
+        InferDisplayDPI();
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
