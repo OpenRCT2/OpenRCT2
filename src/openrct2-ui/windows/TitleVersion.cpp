@@ -19,6 +19,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 500;
     static constexpr int32_t WH = 30;
 
+    static constexpr uint8_t kTextOffset = 8;
+
     static Widget _widgets[] = {
         kWidgetsEnd,
     };
@@ -40,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
             // Write platform information
             constexpr const char platformInfo[] = OPENRCT2_PLATFORM " (" OPENRCT2_ARCHITECTURE ")";
             DrawText(dpi, windowPos + ScreenCoordsXY(0, kListRowHeight), { whiteOutline }, platformInfo);
-            width = std::max<int16_t>(width, GfxGetStringWidth(platformInfo, FontStyle::Medium));
+            width = std::max<int16_t>(width, GfxGetStringWidth(platformInfo, FontStyle::Medium)) + kTextOffset;
         }
     };
 
@@ -50,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = WindowCreate<TitleVersionWindow>(
-                WindowClass::TitleVersion, ScreenCoordsXY(8, ContextGetHeight() - 30), WW, WH,
+                WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), WW, WH,
                 WF_STICK_TO_BACK | WF_TRANSPARENT);
         }
         return window;
