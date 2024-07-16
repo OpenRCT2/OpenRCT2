@@ -780,7 +780,7 @@ namespace OpenRCT2
                 loadTitleScreenFirstOnFail = true;
 
                 GameUnloadScripts();
-                _objectManager->LoadObjects(result.RequiredObjects);
+                _objectManager->LoadObjects(result.RequiredObjects, true);
                 SetProgress(70, 100, STR_STRING_M_PERCENT, true);
 
                 // TODO: Have a separate GameState and exchange once loaded.

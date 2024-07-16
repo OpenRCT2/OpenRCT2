@@ -186,13 +186,13 @@ public:
         return RepositoryItemToObject(ori, slot);
     }
 
-    void LoadObjects(const ObjectList& objectList) override
+    void LoadObjects(const ObjectList& objectList, const bool reportProgress) override
     {
         // Find all the required objects
         auto requiredObjects = GetRequiredObjects(objectList);
 
         // Load the required objects
-        LoadObjects(requiredObjects);
+        LoadObjects(requiredObjects, reportProgress);
 
         // Update indices.
         UpdateSceneryGroupIndexes();
@@ -559,7 +559,17 @@ private:
         return requiredObjects;
     }
 
-    void LoadObjects(std::vector<ObjectToLoad>& requiredObjects)
+    void ReportProgress(size_t numLoaded, size_t numRequired)
+    {
+        constexpr auto kObjectLoadMinProgress = 30;
+        constexpr auto kObjectLoadMaxProgress = 70;
+        constexpr auto kObjectLoadProgressRange = kObjectLoadMaxProgress - kObjectLoadMinProgress;
+
+        const auto currentProgress = kObjectLoadMinProgress + (numLoaded * kObjectLoadProgressRange / numRequired);
+        OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(currentProgress), 100, STR_STRING_M_PERCENT, true);
+    }
+
+    void LoadObjects(std::vector<ObjectToLoad>& requiredObjects, bool reportProgress)
     {
         std::vector<Object*> objects;
         std::vector<Object*> newLoadedObjects;
@@ -611,11 +621,16 @@ private:
             numProcessed++;
         };
 
+        auto completionFn = [&]() {
+            if (reportProgress && (numProcessed % 100) == 0)
+                ReportProgress(numProcessed, numRequired);
+        };
+
         // Dispatch loading the objects
         JobPool jobs{};
         for (auto* object : objectsToLoad)
         {
-            jobs.AddTask([object, &loadSingleObject]() { loadSingleObject(object); });
+            jobs.AddTask([object, &loadSingleObject]() { loadSingleObject(object); }, completionFn);
         }
 
         // Wait until all jobs are fully completed

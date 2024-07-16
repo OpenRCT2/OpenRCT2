@@ -321,7 +321,7 @@ namespace OpenRCT2::Title
                     ReportProgress(30);
 
                     auto& objectManager = GetContext()->GetObjectManager();
-                    objectManager.LoadObjects(result.RequiredObjects);
+                    objectManager.LoadObjects(result.RequiredObjects, true);
                     ReportProgress(70);
 
                     // TODO: Have a separate GameState and exchange once loaded.
@@ -377,7 +377,7 @@ namespace OpenRCT2::Title
                     ReportProgress(30);
 
                     auto& objectManager = GetContext()->GetObjectManager();
-                    objectManager.LoadObjects(result.RequiredObjects);
+                    objectManager.LoadObjects(result.RequiredObjects, true);
                     ReportProgress(70);
 
                     // TODO: Have a separate GameState and exchange once loaded.
