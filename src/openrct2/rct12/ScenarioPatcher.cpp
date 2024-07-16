@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../PlatformEnvironment.h"
-#include "../core/Crypt.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
@@ -27,6 +26,12 @@
 #include "../world/Map.h"
 #include "../world/Surface.h"
 #include "../world/tile_element/TileElementType.h"
+
+#ifdef DISABLE_NETWORK
+#    include <picosha2.hpp>
+#else
+#    include "../core/Crypt.h"
+#endif
 
 #include <iostream>
 
@@ -406,9 +411,14 @@ static u8string getScenarioSHA256(u8string_view scenarioPath)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
     auto scenarioData = File::ReadAllBytes(scenarioPath);
+#ifdef DISABLE_NETWORK
+    auto scenarioStringHash = picosha2::hash256_hex_string(scenarioData);
+#else
     auto scenarioHash = Crypt::SHA256(scenarioData.data(), scenarioData.size());
-    LOG_INFO("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), String::StringFromHex(scenarioHash).c_str());
-    return String::StringFromHex(scenarioHash);
+    auto scenarioStringHash = String::StringFromHex(scenarioHash);
+#endif
+    LOG_INFO("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), scenarioStringHash.c_str());
+    return scenarioStringHash;
 }
 
 static u8string GetPatchFileName(u8string_view scenarioHash)
