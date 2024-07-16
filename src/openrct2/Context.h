@@ -160,7 +160,9 @@ namespace OpenRCT2
         virtual void DisposeDrawingEngine() = 0;
 
         virtual void OpenProgress(StringId captionStringId) = 0;
-        virtual void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) = 0;
+        virtual void SetProgress(
+            uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE, bool forceDraw = false)
+            = 0;
         virtual void CloseProgress() = 0;
 
         virtual bool LoadParkFromFile(const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) = 0;

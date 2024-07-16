@@ -927,6 +927,9 @@ void ViewportRotateAll(int32_t direction)
  */
 void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect)
 {
+    if (viewport->flags & VIEWPORT_FLAG_RENDERING_INHIBITED)
+        return;
+
     auto [topLeft, bottomRight] = screenRect;
 
     if (bottomRight.x <= viewport->pos.x)
@@ -1018,6 +1021,9 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
     PROFILED_FUNCTION();
 
     const uint32_t viewFlags = viewport->flags;
+    if (viewFlags & VIEWPORT_FLAG_RENDERING_INHIBITED)
+        return;
+
     uint32_t width = screenRect.GetWidth();
     uint32_t height = screenRect.GetHeight();
     const uint32_t bitmask = viewport->zoom >= ZoomLevel{ 0 } ? 0xFFFFFFFF & (viewport->zoom.ApplyTo(0xFFFFFFFF)) : 0xFFFFFFFF;

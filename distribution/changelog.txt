@@ -4,13 +4,17 @@
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
+- Feature: [#22301] Loading save games or scenarios now indicates loading progress.
 - Feature: [OpenMusic#54] Added Progressive ride music style (feat. Approaching Nirvana).
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
+- Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
 - Fix: [#22056] Potential crash upon exiting the game.
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
 - Fix: [#22284] Unrated rides cause high amount of nausea.
+- Fix: [#22304] Graphs don't draw lines on the left edge of the screen.
+- Fix: [#22318] Water sparkles are missing if transparent water is enabled without RCT1 linked.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------

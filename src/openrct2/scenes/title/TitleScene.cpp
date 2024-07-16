@@ -109,18 +109,9 @@ void TitleScene::Load()
     gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
-    CreateWindows();
-
-    GetContext().OpenProgress(STR_LOADING_TITLE_SEQUENCE);
 
     TitleInitialise();
     OpenRCT2::Audio::PlayTitleMusic();
-
-    if (gOpenRCT2ShowChangelog)
-    {
-        gOpenRCT2ShowChangelog = false;
-        ContextOpenWindow(WindowClass::Changelog);
-    }
 
     if (_sequencePlayer != nullptr)
     {
@@ -131,7 +122,13 @@ void TitleScene::Load()
         _sequencePlayer->Update();
     }
 
-    GetContext().CloseProgress();
+    CreateWindows();
+
+    if (gOpenRCT2ShowChangelog)
+    {
+        gOpenRCT2ShowChangelog = false;
+        ContextOpenWindow(WindowClass::Changelog);
+    }
 
     LOG_VERBOSE("TitleScene::Load() finished");
 }
