@@ -120,20 +120,6 @@ public:
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
-        if (gConfigGeneral.InferDisplayDPI)
-        {
-            float ddpi, hdpi, vdpi;
-            if (SDL_GetDisplayDPI(0, &ddpi, &hdpi, &vdpi) == 0)
-            {
-                constexpr auto regularDPI = 96.0f;
-                gConfigGeneral.WindowScale = std::round(ddpi / regularDPI * 4.0) / 4.0;
-
-                LOG_VERBOSE("Changing DPI scaling to %f\n", gConfigGeneral.WindowScale);
-            }
-            gConfigGeneral.InferDisplayDPI = false;
-            auto configPath = env->GetFilePath(PATHID::CONFIG);
-            ConfigSave(configPath.c_str());
-        }
         _cursorRepository.LoadCursors();
         _shortcutManager.LoadUserBindings();
     }
@@ -747,6 +733,25 @@ private:
         LOG_VERBOSE("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
     }
 
+    void InferDisplayDPI()
+    {
+        auto& config = Config::Get().general;
+        if (!config.InferDisplayDPI)
+            return;
+
+        float ddpi, hdpi, vdpi;
+        if (SDL_GetDisplayDPI(0, &ddpi, &hdpi, &vdpi) == 0)
+        {
+            constexpr auto regularDPI = 96.0f;
+            config.WindowScale = std::round(ddpi / regularDPI * 2.0) / 2.0;
+
+            LOG_VERBOSE("Changing DPI scaling to %f\n", config.WindowScale);
+        }
+
+        config.InferDisplayDPI = false;
+        Config::Save();
+    }
+
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size
@@ -770,6 +775,7 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
+        InferDisplayDPI();
         ApplyScreenSaverLockSetting();
 
         SDL_SetWindowMinimumSize(_window, 720, 480);
