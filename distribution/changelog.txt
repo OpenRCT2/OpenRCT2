@@ -4,6 +4,7 @@
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
+- Feature: [#22301] Loading save games or scenarios now indicates loading progress.
 - Feature: [OpenMusic#54] Added Progressive ride music style (feat. Approaching Nirvana).
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
