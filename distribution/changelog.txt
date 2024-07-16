@@ -13,6 +13,7 @@
 - Fix: [#22056] Potential crash upon exiting the game.
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
 - Fix: [#22304] Graphs don't draw lines on the left edge of the screen.
+- Fix: [#22318] Water sparkles are missing if transparent water is enabled without RCT1 linked.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
