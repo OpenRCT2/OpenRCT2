@@ -31,7 +31,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Input.h>
-#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/Version.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
@@ -741,12 +740,10 @@ private:
 
         int wWidth, wHeight;
         SDL_GetWindowSize(_window, &wWidth, &wHeight);
-        LOG_INFO("SDL_GetWindowSize: %d, %d", wWidth, wHeight);
 
         auto renderer = SDL_GetRenderer(_window);
         int rWidth, rHeight;
         SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight);
-        LOG_INFO("SDL_GetRendererOutputSize: %d, %d", rWidth, rHeight);
 
         config.WindowScale = rWidth / wWidth;
         config.InferDisplayDPI = false;
