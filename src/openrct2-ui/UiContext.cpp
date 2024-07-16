@@ -120,7 +120,7 @@ public:
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
-        if (gConfigGeneral.RefreshDPIScaling)
+        if (gConfigGeneral.InferDisplayDPI)
         {
             float ddpi, hdpi, vdpi;
             if (!SDL_GetDisplayDPI(0, &ddpi, &hdpi, &vdpi))
@@ -130,7 +130,7 @@ public:
 
                 LOG_VERBOSE("Changing DPI scaling to %f\n", gConfigGeneral.WindowScale);
             }
-            gConfigGeneral.RefreshDPIScaling = false;
+            gConfigGeneral.InferDisplayDPI = false;
             auto configPath = env->GetFilePath(PATHID::CONFIG);
             ConfigSave(configPath.c_str());
         }
