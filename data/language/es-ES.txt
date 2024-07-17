@@ -3720,6 +3720,9 @@ STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 STR_6644    :Mejoras táctiles
 STR_6645    :Aumenta el tamaño de algunos elementos de la interfaz para que sea más fácil pulsarlos.
+STR_6646    :Autor: {STRING}
+STR_6647    :Autores: {STRING}
+STR_6648    :Cargando motor de plugins…
 
 ##############
 # Escenarios #
