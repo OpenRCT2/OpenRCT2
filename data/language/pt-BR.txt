@@ -3719,6 +3719,9 @@ STR_6645    :Aumenta alguns elementos da interface para ficarem mais fáceis de 
 STR_6646    :Autor: {STRING}
 STR_6647    :Autores: {STRING}
 STR_6648    :Carregando motor de plugins…
+STR_6649    :Carregando cenário…
+STR_6650    :Carregando jogo salvo…
+STR_6651    :{STRING} ({COMMA32}%)
 
 #############
 # Scenarios #

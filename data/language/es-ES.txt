@@ -3723,6 +3723,9 @@ STR_6645    :Aumenta el tamaño de algunos elementos de la interfaz para que sea
 STR_6646    :Autor: {STRING}
 STR_6647    :Autores: {STRING}
 STR_6648    :Cargando motor de plugins…
+STR_6649    :Cargando escenario…
+STR_6650    :Cargando partida guardada…
+STR_6651    :{STRING} ({COMMA32}%)
 
 ##############
 # Escenarios #
