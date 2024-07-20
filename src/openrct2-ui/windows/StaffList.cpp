@@ -226,6 +226,7 @@ static Widget _staffListWidgets[] = {
                     if (_selectedTab != newSelectedTab)
                     {
                         _selectedTab = static_cast<uint8_t>(newSelectedTab);
+                        RefreshList();
                         Invalidate();
                         scrolls[0].v_top = 0;
                         CancelTools();
