@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "common.h"
 #include "drawing/ImageImporter.h"
 
 int32_t CommandLineForSprite(const char** argv, int32_t argc);

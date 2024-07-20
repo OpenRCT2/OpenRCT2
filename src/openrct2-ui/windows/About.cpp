@@ -17,6 +17,7 @@
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 
@@ -139,6 +140,7 @@ static Widget *_windowAboutPageWidgets[] = {
 
             // Draw tab names
             {
+                // TODO: this string shouldn't be reused for this tab
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
                 DrawTextWrapped(
@@ -146,6 +148,7 @@ static Widget *_windowAboutPageWidgets[] = {
                     { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
             }
             {
+                // TODO: this string shouldn't be reused for this tab
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
                 DrawTextWrapped(

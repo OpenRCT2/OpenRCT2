@@ -11,7 +11,6 @@
 
 #include "../Limits.h"
 #include "../actions/ResultWithMessage.h"
-#include "../common.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../object/MusicObject.h"
@@ -56,6 +55,8 @@ constexpr uint8_t kRideNumPoweredLiftsMask = 0b11000000;
 
 constexpr money64 kRideMinPrice = 0.00_GBP;
 constexpr money64 kRideMaxPrice = 20.00_GBP;
+
+extern const StringId kRideInspectionIntervalNames[];
 
 struct RideStation
 {
@@ -437,7 +438,7 @@ struct TrackBeginEnd
     TileElement* end_element;
 };
 #ifdef PLATFORM_32BIT
-assert_struct_size(TrackBeginEnd, 36);
+static_assert(sizeof(TrackBeginEnd) == 36);
 #endif
 
 #pragma pack(pop)
@@ -790,6 +791,7 @@ enum
     RIDE_INVALIDATE_RIDE_LIST = 1 << 3,
     RIDE_INVALIDATE_RIDE_OPERATING = 1 << 4,
     RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
+    RIDE_INVALIDATE_RIDE_MUSIC = 1 << 6,
 };
 
 enum

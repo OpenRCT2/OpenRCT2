@@ -10,6 +10,7 @@
 #include "SignSetStyleAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"

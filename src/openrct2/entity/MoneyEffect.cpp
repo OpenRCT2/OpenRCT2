@@ -6,8 +6,10 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #include "MoneyEffect.h"
 
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
@@ -15,7 +17,6 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"

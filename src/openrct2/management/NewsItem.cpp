@@ -10,6 +10,7 @@
 #include "NewsItem.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
@@ -18,10 +19,9 @@
 #include "../entity/Peep.h"
 #include "../interface/Window.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Research.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -29,6 +29,8 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
+
+#include <cassert>
 
 using namespace OpenRCT2;
 

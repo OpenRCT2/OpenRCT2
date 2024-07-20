@@ -13,7 +13,6 @@
 
 #    include "ScWidget.hpp"
 
-#    include <openrct2/common.h>
 #    include <openrct2/interface/Window.h>
 #    include <openrct2/interface/Window_internal.h>
 #    include <openrct2/localisation/Language.h>

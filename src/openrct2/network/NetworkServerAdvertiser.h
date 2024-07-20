@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #include <memory>
 
 enum class ADVERTISE_STATUS
@@ -26,8 +24,8 @@ struct INetworkServerAdvertiser
     {
     }
 
-    virtual ADVERTISE_STATUS GetStatus() const abstract;
-    virtual void Update() abstract;
+    virtual ADVERTISE_STATUS GetStatus() const = 0;
+    virtual void Update() = 0;
 };
 
 [[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);

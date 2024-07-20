@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
 #include "Banner.h"
@@ -214,7 +213,7 @@ struct TileElement : public TileElementBase
     void RemoveBannerEntry();
     BannerIndex GetBannerIndex() const;
 };
-assert_struct_size(TileElement, 16);
+static_assert(sizeof(TileElement) == 16);
 
 struct SurfaceElement : TileElementBase
 {
@@ -262,7 +261,7 @@ public:
     bool HasTrackThatNeedsWater() const;
     void SetHasTrackThatNeedsWater(bool on);
 };
-assert_struct_size(SurfaceElement, 16);
+static_assert(sizeof(SurfaceElement) == 16);
 
 struct PathElement : TileElementBase
 {
@@ -356,7 +355,7 @@ public:
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
 };
-assert_struct_size(PathElement, 16);
+static_assert(sizeof(PathElement) == 16);
 
 struct TrackElement : TileElementBase
 {
@@ -457,7 +456,7 @@ public:
     bool IsStation() const;
     bool IsBlockStart() const;
 };
-assert_struct_size(TrackElement, 16);
+static_assert(sizeof(TrackElement) == 16);
 
 struct SmallSceneryElement : TileElementBase
 {
@@ -492,7 +491,7 @@ public:
     void SetNeedsSupports();
     void UpdateAge(const CoordsXY& sceneryPos);
 };
-assert_struct_size(SmallSceneryElement, 16);
+static_assert(sizeof(SmallSceneryElement) == 16);
 
 struct LargeSceneryElement : TileElementBase
 {
@@ -532,7 +531,7 @@ public:
     bool IsAccounted() const;
     void SetIsAccounted(bool isAccounted);
 };
-assert_struct_size(LargeSceneryElement, 16);
+static_assert(sizeof(LargeSceneryElement) == 16);
 
 struct WallElement : TileElementBase
 {
@@ -577,7 +576,7 @@ public:
     bool AnimationIsBackwards() const;
     void SetAnimationIsBackwards(bool isBackwards);
 };
-assert_struct_size(WallElement, 16);
+static_assert(sizeof(WallElement) == 16);
 
 struct EntranceElement : TileElementBase
 {
@@ -622,7 +621,7 @@ public:
 
     int32_t GetDirections() const;
 };
-assert_struct_size(EntranceElement, 16);
+static_assert(sizeof(EntranceElement) == 16);
 
 struct BannerElement : TileElementBase
 {
@@ -650,7 +649,7 @@ public:
     void SetAllowedEdges(uint8_t newEdges);
     void ResetAllowedEdges();
 };
-assert_struct_size(BannerElement, 16);
+static_assert(sizeof(BannerElement) == 16);
 
 #pragma pack(pop)
 

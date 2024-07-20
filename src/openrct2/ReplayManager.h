@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "common.h"
-
 #include <memory>
 #include <set>
 #include <string>

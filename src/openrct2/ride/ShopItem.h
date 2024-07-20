@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/Money.hpp"
 #include "../entity/Litter.h"
 #include "../util/Util.h"

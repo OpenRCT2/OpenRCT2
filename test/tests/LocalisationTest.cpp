@@ -9,6 +9,7 @@
 
 #include "helpers/StringHelpers.hpp"
 #include "openrct2/localisation/Language.h"
+#include "openrct2/rct12/CSStringConverter.h"
 
 #include <gtest/gtest.h>
 

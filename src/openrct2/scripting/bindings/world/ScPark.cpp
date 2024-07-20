@@ -14,7 +14,6 @@
 #    include "../../../Context.h"
 #    include "../../../Date.h"
 #    include "../../../GameState.h"
-#    include "../../../common.h"
 #    include "../../../core/String.hpp"
 #    include "../../../entity/Guest.h"
 #    include "../../../management/Finance.h"

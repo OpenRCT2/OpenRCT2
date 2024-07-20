@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../util/Math.hpp"
+
+#include <cstdint>
 
 constexpr int16_t LOCATION_NULL = -32768;
 

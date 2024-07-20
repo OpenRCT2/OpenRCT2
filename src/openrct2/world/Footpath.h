@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "../interface/Viewport.h"
 #include "../object/Object.h"
 

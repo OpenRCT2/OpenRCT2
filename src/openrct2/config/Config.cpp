@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Date.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"
@@ -21,8 +22,8 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../interface/Window.h"
 #include "../localisation/Currency.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"

@@ -9,6 +9,7 @@
 
 #include "../UiStringIds.h"
 
+#include <cassert>
 #include <cmath>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -26,7 +27,6 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>

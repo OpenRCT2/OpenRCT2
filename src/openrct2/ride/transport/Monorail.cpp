@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
 #include "../../paint/Boundbox.h"

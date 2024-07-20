@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #pragma once
-#include "../../common.h"
+
 #include "../../core/String.hpp"
 
 #include <limits>

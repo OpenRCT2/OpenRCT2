@@ -17,6 +17,11 @@
 
 #include <linenoise.hpp>
 
+// Ignore isatty warning on WIN32
+#ifdef _MSC_VER
+#    pragma warning(disable : 4996)
+#endif
+
 using namespace OpenRCT2;
 
 void StdInOutConsole::Start()

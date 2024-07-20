@@ -10,7 +10,7 @@
 #include "LanguagePack.h"
 
 #include "../Context.h"
-#include "../common.h"
+#include "../Diagnostic.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/RTL.h"
@@ -18,7 +18,6 @@
 #include "../core/StringBuilder.h"
 #include "../core/StringReader.h"
 #include "Language.h"
-#include "Localisation.h"
 #include "LocalisationService.h"
 #include "StringIds.h"
 

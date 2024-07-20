@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "EntityBase.h"
 
 #include <array>

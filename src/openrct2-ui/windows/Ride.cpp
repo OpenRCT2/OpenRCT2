@@ -10,6 +10,7 @@
 #include "../UiStringIds.h"
 #include "../interface/Theme.h"
 
+#include <cassert>
 #include <cmath>
 #include <iterator>
 #include <limits>
@@ -20,6 +21,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -38,9 +40,9 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/Staff.h>
-#include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/MusicObject.h>
@@ -196,6 +198,8 @@ enum {
     WIDX_PLAY_MUSIC = 14,
     WIDX_MUSIC,
     WIDX_MUSIC_DROPDOWN,
+    WIDX_MUSIC_IMAGE,
+    WIDX_MUSIC_DATA,
 
     WIDX_SAVE_TRACK_DESIGN = 14,
     WIDX_SELECT_NEARBY_SCENERY,
@@ -340,9 +344,11 @@ static Widget _colourWidgets[] = {
 // 0x009AE4C8
 static Widget _musicWidgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({  7, 47}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
-    MakeWidget({  7, 62}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
-    MakeWidget({297, 63}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
+    MakeWidget({  7, 47}, {302,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
+    MakeWidget({  7, 62}, {302,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
+    MakeWidget({297, 63}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
+    MakeWidget({154, 90}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                ),
+    MakeWidget({  7, 90}, {500, 450}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_BOTH                                   ),
     kWidgetsEnd,
 };
 
@@ -965,6 +971,8 @@ static_assert(std::size(RatingNames) == 6);
             {
                 case WINDOW_RIDE_PAGE_GRAPHS:
                     return GraphsScrollGetSize(scrollIndex);
+                case WINDOW_RIDE_PAGE_MUSIC:
+                    return MusicScrollGetSize(scrollIndex);
             }
             return {};
         }
@@ -989,6 +997,9 @@ static_assert(std::size(RatingNames) == 6);
                     break;
                 case WINDOW_RIDE_PAGE_GRAPHS:
                     GraphsOnScrollDraw(dpi, scrollIndex);
+                    break;
+                case WINDOW_RIDE_PAGE_MUSIC:
+                    MusicOnScrollDraw(dpi, scrollIndex);
                     break;
             }
         }
@@ -3713,7 +3724,7 @@ static_assert(std::size(RatingNames) == 6);
                     for (int32_t i = 0; i < 7; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = RideInspectionIntervalNames[i];
+                        gDropdownItems[i].Args = kRideInspectionIntervalNames[i];
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -3925,7 +3936,7 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter::Common();
             ride->FormatNameTo(ft);
 
-            widgets[WIDX_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[ride->inspection_interval];
+            widgets[WIDX_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[ride->inspection_interval];
 
             AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
@@ -4825,6 +4836,7 @@ static_assert(std::size(RatingNames) == 6);
             {
                 int32_t activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
                 SetOperatingSetting(rideId, RideSetSetting::Music, activateMusic);
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MUSIC;
             }
         }
 
@@ -4856,7 +4868,16 @@ static_assert(std::size(RatingNames) == 6);
         void MusicResize()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 316, 81, 316, 81);
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            // Expand the window when music is playing
+            auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
+            auto minHeight = isMusicActivated ? 214 : 81;
+            auto maxHeight = isMusicActivated ? 450 : 81;
+            WindowSetResize(*this, 316, minHeight, 500, maxHeight);
         }
 
         static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
@@ -4960,6 +4981,93 @@ static_assert(std::size(RatingNames) == 6);
             frame_no++;
             OnPrepareDraw();
             WidgetInvalidate(*this, WIDX_TAB_6);
+
+            if (auto ride = GetRide(rideId); ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MUSIC)
+            {
+                ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MUSIC;
+                Invalidate();
+                OnResize();
+                OnPrepareDraw();
+                Invalidate();
+            }
+
+            WidgetScrollUpdateThumbs(*this, WIDX_MUSIC_DATA);
+        }
+
+        ScreenSize MusicScrollGetSize(int32_t scrollIndex)
+        {
+            // Hack: can be removed when widgets are no longer shared globally
+            OnPrepareDraw();
+
+            // Figure out minimum size
+            ScreenSize size{};
+            size.height = widgets[WIDX_MUSIC_DATA].height() - 2;
+            size.width = widgets[WIDX_MUSIC_DATA].width() - 2;
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return size;
+
+            auto musicObj = ride->GetMusicObject();
+            if (musicObj == nullptr)
+                return size;
+
+            // Compute scroll width based on track name and composer
+            int32_t newWidth = 0;
+            for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
+            {
+                const auto* track = musicObj->GetTrack(i);
+                if (track->Name.empty())
+                    continue;
+
+                auto nameWidth = GfxGetStringWidth(track->Name.c_str(), FontStyle::Small);
+                auto composerWidth = GfxGetStringWidth(track->Composer.c_str(), FontStyle::Small);
+                newWidth = std::max(newWidth, nameWidth + composerWidth + 24);
+            }
+
+            // Do we need a horizontal scrollbar?
+            auto left = newWidth - widgets[WIDX_MUSIC_DATA].width() + kScrollBarWidth;
+            if (left < 0)
+            {
+                scrolls[0].flags &= ~HSCROLLBAR_VISIBLE;
+                left = 0;
+            }
+            else
+            {
+                scrolls[0].flags |= HSCROLLBAR_VISIBLE;
+            }
+
+            // Reset the horizontal scrollbar?
+            if (left < scrolls[0].h_left)
+            {
+                scrolls[0].h_left = left;
+                Invalidate();
+            }
+
+            // Compute scroll height based on number of tracks
+            const int32_t newHeight = static_cast<int32_t>(musicObj->GetTrackCount()) * kScrollableRowHeight;
+
+            // Do we need a vertical scrollbar?
+            auto top = newHeight - widgets[WIDX_MUSIC_DATA].height() + kScrollBarWidth;
+            if (top < 0)
+            {
+                top = 0;
+                scrolls[0].flags &= ~VSCROLLBAR_VISIBLE;
+            }
+            else
+            {
+                scrolls[0].flags |= VSCROLLBAR_VISIBLE;
+            }
+
+            // Reset the vertical scrollbar?
+            if (top < scrolls[0].v_top)
+            {
+                scrolls[0].v_top = top;
+                Invalidate();
+            }
+
+            // Return the computed size
+            return { newWidth, newHeight };
         }
 
         void MusicOnPrepareDraw()
@@ -4980,29 +5088,49 @@ static_assert(std::size(RatingNames) == 6);
             auto ft = Formatter::Common();
             ride->FormatNameTo(ft);
 
+            // Align music dropdown
+            widgets[WIDX_MUSIC].right = width - 8;
+            widgets[WIDX_MUSIC_DROPDOWN].right = width - 9;
+            widgets[WIDX_MUSIC_DROPDOWN].left = width - 19;
+
             // Set selected music
             StringId musicName = STR_NONE;
-            auto& objManager = GetContext()->GetObjectManager();
-            auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
+            auto musicObj = ride->GetMusicObject();
             if (musicObj != nullptr)
             {
                 musicName = musicObj->NameStringId;
             }
             widgets[WIDX_MUSIC].text = musicName;
 
-            // Set music activated
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
+            bool hasPreviewImage = musicObj != nullptr && musicObj->HasPreview();
+
+            WidgetSetVisible(*this, WIDX_MUSIC_DATA, isMusicActivated);
+            WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, isMusicActivated && hasPreviewImage);
+
             if (isMusicActivated)
             {
-                pressed_widgets |= (1uLL << WIDX_PLAY_MUSIC);
-                disabled_widgets &= ~(1uLL << WIDX_MUSIC);
-                disabled_widgets &= ~(1uLL << WIDX_MUSIC_DROPDOWN);
+                widgets[WIDX_MUSIC_DATA].bottom = height - 11;
+
+                if (hasPreviewImage)
+                {
+                    widgets[WIDX_MUSIC_DATA].right = width - 129;
+                    widgets[WIDX_MUSIC_IMAGE].left = width - 121;
+                    widgets[WIDX_MUSIC_IMAGE].right = width - 8;
+                }
+                else
+                {
+                    widgets[WIDX_MUSIC_DATA].right = width - 8;
+                }
+
+                pressed_widgets |= (1uLL << WIDX_PLAY_MUSIC) | (1uLL << WIDX_MUSIC_IMAGE);
+                disabled_widgets &= ~((1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA));
             }
             else
             {
                 pressed_widgets &= ~(1uLL << WIDX_PLAY_MUSIC);
-                disabled_widgets |= (1uLL << WIDX_MUSIC);
-                disabled_widgets |= (1uLL << WIDX_MUSIC_DROPDOWN);
+                pressed_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
+                disabled_widgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
             }
 
             AnchorBorderWidgets();
@@ -5013,6 +5141,83 @@ static_assert(std::size(RatingNames) == 6);
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            // Draw music data only when music is activated
+            auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
+            if (!isMusicActivated)
+                return;
+
+            // 'Tracks' caption
+            auto trackLabelPos = windowPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, widgets[WIDX_MUSIC_DATA].top - 13 };
+            DrawTextWrapped(dpi, trackLabelPos, width, STR_MUSIC_OBJECT_TRACK_HEADER, {}, { TextAlignment::LEFT });
+
+            // Do we have a preview image to draw?
+            auto musicObj = ride->GetMusicObject();
+            bool hasPreview = musicObj->HasPreview();
+            if (!hasPreview)
+                return;
+
+            // Figure out where the image should go
+            const auto& previewWidget = widgets[WIDX_MUSIC_IMAGE];
+            int32_t clipWidth = previewWidget.width() - 1;
+            int32_t clipHeight = previewWidget.height() - 1;
+
+            // Draw the preview image
+            DrawPixelInfo clipDPI;
+            auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
+            if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, clipWidth, clipHeight))
+            {
+                musicObj->DrawPreview(clipDPI, clipWidth, clipHeight);
+            }
+        }
+
+        void MusicOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        {
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            // Only draw track listing when music is activated
+            auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
+            if (!isMusicActivated)
+                return;
+
+            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            GfxClear(dpi, paletteIndex);
+
+            auto* musicObj = ride->GetMusicObject();
+            auto y = 0;
+
+            for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
+            {
+                // Skip invisible items
+                if (y + kScrollableRowHeight < dpi.y || y > dpi.y + dpi.height)
+                {
+                    y += kScrollableRowHeight;
+                    continue;
+                }
+
+                // Skip empty items
+                const auto* track = musicObj->GetTrack(i);
+                if (track->Name.empty())
+                    continue;
+
+                // Prepare items for display
+                auto ft = Formatter();
+                ft.Add<const char*>(track->Name.c_str());
+                ft.Add<const char*>(track->Composer.c_str());
+
+                // Do we have composer info to show?
+                auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
+                                                        : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
+
+                // Draw the track
+                DrawTextBasic(dpi, { 0, y }, stringId, ft, { FontStyle::Small });
+                y += kScrollableRowHeight;
+            }
         }
 
 #pragma endregion

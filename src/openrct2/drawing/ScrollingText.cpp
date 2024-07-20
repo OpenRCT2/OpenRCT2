@@ -14,13 +14,13 @@
 #include "../interface/Colour.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
 #include "../sprites.h"
 #include "Drawing.h"
 #include "TTF.h"
 
+#include <cassert>
 #include <mutex>
 
 using namespace OpenRCT2;

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <openrct2/common.h>
+#include <openrct2/Diagnostic.h>
 
 #ifdef OPENGL_NO_LINK
 

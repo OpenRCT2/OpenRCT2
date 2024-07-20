@@ -10,7 +10,6 @@
 #include "CursorRepository.h"
 
 #include <cmath>
-#include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/interface/Cursors.h>

@@ -9,6 +9,12 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../Date.h"
+#include "../localisation/StringIdType.h"
 
-wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str);
+extern const StringId DateFormatStringIDs[];
+extern const StringId DateFormatStringFormatIds[];
+
+extern const StringId DateDayNames[31];
+extern const StringId DateGameMonthNames[MONTH_COUNT];
+extern const StringId DateGameShortMonthNames[MONTH_COUNT];

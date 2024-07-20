@@ -18,15 +18,13 @@
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
-#include "../common.h"
 #include "../core/FixedVector.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
 #include "../ui/UiContext.h"
@@ -49,6 +47,8 @@
 #include "TrackData.h"
 #include "TrainManager.h"
 #include "Vehicle.h"
+
+#include <cassert>
 
 using namespace OpenRCT2::TrackMetaData;
 

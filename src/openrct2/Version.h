@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "common.h"
-
 #include <string>
 
 #define OPENRCT2_NAME "OpenRCT2"

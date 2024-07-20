@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../paint/Paint.h"
 #include "../paint/support/MetalSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"

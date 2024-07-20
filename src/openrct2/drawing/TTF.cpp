@@ -9,6 +9,8 @@
 
 #ifndef NO_TTF
 
+#    include "../Diagnostic.h"
+
 #    include <mutex>
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wdocumentation"

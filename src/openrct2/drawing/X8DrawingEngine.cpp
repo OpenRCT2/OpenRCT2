@@ -17,7 +17,6 @@
 #include "../interface/Window.h"
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
-#include "../util/Util.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
@@ -25,6 +24,7 @@
 #include "Weather.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstring>
 
 using namespace OpenRCT2;

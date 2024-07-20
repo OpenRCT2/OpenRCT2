@@ -9,6 +9,7 @@
 
 #include "Image.h"
 
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"

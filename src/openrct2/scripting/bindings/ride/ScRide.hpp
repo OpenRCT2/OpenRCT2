@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
-#    include "../../../common.h"
 #    include "../../../ride/Ride.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
@@ -162,6 +161,8 @@ namespace OpenRCT2::Scripting
 
         uint8_t maxLiftHillSpeed_get() const;
         uint8_t minLiftHillSpeed_get() const;
+
+        uint8_t satisfaction_get() const;
 
         Ride* GetRide() const;
 

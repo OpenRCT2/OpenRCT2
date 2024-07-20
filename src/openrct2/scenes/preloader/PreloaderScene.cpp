@@ -10,6 +10,7 @@
 #include "PreloaderScene.h"
 
 #include "../../Context.h"
+#include "../../Diagnostic.h"
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
@@ -40,6 +41,7 @@ void PreloaderScene::Load()
     gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
+    WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 
     // Reset screen

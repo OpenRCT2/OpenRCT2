@@ -9,6 +9,7 @@
 
 #include "GameStateSnapshots.h"
 
+#include "Diagnostic.h"
 #include "core/CircularBuffer.h"
 #include "entity/Balloon.h"
 #include "entity/Duck.h"
@@ -35,7 +36,7 @@ union EntitySnapshot
     {
     }
 };
-assert_struct_size(EntitySnapshot, 0x200);
+static_assert(sizeof(EntitySnapshot) == 0x200);
 #pragma pack(pop)
 
 struct GameStateSnapshot_t

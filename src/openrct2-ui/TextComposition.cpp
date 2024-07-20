@@ -15,14 +15,9 @@
 
 #include <SDL.h>
 #include <openrct2-ui/interface/Window.h>
-#include <openrct2/common.h>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/interface/InteractiveConsole.h>
-#include <openrct2/localisation/Language.h>
-
-// TODO: only because of STR_NONE. We can do better.
-#include <openrct2/localisation/StringIds.h>
+#include <openrct2/core/UTF8.h>
 
 #ifdef __MACOSX__
 // macOS uses COMMAND rather than CTRL for many keyboard shortcuts

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <openrct2/common.h>
+#include <openrct2/localisation/StringIdType.h>
 
 namespace OpenRCT2
 {
@@ -258,7 +258,17 @@ namespace OpenRCT2
         STR_SHORTCUT_ZOOM_VIEW_IN = 2498,
         STR_SHORTCUT_ZOOM_VIEW_OUT = 2497,
 
+        // Widgets
+        STR_CLOSE_X = 824,
+        STR_CLOSE_X_WHITE = 6164,
+        STR_DROPDOWN_GLYPH = 876,
+        STR_NUMERIC_DOWN = 1219,
+        STR_NUMERIC_UP = 1218,
+        STR_TOGGLE_OPTION = 1156,
+        STR_TOGGLE_OPTION_CHECKED = 1157, // Used as STR_TOGGLE_OPTION + 1
+
         // Window: About.cpp
+        STR_ABOUT = 847,
         STR_ABOUT_FAIRGROUND_ORGAN = 6588,
         STR_ABOUT_OPENRCT2_DESCRIPTION = 6137,
         STR_ABOUT_OPENRCT2_DESCRIPTION_2 = 6138,
@@ -314,6 +324,7 @@ namespace OpenRCT2
         STR_TEXT_COLOUR_YELLOW = 3001,
 
         // Window: Changelog
+        STR_CHANGELOG_TITLE = 5344,
         STR_CONTRIBUTORS_WINDOW = 6542,
         STR_NEW_RELEASE_DOWNLOAD_PAGE = 6383,
         STR_NEW_RELEASE_VERSION_INFO = 6382,
@@ -1009,6 +1020,7 @@ namespace OpenRCT2
         STR_OBJECT_ERROR_WINDOW_FILE = 6127,
         STR_OBJECT_LOAD_ERROR_TITLE = 6123,
         STR_OBJECT_NAME = 6124,
+        STR_OBJECT_SELECTION_PARK_ENTRANCE = 3192,
         STR_OBJECT_SOURCE = 6131,
         STR_OBJECT_TYPE = 6125,
 
@@ -1325,6 +1337,8 @@ namespace OpenRCT2
         STR_ARG_6_STRINGID = 868,
         STR_ARRIVING_AT = 1103,
         STR_AVERAGE_SPEED = 1347,
+        STR_AUTHOR_STRING = 6646,
+        STR_AUTHORS_STRING = 6647,
         STR_BLOCK_SECTIONS = 3110,
         STR_BUILT_LAST_YEAR = 1854,
         STR_BUILT_THIS_YEAR = 1853,
@@ -1357,6 +1371,7 @@ namespace OpenRCT2
         STR_DIFFERENT_COLOURS_PER_VEHICLE = 1131,
         STR_DOING_CIRCUS_SHOW = 1117,
         STR_DOWN_TIME_LABEL_1889 = 1889,
+        STR_DROPDOWN_MENU_LABEL = 1142,
         STR_DROPDOWN_MENU_LABEL_SELECTED = 1143,
         STR_DROPS = 1355,
         STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION = 1058,

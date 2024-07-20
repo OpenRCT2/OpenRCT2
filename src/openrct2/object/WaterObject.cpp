@@ -12,7 +12,6 @@
 #include "WaterObject.h"
 
 #include "../OpenRCT2.h"
-#include "../common.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../localisation/Formatter.h"

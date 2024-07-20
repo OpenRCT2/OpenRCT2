@@ -3719,6 +3719,12 @@ STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 STR_6644    :터치 개선
 STR_6645    :일부 UI 요소를 크게 표시하여 클릭이나 터치가 용이하게 만듭니다.
+STR_6646    :제작: {STRING}
+STR_6647    :제작: {STRING}
+STR_6648    :플러그인 엔진 불러오는 중…
+STR_6649    :시나리오 불러오는 중…
+STR_6650    :저장된 게임 불러오는 중…
+STR_6651    :{STRING} ({COMMA32}%)
 
 #############
 # Scenarios #

@@ -9,23 +9,20 @@
 
 #pragma once
 
-#include <cstdint>
-
-constexpr uint16_t kNetworkDefaultPort = 11753;
-constexpr uint16_t kNetworkLanBroadcastPort = 11754;
-constexpr const char* kNetworkLanBroadcastMsg = "openrct2.server.query";
-constexpr uint16_t kMaxServerDescriptionLength = 256;
-
 #include "../Game.h"
-#include "../common.h"
 #include "../core/JsonFwd.hpp"
 #include "../localisation/StringIds.h"
 #include "NetworkTypes.h"
 
-#include <memory>
 #include <string>
 #include <string_view>
 #include <vector>
+
+constexpr uint16_t kNetworkDefaultPort = 11753;
+constexpr uint16_t kNetworkLanBroadcastPort = 11754;
+constexpr const char* kNetworkLanBroadcastMsg = "openrct2.server.query";
+constexpr const char* kMasterServerURL = "https://servers.openrct2.io";
+constexpr uint16_t kMaxServerDescriptionLength = 256;
 
 class GameAction;
 struct Peep;

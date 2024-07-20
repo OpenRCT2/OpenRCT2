@@ -19,7 +19,6 @@
 
 #    include <memory>
 #    include <openrct2/Context.h>
-#    include <openrct2/common.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/scripting/IconNames.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
@@ -941,6 +940,7 @@ namespace OpenRCT2::Scripting
             // Explicit template due to text being a base method
             dukglue_register_property<ScTextBoxWidget, std::string, std::string>(
                 ctx, &ScTextBoxWidget::text_get, &ScTextBoxWidget::text_set, "text");
+            dukglue_register_method(ctx, &ScTextBoxWidget::focus, "focus");
         }
 
     private:
@@ -960,6 +960,15 @@ namespace OpenRCT2::Scripting
             if (w != nullptr && IsCustomWindow())
             {
                 OpenRCT2::Ui::Windows::SetWidgetMaxLength(w, _widgetIndex, value);
+            }
+        }
+
+        void focus()
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                WindowStartTextbox(*w, _widgetIndex, GetWidget()->string, Ui::Windows::GetWidgetMaxLength(w, _widgetIndex));
             }
         }
     };

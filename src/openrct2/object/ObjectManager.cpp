@@ -10,9 +10,11 @@
 #include "ObjectManager.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
+#include "../core/JobPool.h"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
@@ -36,6 +38,8 @@
 #include <mutex>
 #include <thread>
 #include <unordered_set>
+
+using namespace OpenRCT2;
 
 /**
  * Represents an object that is to be loaded or is loaded and ready
@@ -182,13 +186,13 @@ public:
         return RepositoryItemToObject(ori, slot);
     }
 
-    void LoadObjects(const ObjectList& objectList) override
+    void LoadObjects(const ObjectList& objectList, const bool reportProgress) override
     {
         // Find all the required objects
         auto requiredObjects = GetRequiredObjects(objectList);
 
         // Load the required objects
-        LoadObjects(requiredObjects);
+        LoadObjects(requiredObjects, reportProgress);
 
         // Update indices.
         UpdateSceneryGroupIndexes();
@@ -555,31 +559,17 @@ private:
         return requiredObjects;
     }
 
-    template<typename T, typename TFunc> static void ParallelFor(const std::vector<T>& items, TFunc func)
+    void ReportProgress(size_t numLoaded, size_t numRequired)
     {
-        auto partitions = std::thread::hardware_concurrency();
-        auto partitionSize = (items.size() + (partitions - 1)) / partitions;
-        std::vector<std::thread> threads;
-        for (size_t n = 0; n < partitions; n++)
-        {
-            auto begin = n * partitionSize;
-            auto end = std::min(items.size(), begin + partitionSize);
-            threads.emplace_back(
-                [func](size_t pbegin, size_t pend) {
-                    for (size_t i = pbegin; i < pend; i++)
-                    {
-                        func(i);
-                    }
-                },
-                begin, end);
-        }
-        for (auto& t : threads)
-        {
-            t.join();
-        }
+        constexpr auto kObjectLoadMinProgress = 10;
+        constexpr auto kObjectLoadMaxProgress = 90;
+        constexpr auto kObjectLoadProgressRange = kObjectLoadMaxProgress - kObjectLoadMinProgress;
+
+        const auto currentProgress = kObjectLoadMinProgress + (numLoaded * kObjectLoadProgressRange / numRequired);
+        OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(currentProgress), 100, STR_STRING_M_PERCENT, true);
     }
 
-    void LoadObjects(std::vector<ObjectToLoad>& requiredObjects)
+    void LoadObjects(std::vector<ObjectToLoad>& requiredObjects, bool reportProgress)
     {
         std::vector<Object*> objects;
         std::vector<Object*> newLoadedObjects;
@@ -606,11 +596,11 @@ private:
         std::sort(objectsToLoad.begin(), objectsToLoad.end());
         objectsToLoad.erase(std::unique(objectsToLoad.begin(), objectsToLoad.end()), objectsToLoad.end());
 
-        // Load the objects.
+        // Prepare for loading objects multi-threaded
+        auto numProcessed = 0;
+        auto numRequired = objectsToLoad.size();
         std::mutex commonMutex;
-        ParallelFor(objectsToLoad, [&](size_t i) {
-            const auto* requiredObject = objectsToLoad[i];
-
+        auto loadSingleObject = [&](const ObjectRepositoryItem* requiredObject) {
             // Object requires to be loaded, if the object successfully loads it will register it
             // as a loaded object otherwise placed into the badObjects list.
             auto newObject = _objectRepository.LoadObject(requiredObject);
@@ -627,7 +617,24 @@ private:
                 // Connect the ori to the registered object
                 _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
             }
-        });
+
+            numProcessed++;
+        };
+
+        auto completionFn = [&]() {
+            if (reportProgress && (numProcessed % 100) == 0)
+                ReportProgress(numProcessed, numRequired);
+        };
+
+        // Dispatch loading the objects
+        JobPool jobs{};
+        for (auto* object : objectsToLoad)
+        {
+            jobs.AddTask([object, &loadSingleObject]() { loadSingleObject(object); }, completionFn);
+        }
+
+        // Wait until all jobs are fully completed
+        jobs.Join();
 
         // Assign the loaded objects to the required objects
         for (auto& requiredObject : requiredObjects)

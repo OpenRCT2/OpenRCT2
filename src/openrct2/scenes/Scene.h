@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #include <functional>
 
 namespace OpenRCT2

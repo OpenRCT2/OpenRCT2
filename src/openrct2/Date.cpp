@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "localisation/Date.h"
+#include "Date.h"
 
 #include "Context.h"
-#include "Date.h"
 #include "Game.h"
 #include "GameState.h"
 #include "core/Guard.hpp"
+#include "localisation/Localisation.Date.h"
 
 using namespace OpenRCT2;
 

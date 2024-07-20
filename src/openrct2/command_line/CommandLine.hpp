@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include <cstdint>
 
 /**
  * Class for enumerating and retrieving values for a set of command line arguments.

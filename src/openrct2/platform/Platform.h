@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../config/ConfigTypes.h"
+#include "../core/DateTime.h"
 #include "../core/String.hpp"
 
 #include <ctime>
@@ -124,6 +124,9 @@ namespace Platform
     uint32_t GetTicks();
 
     void Sleep(uint32_t ms);
+
+    bool SSE41Available();
+    bool AVX2Available();
 } // namespace Platform
 
 #ifdef __ANDROID__

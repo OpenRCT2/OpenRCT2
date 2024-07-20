@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../common.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../core/CallingConventions.h"
 #include "../core/Money.hpp"
 #include "../core/String.hpp"
 
@@ -24,12 +24,8 @@ int32_t MetresToFeet(int32_t metres);
 int32_t MphToKmph(int32_t mph);
 int32_t MphToDmps(int32_t mph);
 
-bool SSE41Available();
-bool AVX2Available();
-
 int32_t UtilBitScanForward(int32_t source);
 int32_t UtilBitScanForward(int64_t source);
-int32_t BitCount(uint32_t source);
 int32_t StrLogicalCmp(char const* a, char const* b);
 char* SafeStrCpy(char* destination, const char* source, size_t num);
 char* SafeStrCat(char* destination, const char* source, size_t size);
@@ -45,7 +41,7 @@ template<typename T> constexpr T AddClamp(T value, T valueToAdd)
 {
     if (std::is_same_v<decltype(value), money64>)
     {
-        assert_struct_size(money64, sizeof(int64_t));
+        static_assert(sizeof(money64) == sizeof(int64_t));
     }
     auto maxCap = std::numeric_limits<T>::max();
     auto minCap = std::numeric_limits<T>::lowest();
@@ -92,5 +88,5 @@ constexpr uint8_t HiByte(uint16_t value)
 
 constexpr uint8_t LoByte(uint16_t value)
 {
-    return static_cast<uint8_t>(value & 0xFFU);
+    return static_cast<uint8_t>(value & 0xFFu);
 }

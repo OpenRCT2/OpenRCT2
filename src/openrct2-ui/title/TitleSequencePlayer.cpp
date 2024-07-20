@@ -13,11 +13,11 @@
 
 #include <memory>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
@@ -25,6 +25,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/ScenarioRepository.h>
@@ -48,6 +49,7 @@ namespace OpenRCT2::Title
         std::unique_ptr<TitleSequence> _sequence;
         int32_t _position = 0;
         int32_t _waitCounter = 0;
+        bool _initialLoadCommand = true;
 
         int32_t _previousWindowWidth = 0;
         int32_t _previousWindowHeight = 0;
@@ -207,6 +209,7 @@ namespace OpenRCT2::Title
         {
             _position = 0;
             _waitCounter = 0;
+            _initialLoadCommand = true;
         }
 
         void Seek(int32_t targetPosition) override
@@ -280,6 +283,20 @@ namespace OpenRCT2::Title
             return _position != entryPosition;
         }
 
+        void ReportProgress(uint8_t progress)
+        {
+            if (!_initialLoadCommand)
+                return;
+
+            if (progress == 0)
+                GetContext()->OpenProgress(STR_LOADING_TITLE_SEQUENCE);
+
+            GetContext()->SetProgress(progress, 100, STR_STRING_M_PERCENT, true);
+
+            if (progress == 100)
+                GetContext()->CloseProgress();
+        }
+
         bool LoadParkFromFile(const u8string& path)
         {
             LOG_VERBOSE("TitleSequencePlayer::LoadParkFromFile(%s)", path.c_str());
@@ -294,24 +311,39 @@ namespace OpenRCT2::Title
                 }
                 else
                 {
+                    // Inhibit viewport rendering while we're loading
+                    WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+
+                    ReportProgress(0);
                     auto parkImporter = ParkImporter::Create(path);
+
                     auto result = parkImporter->Load(path);
+                    ReportProgress(10);
 
                     auto& objectManager = GetContext()->GetObjectManager();
-                    objectManager.LoadObjects(result.RequiredObjects);
+                    objectManager.LoadObjects(result.RequiredObjects, true);
+                    ReportProgress(90);
 
                     // TODO: Have a separate GameState and exchange once loaded.
                     auto& gameState = GetGameState();
                     parkImporter->Import(gameState);
+                    ReportProgress(100);
+
                     MapAnimationAutoCreate();
                 }
                 PrepareParkForPlayback();
+                _initialLoadCommand = false;
                 success = true;
             }
             catch (const std::exception&)
             {
                 Console::Error::WriteLine("Unable to load park: %s", path.c_str());
+                GetContext()->CloseProgress();
             }
+
+            // Reset viewport rendering inhibition
+            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+
             gLoadKeepWindowsOpen = false;
             return success;
         }
@@ -334,26 +366,40 @@ namespace OpenRCT2::Title
                 }
                 else
                 {
+                    // Inhibit viewport rendering while we're loading
+                    WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+
+                    ReportProgress(0);
                     bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
                     auto parkImporter = ParkImporter::Create(hintPath);
+
                     auto result = parkImporter->LoadFromStream(stream, isScenario);
+                    ReportProgress(30);
 
                     auto& objectManager = GetContext()->GetObjectManager();
-                    objectManager.LoadObjects(result.RequiredObjects);
+                    objectManager.LoadObjects(result.RequiredObjects, true);
+                    ReportProgress(70);
 
                     // TODO: Have a separate GameState and exchange once loaded.
                     auto& gameState = GetGameState();
-
                     parkImporter->Import(gameState);
+                    ReportProgress(100);
+
                     MapAnimationAutoCreate();
                 }
                 PrepareParkForPlayback();
+                _initialLoadCommand = false;
                 success = true;
             }
             catch (const std::exception&)
             {
                 Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
+                GetContext()->CloseProgress();
             }
+
+            // Reset viewport rendering inhibition
+            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+
             gLoadKeepWindowsOpen = false;
             return success;
         }

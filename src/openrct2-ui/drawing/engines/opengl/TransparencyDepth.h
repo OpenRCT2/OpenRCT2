@@ -11,8 +11,6 @@
 
 #include "DrawCommands.h"
 
-#include <openrct2/common.h>
-
 namespace OpenRCT2::Ui
 {
     /*

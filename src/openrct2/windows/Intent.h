@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/Identifier.hpp"
 #include "../interface/Window.h"
 

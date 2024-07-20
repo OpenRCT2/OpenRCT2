@@ -9,7 +9,7 @@
 
 #include "Tables.h"
 
-#include "../common.h"
+#include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../interface/Colour.h"
 #include "../object/ObjectManager.h"

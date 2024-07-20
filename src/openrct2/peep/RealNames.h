@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include "../Date.h"
-#include "../common.h"
+#include <cstdint>
 
-extern const StringId DateFormatStringIDs[];
-extern const StringId DateFormatStringFormatIds[];
+constexpr uint16_t kRealNameStart = 0xA000;
+constexpr uint16_t kRealNameEnd = 0xDFFF;
 
-extern const StringId DateDayNames[31];
-extern const StringId DateGameMonthNames[MONTH_COUNT];
-extern const StringId DateGameShortMonthNames[MONTH_COUNT];
+// Real name data
+extern const char real_name_initials[16];
+extern const char* real_names[1024];

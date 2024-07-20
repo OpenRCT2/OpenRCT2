@@ -30,8 +30,8 @@ template<typename T> struct ConfigEnumEntry
 template<typename T> struct IConfigEnum
 {
     virtual ~IConfigEnum() = default;
-    virtual std::string GetName(T value) const abstract;
-    virtual T GetValue(const std::string& key, T defaultValue) const abstract;
+    virtual std::string GetName(T value) const = 0;
+    virtual T GetValue(const std::string& key, T defaultValue) const = 0;
 };
 
 template<typename T> class ConfigEnum final : public IConfigEnum<T>

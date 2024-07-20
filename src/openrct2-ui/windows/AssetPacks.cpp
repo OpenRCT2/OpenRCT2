@@ -16,7 +16,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/sprites.h>
 
@@ -264,7 +264,7 @@ static Widget WindowAssetPacksWidgets[] = {
             {
                 auto checkmark = Formatter();
                 checkmark.Add<StringId>(STR_STRING);
-                checkmark.Add<char*>(CheckBoxMarkString);
+                checkmark.Add<char*>(kCheckMarkString);
                 DrawTextBasic(
                     dpi, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
             }

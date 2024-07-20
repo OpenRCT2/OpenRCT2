@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "Location.hpp"
 #include "TileElement.h"
 
@@ -190,7 +189,7 @@ struct TileElementIterator
     TileElement* element;
 };
 #ifdef PLATFORM_32BIT
-assert_struct_size(TileElementIterator, 12);
+static_assert(sizeof(TileElementIterator) == 12);
 #endif
 
 void TileElementIteratorBegin(TileElementIterator* it);

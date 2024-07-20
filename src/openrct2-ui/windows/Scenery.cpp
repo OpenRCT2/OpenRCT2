@@ -18,9 +18,9 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ScenerySetRestrictedAction.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
@@ -816,26 +816,30 @@ static Widget WindowSceneryBaseWidgets[] = {
             ft.Add<StringId>(name);
             DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height - 23 }, width - 19, STR_BLACK_STRING, ft);
 
-            auto sceneryObjectType = GetObjectTypeFromSceneryType(selectedSceneryEntry.SceneryType);
-            auto& objManager = GetContext()->GetObjectManager();
-            auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selectedSceneryEntry.EntryIndex);
-            if (sceneryObject != nullptr && sceneryObject->GetAuthors().size() > 0)
+            // Draw object author(s) if debugging tools are active
+            if (Config::Get().general.DebuggingTools)
             {
-                std::string authorsString;
-                const auto& authors = sceneryObject->GetAuthors();
-                for (size_t i = 0; i < authors.size(); ++i)
+                auto sceneryObjectType = GetObjectTypeFromSceneryType(selectedSceneryEntry.SceneryType);
+                auto& objManager = GetContext()->GetObjectManager();
+                auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selectedSceneryEntry.EntryIndex);
+                if (sceneryObject != nullptr && sceneryObject->GetAuthors().size() > 0)
                 {
-                    if (i > 0)
+                    std::string authorsString;
+                    const auto& authors = sceneryObject->GetAuthors();
+                    for (size_t i = 0; i < authors.size(); ++i)
                     {
-                        authorsString.append(", ");
+                        if (i > 0)
+                        {
+                            authorsString.append(", ");
+                        }
+                        authorsString.append(authors[i]);
                     }
-                    authorsString.append(authors[i]);
+                    ft = Formatter();
+                    ft.Add<const char*>(authorsString.c_str());
+                    DrawTextEllipsised(
+                        dpi, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
+                        (sceneryObject->GetAuthors().size() == 1 ? STR_SCENERY_AUTHOR : STR_SCENERY_AUTHOR_PLURAL), ft);
                 }
-                ft = Formatter();
-                ft.Add<const char*>(authorsString.c_str());
-                DrawTextEllipsised(
-                    dpi, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
-                    (sceneryObject->GetAuthors().size() == 1 ? STR_SCENERY_AUTHOR : STR_SCENERY_AUTHOR_PLURAL), ft);
             }
         }
 

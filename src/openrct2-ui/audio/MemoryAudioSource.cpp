@@ -14,7 +14,6 @@
 #include <SDL.h>
 #include <algorithm>
 #include <openrct2/audio/AudioSource.h>
-#include <openrct2/common.h>
 #include <stdexcept>
 #include <vector>
 

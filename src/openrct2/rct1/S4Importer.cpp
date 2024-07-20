@@ -9,6 +9,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -36,8 +37,8 @@
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Formatting.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -48,6 +49,7 @@
 #include "../object/ObjectRepository.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -71,6 +73,7 @@
 #include "RCT1.h"
 #include "Tables.h"
 
+#include <cassert>
 #include <iterator>
 #include <memory>
 #include <vector>
