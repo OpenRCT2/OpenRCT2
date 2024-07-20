@@ -721,7 +721,8 @@ static uint64_t PageDisabledWidgets[] = {
 
         void OnClose() override
         {
-            ToolCancel();
+            if (gCurrentToolWidget.window_classification == WindowClass::TileInspector)
+                ToolCancel();
             TileElement* const elem = OpenRCT2::TileInspector::GetSelectedElement();
             if (elem != nullptr)
             {
