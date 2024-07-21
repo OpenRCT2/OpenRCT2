@@ -189,7 +189,7 @@ namespace OpenRCT2::Config
             model->WindowWidth = reader->GetInt32("window_width", -1);
             model->DefaultDisplay = reader->GetInt32("default_display", 0);
             model->DrawingEngine = reader->GetEnum<DrawingEngine>(
-                "drawing_engine", DrawingEngine::Software, Enum_DrawingEngine);
+                "drawing_engine", DrawingEngine::SoftwareWithHardwareDisplay, Enum_DrawingEngine);
             model->UncapFPS = reader->GetBoolean("uncap_fps", false);
             model->UseVSync = reader->GetBoolean("use_vsync", true);
             model->VirtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
