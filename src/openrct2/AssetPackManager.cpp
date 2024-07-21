@@ -11,6 +11,7 @@
 
 #include "AssetPack.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "PlatformEnvironment.h"
 #include "config/Config.h"
 #include "core/Console.hpp"

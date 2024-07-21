@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../core/CallingConventions.h"
 #include "../core/String.hpp"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
@@ -18,6 +18,7 @@
 #include "ImageId.hpp"
 #include "Text.h"
 
+#include <cassert>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -44,7 +45,7 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
-constexpr auto PALETTE_SIZE = 256U;
+constexpr auto PALETTE_SIZE = 256u;
 
 struct GamePalette
 {
@@ -94,7 +95,7 @@ struct RCTG1Header
     uint32_t num_entries = 0;
     uint32_t total_size = 0;
 };
-assert_struct_size(RCTG1Header, 8);
+static_assert(sizeof(RCTG1Header) == 8);
 #pragma pack(pop)
 
 struct Gx
@@ -168,7 +169,7 @@ struct RCTG1Element
     uint16_t flags;         // 0x0C
     uint16_t zoomed_offset; // 0x0E
 };
-assert_struct_size(RCTG1Element, 0x10);
+static_assert(sizeof(RCTG1Element) == 0x10);
 
 enum
 {

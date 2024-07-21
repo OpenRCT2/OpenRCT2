@@ -9,7 +9,6 @@
 
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Localisation.h"
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"

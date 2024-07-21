@@ -10,6 +10,7 @@
 #include "CommandLineSprite.h"
 
 #include "Context.h"
+#include "Diagnostic.h"
 #include "OpenRCT2.h"
 #include "core/FileStream.h"
 #include "core/Imaging.h"

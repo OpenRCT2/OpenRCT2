@@ -10,6 +10,7 @@
 #include "RideSetSettingAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"

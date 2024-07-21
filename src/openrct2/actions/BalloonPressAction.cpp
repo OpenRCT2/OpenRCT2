@@ -9,6 +9,7 @@
 
 #include "BalloonPressAction.h"
 
+#include "../Diagnostic.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "GameAction.h"

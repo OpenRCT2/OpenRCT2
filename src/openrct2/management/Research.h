@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../localisation/StringIdType.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"
@@ -116,6 +116,8 @@ enum
 };
 
 extern bool gSilentResearch;
+
+extern const StringId kResearchFundingLevelNames[4];
 
 void ResearchResetItems(OpenRCT2::GameState_t& gameState);
 void ResearchUpdateUncompletedTypes();

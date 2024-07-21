@@ -23,6 +23,7 @@
 
 #    include <SDL.h>
 #    include <algorithm>
+#    include <cassert>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>
 #    include <openrct2/config/Config.h>

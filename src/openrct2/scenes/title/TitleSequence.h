@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../common.h"
 #include "../../core/IStream.hpp"
 #include "Command/End.h"
 #include "Command/FollowEntity.h"

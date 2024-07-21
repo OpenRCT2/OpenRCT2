@@ -26,6 +26,8 @@
 #include "Scenery.h"
 #include "Surface.h"
 
+#include <cassert>
+
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
     return (this->Type & kTileElementQuadrantMask) >> 6;

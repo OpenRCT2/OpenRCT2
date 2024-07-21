@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
-#    include "../../../common.h"
 #    include "../../../management/NewsItem.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"

@@ -13,6 +13,7 @@
 #    include <sys/stat.h>
 #endif
 
+#include "../Diagnostic.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "File.h"

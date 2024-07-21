@@ -20,9 +20,9 @@
 #include <openrct2/drawing/Font.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Colour.h>
-#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -1172,7 +1172,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                         DrawText(
                             dpi, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
-                            static_cast<const char*>(CheckBoxMarkString));
+                            kCheckMarkString);
                     }
 
                     // Ride name

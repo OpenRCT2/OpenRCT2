@@ -9,38 +9,6 @@
 
 #pragma once
 
-#undef M_PI
-
-// Ignore isatty warning on WIN32
-#ifndef _CRT_NONSTDC_NO_WARNINGS
-#    define _CRT_NONSTDC_NO_WARNINGS
-#endif
-
-#ifdef _MSC_VER
-#    include <ctime>
-#endif
-
-#include "Diagnostic.h"
-#include "localisation/StringIdType.h"
-
-#include <cassert>
-#include <cstddef>
-#include <cstdint>
-
-using colour_t = uint8_t;
-
-// Gets the name of a symbol as a C string
-#define nameof(symbol) #symbol
-
-#define OPENRCT2_MASTER_SERVER_URL "https://servers.openrct2.io"
-
-// Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
-using datetime64 = uint64_t;
-
-constexpr datetime64 DATETIME64_MIN = 0;
-
-#define abstract = 0
-
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
 #    define OPENRCT2_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
@@ -66,8 +34,6 @@ constexpr datetime64 DATETIME64_MIN = 0;
 #else
 #    define RESTRICT __restrict__
 #endif
-
-#define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
 
 #ifdef PLATFORM_X86
 #    ifndef FASTCALL

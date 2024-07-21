@@ -16,7 +16,6 @@
 #include "../object/ObjectManager.h"
 #include "../platform/Platform.h"
 #include "LanguagePack.h"
-#include "Localisation.h"
 #include "LocalisationService.h"
 
 #include <stack>

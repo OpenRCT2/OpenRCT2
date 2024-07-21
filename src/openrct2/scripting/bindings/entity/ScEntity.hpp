@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
-#    include "../../../common.h"
 #    include "../../../entity/EntityList.h"
 #    include "../../../entity/EntityRegistry.h"
 #    include "../../../entity/Peep.h"

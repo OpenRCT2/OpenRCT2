@@ -20,6 +20,7 @@
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 
+#include <cassert>
 #include <cmath>
 
 using namespace OpenRCT2;

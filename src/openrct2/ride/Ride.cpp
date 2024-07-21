@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -22,7 +23,6 @@
 #include "../actions/RideSetVehicleAction.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
-#include "../common.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedVector.h"
@@ -32,10 +32,9 @@
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -94,6 +93,18 @@ RideMode& operator++(RideMode& d, int)
 static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
+
+// clang-format off
+const StringId kRideInspectionIntervalNames[] = {
+    STR_EVERY_10_MINUTES,
+    STR_EVERY_20_MINUTES,
+    STR_EVERY_30_MINUTES,
+    STR_EVERY_45_MINUTES,
+    STR_EVERY_HOUR,
+    STR_EVERY_2_HOURS,
+    STR_NEVER,
+};
+// clang-format on
 
 // This is the highest used index + 1 of the GameState_t::Rides array.
 static size_t _endOfUsedRange = 0;
@@ -2263,7 +2274,7 @@ void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
         ride.vehicleColourSettings = VehicleColourSettings::perTrain;
         for (uint32_t i = 0; i < presetList->count; i++)
         {
-            const auto index = i % 32U;
+            const auto index = i % 32u;
             ride.vehicle_colours[i] = presetList->list[index];
         }
     }

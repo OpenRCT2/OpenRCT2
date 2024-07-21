@@ -29,6 +29,7 @@
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Input.h>
 #include <openrct2/Version.h>
 #include <openrct2/audio/AudioContext.h>
@@ -46,9 +47,6 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 #include <vector>
-
-// TODO: only because of STR_NONE. We can do better.
-#include <openrct2/localisation/StringIds.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -131,7 +129,7 @@ public:
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
     }
 
-    void Initialise() override
+    void InitialiseScriptExtensions() override
     {
 #ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -734,6 +732,24 @@ private:
         LOG_VERBOSE("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
     }
 
+    void InferDisplayDPI()
+    {
+        auto& config = Config::Get().general;
+        if (!config.InferDisplayDPI)
+            return;
+
+        int wWidth, wHeight;
+        SDL_GetWindowSize(_window, &wWidth, &wHeight);
+
+        auto renderer = SDL_GetRenderer(_window);
+        int rWidth, rHeight;
+        if (SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight) == 0)
+            config.WindowScale = rWidth / wWidth;
+
+        config.InferDisplayDPI = false;
+        Config::Save();
+    }
+
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size
@@ -765,6 +781,7 @@ private:
 
         // Initialise the surface, palette and draw buffer
         DrawingEngineInit();
+        InferDisplayDPI();
         OnResize(width, height);
 
         UpdateFullscreenResolutions();

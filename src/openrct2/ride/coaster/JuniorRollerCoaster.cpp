@@ -9,7 +9,6 @@
 
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Localisation.h"
 #include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/MetalSupports.h"

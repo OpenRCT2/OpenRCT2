@@ -10,7 +10,6 @@
 #pragma once
 
 #include <memory>
-#include <openrct2/common.h>
 #include <string>
 #include <vector>
 
@@ -31,20 +30,21 @@ namespace OpenRCT2::Ui
     struct IPlatformUiContext
     {
         virtual ~IPlatformUiContext() = default;
-        virtual void SetWindowIcon(SDL_Window* window) abstract;
-        virtual bool IsSteamOverlayAttached() abstract;
+        virtual void SetWindowIcon(SDL_Window* window) = 0;
+        virtual bool IsSteamOverlayAttached() = 0;
 
-        virtual void ShowMessageBox(SDL_Window* window, const std::string& message) abstract;
-        virtual bool HasMenuSupport() abstract;
+        virtual void ShowMessageBox(SDL_Window* window, const std::string& message) = 0;
+        virtual bool HasMenuSupport() = 0;
         virtual int32_t ShowMenuDialog(
-            const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
-        virtual void OpenFolder(const std::string& path) abstract;
+            const std::vector<std::string>& options, const std::string& title, const std::string& text)
+            = 0;
+        virtual void OpenFolder(const std::string& path) = 0;
 
-        virtual void OpenURL(const std::string& url) abstract;
-        virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) abstract;
-        virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) abstract;
+        virtual void OpenURL(const std::string& url) = 0;
+        virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) = 0;
+        virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) = 0;
 
-        virtual bool HasFilePicker() const abstract;
+        virtual bool HasFilePicker() const = 0;
     };
 
     [[nodiscard]] std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);

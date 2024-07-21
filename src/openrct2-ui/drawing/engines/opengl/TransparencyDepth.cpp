@@ -12,6 +12,7 @@
 #    include "TransparencyDepth.h"
 
 #    include <algorithm>
+#    include <cassert>
 #    include <map>
 #    include <vector>
 

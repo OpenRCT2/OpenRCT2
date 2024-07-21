@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../interface/Colour.h"
+#include "../localisation/StringIdType.h"
 #include "Font.h"
 
 struct ScreenCoordsXY;

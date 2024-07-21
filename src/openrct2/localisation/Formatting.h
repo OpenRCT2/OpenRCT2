@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "FormatCodes.h"
 #include "Language.h"
 
@@ -24,6 +23,9 @@
 
 namespace OpenRCT2
 {
+    // TODO: find a better spot for this (RCT12.h?)
+    constexpr size_t kUserStringMaxLength = 32;
+
     template<typename T, size_t StackSize = 256, typename TTraits = std::char_traits<T>> class FormatBufferBase
     {
         T _storage[StackSize];
@@ -305,5 +307,9 @@ namespace OpenRCT2
 
     std::string FormatStringAny(const FmtString& fmt, const std::vector<FormatArg_t>& args);
     size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<FormatArg_t>& args);
+
+    // TODO: the following three functions should not be used in new code.
     size_t FormatStringLegacy(char* buffer, size_t bufferLen, StringId id, const void* args);
+    std::string FormatStringIDLegacy(StringId format, const void* args);
+    void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
 } // namespace OpenRCT2

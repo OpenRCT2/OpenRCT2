@@ -12,7 +12,6 @@
 #include "OpenGLAPI.h"
 
 #include <memory>
-#include <openrct2/common.h>
 #include <string>
 namespace OpenRCT2::Ui
 {

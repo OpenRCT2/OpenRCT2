@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Language.h"
-#include "Localisation.h"
+#include "UTF8.h"
 
 #include <cstring>
 #include <wchar.h>

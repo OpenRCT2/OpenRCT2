@@ -12,7 +12,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Language.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>

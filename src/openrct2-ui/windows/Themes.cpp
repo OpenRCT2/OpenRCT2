@@ -17,7 +17,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
 
@@ -805,8 +805,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
                             DrawText(
-                                dpi, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark },
-                                static_cast<const char*>(CheckBoxMarkString));
+                                dpi, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark }, kCheckMarkString);
                         }
                     }
                 }

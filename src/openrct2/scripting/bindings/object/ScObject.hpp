@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
-#    include "../../../common.h"
 #    include "../../../object/ObjectManager.h"
 #    include "../../../object/RideObject.h"
 #    include "../../../object/SceneryGroupObject.h"

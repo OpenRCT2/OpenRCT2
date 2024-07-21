@@ -9,6 +9,7 @@
 
 #include "EntityRegistry.h"
 
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../core/Algorithm.hpp"
@@ -31,6 +32,7 @@
 #include "MoneyEffect.h"
 #include "Particle.h"
 
+#include <cassert>
 #include <cmath>
 #include <iterator>
 #include <numeric>

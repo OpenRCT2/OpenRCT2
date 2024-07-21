@@ -13,6 +13,9 @@
 #    ifndef WIN32_LEAN_AND_MEAN
 #        define WIN32_LEAN_AND_MEAN
 #    endif
+#    include "../Diagnostic.h"
+
+#    include <cassert>
 #    include <windows.h>
 
 // Then the rest
@@ -26,11 +29,10 @@
 
 #    include "../Date.h"
 #    include "../OpenRCT2.h"
-#    include "../common.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
+#    include "../localisation/Localisation.Date.h"
 #    include "Platform.h"
 
 #    include <cstring>

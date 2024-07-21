@@ -12,6 +12,7 @@
 #    include "Platform.h"
 
 #    include "../Date.h"
+#    include "../Diagnostic.h"
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../util/Util.h"

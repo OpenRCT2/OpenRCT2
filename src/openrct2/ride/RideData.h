@@ -20,7 +20,6 @@
 #define DEFAULT_STALL_COLOUR_PRESET TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED })
 
 #include "../audio/audio.h"
-#include "../common.h"
 #include "../core/BitSet.hpp"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"

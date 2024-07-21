@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../ride/TrackDesign.h"
 
 #include <vector>

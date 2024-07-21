@@ -10,7 +10,6 @@
 #include "ShopItem.h"
 
 #include "../GameState.h"
-#include "../common.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../ride/RideEntry.h"

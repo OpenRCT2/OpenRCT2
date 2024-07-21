@@ -9,6 +9,7 @@
 
 #include "FileClassifier.h"
 
+#include "Diagnostic.h"
 #include "core/Console.hpp"
 #include "core/FileStream.h"
 #include "core/Path.hpp"

@@ -11,7 +11,6 @@
 
 #include "../Limits.h"
 #include "../actions/GameActionResult.h"
-#include "../common.h"
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../world/Map.h"

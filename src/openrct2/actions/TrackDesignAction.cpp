@@ -10,6 +10,7 @@
 #include "TrackDesignAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"

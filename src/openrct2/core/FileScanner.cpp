@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../common.h"
-
 #ifdef _WIN32
 #    include <windows.h>
 #endif
@@ -149,7 +147,7 @@ public:
         return false;
     }
 
-    virtual void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) abstract;
+    virtual void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) = 0;
 
 private:
     void PushState(const std::string& directory)

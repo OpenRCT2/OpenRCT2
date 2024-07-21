@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "../core/String.hpp"
+#include "../localisation/StringIdType.h"
 
 #include <algorithm>
 #include <array>

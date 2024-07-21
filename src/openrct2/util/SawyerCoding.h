@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
+#include <cstddef>
+#include <cstdint>
 
 #pragma pack(push, 1)
 struct SawyerCodingChunkHeader
@@ -17,7 +18,7 @@ struct SawyerCodingChunkHeader
     uint8_t encoding;
     uint32_t length;
 };
-assert_struct_size(SawyerCodingChunkHeader, 5);
+static_assert(sizeof(SawyerCodingChunkHeader) == 5);
 #pragma pack(pop)
 
 enum

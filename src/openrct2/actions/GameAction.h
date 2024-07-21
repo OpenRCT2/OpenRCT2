@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Game.h"
-#include "../common.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Identifier.hpp"
 #include "../localisation/StringIds.h"
@@ -234,12 +233,12 @@ public:
     /**
      * Query the result of the game action without changing the game state.
      */
-    virtual GameActions::Result Query() const abstract;
+    virtual GameActions::Result Query() const = 0;
 
     /**
      * Apply the game action and change the game state.
      */
-    virtual GameActions::Result Execute() const abstract;
+    virtual GameActions::Result Execute() const = 0;
 
     bool LocationValid(const CoordsXY& coords) const;
 };

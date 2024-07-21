@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <openrct2/common.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Window.h>
 

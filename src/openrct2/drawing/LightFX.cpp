@@ -9,9 +9,9 @@
 
 #include "LightFX.h"
 
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../common.h"
 #include "../config/Config.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
@@ -21,7 +21,6 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
-#include "../util/Util.h"
 #include "../world/Map.h"
 #include "Drawing.h"
 

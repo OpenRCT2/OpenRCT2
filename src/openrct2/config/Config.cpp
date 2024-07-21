@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Date.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"
@@ -21,8 +22,8 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../interface/Window.h"
 #include "../localisation/Currency.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
@@ -212,6 +213,7 @@ namespace OpenRCT2::Config
             model->DisableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
             model->SteamOverlayPause = reader->GetBoolean("steam_overlay_pause", true);
             model->WindowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
+            model->InferDisplayDPI = reader->GetBoolean("infer_display_dpi", true);
             model->ShowFPS = reader->GetBoolean("show_fps", false);
 #ifdef _DEBUG
             // Always have multi-threading disabled in debug builds, this makes things slower.
@@ -302,6 +304,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("disable_lightning_effect", model->DisableLightningEffect);
         writer->WriteBoolean("steam_overlay_pause", model->SteamOverlayPause);
         writer->WriteFloat("window_scale", model->WindowScale);
+        writer->WriteBoolean("infer_display_dpi", model->InferDisplayDPI);
         writer->WriteBoolean("show_fps", model->ShowFPS);
         writer->WriteBoolean("multithreading", model->MultiThreading);
         writer->WriteBoolean("trap_cursor", model->TrapCursor);

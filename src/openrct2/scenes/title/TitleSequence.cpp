@@ -9,7 +9,7 @@
 
 #include "TitleSequence.h"
 
-#include "../../common.h"
+#include "../../Diagnostic.h"
 #include "../../core/Collections.hpp"
 #include "../../core/Console.hpp"
 #include "../../core/File.h"

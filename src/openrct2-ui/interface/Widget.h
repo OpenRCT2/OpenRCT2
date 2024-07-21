@@ -11,11 +11,11 @@
 
 #include "Window.h"
 
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Widget.h>
 
-// TODO: only because of STR_NONE. We can do better.
-#include <openrct2/localisation/StringIds.h>
+using namespace OpenRCT2;
 
 ImageId GetColourButtonImage(colour_t colour);
 Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
@@ -25,6 +25,13 @@ constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
 constexpr auto kBarBlink = (1u << 31);
 constexpr uint8_t kScrollBarWidth = 10;
 constexpr ScreenSize kTabSize = { 31, 27 };
+
+constexpr const char* kBlackUpArrowString = u8"{BLACK}▲";
+constexpr const char* kBlackDownArrowString = u8"{BLACK}▼";
+constexpr const char* kBlackLeftArrowString = u8"{BLACK}◀";
+constexpr const char* kBlackRightArrowString = u8"{BLACK}▶";
+constexpr const char* kCheckMarkString = u8"✓";
+constexpr const char* kEyeString = u8"👁";
 
 enum class WindowColour : uint8_t
 {

@@ -9,6 +9,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../Identifiers.h"
@@ -20,7 +21,6 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
@@ -45,9 +45,11 @@
 #include "Surface.h"
 #include "TileElement.h"
 
+#include <bit>
 #include <iterator>
 
 using namespace OpenRCT2::TrackMetaData;
+
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 FootpathSelection gFootpathSelection;
@@ -1134,8 +1136,8 @@ void FootpathChainRideQueue(
         {
             // Fix #2051: Stop queue paths that are already connected to two other tiles
             //            from connecting to the tile we are coming from.
-            int32_t edges = tileElement->AsPath()->GetEdges();
-            int32_t numEdges = BitCount(edges);
+            uint32_t edges = tileElement->AsPath()->GetEdges();
+            uint32_t numEdges = std::popcount(edges);
             if (numEdges >= 2)
             {
                 int32_t requiredEdgeMask = 1 << DirectionReverse(direction);

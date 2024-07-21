@@ -16,10 +16,9 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
@@ -256,7 +255,7 @@ static Widget _scenarioSelectWidgets[] = {
                                     .Currency = scenario->ObjectiveArg2 };
 
             ft = Formatter();
-            ft.Add<StringId>(ObjectiveNames[scenario->ObjectiveType]);
+            ft.Add<StringId>(kObjectiveNames[scenario->ObjectiveType]);
             formatObjective(ft, objective);
             screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
@@ -500,7 +499,7 @@ static Widget _scenarioSelectWidgets[] = {
             DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
             // Get string dimensions
-            utf8 buffer[CommonTextBufferSize];
+            utf8 buffer[512];
             auto bufferPtr = buffer;
             OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
             int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;

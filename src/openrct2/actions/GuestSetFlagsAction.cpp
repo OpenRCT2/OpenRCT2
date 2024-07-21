@@ -10,6 +10,7 @@
 #include "GuestSetFlagsAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../entity/EntityRegistry.h"
 

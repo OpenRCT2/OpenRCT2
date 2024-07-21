@@ -9,6 +9,8 @@
 
 #if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
 
+#    include "../Diagnostic.h"
+
 #    include <cstring>
 #    include <fnmatch.h>
 #    include <limits.h>

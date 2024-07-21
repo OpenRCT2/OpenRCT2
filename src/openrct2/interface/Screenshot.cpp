@@ -10,6 +10,7 @@
 #include "Screenshot.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -25,7 +26,6 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
 #include "../paint/Painter.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"

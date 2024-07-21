@@ -11,6 +11,7 @@
 
 #include "../core/Money.hpp"
 #include "../interface/Cursors.h"
+#include "../localisation/StringIdType.h"
 #include "../world/Location.hpp"
 #include "ObjectTypes.h"
 

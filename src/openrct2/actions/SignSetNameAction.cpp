@@ -11,9 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../common.h"
 #include "../drawing/Drawing.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"

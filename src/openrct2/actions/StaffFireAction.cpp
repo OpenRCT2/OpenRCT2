@@ -9,6 +9,7 @@
 
 #include "StaffFireAction.h"
 
+#include "../Diagnostic.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"

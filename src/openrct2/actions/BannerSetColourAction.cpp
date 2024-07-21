@@ -10,6 +10,7 @@
 #include "BannerSetColourAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../management/Finance.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"

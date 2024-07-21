@@ -10,9 +10,9 @@
 #include "ObjectRepository.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
 #include "../core/FileIndex.hpp"
@@ -24,7 +24,6 @@
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
 #include "../park/Legacy.h"

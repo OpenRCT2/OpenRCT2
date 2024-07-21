@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
-#    include "../../../common.h"
 #    include "../../Duktape.hpp"
 #    include "ScParkMessage.hpp"
 #    include "ScResearch.hpp"

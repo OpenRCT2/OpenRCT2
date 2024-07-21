@@ -10,6 +10,7 @@
 #include "Vehicle.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -27,7 +28,6 @@
 #include "../entity/Yaw.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../math/Trigonometry.hpp"
 #include "../object/SmallSceneryEntry.h"
@@ -57,6 +57,7 @@
 #include "VehicleData.h"
 #include "VehicleSubpositionData.h"
 
+#include <cassert>
 #include <iterator>
 
 using namespace OpenRCT2;

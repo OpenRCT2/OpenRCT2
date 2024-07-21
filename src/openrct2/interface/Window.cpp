@@ -10,6 +10,7 @@
 #include "Window.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -21,7 +22,6 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../platform/Platform.h"
 #include "../ride/RideAudio.h"
@@ -34,6 +34,7 @@
 #include "Widget.h"
 #include "Window_internal.h"
 
+#include <cassert>
 #include <cmath>
 #include <functional>
 #include <iterator>
@@ -98,6 +99,19 @@ void WindowVisitEach(std::function<void(WindowBase*)> func)
             continue;
         func(w.get());
     }
+}
+
+void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled)
+{
+    WindowVisitEach([&](WindowBase* w) {
+        if (w->viewport != nullptr)
+        {
+            if (enabled)
+                w->viewport->flags |= viewportFlag;
+            else
+                w->viewport->flags &= ~viewportFlag;
+        }
+    });
 }
 
 /**
@@ -1387,6 +1401,10 @@ void WindowResizeGui(int32_t width, int32_t height)
         titleWind->windowPos.x = (width - titleWind->width) / 2;
         titleWind->windowPos.y = height - 182;
     }
+
+    WindowBase* versionWind = WindowFindByClass(WindowClass::TitleVersion);
+    if (versionWind != nullptr)
+        versionWind->windowPos.y = height - 30;
 
     WindowBase* exitWind = WindowFindByClass(WindowClass::TitleExit);
     if (exitWind != nullptr)

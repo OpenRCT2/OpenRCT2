@@ -10,12 +10,11 @@
 #include "SmallSceneryPlaceAction.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../common.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/ObjectEntryManager.h"

@@ -35,8 +35,8 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Formatting.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -50,6 +50,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
@@ -73,6 +74,8 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
+
+#include <cassert>
 
 using namespace OpenRCT2;
 

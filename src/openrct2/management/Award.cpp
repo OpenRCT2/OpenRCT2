@@ -13,7 +13,6 @@
 #include "../config/Config.h"
 #include "../entity/Guest.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"

@@ -11,6 +11,7 @@
 
 #include "Cheats.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "Editor.h"
 #include "FileClassifier.h"
 #include "GameState.h"
@@ -37,7 +38,6 @@
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
-#include "localisation/Localisation.h"
 #include "management/Finance.h"
 #include "management/Marketing.h"
 #include "management/Research.h"
@@ -47,6 +47,7 @@
 #include "object/ObjectList.h"
 #include "object/WaterEntry.h"
 #include "platform/Platform.h"
+#include "rct12/CSStringConverter.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "ride/Station.h"
@@ -615,7 +616,6 @@ static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
         GameNotifyMapChange();
         GameUnloadScripts();
         WindowCloseByClass(WindowClass::EditorObjectSelection);
-        GetContext()->LoadParkFromFile(path);
         GameLoadScripts();
         GameNotifyMapChanged();
         gIsAutosaveLoaded = gIsAutosave;

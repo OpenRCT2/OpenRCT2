@@ -9,6 +9,7 @@
 
 #include "ScenarioSources.h"
 
+#include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "Scenario.h"

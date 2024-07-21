@@ -9,6 +9,7 @@
 
 #include "RideEntranceExitRemoveAction.h"
 
+#include "../Diagnostic.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
 #include "../world/Entrance.h"

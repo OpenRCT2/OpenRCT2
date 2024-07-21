@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
@@ -19,6 +18,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
+
+#include <cassert>
 
 enum
 {

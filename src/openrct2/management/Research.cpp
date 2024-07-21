@@ -10,6 +10,7 @@
 #include "Research.h"
 
 #include "../Date.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -19,9 +20,8 @@
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../interface/Window.h"
-#include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
@@ -55,6 +55,15 @@ static bool _researchedRideEntries[MAX_RIDE_OBJECTS];
 static bool _researchedSceneryItems[SCENERY_TYPE_COUNT][UINT16_MAX];
 
 bool gSilentResearch = false;
+
+// clang-format off
+const StringId kResearchFundingLevelNames[] = {
+    STR_RESEARCH_FUNDING_NONE,
+    STR_RESEARCH_FUNDING_MINIMUM,
+    STR_RESEARCH_FUNDING_NORMAL,
+    STR_RESEARCH_FUNDING_MAXIMUM,
+};
+// clang-format on
 
 /**
  *

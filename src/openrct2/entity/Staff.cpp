@@ -10,6 +10,7 @@
 #include "Staff.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../Input.h"
@@ -18,8 +19,7 @@
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -47,6 +47,7 @@
 #include "PatrolArea.h"
 #include "Peep.h"
 
+#include <cassert>
 #include <iterator>
 
 using namespace OpenRCT2;

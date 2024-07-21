@@ -21,7 +21,6 @@
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows

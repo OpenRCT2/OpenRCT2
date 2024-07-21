@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
@@ -18,7 +19,6 @@
 #include "../entity/Duck.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../object/PathAdditionEntry.h"

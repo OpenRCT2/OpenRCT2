@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -42,7 +40,7 @@ struct INetworkEndpoint
     {
     }
 
-    virtual std::string GetHostname() const abstract;
+    virtual std::string GetHostname() const = 0;
 };
 
 /**
@@ -53,26 +51,26 @@ struct ITcpSocket
 public:
     virtual ~ITcpSocket() = default;
 
-    virtual SocketStatus GetStatus() const abstract;
-    virtual const char* GetError() const abstract;
-    virtual const char* GetHostName() const abstract;
-    virtual std::string GetIpAddress() const abstract;
+    virtual SocketStatus GetStatus() const = 0;
+    virtual const char* GetError() const = 0;
+    virtual const char* GetHostName() const = 0;
+    virtual std::string GetIpAddress() const = 0;
 
-    virtual void Listen(uint16_t port) abstract;
-    virtual void Listen(const std::string& address, uint16_t port) abstract;
-    [[nodiscard]] virtual std::unique_ptr<ITcpSocket> Accept() abstract;
+    virtual void Listen(uint16_t port) = 0;
+    virtual void Listen(const std::string& address, uint16_t port) = 0;
+    [[nodiscard]] virtual std::unique_ptr<ITcpSocket> Accept() = 0;
 
-    virtual void Connect(const std::string& address, uint16_t port) abstract;
-    virtual void ConnectAsync(const std::string& address, uint16_t port) abstract;
+    virtual void Connect(const std::string& address, uint16_t port) = 0;
+    virtual void ConnectAsync(const std::string& address, uint16_t port) = 0;
 
-    virtual size_t SendData(const void* buffer, size_t size) abstract;
-    virtual NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) abstract;
+    virtual size_t SendData(const void* buffer, size_t size) = 0;
+    virtual NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) = 0;
 
-    virtual void SetNoDelay(bool noDelay) abstract;
+    virtual void SetNoDelay(bool noDelay) = 0;
 
-    virtual void Finish() abstract;
-    virtual void Disconnect() abstract;
-    virtual void Close() abstract;
+    virtual void Finish() = 0;
+    virtual void Disconnect() = 0;
+    virtual void Close() = 0;
 };
 
 /**
@@ -83,19 +81,20 @@ struct IUdpSocket
 public:
     virtual ~IUdpSocket() = default;
 
-    virtual SocketStatus GetStatus() const abstract;
-    virtual const char* GetError() const abstract;
-    virtual const char* GetHostName() const abstract;
+    virtual SocketStatus GetStatus() const = 0;
+    virtual const char* GetError() const = 0;
+    virtual const char* GetHostName() const = 0;
 
-    virtual void Listen(uint16_t port) abstract;
-    virtual void Listen(const std::string& address, uint16_t port) abstract;
+    virtual void Listen(uint16_t port) = 0;
+    virtual void Listen(const std::string& address, uint16_t port) = 0;
 
-    virtual size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) abstract;
-    virtual size_t SendData(const INetworkEndpoint& destination, const void* buffer, size_t size) abstract;
+    virtual size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) = 0;
+    virtual size_t SendData(const INetworkEndpoint& destination, const void* buffer, size_t size) = 0;
     virtual NetworkReadPacket ReceiveData(
-        void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) abstract;
+        void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender)
+        = 0;
 
-    virtual void Close() abstract;
+    virtual void Close() = 0;
 };
 
 [[nodiscard]] std::unique_ptr<ITcpSocket> CreateTcpSocket();

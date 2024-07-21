@@ -16,8 +16,8 @@
 
 #include <memory>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
-#include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
