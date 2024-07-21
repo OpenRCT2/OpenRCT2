@@ -1006,7 +1006,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             }
 
             const int32_t ride_tabs[] = {
-                SPR_TAB_RIDE_16,        SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, SPR_TAB_RIDES_ROLLER_COASTERS_0,
+                SPR_G2_INFINITY,        SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, SPR_TAB_RIDES_ROLLER_COASTERS_0,
                 SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0,     SPR_TAB_RIDES_SHOP_0,   SPR_TAB_FINANCES_RESEARCH_0,
             };
             const int32_t ThrillRidesTabAnimationSequence[] = {
