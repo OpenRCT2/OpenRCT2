@@ -199,7 +199,9 @@
     },
     {
         "path": "icons/infinity.png",
-        "palette": "keep"
+        "palette": "keep",
+        "x": 2,
+        "y": 6
     },
     {
         "path": "tool/normal_selection_6x6.png",
