@@ -33,36 +33,6 @@ class FootpathRailingsObject;
 enum class RideColourScheme : uint8_t;
 using track_type_t = uint16_t;
 
-struct CarTrackLocation : public CoordsXYZD
-{
-    track_type_t trackType = 0;
-
-    constexpr CarTrackLocation() = default;
-    constexpr CarTrackLocation(int32_t _x, int32_t _y, int32_t _z, Direction _d, track_type_t _t)
-        : CoordsXYZD(_x, _y, _z, _d)
-        , trackType(_t)
-    {
-    }
-
-    constexpr CarTrackLocation(const CoordsXY& _c, int32_t _z, Direction _d, track_type_t _t)
-        : CoordsXYZD(_c, _z, _d)
-        , trackType(_t)
-    {
-    }
-
-    constexpr CarTrackLocation(const CoordsXYZ& _c, Direction _d, track_type_t _t)
-        : CoordsXYZD(_c, _d)
-        , trackType(_t)
-    {
-    }
-
-    constexpr CarTrackLocation(const CoordsXYZD& _c, track_type_t _t)
-        : CoordsXYZD(_c)
-        , trackType(_t)
-    {
-    }
-};
-
 constexpr uint8_t MAX_ELEMENT_HEIGHT = 255;
 constexpr uint8_t OWNER_MASK = 0b00001111;
 
