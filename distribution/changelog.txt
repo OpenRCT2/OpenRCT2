@@ -19,6 +19,7 @@
 - Fix: [#22304] Graphs don't draw lines on the left edge of the screen.
 - Fix: [#22318] Water sparkles are missing if transparent water is enabled without RCT1 linked.
 - Fix: [#22333] Tile inspector closes other tool windows.
+- Fix: [#22339] Printing ui.tool.cursor in console crashes the game.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
