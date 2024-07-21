@@ -732,6 +732,24 @@ private:
         LOG_VERBOSE("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
     }
 
+    void InferDisplayDPI()
+    {
+        auto& config = Config::Get().general;
+        if (!config.InferDisplayDPI)
+            return;
+
+        int wWidth, wHeight;
+        SDL_GetWindowSize(_window, &wWidth, &wHeight);
+
+        auto renderer = SDL_GetRenderer(_window);
+        int rWidth, rHeight;
+        if (SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight) == 0)
+            config.WindowScale = rWidth / wWidth;
+
+        config.InferDisplayDPI = false;
+        Config::Save();
+    }
+
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size
@@ -763,6 +781,7 @@ private:
 
         // Initialise the surface, palette and draw buffer
         DrawingEngineInit();
+        InferDisplayDPI();
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
