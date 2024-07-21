@@ -743,9 +743,9 @@ private:
 
         auto renderer = SDL_GetRenderer(_window);
         int rWidth, rHeight;
-        SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight);
+        if (SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight) == 0)
+            config.WindowScale = rWidth / wWidth;
 
-        config.WindowScale = rWidth / wWidth;
         config.InferDisplayDPI = false;
         Config::Save();
     }
