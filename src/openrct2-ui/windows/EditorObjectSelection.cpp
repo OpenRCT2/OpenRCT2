@@ -225,22 +225,20 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 #pragma endregion
 
     static constexpr int32_t window_editor_object_selection_animation_loops[] = {
-        20, // All
-        32, // Transport
-        10, // Gentle
-        72, // Coaster
-        24, // Thrill
-        28, // Water
-        16, // Stall
+        20, // Transport
+        32, // Gentle
+        10, // Coaster
+        72, // Thrill
+        24, // Water
+        28, // Stall
     };
     static constexpr int32_t window_editor_object_selection_animation_divisor[] = {
-        4, // All
-        8, // Transport
-        2, // Gentle
-        4, // Coaster
+        4, // Transport
+        8, // Gentle
+        2, // Coaster
         4, // Thrill
         4, // Water
-        2, // Stall
+        4, // Stall
     };
 
     static StringId GetRideTypeStringId(const ObjectRepositoryItem* item);
