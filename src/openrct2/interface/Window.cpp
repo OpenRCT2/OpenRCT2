@@ -1427,6 +1427,14 @@ void WindowResizeGui(int32_t width, int32_t height)
         optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
     }
 
+    // Keep progress bar window centred after a resize
+    WindowBase* ProgressWindow = WindowFindByClass(WindowClass::ProgressWindow);
+    if (ProgressWindow != nullptr)
+    {
+        ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
+        ProgressWindow->windowPos.y = (ContextGetHeight() - ProgressWindow->height) / 2;
+    }
+
     GfxInvalidateScreen();
 }
 
