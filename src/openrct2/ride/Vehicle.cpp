@@ -848,12 +848,10 @@ void Vehicle::UpdateMeasurements()
             curRide->max_speed = absVelocity;
         }
 
-        if (curRide->average_speed_test_timeout == 0)
+        if (curRide->average_speed_test_timeout == 0 && absVelocity > 0)
         {
-            if (absVelocity > 0x8000)
-                curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity);
-            if (absVelocity > 0)
-                stationForTestSegment.SegmentTime++;
+            curRide->average_speed = AddClamp<int32_t>(curRide->average_speed, absVelocity);
+            stationForTestSegment.SegmentTime++;
         }
 
         int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
