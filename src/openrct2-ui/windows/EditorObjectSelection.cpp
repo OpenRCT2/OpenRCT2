@@ -255,6 +255,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
         int32_t _listSortType = RIDE_SORT_TYPE;
         bool _listSortDescending = false;
         std::unique_ptr<Object> _loadedObject;
+        uint8_t _selectedSubTab = 0;
 
     public:
         /**
@@ -331,18 +332,17 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
             }
 
-            for (WidgetIndex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
-            {
-                if (!IsWidgetPressed(i))
-                    continue;
+            if (GetSelectedObjectType() != ObjectType::Ride)
+                return;
 
-                frame_no++;
-                if (frame_no >= window_editor_object_selection_animation_loops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
-                    frame_no = 0;
+            if (_selectedSubTab == 0)
+                return;
 
-                WidgetInvalidate(*this, i);
-                break;
-            }
+            frame_no++;
+            if (frame_no >= window_editor_object_selection_animation_loops[_selectedSubTab - 1])
+                frame_no = 0;
+
+            WidgetInvalidate(*this, WIDX_FILTER_RIDE_TAB_ALL + _selectedSubTab);
         }
 
         /**
@@ -371,25 +371,22 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     }
                     break;
                 case WIDX_FILTER_RIDE_TAB_ALL:
-                    _filter_flags |= FILTER_RIDES;
-                    Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
-                    Config::Save();
-
-                    FilterUpdateCounts();
-                    VisibleListRefresh();
-
-                    selected_list_item = -1;
-                    scrolls[0].v_top = 0;
-                    Invalidate();
-                    break;
                 case WIDX_FILTER_RIDE_TAB_TRANSPORT:
                 case WIDX_FILTER_RIDE_TAB_GENTLE:
                 case WIDX_FILTER_RIDE_TAB_COASTER:
                 case WIDX_FILTER_RIDE_TAB_THRILL:
                 case WIDX_FILTER_RIDE_TAB_WATER:
                 case WIDX_FILTER_RIDE_TAB_STALL:
-                    _filter_flags &= ~FILTER_RIDES;
-                    _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + _numSourceGameItems));
+                {
+                    _selectedSubTab = widgetIndex - WIDX_FILTER_RIDE_TAB_ALL;
+                    if (widgetIndex != WIDX_FILTER_RIDE_TAB_ALL)
+                    {
+                        _filter_flags &= ~FILTER_RIDES;
+                        _filter_flags |= (1 << (_numSourceGameItems + _selectedSubTab - 1));
+                    }
+                    else
+                        _filter_flags |= FILTER_RIDES;
+
                     Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
                     Config::Save();
 
@@ -401,6 +398,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     frame_no = 0;
                     Invalidate();
                     break;
+                }
 
                 case WIDX_ADVANCED:
                     list_information_type ^= 1;
@@ -1022,7 +1020,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
                     int32_t spriteIndex = ride_tabs[i];
                     int32_t frame = 0;
-                    if (i != 0 && IsWidgetPressed(WIDX_FILTER_RIDE_TAB_ALL + i))
+                    if (i != 0 && _selectedSubTab == i)
                     {
                         frame = frame_no / window_editor_object_selection_animation_divisor[i - 1];
                     }
@@ -1143,6 +1141,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 return;
 
             selected_tab = _page;
+            _selectedSubTab = 0;
             selected_list_item = -1;
             scrolls[0].v_top = 0;
             frame_no = 0;
