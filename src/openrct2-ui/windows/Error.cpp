@@ -26,6 +26,11 @@ enum {
     WIDX_BACKGROUND
 };
 
+static constexpr auto kBorderSize = 1;
+static constexpr auto kMinWidth = 64;
+static constexpr auto kMaxWidth = 196;
+static constexpr auto kPadding = 4;
+
 static Widget window_error_widgets[] = {
     MakeWidget({0, 0}, {200, 42}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     kWidgetsEnd,
@@ -69,7 +74,9 @@ static Widget window_error_widgets[] = {
             ScreenCoordsXY rightTop{ rightBottom.x, leftTop.y };
 
             GfxFilterRect(
-                dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
+                dpi,
+                ScreenRect{ leftTop + ScreenCoordsXY{ kBorderSize, kBorderSize },
+                            rightBottom - ScreenCoordsXY{ kBorderSize, kBorderSize } },
                 FilterPaletteID::Palette45);
             GfxFilterRect(dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
 
@@ -100,7 +107,8 @@ static Widget window_error_widgets[] = {
                 FilterPaletteID::PaletteDarken3);
 
             DrawStringCentredRaw(
-                dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
+                dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, kPadding - 1 } }, _numLines, _text.data(),
+                FontStyle::Medium);
         }
 
         void OnPeriodicUpdate() override
@@ -125,7 +133,7 @@ static Widget window_error_widgets[] = {
 
     WindowBase* ErrorOpen(std::string_view title, std::string_view message, bool autoClose)
     {
-        std::string buffer = "{BLACK}";
+        std::string buffer = "{OUTLINE}{WHITE}";
         buffer.append(title);
 
         // Format the message
@@ -153,13 +161,13 @@ static Widget window_error_widgets[] = {
         WindowCloseByClass(WindowClass::Error);
 
         int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
-        width = std::clamp(width, 64, 196);
+        width = std::clamp(width, kMinWidth, kMaxWidth);
 
         int32_t numLines{};
         GfxWrapString(buffer, width + 1, FontStyle::Medium, &buffer, &numLines);
 
         width = width + 3;
-        int32_t height = (numLines + 1) * FontGetLineHeight(FontStyle::Medium) + 4;
+        int32_t height = (numLines + 1) * FontGetLineHeight(FontStyle::Medium) + (2 * kPadding);
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
         const CursorState* state = ContextGetCursorState();
