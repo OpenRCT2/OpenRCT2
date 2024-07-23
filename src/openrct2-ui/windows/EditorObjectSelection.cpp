@@ -124,13 +124,6 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 400;
     static constexpr int32_t WW = 755;
 
-    enum ObjectPageFlags : uint8_t
-    {
-        none = 0,
-        isAdvanced = 1 << 0,
-        hasSubTabs = 1 << 1,
-    };
-
     struct ObjectSubTab
     {
         StringId tooltip;
@@ -146,7 +139,6 @@ namespace OpenRCT2::Ui::Windows
         StringId Caption;
         ObjectType mainObjectType;
         uint32_t Image;
-        uint8_t Flags;
         std::span<ObjectSubTab> subTabs;
     };
 
@@ -177,15 +169,15 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
-        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,             SPR_TAB_RIDE_16,            ObjectPageFlags::hasSubTabs, kRideObjectSubTabs },
-        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,     SPR_TAB_SCENERY_STATUES,    ObjectPageFlags::hasSubTabs, kSceneryObjectSubTabs },
-        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface,  SPR_G2_LEGACY_PATH_TAB,     ObjectPageFlags::hasSubTabs, kPathObjectSubTabs },
-        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,     SPR_TAB_PARK,               ObjectPageFlags::none      , {} },
-        { STR_OBJECT_SELECTION_STATIONS,                  ObjectType::Station,          SPR_G2_RIDE_STATION_TAB,    ObjectPageFlags::isAdvanced, {} },
-        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,            SPR_TAB_MUSIC_0,            ObjectPageFlags::isAdvanced, {} },
-        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,   SPR_G2_TAB_LAND,            ObjectPageFlags::isAdvanced, {} },
-        { STR_OBJECT_SELECTION_TERRAIN_EDGES,             ObjectType::TerrainEdge,      SPR_G2_TERRAIN_EDGE_TAB,    ObjectPageFlags::isAdvanced, {} },
-        { STR_OBJECT_SELECTION_WATER,                     ObjectType::Water,            SPR_TAB_WATER,              ObjectPageFlags::none      , {} },
+        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,             SPR_TAB_RIDE_16,            kRideObjectSubTabs },
+        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,     SPR_TAB_SCENERY_STATUES,    kSceneryObjectSubTabs },
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface,  SPR_G2_LEGACY_PATH_TAB,     kPathObjectSubTabs },
+        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,     SPR_TAB_PARK,               {} },
+        { STR_OBJECT_SELECTION_STATIONS,                  ObjectType::Station,          SPR_G2_RIDE_STATION_TAB,    {} },
+        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,            SPR_TAB_MUSIC_0,            {} },
+        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,   SPR_G2_TAB_LAND,            {} },
+        { STR_OBJECT_SELECTION_TERRAIN_EDGES,             ObjectType::TerrainEdge,      SPR_G2_TERRAIN_EDGE_TAB,    {} },
+        { STR_OBJECT_SELECTION_WATER,                     ObjectType::Water,            SPR_TAB_WATER,              {} },
     };
     // clang-format on
 
@@ -197,7 +189,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TITLE,
         WIDX_CLOSE,
         WIDX_TAB_CONTENT_PANEL,
-        WIDX_ADVANCED,
         WIDX_LIST,
         WIDX_PREVIEW,
         WIDX_INSTALL_TRACK,
@@ -226,11 +217,10 @@ namespace OpenRCT2::Ui::Windows
 static std::vector<Widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
-    MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
     MakeWidget({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
     MakeWidget({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-    MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
-    MakeWidget({350, 22}, {114,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
+    MakeWidget({350, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+    MakeWidget({470, 22}, {114,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
     MakeWidget({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
     MakeWidget({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
     MakeWidget({  3, 73}, {285,   4}, WindowWidgetType::ImgBtn,       WindowColour::Secondary                                                                  ),
@@ -346,7 +336,8 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
             }
 
-            if (GetSelectedObjectType() != ObjectType::Ride)
+            auto& currentPage = ObjectSelectionPages[selected_tab];
+            if (currentPage.subTabs.empty())
                 return;
 
             if (_selectedSubTab == 0)
@@ -414,11 +405,6 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                     Invalidate();
                     break;
                 }
-
-                case WIDX_ADVANCED:
-                    list_information_type ^= 1;
-                    Invalidate();
-                    break;
 
                 case WIDX_INSTALL_TRACK:
                 {
@@ -854,26 +840,20 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
         {
             // Resize widgets
             ResizeFrameWithPage();
-            widgets[WIDX_ADVANCED].left = width - 130;
-            widgets[WIDX_ADVANCED].right = width - 9;
             widgets[WIDX_LIST].right = width - 309;
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
-            widgets[WIDX_INSTALL_TRACK].left = width - 130;
-            widgets[WIDX_INSTALL_TRACK].right = width - 9;
-            widgets[WIDX_FILTER_DROPDOWN].left = width - 250;
-            widgets[WIDX_FILTER_DROPDOWN].right = width - 137;
+            widgets[WIDX_FILTER_DROPDOWN].left = width - 130;
+            widgets[WIDX_FILTER_DROPDOWN].right = width - 9;
+            widgets[WIDX_INSTALL_TRACK].left = width - 250;
+            widgets[WIDX_INSTALL_TRACK].right = width - 137;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
             widgets[WIDX_RELOAD_OBJECT].right = width - 9;
 
             // Set pressed widgets
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
             SetPressedTab();
-            if (list_information_type & 1)
-                pressed_widgets |= (1uLL << WIDX_ADVANCED);
-            else
-                pressed_widgets &= ~(1uLL << WIDX_ADVANCED);
 
             // Set window title and buttons
             auto ft = Formatter::Common();
@@ -896,24 +876,20 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 installTrackWidget.type = WindowWidgetType::Empty;
             }
 
-            // Align tabs, hide advanced ones
-            bool advancedMode = (list_information_type & 1) != 0;
+            // Align main tabs
             int32_t x = 3;
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 auto& widget = widgets[WIDX_TAB_1 + i];
-                if ((!advancedMode && (ObjectSelectionPages[i].Flags & ObjectPageFlags::isAdvanced))
-                    || ObjectSelectionPages[i].Image == static_cast<uint32_t>(SPR_NONE))
-                {
-                    widget.type = WindowWidgetType::Empty;
-                }
-                else
+                if (ObjectSelectionPages[i].Image != static_cast<uint32_t>(SPR_NONE))
                 {
                     widget.type = WindowWidgetType::Tab;
                     widget.left = x;
                     widget.right = x + 30;
                     x += 31;
                 }
+                else
+                    widget.type = WindowWidgetType::Empty;
             }
 
             if (Config::Get().general.DebuggingTools)
@@ -923,7 +899,6 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
             {
-                widgets[WIDX_ADVANCED].type = WindowWidgetType::Empty;
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
                     widgets[WIDX_TAB_1 + i].type = WindowWidgetType::Empty;
@@ -931,10 +906,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                 x = 150;
             }
             else
-            {
-                widgets[WIDX_ADVANCED].type = WindowWidgetType::Button;
                 x = 300;
-            }
 
             widgets[WIDX_FILTER_DROPDOWN].type = WindowWidgetType::Button;
             widgets[WIDX_LIST].right = width - (WW - 587) - x;
@@ -1026,7 +998,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
             // Draw sub-tab images, if applicable
             auto& currentPage = ObjectSelectionPages[selected_tab];
-            if (currentPage.Flags & ObjectPageFlags::hasSubTabs)
+            if (!currentPage.subTabs.empty())
             {
                 for (auto i = 0u; i < currentPage.subTabs.size(); i++)
                 {
