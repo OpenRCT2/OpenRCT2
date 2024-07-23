@@ -178,11 +178,11 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
         { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,             SPR_TAB_RIDE_16,            ObjectPageFlags::hasSubTabs, kRideObjectSubTabs },
-        { STR_OBJECT_SELECTION_STATIONS,                  ObjectType::Station,          SPR_G2_RIDE_STATION_TAB,    ObjectPageFlags::isAdvanced, {} },
-        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,            SPR_TAB_MUSIC_0,            ObjectPageFlags::isAdvanced, {} },
         { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,     SPR_TAB_SCENERY_STATUES,    ObjectPageFlags::hasSubTabs, kSceneryObjectSubTabs },
         { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface,  SPR_G2_LEGACY_PATH_TAB,     ObjectPageFlags::hasSubTabs, kPathObjectSubTabs },
         { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,     SPR_TAB_PARK,               ObjectPageFlags::none      , {} },
+        { STR_OBJECT_SELECTION_STATIONS,                  ObjectType::Station,          SPR_G2_RIDE_STATION_TAB,    ObjectPageFlags::isAdvanced, {} },
+        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,            SPR_TAB_MUSIC_0,            ObjectPageFlags::isAdvanced, {} },
         { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,   SPR_G2_TAB_LAND,            ObjectPageFlags::isAdvanced, {} },
         { STR_OBJECT_SELECTION_TERRAIN_EDGES,             ObjectType::TerrainEdge,      SPR_G2_TERRAIN_EDGE_TAB,    ObjectPageFlags::isAdvanced, {} },
         { STR_OBJECT_SELECTION_WATER,                     ObjectType::Water,            SPR_TAB_WATER,              ObjectPageFlags::none      , {} },
