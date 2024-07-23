@@ -361,7 +361,6 @@ namespace OpenRCT2::Config
             model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", WindowButtonsOnTheLeftDefault);
             model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
             model->TouchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
-            model->UseUnobtrusiveReplays = reader->GetBoolean("use_unobtrusive_replays", false);
         }
     }
 
@@ -387,7 +386,6 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("window_buttons_on_the_left", model->WindowButtonsOnTheLeft);
         writer->WriteBoolean("enlarged_ui", model->EnlargedUi);
         writer->WriteBoolean("touch_enhancements", model->TouchEnhancements);
-        writer->WriteBoolean("use_unobtrusive_replays", model->UseUnobtrusiveReplays);
     }
 
     static void ReadSound(IIniReader* reader)
