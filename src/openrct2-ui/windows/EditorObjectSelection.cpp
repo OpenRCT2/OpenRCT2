@@ -122,7 +122,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
     static constexpr int32_t WH = 400;
-    static constexpr int32_t WW = 755;
+    static constexpr int32_t WW = 600;
+    static constexpr auto kPreviewSize = 113;
 
     struct ObjectSubTab
     {
@@ -234,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab            ({189, 47}),
         MakeWidget         ({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
         MakeWidget         ({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-        MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Primary,   SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
+        MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
         MakeTab            ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
         // Copied object type times...
 
@@ -903,29 +904,23 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widgets[WIDX_TAB_1 + i].type = WindowWidgetType::Empty;
                 }
-                x = 150;
             }
-            else
-                x = 300;
-
-            widgets[WIDX_FILTER_DROPDOWN].type = WindowWidgetType::Button;
-            widgets[WIDX_LIST].right = width - (WW - 587) - x;
-            widgets[WIDX_PREVIEW].left = width - (WW - 537) - (x / 2);
-            widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + 113;
-            widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = widgets[WIDX_LIST].right;
 
             // Do we have any sub-tabs?
             const auto& currentPage = ObjectSelectionPages[selected_tab];
             const bool hasSubTabs = !currentPage.subTabs.empty();
 
-            widgets[WIDX_LIST].top = (hasSubTabs ? 118 : 60);
+            widgets[WIDX_LIST].right = width / 2 - 2;
+            widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = widgets[WIDX_LIST].right;
+
             widgets[WIDX_FILTER_TEXT_BOX].right = widgets[WIDX_LIST].right - 77;
-            widgets[WIDX_FILTER_TEXT_BOX].top = (hasSubTabs ? 79 : 45);
-            widgets[WIDX_FILTER_TEXT_BOX].bottom = (hasSubTabs ? 92 : 58);
+            widgets[WIDX_FILTER_TEXT_BOX].top = (hasSubTabs ? 79 : 48);
+            widgets[WIDX_FILTER_TEXT_BOX].bottom = (hasSubTabs ? 92 : 61);
+
             widgets[WIDX_FILTER_CLEAR_BUTTON].left = widgets[WIDX_LIST].right - 73;
             widgets[WIDX_FILTER_CLEAR_BUTTON].right = widgets[WIDX_LIST].right;
-            widgets[WIDX_FILTER_CLEAR_BUTTON].top = (hasSubTabs ? 79 : 45);
-            widgets[WIDX_FILTER_CLEAR_BUTTON].bottom = (hasSubTabs ? 92 : 58);
+            widgets[WIDX_FILTER_CLEAR_BUTTON].top = (hasSubTabs ? 79 : 48);
+            widgets[WIDX_FILTER_CLEAR_BUTTON].bottom = (hasSubTabs ? 92 : 61);
 
             // Toggle sub-tab visibility
             const auto numSubTabs = static_cast<int8_t>(currentPage.subTabs.size());
@@ -972,12 +967,15 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_LIST].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 2;
             }
+
+            widgets[WIDX_PREVIEW].top = widgets[WIDX_FILTER_TEXT_BOX].top;
+            widgets[WIDX_PREVIEW].bottom = widgets[WIDX_PREVIEW].top + kPreviewSize;
+            widgets[WIDX_PREVIEW].left = width * 3 / 4 - kPreviewSize / 2;
+            widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            int32_t _width;
-
             DrawWidgets(dpi);
 
             // Draw main tab images
@@ -1072,28 +1070,16 @@ namespace OpenRCT2::Ui::Windows
             if (selected_list_item == -1 || _loadedObject == nullptr)
                 return;
 
-            ObjectListItem* listItem = &_listItems[selected_list_item];
-
             // Draw preview
             {
                 DrawPixelInfo clipDPI;
                 auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
-                _width = previewWidget.width() - 1;
-                int32_t _height = previewWidget.height() - 1;
-                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _width, _height))
+                int32_t previewWidth = previewWidget.width() - 1;
+                int32_t previewHeight = previewWidget.height() - 1;
+                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, previewWidth, previewHeight))
                 {
-                    _loadedObject->DrawPreview(clipDPI, _width, _height);
+                    _loadedObject->DrawPreview(clipDPI, previewWidth, previewHeight);
                 }
-            }
-
-            // Draw name of object
-            {
-                auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.midX() + 1, previewWidget.bottom + 3 };
-                _width = this->width - widgets[WIDX_LIST].right - 6;
-                auto ft = Formatter();
-                ft.Add<StringId>(STR_STRING);
-                ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
-                DrawTextEllipsised(dpi, screenPos, _width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
             }
 
             DrawDescriptions(dpi);
@@ -1224,14 +1210,30 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawDescriptions(DrawPixelInfo& dpi)
         {
-            const auto& widget = widgets[WIDX_PREVIEW];
-            auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
-            auto _width2 = windowPos.x + this->width - screenPos.x - 4;
+            auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIEW].midX(), widgets[WIDX_PREVIEW].bottom + 3 };
+            auto descriptionWidth = width - widgets[WIDX_LIST].right - 12;
 
+            // Draw name of object
+            {
+                ObjectListItem* listItem = &_listItems[selected_list_item];
+
+                auto ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
+                screenPos.y += DrawTextWrapped(
+                    dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+
+                // Leave some space between name and description
+                screenPos.y += kListRowHeight;
+            }
+
+            screenPos.x = windowPos.x + widgets[WIDX_LIST].right + 6;
+
+            // Compatibility object?
             if (_loadedObject->IsCompatibilityObject())
             {
                 screenPos.y += DrawTextWrapped(
-                                   dpi, screenPos, _width2, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
+                                   dpi, screenPos, descriptionWidth, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
                                    { COLOUR_BRIGHT_RED })
                     + kListRowHeight;
             }
@@ -1243,7 +1245,8 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(description.c_str());
 
-                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + kListRowHeight;
+                screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft);
+                screenPos.y += kListRowHeight;
             }
             if (GetSelectedObjectType() == ObjectType::Ride)
             {
@@ -1264,7 +1267,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto ft = Formatter();
                     ft.Add<const char*>(sells.c_str());
-                    screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
+                    screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
                 }
             }
             else if (GetSelectedObjectType() == ObjectType::SceneryGroup)
@@ -1272,11 +1275,11 @@ namespace OpenRCT2::Ui::Windows
                 const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
                 auto ft = Formatter();
                 ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
-                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_INCLUDES_X_OBJECTS, ft) + 2;
+                screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_INCLUDES_X_OBJECTS, ft) + 2;
             }
             else if (GetSelectedObjectType() == ObjectType::Music)
             {
-                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+                screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
                 const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
                 for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
                 {
@@ -1289,7 +1292,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<const char*>(track->Name.c_str());
                     ft.Add<const char*>(track->Composer.c_str());
-                    screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, _width2, stringId, ft);
+                    screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, descriptionWidth, stringId, ft);
                 }
             }
         }
