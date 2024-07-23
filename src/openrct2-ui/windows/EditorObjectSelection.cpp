@@ -46,6 +46,8 @@ namespace OpenRCT2::Ui::Windows
 {
     enum : uint16_t
     {
+        FILTER_NONE = 0,
+
         FILTER_RCT1 = (1 << 0),
         FILTER_AA = (1 << 1),
         FILTER_LL = (1 << 2),
@@ -158,10 +160,15 @@ namespace OpenRCT2::Ui::Windows
         { STR_WATER_RIDES_TIP,             ObjectType::Ride, FILTER_RIDE_WATER,     SPR_TAB_RIDES_WATER_0,           24, 4 },
         { STR_SHOPS_STALLS_TIP,            ObjectType::Ride, FILTER_RIDE_STALL,     SPR_TAB_RIDES_SHOP_0,            28, 4 },
     };
-    // clang-format on
 
-    // clang-format off
-    // Order of which the object tabs are displayed.
+    static ObjectSubTab kPathObjectSubTabs[] = {
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES, ObjectType::FootpathSurface,  FILTER_NONE, SPR_G2_PATH_SURFACE_TAB,    1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS, ObjectType::FootpathRailings, FILTER_NONE, SPR_G2_PATH_RAILINGS_TAB,   1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATHS,         ObjectType::Paths,            FILTER_NONE, SPR_G2_LEGACY_PATH_TAB,     1, 1 },
+        { STR_OBJECT_SELECTION_PATH_EXTRAS,       ObjectType::PathAdditions,    FILTER_NONE, SPR_TAB_SCENERY_PATH_ITEMS, 1, 1 },
+        { STR_OBJECT_SELECTION_PATH_SIGNS,        ObjectType::Banners,          FILTER_NONE, SPR_TAB_SCENERY_SIGNAGE,    1, 1 },
+    };
+
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
         { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,             SPR_TAB_RIDE_16,            ObjectPageFlags::hasSubTabs, kRideObjectSubTabs },
         { STR_OBJECT_SELECTION_STATIONS,                  ObjectType::Station,          SPR_G2_RIDE_STATION_TAB,    ObjectPageFlags::isAdvanced, {} },
@@ -170,11 +177,7 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_SMALL_SCENERY,             ObjectType::SmallScenery,     SPR_TAB_SCENERY_TREES,      ObjectPageFlags::isAdvanced, {} },
         { STR_OBJECT_SELECTION_LARGE_SCENERY,             ObjectType::LargeScenery,     SPR_TAB_SCENERY_URBAN,      ObjectPageFlags::isAdvanced, {} },
         { STR_OBJECT_SELECTION_WALLS_FENCES,              ObjectType::Walls,            SPR_TAB_SCENERY_WALLS,      ObjectPageFlags::isAdvanced, {} },
-        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface,  SPR_G2_PATH_SURFACE_TAB,    ObjectPageFlags::none      , {} },
-        { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,         ObjectType::FootpathRailings, SPR_G2_PATH_RAILINGS_TAB,   ObjectPageFlags::none      , {} },
-        { STR_OBJECT_SELECTION_FOOTPATHS,                 ObjectType::Paths,            SPR_G2_LEGACY_PATH_TAB,     ObjectPageFlags::isAdvanced, {} },
-        { STR_OBJECT_SELECTION_PATH_EXTRAS,               ObjectType::PathAdditions,    SPR_TAB_SCENERY_PATH_ITEMS, ObjectPageFlags::none      , {} },
-        { STR_OBJECT_SELECTION_PATH_SIGNS,                ObjectType::Banners,          SPR_TAB_SCENERY_SIGNAGE,    ObjectPageFlags::isAdvanced, {} },
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface,  SPR_G2_LEGACY_PATH_TAB,     ObjectPageFlags::hasSubTabs, kPathObjectSubTabs },
         { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,     SPR_TAB_PARK,               ObjectPageFlags::none      , {} },
         { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,   SPR_G2_TAB_LAND,            ObjectPageFlags::isAdvanced, {} },
         { STR_OBJECT_SELECTION_TERRAIN_EDGES,             ObjectType::TerrainEdge,      SPR_G2_TERRAIN_EDGE_TAB,    ObjectPageFlags::isAdvanced, {} },
