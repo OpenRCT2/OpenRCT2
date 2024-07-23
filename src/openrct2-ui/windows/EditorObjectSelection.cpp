@@ -193,6 +193,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PREVIEW,
         WIDX_INSTALL_TRACK,
         WIDX_FILTER_DROPDOWN,
+        WIDX_FILTER_DROPDOWN_BTN,
         WIDX_FILTER_TEXT_BOX,
         WIDX_FILTER_CLEAR_BUTTON,
         WIDX_FILTER_RIDE_TAB_FRAME,
@@ -214,31 +215,31 @@ namespace OpenRCT2::Ui::Windows
     static bool _window_editor_object_selection_widgets_initialised;
 
     // clang-format off
-static std::vector<Widget> _window_editor_object_selection_widgets = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
-    MakeWidget({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
-    MakeWidget({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-    MakeWidget({350, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
-    MakeWidget({470, 22}, {114,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
-    MakeWidget({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
-    MakeWidget({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
-    MakeWidget({  3, 73}, {285,   4}, WindowWidgetType::ImgBtn,       WindowColour::Secondary                                                                  ),
-    MakeTab   ({  3, 47}),
-    MakeTab   ({ 34, 47}),
-    MakeTab   ({ 65, 47}),
-    MakeTab   ({ 96, 47}),
-    MakeTab   ({127, 47}),
-    MakeTab   ({158, 47}),
-    MakeTab   ({189, 47}),
-    MakeWidget({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-    MakeWidget({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-    MakeWidget({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Primary,   SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
-    MakeTab   ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
-    // Copied object type times...
+    static std::vector<Widget> _window_editor_object_selection_widgets = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
+        MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
+        MakeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
+        MakeWidget         ({350, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        MakeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
+        MakeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
+        MakeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
+        MakeWidget         ({  3, 73}, {285,   4}, WindowWidgetType::ImgBtn,       WindowColour::Secondary                                                                  ),
+        MakeTab            ({  3, 47}),
+        MakeTab            ({ 34, 47}),
+        MakeTab            ({ 65, 47}),
+        MakeTab            ({ 96, 47}),
+        MakeTab            ({127, 47}),
+        MakeTab            ({158, 47}),
+        MakeTab            ({189, 47}),
+        MakeWidget         ({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
+        MakeWidget         ({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
+        MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Primary,   SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
+        MakeTab            ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
+        // Copied object type times...
 
-    kWidgetsEnd,
-};
+        kWidgetsEnd,
+    };
     // clang-format on
 
 #pragma endregion
@@ -487,7 +488,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
             switch (widgetIndex)
             {
-                case WIDX_FILTER_DROPDOWN:
+                case WIDX_FILTER_DROPDOWN_BTN:
 
                     gDropdownItems[DDIX_FILTER_RCT1].Format = STR_TOGGLE_OPTION;
                     gDropdownItems[DDIX_FILTER_AA].Format = STR_TOGGLE_OPTION;
@@ -519,10 +520,10 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
                     }
 
+                    auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];
                     WindowDropdownShowText(
-                        { windowPos.x + widgets[widgetIndex].left, windowPos.y + widgets[widgetIndex].top },
-                        widgets[widgetIndex].height() + 1, colours[widgets[widgetIndex].colour], Dropdown::Flag::StayOpen,
-                        _numSourceGameItems + numSelectionItems);
+                        { windowPos.x + ddWidget.left, windowPos.y + ddWidget.top }, ddWidget.height() + 1,
+                        colours[ddWidget.colour], Dropdown::Flag::StayOpen, _numSourceGameItems + numSelectionItems);
 
                     for (int32_t i = 0; i < _numSourceGameItems; i++)
                     {
@@ -548,7 +549,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
             switch (widgetIndex)
             {
-                case WIDX_FILTER_DROPDOWN:
+                case WIDX_FILTER_DROPDOWN_BTN:
                     if (dropdownIndex == DDIX_FILTER_SELECTED)
                     {
                         _filter_flags ^= FILTER_SELECTED;
@@ -844,8 +845,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
-            widgets[WIDX_FILTER_DROPDOWN].left = width - 130;
-            widgets[WIDX_FILTER_DROPDOWN].right = width - 9;
+            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - 130, 22 }, { 122, 14 });
             widgets[WIDX_INSTALL_TRACK].left = width - 250;
             widgets[WIDX_INSTALL_TRACK].right = width - 137;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
