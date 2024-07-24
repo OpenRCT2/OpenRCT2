@@ -111,7 +111,6 @@ void TitleScene::Load()
     ContextOpenWindow(WindowClass::MainWindow);
 
     TitleInitialise();
-    OpenRCT2::Audio::PlayTitleMusic();
 
     if (_sequencePlayer != nullptr)
     {
@@ -121,6 +120,8 @@ void TitleScene::Load()
         TryLoadSequence();
         _sequencePlayer->Update();
     }
+
+    Audio::PlayTitleMusic();
 
     CreateWindows();
 
