@@ -179,7 +179,7 @@ void TitleScene::ChangePresetSequence(size_t preset)
         return;
     }
 
-    const utf8* configId = TitleSequenceManagerGetConfigID(preset);
+    const utf8* configId = TitleSequenceManager::GetConfigID(preset);
     Config::Get().interface.CurrentTitleSequencePreset = configId;
 
     if (!_previewingSequence)
@@ -248,7 +248,7 @@ void TitleScene::TitleInitialise()
             while (!safeSequence)
             {
                 random = UtilRand() % static_cast<int32_t>(total);
-                const utf8* scName = TitleSequenceManagerGetName(random);
+                const utf8* scName = TitleSequenceManager::GetName(random);
                 if (scName == RCT1String)
                 {
                     safeSequence = RCT1Installed;
@@ -272,7 +272,7 @@ void TitleScene::TitleInitialise()
     size_t seqId = TitleGetConfigSequence();
     if (seqId == SIZE_MAX)
     {
-        seqId = TitleSequenceManagerGetIndexForConfigID("*OPENRCT2");
+        seqId = TitleSequenceManager::GetIndexForConfigID("*OPENRCT2");
         if (seqId == SIZE_MAX)
         {
             seqId = 0;
@@ -302,7 +302,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
                     if (targetSequence != _currentSequence && !loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
-                        const utf8* configId = TitleSequenceManagerGetConfigID(targetSequence);
+                        const utf8* configId = TitleSequenceManager::GetConfigID(targetSequence);
                         Config::Get().interface.CurrentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
@@ -359,7 +359,7 @@ void TitleSequenceChangePreset(size_t preset)
 
 size_t TitleGetConfigSequence()
 {
-    return TitleSequenceManagerGetIndexForConfigID(Config::Get().interface.CurrentTitleSequencePreset.c_str());
+    return TitleSequenceManager::GetIndexForConfigID(Config::Get().interface.CurrentTitleSequencePreset.c_str());
 }
 
 size_t TitleGetCurrentSequence()

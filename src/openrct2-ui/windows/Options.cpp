@@ -1739,11 +1739,11 @@ static Widget *window_options_page_widgets[] = {
             {
                 case WIDX_TITLE_SEQUENCE_DROPDOWN:
                 {
-                    uint32_t numItems = static_cast<int32_t>(TitleSequenceManagerGetCount());
+                    uint32_t numItems = static_cast<int32_t>(TitleSequenceManager::GetCount());
                     for (size_t i = 0; i < numItems; i++)
                     {
                         gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(TitleSequenceManagerGetName(i));
+                        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(TitleSequenceManager::GetName(i));
                     }
 
                     gDropdownItems[numItems].Format = 0;
@@ -1797,7 +1797,7 @@ static Widget *window_options_page_widgets[] = {
             {
                 case WIDX_TITLE_SEQUENCE_DROPDOWN:
                 {
-                    auto numItems = static_cast<int32_t>(TitleSequenceManagerGetCount());
+                    auto numItems = static_cast<int32_t>(TitleSequenceManager::GetCount());
                     if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(TitleGetCurrentSequence()))
                     {
                         Config::Get().interface.RandomTitleSequence = false;
@@ -1843,7 +1843,7 @@ static Widget *window_options_page_widgets[] = {
             }
             else
             {
-                auto name = TitleSequenceManagerGetName(TitleGetConfigSequence());
+                auto name = TitleSequenceManager::GetName(TitleGetConfigSequence());
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<utf8*>(name);
             }
