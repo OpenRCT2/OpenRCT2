@@ -4281,7 +4281,7 @@ declare global {
     interface ToolEventArgs {
         readonly isDown: boolean;
         readonly screenCoords: ScreenCoordsXY;
-        readonly mapCoords?: CoordsXYZ;
+        readonly mapCoords?: CoordsXY;
         readonly tileElementIndex?: number;
         readonly entityId?: number;
     }
