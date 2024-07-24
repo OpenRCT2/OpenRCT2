@@ -75,6 +75,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleLogoOpen();
     WindowBase* TitleMenuOpen();
     WindowBase* TitleOptionsOpen();
+    WindowBase* TitleVersionOpen();
     WindowBase* ViewportOpen();
     WindowBase* WaterOpen();
     WindowBase* ViewClippingOpen();

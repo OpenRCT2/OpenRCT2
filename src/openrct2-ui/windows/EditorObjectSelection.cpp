@@ -25,7 +25,6 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -760,7 +759,8 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
                     screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
-                    auto bufferWithColour = strcpy(gCommonStringFormatBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
+                    utf8 itemBuffer[512]{};
+                    auto bufferWithColour = strcpy(itemBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
                     auto buffer = strchr(bufferWithColour, '\0');
 
                     colour_t colour = COLOUR_BLACK;
@@ -780,7 +780,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
                         SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                         auto ft = Formatter();
-                        ft.Add<const char*>(gCommonStringFormatBuffer);
+                        ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
                             dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                         screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
@@ -796,7 +796,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
                         *buffer = 0;
                     }
                     auto ft = Formatter();
-                    ft.Add<const char*>(gCommonStringFormatBuffer);
+                    ft.Add<const char*>(itemBuffer);
                     DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                 }
                 screenCoords.y += kScrollableRowHeight;
@@ -1006,7 +1006,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             }
 
             const int32_t ride_tabs[] = {
-                SPR_TAB_RIDE_16,        SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, SPR_TAB_RIDES_ROLLER_COASTERS_0,
+                SPR_G2_INFINITY,        SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, SPR_TAB_RIDES_ROLLER_COASTERS_0,
                 SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0,     SPR_TAB_RIDES_SHOP_0,   SPR_TAB_FINANCES_RESEARCH_0,
             };
             const int32_t ThrillRidesTabAnimationSequence[] = {

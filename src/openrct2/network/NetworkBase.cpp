@@ -78,8 +78,7 @@ static constexpr uint32_t MaxPacketsPerUpdate = 100;
 #    include "../core/String.hpp"
 #    include "../interface/Chat.h"
 #    include "../interface/Window.h"
-#    include "../localisation/Date.h"
-#    include "../localisation/Localisation.h"
+#    include "../localisation/Localisation.Date.h"
 #    include "../object/ObjectManager.h"
 #    include "../object/ObjectRepository.h"
 #    include "../scenario/Scenario.h"
@@ -1396,8 +1395,8 @@ void NetworkBase::ServerSendScripts(NetworkConnection& connection)
 
 #    else
     NetworkPacket packetScriptHeader(NetworkCommand::ScriptsHeader);
-    packetScriptHeader << static_cast<uint32_t>(0U);
-    packetScriptHeader << static_cast<uint32_t>(0U);
+    packetScriptHeader << static_cast<uint32_t>(0u);
+    packetScriptHeader << static_cast<uint32_t>(0u);
 #    endif
 }
 

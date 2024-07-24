@@ -16,7 +16,7 @@
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/management/Marketing.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
@@ -171,7 +171,7 @@ static Widget window_new_campaign_widgets[] = {
 
         void SetCampaign(int16_t campaignType)
         {
-            widgets[WIDX_TITLE].text = MarketingCampaignNames[campaignType][0];
+            widgets[WIDX_TITLE].text = kMarketingCampaignNames[campaignType][0];
 
             // Campaign type
             Campaign.campaign_type = campaignType;

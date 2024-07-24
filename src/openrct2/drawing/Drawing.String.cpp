@@ -11,12 +11,12 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../core/UTF8.h"
+#include "../core/UnicodeChar.h"
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
@@ -260,7 +260,7 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
 void GfxDrawStringLeftCentred(
     DrawPixelInfo& dpi, StringId format, void* args, ColourWithFlags colour, const ScreenCoordsXY& coords)
 {
-    char buffer[CommonTextBufferSize];
+    char buffer[512];
     auto bufferPtr = buffer;
     FormatStringLegacy(bufferPtr, sizeof(buffer), format, args);
     int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::Medium);

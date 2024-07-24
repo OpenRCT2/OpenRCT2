@@ -36,8 +36,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
@@ -1471,7 +1470,7 @@ namespace OpenRCT2
                     {
                         uint16_t tempRideValue{};
                         cs.ReadWrite(tempRideValue);
-                        if (tempRideValue == 0xFFFFU)
+                        if (tempRideValue == 0xFFFFu)
                         {
                             ride.value = RIDE_VALUE_UNDEFINED;
                         }
@@ -1484,7 +1483,7 @@ namespace OpenRCT2
                     {
                         money64 tempRideValue{};
                         cs.ReadWrite(tempRideValue);
-                        if (tempRideValue == 0xFFFFU)
+                        if (tempRideValue == 0xFFFFu)
                         {
                             ride.value = RIDE_VALUE_UNDEFINED;
                         }

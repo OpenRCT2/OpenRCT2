@@ -22,7 +22,6 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../platform/Platform.h"
 #include "../ride/RideAudio.h"
@@ -100,6 +99,19 @@ void WindowVisitEach(std::function<void(WindowBase*)> func)
             continue;
         func(w.get());
     }
+}
+
+void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled)
+{
+    WindowVisitEach([&](WindowBase* w) {
+        if (w->viewport != nullptr)
+        {
+            if (enabled)
+                w->viewport->flags |= viewportFlag;
+            else
+                w->viewport->flags &= ~viewportFlag;
+        }
+    });
 }
 
 /**
@@ -1390,6 +1402,10 @@ void WindowResizeGui(int32_t width, int32_t height)
         titleWind->windowPos.y = height - 182;
     }
 
+    WindowBase* versionWind = WindowFindByClass(WindowClass::TitleVersion);
+    if (versionWind != nullptr)
+        versionWind->windowPos.y = height - 30;
+
     WindowBase* exitWind = WindowFindByClass(WindowClass::TitleExit);
     if (exitWind != nullptr)
     {
@@ -1409,6 +1425,14 @@ void WindowResizeGui(int32_t width, int32_t height)
     {
         optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
         optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
+    }
+
+    // Keep progress bar window centred after a resize
+    WindowBase* ProgressWindow = WindowFindByClass(WindowClass::ProgressWindow);
+    if (ProgressWindow != nullptr)
+    {
+        ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
+        ProgressWindow->windowPos.y = (ContextGetHeight() - ProgressWindow->height) / 2;
     }
 
     GfxInvalidateScreen();

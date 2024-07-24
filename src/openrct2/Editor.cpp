@@ -29,7 +29,6 @@
 #include "entity/Staff.h"
 #include "interface/Viewport.h"
 #include "interface/Window_internal.h"
-#include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
@@ -61,8 +60,6 @@ namespace Editor
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
     static void FinaliseMainView();
-    static bool ReadS4OrS6(const char* path);
-    static bool ReadPark(const char* path);
     static void ClearMapForEditing(bool fromSave);
 
     static void ObjectListLoad()
@@ -227,31 +224,6 @@ namespace Editor
         GameActions::Execute(&landBuyRightsAction);
     }
 
-    /**
-     *
-     *  rct2: 0x006758C0
-     */
-    bool LoadLandscape(const utf8* path)
-    {
-        // #4996: Make sure the object selection window closes here to prevent unload objects
-        //        after we have loaded a new park.
-        WindowCloseAll();
-
-        auto extension = GetFileExtensionType(path);
-        switch (extension)
-        {
-            case FileExtension::SC6:
-            case FileExtension::SV6:
-            case FileExtension::SC4:
-            case FileExtension::SV4:
-                return ReadS4OrS6(path);
-            case FileExtension::PARK:
-                return ReadPark(path);
-            default:
-                return false;
-        }
-    }
-
     static void AfterLoadCleanup(bool loadedFromSave)
     {
         ClearMapForEditing(loadedFromSave);
@@ -268,49 +240,20 @@ namespace Editor
         FinaliseMainView();
     }
 
-    /**
-     *
-     *  rct2: 0x006758FE
-     */
-    static bool ReadS4OrS6(const char* path)
+    bool LoadLandscape(const utf8* path)
     {
-        auto extensionS = Path::GetExtension(path);
-        const char* extension = extensionS.c_str();
-        auto loadedFromSave = false;
-        const auto loadSuccess = GetContext()->LoadParkFromFile(path);
-        if (!loadSuccess)
+        // #4996: Make sure the object selection window closes here to prevent unload objects
+        //        after we have loaded a new park.
+        WindowCloseAll();
+
+        if (!GetContext()->LoadParkFromFile(path))
             return false;
 
-        if (String::IEquals(extension, ".sv4") || String::IEquals(extension, ".sv6") || String::IEquals(extension, ".sv7") == 0)
-        {
-            loadedFromSave = true;
-        }
+        auto extension = Path::GetExtension(path);
+        bool loadedFromSave = !ParkImporter::ExtensionIsScenario(extension);
 
         AfterLoadCleanup(loadedFromSave);
         return true;
-    }
-
-    static bool ReadPark(const char* path)
-    {
-        try
-        {
-            auto context = GetContext();
-            auto& objManager = context->GetObjectManager();
-            auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
-            auto loadResult = importer->Load(path);
-            objManager.LoadObjects(loadResult.RequiredObjects);
-
-            // TODO: Have a separate GameState and exchange once loaded.
-            auto& gameState = GetGameState();
-            importer->Import(gameState);
-
-            AfterLoadCleanup(true);
-            return true;
-        }
-        catch (const std::exception&)
-        {
-            return false;
-        }
     }
 
     static void ClearMapForEditing(bool fromSave)

@@ -13,7 +13,6 @@
 #include "actions/CheatSetAction.h"
 #include "actions/ParkSetLoanAction.h"
 #include "core/DataSerialiser.h"
-#include "localisation/Localisation.h"
 #include "network/network.h"
 #include "ride/Ride.h"
 #include "scenario/Scenario.h"

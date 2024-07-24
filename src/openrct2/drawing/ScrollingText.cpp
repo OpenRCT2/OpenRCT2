@@ -14,7 +14,6 @@
 #include "../interface/Colour.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
 #include "../sprites.h"

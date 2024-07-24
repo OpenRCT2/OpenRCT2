@@ -30,7 +30,6 @@
 #include "../core/File.h"
 #include "../core/Path.hpp"
 #include "../localisation/Currency.h"
-#include "../localisation/Localisation.h"
 #include "Platform.h"
 
 #include <algorithm>

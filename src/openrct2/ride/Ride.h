@@ -56,6 +56,8 @@ constexpr uint8_t kRideNumPoweredLiftsMask = 0b11000000;
 constexpr money64 kRideMinPrice = 0.00_GBP;
 constexpr money64 kRideMaxPrice = 20.00_GBP;
 
+extern const StringId kRideInspectionIntervalNames[];
+
 struct RideStation
 {
     static constexpr uint8_t kNoTrain = std::numeric_limits<uint8_t>::max();

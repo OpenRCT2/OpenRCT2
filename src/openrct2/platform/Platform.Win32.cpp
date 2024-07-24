@@ -31,8 +31,8 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
+#    include "../localisation/Localisation.Date.h"
 #    include "Platform.h"
 
 #    include <cstring>

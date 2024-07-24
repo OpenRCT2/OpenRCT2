@@ -14,7 +14,7 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
-#include "../localisation/Date.h"
+#include "../localisation/Localisation.Date.h"
 #include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
 #include "../world/Footpath.h"
@@ -2268,6 +2268,4 @@ bool RatingTuple::isNull() const
 void RatingTuple::setNull()
 {
     excitement = kRideRatingUndefined;
-    intensity = kRideRatingUndefined;
-    nausea = kRideRatingUndefined;
 }

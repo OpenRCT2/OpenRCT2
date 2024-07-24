@@ -15,7 +15,6 @@
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideConstruction.h"

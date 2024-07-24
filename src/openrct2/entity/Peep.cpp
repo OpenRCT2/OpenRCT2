@@ -29,7 +29,6 @@
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -38,6 +37,7 @@
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/PeepSpriteIds.h"
+#include "../peep/RealNames.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -201,7 +201,7 @@ void PeepUpdateAll()
 
     const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
 
-    constexpr auto kTicks128Mask = 128U - 1U;
+    constexpr auto kTicks128Mask = 128u - 1u;
     const auto currentTicksMasked = currentTicks & kTicks128Mask;
 
     uint32_t index = 0;

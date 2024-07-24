@@ -21,7 +21,6 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
@@ -1517,7 +1516,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 if (_tabEntries[tabIndex].IsAll())
                 {
                     auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
-                    GfxDrawSprite(dpi, imageId, offset + widgetCoordsXY + ScreenCoordsXY(2, 6));
+                    GfxDrawSprite(dpi, imageId, offset + widgetCoordsXY);
                 }
             }
         }

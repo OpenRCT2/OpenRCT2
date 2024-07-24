@@ -12,7 +12,6 @@
 #include "../core/UTF8.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "Drawing.h"
 
 class StaticLayout
@@ -153,7 +152,7 @@ int32_t DrawTextWrapped(
 {
     const void* args = ft.Data();
 
-    StaticLayout layout(FormatStringIDLegacy(format, args), textPaint, width);
+    StaticLayout layout(OpenRCT2::FormatStringIDLegacy(format, args), textPaint, width);
 
     if (textPaint.Alignment == TextAlignment::CENTRE)
     {

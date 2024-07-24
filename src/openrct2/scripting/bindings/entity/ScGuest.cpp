@@ -13,7 +13,7 @@
 
 #    include "../../../GameState.h"
 #    include "../../../entity/Guest.h"
-#    include "../../../localisation/Localisation.h"
+#    include "../../../localisation/Formatting.h"
 #    include "../../../peep/PeepAnimationData.h"
 #    include "../../../ride/RideEntry.h"
 

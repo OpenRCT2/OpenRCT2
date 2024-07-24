@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
 #include "../rct12/SawyerChunkWriter.h"

@@ -18,7 +18,6 @@
 #include <openrct2/actions/BannerSetNameAction.h>
 #include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/sprites.h>
