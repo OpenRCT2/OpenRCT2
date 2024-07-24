@@ -11,6 +11,8 @@
 #include "../entity/EntityRegistry.h"
 #include "Vehicle.h"
 
+using namespace OpenRCT2;
+
 constexpr int operator"" _MPH(unsigned long long x) noexcept
 {
     return x * 29127;

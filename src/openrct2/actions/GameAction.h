@@ -20,7 +20,7 @@
 #include <memory>
 #include <utility>
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     namespace Flags
     {
@@ -30,7 +30,7 @@ namespace GameActions
         constexpr uint16_t IgnoreForReplays = 1 << 3;
     } // namespace Flags
 
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic push
@@ -262,7 +262,7 @@ public:
     }
 };
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     using GameActionFactory = GameAction* (*)();
 
@@ -293,4 +293,4 @@ namespace GameActions
     GameActions::Result QueryNested(const GameAction* action);
     GameActions::Result ExecuteNested(const GameAction* action);
 
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions

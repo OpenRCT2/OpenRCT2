@@ -22,8 +22,6 @@
 #    pragma warning(disable : 4996)
 #endif
 
-using namespace OpenRCT2;
-
 void StdInOutConsole::Start()
 {
     // Only start if stdin/stdout is a TTY
@@ -125,7 +123,7 @@ void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
             break;
     }
 
-    if (!Platform::IsColourTerminalSupported())
+    if (!OpenRCT2::Platform::IsColourTerminalSupported())
     {
         std::printf("%s\n", s.c_str());
         std::fflush(stdout);

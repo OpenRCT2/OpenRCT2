@@ -21,7 +21,7 @@
 
 using json_t = nlohmann::json;
 
-namespace Json
+namespace OpenRCT2::Json
 {
     // Don't try to load JSON files that exceed 64 MiB
     constexpr uint64_t MAX_JSON_SIZE = 64 * 1024 * 1024;
@@ -183,7 +183,7 @@ namespace Json
         }
         return flags;
     }
-} // namespace Json
+} // namespace OpenRCT2::Json
 
 class JsonException final : public std::runtime_error
 {

@@ -24,7 +24,9 @@
 
 #include <mutex>
 
-namespace RCT2
+using namespace OpenRCT2;
+
+namespace OpenRCT2::RCT2
 {
     static std::mutex _objectLookupMutex;
 
@@ -221,7 +223,7 @@ namespace RCT2
             }
         }
     };
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2
 
 std::unique_ptr<ITrackImporter> TrackImporter::CreateTD6()
 {

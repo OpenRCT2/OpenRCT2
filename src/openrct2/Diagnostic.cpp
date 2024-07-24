@@ -20,6 +20,8 @@
 #    include <android/log.h>
 #endif
 
+using namespace OpenRCT2;
+
 [[maybe_unused]] static bool _log_location_enabled = true;
 bool _log_levels[EnumValue(DiagnosticLevel::Count)] = {
     true, true, true, false, true,

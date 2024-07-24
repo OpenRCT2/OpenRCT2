@@ -23,6 +23,8 @@
 #include <limits>
 #include <unordered_map>
 
+using namespace OpenRCT2;
+
 static constexpr int32_t SpriteFontLineHeight[FontStyleCount] = {
     10,
     10,

@@ -22,7 +22,7 @@
 
 #include <fstream>
 
-namespace File
+namespace OpenRCT2::File
 {
     bool Exists(u8string_view path)
     {
@@ -138,4 +138,4 @@ namespace File
     {
         return Platform::GetFileSize(path);
     }
-} // namespace File
+} // namespace OpenRCT2::File

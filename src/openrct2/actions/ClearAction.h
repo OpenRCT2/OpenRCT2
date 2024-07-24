@@ -17,12 +17,12 @@ using namespace OpenRCT2;
 
 using ClearableItems = uint8_t;
 
-namespace CLEARABLE_ITEMS
+namespace OpenRCT2::CLEARABLE_ITEMS
 {
     constexpr ClearableItems SCENERY_SMALL = 1 << 0;
     constexpr ClearableItems SCENERY_LARGE = 1 << 1;
     constexpr ClearableItems SCENERY_FOOTPATH = 1 << 2;
-} // namespace CLEARABLE_ITEMS
+} // namespace OpenRCT2::CLEARABLE_ITEMS
 
 class ClearAction final : public GameActionBase<GameCommand::ClearScenery>
 {

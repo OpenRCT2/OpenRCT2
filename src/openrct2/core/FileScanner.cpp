@@ -32,6 +32,8 @@
 #include <string>
 #include <vector>
 
+using namespace OpenRCT2;
+
 enum class DIRECTORY_CHILD_TYPE
 {
     DC_DIRECTORY,

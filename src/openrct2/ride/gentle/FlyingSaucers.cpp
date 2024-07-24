@@ -17,6 +17,8 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 enum
 {
     SprFlyingSaucersFloor = 21920,

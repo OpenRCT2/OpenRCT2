@@ -23,6 +23,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr uint32_t BM_BLOCK_BRAKE_SW_NE_OPEN = 17150;
 static constexpr uint32_t BM_BLOCK_BRAKE_NW_SE_OPEN = 17151;
 static constexpr uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = 17152;

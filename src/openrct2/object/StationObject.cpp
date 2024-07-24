@@ -15,6 +15,8 @@
 #include "../drawing/Drawing.h"
 #include "../world/Banner.h"
 
+using namespace OpenRCT2;
+
 void StationObject::Load()
 {
     GetStringTable().Sort();

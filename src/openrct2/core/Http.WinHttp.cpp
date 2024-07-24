@@ -20,7 +20,7 @@
 #    include <windows.h>
 #    include <winhttp.h>
 
-namespace Http
+namespace OpenRCT2::Http
 {
     static constexpr char OPENRCT2_USER_AGENT[] = "OpenRCT2/" OPENRCT2_VERSION;
 
@@ -235,6 +235,6 @@ namespace Http
             throw;
         }
     }
-} // namespace Http
+} // namespace OpenRCT2::Http
 
 #endif

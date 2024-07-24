@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-namespace UnicodeChar
+namespace OpenRCT2::UnicodeChar
 {
     // Latin alphabet
     constexpr char32_t j = 0x6A;
@@ -227,4 +227,4 @@ namespace UnicodeChar
     // Misc
     constexpr char32_t superscript_minus_one = 0x207B;
 
-}; // namespace UnicodeChar
+}; // namespace OpenRCT2::UnicodeChar

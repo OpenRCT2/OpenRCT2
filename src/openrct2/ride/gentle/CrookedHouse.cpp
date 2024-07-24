@@ -20,6 +20,8 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr BoundBoxXY CrookedHouseData[] = {
     {
         { 6, 0 },

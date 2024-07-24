@@ -18,7 +18,7 @@ namespace OpenRCT2
     struct IStream;
 }
 
-namespace RCT2
+namespace OpenRCT2::RCT2
 {
     /**
      * Class to export RollerCoaster Tycoon 2 track designs (*.TD6).
@@ -34,4 +34,4 @@ namespace RCT2
     private:
         const TrackDesign& _trackDesign;
     };
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2

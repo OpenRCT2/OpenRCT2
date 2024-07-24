@@ -50,6 +50,7 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 money64 _currentTrackPrice;

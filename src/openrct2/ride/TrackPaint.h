@@ -602,15 +602,15 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineRide(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType);
-namespace HybridRC
+namespace OpenRCT2::HybridRC
 {
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
 }
-namespace SingleRailRC
+namespace OpenRCT2::SingleRailRC
 {
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
 }
-namespace AlpineRC
+namespace OpenRCT2::AlpineRC
 {
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
 }

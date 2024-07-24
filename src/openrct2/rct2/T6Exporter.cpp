@@ -28,7 +28,7 @@
 
 #include <functional>
 
-namespace RCT2
+namespace OpenRCT2::RCT2
 {
     T6Exporter::T6Exporter(const TrackDesign& trackDesign)
         : _trackDesign(trackDesign)
@@ -189,4 +189,4 @@ namespace RCT2
         sawyerCoding.WriteChunkTrack(tempStream.GetData(), tempStream.GetLength());
         return true;
     }
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2

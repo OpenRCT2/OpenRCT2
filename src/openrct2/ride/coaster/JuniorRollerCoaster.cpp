@@ -23,6 +23,8 @@
 
 #include <algorithm>
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
 
 enum class JuniorRCSubType : uint8_t

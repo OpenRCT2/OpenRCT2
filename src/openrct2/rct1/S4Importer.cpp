@@ -82,7 +82,7 @@ using namespace OpenRCT2;
 
 static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
-namespace RCT1
+namespace OpenRCT2::RCT1
 {
     class S4Importer final : public IParkImporter
     {
@@ -3223,7 +3223,7 @@ namespace RCT1
                 break;
         }
     }
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
 {

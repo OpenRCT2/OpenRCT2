@@ -37,10 +37,14 @@ struct WindowCloseModifier;
 
 enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
-enum class RideConstructionState : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
 using rct_windownumber = uint16_t;
+
+namespace OpenRCT2
+{
+    enum class RideConstructionState : uint8_t;
+}
 
 struct WindowIdentifier
 {
@@ -57,7 +61,7 @@ struct WidgetIdentifier
 extern WindowCloseModifier gLastCloseModifier;
 
 using WidgetFlags = uint32_t;
-namespace WIDGET_FLAGS
+namespace OpenRCT2::WIDGET_FLAGS
 {
     const WidgetFlags TEXT_IS_STRING = 1 << 0;
     const WidgetFlags IS_PRESSED = 1 << 2;
@@ -65,7 +69,7 @@ namespace WIDGET_FLAGS
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
     const WidgetFlags IS_HIDDEN = 1 << 5;
     const WidgetFlags IS_HOLDABLE = 1 << 6;
-} // namespace WIDGET_FLAGS
+} // namespace OpenRCT2::WIDGET_FLAGS
 
 enum class WindowWidgetType : uint8_t;
 
@@ -138,7 +142,7 @@ struct Widget
 
     bool IsVisible() const
     {
-        return !(flags & WIDGET_FLAGS::IS_HIDDEN);
+        return !(flags & OpenRCT2::WIDGET_FLAGS::IS_HIDDEN);
     }
 };
 
@@ -629,4 +633,4 @@ money64 PlaceProvisionalTrackPiece(
     RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
     const CoordsXYZ& trackPos);
 
-extern RideConstructionState _rideConstructionState2;
+extern OpenRCT2::RideConstructionState _rideConstructionState2;

@@ -27,7 +27,7 @@ constexpr uint16_t kMaxServerDescriptionLength = 256;
 class GameAction;
 struct Peep;
 struct CoordsXYZ;
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     class Result;
 }

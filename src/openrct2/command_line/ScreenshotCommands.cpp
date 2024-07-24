@@ -10,6 +10,8 @@
 #include "../interface/Screenshot.h"
 #include "CommandLine.hpp"
 
+using namespace OpenRCT2;
+
 static ScreenshotOptions _options;
 
 // clang-format off

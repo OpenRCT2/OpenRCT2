@@ -12,6 +12,8 @@
 #include "../core/IStream.hpp"
 #include "../core/Numerics.hpp"
 
+using namespace OpenRCT2;
+
 // malloc is very slow for large allocations in MSVC debug builds as it allocates
 // memory on a special debug heap and then initialises all the memory to 0xCC.
 #if defined(_WIN32) && defined(DEBUG)

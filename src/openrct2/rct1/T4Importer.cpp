@@ -23,7 +23,9 @@
 
 #include <cassert>
 
-namespace RCT1
+using namespace OpenRCT2;
+
+namespace OpenRCT2::RCT1
 {
     /**
      * Class to import RollerCoaster Tycoon 1 track designs (*.TD4).
@@ -264,7 +266,7 @@ namespace RCT1
             return td;
         }
     };
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1
 
 std::unique_ptr<ITrackImporter> TrackImporter::CreateTD4()
 {

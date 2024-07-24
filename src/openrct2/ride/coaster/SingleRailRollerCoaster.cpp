@@ -20,9 +20,11 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
 
-namespace SingleRailRC
+namespace OpenRCT2::SingleRailRC
 {
     static void TrackFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -18874,4 +18876,4 @@ namespace SingleRailRC
         return nullptr;
     }
 
-} // namespace SingleRailRC
+} // namespace OpenRCT2::SingleRailRC

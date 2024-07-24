@@ -103,12 +103,12 @@ enum class RideClassification
     KioskOrFacility
 };
 
-namespace ShelteredSectionsBits
+namespace OpenRCT2::ShelteredSectionsBits
 {
     constexpr uint8_t NumShelteredSectionsMask = 0b00011111;
     constexpr uint8_t RotatingWhileSheltered = 0b00100000;
     constexpr uint8_t BankingWhileSheltered = 0b01000000;
-}; // namespace ShelteredSectionsBits
+}; // namespace OpenRCT2::ShelteredSectionsBits
 
 struct TrackDesign;
 struct TrackDesignState;
@@ -198,7 +198,7 @@ struct Ride
     uint16_t num_customers_timeout{};
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
-    money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    money64 price[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     RatingTuple ratings{};
     money64 value{};

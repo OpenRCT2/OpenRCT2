@@ -20,7 +20,7 @@
 #include <type_traits>
 #include <variant>
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     /**
      * Common error codes for game actions.
@@ -102,4 +102,4 @@ namespace GameActions
         }
     };
 
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions

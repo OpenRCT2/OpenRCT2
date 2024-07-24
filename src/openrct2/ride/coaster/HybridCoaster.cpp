@@ -22,7 +22,7 @@
 
 static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
 
-namespace HybridRC
+namespace OpenRCT2::HybridRC
 {
     static ImageId GetTrackColour(PaintSession& session)
     {
@@ -14752,4 +14752,4 @@ namespace HybridRC
         }
         return nullptr;
     }
-} // namespace HybridRC
+} // namespace OpenRCT2::HybridRC

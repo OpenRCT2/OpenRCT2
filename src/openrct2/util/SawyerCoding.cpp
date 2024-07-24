@@ -18,6 +18,8 @@
 #include <cstring>
 #include <stdexcept>
 
+using namespace OpenRCT2;
+
 static size_t DecodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
 static size_t DecodeChunkRLEWithSize(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize);
 

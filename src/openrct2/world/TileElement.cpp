@@ -20,6 +20,8 @@
 #include "Scenery.h"
 #include "tile_element/Slope.h"
 
+using namespace OpenRCT2;
+
 bool TileElementIsUnderground(TileElement* tileElement)
 {
     do

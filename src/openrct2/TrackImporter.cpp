@@ -14,7 +14,7 @@
 
 #include <memory>
 
-namespace TrackImporter
+namespace OpenRCT2::TrackImporter
 {
     std::unique_ptr<ITrackImporter> Create(const std::string& hintPath)
     {
@@ -35,4 +35,4 @@ namespace TrackImporter
     {
         return String::IEquals(extension, ".td4");
     }
-} // namespace TrackImporter
+} // namespace OpenRCT2::TrackImporter

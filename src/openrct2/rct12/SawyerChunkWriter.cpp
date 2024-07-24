@@ -13,6 +13,8 @@
 #include "../core/Numerics.hpp"
 #include "../util/SawyerCoding.h"
 
+using namespace OpenRCT2;
+
 // Maximum buffer size to store compressed data, maximum of 16 MiB
 constexpr size_t MAX_COMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
 

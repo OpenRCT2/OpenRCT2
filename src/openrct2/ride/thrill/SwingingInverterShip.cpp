@@ -21,6 +21,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 /** rct2: 0x01428010 */
 static constexpr uint32_t SwingingInverterShipBaseSpriteOffset[] = {
     0,

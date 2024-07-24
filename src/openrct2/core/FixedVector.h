@@ -91,13 +91,13 @@ public:
 
     constexpr void push_back(const T& val)
     {
-        Guard::Assert(_count < MAX);
+        OpenRCT2::Guard::Assert(_count < MAX);
         _data[_count++] = val;
     }
 
     constexpr void push_back(T&& val)
     {
-        Guard::Assert(_count < MAX);
+        OpenRCT2::Guard::Assert(_count < MAX);
         _data[_count++] = std::move(val);
     }
 
@@ -129,7 +129,7 @@ public:
 
     template<typename... Args> constexpr reference_type emplace_back(Args&&... args)
     {
-        Guard::Assert(_count < MAX);
+        OpenRCT2::Guard::Assert(_count < MAX);
         reference_type res = _data[_count++];
         ::new (&res) T(std::forward<Args&&>(args)...);
         return res;

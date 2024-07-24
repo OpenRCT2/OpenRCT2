@@ -25,7 +25,7 @@ class ObjectList;
 
 using track_type_t = uint16_t;
 using RCT12TrackType = uint8_t;
-namespace RCT12
+namespace OpenRCT2::RCT12
 {
     class EntryList;
 }
@@ -830,17 +830,17 @@ static_assert(sizeof(RCT12PeepThought) == 4);
 
 struct RCT12RideMeasurement
 {
-    uint8_t RideIndex;                                        // 0x0000
-    uint8_t Flags;                                            // 0x0001
-    uint32_t LastUseTick;                                     // 0x0002
-    uint16_t NumItems;                                        // 0x0006
-    uint16_t CurrentItem;                                     // 0x0008
-    uint8_t VehicleIndex;                                     // 0x000A
-    uint8_t CurrentStation;                                   // 0x000B
-    int8_t Vertical[RCT12::Limits::RideMeasurementMaxItems];  // 0x000C
-    int8_t Lateral[RCT12::Limits::RideMeasurementMaxItems];   // 0x12CC
-    uint8_t Velocity[RCT12::Limits::RideMeasurementMaxItems]; // 0x258C
-    uint8_t Altitude[RCT12::Limits::RideMeasurementMaxItems]; // 0x384C
+    uint8_t RideIndex;                                                  // 0x0000
+    uint8_t Flags;                                                      // 0x0001
+    uint32_t LastUseTick;                                               // 0x0002
+    uint16_t NumItems;                                                  // 0x0006
+    uint16_t CurrentItem;                                               // 0x0008
+    uint8_t VehicleIndex;                                               // 0x000A
+    uint8_t CurrentStation;                                             // 0x000B
+    int8_t Vertical[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems];  // 0x000C
+    int8_t Lateral[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems];   // 0x12CC
+    uint8_t Velocity[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems]; // 0x258C
+    uint8_t Altitude[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems]; // 0x384C
 };
 static_assert(sizeof(RCT12RideMeasurement) == 0x4B0C);
 
@@ -913,7 +913,7 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style);
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
 void RCT12AddDefaultObjects(ObjectList& objectList);
-void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList);
+void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const OpenRCT2::RCT12::EntryList& entryList);
 bool IsUserStringID(StringId stringId);
 
 static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
@@ -923,7 +923,7 @@ money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
 template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
     std::vector<uint16_t> ridesTypesBeenOn;
-    for (uint16_t i = 0; i < RCT12::Limits::MaxRideObjects; i++)
+    for (uint16_t i = 0; i < OpenRCT2::RCT12::Limits::MaxRideObjects; i++)
     {
         if (srcPeep->RideTypesBeenOn[i / 8] & (1 << (i % 8)))
         {
@@ -935,7 +935,7 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
 {
     std::vector<RideId> ridesBeenOn;
-    for (uint16_t i = 0; i < RCT12::Limits::kMaxRidesInPark; i++)
+    for (uint16_t i = 0; i < OpenRCT2::RCT12::Limits::kMaxRidesInPark; i++)
     {
         if (srcPeep->RidesBeenOn[i / 8] & (1 << (i % 8)))
         {
@@ -958,11 +958,11 @@ void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
 uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source);
 void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
 
-namespace RCT12
+namespace OpenRCT2::RCT12
 {
     /**
      * Iterates an RCT string buffer and returns the length of the string in bytes.
      * Handles single and multi-byte strings.
      */
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
-} // namespace RCT12
+} // namespace OpenRCT2::RCT12

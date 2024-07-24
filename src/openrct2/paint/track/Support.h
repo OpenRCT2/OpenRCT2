@@ -13,7 +13,7 @@
 
 constexpr int8_t kDefaultGeneralSupportHeight = 32;
 
-namespace SupportedSequences
+namespace OpenRCT2::SupportedSequences
 {
     constexpr MetalSupportPlace kDiagStraightFlat[] = { MetalSupportPlace::None, MetalSupportPlace::None,
                                                         MetalSupportPlace::None, MetalSupportPlace::LeftCorner };

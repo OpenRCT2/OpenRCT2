@@ -14,6 +14,7 @@
 #include <openrct2/drawing/ImageImporter.h>
 #include <string_view>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 class ImageImporterTests : public testing::Test

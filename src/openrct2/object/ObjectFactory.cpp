@@ -48,6 +48,8 @@
 #include <memory>
 #include <unordered_map>
 
+using namespace OpenRCT2;
+
 struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
@@ -211,7 +213,7 @@ public:
     }
 };
 
-namespace ObjectFactory
+namespace OpenRCT2::ObjectFactory
 {
     /**
      * @param jRoot Must be JSON node of type object
@@ -591,4 +593,4 @@ namespace ObjectFactory
         }
         return result;
     }
-} // namespace ObjectFactory
+} // namespace OpenRCT2::ObjectFactory

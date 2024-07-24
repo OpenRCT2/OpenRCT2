@@ -14,7 +14,7 @@
 #include <cassert>
 #include <string>
 
-namespace Cursor
+namespace OpenRCT2::Cursor
 {
     static const EnumMap<CursorID> LookupTable{
         { "CURSOR_BLANK", CursorID::Blank },
@@ -53,4 +53,4 @@ namespace Cursor
         auto result = LookupTable.find(s);
         return (result != LookupTable.end()) ? result->second : defaultValue;
     }
-} // namespace Cursor
+} // namespace OpenRCT2::Cursor

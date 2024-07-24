@@ -353,4 +353,4 @@ namespace OpenRCT2::TitleSequenceManager
         }
         return SIZE_MAX;
     }
-}
+} // namespace OpenRCT2::TitleSequenceManager

@@ -259,11 +259,11 @@ extern ColourShadeMap ColourMapA[COLOUR_COUNT];
 
 void ColoursInitMaps();
 
-namespace Colour
+namespace OpenRCT2::Colour
 {
     colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);
     u8string ToString(colour_t colour);
-} // namespace Colour
+} // namespace OpenRCT2::Colour
 
 #ifndef NO_TTF
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);

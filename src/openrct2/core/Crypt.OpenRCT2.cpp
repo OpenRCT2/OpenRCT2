@@ -14,7 +14,7 @@
 #include <cstdlib>
 #include <cstring>
 
-using namespace Crypt;
+using namespace OpenRCT2::Crypt;
 
 class OpenRCT2FNV1aAlgorithm final : public FNV1aAlgorithm
 {
@@ -91,10 +91,10 @@ public:
     }
 };
 
-namespace Crypt
+namespace OpenRCT2::Crypt
 {
     std::unique_ptr<FNV1aAlgorithm> CreateFNV1a()
     {
         return std::make_unique<OpenRCT2FNV1aAlgorithm>();
     }
-} // namespace Crypt
+} // namespace OpenRCT2::Crypt

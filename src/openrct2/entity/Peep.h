@@ -30,7 +30,7 @@ class Formatter;
 struct TileElement;
 struct PaintSession;
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     class Result;
 }
@@ -394,7 +394,7 @@ public: // Peep
     bool CanBePickedUp() const;
     void Pickup();
     void PickupAbort(int32_t old_x);
-    [[nodiscard]] GameActions::Result Place(const TileCoordsXYZ& location, bool apply);
+    [[nodiscard]] OpenRCT2::GameActions::Result Place(const TileCoordsXYZ& location, bool apply);
     void RemoveFromRide();
     void FormatActionTo(Formatter&) const;
     void FormatNameTo(Formatter&) const;

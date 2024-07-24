@@ -19,6 +19,8 @@
 #include <unordered_map>
 #include <vector>
 
+using namespace OpenRCT2;
+
 /**
  * Simple tuple (start, length) representing a text span in a buffer.
  */

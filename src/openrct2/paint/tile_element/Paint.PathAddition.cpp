@@ -15,6 +15,8 @@
 #include "../../profiling/Profiling.h"
 #include "Paint.TileElement.h"
 
+using namespace OpenRCT2;
+
 static ImageIndex GetEdgeImageOffset(edge_t edge)
 {
     switch (edge)

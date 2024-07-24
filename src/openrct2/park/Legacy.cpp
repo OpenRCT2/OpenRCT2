@@ -14,6 +14,8 @@
 
 #include <map>
 
+using namespace OpenRCT2;
+
 static std::map<std::string_view, std::string_view> oldObjectIds = {
     { "official.scgpanda", "rct2dlc.scenery_group.scgpanda" },
     { "official.wtrpink", "rct2dlc.water.wtrpink" },

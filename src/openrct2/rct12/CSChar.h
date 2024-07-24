@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-namespace CSChar
+namespace OpenRCT2::CSChar
 {
     constexpr char32_t quote_close = 0x22;
 
@@ -52,4 +52,4 @@ namespace CSChar
     constexpr char32_t z_acute = 0xFE;
 
     constexpr char32_t z_dot = 0xFD;
-} // namespace CSChar
+} // namespace OpenRCT2::CSChar

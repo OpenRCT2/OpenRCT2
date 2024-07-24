@@ -13,7 +13,7 @@
 
 #include <cstdint>
 
-namespace BlockedSegments
+namespace OpenRCT2::BlockedSegments
 {
     constexpr uint16_t kStraightFlat = EnumsToFlags(
         PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide);
@@ -25,4 +25,4 @@ namespace BlockedSegments
             PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
         EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
     };
-} // namespace BlockedSegments
+} // namespace OpenRCT2::BlockedSegments

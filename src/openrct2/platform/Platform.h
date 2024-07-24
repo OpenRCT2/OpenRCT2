@@ -45,7 +45,7 @@ struct RealWorldDate;
 struct RealWorldTime;
 struct TTFFontDescriptor;
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     std::string GetEnvironmentVariable(std::string_view name);
     std::string GetFolderPath(SPECIAL_FOLDER folder);
@@ -127,7 +127,7 @@ namespace Platform
 
     bool SSE41Available();
     bool AVX2Available();
-} // namespace Platform
+} // namespace OpenRCT2::Platform
 
 #ifdef __ANDROID__
 class AndroidClassLoader

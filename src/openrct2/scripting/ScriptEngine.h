@@ -32,7 +32,7 @@ struct duk_hthread;
 typedef struct duk_hthread duk_context;
 
 class GameAction;
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     class Result;
 }

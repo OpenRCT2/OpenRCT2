@@ -74,11 +74,11 @@ static constexpr float window_scroll_locations[][2] = {
 };
 // clang-format on
 
-namespace WindowCloseFlags
+namespace OpenRCT2::WindowCloseFlags
 {
     static constexpr uint32_t None = 0;
     static constexpr uint32_t CloseSingle = (1 << 0);
-} // namespace WindowCloseFlags
+} // namespace OpenRCT2::WindowCloseFlags
 
 static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);

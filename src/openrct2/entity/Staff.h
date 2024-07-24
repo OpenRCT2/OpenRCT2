@@ -142,7 +142,7 @@ enum class EntertainerCostume : uint8_t
 extern const StringId StaffCostumeNames[EnumValue(EntertainerCostume::Count)];
 
 colour_t StaffGetColour(StaffType staffType);
-GameActions::Result StaffSetColour(StaffType staffType, colour_t value);
+OpenRCT2::GameActions::Result StaffSetColour(StaffType staffType, colour_t value);
 uint32_t StaffGetAvailableEntertainerCostumes();
 int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList);
 

@@ -14,6 +14,8 @@
 #include <memory>
 #include <string>
 
+using namespace OpenRCT2;
+
 class Intent;
 struct ParkLoadResult;
 

@@ -19,6 +19,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+
 constexpr auto kNumWoodenSupportTypes = 2;
 constexpr auto kNumWoodenSupportSubTypes = 6;
 

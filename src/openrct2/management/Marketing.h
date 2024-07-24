@@ -53,7 +53,7 @@ struct MarketingCampaign
     };
 };
 
-namespace MarketingCampaignFlags
+namespace OpenRCT2::MarketingCampaignFlags
 {
     constexpr uint8_t FIRST_WEEK = 1 << 0;
 }

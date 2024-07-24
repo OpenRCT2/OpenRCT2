@@ -38,7 +38,7 @@
 #    define _stricmp(x, y) strcasecmp((x), (y))
 #endif
 
-namespace String
+namespace OpenRCT2::String
 {
     std::string ToStd(const utf8* str)
     {
@@ -725,7 +725,7 @@ namespace String
 
         return escaped.str();
     }
-} // namespace String
+} // namespace OpenRCT2::String
 
 char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
 {

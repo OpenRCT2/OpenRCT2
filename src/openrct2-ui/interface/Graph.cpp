@@ -17,7 +17,7 @@
 
 using namespace OpenRCT2;
 
-namespace Graph
+namespace OpenRCT2::Graph
 {
     static void DrawMonths(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
@@ -105,7 +105,7 @@ namespace Graph
         DrawLineA(dpi, history, count, screenPos);
         DrawLineB(dpi, history, count, screenPos);
     }
-} // namespace Graph
+} // namespace OpenRCT2::Graph
 
 struct FinancialTooltipInfo
 {
@@ -153,7 +153,7 @@ static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
     return { coords, history[historyIndex] };
 }
 
-namespace Graph
+namespace OpenRCT2::Graph
 {
     static void DrawMonths(DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
@@ -288,4 +288,4 @@ namespace Graph
         DrawLineB(dpi, history, count, screenCoords, modifier, offset);
         DrawHoveredValue(dpi, history, count, screenCoords, modifier, offset);
     }
-} // namespace Graph
+} // namespace OpenRCT2::Graph

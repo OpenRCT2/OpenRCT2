@@ -22,6 +22,8 @@
 #include <cassert>
 #include <cstring>
 
+using namespace OpenRCT2;
+
 enum
 {
     SPR_ROTO_DROP_TOWER_SEGMENT = 14558,

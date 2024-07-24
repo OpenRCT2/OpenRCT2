@@ -16,6 +16,8 @@
 #include <gtest/gtest.h>
 #include <limits>
 
+using namespace OpenRCT2;
+
 class IniWriterTest : public testing::Test
 {
 };

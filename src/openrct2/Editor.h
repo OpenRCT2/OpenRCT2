@@ -13,7 +13,7 @@
 
 struct ResultWithMessage;
 
-namespace Editor
+namespace OpenRCT2::Editor
 {
     void Load();
     void ConvertSaveToScenario();
@@ -29,7 +29,7 @@ namespace Editor
     uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
     void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
-} // namespace Editor
+} // namespace OpenRCT2::Editor
 
 enum class EditorStep : uint8_t
 {

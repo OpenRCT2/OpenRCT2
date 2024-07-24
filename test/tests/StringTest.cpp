@@ -17,6 +17,8 @@
 #include <tuple>
 #include <utility>
 
+using namespace OpenRCT2;
+
 using TCase = std::tuple<std::string, std::string, std::string>;
 
 class StringTest : public testing::TestWithParam<TCase>

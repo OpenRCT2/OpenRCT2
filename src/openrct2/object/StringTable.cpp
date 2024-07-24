@@ -17,6 +17,8 @@
 #include "../rct12/CSStringConverter.h"
 #include "Object.h"
 
+using namespace OpenRCT2;
+
 static constexpr uint8_t RCT2ToOpenRCT2LanguageId[] = {
     LANGUAGE_ENGLISH_UK,
     LANGUAGE_ENGLISH_US,

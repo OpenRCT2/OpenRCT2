@@ -16,6 +16,8 @@
 #include "../drawing/Drawing.h"
 #include "ObjectManager.h"
 
+using namespace OpenRCT2;
+
 void TerrainEdgeObject::Load()
 {
     GetStringTable().Sort();

@@ -19,6 +19,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 static constexpr uint32_t MerryGoRoundRiderOffsets[] = {
     0, 32, 64, 96, 16, 48, 80, 112,
 };

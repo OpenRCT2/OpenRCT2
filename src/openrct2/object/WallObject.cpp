@@ -17,6 +17,8 @@
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
 
+using namespace OpenRCT2;
+
 void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
