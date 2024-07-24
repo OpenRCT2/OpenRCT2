@@ -44,11 +44,6 @@ void PreloaderScene::Load()
     WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 
-    // Reset screen
-    auto* engine = GetContext().GetDrawingEngine();
-    auto* drawingContext = engine->GetDrawingContext();
-    drawingContext->Clear(*engine->GetDrawingPixelInfo(), PALETTE_INDEX_10);
-
     LOG_VERBOSE("PreloaderScene::Load() finished");
 }
 
@@ -58,6 +53,11 @@ void PreloaderScene::Tick()
 
     ContextHandleInput();
     WindowInvalidateAll();
+
+    // Reset screen
+    auto* engine = GetContext().GetDrawingEngine();
+    auto* drawingContext = engine->GetDrawingContext();
+    drawingContext->Clear(*engine->GetDrawingPixelInfo(), PALETTE_INDEX_10);
 
     gInUpdateCode = false;
 
