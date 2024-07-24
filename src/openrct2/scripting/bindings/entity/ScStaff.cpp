@@ -468,7 +468,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            duk_push_undefined(ctx);
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
@@ -484,7 +484,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            duk_push_undefined(ctx);
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
@@ -500,7 +500,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            duk_push_undefined(ctx);
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
@@ -516,7 +516,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            duk_push_undefined(ctx);
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
@@ -549,7 +549,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            duk_push_undefined(ctx);
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
@@ -565,7 +565,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            duk_push_undefined(ctx);
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
@@ -597,7 +597,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            duk_push_undefined(ctx);
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
