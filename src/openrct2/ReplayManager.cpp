@@ -184,7 +184,10 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 // If the network is disabled we will only get a dummy hash which will cause
                 // false positives during replay.
-                CheckState();
+                if (!gSilentReplays)
+                {
+                    CheckState();
+                }
 #endif
                 ReplayCommands();
 
