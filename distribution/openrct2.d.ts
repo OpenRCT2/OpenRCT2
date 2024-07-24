@@ -503,20 +503,20 @@ declare global {
          */
         subscribe(hook: HookType, callback: Function): IDisposable;
 
-        subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
         subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
-        subscribe(hook: "interval.tick", callback: () => void): IDisposable;
+        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
+        subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
-        subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
+        subscribe(hook: "interval.tick", callback: () => void): IDisposable;
+        subscribe(hook: "map.change", callback: () => void): IDisposable;
+        subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
+        subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
-        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
-        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
-        subscribe(hook: "map.save", callback: () => void): IDisposable;
-        subscribe(hook: "map.change", callback: () => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -627,10 +627,21 @@ declare global {
         "footpath_railings";
 
     type HookType =
-        "interval.tick" | "interval.day" |
-        "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.change" | "map.changed" | "map.save";
+        "action.execute" |
+        "action.location" |
+        "action.query" |
+        "guest.generation" |
+        "interval.day" |
+        "interval.tick" |
+        "map.change" |
+        "map.changed" |
+        "map.save" |
+        "network.authenticate" |
+        "network.chat" |
+        "network.join" |
+        "network.leave" |
+        "ride.ratings.calculate" |
+        "vehicle.crash";
 
     type ExpenditureType =
         "ride_construction" |
@@ -4277,7 +4288,7 @@ declare global {
     interface ToolEventArgs {
         readonly isDown: boolean;
         readonly screenCoords: ScreenCoordsXY;
-        readonly mapCoords?: CoordsXYZ;
+        readonly mapCoords?: CoordsXY;
         readonly tileElementIndex?: number;
         readonly entityId?: number;
     }
