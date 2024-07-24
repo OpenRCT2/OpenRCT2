@@ -24,36 +24,6 @@
 
 namespace OpenRCT2::Scripting
 {
-    struct CarTrackLocation : public CoordsXYZD
-    {
-        track_type_t trackType = 0;
-
-        constexpr CarTrackLocation() = default;
-        constexpr CarTrackLocation(int32_t _x, int32_t _y, int32_t _z, Direction _d, track_type_t _t)
-            : CoordsXYZD(_x, _y, _z, _d)
-            , trackType(_t)
-        {
-        }
-
-        constexpr CarTrackLocation(const CoordsXY& _c, int32_t _z, Direction _d, track_type_t _t)
-            : CoordsXYZD(_c, _z, _d)
-            , trackType(_t)
-        {
-        }
-
-        constexpr CarTrackLocation(const CoordsXYZ& _c, Direction _d, track_type_t _t)
-            : CoordsXYZD(_c, _d)
-            , trackType(_t)
-        {
-        }
-
-        constexpr CarTrackLocation(const CoordsXYZD& _c, track_type_t _t)
-            : CoordsXYZD(_c)
-            , trackType(_t)
-        {
-        }
-    };
-
     template<typename T> DukValue GetObjectAsDukValue(duk_context* ctx, const std::shared_ptr<T>& value)
     {
         dukglue::types::DukType<std::shared_ptr<T>>::template push<T>(ctx, value);
@@ -441,22 +411,6 @@ namespace OpenRCT2::Scripting
         return dukCoords.Take();
     }
 
-    template<> inline DukValue ToDuk(duk_context* ctx, const CarTrackLocation& value)
-    {
-        if (value.IsNull())
-        {
-            return ToDuk(ctx, nullptr);
-        }
-
-        DukObject dukCoords(ctx);
-        dukCoords.Set("x", value.x);
-        dukCoords.Set("y", value.y);
-        dukCoords.Set("z", value.z);
-        dukCoords.Set("direction", value.direction);
-        dukCoords.Set("trackType", value.trackType);
-        return dukCoords.Take();
-    }
-
     template<> inline DukValue ToDuk(duk_context* ctx, const GForces& value)
     {
         DukObject dukGForces(ctx);
@@ -482,24 +436,6 @@ namespace OpenRCT2::Scripting
             result.y = AsOrDefault(value["y"], 0);
             result.z = AsOrDefault(value["z"], 0);
             result.direction = AsOrDefault(value["direction"], 0);
-        }
-        else
-        {
-            result.SetNull();
-        }
-        return result;
-    }
-
-    template<> inline CarTrackLocation FromDuk(const DukValue& value)
-    {
-        CarTrackLocation result;
-        if (value.type() == DukValue::Type::OBJECT)
-        {
-            result.x = AsOrDefault(value["x"], 0);
-            result.y = AsOrDefault(value["y"], 0);
-            result.z = AsOrDefault(value["z"], 0);
-            result.direction = AsOrDefault(value["direction"], 0);
-            result.trackType = AsOrDefault(value["trackType"], 0);
         }
         else
         {
