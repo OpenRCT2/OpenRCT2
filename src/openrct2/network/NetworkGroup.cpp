@@ -15,6 +15,8 @@
 #    include "NetworkAction.h"
 #    include "NetworkTypes.h"
 
+using namespace OpenRCT2;
+
 NetworkGroup NetworkGroup::FromJson(const json_t& jsonData)
 {
     Guard::Assert(jsonData.is_object(), "NetworkGroup::FromJson expects parameter jsonData to be object");

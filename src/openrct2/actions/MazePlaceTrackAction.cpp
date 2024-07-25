@@ -16,6 +16,8 @@
 #include "../ride/gentle/Maze.h"
 #include "../world/ConstructionClearance.h"
 
+using namespace OpenRCT2;
+
 using namespace OpenRCT2::TrackMetaData;
 
 MazePlaceTrackAction::MazePlaceTrackAction(const CoordsXYZ& location, RideId rideIndex, uint16_t mazeEntry)

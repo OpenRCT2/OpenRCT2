@@ -70,6 +70,8 @@
 #include <iterator>
 #include <memory>
 
+using namespace OpenRCT2;
+
 namespace OpenRCT2::TrackDesignSceneryElementFlags
 {
     static constexpr uint8_t kRotationMask = 0b00000011;

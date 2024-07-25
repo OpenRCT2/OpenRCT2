@@ -21,6 +21,8 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 static StringId _StatusErrorTitles[] = {
     STR_CANT_CLOSE,
     STR_CANT_OPEN,

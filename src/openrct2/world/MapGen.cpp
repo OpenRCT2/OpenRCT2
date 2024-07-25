@@ -36,6 +36,8 @@
 #include <iterator>
 #include <vector>
 
+using namespace OpenRCT2;
+
 #pragma region Height map struct
 
 static struct

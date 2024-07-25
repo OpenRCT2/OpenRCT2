@@ -17,6 +17,8 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
+using namespace OpenRCT2;
+
 BannerSetStyleAction::BannerSetStyleAction(BannerSetStyleType type, BannerIndex bannerIndex, uint8_t parameter)
     : _type(type)
     , _bannerIndex(bannerIndex)

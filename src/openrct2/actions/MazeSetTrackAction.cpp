@@ -24,6 +24,8 @@
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 using namespace OpenRCT2::TrackMetaData;
 
 // clang-format off

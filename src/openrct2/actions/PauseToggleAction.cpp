@@ -9,6 +9,8 @@
 
 #include "PauseToggleAction.h"
 
+using namespace OpenRCT2;
+
 uint16_t PauseToggleAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused | GameActions::Flags::IgnoreForReplays;

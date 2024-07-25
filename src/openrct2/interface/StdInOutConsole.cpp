@@ -68,7 +68,7 @@ void StdInOutConsole::Start()
 std::future<void> StdInOutConsole::Eval(const std::string& s)
 {
 #ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& scriptEngine = OpenRCT2::GetContext()->GetScriptEngine();
     return scriptEngine.Eval(s);
 #else
     // Push on-demand evaluations onto a queue so that it can be processed deterministically

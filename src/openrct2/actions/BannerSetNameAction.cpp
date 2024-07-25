@@ -19,6 +19,8 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
+using namespace OpenRCT2;
+
 BannerSetNameAction::BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
     : _bannerIndex(bannerIndex)
     , _name(name)

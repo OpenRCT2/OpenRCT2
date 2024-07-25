@@ -21,6 +21,8 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 RideSetNameAction::RideSetNameAction(RideId rideIndex, const std::string& name)
     : _rideIndex(rideIndex)
     , _name(name)
