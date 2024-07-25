@@ -20,8 +20,6 @@
 
 #include <cstdint>
 
-using namespace OpenRCT2;
-
 struct SpriteBoundBox2
 {
     ImageIndex ImageIdA;

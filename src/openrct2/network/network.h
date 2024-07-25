@@ -78,12 +78,12 @@ void NetworkSetPlayerGroup(uint32_t index, uint32_t groupindex);
 [[nodiscard]] uint8_t NetworkGetGroupID(uint32_t index);
 [[nodiscard]] int32_t NetworkGetNumGroups();
 [[nodiscard]] const char* NetworkGetGroupName(uint32_t index);
-[[nodiscard]] GameActions::Result NetworkSetPlayerGroup(
+[[nodiscard]] OpenRCT2::GameActions::Result NetworkSetPlayerGroup(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
-[[nodiscard]] GameActions::Result NetworkModifyGroups(
+[[nodiscard]] OpenRCT2::GameActions::Result NetworkModifyGroups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting);
-[[nodiscard]] GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting);
+[[nodiscard]] OpenRCT2::GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting);
 [[nodiscard]] uint8_t NetworkGetDefaultGroup();
 [[nodiscard]] int32_t NetworkGetNumActions();
 [[nodiscard]] StringId NetworkGetActionNameStringID(uint32_t index);

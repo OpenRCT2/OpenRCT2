@@ -34,6 +34,8 @@
 #include <iterator>
 #include <vector>
 
+using namespace OpenRCT2;
+
 std::optional<StringId> _gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
 uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];

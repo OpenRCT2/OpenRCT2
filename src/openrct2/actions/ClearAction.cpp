@@ -22,6 +22,8 @@
 #include "SmallSceneryRemoveAction.h"
 #include "WallRemoveAction.h"
 
+using namespace OpenRCT2;
+
 ClearAction::ClearAction(MapRange range, ClearableItems itemsToClear)
     : _range(range)
     , _itemsToClear(itemsToClear)

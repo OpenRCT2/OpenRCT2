@@ -25,7 +25,7 @@ private:
     MapRange _range;
     StaffSetPatrolAreaMode _mode;
 
-    GameActions::Result QueryExecute(bool executing) const;
+    OpenRCT2::GameActions::Result QueryExecute(bool executing) const;
 
 public:
     StaffSetPatrolAreaAction() = default;
@@ -35,6 +35,6 @@ public:
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 };

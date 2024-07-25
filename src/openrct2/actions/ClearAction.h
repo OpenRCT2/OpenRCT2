@@ -13,8 +13,6 @@
 #include "../management/Finance.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 using ClearableItems = uint8_t;
 
 namespace OpenRCT2::CLEARABLE_ITEMS
@@ -39,12 +37,12 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result CreateResult() const;
-    GameActions::Result QueryExecute(bool executing) const;
+    OpenRCT2::GameActions::Result CreateResult() const;
+    OpenRCT2::GameActions::Result QueryExecute(bool executing) const;
     money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
 
     /**

@@ -23,6 +23,6 @@ public:
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 };

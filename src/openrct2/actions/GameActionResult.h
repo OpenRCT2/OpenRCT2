@@ -56,7 +56,7 @@ namespace OpenRCT2::GameActions
     public:
         using StringVariant = std::variant<std::string, StringId>;
 
-        GameActions::Status Error = GameActions::Status::Ok;
+        OpenRCT2::GameActions::Status Error = OpenRCT2::GameActions::Status::Ok;
         StringVariant ErrorTitle = STR_NONE;
         StringVariant ErrorMessage = STR_NONE;
         std::array<uint8_t, 32> ErrorMessageArgs{};
@@ -74,7 +74,7 @@ namespace OpenRCT2::GameActions
 #endif
 
         Result() = default;
-        Result(GameActions::Status error, StringId title, StringId message, uint8_t* args = nullptr);
+        Result(OpenRCT2::GameActions::Status error, StringId title, StringId message, uint8_t* args = nullptr);
 
         std::string GetErrorTitle() const;
         std::string GetErrorMessage() const;
