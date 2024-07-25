@@ -17,7 +17,7 @@
 constexpr RideTypeDescriptor MotionSimulatorRTD =
 {
     .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = TrackElemType::FlatTrack2x2,
+    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMotionsimulator,
         .EnabledTrackPieces = {},

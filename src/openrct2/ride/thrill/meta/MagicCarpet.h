@@ -18,7 +18,7 @@
 constexpr RideTypeDescriptor MagicCarpetRTD =
 {
     .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = TrackElemType::FlatTrack1x4A,
+    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMagicCarpet,
         .EnabledTrackPieces = {},

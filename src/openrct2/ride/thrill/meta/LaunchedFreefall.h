@@ -18,7 +18,7 @@
 constexpr RideTypeDescriptor LaunchedFreefallRTD =
 {
     .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = TrackElemType::TowerBase,
+    .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionLaunchedFreefall,
         .EnabledTrackPieces = {TRACK_TOWER_BASE},
