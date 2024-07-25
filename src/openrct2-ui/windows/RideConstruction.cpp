@@ -2105,11 +2105,11 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
                     {
-                        pressed_widgets |= (1uLL << WIDX_O_TRACK);
+                        pressedWidgets |= (1uLL << WIDX_O_TRACK);
                     }
                     else
                     {
-                        pressed_widgets |= (1uLL << WIDX_U_TRACK);
+                        pressedWidgets |= (1uLL << WIDX_U_TRACK);
                     }
                 }
                 switch (_currentTrackRollEnd)
