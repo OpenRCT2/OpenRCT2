@@ -7,6 +7,7 @@
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
 - Feature: [#22301] Loading save games or scenarios now indicates loading progress.
 - Feature: [OpenMusic#54] Added Progressive ride music style (feat. Approaching Nirvana).
+- Improved: [#22357] Error messages are now themeable, and more easily readable by default.
 - Improved: [#22361] Add additional colour preset for the Observation Tower.
 - Change: [#21494] Display pixel density is now taken into account for the initial window scale setting.
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
