@@ -1933,9 +1933,9 @@ static int32_t ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_
         console.WriteLineError("Need arguments: <x> <y> <z> <colour>");
         return 1;
     }
-    int32_t x = COORDS_XY_STEP * atof(argv[0].c_str());
-    int32_t y = COORDS_XY_STEP * atof(argv[1].c_str());
-    int32_t z = COORDS_Z_STEP * atof(argv[2].c_str());
+    int32_t x = kCoordsXYStep * atof(argv[0].c_str());
+    int32_t y = kCoordsXYStep * atof(argv[1].c_str());
+    int32_t z = kCoordsZStep * atof(argv[2].c_str());
     int32_t col = 28;
     if (argv.size() > 3)
         col = atoi(argv[3].c_str());

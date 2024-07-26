@@ -125,7 +125,7 @@ enum
 };
 
 constexpr int8_t kMaxStationPlatformLength = 32;
-constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
+constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * kCoordsZStep;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
 // Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces

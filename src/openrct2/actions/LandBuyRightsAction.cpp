@@ -89,9 +89,9 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
     res.Expenditure = ExpenditureType::LandPurchase;
 
     // Game command modified to accept selection size
-    for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (auto x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (auto x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (!LocationValid({ x, y }))
                 continue;

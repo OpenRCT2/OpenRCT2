@@ -213,8 +213,8 @@ namespace Editor
     static void SetAllLandOwned()
     {
         auto& gameState = GetGameState();
-        MapRange range = { 2 * COORDS_XY_STEP, 2 * COORDS_XY_STEP, (gameState.MapSize.x - 3) * COORDS_XY_STEP,
-                           (gameState.MapSize.y - 3) * COORDS_XY_STEP };
+        MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.MapSize.x - 3) * kCoordsXYStep,
+                           (gameState.MapSize.y - 3) * kCoordsXYStep };
         auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
         landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&landSetRightsAction);

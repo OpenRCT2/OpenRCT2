@@ -799,7 +799,7 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
 
     bool overallFocus = true;
     if (peep.State == PeepState::OnRide || peep.State == PeepState::EnteringRide
-        || (peep.State == PeepState::LeavingRide && peep.x == LOCATION_NULL))
+        || (peep.State == PeepState::LeavingRide && peep.x == kLocationNull))
     {
         auto ride = GetRide(peep.CurrentRide);
         if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
@@ -818,7 +818,7 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
         }
     }
 
-    if (peep.x == LOCATION_NULL && overallFocus)
+    if (peep.x == kLocationNull && overallFocus)
     {
         auto ride = GetRide(peep.CurrentRide);
         if (ride != nullptr)
@@ -827,7 +827,7 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
             CoordsXYZ coordFocus;
             coordFocus.x = xy.x;
             coordFocus.y = xy.y;
-            coordFocus.z = TileElementHeight(xy) + (4 * COORDS_Z_STEP);
+            coordFocus.z = TileElementHeight(xy) + (4 * kCoordsZStep);
             focus = Focus(coordFocus);
             window->viewport_target_sprite = EntityId::GetNull();
         }

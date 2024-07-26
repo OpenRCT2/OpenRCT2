@@ -63,12 +63,12 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
     res.Position.z = z;
     res.Expenditure = ExpenditureType::Landscaping;
 
-    auto maxHeight = GetHighestHeight(validRange) / COORDS_Z_STEP;
+    auto maxHeight = GetHighestHeight(validRange) / kCoordsZStep;
     bool hasChanged = false;
     bool withinOwnership = false;
-    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (!LocationValid({ x, y }))
                 continue;
@@ -86,7 +86,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             }
             withinOwnership = true;
 
-            uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
+            uint8_t height = surfaceElement->GetWaterHeight() / kCoordsZStep;
 
             if (surfaceElement->BaseHeight > maxHeight)
                 continue;
@@ -144,10 +144,10 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
 uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
 {
     // The highest height to raise the water to is the lowest water level in the selection
-    uint16_t maxHeight = 255 * COORDS_Z_STEP;
-    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    uint16_t maxHeight = 255 * kCoordsZStep;
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
             {

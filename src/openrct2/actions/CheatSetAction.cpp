@@ -758,12 +758,12 @@ void CheatSetAction::SetStaffSpeed(uint8_t value) const
 
 void CheatSetAction::OwnAllLand() const
 {
-    const auto min = CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
-    const auto max = GetMapSizeUnits() - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+    const auto min = CoordsXY{ kCoordsXYStep, kCoordsXYStep };
+    const auto max = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
 
-    for (CoordsXY coords = min; coords.y <= max.y; coords.y += COORDS_XY_STEP)
+    for (CoordsXY coords = min; coords.y <= max.y; coords.y += kCoordsXYStep)
     {
-        for (coords.x = min.x; coords.x <= max.x; coords.x += COORDS_XY_STEP)
+        for (coords.x = min.x; coords.x <= max.x; coords.x += kCoordsXYStep)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)

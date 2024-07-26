@@ -138,7 +138,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
             auto& station = ride->GetStation(stationIndex);
             station.Start.x = loc.x;
             station.Start.y = loc.y;
-            station.Height = loc.z / COORDS_Z_STEP;
+            station.Height = loc.z / kCoordsZStep;
             station.Depart = 1;
             station.Length = 0;
             ride->num_stations++;
@@ -229,7 +229,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
                     {
                         auto& station = ride->GetStation(stationIndex);
                         station.Start = loc;
-                        station.Height = loc.z / COORDS_Z_STEP;
+                        station.Height = loc.z / kCoordsZStep;
                         station.Depart = 1;
                         station.Length = stationLength;
                         ride->num_stations++;
@@ -364,7 +364,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                     {
                         auto& station = ride->GetStation(stationIndex);
                         station.Start = currentLoc;
-                        station.Height = currentLoc.z / COORDS_Z_STEP;
+                        station.Height = currentLoc.z / kCoordsZStep;
                         station.Depart = 1;
                         station.Length = stationLength != 0 ? stationLength : ByteF441D1;
                         ride->num_stations++;

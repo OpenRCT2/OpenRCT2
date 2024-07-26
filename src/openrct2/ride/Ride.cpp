@@ -506,8 +506,8 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
             if (output != nullptr)
             {
                 output->element = resultTileElement;
-                output->x = it.x * COORDS_XY_STEP;
-                output->y = it.y * COORDS_XY_STEP;
+                output->x = it.x * kCoordsXYStep;
+                output->y = it.y * kCoordsXYStep;
             }
         }
 
@@ -543,7 +543,7 @@ bool TrackBlockGetNextFromZero(
     if (tileElement == nullptr)
     {
         output->element = nullptr;
-        output->x = LOCATION_NULL;
+        output->x = kLocationNull;
         return false;
     }
 
@@ -1190,10 +1190,10 @@ void UpdateChairlift(Ride& ride)
         return;
 
     auto bullwheelLoc = ride.ChairliftBullwheelLocation[0].ToCoordsXYZ();
-    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
+    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * kCoordsZStep) });
 
     bullwheelLoc = ride.ChairliftBullwheelLocation[1].ToCoordsXYZ();
-    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
+    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * kCoordsZStep) });
 }
 
 /**
@@ -1835,7 +1835,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
             if (!peep->IsLocationInPatrol(location))
                 continue;
 
-        if (peep->x == LOCATION_NULL)
+        if (peep->x == kLocationNull)
             continue;
 
         // Manhattan distance
@@ -5393,7 +5393,7 @@ static bool CheckForAdjacentStation(const CoordsXYZ& stationCoords, uint8_t dire
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;
         TileElement* stationElement = GetStationPlatform(
-            { { adjX, adjY, stationCoords.z }, stationCoords.z + 2 * COORDS_Z_STEP });
+            { { adjX, adjY, stationCoords.z }, stationCoords.z + 2 * kCoordsZStep });
         if (stationElement != nullptr)
         {
             auto rideIndex = stationElement->AsTrack()->GetRideIndex();

@@ -62,7 +62,7 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
 
 static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
 {
-    constexpr auto MapRangeMax = MaxPaintQuadrants * COORDS_XY_STEP;
+    constexpr auto MapRangeMax = MaxPaintQuadrants * kCoordsXYStep;
     constexpr auto MapRangeCenter = MapRangeMax / 2;
 
     const auto x = ps.Bounds.x;
@@ -91,7 +91,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     const auto positionHash = RemapPositionToQuadrant(*ps, session.CurrentRotation);
 
     // Values below zero or above MaxPaintQuadrants are void, corners also share the same quadrant as void.
-    const uint32_t paintQuadrantIndex = std::clamp(positionHash / COORDS_XY_STEP, 0, MaxPaintQuadrants - 1);
+    const uint32_t paintQuadrantIndex = std::clamp(positionHash / kCoordsXYStep, 0, MaxPaintQuadrants - 1);
 
     ps->QuadrantIndex = paintQuadrantIndex;
     ps->NextQuadrantEntry = session.Quadrants[paintQuadrantIndex];

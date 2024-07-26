@@ -124,7 +124,7 @@ static void PathPaintQueueBanner(
     if (pathElement.IsSloped())
     {
         if (pathElement.GetSlopeDirection() == direction)
-            height += COORDS_Z_STEP * 2;
+            height += kCoordsZStep * 2;
     }
     direction += session.CurrentRotation;
     direction &= 3;

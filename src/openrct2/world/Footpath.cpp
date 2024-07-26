@@ -73,7 +73,7 @@ const std::array<CoordsXY, kNumOrthogonalDirections> BinUseOffsets = {
 
 // These are the offsets for bench positions on footpaths, 2 for each edge
 // rct2: 0x00981F2C, 0x00981F2E
-const std::array<CoordsXY, kNumOrthogonalDirections* 2> BenchUseOffsets = {
+const std::array<CoordsXY, 2 * kNumOrthogonalDirections> BenchUseOffsets = {
     CoordsXY{ 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 
@@ -2333,7 +2333,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
             bool isQueue = tileElement->GetType() == TileElementType::Path ? tileElement->AsPath()->IsQueue() : false;
             int32_t z0 = z1 - 2;
             FootpathRemoveEdgesTowards(
-                { footpathPos + CoordsDirectionDelta[direction], z0 * COORDS_Z_STEP, z1 * COORDS_Z_STEP }, direction, isQueue);
+                { footpathPos + CoordsDirectionDelta[direction], z0 * kCoordsZStep, z1 * kCoordsZStep }, direction, isQueue);
         }
         else
         {

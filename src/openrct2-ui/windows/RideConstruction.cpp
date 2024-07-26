@@ -2671,7 +2671,7 @@ static Widget _rideConstructionWidgets[] = {
                 CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
                 int32_t baseZ = originZ + trackBlock->z;
-                int32_t clearanceZ = trackBlock->ClearanceZ + clearanceHeight + baseZ + (4 * COORDS_Z_STEP);
+                int32_t clearanceZ = trackBlock->ClearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
 
                 auto centreTileCoords = TileCoordsXY{ coords };
                 auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
@@ -3021,7 +3021,7 @@ static Widget _rideConstructionWidgets[] = {
             _trackPlaceZ = std::max<int32_t>(mapZ, 16);
         }
 
-        if (mapCoords.x == LOCATION_NULL)
+        if (mapCoords.x == kLocationNull)
             return std::nullopt;
 
         return mapCoords.ToTileStart();
@@ -3313,7 +3313,7 @@ static Widget _rideConstructionWidgets[] = {
 
         _previousTrackPiece = _currentTrackBegin;
         // search for appropriate z value for ghost, up to max ride height
-        int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
+        int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         {
@@ -3550,7 +3550,7 @@ static Widget _rideConstructionWidgets[] = {
         }
 
         // search for z value to build at, up to max ride height
-        int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
+        int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
@@ -4561,7 +4561,7 @@ static Widget _rideConstructionWidgets[] = {
     {
         if (_gotoStartPlacementMode)
         {
-            _currentTrackBegin.z = Floor2(piecePos.z, COORDS_Z_STEP);
+            _currentTrackBegin.z = Floor2(piecePos.z, kCoordsZStep);
             _rideConstructionState = RideConstructionState::Front;
             _currentTrackSelectionFlags = 0;
             _currentTrackPieceDirection = piecePos.direction & 3;

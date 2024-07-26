@@ -410,12 +410,12 @@ StationIndex RideGetFirstEmptyStationStart(const Ride& ride)
 
 int32_t RideStation::GetBaseZ() const
 {
-    return Height * COORDS_Z_STEP;
+    return Height * kCoordsZStep;
 }
 
 void RideStation::SetBaseZ(int32_t newZ)
 {
-    Height = newZ / COORDS_Z_STEP;
+    Height = newZ / kCoordsZStep;
 }
 
 CoordsXYZ RideStation::GetStart() const

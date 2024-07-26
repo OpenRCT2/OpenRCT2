@@ -129,7 +129,7 @@ static Widget _staffOptionsWidgets[] = {
     private:
         EntertainerCostume _availableCostumes[EnumValue(EntertainerCostume::Count)]{};
         uint16_t _tabAnimationOffset = 0;
-        int32_t _pickedPeepOldX = LOCATION_NULL;
+        int32_t _pickedPeepOldX = kLocationNull;
 
     public:
         void Initialise(EntityId entityId)

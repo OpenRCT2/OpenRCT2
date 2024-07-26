@@ -463,16 +463,16 @@ void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
 {
     auto mapSizeUnits = GetMapSizeUnits();
     uint8_t direction = 0;
-    if (_loc.x != COORDS_XY_STEP)
+    if (_loc.x != kCoordsXYStep)
     {
         direction++;
-        if (_loc.y != mapSizeUnits.y - COORDS_XY_STEP)
+        if (_loc.y != mapSizeUnits.y - kCoordsXYStep)
         {
             direction++;
-            if (_loc.x != mapSizeUnits.x - COORDS_XY_STEP)
+            if (_loc.x != mapSizeUnits.x - kCoordsXYStep)
             {
                 direction++;
-                if (_loc.y != COORDS_XY_STEP)
+                if (_loc.y != kCoordsXYStep)
                     return;
             }
         }
@@ -496,8 +496,8 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
     {
         auto direction = pathElement->GetSlopeDirection();
         int32_t z = pathElement->GetBaseZ();
-        WallRemoveIntersectingWalls({ _loc, z, z + (6 * COORDS_Z_STEP) }, DirectionReverse(direction));
-        WallRemoveIntersectingWalls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction);
+        WallRemoveIntersectingWalls({ _loc, z, z + (6 * kCoordsZStep) }, DirectionReverse(direction));
+        WallRemoveIntersectingWalls({ _loc, z, z + (6 * kCoordsZStep) }, direction);
         // Removing walls may have made the pointer invalid, so find it again
         pathElement = MapGetFootpathElement(CoordsXYZ(_loc, z));
         if (pathElement == nullptr)

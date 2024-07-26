@@ -60,8 +60,8 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
     res.Expenditure = ExpenditureType::LandPurchase;
     res.Position = { _loc.x, _loc.y, _loc.z };
 
-    auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
-    if (!LocationValid(_loc) || _loc.x <= COORDS_XY_STEP || _loc.y <= COORDS_XY_STEP || _loc.x >= mapSizeUnits.x
+    auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
+    if (!LocationValid(_loc) || _loc.x <= kCoordsXYStep || _loc.y <= kCoordsXYStep || _loc.x >= mapSizeUnits.x
         || _loc.y >= mapSizeUnits.y)
     {
         return GameActions::Result(
@@ -171,10 +171,10 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
         }
 
         Park::UpdateFences(entranceLoc);
-        Park::UpdateFences({ entranceLoc.x - COORDS_XY_STEP, entranceLoc.y });
-        Park::UpdateFences({ entranceLoc.x + COORDS_XY_STEP, entranceLoc.y });
-        Park::UpdateFences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
-        Park::UpdateFences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
+        Park::UpdateFences({ entranceLoc.x - kCoordsXYStep, entranceLoc.y });
+        Park::UpdateFences({ entranceLoc.x + kCoordsXYStep, entranceLoc.y });
+        Park::UpdateFences({ entranceLoc.x, entranceLoc.y - kCoordsXYStep });
+        Park::UpdateFences({ entranceLoc.x, entranceLoc.y + kCoordsXYStep });
 
         MapInvalidateTile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
 

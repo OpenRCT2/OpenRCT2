@@ -148,7 +148,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     banner->position = TileCoordsXY(_loc);
 
     res.SetData(BannerPlaceActionResult{ banner->id });
-    auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
+    auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * kCoordsZStep) }, 0b0000);
     Guard::Assert(bannerElement != nullptr);
 
     bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);

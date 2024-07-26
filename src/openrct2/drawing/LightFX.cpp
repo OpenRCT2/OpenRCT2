@@ -321,7 +321,7 @@ void LightFXPrepareLightList()
                 }
 
                 int32_t minDist = 0;
-                int32_t baseHeight = (-999) * COORDS_Z_STEP;
+                int32_t baseHeight = (-999) * kCoordsZStep;
 
                 if (interactionType != ViewportInteractionItem::Entity && tileElement != nullptr)
                 {

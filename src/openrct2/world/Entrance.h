@@ -27,14 +27,14 @@ namespace EntranceSequence
     constexpr uint8_t Right = 2;
 }; // namespace EntranceSequence
 
-constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;
-constexpr const uint8_t RideEntranceHeight = 7 * COORDS_Z_STEP;
-constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
+constexpr uint8_t ParkEntranceHeight = 12 * kCoordsZStep;
+constexpr uint8_t RideEntranceHeight = 7 * kCoordsZStep;
+constexpr uint8_t RideExitHeight = 5 * kCoordsZStep;
 
 extern bool gParkEntranceGhostExists;
 extern CoordsXYZD gParkEntranceGhostPosition;
 
-constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
+constexpr int32_t MaxRideEntranceOrExitHeight = 244 * kCoordsZStep;
 
 extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern StationIndex gRideEntranceExitGhostStationIndex;

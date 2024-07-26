@@ -232,7 +232,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, COORDS_Z_STEP);
+    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, kCoordsZStep);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))

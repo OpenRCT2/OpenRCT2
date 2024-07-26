@@ -723,7 +723,7 @@ static PeepDistance GetClosestPeep(
 {
     for (auto peep : EntityList<T>())
     {
-        if (peep->x == LOCATION_NULL)
+        if (peep->x == kLocationNull)
             continue;
 
         auto screenCoords = Translate3DTo2DWithZ(rotation, peep->GetLocation());

@@ -242,7 +242,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
-        int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
+        int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
 
         int32_t clearanceZ = trackBlock->ClearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
@@ -254,7 +254,7 @@ GameActions::Result TrackPlaceAction::Query() const
             clearanceZ += clearanceHeight;
         }
 
-        clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
+        clearanceZ = Floor2(clearanceZ, kCoordsZStep) + baseZ;
 
         if (clearanceZ > MAX_TRACK_HEIGHT)
         {
@@ -391,7 +391,7 @@ GameActions::Result TrackPlaceAction::Query() const
                     maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
                 }
 
-                ride_height /= COORDS_Z_PER_TINY_Z;
+                ride_height /= kCoordsZPerTinyZ;
                 if (ride_height > maxHeight && !_trackDesignDrawingPreview)
                 {
                     return GameActions::Result(
@@ -404,10 +404,10 @@ GameActions::Result TrackPlaceAction::Query() const
         int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
         if (supportHeight < 0)
         {
-            supportHeight = (10 * COORDS_Z_STEP);
+            supportHeight = (10 * kCoordsZStep);
         }
 
-        supportCosts += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice);
+        supportCosts += ((supportHeight / (2 * kCoordsZStep)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice);
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
@@ -464,7 +464,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
-        int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
+        int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
         int32_t clearanceZ = trackBlock->ClearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
@@ -475,7 +475,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             clearanceZ += clearanceHeight;
         }
 
-        clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
+        clearanceZ = Floor2(clearanceZ, kCoordsZStep) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
         auto crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
@@ -550,10 +550,10 @@ GameActions::Result TrackPlaceAction::Execute() const
         int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
         if (supportHeight < 0)
         {
-            supportHeight = (10 * COORDS_Z_STEP);
+            supportHeight = (10 * kCoordsZStep);
         }
 
-        supportCosts += (supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        supportCosts += (supportHeight / (2 * kCoordsZStep)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
 
         int32_t entranceDirections = 0;
         if (!ride->overall_view.IsNull())

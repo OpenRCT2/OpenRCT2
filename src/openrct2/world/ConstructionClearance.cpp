@@ -194,7 +194,7 @@ GameActions::Result MapCanConstructWithClearAt(
         {
             const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
-            if (heightFromGround > (18 * COORDS_Z_STEP))
+            if (heightFromGround > (18 * kCoordsZStep))
             {
                 res.Error = GameActions::Status::Disallowed;
                 res.ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
@@ -248,7 +248,7 @@ GameActions::Result MapCanConstructWithClearAt(
                     if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
                         westZ += LAND_HEIGHT_STEP;
                 }
-                const auto baseHeight = pos.baseZ + (4 * COORDS_Z_STEP);
+                const auto baseHeight = pos.baseZ + (4 * kCoordsZStep);
                 const auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
                 const auto zQuarter = quarterTile.GetZQuarterOccupied();
                 if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ >= northZ) && baseHeight >= northZ))
