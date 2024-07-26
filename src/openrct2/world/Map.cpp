@@ -70,14 +70,14 @@ using namespace OpenRCT2;
  */
 // clang-format off
 const std::array<CoordsXY, 8> CoordsDirectionDelta = {
-    CoordsXY{ -COORDS_XY_STEP, 0 },
-    CoordsXY{               0, +COORDS_XY_STEP },
-    CoordsXY{ +COORDS_XY_STEP, 0 },
-    CoordsXY{               0, -COORDS_XY_STEP },
-    CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
-    CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
-    CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
-    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP }
+    CoordsXY{ -kCoordsXYStep, 0 },
+    CoordsXY{               0, +kCoordsXYStep },
+    CoordsXY{ +kCoordsXYStep, 0 },
+    CoordsXY{               0, -kCoordsXYStep },
+    CoordsXY{ -kCoordsXYStep, +kCoordsXYStep },
+    CoordsXY{ +kCoordsXYStep, +kCoordsXYStep },
+    CoordsXY{ +kCoordsXYStep, -kCoordsXYStep },
+    CoordsXY{ -kCoordsXYStep, -kCoordsXYStep }
 };
 // clang-format on
 
@@ -135,13 +135,13 @@ void UnstashMap()
 CoordsXY GetMapSizeUnits()
 {
     auto& gameState = OpenRCT2::GetGameState();
-    return { (gameState.MapSize.x - 1) * COORDS_XY_STEP, (gameState.MapSize.y - 1) * COORDS_XY_STEP };
+    return { (gameState.MapSize.x - 1) * kCoordsXYStep, (gameState.MapSize.y - 1) * kCoordsXYStep };
 }
 CoordsXY GetMapSizeMinus2()
 {
     auto& gameState = OpenRCT2::GetGameState();
-    return { (gameState.MapSize.x * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2),
-             (gameState.MapSize.y * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2) };
+    return { (gameState.MapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
+             (gameState.MapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
 }
 CoordsXY GetMapSizeMaxXY()
 {
@@ -769,11 +769,11 @@ void MapUpdatePathWideFlags()
         FootpathUpdatePathWideFlags(loopPosition);
 
         // Next x, y tile
-        loopPosition.x += COORDS_XY_STEP;
+        loopPosition.x += kCoordsXYStep;
         if (loopPosition.x >= MAXIMUM_MAP_SIZE_BIG)
         {
             loopPosition.x = 0;
-            loopPosition.y += COORDS_XY_STEP;
+            loopPosition.y += kCoordsXYStep;
             if (loopPosition.y >= MAXIMUM_MAP_SIZE_BIG)
             {
                 loopPosition.y = 0;
@@ -950,9 +950,9 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
                             std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
     uint8_t min_height = 0xFF;
-    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
+    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
     {
-        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += COORDS_XY_STEP)
+        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
 
@@ -980,9 +980,9 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
                             std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
     uint8_t max_height = 0;
-    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
+    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
     {
-        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += COORDS_XY_STEP)
+        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
@@ -1360,9 +1360,9 @@ void MapRemoveOutOfRangeElements()
     bool buildState = GetGameState().Cheats.BuildInPauseMode;
     GetGameState().Cheats.BuildInPauseMode = true;
 
-    for (int32_t y = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP; y >= 0; y -= COORDS_XY_STEP)
+    for (int32_t y = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
     {
-        for (int32_t x = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP; x >= 0; x -= COORDS_XY_STEP)
+        for (int32_t x = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; x >= 0; x -= kCoordsXYStep)
         {
             if (x == 0 || y == 0 || x >= mapSizeMax.x || y >= mapSizeMax.y)
             {
@@ -1912,9 +1912,9 @@ bool MapSurfaceIsBlocked(const CoordsXY& mapCoords)
 /* Clears all map elements, to be used before generating a new map */
 void MapClearAllElements()
 {
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += kCoordsXYStep)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += kCoordsXYStep)
         {
             ClearElementsAt({ x, y });
         }
@@ -2230,9 +2230,9 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
 MapRange ClampRangeWithinMap(const MapRange& range)
 {
     auto mapSizeMax = GetMapSizeMaxXY();
-    auto aX = std::max<decltype(range.GetLeft())>(COORDS_XY_STEP, range.GetLeft());
+    auto aX = std::max<decltype(range.GetLeft())>(kCoordsXYStep, range.GetLeft());
     auto bX = std::min<decltype(range.GetRight())>(mapSizeMax.x, range.GetRight());
-    auto aY = std::max<decltype(range.GetTop())>(COORDS_XY_STEP, range.GetTop());
+    auto aY = std::max<decltype(range.GetTop())>(kCoordsXYStep, range.GetTop());
     auto bY = std::min<decltype(range.GetBottom())>(mapSizeMax.y, range.GetBottom());
     MapRange validRange = MapRange{ aX, aY, bX, bY };
     return validRange;

@@ -65,7 +65,7 @@ Vehicle* CableLiftSegmentCreate(
     current->TrackSubposition = VehicleTrackSubposition::Default;
     current->Orientation = direction << 3;
 
-    z = z * COORDS_Z_STEP;
+    z = z * kCoordsZStep;
     current->TrackLocation = { x, y, z };
     z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
 

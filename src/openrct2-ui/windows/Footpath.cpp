@@ -1145,7 +1145,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 return nullptr;
             }
 
-            z = std::min(255 * COORDS_Z_STEP, gFootpathConstructFromPosition.z);
+            z = std::min(255 * kCoordsZStep, gFootpathConstructFromPosition.z);
             zLow = z - PATH_HEIGHT_STEP;
 
             tileElement = MapGetFirstElementAt(gFootpathConstructFromPosition);

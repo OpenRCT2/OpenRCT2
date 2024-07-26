@@ -68,9 +68,9 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
     uint8_t minHeight = GetLowestHeight(validRange);
     bool hasChanged = false;
     bool withinOwnership = false;
-    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (!LocationValid({ x, y }))
                 continue;
@@ -88,7 +88,7 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
             }
             withinOwnership = true;
 
-            uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
+            uint8_t height = surfaceElement->GetWaterHeight() / kCoordsZStep;
             if (height == 0)
                 continue;
 
@@ -134,9 +134,9 @@ uint8_t WaterLowerAction::GetLowestHeight(const MapRange& validRange) const
 {
     // The lowest height to lower the water to is the highest water level in the selection
     uint8_t minHeight{ 0 };
-    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
             {
@@ -150,7 +150,7 @@ uint8_t WaterLowerAction::GetLowestHeight(const MapRange& validRange) const
             if (surfaceElement == nullptr)
                 continue;
 
-            uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
+            uint8_t height = surfaceElement->GetWaterHeight() / kCoordsZStep;
             if (height == 0)
                 continue;
 

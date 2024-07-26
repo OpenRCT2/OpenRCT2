@@ -402,7 +402,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
             // Smooth the edges
             int32_t z1, z2;
-            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), y });
                 if (surfaceElement != nullptr)
@@ -421,7 +421,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
                 }
             }
 
-            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.GetTop() });
                 if (surfaceElement != nullptr)

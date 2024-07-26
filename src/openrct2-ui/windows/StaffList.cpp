@@ -668,7 +668,7 @@ static Widget _staffListWidgets[] = {
                     }
                 }
 
-                if (peep->x == LOCATION_NULL)
+                if (peep->x == kLocationNull)
                 {
                     continue;
                 }

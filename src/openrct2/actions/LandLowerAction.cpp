@@ -86,9 +86,9 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
     uint8_t maxHeight = MapGetHighestLandHeight(validRange);
     bool withinOwnership = false;
 
-    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (!LocationValid({ x, y }))
                 continue;

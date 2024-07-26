@@ -244,14 +244,14 @@ namespace OpenRCT2::TileInspector
                         uint8_t z = tileElement->BaseHeight;
 
                         // Make sure this is the correct entrance or exit
-                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / COORDS_XY_STEP
-                            && entrance.y == loc.y / COORDS_XY_STEP && entrance.z == z)
+                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / kCoordsXYStep
+                            && entrance.y == loc.y / kCoordsXYStep && entrance.z == z)
                         {
                             station.Entrance = { entrance, newRotation };
                         }
                         else if (
-                            entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / COORDS_XY_STEP
-                            && exit.y == loc.y / COORDS_XY_STEP && exit.z == z)
+                            entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / kCoordsXYStep
+                            && exit.y == loc.y / kCoordsXYStep && exit.z == z)
                         {
                             station.Exit = { exit, newRotation };
                         }

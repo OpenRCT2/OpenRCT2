@@ -33,7 +33,7 @@ public:
     uint32_t LastActionTime = 0;
     CoordsXYZ LastActionCoord = {};
     Peep* PickupPeep = nullptr;
-    int32_t PickupPeepOldX = LOCATION_NULL;
+    int32_t PickupPeepOldX = kLocationNull;
     std::string KeyHash;
     uint32_t LastDemolishRideTime = 0;
     uint32_t LastPlaceSceneryTime = 0;

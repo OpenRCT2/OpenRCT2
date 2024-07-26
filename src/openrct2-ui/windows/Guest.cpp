@@ -185,7 +185,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
         uint16_t _marqueePosition = 0;
         uint16_t _beingWatchedTimer = 0;
         uint16_t _guestAnimationFrame = 0;
-        int16_t _pickedPeepX = LOCATION_NULL; // entity->x gets set to 0x8000 on pickup, this is the old value
+        int16_t _pickedPeepX = kLocationNull; // entity->x gets set to 0x8000 on pickup, this is the old value
         std::vector<RideId> _riddenRides;
 
     public:

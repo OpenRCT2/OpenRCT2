@@ -807,7 +807,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             uint16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
-            uint16_t tool_length = (tool_size - 1) * COORDS_XY_STEP;
+            uint16_t tool_length = (tool_size - 1) * kCoordsXYStep;
 
             // Move to tool bottom left
             mapTile.x -= tool_length / 2;
@@ -913,15 +913,15 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
                     if (gWindowSceneryScatterEnabled)
                     {
-                        uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * COORDS_XY_STEP;
+                        uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * kCoordsXYStep;
                         gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
                         gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
                         gMapSelectPositionB.x = mapTile.x + cluster_size / 2;
                         gMapSelectPositionB.y = mapTile.y + cluster_size / 2;
                         if (gWindowSceneryScatterSize % 2 == 0)
                         {
-                            gMapSelectPositionB.x += COORDS_XY_STEP;
-                            gMapSelectPositionB.y += COORDS_XY_STEP;
+                            gMapSelectPositionB.x += kCoordsXYStep;
+                            gMapSelectPositionB.y += kCoordsXYStep;
                         }
                     }
                     else
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if (cost != kMoney64Undefined)
                             break;
-                        gSceneryPlaceZ += COORDS_Z_STEP;
+                        gSceneryPlaceZ += kCoordsZStep;
                     }
 
                     gSceneryPlaceCost = cost;
@@ -2157,7 +2157,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (rotation != DirectionReverse(info.Element->AsPath()->GetSlopeDirection()))
                 {
-                    z += (2 * COORDS_Z_STEP);
+                    z += (2 * kCoordsZStep);
                 }
             }
 
@@ -2250,8 +2250,8 @@ namespace OpenRCT2::Ui::Windows
                                 grid_x_offset += 1;
                                 grid_y_offset += 1;
                             }
-                            cur_grid_x += grid_x_offset * COORDS_XY_STEP;
-                            cur_grid_y += grid_y_offset * COORDS_XY_STEP;
+                            cur_grid_x += grid_x_offset * kCoordsXYStep;
+                            cur_grid_y += grid_y_offset * kCoordsXYStep;
 
                             if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
                             {

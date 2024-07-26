@@ -207,7 +207,7 @@ money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const Coor
     money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;
 
     auto surfaceElement = MapGetSurfaceElementAt(loc);
-    auto heightDifference = (loc.z - surfaceElement->GetBaseZ()) / COORDS_Z_PER_TINY_Z;
+    auto heightDifference = (loc.z - surfaceElement->GetBaseZ()) / kCoordsZPerTinyZ;
     money64 supportCost = heightDifference * ride.GetRideTypeDescriptor().BuildCosts.SupportPrice;
 
     return constructionCost + price + supportCost;

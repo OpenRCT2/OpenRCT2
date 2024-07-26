@@ -96,9 +96,9 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     money64 surfaceCost = 0;
     money64 edgeCost = 0;
     for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
-         coords.x += COORDS_XY_STEP)
+         coords.x += kCoordsXYStep)
     {
-        for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
+        for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += kCoordsXYStep)
         {
             if (!LocationValid(coords))
                 continue;
@@ -164,9 +164,9 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
     money64 surfaceCost = 0;
     money64 edgeCost = 0;
     for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
-         coords.x += COORDS_XY_STEP)
+         coords.x += kCoordsXYStep)
     {
-        for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
+        for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += kCoordsXYStep)
         {
             if (!LocationValid(coords))
                 continue;

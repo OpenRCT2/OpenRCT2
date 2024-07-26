@@ -416,7 +416,7 @@ namespace OpenRCT2::RCT2
             gameState.Park.Entrances.clear();
             for (uint8_t i = 0; i < Limits::kMaxParkEntrances; i++)
             {
-                if (_s6.ParkEntranceX[i] != LOCATION_NULL)
+                if (_s6.ParkEntranceX[i] != kLocationNull)
                 {
                     CoordsXYZD entrance;
                     entrance.x = _s6.ParkEntranceX[i];
@@ -1599,7 +1599,7 @@ namespace OpenRCT2::RCT2
             dst->totalAirTime = src->TotalAirTime;
             dst->current_test_station = StationIndex::FromUnderlying(src->CurrentTestStation);
             dst->num_circuits = src->NumCircuits;
-            dst->CableLiftLoc = { src->CableLiftX, src->CableLiftY, src->CableLiftZ * COORDS_Z_STEP };
+            dst->CableLiftLoc = { src->CableLiftX, src->CableLiftY, src->CableLiftZ * kCoordsZStep };
             // Pad1FD;
             dst->cable_lift = EntityId::FromUnderlying(src->CableLift);
 
@@ -1869,8 +1869,8 @@ namespace OpenRCT2::RCT2
             const auto rct12Type = src->GetType();
             dst->ClearAs(ToOpenRCT2TileElementType(rct12Type));
             dst->SetDirection(src->GetDirection());
-            dst->SetBaseZ(src->BaseHeight * COORDS_Z_STEP);
-            dst->SetClearanceZ(src->ClearanceHeight * COORDS_Z_STEP);
+            dst->SetBaseZ(src->BaseHeight * kCoordsZStep);
+            dst->SetClearanceZ(src->ClearanceHeight * kCoordsZStep);
 
             // All saved in "flags"
             dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
@@ -2204,8 +2204,7 @@ namespace OpenRCT2::RCT2
                     x <<= 7;
                     int32_t y = val & 0xFC0;
                     y <<= 1;
-                    staffmember->SetPatrolArea(
-                        MapRange(x, y, x + (4 * COORDS_XY_STEP) - 1, y + (4 * COORDS_XY_STEP) - 1), true);
+                    staffmember->SetPatrolArea(MapRange(x, y, x + (4 * kCoordsXYStep) - 1, y + (4 * kCoordsXYStep) - 1), true);
                 }
             }
         }
@@ -2236,7 +2235,7 @@ namespace OpenRCT2::RCT2
             {
                 dst->SetName(GetUserString(src->NameStringIdx));
             }
-            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * COORDS_Z_STEP };
+            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * kCoordsZStep };
             dst->NextFlags = src->NextFlags;
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;

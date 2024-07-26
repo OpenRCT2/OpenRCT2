@@ -44,9 +44,9 @@ constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
-constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
+constexpr uint16_t MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
 
-constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
+constexpr uint16_t MAZE_CLEARANCE_HEIGHT = 4 * kCoordsZStep;
 
 constexpr uint8_t kRideMaxDropsCount = 63;
 constexpr uint8_t kRideNumDropsMask = 0b00111111;

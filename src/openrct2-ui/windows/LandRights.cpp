@@ -337,7 +337,7 @@ static Widget window_land_rights_widgets[] = {
         {
             if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -347,7 +347,7 @@ static Widget window_land_rights_widgets[] = {
             }
             else
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -361,7 +361,7 @@ static Widget window_land_rights_widgets[] = {
         {
             if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -371,7 +371,7 @@ static Widget window_land_rights_widgets[] = {
             }
             else
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },

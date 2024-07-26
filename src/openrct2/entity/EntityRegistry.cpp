@@ -58,8 +58,8 @@ static constexpr size_t GetSpatialIndexOffset(const CoordsXY& loc)
         return SPATIAL_INDEX_LOCATION_NULL;
 
     // NOTE: The input coordinate is rotated and can have negative components.
-    const auto tileX = std::abs(loc.x) / COORDS_XY_STEP;
-    const auto tileY = std::abs(loc.y) / COORDS_XY_STEP;
+    const auto tileX = std::abs(loc.x) / kCoordsXYStep;
+    const auto tileY = std::abs(loc.y) / kCoordsXYStep;
 
     if (tileX >= kMaximumMapSizeTechnical || tileY >= kMaximumMapSizeTechnical)
         return SPATIAL_INDEX_LOCATION_NULL;
@@ -314,15 +314,15 @@ static void PrepareNewEntity(EntityBase* base, const EntityType type)
     base->Type = type;
     AddToEntityList(base);
 
-    base->x = LOCATION_NULL;
-    base->y = LOCATION_NULL;
+    base->x = kLocationNull;
+    base->y = kLocationNull;
     base->z = 0;
     base->SpriteData.Width = 0x10;
     base->SpriteData.HeightMin = 0x14;
     base->SpriteData.HeightMax = 0x8;
     base->SpriteData.SpriteRect = {};
 
-    EntitySpatialInsert(base, { LOCATION_NULL, 0 });
+    EntitySpatialInsert(base, { kLocationNull, 0 });
 }
 
 EntityBase* CreateEntity(EntityType type)
@@ -449,7 +449,7 @@ static void EntitySpatialMove(EntityBase* entity, const CoordsXY& newLoc)
 
 void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 {
-    if (x != LOCATION_NULL)
+    if (x != kLocationNull)
     {
         // Invalidate old position.
         Invalidate();
@@ -458,12 +458,12 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
     auto loc = newLocation;
     if (!MapIsLocationValid(loc))
     {
-        loc.x = LOCATION_NULL;
+        loc.x = kLocationNull;
     }
 
     EntitySpatialMove(this, loc);
 
-    if (loc.x == LOCATION_NULL)
+    if (loc.x == kLocationNull)
     {
         x = loc.x;
         y = loc.y;

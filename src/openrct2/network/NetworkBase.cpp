@@ -54,7 +54,7 @@ constexpr uint8_t kNetworkStreamVersion = 0;
 const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::to_string(kNetworkStreamVersion);
 
 static Peep* _pickup_peep = nullptr;
-static int32_t _pickup_peep_old_x = LOCATION_NULL;
+static int32_t _pickup_peep_old_x = kLocationNull;
 
 #ifndef DISABLE_NETWORK
 

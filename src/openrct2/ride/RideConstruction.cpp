@@ -260,8 +260,8 @@ void Ride::RemovePeeps()
         {
             auto direction = DirectionReverse(location.direction);
             exitPosition = location;
-            exitPosition.x += (DirectionOffsets[direction].x * 20) + COORDS_XY_HALF_TILE;
-            exitPosition.y += (DirectionOffsets[direction].y * 20) + COORDS_XY_HALF_TILE;
+            exitPosition.x += (DirectionOffsets[direction].x * 20) + kCoordsXYHalfTile;
+            exitPosition.y += (DirectionOffsets[direction].y * 20) + kCoordsXYHalfTile;
             exitPosition.z += 2;
 
             // Reverse direction
@@ -288,7 +288,7 @@ void Ride::RemovePeeps()
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
-                    newLoc.z += COORDS_Z_STEP;
+                    newLoc.z += kCoordsZStep;
                 newLoc.z++;
                 peep->MoveTo(newLoc);
             }
@@ -318,7 +318,7 @@ void Ride::RemovePeeps()
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
-                    newLoc.z += COORDS_Z_STEP;
+                    newLoc.z += kCoordsZStep;
                 newLoc.z++;
                 peep->MoveTo(newLoc);
             }

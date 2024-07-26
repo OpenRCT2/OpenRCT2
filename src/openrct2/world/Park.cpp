@@ -670,22 +670,22 @@ namespace OpenRCT2::Park
 
             if (fenceRequired)
             {
-                if (MapIsLocationInPark({ coords.x - COORDS_XY_STEP, coords.y }))
+                if (MapIsLocationInPark({ coords.x - kCoordsXYStep, coords.y }))
                 {
                     newFences |= 0x8;
                 }
 
-                if (MapIsLocationInPark({ coords.x, coords.y - COORDS_XY_STEP }))
+                if (MapIsLocationInPark({ coords.x, coords.y - kCoordsXYStep }))
                 {
                     newFences |= 0x4;
                 }
 
-                if (MapIsLocationInPark({ coords.x + COORDS_XY_STEP, coords.y }))
+                if (MapIsLocationInPark({ coords.x + kCoordsXYStep, coords.y }))
                 {
                     newFences |= 0x2;
                 }
 
-                if (MapIsLocationInPark({ coords.x, coords.y + COORDS_XY_STEP }))
+                if (MapIsLocationInPark({ coords.x, coords.y + kCoordsXYStep }))
                 {
                     newFences |= 0x1;
                 }
@@ -704,10 +704,10 @@ namespace OpenRCT2::Park
     void UpdateFencesAroundTile(const CoordsXY& coords)
     {
         UpdateFences(coords);
-        UpdateFences({ coords.x + COORDS_XY_STEP, coords.y });
-        UpdateFences({ coords.x - COORDS_XY_STEP, coords.y });
-        UpdateFences({ coords.x, coords.y + COORDS_XY_STEP });
-        UpdateFences({ coords.x, coords.y - COORDS_XY_STEP });
+        UpdateFences({ coords.x + kCoordsXYStep, coords.y });
+        UpdateFences({ coords.x - kCoordsXYStep, coords.y });
+        UpdateFences({ coords.x, coords.y + kCoordsXYStep });
+        UpdateFences({ coords.x, coords.y - kCoordsXYStep });
     }
 
     void SetForcedRating(int32_t rating)

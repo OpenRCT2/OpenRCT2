@@ -149,14 +149,14 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         case 0:
             break;
         case 1:
-            coords.x += COORDS_XY_STEP;
+            coords.x += kCoordsXYStep;
             break;
         case 2:
-            coords.x += COORDS_XY_STEP;
-            coords.y += COORDS_XY_STEP;
+            coords.x += kCoordsXYStep;
+            coords.y += kCoordsXYStep;
             break;
         case 3:
-            coords.y += COORDS_XY_STEP;
+            coords.y += kCoordsXYStep;
             break;
     }
 
@@ -219,7 +219,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         }
 
         // Only paint tile_elements below the clip height.
-        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
+        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * kCoordsZStep))
             continue;
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);

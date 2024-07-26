@@ -37,25 +37,25 @@ enum class PATTERN
 };
 
 static constexpr std::array _fountainDirectionsNegative = {
-    CoordsXY{ -COORDS_XY_STEP, 0 },
-    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
+    CoordsXY{ -kCoordsXYStep, 0 },
+    CoordsXY{ -kCoordsXYStep, -kCoordsXYStep },
     CoordsXY{ 0, 0 },
-    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{ -kCoordsXYStep, 0 },
     CoordsXY{ 0, 0 },
-    CoordsXY{ 0, -COORDS_XY_STEP },
-    CoordsXY{ 0, -COORDS_XY_STEP },
-    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
+    CoordsXY{ 0, -kCoordsXYStep },
+    CoordsXY{ 0, -kCoordsXYStep },
+    CoordsXY{ -kCoordsXYStep, -kCoordsXYStep },
 };
 
 static constexpr std::array _fountainDirectionsPositive = {
-    CoordsXY{ COORDS_XY_STEP, 0 },
+    CoordsXY{ kCoordsXYStep, 0 },
     CoordsXY{ 0, 0 },
-    CoordsXY{ 0, COORDS_XY_STEP },
-    CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
-    CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
-    CoordsXY{ COORDS_XY_STEP, 0 },
+    CoordsXY{ 0, kCoordsXYStep },
+    CoordsXY{ kCoordsXYStep, kCoordsXYStep },
+    CoordsXY{ kCoordsXYStep, kCoordsXYStep },
+    CoordsXY{ kCoordsXYStep, 0 },
     CoordsXY{ 0, 0 },
-    CoordsXY{ 0, COORDS_XY_STEP },
+    CoordsXY{ 0, kCoordsXYStep },
 };
 constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
 constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
@@ -435,11 +435,11 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
                                                                        : JumpingFountainWaterBaseImage;
     auto imageId = ImageId(baseImageId + imageDirection * 16 + frame);
     constexpr std::array antiClockWiseBoundingBoxes = {
-        CoordsXY{ -COORDS_XY_STEP, -3 },
+        CoordsXY{ -kCoordsXYStep, -3 },
         CoordsXY{ 0, -3 },
     };
     constexpr std::array clockWiseBoundingBoxes = {
-        CoordsXY{ -COORDS_XY_STEP, 3 },
+        CoordsXY{ -kCoordsXYStep, 3 },
         CoordsXY{ 0, 3 },
     };
 

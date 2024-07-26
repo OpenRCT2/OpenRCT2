@@ -38,13 +38,13 @@
 
 enum class ResearchCategory : uint8_t;
 
-constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultToiletHeight = 4 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultInformationKioskHeight = 6 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultFirstAidHeight = 6 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultCashMachineHeight = 8 * COORDS_Z_STEP;
+constexpr uint8_t DefaultFoodStallHeight = 8 * kCoordsZStep;
+constexpr uint8_t DefaultDrinksStallHeight = 8 * kCoordsZStep;
+constexpr uint8_t DefaultShopHeight = 8 * kCoordsZStep;
+constexpr uint8_t DefaultToiletHeight = 4 * kCoordsZStep;
+constexpr uint8_t DefaultInformationKioskHeight = 6 * kCoordsZStep;
+constexpr uint8_t DefaultFirstAidHeight = 6 * kCoordsZStep;
+constexpr uint8_t DefaultCashMachineHeight = 8 * kCoordsZStep;
 
 struct RideComponentName
 {

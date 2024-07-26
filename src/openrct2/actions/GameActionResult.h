@@ -60,7 +60,7 @@ namespace OpenRCT2::GameActions
         StringVariant ErrorTitle = STR_NONE;
         StringVariant ErrorMessage = STR_NONE;
         std::array<uint8_t, 32> ErrorMessageArgs{};
-        CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
+        CoordsXYZ Position = { kLocationNull, kLocationNull, kLocationNull };
         money64 Cost = 0;
         ExpenditureType Expenditure = ExpenditureType::Count;
 
