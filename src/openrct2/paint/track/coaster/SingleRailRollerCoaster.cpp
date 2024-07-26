@@ -18399,13 +18399,13 @@ namespace OpenRCT2::SingleRailRC
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_3)),
-                    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_3)), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_4)),
-                    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_4)), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
