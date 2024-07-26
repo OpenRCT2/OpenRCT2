@@ -1466,7 +1466,6 @@ static Widget _rideConstructionWidgets[] = {
                     break;
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
-                case TrackElemType::SlopedBrakes:
                     _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
             }
             _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
