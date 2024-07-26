@@ -160,7 +160,7 @@ static void ScrollingTextFormat(utf8* dst, size_t size, DrawScrollText* scrollTe
 
 extern bool TempForScrollText;
 
-#define SCROLL_POS(x, y) (((y)*64) + (x))
+#define SCROLL_POS(x, y) (((y) * 64) + (x))
 
 // clang-format off
 static constexpr int16_t _scrollpos0[] = {

@@ -32,8 +32,8 @@ struct ITrackDesignRepository
 
     [[nodiscard]] virtual size_t GetCount() const = 0;
     [[nodiscard]] virtual size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const = 0;
-    [[nodiscard]] virtual std::vector<TrackDesignFileRef> GetItemsForObjectEntry(
-        ride_type_t rideType, const std::string& entry) const = 0;
+    [[nodiscard]] virtual std::vector<TrackDesignFileRef>
+        GetItemsForObjectEntry(ride_type_t rideType, const std::string& entry) const = 0;
 
     virtual void Scan(int32_t language) = 0;
     virtual bool Delete(const std::string& path) = 0;
