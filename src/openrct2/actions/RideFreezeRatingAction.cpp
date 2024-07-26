@@ -11,6 +11,8 @@
 
 #include "../Diagnostic.h"
 
+using namespace OpenRCT2;
+
 RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType type, ride_rating value)
     : _rideIndex(rideIndex)
     , _type(type)

@@ -29,7 +29,7 @@ constexpr size_t VersionNumFields = 3;
 using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
 static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
-namespace ObjectSelectionFlags
+namespace OpenRCT2::ObjectSelectionFlags
 {
     constexpr uint8_t Selected = (1 << 0);
     constexpr uint8_t InUse = (1 << 2);
@@ -37,7 +37,7 @@ namespace ObjectSelectionFlags
     constexpr uint8_t AlwaysRequired = (1 << 4);
     constexpr uint8_t Flag6 = (1 << 5);
     constexpr uint8_t AllFlags = 0xFF;
-}; // namespace ObjectSelectionFlags
+}; // namespace OpenRCT2::ObjectSelectionFlags
 
 enum class ObjectSourceGame : uint8_t
 {

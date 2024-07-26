@@ -20,6 +20,8 @@
 #include "../ride/ShopItem.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 RideSetPriceAction::RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice)
     : _rideIndex(rideIndex)
     , _price(price)

@@ -16,6 +16,8 @@
 #include "../object/LargeSceneryEntry.h"
 #include "../world/Scenery.h"
 
+using namespace OpenRCT2;
+
 LargeScenerySetColourAction::LargeScenerySetColourAction(
     const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour, uint8_t tertiaryColour)
     : _loc(loc)

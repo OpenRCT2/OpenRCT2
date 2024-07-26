@@ -12,6 +12,8 @@
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
 
+using namespace OpenRCT2;
+
 #define SZ_DEFAULT "default"
 #define SZ_CLOSEST "closest"
 #define SZ_DITHERING "dithering"

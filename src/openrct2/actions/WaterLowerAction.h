@@ -25,10 +25,10 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result QueryExecute(bool isExecuting) const;
+    OpenRCT2::GameActions::Result QueryExecute(bool isExecuting) const;
     uint8_t GetLowestHeight(const MapRange& validRange) const;
 };

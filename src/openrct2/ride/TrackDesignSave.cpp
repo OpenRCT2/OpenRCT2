@@ -35,6 +35,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+
 constexpr size_t TRACK_MAX_SAVED_TILE_ELEMENTS = 1500;
 constexpr int32_t TRACK_NEARBY_SCENERY_DISTANCE = 1;
 

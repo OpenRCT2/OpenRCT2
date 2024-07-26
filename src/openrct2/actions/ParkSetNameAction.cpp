@@ -21,6 +21,8 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 ParkSetNameAction::ParkSetNameAction(const std::string& name)
     : _name(name)
 {

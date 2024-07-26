@@ -27,6 +27,8 @@
 #include "../world/SurfaceData.h"
 #include "../world/tile_element/Slope.h"
 
+using namespace OpenRCT2;
+
 LandRaiseAction::LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
     : _coords(coords)
     , _range(range)

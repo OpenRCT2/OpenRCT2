@@ -22,6 +22,8 @@
 
 #include <iterator>
 
+using namespace OpenRCT2;
+
 static RCTLargeSceneryText ReadLegacy3DFont(OpenRCT2::IStream& stream)
 {
     RCTLargeSceneryText _3dFontLegacy = {};

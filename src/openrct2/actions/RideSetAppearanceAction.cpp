@@ -21,6 +21,8 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 RideSetAppearanceAction::RideSetAppearanceAction(RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index)
     : _rideIndex(rideIndex)
     , _type(type)

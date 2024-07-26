@@ -58,11 +58,11 @@ struct PathRailingsDescriptor
 };
 
 using PathConstructFlags = uint8_t;
-namespace PathConstructFlag
+namespace OpenRCT2::PathConstructFlag
 {
     constexpr PathConstructFlags IsQueue = 1 << 0;
     constexpr PathConstructFlags IsLegacyPathObject = 1 << 1;
-} // namespace PathConstructFlag
+} // namespace OpenRCT2::PathConstructFlag
 
 struct FootpathSelection
 {

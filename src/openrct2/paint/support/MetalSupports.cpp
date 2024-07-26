@@ -17,6 +17,8 @@
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 
+using namespace OpenRCT2;
+
 constexpr auto kMetalSupportSkip = 9 * 4 * 2;
 
 /** rct2: 0x0097AF20, 0x0097AF21 */

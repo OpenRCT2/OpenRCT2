@@ -20,6 +20,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+
 static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
 
 // 0x009927E6:

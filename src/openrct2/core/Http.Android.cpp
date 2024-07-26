@@ -20,7 +20,7 @@
 
 #    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
-namespace Http
+namespace OpenRCT2::Http
 {
     Response Do(const Request& req)
     {
@@ -174,6 +174,6 @@ namespace Http
         return response;
     }
 
-} // namespace Http
+} // namespace OpenRCT2::Http
 
 #endif

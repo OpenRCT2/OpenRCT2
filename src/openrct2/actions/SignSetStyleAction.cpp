@@ -19,6 +19,8 @@
 #include "../world/Banner.h"
 #include "../world/Scenery.h"
 
+using namespace OpenRCT2;
+
 SignSetStyleAction::SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge)
     : _bannerIndex(bannerIndex)
     , _mainColour(mainColour)

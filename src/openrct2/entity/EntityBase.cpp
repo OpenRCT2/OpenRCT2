@@ -11,6 +11,8 @@
 
 #include "../core/DataSerialiser.h"
 
+using namespace OpenRCT2;
+
 // Required for GetEntity to return a default
 template<> bool EntityBase::Is<EntityBase>() const
 {

@@ -10,7 +10,7 @@
 #pragma once
 #include <cstdint>
 
-namespace RCT12::Limits
+namespace OpenRCT2::RCT12::Limits
 {
     constexpr uint8_t MaxRideObjects = 128;
 
@@ -46,4 +46,4 @@ namespace RCT12::Limits
     constexpr uint8_t kCustomerHistorySize = 10;
 
     constexpr uint8_t kMaxWaitingTime = 250;
-} // namespace RCT12::Limits
+} // namespace OpenRCT2::RCT12::Limits

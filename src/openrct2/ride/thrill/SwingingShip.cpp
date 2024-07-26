@@ -21,6 +21,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 // 1 2 0 3 4
 static constexpr uint8_t track_map_1x5[][5] = {
     { 0, 1, 2, 3, 4 },

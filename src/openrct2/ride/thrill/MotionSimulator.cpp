@@ -20,6 +20,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 enum
 {
     SPR_MOTION_SIMULATOR_STAIRS_R0 = 22154,

@@ -18,6 +18,8 @@
 #include "../world/Location.hpp"
 #include "ObjectManager.h"
 
+using namespace OpenRCT2;
+
 void TerrainSurfaceObject::Load()
 {
     GetStringTable().Sort();

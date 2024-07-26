@@ -27,7 +27,7 @@
 
 #    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
-namespace Http
+namespace OpenRCT2::Http
 {
     static size_t WriteData(const char* src, size_t size, size_t nmemb, void* userdata)
     {
@@ -161,6 +161,6 @@ namespace Http
         return res;
     }
 
-} // namespace Http
+} // namespace OpenRCT2::Http
 
 #endif

@@ -34,7 +34,7 @@
 
 using namespace OpenRCT2;
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     struct QueuedGameAction
     {
@@ -467,7 +467,7 @@ namespace GameActions
     {
         return ExecuteInternal(action, false);
     }
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions
 
 const char* GameAction::GetName() const
 {

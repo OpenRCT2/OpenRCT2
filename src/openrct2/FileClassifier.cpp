@@ -20,6 +20,8 @@
 #include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"
 
+using namespace OpenRCT2;
+
 static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);

@@ -19,6 +19,8 @@
 
 #include <unordered_map>
 
+using namespace OpenRCT2;
+
 void PathAdditionObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);

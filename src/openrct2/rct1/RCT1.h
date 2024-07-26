@@ -18,7 +18,7 @@
 
 enum class VehicleColourSettings : uint8_t;
 
-namespace RCT1
+namespace OpenRCT2::RCT1
 {
     constexpr uint8_t RCT1ResearchFlagsSeparator = 0xFF;
 
@@ -1293,4 +1293,4 @@ namespace RCT1
     };
 
     track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType);
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1

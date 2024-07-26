@@ -16,6 +16,8 @@
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
 
+using namespace OpenRCT2;
+
 StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, const StaffSetPatrolAreaMode mode)
     : _spriteId(spriteId)
     , _range(range)

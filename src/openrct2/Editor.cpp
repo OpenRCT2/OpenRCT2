@@ -53,7 +53,7 @@
 
 using namespace OpenRCT2;
 
-namespace Editor
+namespace OpenRCT2::Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
 
@@ -530,7 +530,7 @@ namespace Editor
             list[index] |= flags;
         }
     }
-} // namespace Editor
+} // namespace OpenRCT2::Editor
 
 void EditorOpenWindowsForCurrentStep()
 {

@@ -20,6 +20,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 static void PaintEnterpriseRiders(
     PaintSession& session, const RideObjectEntry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
     const BoundBoxXYZ& bb)

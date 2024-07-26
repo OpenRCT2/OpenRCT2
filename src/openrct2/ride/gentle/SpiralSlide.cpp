@@ -18,6 +18,8 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 enum
 {
     SpiralSlideLeftR0 = 0,

@@ -18,7 +18,7 @@
 constexpr RideTypeDescriptor SpiralSlideRTD =
 {
     .Category = RIDE_CATEGORY_GENTLE,
-    .StartTrackPiece = TrackElemType::FlatTrack2x2,
+    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionSpiralSlide,
         .EnabledTrackPieces = {},

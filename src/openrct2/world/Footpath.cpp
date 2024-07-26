@@ -48,6 +48,7 @@
 #include <bit>
 #include <iterator>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);

@@ -19,7 +19,7 @@
 constexpr RideTypeDescriptor MiniHelicoptersRTD =
 {
     .Category = RIDE_CATEGORY_GENTLE,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMiniHelicopters,
         .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL},

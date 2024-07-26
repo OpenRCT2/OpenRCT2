@@ -16,6 +16,8 @@
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
 
+using namespace OpenRCT2;
+
 /** rct2: 0x00982134 */
 constexpr bool peep_slow_walking_types[] = {
     false, // PeepSpriteType::Normal

@@ -18,6 +18,8 @@
 
 #include <string>
 
+using namespace OpenRCT2;
+
 SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
     : _bannerIndex(bannerIndex)
     , _name(name)

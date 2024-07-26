@@ -29,6 +29,8 @@
 
 #include <algorithm>
 
+using namespace OpenRCT2;
+
 LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
     : _coords(coords)
     , _range(range)

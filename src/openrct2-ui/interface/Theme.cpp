@@ -528,7 +528,7 @@ UITheme UITheme::CreatePredefined(const std::string& name, const UIThemeWindowEn
 
 #pragma endregion
 
-namespace ThemeManager
+namespace OpenRCT2::ThemeManager
 {
     struct AvailableTheme
     {
@@ -688,7 +688,7 @@ namespace ThemeManager
         auto env = context->GetPlatformEnvironment();
         return env->GetDirectoryPath(DIRBASE::USER, DIRID::THEME);
     }
-} // namespace ThemeManager
+} // namespace OpenRCT2::ThemeManager
 
 void ThemeManagerLoadAvailableThemes()
 {

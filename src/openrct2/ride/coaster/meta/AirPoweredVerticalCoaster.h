@@ -18,7 +18,7 @@
 constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
 {
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionAirPoweredVerticalRC,
         .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL_STEEP, TRACK_LIFT_HILL_CURVE, TRACK_FLAT_ROLL_BANKING, TRACK_CURVE, TRACK_BRAKES, TRACK_REVERSE_FREEFALL, TRACK_SLOPE_TO_FLAT, TRACK_ON_RIDE_PHOTO},

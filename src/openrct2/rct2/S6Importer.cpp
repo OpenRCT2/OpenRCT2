@@ -79,7 +79,7 @@
 
 using namespace OpenRCT2;
 
-namespace RCT2
+namespace OpenRCT2::RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 
@@ -2865,7 +2865,7 @@ namespace RCT2
                 break;
         }
     }
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {

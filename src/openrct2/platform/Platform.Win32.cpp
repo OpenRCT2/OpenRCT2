@@ -52,7 +52,7 @@ static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
@@ -888,6 +888,6 @@ namespace Platform
         return false;
     }
 
-} // namespace Platform
+} // namespace OpenRCT2::Platform
 
 #endif

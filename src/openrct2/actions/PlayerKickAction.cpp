@@ -11,6 +11,8 @@
 
 #include "../network/network.h"
 
+using namespace OpenRCT2;
+
 PlayerKickAction::PlayerKickAction(NetworkPlayerId_t playerId)
     : _playerId(playerId)
 {

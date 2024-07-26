@@ -24,7 +24,7 @@ class ObjectList;
 enum class EditorStep : uint8_t;
 enum class VehicleColourSettings : uint8_t;
 
-namespace RCT2
+namespace OpenRCT2::RCT2
 {
     constexpr StringId RCT2_RIDE_STRING_START = 2;
 
@@ -1062,6 +1062,6 @@ namespace RCT2
         "rct1ll.terrain_edge.green",        "rct1ll.terrain_edge.stone_brown",  "rct1ll.terrain_edge.stone_grey",
         "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b",
     };
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);

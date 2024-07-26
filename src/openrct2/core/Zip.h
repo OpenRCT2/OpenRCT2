@@ -55,8 +55,8 @@ enum class ZIP_ACCESS
     WRITE,
 };
 
-namespace Zip
+namespace OpenRCT2::Zip
 {
     [[nodiscard]] std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS zipAccess);
     [[nodiscard]] std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS zipAccess);
-} // namespace Zip
+} // namespace OpenRCT2::Zip

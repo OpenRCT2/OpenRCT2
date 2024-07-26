@@ -22,6 +22,8 @@
 #include "../TrackPaint.h"
 #include "WoodenRollerCoaster.h"
 
+using namespace OpenRCT2;
+
 static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
 
 enum

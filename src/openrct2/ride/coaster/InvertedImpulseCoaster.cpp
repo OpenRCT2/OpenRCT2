@@ -21,6 +21,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
 
 /** rct2: 0x008B0460 */

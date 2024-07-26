@@ -22,6 +22,8 @@
 #include "../TrackPaint.h"
 #include "CorkscrewRollerCoaster.hpp"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
 
 static constexpr ImageIndex kLaydownDiagFlatImages[2][kNumOrthogonalDirections] = {

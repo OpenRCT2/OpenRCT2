@@ -17,7 +17,7 @@
 constexpr RideTypeDescriptor SpinningWildMouseRTD =
 {
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionWildMouse,
         .EnabledTrackPieces = {TRACK_STRAIGHT,TRACK_STATION_END,TRACK_LIFT_HILL,  TRACK_SLOPE,TRACK_SLOPE_LONG,TRACK_CURVE_VERY_SMALL,TRACK_CURVE_SMALL, TRACK_BRAKES,TRACK_BLOCK_BRAKES,TRACK_ROTATION_CONTROL_TOGGLE},

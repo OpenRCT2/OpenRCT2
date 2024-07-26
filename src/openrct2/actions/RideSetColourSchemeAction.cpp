@@ -18,6 +18,8 @@
 #include "../ride/RideConstruction.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 RideSetColourSchemeAction::RideSetColourSchemeAction(
     const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme)
     : _loc(location)

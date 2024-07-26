@@ -16,6 +16,8 @@
 #include <cstdint>
 #include <iterator>
 
+using namespace OpenRCT2;
+
 // clang-format off
 static constexpr TrackCoordinates _trackCoordinates[] = {
         { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT

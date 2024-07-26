@@ -19,7 +19,7 @@
 constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
 {
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         { 
             .Drawer = GetTrackPaintFunctionCorkscrewRC<MetalSupportType::TubesInverted>,
@@ -96,7 +96,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
 constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
 {
     .Category = RIDE_CATEGORY_NONE,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .Drawer = nullptr,
         .EnabledTrackPieces = {  },

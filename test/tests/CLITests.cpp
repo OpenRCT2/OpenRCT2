@@ -8,6 +8,8 @@
 #include <openrct2/CommandLineSprite.h>
 #include <openrct2/core/Path.hpp>
 
+using namespace OpenRCT2;
+
 class CommandLineTests : public testing::Test
 {
 public:

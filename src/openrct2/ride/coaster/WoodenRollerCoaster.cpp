@@ -26,6 +26,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
 
 using namespace OpenRCT2;

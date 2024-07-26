@@ -17,6 +17,8 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 enum
 {
     SPR_BOAT_HIRE_FLAT_BACK_SW_NE = 28523,

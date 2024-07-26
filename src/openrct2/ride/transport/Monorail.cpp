@@ -21,6 +21,8 @@
 #include "../TrackPaint.h"
 #include "../VehiclePaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Boxed;
 
 enum

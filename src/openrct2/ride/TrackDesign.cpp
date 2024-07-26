@@ -70,7 +70,9 @@
 #include <iterator>
 #include <memory>
 
-namespace TrackDesignSceneryElementFlags
+using namespace OpenRCT2;
+
+namespace OpenRCT2::TrackDesignSceneryElementFlags
 {
     static constexpr uint8_t kRotationMask = 0b00000011;
 
@@ -80,7 +82,7 @@ namespace TrackDesignSceneryElementFlags
     static constexpr uint8_t kHasSlopeMask = 0b00010000;
     static constexpr uint8_t kSlopeDirectionMask = 0b01100000;
     static constexpr uint8_t kIsQueueMask = 0b10000000;
-} // namespace TrackDesignSceneryElementFlags
+} // namespace OpenRCT2::TrackDesignSceneryElementFlags
 
 using namespace TrackDesignSceneryElementFlags;
 

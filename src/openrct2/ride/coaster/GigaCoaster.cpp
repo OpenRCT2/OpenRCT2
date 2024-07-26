@@ -21,6 +21,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
 
 // Closed block brakes and regular brakes use the same images

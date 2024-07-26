@@ -18,6 +18,9 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
+
+using namespace OpenRCT2;
+
 enum
 {
     SprSpaceRingsFenceNe = 22146,

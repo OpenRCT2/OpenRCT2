@@ -16,6 +16,8 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 enum
 {
     SPR_LIFT_CAGE_BACK = 14994,

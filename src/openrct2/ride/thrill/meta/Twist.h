@@ -17,7 +17,7 @@
 constexpr RideTypeDescriptor TwistRTD =
 {
     .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionTwist,
         .EnabledTrackPieces = {},

@@ -15,7 +15,7 @@
 #include <string_view>
 #include <vector>
 
-namespace Crypt
+namespace OpenRCT2::Crypt
 {
     template<size_t TLength> class HashAlgorithm
     {
@@ -72,4 +72,4 @@ namespace Crypt
     {
         return CreateSHA256()->Update(data, dataLen)->Finish();
     }
-} // namespace Crypt
+} // namespace OpenRCT2::Crypt

@@ -25,6 +25,7 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 enum

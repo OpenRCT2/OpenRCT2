@@ -14,6 +14,8 @@
 #include "../OpenRCT2.h"
 #include "../entity/EntityRegistry.h"
 
+using namespace OpenRCT2;
+
 GuestSetFlagsAction::GuestSetFlagsAction(EntityId peepId, uint32_t flags)
     : _peepId(peepId)
     , _newFlags(flags)

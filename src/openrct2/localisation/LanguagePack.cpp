@@ -25,6 +25,8 @@
 #include <string>
 #include <vector>
 
+using namespace OpenRCT2;
+
 // Don't try to load more than language files that exceed 64 MiB
 constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
 constexpr uint64_t MAX_SCENARIO_OVERRIDES = 4096;
@@ -475,7 +477,7 @@ private:
     }
 };
 
-namespace LanguagePackFactory
+namespace OpenRCT2::LanguagePackFactory
 {
     std::unique_ptr<ILanguagePack> FromFile(uint16_t id, const utf8* path)
     {
@@ -494,4 +496,4 @@ namespace LanguagePackFactory
         auto languagePack = LanguagePack::FromText(id, text);
         return languagePack;
     }
-} // namespace LanguagePackFactory
+} // namespace OpenRCT2::LanguagePackFactory

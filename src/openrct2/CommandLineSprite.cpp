@@ -32,6 +32,7 @@
 #include <iomanip>
 #include <sstream>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc);

@@ -15,6 +15,8 @@
 
 #include <sstream>
 
+using namespace OpenRCT2;
+
 class IniWriter final : public IIniWriter
 {
 private:

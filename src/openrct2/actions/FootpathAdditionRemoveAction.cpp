@@ -22,6 +22,8 @@
 #include "../world/Park.h"
 #include "../world/Wall.h"
 
+using namespace OpenRCT2;
+
 FootpathAdditionRemoveAction::FootpathAdditionRemoveAction(const CoordsXYZ& loc)
     : _loc(loc)
 {

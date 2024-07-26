@@ -20,6 +20,8 @@
 #include <limits>
 #include <stdexcept>
 
+using namespace OpenRCT2;
+
 struct EncodingConvertEntry
 {
     uint16_t code;

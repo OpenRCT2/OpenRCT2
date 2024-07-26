@@ -16,7 +16,7 @@
 
 using ObjectEntryIndex = uint16_t;
 
-namespace RCT12
+namespace OpenRCT2::RCT12
 {
     class EntryList
     {
@@ -63,4 +63,4 @@ namespace RCT12
             }
         }
     };
-} // namespace RCT12
+} // namespace OpenRCT2::RCT12

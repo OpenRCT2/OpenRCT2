@@ -12,6 +12,8 @@
 #include "../util/Util.h"
 #include "String.hpp"
 
+using namespace OpenRCT2;
+
 UTF8StringReader::UTF8StringReader(const utf8* text)
 {
     text = String::SkipBOM(text);

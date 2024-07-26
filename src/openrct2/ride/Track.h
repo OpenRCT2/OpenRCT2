@@ -263,7 +263,7 @@ enum
     TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND = (1 << 16),
 };
 
-namespace TrackElemType
+namespace OpenRCT2::TrackElemType
 {
     constexpr track_type_t Flat = 0;
     constexpr track_type_t EndStation = 1;
@@ -634,7 +634,7 @@ namespace TrackElemType
     constexpr track_type_t Count = 339;
     constexpr track_type_t None = 65535;
 
-}; // namespace TrackElemType
+}; // namespace OpenRCT2::TrackElemType
 
 enum
 {

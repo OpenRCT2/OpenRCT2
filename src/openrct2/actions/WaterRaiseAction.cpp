@@ -15,6 +15,8 @@
 #include "../ride/RideConstruction.h"
 #include "WaterSetHeightAction.h"
 
+using namespace OpenRCT2;
+
 WaterRaiseAction::WaterRaiseAction(MapRange range)
     : _range(range)
 {

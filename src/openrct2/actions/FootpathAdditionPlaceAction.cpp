@@ -25,6 +25,8 @@
 #include "../world/Scenery.h"
 #include "../world/Wall.h"
 
+using namespace OpenRCT2;
+
 FootpathAdditionPlaceAction::FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
     : _loc(loc)
     , _entryIndex(pathItemType)

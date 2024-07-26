@@ -21,6 +21,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 static constexpr uint8_t Edges1X4NeSw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,

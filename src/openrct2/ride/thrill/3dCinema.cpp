@@ -19,6 +19,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 static void Paint3dCinemaDome(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height,
     ImageId stationColour)

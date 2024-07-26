@@ -300,13 +300,13 @@ static bool CheckBoundingBox(const PaintStructBoundBox& initialBBox, const Paint
     return false;
 }
 
-namespace PaintSortFlags
+namespace OpenRCT2::PaintSortFlags
 {
     static constexpr uint8_t None = 0;
     static constexpr uint8_t PendingVisit = (1u << 0);
     static constexpr uint8_t Neighbour = (1u << 1);
     static constexpr uint8_t OutsideQuadrant = (1u << 7);
-} // namespace PaintSortFlags
+} // namespace OpenRCT2::PaintSortFlags
 
 static PaintStruct* PaintStructsFirstInQuadrant(PaintStruct* psNext, uint16_t quadrantIndex)
 {

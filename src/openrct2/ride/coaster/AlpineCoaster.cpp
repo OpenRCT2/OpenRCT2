@@ -20,9 +20,11 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
 
-namespace AlpineRC
+namespace OpenRCT2::AlpineRC
 {
     static void TrackFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -7823,4 +7825,4 @@ namespace AlpineRC
         return nullptr;
     }
 
-} // namespace AlpineRC
+} // namespace OpenRCT2::AlpineRC
