@@ -83,6 +83,7 @@ namespace OpenRCT2::Scripting
             ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
         dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
         dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
+        dukglue_register_property(ctx, &ScVehicle::spinSprite_get, &ScVehicle::spinSprite_set, "spinSprite");
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
@@ -473,6 +474,25 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->status = VehicleStatusMap[value];
+        }
+    }
+
+    uint8_t ScVehicle::spinSprite_get() const
+    {
+        auto vehicle = GetVehicle();
+        if (vehicle != nullptr)
+        {
+            return vehicle->spin_sprite;
+        }
+        return 0;
+    }
+    void ScVehicle::spinSprite_set(const uint8_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto vehicle = GetVehicle();
+        if (vehicle != nullptr)
+        {
+            vehicle->spin_sprite = value;
         }
     }
 

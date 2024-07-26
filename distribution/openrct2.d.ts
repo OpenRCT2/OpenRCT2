@@ -2562,6 +2562,12 @@ declare global {
          */
         status: VehicleStatus;
 
+
+        /**
+         * Sprite used for current vehicle rotation state
+         */
+        spinSprite: number;
+
         /**
          * The location and direction of where the car is on the track.
          */
