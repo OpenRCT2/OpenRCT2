@@ -1075,7 +1075,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             int32_t energyPercentage = NormalizeGuestStatValue(
                 peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
             WidgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
-            
+
             int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
             hungerPercentage = 100 - hungerPercentage; // the bar should be longer when peep->Hunger is low
             WidgetProgressBarSetNewPercentage(widgets[WIDX_HUNGER_BAR], hungerPercentage);
