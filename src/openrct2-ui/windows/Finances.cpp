@@ -12,7 +12,6 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
@@ -333,14 +332,28 @@ static Widget _windowFinancesResearchWidgets[] =
                     OnDrawSummary(dpi);
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
-                    OnDrawFinancialGraph(dpi);
+                {
+                    auto& gameState = GetGameState();
+                    auto cashLessLoan = gameState.Cash - gameState.BankLoan;
+                    auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
+                                                 : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
+                    OnDrawGraph(dpi, cashLessLoan, gameState.CashHistory, fmt, true);
                     break;
+                }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    OnDrawParkValueGraph(dpi);
+                {
+                    auto& gameState = GetGameState();
+                    OnDrawGraph(dpi, gameState.Park.Value, gameState.Park.ValueHistory, STR_FINANCES_PARK_VALUE, false);
                     break;
+                }
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
-                    OnDrawProfitGraph(dpi);
+                {
+                    auto& gameState = GetGameState();
+                    auto fmt = gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
+                                                            : STR_FINANCES_WEEKLY_PROFIT_LOSS;
+                    OnDrawGraph(dpi, gameState.CurrentProfit, gameState.WeeklyProfitHistory, fmt, true);
                     break;
+                }
                 case WINDOW_FINANCES_PAGE_MARKETING:
                     OnDrawMarketing(dpi);
                     break;
@@ -607,190 +620,6 @@ static Widget _windowFinancesResearchWidgets[] =
 
 #pragma endregion
 
-#pragma region Financial Graph Events
-
-        void OnDrawFinancialGraph(DrawPixelInfo& dpi)
-        {
-            Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-            auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
-            auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
-
-            const auto& gameState = GetGameState();
-
-            // Cash (less loan)
-            auto cashLessLoan = gameState.Cash - gameState.BankLoan;
-            auto ft = Formatter();
-            ft.Add<money64>(cashLessLoan);
-
-            DrawTextBasic(
-                dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
-                cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
-                                  : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
-                ft);
-
-            // Graph
-            GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
-
-            // Calculate the Y axis scale (log2 of highest [+/-]balance)
-            int32_t yAxisScale = 0;
-            for (int32_t i = 0; i < 64; i++)
-            {
-                auto balance = gameState.CashHistory[i];
-                if (balance == kMoney64Undefined)
-                    continue;
-
-                // Modifier balance then keep halving until less than 127 pixels
-                balance = std::abs(balance) >> yAxisScale;
-                while (balance > 127)
-                {
-                    balance /= 2;
-                    yAxisScale++;
-                }
-            }
-
-            // Y axis labels
-            auto coords = graphTopLeft + ScreenCoordsXY{ 18, 14 };
-            money64 axisBase;
-            for (axisBase = 12.00_GBP; axisBase >= -12.00_GBP; axisBase -= 6.00_GBP)
-            {
-                auto axisValue = axisBase << yAxisScale;
-                ft = Formatter();
-                ft.Add<money64>(axisValue);
-                DrawTextBasic(
-                    dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                    { FontStyle::Small, TextAlignment::RIGHT });
-                GfxFillRectInset(
-                    dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
-                    INSET_RECT_FLAG_BORDER_INSET);
-                coords.y += 39;
-            }
-
-            // X axis labels and values
-            coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-            Graph::Draw(dpi, gameState.CashHistory, 64, coords, yAxisScale, 128);
-        }
-
-#pragma endregion
-
-#pragma region Park Value Graph Events
-
-        void OnDrawParkValueGraph(DrawPixelInfo& dpi)
-        {
-            Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-            auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
-            auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
-
-            const auto& gameState = GetGameState();
-
-            // Park value
-            auto ft = Formatter();
-            ft.Add<money64>(gameState.Park.Value);
-            DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
-
-            // Graph
-            GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
-
-            // Calculate the Y axis scale (log2 of highest [+/-]balance)
-            int32_t yAxisScale = 0;
-            for (int32_t i = 0; i < 64; i++)
-            {
-                auto balance = gameState.Park.ValueHistory[i];
-                if (balance == kMoney64Undefined)
-                    continue;
-
-                // Modifier balance then keep halving until less than 255 pixels
-                balance = std::abs(balance) >> yAxisScale;
-                while (balance > 255)
-                {
-                    balance /= 2;
-                    yAxisScale++;
-                }
-            }
-
-            // Y axis labels
-            auto coords = graphTopLeft + ScreenCoordsXY{ 18, 14 };
-            money64 axisBase;
-            for (axisBase = 24.00_GBP; axisBase >= 0.00_GBP; axisBase -= 6.00_GBP)
-            {
-                auto axisValue = axisBase << yAxisScale;
-                ft = Formatter();
-                ft.Add<money64>(axisValue);
-                DrawTextBasic(
-                    dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                    { FontStyle::Small, TextAlignment::RIGHT });
-                GfxFillRectInset(
-                    dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
-                    INSET_RECT_FLAG_BORDER_INSET);
-                coords.y += 39;
-            }
-
-            // X axis labels and values
-            coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-            Graph::Draw(dpi, gameState.Park.ValueHistory, 64, coords, yAxisScale, 0);
-        }
-
-#pragma endregion
-
-#pragma region Profit Graph Events
-
-        void OnDrawProfitGraph(DrawPixelInfo& dpi)
-        {
-            auto& gameState = GetGameState();
-            Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-            auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
-            auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
-
-            // Weekly profit
-            auto ft = Formatter();
-            ft.Add<money64>(gameState.CurrentProfit);
-            DrawTextBasic(
-                dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
-                gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
-
-            // Graph
-            GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
-
-            // Calculate the Y axis scale (log2 of highest [+/-]balance)
-            int32_t yAxisScale = 0;
-            for (int32_t i = 0; i < 64; i++)
-            {
-                auto balance = gameState.WeeklyProfitHistory[i];
-                if (balance == kMoney64Undefined)
-                    continue;
-
-                // Modifier balance then keep halving until less than 127 pixels
-                balance = std::abs(balance) >> yAxisScale;
-                while (balance > 127)
-                {
-                    balance /= 2;
-                    yAxisScale++;
-                }
-            }
-
-            // Y axis labels
-            auto screenPos = graphTopLeft + ScreenCoordsXY{ 18, 14 };
-            money64 axisBase;
-            for (axisBase = 12.00_GBP; axisBase >= -12.00_GBP; axisBase -= 6.00_GBP)
-            {
-                money64 axisValue = axisBase << yAxisScale;
-                ft = Formatter();
-                ft.Add<money64>(axisValue);
-                DrawTextBasic(
-                    dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                    { FontStyle::Small, TextAlignment::RIGHT });
-                GfxFillRectInset(
-                    dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
-                    INSET_RECT_FLAG_BORDER_INSET);
-                screenPos.y += 39;
-            }
-
-            // X axis labels and values
-            screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-            Graph::Draw(dpi, gameState.WeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
-        }
-
-#pragma endregion
-
 #pragma region Marketing Events
 
         void OnMouseUpMarketing(WidgetIndex widgetIndex)
@@ -950,6 +779,63 @@ static Widget _windowFinancesResearchWidgets[] =
         void OnResize() override
         {
             ResizeFrameWithPage();
+        }
+
+        void OnDrawGraph(
+            DrawPixelInfo& dpi, const money64 currentValue, const money64 (&series)[128], const StringId fmt,
+            const bool centred) const
+        {
+            const Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+            auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
+            auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
+
+            auto ft = Formatter();
+            ft.Add<money64>(currentValue);
+            DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, fmt, ft);
+
+            // Graph
+            GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+
+            // Calculate the Y axis scale (log2 of highest [+/-]balance)
+            int32_t yAxisScale = 0;
+            for (int32_t i = 0; i < 64; i++)
+            {
+                auto balance = series[i];
+                if (balance == kMoney64Undefined)
+                    continue;
+
+                // Modifier balance then keep halving until less than limit pixels
+                balance = std::abs(balance) >> yAxisScale;
+                auto limit = centred ? 127 : 255;
+                while (balance > limit)
+                {
+                    balance /= 2;
+                    yAxisScale++;
+                }
+            }
+
+            // Y axis labels
+            auto screenPos = graphTopLeft + ScreenCoordsXY{ 18, 14 };
+            const money64 axisBaseStart = centred ? 12.00_GBP : 24.00_GBP;
+            const money64 axisBaseEnd = centred ? -12.00_GBP : 0.00_GBP;
+            for (money64 axisBase = axisBaseStart; axisBase >= axisBaseEnd; axisBase -= 6.00_GBP)
+            {
+                const money64 axisValue = axisBase << yAxisScale;
+                ft = Formatter();
+                ft.Add<money64>(axisValue);
+                DrawTextBasic(
+                    dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                    { FontStyle::Small, TextAlignment::RIGHT });
+                GfxFillRectInset(
+                    dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
+                    INSET_RECT_FLAG_BORDER_INSET);
+                screenPos.y += 39;
+            }
+
+            // X axis labels and values
+            screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
+            const auto offset = centred ? 128 : 0;
+            Graph::Draw(dpi, series, 64, screenPos, yAxisScale, offset);
         }
     };
 
