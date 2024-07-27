@@ -48,7 +48,7 @@ namespace OpenRCT2
         TrackElemType::Booster,
         TrackElemType::Brakes,
         TrackElemType::DiagBrakes,
-        TrackElemType::SlopedBrakes,
+        TrackElemType::Down25Brakes,
         TrackElemType::OnRidePhoto,
         TrackElemType::LeftQuarterBankedHelixLargeUp,
         TrackElemType::RightQuarterBankedHelixLargeUp,

@@ -18391,7 +18391,7 @@ namespace OpenRCT2::SingleRailRC
         TrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
     }
 
-    static void TrackSlopedBrakes(
+    static void Track25DegDownBrakes(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
@@ -18399,22 +18399,22 @@ namespace OpenRCT2::SingleRailRC
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_3)), { 0, 0, height },
+                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_BRAKE_3)), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_4)), { 0, 0, height },
+                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_BRAKE_4)), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_1)), { 0, 0, height },
+                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_BRAKE_1)), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_SLOPED_BRAKE_2)), { 0, 0, height },
+                    session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_BRAKE_2)), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
@@ -18917,8 +18917,8 @@ namespace OpenRCT2::SingleRailRC
                 return TrackLeftEighthBankToOrthogonalDown25;
             case TrackElemType::RightEighthBankToOrthogonalDown25:
                 return TrackRightEighthBankToOrthogonalDown25;
-            case TrackElemType::SlopedBrakes:
-                return TrackSlopedBrakes;
+            case TrackElemType::Down25Brakes:
+                return Track25DegDownBrakes;
         }
         return nullptr;
     }

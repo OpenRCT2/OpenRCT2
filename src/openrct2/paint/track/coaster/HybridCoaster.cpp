@@ -14317,14 +14317,14 @@ namespace OpenRCT2::HybridRC
         TrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
     }
 
-    static void TrackSlopedBrake(
+    static void Track25DegDownBrakes(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         direction = (direction + 2) & 3;
 
         PaintAddImageAsParentRotated(
-            session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_SLOPED_BRAKE + direction), { 0, 0, height },
+            session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_GENTLE_BRAKE + direction), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 2 } });
         WoodenASupportsPaintSetupRotated(
             session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
@@ -14774,8 +14774,8 @@ namespace OpenRCT2::HybridRC
             case TrackElemType::Booster:
                 return Trackbooster;
 
-            case TrackElemType::SlopedBrakes:
-                return TrackSlopedBrake;
+            case TrackElemType::Down25Brakes:
+                return Track25DegDownBrakes;
         }
         return nullptr;
     }

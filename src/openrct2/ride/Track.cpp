@@ -634,7 +634,7 @@ bool TrackTypeIsBrakes(track_type_t trackType)
     {
         case TrackElemType::Brakes:
         case TrackElemType::DiagBrakes:
-        case TrackElemType::SlopedBrakes:
+        case TrackElemType::Down25Brakes:
             return true;
         default:
             return false;
