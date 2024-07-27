@@ -134,22 +134,8 @@ namespace OpenRCT2::Ui::Windows
         // Position error message around the cursor
         const CursorState* state = ContextGetCursorState();
         ScreenCoordsXY windowPosition = state->position - ScreenCoordsXY(width / 2, -26);
-        windowPosition.x = std::clamp(windowPosition.x, 0, ContextGetWidth());
-        windowPosition.y = std::max(22, windowPosition.y);
-
-        // Ensure it is within the game canvas, horizontally
-        int32_t maxX = ContextGetWidth() - width;
-        if (windowPosition.x > maxX)
-        {
-            windowPosition.x = std::min(windowPosition.x - width - 40, maxX);
-        }
-
-        // Ensure it is within the game canvas, vertically
-        int32_t maxY = ContextGetHeight() - height;
-        if (windowPosition.y > maxY)
-        {
-            windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
-        }
+        windowPosition.x = std::clamp(windowPosition.x, 0, ContextGetWidth() - width - 40);
+        windowPosition.y = std::clamp(windowPosition.y, 22, ContextGetHeight() - height - 40);
 
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
         return WindowCreate(
