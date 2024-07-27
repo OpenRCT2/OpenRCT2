@@ -18423,7 +18423,7 @@ namespace OpenRCT2::SingleRailRC
             MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
 
-        if (direction == 0 || direction == 3)
+        if (direction == 1 || direction == 2)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
         }
