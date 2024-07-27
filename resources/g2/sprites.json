@@ -6381,7 +6381,7 @@
         "y": -5
     },
 
-
+/*
     {
         "path": "track/bm/inline_twist_left_1_1.png",
         "x": -24,
@@ -6666,6 +6666,7 @@
         "y": 2,
         "palette": "keep"
     },
+    */
     {
         "path": "track/bm/large_corkscrew_left_1_1.png",
         "x": -24,

@@ -18090,7 +18090,8 @@ static void BolligerMabillardTrackDiagLeftBankedDown25ToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    TrackDiagFlatToRightBankedUp25<supportType>(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrackDiagFlatToRightBankedUp25<supportType>(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagRightBankedDown25ToFlat(
@@ -18820,7 +18821,8 @@ static void BolligerMabillardTrackRightEighthBankToOrthogonalDown25(
     BolligerMabillardTrackLeftEighthBankToDiagUp25<supportType>(
         session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
-template<MetalSupportType supportType>
+    /*
+    template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -19172,7 +19174,7 @@ static void BolligerMabillardTrackRightTwistUpToDown(
     BolligerMabillardTrackRightTwistDownToUp<supportType>(
         session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
-
+*/
 template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionBolligerMabillard(int32_t trackType)
 {
     switch (trackType)
@@ -19679,7 +19681,7 @@ template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctio
             return BolligerMabillardTrackLeftEighthBankToOrthogonalDown25<supportType>;
         case TrackElemType::RightEighthBankToOrthogonalDown25:
             return BolligerMabillardTrackRightEighthBankToOrthogonalDown25<supportType>;
-
+            /*
         case TrackElemType::LeftTwistUpToDown:
             return BolligerMabillardTrackLeftTwistUpToDown<supportType>;
         case TrackElemType::RightTwistUpToDown:
@@ -19688,6 +19690,7 @@ template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctio
             return BolligerMabillardTrackLeftTwistDownToUp<supportType>;
         case TrackElemType::RightTwistDownToUp:
             return BolligerMabillardTrackRightTwistDownToUp<supportType>;
+            */
     }
     return nullptr;
 }
