@@ -373,10 +373,3 @@ void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, con
             break;
     }
 }
-
-void PaintParkEntrancePreview(DrawPixelInfo& dpi, ImageIndex imageStart, ScreenCoordsXY screenCoords)
-{
-    GfxDrawSprite(dpi, ImageId(imageStart + 1), screenCoords + ScreenCoordsXY{ -32, 14 });
-    GfxDrawSprite(dpi, ImageId(imageStart + 0), screenCoords + ScreenCoordsXY{ 0, 28 });
-    GfxDrawSprite(dpi, ImageId(imageStart + 2), screenCoords + ScreenCoordsXY{ 32, 44 });
-}

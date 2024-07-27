@@ -51,4 +51,3 @@ void PaintTrack(PaintSession& session, uint8_t direction, int32_t height, const 
 
 bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag);
 
-void PaintParkEntrancePreview(DrawPixelInfo& dpi, ImageIndex imageStart, ScreenCoordsXY screenCoords);

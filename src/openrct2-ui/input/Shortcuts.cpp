@@ -127,11 +127,11 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate park entrance
-    w = WindowFindByClass(WindowClass::Map);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_MAP__WIDX_ROTATE_90)
-        && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WindowWidgetType::Empty)
+    w = WindowFindByClass(WindowClass::EditorOwnership);
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_EDITOR_OWNERSHIP__WIDX_ROTATE_ENTRANCE_BUTTON)
+        && w->widgets[WC_EDITOR_OWNERSHIP__WIDX_ROTATE_ENTRANCE_BUTTON].type != WindowWidgetType::Empty)
     {
-        w->OnMouseUp(WC_MAP__WIDX_ROTATE_90);
+        w->OnMouseUp(WC_EDITOR_OWNERSHIP__WIDX_ROTATE_ENTRANCE_BUTTON);
         return;
     }
 
