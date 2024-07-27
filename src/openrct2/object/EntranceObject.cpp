@@ -13,7 +13,7 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 
 using namespace OpenRCT2;

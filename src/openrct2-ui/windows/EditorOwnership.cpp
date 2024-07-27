@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            GfxClear(dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
             ScreenCoordsXY coords{ 1, 1 };
 

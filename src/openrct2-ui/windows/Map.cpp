@@ -1628,7 +1628,8 @@ static Widget window_map_widgets[] = {
             }
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1] | 0x80, 0, numItems);
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                ColourWithFlags(colours[1]).withFlag(ColourFlag::translucent, true), 0, numItems);
         }
 
         void BuildParkEntranceToggle()
