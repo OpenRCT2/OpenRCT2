@@ -137,7 +137,14 @@ namespace OpenRCT2::Ui::Windows
         windowPosition.x = std::clamp(windowPosition.x, 0, ContextGetWidth());
         windowPosition.y = std::max(22, windowPosition.y);
 
-        // Ensure it is within the game canvas
+        // Ensure it is within the game canvas, horizontally
+        int32_t maxX = ContextGetWidth() - width;
+        if (windowPosition.x > maxX)
+        {
+            windowPosition.x = std::min(windowPosition.x - width - 40, maxX);
+        }
+
+        // Ensure it is within the game canvas, vertically
         int32_t maxY = ContextGetHeight() - height;
         if (windowPosition.y > maxY)
         {
