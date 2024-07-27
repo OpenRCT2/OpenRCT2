@@ -21061,6 +21061,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return FlyingRCTrackDiagBrakes;
         case TrackElemType::DiagBlockBrakes:
             return FlyingRCTrackDiagBlockBrakes;
-     }
+    }
     return GetTrackPaintFunctionBolligerMabillard<kSupportType>(trackType);
 }

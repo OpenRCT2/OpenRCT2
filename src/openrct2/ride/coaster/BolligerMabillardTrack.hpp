@@ -13148,7 +13148,7 @@ static void BolligerMabillardTrackRightBarrelRollUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        BolligerMabillardTrack PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
@@ -16581,7 +16581,8 @@ static void BolligerMabillardTrackLeftEighthToOrthogonalDown25(
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    TrackRightEighthToDiagUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrackRightEighthToDiagUp25<supportType>(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightEighthToOrthogonalDown25(
@@ -17449,7 +17450,8 @@ static void BolligerMabillardTrackDiagRightBankedDown25ToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    TrackDiagLeftBankedFlatToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrackDiagLeftBankedFlatToLeftBankedUp25<supportType>(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagUp25LeftBanked(
@@ -18830,40 +18832,40 @@ static void BolligerMabillardTrackLeftTwistDownToUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 0),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 0),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 1),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 1),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::RightCorner, 15, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 6),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 6),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 7),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 7),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::BottomCorner, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 12),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 12),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 13),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 13),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 18),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 18),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 19),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 19),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
@@ -18888,34 +18890,34 @@ static void BolligerMabillardTrackLeftTwistDownToUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 2),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 2),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 3),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 3),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 8),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 8),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 9),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 9),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 14),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 14),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 15),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 15),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 20),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 20),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 21),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 21),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
             }
@@ -18934,34 +18936,34 @@ static void BolligerMabillardTrackLeftTwistDownToUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 4),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 4),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 5),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 5),
                         { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 10),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 10),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 11),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 11),
                         { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 16),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 16),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 17),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 17),
                         { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 22),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 22),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 23),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 23),
                         { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                     break;
             }
@@ -18998,40 +19000,40 @@ static void BolligerMabillardTrackRightTwistDownToUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 24),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 24),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 25),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 25),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 30),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 30),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 31),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 31),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 36),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 36),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 37),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 37),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::BottomCorner, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 42),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 42),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 43),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 43),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
                         session, supportType, MetalSupportPlace::LeftCorner, 15, height, session.SupportColours);
@@ -19056,34 +19058,34 @@ static void BolligerMabillardTrackRightTwistDownToUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 26),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 26),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 27),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 27),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 32),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 32),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 33),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 33),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 38),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 38),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 39),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 39),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 44),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 44),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 45),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 45),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     break;
             }
@@ -19102,34 +19104,34 @@ static void BolligerMabillardTrackRightTwistDownToUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 28),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 28),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 29),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 29),
                         { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 34),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 34),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 35),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 35),
                         { 0, 0, height }, { { 0, 6, height + 26 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 40),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 40),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 41),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 41),
                         { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 46),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 46),
                         { 0, 0, height }, { { 0, 6, height - 16 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_SPINNING_TRACK_INLINE_TWIST + 47),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_BM_INLINE_TWIST + 47),
                         { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                     break;
             }
@@ -19687,5 +19689,5 @@ template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctio
         case TrackElemType::RightTwistDownToUp:
             return BolligerMabillardTrackRightTwistDownToUp<supportType>;
     }
-    return nullptr;
+     return nullptr;
 }
