@@ -22,6 +22,7 @@
 - Fix: [#22222] Staff list may remain invalid when changing tabs.
 - Fix: [#22265] Button for switching covered tracks on slides doesn’t stay pressed.
 - Fix: [#22284] Unrated rides cause high amount of nausea.
+- Fix: [#22292] Progress bar not updating correctly with multiple windows open.
 - Fix: [#22304] Graphs don’t draw lines on the left edge of the screen.
 - Fix: [#22318] Water sparkles are missing if transparent water is enabled without RCT1 linked.
 - Fix: [#22333] Tile inspector closes other tool windows.

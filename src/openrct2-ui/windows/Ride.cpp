@@ -3965,12 +3965,18 @@ static_assert(std::size(RatingNames) == 6);
 
         void MaintenanceOnDraw(DrawPixelInfo& dpi)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
+
+            uint16_t reliability = ride->reliability_percentage;
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
+
+            uint16_t downTime = ride->downtime;
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
+
+            DrawWidgets(dpi);
+            DrawTabImages(dpi);
 
             // Locate mechanic button image
             Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
@@ -3987,18 +3993,14 @@ static_assert(std::size(RatingNames) == 6);
             widget = &widgets[WIDX_PAGE_BACKGROUND];
             screenCoords = windowPos + ScreenCoordsXY{ widget->left + 4, widget->top + 4 };
 
-            uint16_t reliability = ride->reliability_percentage;
             auto ft = Formatter();
             ft.Add<uint16_t>(reliability);
             DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
             screenCoords.y += 11;
 
-            uint16_t downTime = ride->downtime;
             ft = Formatter();
             ft.Add<uint16_t>(downTime);
             DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
             screenCoords.y += 26;
 
             // Last inspection
