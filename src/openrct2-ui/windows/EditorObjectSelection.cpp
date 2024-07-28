@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <bit>
 #include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -67,10 +68,11 @@ namespace OpenRCT2::Ui::Windows
         FILTER_SELECTED = (1 << 14),
         FILTER_NONSELECTED = (1 << 15),
 
-        FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER
-            | FILTER_RIDE_STALL,
-        FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO
-            | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
+        FILTER_RIDES_ALL = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL
+            | FILTER_RIDE_WATER | FILTER_RIDE_STALL,
+        FILTER_SOURCES_ALL = FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO
+            | FILTER_CUSTOM,
+        FILTER_ALL = FILTER_RIDES_ALL | FILTER_SOURCES_ALL | FILTER_SELECTED | FILTER_NONSELECTED,
     };
 
     enum
@@ -79,7 +81,7 @@ namespace OpenRCT2::Ui::Windows
         RIDE_SORT_RIDE
     };
 
-    enum
+    enum : uint8_t
     {
         DDIX_FILTER_RCT1,
         DDIX_FILTER_AA,
@@ -116,6 +118,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
     static constexpr int32_t WH = 400;
     static constexpr int32_t WW = 600;
+    static constexpr auto kFilterWidth = 150;
     static constexpr auto kPreviewSize = 113;
 
     struct ObjectSubTab
@@ -138,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static ObjectSubTab kRideObjectSubTabs[] = {
-        { STR_OBJECT_FILTER_ALL_RIDES_TIP, ObjectType::Ride, FILTER_RIDES,          SPR_G2_INFINITY,                  1, 1 },
+        { STR_OBJECT_FILTER_ALL_RIDES_TIP, ObjectType::Ride, FILTER_RIDES_ALL,      SPR_G2_INFINITY,                  1, 1 },
         { STR_TRANSPORT_RIDES_TIP,         ObjectType::Ride, FILTER_RIDE_TRANSPORT, SPR_TAB_RIDES_TRANSPORT_0,       20, 4 },
         { STR_GENTLE_RIDES_TIP,            ObjectType::Ride, FILTER_RIDE_GENTLE,    SPR_TAB_RIDES_GENTLE_0,          32, 8 },
         { STR_ROLLER_COASTERS_TIP,         ObjectType::Ride, FILTER_RIDE_COASTER,   SPR_TAB_RIDES_ROLLER_COASTERS_0, 10, 2 },
@@ -276,7 +279,7 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
-            _filter_flags = FILTER_RIDES | Config::Get().interface.ObjectSelectionFilterFlags;
+            _filter_flags = FILTER_RIDES_ALL | Config::Get().interface.ObjectSelectionFilterFlags;
             std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
             WindowInitScrollWidgets(*this);
@@ -393,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto& currentPage = ObjectSelectionPages[selected_tab];
                     auto& subTabDef = currentPage.subTabs[_selectedSubTab];
-                    _filter_flags &= ~FILTER_RIDES;
+                    _filter_flags &= ~FILTER_RIDES_ALL;
                     _filter_flags |= subTabDef.flagFilter;
 
                     Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
@@ -484,6 +487,12 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, WW, WH, 1200, 1000);
         }
 
+        static constexpr StringId kSourceStringIds[] = {
+            STR_SCENARIO_CATEGORY_RCT1,          STR_SCENARIO_CATEGORY_RCT1_AA, STR_SCENARIO_CATEGORY_RCT1_LL,
+            STR_ROLLERCOASTER_TYCOON_2_DROPDOWN, STR_OBJECT_FILTER_WW,          STR_OBJECT_FILTER_TT,
+            STR_OBJECT_FILTER_OPENRCT2_OFFICIAL, STR_OBJECT_FILTER_CUSTOM,
+        };
+
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
             int32_t numSelectionItems = 0;
@@ -491,24 +500,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_FILTER_DROPDOWN_BTN:
-
-                    gDropdownItems[DDIX_FILTER_RCT1].Format = STR_TOGGLE_OPTION;
-                    gDropdownItems[DDIX_FILTER_AA].Format = STR_TOGGLE_OPTION;
-                    gDropdownItems[DDIX_FILTER_LL].Format = STR_TOGGLE_OPTION;
-                    gDropdownItems[DDIX_FILTER_RCT2].Format = STR_TOGGLE_OPTION;
-                    gDropdownItems[DDIX_FILTER_WW].Format = STR_TOGGLE_OPTION;
-                    gDropdownItems[DDIX_FILTER_TT].Format = STR_TOGGLE_OPTION;
-                    gDropdownItems[DDIX_FILTER_OO].Format = STR_TOGGLE_OPTION;
-                    gDropdownItems[DDIX_FILTER_CUSTOM].Format = STR_TOGGLE_OPTION;
-
-                    gDropdownItems[DDIX_FILTER_RCT1].Args = STR_SCENARIO_CATEGORY_RCT1;
-                    gDropdownItems[DDIX_FILTER_AA].Args = STR_SCENARIO_CATEGORY_RCT1_AA;
-                    gDropdownItems[DDIX_FILTER_LL].Args = STR_SCENARIO_CATEGORY_RCT1_LL;
-                    gDropdownItems[DDIX_FILTER_RCT2].Args = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
-                    gDropdownItems[DDIX_FILTER_WW].Args = STR_OBJECT_FILTER_WW;
-                    gDropdownItems[DDIX_FILTER_TT].Args = STR_OBJECT_FILTER_TT;
-                    gDropdownItems[DDIX_FILTER_OO].Args = STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
-                    gDropdownItems[DDIX_FILTER_CUSTOM].Args = STR_OBJECT_FILTER_CUSTOM;
+                    for (auto ddIdx = EnumValue(DDIX_FILTER_RCT1); ddIdx <= EnumValue(DDIX_FILTER_CUSTOM); ddIdx++)
+                    {
+                        gDropdownItems[ddIdx].Args = kSourceStringIds[ddIdx];
+                        gDropdownItems[ddIdx].Format = STR_TOGGLE_OPTION;
+                    }
 
                     // Track manager cannot select multiple, so only show selection filters if not in track manager
                     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
@@ -847,7 +843,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
-            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - 130, 22 }, { 122, 14 });
+            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, 22 }, { kFilterWidth, 14 });
             widgets[WIDX_INSTALL_TRACK].left = width - 250;
             widgets[WIDX_INSTALL_TRACK].right = width - 137;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
@@ -877,6 +873,27 @@ namespace OpenRCT2::Ui::Windows
                 titleWidget.text = STR_OBJECT_SELECTION;
                 installTrackWidget.type = WindowWidgetType::Empty;
             }
+
+            // Set filter dropdown caption
+            if (!isFilterActive(FILTER_SOURCES_ALL))
+            {
+                // Only one source active?
+                uint32_t sources = _filter_flags & FILTER_SOURCES_ALL;
+                auto numSourcesActive = std::popcount(sources);
+                if (numSourcesActive == 1)
+                {
+                    widgets[WIDX_FILTER_DROPDOWN].text = STR_OBJECT_SELECTION_ONLY_STRINGID;
+                    auto firstActiveSource = UtilBitScanForward(sources);
+                    ft.Add<StringId>(kSourceStringIds[firstActiveSource]);
+                }
+                else
+                {
+                    widgets[WIDX_FILTER_DROPDOWN].text = STR_OBJECT_SELECTION_SHOWING_N_SOURCES;
+                    ft.Add<uint16_t>(numSourcesActive);
+                }
+            }
+            else
+                widgets[WIDX_FILTER_DROPDOWN].text = STR_OBJECT_SELECTION_ALL_SOURCES_SHOWN;
 
             // Align main tabs
             int32_t x = 3;
@@ -1123,7 +1140,7 @@ namespace OpenRCT2::Ui::Windows
 
             selected_tab = _page;
             _selectedSubTab = 0;
-            _filter_flags |= FILTER_RIDES;
+            _filter_flags |= FILTER_RIDES_ALL;
             selected_list_item = -1;
             scrolls[0].v_top = 0;
             frame_no = 0;
