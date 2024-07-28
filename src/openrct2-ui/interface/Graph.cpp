@@ -48,6 +48,17 @@ namespace OpenRCT2::Graph
     }
 
     template<typename T>
+    constexpr int32_t GetYCoord(T value, [[maybe_unused]] int32_t modifier, [[maybe_unused]] int32_t offset)
+    {
+        return ((255 - value) * 100) / 256;
+    }
+
+    constexpr int32_t GetYCoord(money64 value, int32_t modifier, int32_t offset)
+    {
+        return 170 - 6 - ((((value >> modifier) + offset) * 170) / 256);
+    }
+
+    template<typename T>
     static const ScreenCoordsXY ScreenCoordsForHistoryIndex(
         const int32_t index, const T* history, const int32_t chartX, const int32_t chartY, const int32_t modifier,
         const int32_t offset)
@@ -114,7 +125,7 @@ namespace OpenRCT2::Graph
         {
             if (history[i] != GraphNullValue())
             {
-                coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
+                coords.y = origCoords.y + GetYCoord(history[i], modifier, offset);
 
                 if (lastCoordsValid)
                 {
@@ -146,7 +157,7 @@ namespace OpenRCT2::Graph
         {
             if (history[i] != GraphNullValue())
             {
-                coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
+                coords.y = origCoords.y + GetYCoord(history[i], modifier, offset);
 
                 if (lastCoordsValid)
                 {
