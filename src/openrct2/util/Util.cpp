@@ -62,11 +62,11 @@ int32_t MphToDmps(int32_t mph)
     return (mph * 73243) >> 14;
 }
 
-int32_t UtilBitScanForward(int32_t source)
+int32_t UtilBitScanForward(uint32_t source)
 {
 #if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
     DWORD i;
-    uint8_t success = _BitScanForward(&i, static_cast<uint32_t>(source));
+    uint8_t success = _BitScanForward(&i, source);
     return success != 0 ? i : -1;
 #elif defined(__GNUC__)
     int32_t success = __builtin_ffs(source);
@@ -84,11 +84,11 @@ int32_t UtilBitScanForward(int32_t source)
 #endif
 }
 
-int32_t UtilBitScanForward(int64_t source)
+int32_t UtilBitScanForward(uint64_t source)
 {
 #if defined(_MSC_VER) && (_MSC_VER >= 1400) && defined(_M_X64) // Visual Studio 2005
     DWORD i;
-    uint8_t success = _BitScanForward64(&i, static_cast<uint64_t>(source));
+    uint8_t success = _BitScanForward64(&i, source);
     return success != 0 ? i : -1;
 #elif defined(__GNUC__)
     int32_t success = __builtin_ffsll(source);

@@ -359,7 +359,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
         && (*tileElement)->GetType() == TileElementType::Entrance)
     {
-        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
+        uint32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = UtilBitScanForward(directions);
@@ -376,7 +376,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
     if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TileElementType::Entrance)
     {
-        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
+        uint32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = (*tileElement)->GetDirectionWithOffset(UtilBitScanForward(directions));
@@ -1285,7 +1285,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
     GameActions::Execute(&landSetRightsAction);
 }
 
-static bool GetNextDirection(int32_t edges, int32_t* direction)
+static bool GetNextDirection(uint32_t edges, int32_t* direction)
 {
     int32_t index = UtilBitScanForward(edges);
     if (index == -1)

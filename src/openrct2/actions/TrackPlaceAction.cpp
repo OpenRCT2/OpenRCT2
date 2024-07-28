@@ -630,7 +630,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
         {
-            uint8_t availableDirections = entranceDirections & 0x0F;
+            uint32_t availableDirections = entranceDirections & 0x0F;
             if (availableDirections != 0)
             {
                 if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !GetGameState().Cheats.DisableClearanceChecks)
