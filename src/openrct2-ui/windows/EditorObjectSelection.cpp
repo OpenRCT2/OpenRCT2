@@ -108,17 +108,10 @@ namespace OpenRCT2::Ui::Windows
 
     static char _filter_string[MAX_PATH];
 
-#define _FILTER_ALL ((_filter_flags & FILTER_ALL) == FILTER_ALL)
-#define _FILTER_RCT1 (_filter_flags & FILTER_RCT1)
-#define _FILTER_AA (_filter_flags & FILTER_AA)
-#define _FILTER_LL (_filter_flags & FILTER_LL)
-#define _FILTER_RCT2 (_filter_flags & FILTER_RCT2)
-#define _FILTER_WW (_filter_flags & FILTER_WW)
-#define _FILTER_TT (_filter_flags & FILTER_TT)
-#define _FILTER_OO (_filter_flags & FILTER_OO)
-#define _FILTER_CUSTOM (_filter_flags & FILTER_CUSTOM)
-#define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
-#define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
+    static bool isFilterActive(const uint16_t filter)
+    {
+        return (_filter_flags & filter) == filter;
+    }
 
     static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
     static constexpr int32_t WH = 400;
@@ -544,8 +537,8 @@ namespace OpenRCT2::Ui::Windows
 
                     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
                     {
-                        Dropdown::SetChecked(DDIX_FILTER_SELECTED, _FILTER_SELECTED != 0);
-                        Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, _FILTER_NONSELECTED != 0);
+                        Dropdown::SetChecked(DDIX_FILTER_SELECTED, isFilterActive(FILTER_SELECTED));
+                        Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, isFilterActive(FILTER_NONSELECTED));
                     }
                     break;
             }
@@ -659,7 +652,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (_FILTER_SELECTED || _FILTER_NONSELECTED)
+            if (isFilterActive(FILTER_SELECTED) || isFilterActive(FILTER_NONSELECTED))
             {
                 FilterUpdateCounts();
                 VisibleListRefresh();
@@ -1370,15 +1363,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 return true;
             }
-            if (_FILTER_SELECTED == _FILTER_NONSELECTED)
+            if (isFilterActive(FILTER_SELECTED) == isFilterActive(FILTER_NONSELECTED))
             {
                 return true;
             }
-            if (_FILTER_SELECTED && objectFlag & ObjectSelectionFlags::Selected)
+            if (isFilterActive(FILTER_SELECTED) && (objectFlag & ObjectSelectionFlags::Selected))
             {
                 return true;
             }
-            if (_FILTER_NONSELECTED && !(objectFlag & ObjectSelectionFlags::Selected))
+            if (isFilterActive(FILTER_NONSELECTED) && !(objectFlag & ObjectSelectionFlags::Selected))
             {
                 return true;
             }
@@ -1439,27 +1432,27 @@ namespace OpenRCT2::Ui::Windows
         bool SourcesMatch(ObjectSourceGame source)
         {
             // clang-format off
-        return (_FILTER_RCT1 && source == ObjectSourceGame::RCT1) ||
-            (_FILTER_AA && source == ObjectSourceGame::AddedAttractions) ||
-            (_FILTER_LL && source == ObjectSourceGame::LoopyLandscapes) ||
-            (_FILTER_RCT2 && source == ObjectSourceGame::RCT2) ||
-            (_FILTER_WW && source == ObjectSourceGame::WackyWorlds) ||
-            (_FILTER_TT && source == ObjectSourceGame::TimeTwister) ||
-            (_FILTER_OO && source == ObjectSourceGame::OpenRCT2Official) ||
-            (_FILTER_CUSTOM &&
-                source != ObjectSourceGame::RCT1 &&
-                source != ObjectSourceGame::AddedAttractions &&
-                source != ObjectSourceGame::LoopyLandscapes &&
-                source != ObjectSourceGame::RCT2 &&
-                source != ObjectSourceGame::WackyWorlds &&
-                source != ObjectSourceGame::TimeTwister &&
-                source != ObjectSourceGame::OpenRCT2Official);
+            return (isFilterActive(FILTER_RCT1) && source == ObjectSourceGame::RCT1) ||
+                   (isFilterActive(FILTER_AA)   && source == ObjectSourceGame::AddedAttractions) ||
+                   (isFilterActive(FILTER_LL)   && source == ObjectSourceGame::LoopyLandscapes) ||
+                   (isFilterActive(FILTER_RCT2) && source == ObjectSourceGame::RCT2) ||
+                   (isFilterActive(FILTER_WW)   && source == ObjectSourceGame::WackyWorlds) ||
+                   (isFilterActive(FILTER_TT)   && source == ObjectSourceGame::TimeTwister) ||
+                   (isFilterActive(FILTER_OO)   && source == ObjectSourceGame::OpenRCT2Official) ||
+                   (isFilterActive(FILTER_CUSTOM) &&
+                        source != ObjectSourceGame::RCT1 &&
+                        source != ObjectSourceGame::AddedAttractions &&
+                        source != ObjectSourceGame::LoopyLandscapes &&
+                        source != ObjectSourceGame::RCT2 &&
+                        source != ObjectSourceGame::WackyWorlds &&
+                        source != ObjectSourceGame::TimeTwister &&
+                        source != ObjectSourceGame::OpenRCT2Official);
             // clang-format on
         }
 
         bool FilterSource(const ObjectRepositoryItem* item)
         {
-            if (_FILTER_ALL)
+            if (isFilterActive(FILTER_ALL))
                 return true;
 
             for (auto source : item->Sources)
@@ -1491,7 +1484,7 @@ namespace OpenRCT2::Ui::Windows
 
         void FilterUpdateCounts()
         {
-            if (!_FILTER_ALL || _filter_string[0] != '\0')
+            if (!isFilterActive(FILTER_ALL) || _filter_string[0] != '\0')
             {
                 const auto& selectionFlags = _objectSelectionFlags;
                 std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);
