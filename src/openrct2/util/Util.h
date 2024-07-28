@@ -28,7 +28,7 @@ int32_t MetresToFeet(int32_t metres);
 int32_t MphToKmph(int32_t mph);
 int32_t MphToDmps(int32_t mph);
 
-int32_t UtilBitScanForward(uint32_t source)
+inline int32_t UtilBitScanForward(uint32_t source)
 {
 #if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
     unsigned long i;
@@ -50,7 +50,7 @@ int32_t UtilBitScanForward(uint32_t source)
 #endif
 }
 
-int32_t UtilBitScanForward(uint64_t source)
+inline int32_t UtilBitScanForward(uint64_t source)
 {
 #if defined(_MSC_VER) && (_MSC_VER >= 1400) && defined(_M_X64) // Visual Studio 2005
     unsigned long i;
