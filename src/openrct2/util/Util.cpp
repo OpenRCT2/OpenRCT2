@@ -25,16 +25,6 @@
 #include <ctime>
 #include <random>
 
-#ifdef _WIN32
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include <windows.h>
-#endif // _WIN32
-
 int32_t SquaredMetresToSquaredFeet(int32_t squaredMetres)
 {
     // 1 metre squared = 10.7639104 feet squared
@@ -60,50 +50,6 @@ int32_t MphToDmps(int32_t mph)
 {
     // 1 mph = 4.4704 decimeters/s
     return (mph * 73243) >> 14;
-}
-
-int32_t UtilBitScanForward(uint32_t source)
-{
-#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
-    DWORD i;
-    uint8_t success = _BitScanForward(&i, source);
-    return success != 0 ? i : -1;
-#elif defined(__GNUC__)
-    int32_t success = __builtin_ffs(source);
-    return success - 1;
-#else
-#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
-    // This is a low-hanging optimisation boost, check if your compiler offers
-    // any intrinsic.
-    // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
-    for (int32_t i = 0; i < 32; i++)
-        if (source & (1u << i))
-            return i;
-
-    return -1;
-#endif
-}
-
-int32_t UtilBitScanForward(uint64_t source)
-{
-#if defined(_MSC_VER) && (_MSC_VER >= 1400) && defined(_M_X64) // Visual Studio 2005
-    DWORD i;
-    uint8_t success = _BitScanForward64(&i, source);
-    return success != 0 ? i : -1;
-#elif defined(__GNUC__)
-    int32_t success = __builtin_ffsll(source);
-    return success - 1;
-#else
-#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
-    // This is a low-hanging optimisation boost, check if your compiler offers
-    // any intrinsic.
-    // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
-    for (int32_t i = 0; i < 64; i++)
-        if (source & (1uLL << i))
-            return i;
-
-    return -1;
-#endif
 }
 
 /* Case insensitive logical compare */
