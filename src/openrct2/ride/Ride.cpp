@@ -1464,19 +1464,18 @@ static void RideBreakdownUpdate(Ride& ride)
  */
 static int32_t RideGetNewBreakdownProblem(const Ride& ride)
 {
-    int32_t availableBreakdownProblems, totalProbability, randomProbability, problemBits, breakdownProblem;
-
     // Brake failure is more likely when it's raining
     _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = ClimateIsRaining() ? 20 : 3;
 
     if (!ride.CanBreakDown())
         return -1;
 
-    availableBreakdownProblems = ride.GetRideTypeDescriptor().AvailableBreakdowns;
+    int32_t availableBreakdownProblems = ride.GetRideTypeDescriptor().AvailableBreakdowns;
 
     // Calculate the total probability range for all possible breakdown problems
-    totalProbability = 0;
-    problemBits = availableBreakdownProblems;
+    int32_t totalProbability = 0;
+    uint32_t problemBits = availableBreakdownProblems;
+    int32_t breakdownProblem;
     while (problemBits != 0)
     {
         breakdownProblem = UtilBitScanForward(problemBits);
@@ -1487,7 +1486,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
         return -1;
 
     // Choose a random number within this range
-    randomProbability = ScenarioRand() % totalProbability;
+    int32_t randomProbability = ScenarioRand() % totalProbability;
 
     // Find which problem range the random number lies
     problemBits = availableBreakdownProblems;

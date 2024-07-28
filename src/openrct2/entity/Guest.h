@@ -322,8 +322,8 @@ public:
 
     void UpdateGuest();
     void Tick128UpdateGuest(uint32_t index);
-    int64_t GetFoodOrDrinkFlags() const;
-    int64_t GetEmptyContainerFlags() const;
+    uint64_t GetFoodOrDrinkFlags() const;
+    uint64_t GetEmptyContainerFlags() const;
     bool HasDrink() const;
     bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;

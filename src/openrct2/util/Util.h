@@ -24,8 +24,8 @@ int32_t MetresToFeet(int32_t metres);
 int32_t MphToKmph(int32_t mph);
 int32_t MphToDmps(int32_t mph);
 
-int32_t UtilBitScanForward(int32_t source);
-int32_t UtilBitScanForward(int64_t source);
+int32_t UtilBitScanForward(uint32_t source);
+int32_t UtilBitScanForward(uint64_t source);
 int32_t StrLogicalCmp(char const* a, char const* b);
 char* SafeStrCpy(char* destination, const char* source, size_t num);
 char* SafeStrCat(char* destination, const char* source, size_t size);

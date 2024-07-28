@@ -1360,12 +1360,12 @@ void Guest::UpdateSitting()
  * To simplify check of 0x36BA3E0 and 0x11FF78
  * returns false on no food.
  */
-int64_t Guest::GetFoodOrDrinkFlags() const
+uint64_t Guest::GetFoodOrDrinkFlags() const
 {
     return GetItemFlags() & (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
 }
 
-int64_t Guest::GetEmptyContainerFlags() const
+uint64_t Guest::GetEmptyContainerFlags() const
 {
     return GetItemFlags() & ShopItemsGetAllContainers();
 }

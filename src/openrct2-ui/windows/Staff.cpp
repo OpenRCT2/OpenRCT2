@@ -883,8 +883,7 @@ static Widget _staffOptionsWidgets[] = {
                 return;
             }
 
-            auto staffOrders = staff->StaffOrders;
-
+            uint32_t staffOrders = staff->StaffOrders;
             for (auto index = UtilBitScanForward(staffOrders); index != -1; index = UtilBitScanForward(staffOrders))
             {
                 staffOrders &= ~(1 << index);

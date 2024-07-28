@@ -690,7 +690,7 @@ static Widget _scenarioSelectWidgets[] = {
 
         void InitTabs()
         {
-            int32_t showPages = 0;
+            uint32_t showPages = 0;
             size_t numScenarios = ScenarioRepositoryGetCount();
             for (size_t i = 0; i < numScenarios; i++)
             {

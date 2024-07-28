@@ -885,7 +885,7 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
     {
         maze.location.y = -maze.location.y;
 
-        auto mazeEntry = maze.mazeEntry;
+        uint32_t mazeEntry = maze.mazeEntry;
         uint16_t newEntry = 0;
         for (uint8_t position = UtilBitScanForward(mazeEntry); position != 0xFF; position = UtilBitScanForward(mazeEntry))
         {
