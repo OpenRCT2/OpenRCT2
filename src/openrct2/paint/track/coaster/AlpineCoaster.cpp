@@ -21,14 +21,11 @@
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
-
-static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
-
 namespace OpenRCT2::AlpineRC
 {
     static void TrackFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackElement.HasChain())
         {
@@ -58,8 +55,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
             }
         }
         else
@@ -82,8 +79,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
             }
         }
         PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -94,7 +91,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackStation(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         static constexpr uint32_t imageIds[4][3] = {
             { (SPR_G2_ALPINE_TRACK_FLAT + 0), (SPR_G2_ALPINE_TRACK_FLAT + 0), SPR_STATION_BASE_B_SW_NE },
@@ -127,7 +124,7 @@ namespace OpenRCT2::AlpineRC
 
     static void Track25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackElement.HasChain())
         {
@@ -157,8 +154,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
             }
         }
         else
@@ -189,8 +186,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -208,7 +205,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackFlatTo25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackElement.HasChain())
         {
@@ -238,8 +235,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
             }
         }
         else
@@ -270,8 +267,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -289,7 +286,7 @@ namespace OpenRCT2::AlpineRC
 
     static void Track25DegUpToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackElement.HasChain())
         {
@@ -319,8 +316,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 6,
+                    height, session.SupportColours);
             }
         }
         else
@@ -351,8 +348,8 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 6,
+                    height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -370,28 +367,28 @@ namespace OpenRCT2::AlpineRC
 
     static void Track25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        Track25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        Track25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackFlatTo25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        Track25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        Track25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void Track25DegDownToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        TrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftQuarterTurn3(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -420,8 +417,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -498,8 +495,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -524,15 +521,15 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightQuarterTurn3(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftQuarterTurn5(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -561,8 +558,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -710,8 +707,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -736,15 +733,15 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightQuarterTurn5(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftEighthToDiag(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -773,8 +770,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -878,7 +875,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -893,7 +890,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -911,7 +908,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightEighthToDiag(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -940,8 +937,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -1045,7 +1042,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -1060,7 +1057,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1078,23 +1075,23 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftEighthToOrthogonal(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightEighthToOrthogonal(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+        TrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
     }
 
     static void TrackDiagFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
             { SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL, SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL + 1, SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL + 2,
@@ -1104,12 +1101,12 @@ namespace OpenRCT2::AlpineRC
         };
 
         TrackPaintUtilDiagTilesPaintExtra(
-            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], kSupportType);
+            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType.metal);
     }
 
     static void TrackDiag25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -1222,7 +1219,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1235,7 +1232,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1250,7 +1247,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1262,7 +1259,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1286,7 +1283,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiag25DegUpToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -1399,7 +1396,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1412,7 +1409,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1427,7 +1424,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1439,7 +1436,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1463,7 +1460,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagFlatTo25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -1576,7 +1573,8 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 2, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 2,
+                                session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1589,7 +1587,8 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 2, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 2,
+                                session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1604,7 +1603,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1616,7 +1615,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1640,7 +1639,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiag25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -1753,7 +1752,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1766,7 +1765,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1781,7 +1780,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1793,7 +1792,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1817,7 +1816,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagFlatTo25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -1927,7 +1926,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1940,7 +1939,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1955,7 +1954,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1967,7 +1966,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -1992,7 +1991,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiag25DegDownToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -2105,7 +2104,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2118,7 +2117,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -2133,7 +2132,7 @@ namespace OpenRCT2::AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2145,7 +2144,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                                session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
@@ -2169,7 +2168,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackFlatToLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -2203,7 +2202,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -2214,7 +2213,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackFlatToRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -2248,7 +2247,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -2259,21 +2258,21 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftBankToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        TrackFlatToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackFlatToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightBankToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        TrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftBankTo25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -2307,7 +2306,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3, height,
                 session.SupportColours);
         }
         if (direction == 0 || direction == 3)
@@ -2325,7 +2324,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightBankTo25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -2359,7 +2358,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3, height,
                 session.SupportColours);
         }
         if (direction == 0 || direction == 3)
@@ -2377,7 +2376,7 @@ namespace OpenRCT2::AlpineRC
 
     static void Track25DegUpToLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -2411,7 +2410,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 6, height,
                 session.SupportColours);
         }
         if (direction == 0 || direction == 3)
@@ -2429,7 +2428,7 @@ namespace OpenRCT2::AlpineRC
 
     static void Track25DegUpToRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -2463,7 +2462,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 6, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 6, height,
                 session.SupportColours);
         }
         if (direction == 0 || direction == 3)
@@ -2481,35 +2480,35 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftBankTo25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        Track25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        Track25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightBankTo25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        Track25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        Track25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void Track25DegDownToLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        TrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void Track25DegDownToRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        TrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -2537,7 +2536,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -2548,14 +2547,14 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
-        TrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackDiagFlatToLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -2628,7 +2627,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -2641,7 +2640,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -2664,7 +2663,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagFlatToRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -2737,7 +2736,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -2750,7 +2749,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -2773,7 +2772,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagLeftBankToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -2846,7 +2845,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -2859,7 +2858,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -2882,7 +2881,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagRightBankToFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -2955,7 +2954,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -2968,7 +2967,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -2991,7 +2990,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagLeftBankTo25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3064,7 +3063,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3077,7 +3076,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3100,7 +3099,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagRightBankTo25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3173,7 +3172,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3186,7 +3185,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3209,7 +3208,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiag25DegUpToLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3282,7 +3281,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3295,7 +3294,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3318,7 +3317,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiag25DegUpToRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3391,7 +3390,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3404,7 +3403,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3427,7 +3426,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagLeftBankTo25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3497,7 +3496,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3510,7 +3509,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3534,7 +3533,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagRightBankTo25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3604,7 +3603,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3617,7 +3616,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3641,7 +3640,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiag25DegDownToLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3714,7 +3713,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3727,7 +3726,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3750,7 +3749,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiag25DegDownToRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3823,7 +3822,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3836,7 +3835,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -3859,7 +3858,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -3928,7 +3927,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -3941,7 +3940,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -3964,7 +3963,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackDiagRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -4033,7 +4032,7 @@ namespace OpenRCT2::AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4046,7 +4045,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
@@ -4069,7 +4068,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftQuarterTurn3Bank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -4101,8 +4100,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 2, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 2,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -4182,8 +4181,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 2, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 2,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -4208,15 +4207,15 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightQuarterTurn3Bank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackBankedLeftQuarterTurn5(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -4248,8 +4247,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 1, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 1,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -4400,8 +4399,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 1, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 1,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -4426,15 +4425,15 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackBankedRightQuarterTurn5(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftEighthBankToDiag(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -4463,8 +4462,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -4568,7 +4567,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -4583,7 +4582,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4601,7 +4600,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightEighthBankToDiag(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -4630,8 +4629,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -4735,7 +4734,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -4750,7 +4749,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4768,23 +4767,23 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftEighthBankToOrthogonal(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+        TrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightEighthBankToOrthogonal(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+        TrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftQuarterTurn3Tile25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -4813,8 +4812,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
@@ -4860,8 +4859,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -4886,7 +4885,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightQuarterTurn3Tile25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -4915,8 +4914,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
@@ -4952,7 +4951,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 11)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -4966,7 +4965,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                         break;
                 }
                 switch (direction)
@@ -4993,23 +4992,23 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftQuarterTurn3Tile25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackRightQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+        TrackRightQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightQuarterTurn3Tile25DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackLeftQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftQuarterTurn525DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -5038,8 +5037,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
@@ -5187,8 +5186,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -5213,7 +5212,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightQuarterTurn525DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -5242,8 +5241,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
@@ -5391,8 +5390,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -5417,23 +5416,23 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftQuarterTurn525DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+        TrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightQuarterTurn525DegDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackSBendLeft(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -5462,8 +5461,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -5486,7 +5485,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5535,7 +5534,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5581,8 +5580,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 1:
@@ -5607,7 +5606,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackSBendRight(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -5636,8 +5635,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -5660,7 +5659,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5709,7 +5708,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5755,8 +5754,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 1:
@@ -5781,7 +5780,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftHalfBankedHelixUpSmall(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -5813,8 +5812,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 5, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 5,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -5894,8 +5893,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -5943,8 +5942,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -6029,8 +6028,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 9, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 9,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
@@ -6050,7 +6049,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightHalfBankedHelixUpSmall(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -6082,8 +6081,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 5, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 5,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -6163,8 +6162,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -6212,8 +6211,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -6298,8 +6297,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 9, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 9,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
@@ -6319,7 +6318,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftHalfBankedHelixDownSmall(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackSequence >= 4)
         {
@@ -6327,12 +6326,12 @@ namespace OpenRCT2::AlpineRC
             direction = (direction - 1) & 3;
         }
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+        TrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightHalfBankedHelixDownSmall(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackSequence >= 4)
         {
@@ -6340,12 +6339,12 @@ namespace OpenRCT2::AlpineRC
             direction = (direction + 1) & 3;
         }
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackLeftHalfBankedHelixUpLarge(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -6377,8 +6376,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -6529,8 +6528,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -6578,8 +6577,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -6735,8 +6734,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 9, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 9,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);
@@ -6755,7 +6754,7 @@ namespace OpenRCT2::AlpineRC
     }
     static void TrackRightHalfBankedHelixUpLarge(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -6787,8 +6786,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -6929,7 +6928,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -6943,7 +6942,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                         break;
                 }
                 switch (direction)
@@ -6993,8 +6992,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -7133,7 +7132,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7147,7 +7146,7 @@ namespace OpenRCT2::AlpineRC
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7176,7 +7175,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftHalfBankedHelixDownLarge(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackSequence >= 7)
         {
@@ -7184,12 +7183,12 @@ namespace OpenRCT2::AlpineRC
             direction = (direction - 1) & 3;
         }
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+        TrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackRightHalfBankedHelixDownLarge(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         if (trackSequence >= 7)
         {
@@ -7197,12 +7196,12 @@ namespace OpenRCT2::AlpineRC
             direction = (direction + 1) & 3;
         }
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+        TrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void TrackBrakes(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (direction)
         {
@@ -7222,7 +7221,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 0, height,
+                session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 0, height,
                 session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -7233,7 +7232,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftBankToLeftQuarterTurn3Tile25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -7265,8 +7264,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -7312,7 +7311,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
                     height - 6, session.SupportColours);
                 switch (direction)
                 {
@@ -7338,7 +7337,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightBankToRightQuarterTurn3Tile25DegUp(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -7370,8 +7369,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 3, height,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 3,
+                    height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -7417,7 +7416,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 10,
                     height - 6, session.SupportColours);
                 switch (direction)
                 {
@@ -7443,7 +7442,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackLeftQuarterTurn3Tile25DegDownToLeftBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -7472,8 +7471,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height - 6,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height - 6, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
@@ -7522,8 +7521,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -7548,7 +7547,7 @@ namespace OpenRCT2::AlpineRC
 
     static void TrackRightQuarterTurn3Tile25DegDownToRightBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement)
+        const TrackElement& trackElement, SupportType supportType)
     {
         switch (trackSequence)
         {
@@ -7577,8 +7576,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? MetalSupportType::ForkAlt : kSupportType, MetalSupportPlace::Centre, 8, height - 6,
-                    session.SupportColours);
+                    session, direction & 1 ? MetalSupportType::ForkAlt : supportType.metal, MetalSupportPlace::Centre, 8,
+                    height - 6, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
@@ -7627,8 +7626,8 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, direction & 1 ? kSupportType : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5, height,
-                    session.SupportColours);
+                    session, direction & 1 ? supportType.metal : MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 5,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:

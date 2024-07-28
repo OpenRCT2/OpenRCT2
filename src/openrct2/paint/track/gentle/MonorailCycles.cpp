@@ -19,8 +19,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Stick;
-
 enum
 {
     SprMonorailCyclesFlatSwNe = 16820,
@@ -167,7 +165,7 @@ static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] =
 /** rct2: 0x0088AD48 */
 static void PaintMonorailCyclesTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto imageId = session.TrackColours.WithIndex(MonorailCyclesTrackPiecesFlat[(direction & 1)]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
@@ -181,9 +179,8 @@ static void PaintMonorailCyclesTrackFlat(
         PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
     }
 
-    MetalASupportsPaintSetup(
-        session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::Centre, -1, height,
-        session.SupportColours);
+    MetalASupportsPaintSetupRotated(
+        session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -196,7 +193,7 @@ static void PaintMonorailCyclesTrackFlat(
 /** rct2: 0x0088ADD8 */
 static void PaintMonorailCyclesStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -229,7 +226,7 @@ static void PaintMonorailCyclesStation(
 /** rct2: 0x0088AD88 */
 static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
@@ -238,7 +235,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -259,7 +256,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -284,10 +281,11 @@ static constexpr uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_left_turn
 /** rct2: 0x0088AD98 */
 static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
-    PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
+        session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
 static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
@@ -307,7 +305,7 @@ static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[
 /** rct2: 0x0088ADB8 */
 static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles,
@@ -318,50 +316,24 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(
-                session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::Centre, supportSpecial,
-                supportHeight, session.SupportColours);
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, supportSpecial, supportHeight,
+                session.SupportColours);
             break;
         case 2:
-            if (direction == 0)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::BottomRightSide,
-                    supportSpecial, supportHeight, session.SupportColours);
-            if (direction == 1)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::BottomLeftSide,
-                    supportSpecial, supportHeight, session.SupportColours);
-            if (direction == 2)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::TopLeftSide,
-                    supportSpecial, supportHeight, session.SupportColours);
-            if (direction == 3)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::TopRightSide,
-                    supportSpecial, supportHeight, session.SupportColours);
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, supportSpecial, supportHeight,
+                session.SupportColours);
             break;
         case 5:
-            if (direction == 0)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::BottomLeftSide,
-                    supportSpecial, supportHeight, session.SupportColours);
-            if (direction == 1)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::TopLeftSide,
-                    supportSpecial, supportHeight, session.SupportColours);
-            if (direction == 2)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::TopRightSide,
-                    supportSpecial, supportHeight, session.SupportColours);
-            if (direction == 3)
-                MetalASupportsPaintSetup(
-                    session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::BottomRightSide,
-                    supportSpecial, supportHeight, session.SupportColours);
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, DirectionNext(direction), supportSpecial,
+                supportHeight, session.SupportColours);
             break;
         case 6:
-            MetalASupportsPaintSetup(
-                session, (direction & 1) ? kSupportType : MetalSupportType::StickAlt, MetalSupportPlace::Centre, supportSpecial,
-                supportHeight, session.SupportColours);
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), supportSpecial, supportHeight,
+                session.SupportColours);
             break;
     }
 
@@ -444,16 +416,17 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
 /** rct2: 0x0088ADA8 */
 static void PaintMonorailCyclesTrackLeftQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    PaintMonorailCyclesTrackRightQuarterTurn5Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
+        session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x0088ADC8 */
 static void PaintMonorailCyclesTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (direction == 2 || direction == 3)
     {
@@ -487,14 +460,16 @@ static void PaintMonorailCyclesTrackSBendLeft(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -571,7 +546,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
 /** rct2: 0x*/
 static void PaintMonorailCyclesTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (direction == 2 || direction == 3)
     {
@@ -605,14 +580,16 @@ static void PaintMonorailCyclesTrackSBendRight(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height - 2, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height - 2, session.SupportColours);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
         }
     }

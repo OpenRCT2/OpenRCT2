@@ -22,6 +22,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionGoKarts,
+        .supportType = WoodenSupportType::Truss,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},
         .ExtraTrackPieces = {},
     }),

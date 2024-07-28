@@ -24,6 +24,7 @@
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
+#include "../paint/track/Support.h"
 #include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
@@ -288,6 +289,7 @@ enum class RideConstructionWindowContext : uint8_t
 struct TrackDrawerEntry
 {
     TRACK_PAINT_FUNCTION_GETTER Drawer = nullptr;
+    SupportType supportType{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     RideTrackGroup EnabledTrackPieces{};
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,

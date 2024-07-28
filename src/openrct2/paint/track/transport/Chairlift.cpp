@@ -24,8 +24,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Truss;
-
 enum
 {
     SPR_CHAIRLIFT_CABLE_FLAT_SW_NE = 20500,
@@ -85,7 +83,7 @@ const uint32_t chairlift_bullwheel_frames[] = {
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_4,
 };
 
-static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segments, uint16_t height)
+static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segments, uint16_t height, SupportType supportType)
 {
     bool success = false;
 
@@ -97,7 +95,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
 
         if (MetalASupportsPaintSetup(
-                session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
+                session, supportType.metal, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
         {
             success = true;
         }
@@ -117,7 +115,8 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
         uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session.Support.height;
-        MetalASupportsPaintSetup(session, kSupportType, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
         supportSegments[s].height = temp;
     }
 }
@@ -188,7 +187,7 @@ static bool ChairliftPaintUtilIsLastTrack(
 
 static void ChairliftPaintStationNeSw(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     const CoordsXY pos = session.MapPosition;
     auto trackType = trackElement.GetTrackType();
@@ -279,7 +278,7 @@ static void ChairliftPaintStationNeSw(
 
 static void ChairliftPaintStationSeNw(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     const CoordsXY pos = session.MapPosition;
     auto trackType = trackElement.GetTrackType();
@@ -376,21 +375,21 @@ static void ChairliftPaintStationSeNw(
 /** rct2: 0x00744068 */
 static void ChairliftPaintStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (direction % 2)
     {
-        ChairliftPaintStationSeNw(session, ride, trackSequence, direction, height, trackElement);
+        ChairliftPaintStationSeNw(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
     else
     {
-        ChairliftPaintStationNeSw(session, ride, trackSequence, direction, height, trackElement);
+        ChairliftPaintStationNeSw(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 }
 
 static void ChairliftPaintFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
     if (direction & 1)
@@ -413,7 +412,7 @@ static void ChairliftPaintFlat(
 /** rct2: 0x00743FD8 */
 static void ChairliftPaint25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -451,7 +450,7 @@ static void ChairliftPaint25DegUp(
 /** rct2: 0x00743FD8 */
 static void ChairliftPaintFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -498,7 +497,7 @@ static void ChairliftPaintFlatTo25DegUp(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
+    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -506,7 +505,7 @@ static void ChairliftPaintFlatTo25DegUp(
 /** rct2: 0x00743FF8 */
 static void ChairliftPaint25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -553,7 +552,7 @@ static void ChairliftPaint25DegUpToFlat(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height);
+    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -561,31 +560,31 @@ static void ChairliftPaint25DegUpToFlat(
 /** rct2: 0x00744008 */
 static void ChairliftPaint25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    ChairliftPaint25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    ChairliftPaint25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x00744018 */
 static void ChairliftPaintFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    ChairliftPaint25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    ChairliftPaint25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x00744028 */
 static void ChairliftPaint25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    ChairliftPaintFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    ChairliftPaintFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x00744038 */
 static void ChairliftPaintLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -645,7 +644,7 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
 
     ChairliftPaintUtilDrawSupports(
         session, PaintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::bottomLeftSide), direction),
-        height);
+        height, supportType);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -654,9 +653,9 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
 /** rct2: 0x00744048 */
 static void ChairliftPaintRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    ChairliftPaintLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    ChairliftPaintLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
 /* 0x008AAA0C */

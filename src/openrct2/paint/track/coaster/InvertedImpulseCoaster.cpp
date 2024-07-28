@@ -23,12 +23,10 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
-
 /** rct2: 0x008B0460 */
 static void InvertedImpulseRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -49,7 +47,7 @@ static void InvertedImpulseRCTrackFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedFlat);
@@ -59,7 +57,7 @@ static void InvertedImpulseRCTrackFlat(
 /** rct2: 0x008B0470, 0x008B0480, 0x008B0490 */
 static void InvertedImpulseRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][3] = {
         { SPR_STATION_BASE_C_SW_NE, 19662, SPR_STATION_INVERTED_BAR_B_SW_NE },
@@ -77,7 +75,7 @@ static void InvertedImpulseRCTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.SupportColours.WithIndex(imageIds[direction][2]), { 0, 6, height + 29 },
         { { 0, 6, height + 29 }, { 32, 20, 3 } });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -87,7 +85,7 @@ static void InvertedImpulseRCTrackStation(
 /** rct2: 0x008B04A0 */
 static void InvertedImpulseRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -120,19 +118,19 @@ static void InvertedImpulseRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 62, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 62, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 62, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 62, session.SupportColours);
                 break;
         }
     }
@@ -151,7 +149,7 @@ static void InvertedImpulseRCTrack25DegUp(
 /** rct2: 0x008B04B0 */
 static void InvertedImpulseRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -191,7 +189,7 @@ static void InvertedImpulseRCTrack60DegUp(
 /** rct2: 0x008B04C0 */
 static void InvertedImpulseRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -222,19 +220,19 @@ static void InvertedImpulseRCTrackFlatTo25DegUp(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 54, session.SupportColours);
             break;
         case 1:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 54, session.SupportColours);
             break;
         case 2:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 54, session.SupportColours);
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 54, session.SupportColours);
             break;
     }
 
@@ -252,7 +250,7 @@ static void InvertedImpulseRCTrackFlatTo25DegUp(
 /** rct2: 0x008B04D0 */
 static void InvertedImpulseRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -298,7 +296,7 @@ static void InvertedImpulseRCTrack25DegUpTo60DegUp(
 /** rct2: 0x008B04E0 */
 static void InvertedImpulseRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -344,7 +342,7 @@ static void InvertedImpulseRCTrack60DegUpTo25DegUp(
 /** rct2: 0x008B04F0 */
 static void InvertedImpulseRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -375,19 +373,19 @@ static void InvertedImpulseRCTrack25DegUpToFlat(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 52, session.SupportColours);
             break;
         case 1:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 52, session.SupportColours);
             break;
         case 2:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 52, session.SupportColours);
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 52, session.SupportColours);
             break;
     }
 
@@ -405,55 +403,57 @@ static void InvertedImpulseRCTrack25DegUpToFlat(
 /** rct2: 0x008B0500 */
 static void InvertedImpulseRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0510 */
 static void InvertedImpulseRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0520 */
 static void InvertedImpulseRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0530 */
 static void InvertedImpulseRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack60DegUpTo25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0540 */
 static void InvertedImpulseRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack25DegUpTo60DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0550 */
 static void InvertedImpulseRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B05A0 */
 static void InvertedImpulseRCTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -494,15 +494,15 @@ static void InvertedImpulseRCTrack90DegUp(
 /** rct2: 0x008B05B0 */
 static void InvertedImpulseRCTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0560 */
 static void InvertedImpulseRCTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -547,15 +547,16 @@ static void InvertedImpulseRCTrack60DegUpTo90DegUp(
 /** rct2: 0x008B0570 */
 static void InvertedImpulseRCTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack60DegUpTo90DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0580 */
 static void InvertedImpulseRCTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -596,7 +597,7 @@ static void InvertedImpulseRCTrack90DegUpTo60DegUp(
 /** rct2: 0x008B0590 */
 static void InvertedImpulseRCTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -640,7 +641,7 @@ static void InvertedImpulseRCTrack60DegDownTo90DegDown(
 /** rct2: 0x008B05C0 */
 static void InvertedImpulseRCTrackLeftQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -690,7 +691,7 @@ static void InvertedImpulseRCTrackLeftQuarterTurn190DegUp(
 /** rct2: 0x008B05D0 */
 static void InvertedImpulseRCTrackRightQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -740,17 +741,19 @@ static void InvertedImpulseRCTrackRightQuarterTurn190DegUp(
 /** rct2: 0x008B05E0 */
 static void InvertedImpulseRCTrackLeftQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrackRightQuarterTurn190DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedImpulseRCTrackRightQuarterTurn190DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B05F0 */
 static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedImpulseRCTrackLeftQuarterTurn190DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedImpulseRCTrackLeftQuarterTurn190DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(int32_t trackType)

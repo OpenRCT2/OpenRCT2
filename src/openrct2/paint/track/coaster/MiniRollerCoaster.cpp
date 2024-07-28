@@ -23,8 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
-
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_OPEN = 18742;
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_OPEN = 18743;
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED = 18744;
@@ -40,7 +38,7 @@ static constexpr uint32_t _MiniRCBlockBrakeImages[kNumOrthogonalDirections][2] =
 /** rct2: 0x008A4ABC */
 static void MiniRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -53,7 +51,7 @@ static void MiniRCTrackFlat(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -73,7 +71,7 @@ static void MiniRCTrackFlat(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                 }
                 break;
             case 3:
@@ -100,7 +98,7 @@ static void MiniRCTrackFlat(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -123,7 +121,7 @@ static void MiniRCTrackFlat(
 
 static void MiniRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { 18746, SPR_STATION_BASE_A_SW_NE },
@@ -158,7 +156,7 @@ static void MiniRCTrackStation(
 /** rct2: 0x008A4ACC */
 static void MiniRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -171,7 +169,7 @@ static void MiniRCTrack25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -191,7 +189,7 @@ static void MiniRCTrack25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                 }
                 break;
             case 3:
@@ -217,7 +215,7 @@ static void MiniRCTrack25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -237,7 +235,7 @@ static void MiniRCTrack25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                 }
                 break;
             case 3:
@@ -267,7 +265,7 @@ static void MiniRCTrack25DegUp(
 /** rct2: 0x008A4ADC */
 static void MiniRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -277,7 +275,8 @@ static void MiniRCTrack60DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 38, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 38, height, session.SupportColours);
             }
             break;
         case 1:
@@ -296,7 +295,8 @@ static void MiniRCTrack60DegUp(
                 { { 0, 27, height }, { 32, 1, 98 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 38, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 38, height, session.SupportColours);
             }
             break;
         case 3:
@@ -325,7 +325,7 @@ static void MiniRCTrack60DegUp(
 /** rct2: 0x008A4AEC */
 static void MiniRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -338,7 +338,7 @@ static void MiniRCTrackFlatTo25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -358,7 +358,7 @@ static void MiniRCTrackFlatTo25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                 }
                 break;
             case 3:
@@ -384,7 +384,7 @@ static void MiniRCTrackFlatTo25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -404,7 +404,7 @@ static void MiniRCTrackFlatTo25DegUp(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                 }
                 break;
             case 3:
@@ -434,7 +434,7 @@ static void MiniRCTrackFlatTo25DegUp(
 /** rct2: 0x008A4AFC */
 static void MiniRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -444,7 +444,8 @@ static void MiniRCTrack25DegUpTo60DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 18, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 18, height, session.SupportColours);
             }
             break;
         case 1:
@@ -469,7 +470,8 @@ static void MiniRCTrack25DegUpTo60DegUp(
                 { { 0, 27, height }, { 32, 1, 66 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 18, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 18, height, session.SupportColours);
             }
             break;
         case 3:
@@ -498,7 +500,7 @@ static void MiniRCTrack25DegUpTo60DegUp(
 /** rct2: 0x008A4B0C */
 static void MiniRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -508,7 +510,8 @@ static void MiniRCTrack60DegUpTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 26, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 26, height, session.SupportColours);
             }
             break;
         case 1:
@@ -533,7 +536,8 @@ static void MiniRCTrack60DegUpTo25DegUp(
                 { { 0, 27, height }, { 32, 1, 66 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 26, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 26, height, session.SupportColours);
             }
             break;
         case 3:
@@ -562,7 +566,7 @@ static void MiniRCTrack60DegUpTo25DegUp(
 /** rct2: 0x008A4B1C */
 static void MiniRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -575,7 +579,7 @@ static void MiniRCTrack25DegUpToFlat(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -595,7 +599,7 @@ static void MiniRCTrack25DegUpToFlat(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                 }
                 break;
             case 3:
@@ -621,7 +625,7 @@ static void MiniRCTrack25DegUpToFlat(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                 }
                 break;
             case 1:
@@ -641,7 +645,7 @@ static void MiniRCTrack25DegUpToFlat(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                 }
                 break;
             case 3:
@@ -671,55 +675,55 @@ static void MiniRCTrack25DegUpToFlat(
 /** rct2: 0x008A4B2C */
 static void MiniRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4B3C */
 static void MiniRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4B4C */
 static void MiniRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4B5C */
 static void MiniRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4B6C */
 static void MiniRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4B7C */
 static void MiniRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4B8C */
 static void MiniRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -731,7 +735,7 @@ static void MiniRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18851), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -745,7 +749,7 @@ static void MiniRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18861), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -892,7 +896,7 @@ static void MiniRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18852), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -906,7 +910,7 @@ static void MiniRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18842), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -934,16 +938,16 @@ static void MiniRCTrackLeftQuarterTurn5(
 /** rct2: 0x008A4B9C */
 static void MiniRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4BAC */
 static void MiniRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -956,7 +960,8 @@ static void MiniRCTrackFlatToLeftBank(
                 { { 0, 27, height }, { 32, 1, 26 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
@@ -978,7 +983,8 @@ static void MiniRCTrackFlatToLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1000,7 +1006,7 @@ static void MiniRCTrackFlatToLeftBank(
 /** rct2: 0x008A4BBC */
 static void MiniRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1010,7 +1016,8 @@ static void MiniRCTrackFlatToRightBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1032,7 +1039,8 @@ static void MiniRCTrackFlatToRightBank(
                 { { 0, 27, height }, { 32, 1, 26 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1057,7 +1065,7 @@ static void MiniRCTrackFlatToRightBank(
 /** rct2: 0x008A4BCC */
 static void MiniRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1070,7 +1078,8 @@ static void MiniRCTrackLeftBankToFlat(
                 { { 0, 27, height }, { 32, 1, 26 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1092,7 +1101,8 @@ static void MiniRCTrackLeftBankToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1114,7 +1124,7 @@ static void MiniRCTrackLeftBankToFlat(
 /** rct2: 0x008A4BDC */
 static void MiniRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1124,7 +1134,8 @@ static void MiniRCTrackRightBankToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1146,7 +1157,8 @@ static void MiniRCTrackRightBankToFlat(
                 { { 0, 27, height }, { 32, 1, 26 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1171,7 +1183,7 @@ static void MiniRCTrackRightBankToFlat(
 /** rct2: 0x008A4BEC */
 static void MiniRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1186,7 +1198,7 @@ static void MiniRCTrackBankedLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18882), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1200,7 +1212,7 @@ static void MiniRCTrackBankedLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18881), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1347,7 +1359,7 @@ static void MiniRCTrackBankedLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18872), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1364,7 +1376,7 @@ static void MiniRCTrackBankedLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(18862), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -1392,16 +1404,16 @@ static void MiniRCTrackBankedLeftQuarterTurn5(
 /** rct2: 0x008A4BFC */
 static void MiniRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4C0C */
 static void MiniRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1414,7 +1426,8 @@ static void MiniRCTrackLeftBankTo25DegUp(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1436,7 +1449,8 @@ static void MiniRCTrackLeftBankTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1465,7 +1479,7 @@ static void MiniRCTrackLeftBankTo25DegUp(
 /** rct2: 0x008A4C1C */
 static void MiniRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1475,7 +1489,8 @@ static void MiniRCTrackRightBankTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1497,7 +1512,8 @@ static void MiniRCTrackRightBankTo25DegUp(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1529,7 +1545,7 @@ static void MiniRCTrackRightBankTo25DegUp(
 /** rct2: 0x008A4C2C */
 static void MiniRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1542,7 +1558,8 @@ static void MiniRCTrack25DegUpToLeftBank(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1564,7 +1581,8 @@ static void MiniRCTrack25DegUpToLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1593,7 +1611,7 @@ static void MiniRCTrack25DegUpToLeftBank(
 /** rct2: 0x008A4C3C */
 static void MiniRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1603,7 +1621,8 @@ static void MiniRCTrack25DegUpToRightBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1625,7 +1644,8 @@ static void MiniRCTrack25DegUpToRightBank(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1657,39 +1677,39 @@ static void MiniRCTrack25DegUpToRightBank(
 /** rct2: 0x008A4C4C */
 static void MiniRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4C5C */
 static void MiniRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4C6C */
 static void MiniRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4C7C */
 static void MiniRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4C8C */
 static void MiniRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1699,7 +1719,8 @@ static void MiniRCTrackLeftBank(
                 { { 0, 27, height }, { 32, 1, 26 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
@@ -1718,7 +1739,8 @@ static void MiniRCTrackLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 3:
@@ -1740,15 +1762,15 @@ static void MiniRCTrackLeftBank(
 /** rct2: 0x008A4C9C */
 static void MiniRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4CAC */
 static void MiniRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1760,7 +1782,7 @@ static void MiniRCTrackLeftQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18936), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1774,7 +1796,7 @@ static void MiniRCTrackLeftQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18946), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1916,7 +1938,7 @@ static void MiniRCTrackLeftQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18945), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1930,7 +1952,7 @@ static void MiniRCTrackLeftQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18955), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -1958,7 +1980,7 @@ static void MiniRCTrackLeftQuarterTurn525DegUp(
 /** rct2: 0x008A4CBC */
 static void MiniRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1970,7 +1992,7 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18916), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1984,7 +2006,7 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18926), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2125,7 +2147,7 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18925), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2139,7 +2161,7 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(18935), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -2167,25 +2189,25 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
 /** rct2: 0x008A4CCC */
 static void MiniRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MiniRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4CDC */
 static void MiniRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4CEC */
 static void MiniRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2197,7 +2219,7 @@ static void MiniRCTrackSBendLeft(
                         session, direction, session.TrackColours.WithIndex(18900), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2211,7 +2233,7 @@ static void MiniRCTrackSBendLeft(
                         session, direction, session.TrackColours.WithIndex(18903), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2242,7 +2264,7 @@ static void MiniRCTrackSBendLeft(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18901), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 3, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2288,7 +2310,7 @@ static void MiniRCTrackSBendLeft(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18901), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2315,7 +2337,7 @@ static void MiniRCTrackSBendLeft(
                         session, direction, session.TrackColours.WithIndex(18903), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2329,7 +2351,7 @@ static void MiniRCTrackSBendLeft(
                         session, direction, session.TrackColours.WithIndex(18900), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2364,7 +2386,7 @@ static void MiniRCTrackSBendLeft(
 /** rct2: 0x008A4CFC */
 static void MiniRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2376,7 +2398,7 @@ static void MiniRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18908), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2390,7 +2412,7 @@ static void MiniRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18911), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2422,7 +2444,7 @@ static void MiniRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18909), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2467,7 +2489,7 @@ static void MiniRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18909), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2496,7 +2518,7 @@ static void MiniRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18911), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2510,7 +2532,7 @@ static void MiniRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18908), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2545,7 +2567,7 @@ static void MiniRCTrackSBendRight(
 /** rct2: 0x008A4D3C */
 static void MiniRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2557,7 +2579,7 @@ static void MiniRCTrackLeftQuarterTurn3(
                         session, direction, session.TrackColours.WithIndex(18821), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2571,7 +2593,7 @@ static void MiniRCTrackLeftQuarterTurn3(
                         session, direction, session.TrackColours.WithIndex(18827), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2647,7 +2669,7 @@ static void MiniRCTrackLeftQuarterTurn3(
                         session, direction, session.TrackColours.WithIndex(18822), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2661,7 +2683,7 @@ static void MiniRCTrackLeftQuarterTurn3(
                         session, direction, session.TrackColours.WithIndex(18816), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -2689,16 +2711,16 @@ static void MiniRCTrackLeftQuarterTurn3(
 /** rct2: 0x008A4D4C */
 static void MiniRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4D5C */
 static void MiniRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2713,7 +2735,7 @@ static void MiniRCTrackLeftQuarterTurn3Bank(
                         session, direction, session.TrackColours.WithIndex(18840), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2727,7 +2749,7 @@ static void MiniRCTrackLeftQuarterTurn3Bank(
                         session, direction, session.TrackColours.WithIndex(18839), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2803,7 +2825,7 @@ static void MiniRCTrackLeftQuarterTurn3Bank(
                         session, direction, session.TrackColours.WithIndex(18834), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2820,7 +2842,7 @@ static void MiniRCTrackLeftQuarterTurn3Bank(
                         session, direction, session.TrackColours.WithIndex(18828), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -2848,16 +2870,16 @@ static void MiniRCTrackLeftQuarterTurn3Bank(
 /** rct2: 0x008A4D6C */
 static void MiniRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4D7C */
 static void MiniRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2868,7 +2890,7 @@ static void MiniRCTrackLeftQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18967), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2880,7 +2902,7 @@ static void MiniRCTrackLeftQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18971), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2922,7 +2944,7 @@ static void MiniRCTrackLeftQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18968), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2934,7 +2956,7 @@ static void MiniRCTrackLeftQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18964), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -2962,7 +2984,7 @@ static void MiniRCTrackLeftQuarterTurn325DegUp(
 /** rct2: 0x008A4D8C */
 static void MiniRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2973,7 +2995,7 @@ static void MiniRCTrackRightQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18956), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2985,7 +3007,7 @@ static void MiniRCTrackRightQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18960), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3027,7 +3049,7 @@ static void MiniRCTrackRightQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18959), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3039,7 +3061,7 @@ static void MiniRCTrackRightQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18963), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -3067,25 +3089,25 @@ static void MiniRCTrackRightQuarterTurn325DegUp(
 /** rct2: 0x008A4D9C */
 static void MiniRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MiniRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4DAC */
 static void MiniRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4DBC */
 static void MiniRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3100,7 +3122,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18998), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3114,7 +3136,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18997), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3190,7 +3212,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18992), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3207,7 +3229,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18986), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -3247,7 +3269,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18998), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3261,7 +3283,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18997), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -3328,7 +3350,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18986), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3342,7 +3364,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18992), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3375,7 +3397,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
 /** rct2: 0x008A4DCC */
 static void MiniRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3387,7 +3409,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18972), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3401,7 +3423,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18978), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3483,7 +3505,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18984), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3497,7 +3519,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18983), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -3534,7 +3556,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18978), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3551,7 +3573,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18972), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -3621,7 +3643,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18984), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3635,7 +3657,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(18983), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3665,7 +3687,7 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
 /** rct2: 0x008A4DDC */
 static void MiniRCTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 4)
     {
@@ -3673,13 +3695,14 @@ static void MiniRCTrackLeftHalfBankedHelixDownSmall(
         direction = (direction - 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MiniRCTrackRightHalfBankedHelixUpSmall(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4DEC */
 static void MiniRCTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 4)
     {
@@ -3687,13 +3710,13 @@ static void MiniRCTrackRightHalfBankedHelixDownSmall(
         direction = (direction + 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4DFC */
 static void MiniRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3708,7 +3731,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19042), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3722,7 +3745,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19041), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3869,7 +3892,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19032), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3886,7 +3909,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19022), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -3926,7 +3949,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19042), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3940,7 +3963,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19041), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -4077,7 +4100,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19022), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4091,7 +4114,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19032), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -4124,7 +4147,7 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
 /** rct2: 0x008A4E0C */
 static void MiniRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4136,7 +4159,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19000), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4150,7 +4173,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19010), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -4302,7 +4325,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19020), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -4316,7 +4339,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19019), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -4353,7 +4376,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19010), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -4370,7 +4393,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19000), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -4511,7 +4534,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19020), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4525,7 +4548,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(19019), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -4555,7 +4578,7 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
 /** rct2: 0x008A4E1C */
 static void MiniRCTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 7)
     {
@@ -4563,13 +4586,14 @@ static void MiniRCTrackLeftHalfBankedHelixDownLarge(
         direction = (direction - 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MiniRCTrackRightHalfBankedHelixUpLarge(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4E2C */
 static void MiniRCTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 7)
     {
@@ -4577,13 +4601,13 @@ static void MiniRCTrackRightHalfBankedHelixDownLarge(
         direction = (direction + 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4E5C */
 static void MiniRCTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4629,7 +4653,7 @@ static void MiniRCTrackLeftQuarterTurn160DegUp(
 /** rct2: 0x008A4E3C */
 static void MiniRCTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4675,23 +4699,23 @@ static void MiniRCTrackRightQuarterTurn160DegUp(
 /** rct2: 0x008A4E4C */
 static void MiniRCTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MiniRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4E6C */
 static void MiniRCTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4E7C */
 static void MiniRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4702,7 +4726,8 @@ static void MiniRCTrackBrakes(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
@@ -4725,7 +4750,7 @@ static void MiniRCTrackBrakes(
 /** rct2: 0x008A50CC */
 static void MiniRCTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4735,7 +4760,8 @@ static void MiniRCTrack25DegUpLeftBanked(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 1:
@@ -4754,7 +4780,8 @@ static void MiniRCTrack25DegUpLeftBanked(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 3:
@@ -4783,7 +4810,7 @@ static void MiniRCTrack25DegUpLeftBanked(
 /** rct2: 0x008A50DC */
 static void MiniRCTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4793,7 +4820,8 @@ static void MiniRCTrack25DegUpRightBanked(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 1:
@@ -4812,7 +4840,8 @@ static void MiniRCTrack25DegUpRightBanked(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 3:
@@ -4841,11 +4870,11 @@ static void MiniRCTrack25DegUpRightBanked(
 /** rct2: 0x008A4E8C */
 static void MiniRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     PaintAddImageAsParentRotated(
         session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType, 6);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal, 6);
 
     switch (direction)
     {
@@ -4879,23 +4908,23 @@ static void MiniRCTrackOnRidePhoto(
 /** rct2: 0x008A50EC */
 static void MiniRCTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A50FC */
 static void MiniRCTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4EAC */
 static void MiniRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4907,7 +4936,7 @@ static void MiniRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19076), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4921,7 +4950,7 @@ static void MiniRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19084), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5026,7 +5055,7 @@ static void MiniRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19079), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5040,7 +5069,7 @@ static void MiniRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19087), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5066,7 +5095,7 @@ static void MiniRCTrackLeftEighthToDiag(
 /** rct2: 0x008A4EBC */
 static void MiniRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5078,7 +5107,7 @@ static void MiniRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19060), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5092,7 +5121,7 @@ static void MiniRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19068), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5197,7 +5226,7 @@ static void MiniRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19063), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5211,7 +5240,7 @@ static void MiniRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(19071), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5237,25 +5266,25 @@ static void MiniRCTrackRightEighthToDiag(
 /** rct2: 0x008A4ECC */
 static void MiniRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MiniRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4EDC */
 static void MiniRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MiniRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    MiniRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4EEC */
 static void MiniRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5267,7 +5296,7 @@ static void MiniRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19108), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5281,7 +5310,7 @@ static void MiniRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19116), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5386,7 +5415,7 @@ static void MiniRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19111), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5400,7 +5429,7 @@ static void MiniRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19119), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5426,7 +5455,7 @@ static void MiniRCTrackLeftEighthBankToDiag(
 /** rct2: 0x008A4EFC */
 static void MiniRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5438,7 +5467,7 @@ static void MiniRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19092), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5452,7 +5481,7 @@ static void MiniRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19100), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5557,7 +5586,7 @@ static void MiniRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19095), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5571,7 +5600,7 @@ static void MiniRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(19103), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -5597,25 +5626,25 @@ static void MiniRCTrackRightEighthBankToDiag(
 /** rct2: 0x008A4F0C */
 static void MiniRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MiniRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4F1C */
 static void MiniRCTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MiniRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    MiniRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A4E9C */
 static void MiniRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 19124, 19125, 19126, 19127 },
@@ -5628,7 +5657,7 @@ static void MiniRCTrackDiagFlat(
 
     if (trackSequence == 3)
         MetalASupportsPaintSetupRotated(
-            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
@@ -5638,7 +5667,7 @@ static void MiniRCTrackDiagFlat(
 /** rct2: 0x008A4F4C */
 static void MiniRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5747,7 +5776,7 @@ static void MiniRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5759,7 +5788,7 @@ static void MiniRCTrackDiag25DegUp(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -5774,7 +5803,7 @@ static void MiniRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5786,7 +5815,7 @@ static void MiniRCTrackDiag25DegUp(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -5811,7 +5840,7 @@ static void MiniRCTrackDiag25DegUp(
 /** rct2: 0x008A4FAC */
 static void MiniRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5876,7 +5905,7 @@ static void MiniRCTrackDiag60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 38, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 38, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5887,7 +5916,7 @@ static void MiniRCTrackDiag60DegUp(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 38, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 38, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -5911,7 +5940,7 @@ static void MiniRCTrackDiag60DegUp(
 /** rct2: 0x008A4F2C */
 static void MiniRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6020,7 +6049,7 @@ static void MiniRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6032,7 +6061,7 @@ static void MiniRCTrackDiagFlatTo25DegUp(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6047,7 +6076,7 @@ static void MiniRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6059,7 +6088,7 @@ static void MiniRCTrackDiagFlatTo25DegUp(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6084,7 +6113,7 @@ static void MiniRCTrackDiagFlatTo25DegUp(
 /** rct2: 0x008A4F8C */
 static void MiniRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6149,7 +6178,7 @@ static void MiniRCTrackDiag25DegUpTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 22, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -6160,7 +6189,7 @@ static void MiniRCTrackDiag25DegUpTo60DegUp(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 22, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -6184,7 +6213,7 @@ static void MiniRCTrackDiag25DegUpTo60DegUp(
 /** rct2: 0x008A4F9C */
 static void MiniRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6249,7 +6278,7 @@ static void MiniRCTrackDiag60DegUpTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 27, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 27, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -6260,7 +6289,7 @@ static void MiniRCTrackDiag60DegUpTo25DegUp(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 27, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 27, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -6284,7 +6313,7 @@ static void MiniRCTrackDiag60DegUpTo25DegUp(
 /** rct2: 0x008A4F3C */
 static void MiniRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6393,7 +6422,7 @@ static void MiniRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6405,7 +6434,7 @@ static void MiniRCTrackDiag25DegUpToFlat(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6420,7 +6449,7 @@ static void MiniRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6432,7 +6461,7 @@ static void MiniRCTrackDiag25DegUpToFlat(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6457,7 +6486,7 @@ static void MiniRCTrackDiag25DegUpToFlat(
 /** rct2: 0x008A4F7C */
 static void MiniRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6566,7 +6595,7 @@ static void MiniRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6578,7 +6607,7 @@ static void MiniRCTrackDiag25DegDown(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6593,7 +6622,7 @@ static void MiniRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6605,7 +6634,7 @@ static void MiniRCTrackDiag25DegDown(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6630,7 +6659,7 @@ static void MiniRCTrackDiag25DegDown(
 /** rct2: 0x008A4FDC */
 static void MiniRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6695,7 +6724,7 @@ static void MiniRCTrackDiag60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 30, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 30, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -6706,7 +6735,7 @@ static void MiniRCTrackDiag60DegDown(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 30, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 30, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -6730,7 +6759,7 @@ static void MiniRCTrackDiag60DegDown(
 /** rct2: 0x008A4F5C */
 static void MiniRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6836,7 +6865,7 @@ static void MiniRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6848,7 +6877,7 @@ static void MiniRCTrackDiagFlatTo25DegDown(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6863,7 +6892,7 @@ static void MiniRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6875,7 +6904,7 @@ static void MiniRCTrackDiagFlatTo25DegDown(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -6901,7 +6930,7 @@ static void MiniRCTrackDiagFlatTo25DegDown(
 /** rct2: 0x008A4FBC */
 static void MiniRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6966,7 +6995,7 @@ static void MiniRCTrackDiag25DegDownTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 23, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 23, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -6977,7 +7006,7 @@ static void MiniRCTrackDiag25DegDownTo60DegDown(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 23, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 23, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -7001,7 +7030,7 @@ static void MiniRCTrackDiag25DegDownTo60DegDown(
 /** rct2: 0x008A4FCC */
 static void MiniRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7066,7 +7095,7 @@ static void MiniRCTrackDiag60DegDownTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7077,7 +7106,7 @@ static void MiniRCTrackDiag60DegDownTo25DegDown(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -7101,7 +7130,7 @@ static void MiniRCTrackDiag60DegDownTo25DegDown(
 /** rct2: 0x008A4F6C */
 static void MiniRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7210,7 +7239,7 @@ static void MiniRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7222,7 +7251,7 @@ static void MiniRCTrackDiag25DegDownToFlat(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -7237,7 +7266,7 @@ static void MiniRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7249,7 +7278,7 @@ static void MiniRCTrackDiag25DegDownToFlat(
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
@@ -7274,7 +7303,7 @@ static void MiniRCTrackDiag25DegDownToFlat(
 /** rct2: 0x008A500C */
 static void MiniRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7342,7 +7371,7 @@ static void MiniRCTrackDiagFlatToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7353,7 +7382,7 @@ static void MiniRCTrackDiagFlatToLeftBank(
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
@@ -7376,7 +7405,7 @@ static void MiniRCTrackDiagFlatToLeftBank(
 /** rct2: 0x008A501C */
 static void MiniRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7444,7 +7473,7 @@ static void MiniRCTrackDiagFlatToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7455,7 +7484,7 @@ static void MiniRCTrackDiagFlatToRightBank(
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
@@ -7478,7 +7507,7 @@ static void MiniRCTrackDiagFlatToRightBank(
 /** rct2: 0x008A502C */
 static void MiniRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7546,7 +7575,7 @@ static void MiniRCTrackDiagLeftBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7557,7 +7586,7 @@ static void MiniRCTrackDiagLeftBankToFlat(
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
@@ -7580,7 +7609,7 @@ static void MiniRCTrackDiagLeftBankToFlat(
 /** rct2: 0x008A503C */
 static void MiniRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7648,7 +7677,7 @@ static void MiniRCTrackDiagRightBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7659,7 +7688,7 @@ static void MiniRCTrackDiagRightBankToFlat(
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
@@ -7682,7 +7711,7 @@ static void MiniRCTrackDiagRightBankToFlat(
 /** rct2: 0x008A506C */
 static void MiniRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7750,7 +7779,7 @@ static void MiniRCTrackDiagLeftBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7761,7 +7790,7 @@ static void MiniRCTrackDiagLeftBankTo25DegUp(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -7784,7 +7813,7 @@ static void MiniRCTrackDiagLeftBankTo25DegUp(
 /** rct2: 0x008A507C */
 static void MiniRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7852,7 +7881,7 @@ static void MiniRCTrackDiagRightBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7863,7 +7892,7 @@ static void MiniRCTrackDiagRightBankTo25DegUp(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -7886,7 +7915,7 @@ static void MiniRCTrackDiagRightBankTo25DegUp(
 /** rct2: 0x008A504C */
 static void MiniRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7954,7 +7983,7 @@ static void MiniRCTrackDiag25DegUpToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7965,7 +7994,7 @@ static void MiniRCTrackDiag25DegUpToLeftBank(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -7989,7 +8018,7 @@ static void MiniRCTrackDiag25DegUpToLeftBank(
 /** rct2: 0x008A505C */
 static void MiniRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8057,7 +8086,7 @@ static void MiniRCTrackDiag25DegUpToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8068,7 +8097,7 @@ static void MiniRCTrackDiag25DegUpToRightBank(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -8092,7 +8121,7 @@ static void MiniRCTrackDiag25DegUpToRightBank(
 /** rct2: 0x008A508C */
 static void MiniRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8157,7 +8186,7 @@ static void MiniRCTrackDiagLeftBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8168,7 +8197,7 @@ static void MiniRCTrackDiagLeftBankTo25DegDown(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -8193,7 +8222,7 @@ static void MiniRCTrackDiagLeftBankTo25DegDown(
 /** rct2: 0x008A509C */
 static void MiniRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8258,7 +8287,7 @@ static void MiniRCTrackDiagRightBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8269,7 +8298,7 @@ static void MiniRCTrackDiagRightBankTo25DegDown(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -8294,7 +8323,7 @@ static void MiniRCTrackDiagRightBankTo25DegDown(
 /** rct2: 0x008A50AC */
 static void MiniRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8362,7 +8391,7 @@ static void MiniRCTrackDiag25DegDownToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8373,7 +8402,7 @@ static void MiniRCTrackDiag25DegDownToLeftBank(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -8396,7 +8425,7 @@ static void MiniRCTrackDiag25DegDownToLeftBank(
 /** rct2: 0x008A50BC */
 static void MiniRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8464,7 +8493,7 @@ static void MiniRCTrackDiag25DegDownToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8475,7 +8504,7 @@ static void MiniRCTrackDiag25DegDownToRightBank(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -8498,7 +8527,7 @@ static void MiniRCTrackDiag25DegDownToRightBank(
 /** rct2: 0x008A4FEC */
 static void MiniRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8563,7 +8592,7 @@ static void MiniRCTrackDiagLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8574,7 +8603,7 @@ static void MiniRCTrackDiagLeftBank(
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
@@ -8597,7 +8626,7 @@ static void MiniRCTrackDiagLeftBank(
 /** rct2: 0x008A4FFC */
 static void MiniRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8662,7 +8691,7 @@ static void MiniRCTrackDiagRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8673,7 +8702,7 @@ static void MiniRCTrackDiagRightBank(
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
@@ -8696,7 +8725,7 @@ static void MiniRCTrackDiagRightBank(
 /** rct2: 0x008A530C */
 static void MiniRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
@@ -8708,7 +8737,8 @@ static void MiniRCTrackBlockBrakes(
         case 2:
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
@@ -8728,7 +8758,7 @@ static void MiniRCTrackBlockBrakes(
 /** rct2: 0x008A510C */
 static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8739,7 +8769,7 @@ static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19317), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8752,7 +8782,7 @@ static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19321), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -8795,7 +8825,7 @@ static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(19318), { 6, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -8808,7 +8838,7 @@ static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19314), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -8836,7 +8866,7 @@ static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
 /** rct2: 0x008A511C */
 static void MiniRCTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8847,7 +8877,7 @@ static void MiniRCTrackRightBankedQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19306), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8860,7 +8890,7 @@ static void MiniRCTrackRightBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(19310), { 0, 6, height },
                         { { 0, 27, height }, { 32, 1, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -8903,7 +8933,7 @@ static void MiniRCTrackRightBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(19309), { 6, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -8916,7 +8946,7 @@ static void MiniRCTrackRightBankedQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19313), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -8944,25 +8974,27 @@ static void MiniRCTrackRightBankedQuarterTurn325DegUp(
 /** rct2: 0x008A512C */
 static void MiniRCTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MiniRCTrackRightBankedQuarterTurn325DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A513C */
 static void MiniRCTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MiniRCTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftBankedQuarterTurn325DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A514C */
 static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8974,7 +9006,7 @@ static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19286), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8988,7 +9020,7 @@ static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19296), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9133,7 +9165,7 @@ static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19295), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -9147,7 +9179,7 @@ static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19305), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -9175,7 +9207,7 @@ static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
 /** rct2: 0x008A515C */
 static void MiniRCTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -9187,7 +9219,7 @@ static void MiniRCTrackRightBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19266), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -9201,7 +9233,7 @@ static void MiniRCTrackRightBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19276), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9345,7 +9377,7 @@ static void MiniRCTrackRightBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19275), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -9359,7 +9391,7 @@ static void MiniRCTrackRightBankedQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(19285), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -9387,25 +9419,27 @@ static void MiniRCTrackRightBankedQuarterTurn525DegUp(
 /** rct2: 0x008A516C */
 static void MiniRCTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MiniRCTrackRightBankedQuarterTurn525DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A517C */
 static void MiniRCTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MiniRCTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniRCTrackLeftBankedQuarterTurn525DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A518C */
 static void MiniRCTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9415,7 +9449,8 @@ static void MiniRCTrack25DegUpToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9437,7 +9472,8 @@ static void MiniRCTrack25DegUpToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9466,7 +9502,7 @@ static void MiniRCTrack25DegUpToLeftBanked25DegUp(
 /** rct2: 0x008A519C */
 static void MiniRCTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9476,7 +9512,8 @@ static void MiniRCTrack25DegUpToRightBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9498,7 +9535,8 @@ static void MiniRCTrack25DegUpToRightBanked25DegUp(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9527,7 +9565,7 @@ static void MiniRCTrack25DegUpToRightBanked25DegUp(
 /** rct2: 0x008A51AC */
 static void MiniRCTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9537,7 +9575,8 @@ static void MiniRCTrackLeftBanked25DegUpTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9559,7 +9598,8 @@ static void MiniRCTrackLeftBanked25DegUpTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9588,7 +9628,7 @@ static void MiniRCTrackLeftBanked25DegUpTo25DegUp(
 /** rct2: 0x008A51BC */
 static void MiniRCTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9598,7 +9638,8 @@ static void MiniRCTrackRightBanked25DegUpTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9620,7 +9661,8 @@ static void MiniRCTrackRightBanked25DegUpTo25DegUp(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9649,39 +9691,41 @@ static void MiniRCTrackRightBanked25DegUpTo25DegUp(
 /** rct2: 0x008A51CC */
 static void MiniRCTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackRightBanked25DegUpTo25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A51DC */
 static void MiniRCTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A51EC */
 static void MiniRCTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpToRightBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A51FC */
 static void MiniRCTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A520C */
 static void MiniRCTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9691,7 +9735,8 @@ static void MiniRCTrackLeftBankedFlatToLeftBanked25DegUp(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9710,7 +9755,8 @@ static void MiniRCTrackLeftBankedFlatToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9739,7 +9785,7 @@ static void MiniRCTrackLeftBankedFlatToLeftBanked25DegUp(
 /** rct2: 0x008A521C */
 static void MiniRCTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9749,7 +9795,8 @@ static void MiniRCTrackRightBankedFlatToRightBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9768,7 +9815,8 @@ static void MiniRCTrackRightBankedFlatToRightBanked25DegUp(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9797,7 +9845,7 @@ static void MiniRCTrackRightBankedFlatToRightBanked25DegUp(
 /** rct2: 0x008A524C */
 static void MiniRCTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9807,7 +9855,8 @@ static void MiniRCTrackLeftBanked25DegUpToLeftBankedFlat(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9826,7 +9875,8 @@ static void MiniRCTrackLeftBanked25DegUpToLeftBankedFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9855,7 +9905,7 @@ static void MiniRCTrackLeftBanked25DegUpToLeftBankedFlat(
 /** rct2: 0x008A525C */
 static void MiniRCTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9865,7 +9915,8 @@ static void MiniRCTrackRightBanked25DegUpToRightBankedFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9884,7 +9935,8 @@ static void MiniRCTrackRightBanked25DegUpToRightBankedFlat(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 3:
@@ -9913,39 +9965,43 @@ static void MiniRCTrackRightBanked25DegUpToRightBankedFlat(
 /** rct2: 0x008A526C */
 static void MiniRCTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackRightBanked25DegUpToRightBankedFlat(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A527C */
 static void MiniRCTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackLeftBanked25DegUpToLeftBankedFlat(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A522C */
 static void MiniRCTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackRightBankedFlatToRightBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A523C */
 static void MiniRCTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackLeftBankedFlatToLeftBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A528C */
 static void MiniRCTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9955,7 +10011,8 @@ static void MiniRCTrackFlatToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 1:
@@ -9977,7 +10034,8 @@ static void MiniRCTrackFlatToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 3:
@@ -10006,7 +10064,7 @@ static void MiniRCTrackFlatToLeftBanked25DegUp(
 /** rct2: 0x008A529C */
 static void MiniRCTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10016,7 +10074,8 @@ static void MiniRCTrackFlatToRightBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 1:
@@ -10038,7 +10097,8 @@ static void MiniRCTrackFlatToRightBanked25DegUp(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             break;
         case 3:
@@ -10067,7 +10127,7 @@ static void MiniRCTrackFlatToRightBanked25DegUp(
 /** rct2: 0x008A52AC */
 static void MiniRCTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10077,7 +10137,8 @@ static void MiniRCTrackLeftBanked25DegUpToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 1:
@@ -10099,7 +10160,8 @@ static void MiniRCTrackLeftBanked25DegUpToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 3:
@@ -10128,7 +10190,7 @@ static void MiniRCTrackLeftBanked25DegUpToFlat(
 /** rct2: 0x008A52BC */
 static void MiniRCTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10138,7 +10200,8 @@ static void MiniRCTrackRightBanked25DegUpToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 1:
@@ -10160,7 +10223,8 @@ static void MiniRCTrackRightBanked25DegUpToFlat(
                 { { 0, 27, height }, { 32, 1, 34 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             break;
         case 3:
@@ -10189,38 +10253,38 @@ static void MiniRCTrackRightBanked25DegUpToFlat(
 /** rct2: 0x008A52CC */
 static void MiniRCTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A52DC */
 static void MiniRCTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A52EC */
 static void MiniRCTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008A52FC */
 static void MiniRCTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MiniRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 static void MiniRCTrackLeftCurvedLiftHill(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10231,7 +10295,7 @@ static void MiniRCTrackLeftCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19333), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -10243,7 +10307,7 @@ static void MiniRCTrackLeftCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19337), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -10285,7 +10349,7 @@ static void MiniRCTrackLeftCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19334), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 17, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -10297,7 +10361,7 @@ static void MiniRCTrackLeftCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19330), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 17, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -10324,7 +10388,7 @@ static void MiniRCTrackLeftCurvedLiftHill(
 
 static void MiniRCTrackRightCurvedLiftHill(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10335,7 +10399,7 @@ static void MiniRCTrackRightCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19322), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -10347,7 +10411,7 @@ static void MiniRCTrackRightCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19326), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -10389,7 +10453,7 @@ static void MiniRCTrackRightCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19325), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 17, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -10401,7 +10465,7 @@ static void MiniRCTrackRightCurvedLiftHill(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19329), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 17, height, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -10428,7 +10492,7 @@ static void MiniRCTrackRightCurvedLiftHill(
 
 static void MiniRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10439,7 +10503,8 @@ static void MiniRCTrackBooster(
                 { { 0, 6, height }, { 32, 20, 3 } });
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             break;
         case 1:
