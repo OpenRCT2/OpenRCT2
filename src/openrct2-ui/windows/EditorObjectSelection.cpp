@@ -854,8 +854,6 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             // Set window title and buttons
-            auto ft = Formatter::Common();
-            ft.Add<StringId>(ObjectSelectionPages[selected_tab].Caption);
             auto& titleWidget = widgets[WIDX_TITLE];
             auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -873,6 +871,14 @@ namespace OpenRCT2::Ui::Windows
                 titleWidget.text = STR_OBJECT_SELECTION;
                 installTrackWidget.type = WindowWidgetType::Empty;
             }
+
+            // Set title parameters for current page
+            const auto& currentPage = ObjectSelectionPages[selected_tab];
+            auto ft = Formatter::Common();
+            if (!currentPage.subTabs.empty())
+                ft.Add<StringId>(currentPage.subTabs[_selectedSubTab].tooltip);
+            else
+                ft.Add<StringId>(currentPage.Caption);
 
             // Set filter dropdown caption
             if (!isFilterActive(FILTER_SOURCES_ALL))
@@ -925,7 +931,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Do we have any sub-tabs?
-            const auto& currentPage = ObjectSelectionPages[selected_tab];
             const bool hasSubTabs = !currentPage.subTabs.empty();
 
             widgets[WIDX_LIST].right = width / 2 - 2;
