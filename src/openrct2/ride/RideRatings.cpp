@@ -24,11 +24,13 @@
 #include "RideData.h"
 #include "Station.h"
 #include "Track.h"
+#include "TrackData.h"
 
 #include <iterator>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
+using namespace OpenRCT2::TrackMetaData;
 
 enum
 {

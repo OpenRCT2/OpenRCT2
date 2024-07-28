@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/FixedPoint.hpp"
+#include "../core/Money.hpp"
 #include "../world/Location.hpp"
 #include "RideTypes.h"
 

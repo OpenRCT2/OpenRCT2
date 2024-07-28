@@ -31,6 +31,7 @@
 #include "../management/NewsItem.h"
 #include "../math/Trigonometry.hpp"
 #include "../object/SmallSceneryEntry.h"
+#include "../paint/vehicle/Vehicle.MiniGolf.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct12/RCT12.h"
