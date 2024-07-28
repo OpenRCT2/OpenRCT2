@@ -169,16 +169,24 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_PATH_SIGNS,        ObjectType::Banners,          FILTER_NONE, SPR_TAB_SCENERY_SIGNAGE,    1, 1 },
     };
 
+    static ObjectSubTab kEntrancesObjectSubTabs[] = {
+        { STR_OBJECT_SELECTION_PARK_ENTRANCE,     ObjectType::ParkEntrance,     FILTER_NONE, SPR_TAB_PARK,            1, 1 },
+        { STR_OBJECT_SELECTION_STATIONS,          ObjectType::Station,          FILTER_NONE, SPR_G2_RIDE_STATION_TAB, 1, 1 },
+    };
+
+    static ObjectSubTab kTerrainObjectSubTabs[] = {
+        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,  ObjectType::TerrainSurface,   FILTER_NONE, SPR_G2_TAB_LAND,         1, 1 },
+        { STR_OBJECT_SELECTION_TERRAIN_EDGES,     ObjectType::TerrainEdge,      FILTER_NONE, SPR_G2_TERRAIN_EDGE_TAB, 1, 1 },
+        { STR_OBJECT_SELECTION_WATER,             ObjectType::Water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
+    };
+
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
-        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,             SPR_TAB_RIDE_16,            kRideObjectSubTabs },
-        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,     SPR_TAB_SCENERY_STATUES,    kSceneryObjectSubTabs },
-        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface,  SPR_G2_LEGACY_PATH_TAB,     kPathObjectSubTabs },
-        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,     SPR_TAB_PARK,               {} },
-        { STR_OBJECT_SELECTION_STATIONS,                  ObjectType::Station,          SPR_G2_RIDE_STATION_TAB,    {} },
-        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,            SPR_TAB_MUSIC_0,            {} },
-        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,   SPR_G2_TAB_LAND,            {} },
-        { STR_OBJECT_SELECTION_TERRAIN_EDGES,             ObjectType::TerrainEdge,      SPR_G2_TERRAIN_EDGE_TAB,    {} },
-        { STR_OBJECT_SELECTION_WATER,                     ObjectType::Water,            SPR_TAB_WATER,              {} },
+        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,            SPR_TAB_RIDE_16,         kRideObjectSubTabs },
+        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,    SPR_TAB_SCENERY_STATUES, kSceneryObjectSubTabs },
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface, SPR_G2_LEGACY_PATH_TAB,  kPathObjectSubTabs },
+        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
+        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
+        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,           SPR_TAB_MUSIC_0,         {} },
     };
     // clang-format on
 
