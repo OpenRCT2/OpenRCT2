@@ -3715,6 +3715,13 @@ STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 STR_6644    :Touch-verbeteringen
 STR_6645    :Maakt sommige UI-elementen groter zodat ze gemakkelijker aan te klikken/tikken zijn.
+STR_6646    :Gemaakt door: {STRING}
+STR_6647    :Gemaakt door: {STRING}
+STR_6648    :Plugin-engine laden…
+STR_6649    :Scenario laden…
+STR_6650    :Opgeslagen park laden…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Foutmeldingen
 
 #############
 # Scenarios #
