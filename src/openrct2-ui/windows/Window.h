@@ -81,7 +81,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleOptionsOpen();
     WindowBase* TitleVersionOpen();
     WindowBase* ViewportOpen();
+
     WindowBase* WaterOpen();
+    void ToggleWaterWindow();
+
     WindowBase* ViewClippingOpen();
     WindowBase* TransparencyOpen();
     WindowBase* AssetPacksOpen();
