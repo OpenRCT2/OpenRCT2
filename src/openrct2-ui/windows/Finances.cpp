@@ -782,60 +782,26 @@ static Widget _windowFinancesResearchWidgets[] =
         }
 
         void OnDrawGraph(
-            DrawPixelInfo& dpi, const money64 currentValue, const money64 (&series)[128], const StringId fmt,
+            DrawPixelInfo& dpi, const money64 currentValue, money64 (&series)[128], const StringId fmt,
             const bool centred) const
         {
             const Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
             auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
             auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
+            ScreenRect graphBounds(graphTopLeft, graphBottomRight);
 
             auto ft = Formatter();
             ft.Add<money64>(currentValue);
             DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
-            GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(dpi, graphBounds, colours[1], INSET_RECT_F_30);
 
-            // Calculate the Y axis scale (log2 of highest [+/-]balance)
-            int32_t yAxisScale = 0;
-            for (int32_t i = 0; i < 64; i++)
-            {
-                auto balance = series[i];
-                if (balance == kMoney64Undefined)
-                    continue;
+            for (int i = 0; i < 128; i++) // TODO debug
+                series[i] = i % 2 * 96.00_GBP;
+            // series[i] = 0;
 
-                // Modifier balance then keep halving until less than limit pixels
-                balance = std::abs(balance) >> yAxisScale;
-                auto limit = centred ? 127 : 255;
-                while (balance > limit)
-                {
-                    balance /= 2;
-                    yAxisScale++;
-                }
-            }
-
-            // Y axis labels
-            auto screenPos = graphTopLeft + ScreenCoordsXY{ 18, 14 };
-            const money64 axisBaseStart = centred ? 12.00_GBP : 24.00_GBP;
-            const money64 axisBaseEnd = centred ? -12.00_GBP : 0.00_GBP;
-            for (money64 axisBase = axisBaseStart; axisBase >= axisBaseEnd; axisBase -= 6.00_GBP)
-            {
-                const money64 axisValue = axisBase << yAxisScale;
-                ft = Formatter();
-                ft.Add<money64>(axisValue);
-                DrawTextBasic(
-                    dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                    { FontStyle::Small, TextAlignment::RIGHT });
-                GfxFillRectInset(
-                    dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
-                    INSET_RECT_FLAG_BORDER_INSET);
-                screenPos.y += 39;
-            }
-
-            // X axis labels and values
-            screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-            const auto offset = centred ? 128 : 0;
-            Graph::Draw(dpi, series, 64, screenPos, yAxisScale, offset);
+            Graph::DrawFinanceGraph(dpi, series, graphBounds, centred, colours[2]);
         }
     };
 

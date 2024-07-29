@@ -107,185 +107,193 @@ namespace OpenRCT2::Graph
     }
 } // namespace OpenRCT2::Graph
 
-struct FinancialTooltipInfo
-{
-    const ScreenCoordsXY coords;
-    const money64 money{};
-};
-
-static constexpr auto ChartMaxDataCount = 64;
-static constexpr auto ChartMaxIndex = ChartMaxDataCount - 1;
-static constexpr auto ChartDataWidth = 6;
-static constexpr auto ChartMaxWidth = ChartMaxIndex * ChartDataWidth;
-static constexpr auto ChartMaxHeight = 164;
-static constexpr auto CursorXOffset = 3;
-static constexpr auto DefaultDashedLength = 2;
-
-static int32_t IndexForCursorAndHistory(const int32_t historyCount, const int32_t cursorX, const int32_t chartX)
-{
-    const auto offsettedCursorX = cursorX + CursorXOffset;
-    return (historyCount - 1) - (offsettedCursorX - chartX) / ChartDataWidth;
-}
-
-static const ScreenCoordsXY ScreenCoordsForHistoryIndex(
-    const int32_t index, const money64* history, const int32_t chartX, const int32_t chartY, const int32_t modifier,
-    const int32_t offset)
-{
-    auto coords = ScreenCoordsXY{ chartX + ChartDataWidth * (ChartMaxIndex - index),
-                                  chartY + ChartMaxHeight
-                                      - (((static_cast<int32_t>(history[index] >> modifier) + offset) * 170) / 256) };
-    return coords;
-}
-
-static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
-    const money64* history, const int32_t historyCount, const int32_t modifier, const int32_t offset,
-    const ScreenRect& chartFrame, const ScreenCoordsXY& cursorPosition)
-{
-    if (!chartFrame.Contains(cursorPosition))
-    {
-        return { {}, kMoney64Undefined };
-    }
-
-    const auto historyIndex = IndexForCursorAndHistory(historyCount, cursorPosition.x, chartFrame.GetLeft());
-    const auto coords = ScreenCoordsForHistoryIndex(
-        historyIndex, history, chartFrame.GetLeft(), chartFrame.GetTop(), modifier, offset);
-
-    return { coords, history[historyIndex] };
-}
-
 namespace OpenRCT2::Graph
 {
-    static void DrawMonths(DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
+    constexpr int32_t kDashLength = 2;
+    constexpr ScreenCoordsXY kFinanceTopLeftPadding{ 88, 20 };
+    constexpr ScreenCoordsXY kFinanceBottomRightPadding{ 15, 18 };
+    constexpr uint8_t kNumFinanceGraphYLabels = 5;
+
+    template<typename T, T TkNoValue>
+    static void DrawMonths(
+        DrawPixelInfo& dpi, const T* series, int32_t count, const ScreenRect& bounds, const int32_t xStep)
     {
         auto& date = GetDate();
         int32_t currentMonth = date.GetMonth();
         int32_t currentDay = date.GetMonthTicks();
         int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-        auto screenCoords = origCoords;
+        auto screenCoords = bounds.Point1;
         for (int32_t i = count - 1; i >= 0; i--)
         {
-            if (history[i] != kMoney64Undefined && yearOver32 % 4 == 0)
+            if (series[i] != TkNoValue && yearOver32 % 4 == 0)
             {
                 // Draw month text
                 auto ft = Formatter();
                 ft.Add<StringId>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 13 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
-                GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
+                GfxFillRect(dpi, { screenCoords - ScreenCoordsXY{ 0, 3 }, screenCoords }, PALETTE_INDEX_10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
-            screenCoords.x += 6;
+            screenCoords.x += xStep;
         }
     }
 
-    static void DrawLineA(
-        DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
-        int32_t offset)
-    {
-        ScreenCoordsXY lastCoords;
-        bool lastCoordsValid = false;
-        auto coords = origCoords;
-        for (int32_t i = count - 1; i >= 0; i--)
-        {
-            if (history[i] != kMoney64Undefined)
-            {
-                coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
-
-                if (lastCoordsValid)
-                {
-                    auto leftTop1 = lastCoords + ScreenCoordsXY{ 1, 1 };
-                    auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
-                    auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
-                    auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                    GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
-                    GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
-                }
-                if (i == 0)
-                    GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
-
-                lastCoords = coords;
-                lastCoordsValid = true;
-            }
-            coords.x += 6;
-        }
-    }
-
-    static void DrawLineB(
-        DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
-        int32_t offset)
-    {
-        ScreenCoordsXY lastCoords;
-        bool lastCoordsValid = false;
-        auto coords = origCoords;
-        for (int32_t i = count - 1; i >= 0; i--)
-        {
-            if (history[i] != kMoney64Undefined)
-            {
-                coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
-
-                if (lastCoordsValid)
-                {
-                    auto leftTop = lastCoords;
-                    auto rightBottom = coords;
-                    GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
-                }
-                if (i == 0)
-                    GfxFillRect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
-
-                lastCoords = coords;
-                lastCoordsValid = true;
-            }
-            coords.x += 6;
-        }
-    }
-
+    template<typename T, T TkNoValue>
     static void DrawHoveredValue(
-        DrawPixelInfo& dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
-        const int32_t modifier, const int32_t offset)
+        DrawPixelInfo& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
+        const T minValue, const T maxValue)
     {
-        const auto cursorPosition = ContextGetCursorPositionScaled();
-        const ScreenRect chartFrame{ screenCoords, screenCoords + ScreenCoordsXY{ ChartMaxWidth, ChartMaxHeight } };
-
-        if (!chartFrame.Contains(cursorPosition))
-        {
+        const ScreenCoordsXY cursorPos = ContextGetCursorPositionScaled();
+        if (!bounds.Contains(cursorPos))
             return;
-        }
 
-        const auto info = FinanceTooltipInfoFromMoney(history, ChartMaxDataCount, modifier, offset, chartFrame, cursorPosition);
+        int32_t i = (count - 1) - (cursorPos.x - bounds.GetLeft() + (xStep / 2)) / xStep;
+        if (i < 0)
+            i = 1;
+        if (i > count - 1)
+            i = count - 1;
 
-        if (info.money == kMoney64Undefined)
-        {
+        T value = series[i];
+        if (value == TkNoValue)
             return;
-        }
-        GfxDrawDashedLine(dpi, { { info.coords.x, chartFrame.GetTop() }, info.coords }, DefaultDashedLength, 0);
-        GfxDrawDashedLine(dpi, { { chartFrame.GetLeft() - 10, info.coords.y }, info.coords }, DefaultDashedLength, 0);
+        const int32_t screenRange = bounds.GetHeight();
+        const int32_t valueRange = maxValue - minValue;
+        int32_t test = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
+        ScreenCoordsXY coords = { bounds.GetRight() - i * xStep, test };
+        ScreenCoordsXY lineCoords = { coords.x + 1, coords.y };
 
-        if (cursorPosition.y > info.coords.y)
+        GfxDrawDashedLine(dpi, { { lineCoords.x, bounds.GetTop() }, lineCoords }, kDashLength, PALETTE_INDEX_10);
+        GfxDrawDashedLine(dpi, { { bounds.GetLeft(), lineCoords.y }, lineCoords }, kDashLength, PALETTE_INDEX_10);
+
+        if (cursorPos.y > coords.y)
         {
-            GfxDrawDashedLine(dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DefaultDashedLength, 0);
+            GfxDrawDashedLine(dpi, { lineCoords, { lineCoords.x, cursorPos.y } }, kDashLength, PALETTE_INDEX_10);
         }
 
         auto ft = Formatter();
-        ft.Add<money64>(info.money);
+        ft.Add<money64>(value);
         DrawTextBasic(
-            dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
+            dpi, coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
 
-        GfxFillRect(dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
-        GfxFillRect(
-            dpi, { { info.coords - ScreenCoordsXY{ 1, 1 } }, { info.coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
+        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
     }
 
-    void Draw(
-        DrawPixelInfo& dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
-        const int32_t modifier, const int32_t offset)
+    template<typename T, T TkNoValue, bool TbackgroundLine>
+    static void DrawLine(
+        DrawPixelInfo& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
+        const T minValue, const T maxValue)
     {
-        DrawMonths(dpi, history, count, screenCoords);
-        DrawLineA(dpi, history, count, screenCoords, modifier, offset);
-        DrawLineB(dpi, history, count, screenCoords, modifier, offset);
-        DrawHoveredValue(dpi, history, count, screenCoords, modifier, offset);
+        const int32_t screenRange = bounds.GetHeight();
+        const int32_t valueRange = maxValue - minValue;
+
+        ScreenCoordsXY lastCoords;
+        bool lastCoordsValid = false;
+        ScreenCoordsXY coords = bounds.Point1;
+        for (int32_t i = count - 1; i >= 0; i--)
+        {
+            auto value = series[i];
+            if (value != TkNoValue)
+            {
+                coords.y = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
+
+                if constexpr (TbackgroundLine)
+                {
+                    if (lastCoordsValid)
+                    {
+                        auto leftTop1 = lastCoords + ScreenCoordsXY{ 1, 1 };
+                        auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
+                        auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
+                        auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
+                        GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
+                        GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
+                    }
+                    if (i == 0)
+                    {
+                        GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+                    }
+                }
+                else
+                {
+                    if (lastCoordsValid)
+                    {
+                        auto leftTop = lastCoords;
+                        auto rightBottom = coords;
+                        GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
+                    }
+                    if (i == 0)
+                    {
+                        GfxFillRect(
+                            dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
+                    }
+                }
+
+                lastCoords = coords;
+                lastCoordsValid = true;
+            }
+            coords.x += xStep;
+        }
+    }
+
+    void DrawFinanceGraph(
+        DrawPixelInfo& dpi, const money64 (&series)[128], const ScreenRect& graphBounds, const bool centred,
+        const ColourWithFlags lineCol)
+    {
+        constexpr int32_t count = 64; // todo for whatever reason this is 64.
+
+        ScreenRect internalBounds{ graphBounds.Point1 + kFinanceTopLeftPadding,
+                                   graphBounds.Point2 - kFinanceBottomRightPadding };
+        const int32_t yLabelStepPx = (internalBounds.GetBottom() - internalBounds.GetTop()) / (kNumFinanceGraphYLabels - 1);
+        const int32_t xStepPx = (internalBounds.GetRight() - internalBounds.GetLeft()) / (count - 1);
+
+        // adjust bounds to be exact multiples of the steps.
+        internalBounds.Point2 = internalBounds.Point1
+            + ScreenCoordsXY{ xStepPx * (count - 1), yLabelStepPx * (kNumFinanceGraphYLabels - 1) };
+
+        money64 graphMaximum = centred ? 12.00_GBP : 24.00_GBP;
+        for (int32_t i = 0; i < count; i++)
+        {
+            auto currentValue = series[i];
+            if (currentValue == kMoney64Undefined)
+                continue;
+            while (std::abs(currentValue) > graphMaximum)
+                graphMaximum *= 2;
+        }
+        const money64 graphMinimum = centred ? -graphMaximum : 0.00_GBP;
+
+        const money64 yLabelStep = (graphMaximum - graphMinimum) / (kNumFinanceGraphYLabels - 1);
+        money64 curLabel = graphMaximum;
+        int32_t curScreenPos = internalBounds.GetTop() - 5;
+        for (uint8_t i = 0; i < kNumFinanceGraphYLabels; i++)
+        {
+            Formatter ft;
+            ft.Add<money64>(curLabel);
+            DrawTextBasic(
+                dpi, { internalBounds.GetLeft(), curScreenPos }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                { FontStyle::Small, TextAlignment::RIGHT });
+            GfxFillRectInset(
+                dpi, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
+                lineCol, INSET_RECT_FLAG_BORDER_INSET);
+            curScreenPos += yLabelStepPx;
+            curLabel -= yLabelStep;
+        }
+
+        DrawMonths<money64, kMoney64Undefined>(dpi, series, count, internalBounds, xStepPx);
+        DrawLine<money64, kMoney64Undefined, true>(dpi, series, count, internalBounds, xStepPx, graphMinimum, graphMaximum);
+        DrawLine<money64, kMoney64Undefined, false>(dpi, series, count, internalBounds, xStepPx, graphMinimum, graphMaximum);
+        DrawHoveredValue<money64, kMoney64Undefined>(dpi, series, count, internalBounds, xStepPx, graphMinimum, graphMaximum);
+
+        // todo debug code.
+        ScreenCoordsXY bottomLeft{ internalBounds.Point1.x, internalBounds.Point2.y };
+        ScreenCoordsXY topRight{ internalBounds.Point2.x, internalBounds.Point1.y };
+        GfxDrawLine(dpi, { internalBounds.Point1, topRight }, 33);
+        GfxDrawLine(dpi, { internalBounds.Point1, bottomLeft }, 33);
+        GfxDrawLine(dpi, { bottomLeft, internalBounds.Point2 }, 33);
+        GfxDrawLine(dpi, { topRight, internalBounds.Point2 }, 33);
     }
 } // namespace OpenRCT2::Graph

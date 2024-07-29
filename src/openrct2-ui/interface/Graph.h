@@ -16,7 +16,7 @@
 namespace OpenRCT2::Graph
 {
     void Draw(DrawPixelInfo& dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos);
-    void Draw(
-        DrawPixelInfo& dpi, const money64* history, const int32_t count, const ScreenCoordsXY& coords, const int32_t modifier,
-        const int32_t offset);
+
+    void DrawFinanceGraph(
+        DrawPixelInfo& dpi, const money64 (&series)[128], const ScreenRect& graphBounds, bool centred, ColourWithFlags lineCol);
 } // namespace OpenRCT2::Graph
