@@ -366,7 +366,7 @@ namespace AlpineRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_12);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
