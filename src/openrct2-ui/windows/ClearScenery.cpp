@@ -12,6 +12,8 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
+#include <openrct2/Input.h>
+#include <openrct2/actions/ClearAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -30,7 +32,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LARGE_SCENERY,
         WIDX_FOOTPATH
     };
-    // clang-format on
+
     static constexpr StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
     static constexpr int32_t WW = 98;
     static constexpr int32_t WH = 94;
@@ -204,6 +206,100 @@ namespace OpenRCT2::Ui::Windows
         {
             ResizeFrame();
         }
+
+        ClearAction GetClearAction()
+        {
+            auto range = MapRange(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y);
+
+            ClearableItems itemsToClear = 0;
+
+            if (gClearSmallScenery)
+                itemsToClear |= CLEARABLE_ITEMS::SCENERY_SMALL;
+            if (gClearLargeScenery)
+                itemsToClear |= CLEARABLE_ITEMS::SCENERY_LARGE;
+            if (gClearFootpath)
+                itemsToClear |= CLEARABLE_ITEMS::SCENERY_FOOTPATH;
+
+            return ClearAction(range, itemsToClear);
+        }
+
+        /**
+         *
+         *  rct2: 0x0068E213
+         */
+        void ToolUpdateSceneryClear(const ScreenCoordsXY& screenPos)
+        {
+            auto action = GetClearAction();
+            auto result = GameActions::Query(&action);
+            auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
+            if (gClearSceneryCost != cost)
+            {
+                gClearSceneryCost = cost;
+                WindowInvalidateByClass(WindowClass::ClearScenery);
+            }
+        }
+
+        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BACKGROUND:
+                    ToolUpdateSceneryClear(screenCoords);
+                    break;
+            }
+        }
+
+        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BACKGROUND:
+                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                    {
+                        auto action = GetClearAction();
+                        GameActions::Execute(&action);
+                        gCurrentToolId = Tool::Crosshair;
+                    }
+                    break;
+            }
+        }
+
+        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BACKGROUND:
+                    if (WindowFindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                    {
+                        auto action = GetClearAction();
+                        GameActions::Execute(&action);
+                        gCurrentToolId = Tool::Crosshair;
+                    }
+                    break;
+            }
+        }
+
+        void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BACKGROUND:
+                    MapInvalidateSelectionRect();
+                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                    gCurrentToolId = Tool::Crosshair;
+                    break;
+            }
+        }
+
+        void OnToolAbort(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BACKGROUND:
+                    HideGridlines();
+                    break;
+            }
+        }
     };
 
     WindowBase* ClearSceneryOpen()
@@ -219,5 +315,25 @@ namespace OpenRCT2::Ui::Windows
             return w;
 
         return nullptr;
+    }
+
+    /**
+     *
+     *  rct2: 0x0066CD0C
+     */
+    void ToggleClearSceneryWindow()
+    {
+        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::ClearScenery
+             && gCurrentToolWidget.widget_index == WIDX_BACKGROUND))
+        {
+            ToolCancel();
+        }
+        else
+        {
+            ShowGridlines();
+            auto* toolWindow = ContextOpenWindow(WindowClass::ClearScenery);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::Crosshair);
+            InputSetFlag(INPUT_FLAG_6, true);
+        }
     }
 } // namespace OpenRCT2::Ui::Windows

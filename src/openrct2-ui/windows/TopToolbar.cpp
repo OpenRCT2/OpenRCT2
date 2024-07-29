@@ -28,7 +28,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/Version.h>
-#include <openrct2/actions/ClearAction.h>
 #include <openrct2/actions/GameSetSpeedAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/PauseToggleAction.h>
@@ -278,7 +277,6 @@ namespace OpenRCT2::Ui::Windows
     class TopToolbar final : public Window
     {
     private:
-        bool _landToolBlocked{ false };
         bool _waitingForPause{ false };
 
         void InitViewMenu(Widget& widget);
@@ -328,58 +326,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        /**
-         *
-         *  rct2: 0x0066CD0C
-         */
-        void ToggleClearSceneryWindow(WidgetIndex widgetIndex)
-        {
-            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
-                 && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY))
-            {
-                ToolCancel();
-            }
-            else
-            {
-                ShowGridlines();
-                ToolSet(*this, widgetIndex, Tool::Crosshair);
-                InputSetFlag(INPUT_FLAG_6, true);
-                ContextOpenWindow(WindowClass::ClearScenery);
-            }
-        }
-
-        /**
-         *
-         *  rct2: 0x0068E213
-         */
-        void ToolUpdateSceneryClear(const ScreenCoordsXY& screenPos)
-        {
-            auto action = GetClearAction();
-            auto result = GameActions::Query(&action);
-            auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
-            if (gClearSceneryCost != cost)
-            {
-                gClearSceneryCost = cost;
-                WindowInvalidateByClass(WindowClass::ClearScenery);
-            }
-        }
-
-        ClearAction GetClearAction()
-        {
-            auto range = MapRange(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y);
-
-            ClearableItems itemsToClear = 0;
-
-            if (gClearSmallScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_SMALL;
-            if (gClearLargeScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_LARGE;
-            if (gClearFootpath)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_FOOTPATH;
-
-            return ClearAction(range, itemsToClear);
-        }
-
     public:
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
@@ -404,7 +350,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowZoomIn(*mainWindow, false);
                     break;
                 case WIDX_CLEAR_SCENERY:
-                    ToggleClearSceneryWindow(WIDX_CLEAR_SCENERY);
+                    ToggleClearSceneryWindow();
                     break;
                 case WIDX_LAND:
                     ToggleLandWindow();
@@ -619,9 +565,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_CLEAR_SCENERY:
-                    ToolUpdateSceneryClear(screenCoords);
-                    break;
 #ifdef ENABLE_SCRIPTING
                 default:
                     auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
@@ -638,14 +581,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_CLEAR_SCENERY:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
-                    {
-                        auto action = GetClearAction();
-                        GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Crosshair;
-                    }
-                    break;
 #ifdef ENABLE_SCRIPTING
                 default:
                     auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
@@ -662,14 +597,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_CLEAR_SCENERY:
-                    if (WindowFindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-                    {
-                        auto action = GetClearAction();
-                        GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Crosshair;
-                    }
-                    break;
 #ifdef ENABLE_SCRIPTING
                 default:
                     auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
@@ -684,14 +611,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            _landToolBlocked = false;
             switch (widgetIndex)
             {
-                case WIDX_CLEAR_SCENERY:
-                    MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::Crosshair;
-                    break;
 #ifdef ENABLE_SCRIPTING
                 default:
                     auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
@@ -708,9 +629,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_CLEAR_SCENERY:
-                    HideGridlines();
-                    break;
 #ifdef ENABLE_SCRIPTING
                 default:
                     auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;

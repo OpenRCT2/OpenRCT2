@@ -43,7 +43,10 @@ namespace OpenRCT2::Ui::Windows
     void WindowCampaignRefreshRides();
     WindowBase* ChangelogOpen(int personality);
     WindowBase* CheatsOpen();
+
     WindowBase* ClearSceneryOpen();
+    void ToggleClearSceneryWindow();
+
     WindowBase* CustomCurrencyOpen();
     WindowBase* DebugPaintOpen();
     WindowBase* EditorInventionsListOpen();
