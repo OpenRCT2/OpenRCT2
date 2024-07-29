@@ -561,86 +561,55 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+#ifdef ENABLE_SCRIPTING
+        // The following are tool events for custom tools set by user scripts.
+        // NB: these can't go into CustomWindow.cpp, as tools may be active without a visible window.
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            switch (widgetIndex)
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
             {
-#ifdef ENABLE_SCRIPTING
-                default:
-                    auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
-                    if (customTool)
-                    {
-                        customTool->OnUpdate(screenCoords);
-                    }
-                    break;
-#endif
+                customTool->OnUpdate(screenCoords);
             }
         }
 
         void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            switch (widgetIndex)
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
             {
-#ifdef ENABLE_SCRIPTING
-                default:
-                    auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
-                    if (customTool)
-                    {
-                        customTool->OnDown(screenCoords);
-                    }
-                    break;
-#endif
+                customTool->OnDown(screenCoords);
             }
         }
 
         void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            switch (widgetIndex)
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
             {
-#ifdef ENABLE_SCRIPTING
-                default:
-                    auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
-                    if (customTool)
-                    {
-                        customTool->OnDrag(screenCoords);
-                    }
-                    break;
-#endif
+                customTool->OnDrag(screenCoords);
             }
         }
 
         void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            switch (widgetIndex)
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
             {
-#ifdef ENABLE_SCRIPTING
-                default:
-                    auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
-                    if (customTool)
-                    {
-                        customTool->OnUp(screenCoords);
-                    }
-                    break;
-#endif
+                customTool->OnUp(screenCoords);
             }
         }
 
         void OnToolAbort(WidgetIndex widgetIndex) override
         {
-            switch (widgetIndex)
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
             {
-#ifdef ENABLE_SCRIPTING
-                default:
-                    auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
-                    if (customTool)
-                    {
-                        customTool->OnAbort();
-                        customTool = {};
-                    }
-                    break;
-#endif
+                customTool->OnAbort();
+                customTool = {};
             }
         }
+#endif
 
         void ResetWidgetToDefaultState()
         {
