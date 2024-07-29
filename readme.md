@@ -98,9 +98,13 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 <details>
   <summary>Windows prerequisites</summary>
 
-  - Visual Studio 2022 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+  There are two toolchain options for building the game on Windows:
+
+  1. Visual Studio 2022 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
     - Desktop development with C++
-  - MSYS2 MinGW Toolchain. The toolchains with supported dependencies are `mingw-x86_64`, `mingw-xi686`, `ucrt-x86_64`, `clang-x86_64`, and `clang-xi686`, each of these require the `$MINGW_PACKAGE_PREFIX` and `msys` and `clangarm-64` are lacking packages for some dependencies
+  2. MSYS2 MinGW Toolchain. The toolchains with supported dependencies are `mingw-x86_64`, `mingw-xi686`, `ucrt-x86_64`, `clang-x86_64`, and `clang-xi686`. Each of these require the `$MINGW_PACKAGE_PREFIX`. Note that `msys` and `clangarm-64` are lacking packages for some dependencies.
+
+  The following packages are required. Note that these dependencies are installed automatically for Visual Studio builds. Section 3.2 for details.
     - sdl2 (only for UI client)
     - freetype (can be disabled)
     - fontconfig (can be disabled)
