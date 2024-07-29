@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
@@ -242,6 +243,14 @@ static Widget _windowFinancesResearchWidgets[] =
         {
             frame_no++;
             InvalidateWidget(WIDX_TAB_1 + page);
+
+            if (gHoverWidget.window_classification == WindowClass::Finances
+                && (page == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH || page == WINDOW_FINANCES_PAGE_VALUE_GRAPH
+                    || page == WINDOW_FINANCES_PAGE_PROFIT_GRAPH)
+                && gHoverWidget.widget_index == WIDX_PAGE_BACKGROUND)
+            {
+                InvalidateWidget(WIDX_PAGE_BACKGROUND);
+            }
         }
 
         void OnMouseDown(WidgetIndex widgetIndex) override
