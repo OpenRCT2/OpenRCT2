@@ -12,7 +12,6 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Identifiers.h>
 #include <openrct2/ride/Ride.h>
-#include <openrct2/windows/TileInspectorGlobals.h>
 #include <string_view>
 
 // TODO: only for WINDOW_SHIM_RAW below; we can do better.
