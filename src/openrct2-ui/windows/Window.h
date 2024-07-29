@@ -11,15 +11,19 @@
 
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Identifiers.h>
-#include <openrct2/ride/Ride.h>
 #include <string_view>
 
+struct ObjectEntryDescriptor;
 struct Peep;
+struct Ride;
+struct RideSelection;
 struct TileElement;
-struct Vehicle;
 struct TrackDesign;
+struct Vehicle;
+
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
+
 using loadsave_callback = void (*)(int32_t result, const utf8* path);
 using scenarioselect_callback = void (*)(const utf8* path);
 
