@@ -64,6 +64,12 @@ namespace OpenRCT2::Ui::Windows
 
     class CleanSceneryWindow final : public Window
     {
+    private:
+        bool _clearSmallScenery = true;
+        bool _clearLargeScenery = false;
+        bool _clearFootpath = false;
+        money64 _clearSceneryCost = kMoney64Undefined;
+
     public:
         void OnOpen() override
         {
@@ -73,11 +79,6 @@ namespace OpenRCT2::Ui::Windows
             WindowPushOthersBelow(*this);
 
             gLandToolSize = 2;
-            gClearSceneryCost = kMoney64Undefined;
-
-            gClearSmallScenery = true;
-            gClearLargeScenery = false;
-            gClearFootpath = false;
 
             Invalidate();
         }
@@ -104,15 +105,15 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_SMALL_SCENERY:
-                    gClearSmallScenery ^= 1;
+                    _clearSmallScenery ^= 1;
                     Invalidate();
                     break;
                 case WIDX_LARGE_SCENERY:
-                    gClearLargeScenery ^= 1;
+                    _clearLargeScenery ^= 1;
                     Invalidate();
                     break;
                 case WIDX_FOOTPATH:
-                    gClearFootpath ^= 1;
+                    _clearFootpath ^= 1;
                     Invalidate();
                     break;
             }
@@ -168,8 +169,8 @@ namespace OpenRCT2::Ui::Windows
         void Invalidate()
         {
             // Set the preview image button to be pressed down
-            pressed_widgets = (1uLL << WIDX_PREVIEW) | (gClearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
-                | (gClearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
+            pressed_widgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
+                | (_clearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (_clearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
             // Update the preview image (for tool sizes up to 7)
             window_clear_scenery_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
@@ -191,11 +192,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw cost amount
-            if (gClearSceneryCost != kMoney64Undefined && gClearSceneryCost != 0
+            if (_clearSceneryCost != kMoney64Undefined && _clearSceneryCost != 0
                 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
-                ft.Add<money64>(gClearSceneryCost);
+                ft.Add<money64>(_clearSceneryCost);
                 screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
                 screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
                 DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
@@ -213,11 +214,11 @@ namespace OpenRCT2::Ui::Windows
 
             ClearableItems itemsToClear = 0;
 
-            if (gClearSmallScenery)
+            if (_clearSmallScenery)
                 itemsToClear |= CLEARABLE_ITEMS::SCENERY_SMALL;
-            if (gClearLargeScenery)
+            if (_clearLargeScenery)
                 itemsToClear |= CLEARABLE_ITEMS::SCENERY_LARGE;
-            if (gClearFootpath)
+            if (_clearFootpath)
                 itemsToClear |= CLEARABLE_ITEMS::SCENERY_FOOTPATH;
 
             return ClearAction(range, itemsToClear);
@@ -232,9 +233,9 @@ namespace OpenRCT2::Ui::Windows
             auto action = GetClearAction();
             auto result = GameActions::Query(&action);
             auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
-            if (gClearSceneryCost != cost)
+            if (_clearSceneryCost != cost)
             {
-                gClearSceneryCost = cost;
+                _clearSceneryCost = cost;
                 WindowInvalidateByClass(WindowClass::ClearScenery);
             }
         }

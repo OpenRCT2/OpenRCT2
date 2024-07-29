@@ -18,12 +18,8 @@ constexpr uint16_t kLandToolMaximumSize = 64;
 constexpr uint16_t kLandToolMaximumSizeWithSprite = 7;
 
 extern uint16_t gLandToolSize;
-extern money64 gLandToolRaiseCost;
-extern money64 gLandToolLowerCost;
 extern ObjectEntryIndex gLandToolTerrainSurface;
 extern ObjectEntryIndex gLandToolTerrainEdge;
-extern money64 gWaterToolRaiseCost;
-extern money64 gWaterToolLowerCost;
 
 namespace OpenRCT2::LandTool
 {

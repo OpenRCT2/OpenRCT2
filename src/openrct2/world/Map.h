@@ -106,15 +106,6 @@ extern uint8_t gMapSelectArrowDirection;
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
 
-// Used in the land tool window to enable mountain tool / land smoothing
-extern bool gLandMountainMode;
-// Used in the land tool window to allow dragging and changing land styles
-extern bool gLandPaintMode;
-// Used in the clear scenery tool
-extern bool gClearSmallScenery;
-extern bool gClearLargeScenery;
-extern bool gClearFootpath;
-
 extern uint32_t gLandRemainingOwnershipSales;
 extern uint32_t gLandRemainingConstructionSales;
 

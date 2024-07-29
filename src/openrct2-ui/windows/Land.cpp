@@ -62,6 +62,11 @@ static Widget window_land_widgets[] = {
     {
     private:
         bool _landToolBlocked = false;
+        bool _landToolMountainMode = false;
+        bool _landToolPaintMode = false;
+
+        money64 _landToolRaiseCost = kMoney64Undefined;
+        money64 _landToolLowerCost = kMoney64Undefined;
 
         ObjectEntryIndex _selectedFloorTexture = 0;
         ObjectEntryIndex _selectedWallTexture = 0;
@@ -85,12 +90,9 @@ static Widget window_land_widgets[] = {
             gLandToolSize = 1;
             gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
             gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
-            gLandMountainMode = false;
-            gLandPaintMode = false;
+
             _selectedFloorTexture = LandTool::GetSurfaceStyleFromDropdownIndex(0);
             _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
-            gLandToolRaiseCost = kMoney64Undefined;
-            gLandToolLowerCost = kMoney64Undefined;
         }
 
         void OnClose() override
@@ -108,13 +110,13 @@ static Widget window_land_widgets[] = {
                     Close();
                     break;
                 case WIDX_MOUNTAINMODE:
-                    gLandMountainMode ^= 1;
-                    gLandPaintMode = 0;
+                    _landToolMountainMode ^= 1;
+                    _landToolPaintMode = 0;
                     Invalidate();
                     break;
                 case WIDX_PAINTMODE:
-                    gLandMountainMode = 0;
-                    gLandPaintMode ^= 1;
+                    _landToolMountainMode = 0;
+                    _landToolPaintMode ^= 1;
                     Invalidate();
                     break;
                 case WIDX_PREVIEW:
@@ -232,9 +234,9 @@ static Widget window_land_widgets[] = {
                 SetWidgetPressed(WIDX_FLOOR, true);
             if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
                 SetWidgetPressed(WIDX_WALL, true);
-            if (gLandMountainMode)
+            if (_landToolMountainMode)
                 SetWidgetPressed(WIDX_MOUNTAINMODE, true);
-            if (gLandPaintMode)
+            if (_landToolPaintMode)
                 SetWidgetPressed(WIDX_PAINTMODE, true);
 
             // Update the preview image (for tool sizes up to 7)
@@ -260,7 +262,7 @@ static Widget window_land_widgets[] = {
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
-            else if (gLandMountainMode)
+            else if (_landToolMountainMode)
             {
                 screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
                 auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
@@ -274,19 +276,19 @@ static Widget window_land_widgets[] = {
             if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Draw raise cost amount
-                if (gLandToolRaiseCost != kMoney64Undefined && gLandToolRaiseCost != 0)
+                if (_landToolRaiseCost != kMoney64Undefined && _landToolRaiseCost != 0)
                 {
                     auto ft = Formatter();
-                    ft.Add<money64>(gLandToolRaiseCost);
+                    ft.Add<money64>(_landToolRaiseCost);
                     DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 10;
 
                 // Draw lower cost amount
-                if (gLandToolLowerCost != kMoney64Undefined && gLandToolLowerCost != 0)
+                if (_landToolLowerCost != kMoney64Undefined && _landToolLowerCost != 0)
                 {
                     auto ft = Formatter();
-                    ft.Add<money64>(gLandToolLowerCost);
+                    ft.Add<money64>(_landToolLowerCost);
                     DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 50;
@@ -334,7 +336,7 @@ static Widget window_land_widgets[] = {
             centreX += 16;
             centreY += 16;
 
-            if (gLandMountainMode)
+            if (_landToolMountainMode)
             {
                 auto landSmoothAction = LandSmoothAction(
                     { centreX, centreY },
@@ -365,7 +367,7 @@ static Widget window_land_widgets[] = {
             centreX += 16;
             centreY += 16;
 
-            if (gLandMountainMode)
+            if (_landToolMountainMode)
             {
                 auto landSmoothAction = LandSmoothAction(
                     { centreX, centreY },
@@ -414,8 +416,8 @@ static Widget window_land_widgets[] = {
 
                 SelectionRaiseLand(GAME_COMMAND_FLAG_APPLY);
 
-                gLandToolRaiseCost = kMoney64Undefined;
-                gLandToolLowerCost = kMoney64Undefined;
+                _landToolRaiseCost = kMoney64Undefined;
+                _landToolLowerCost = kMoney64Undefined;
             }
             else if (y_diff >= -tile_height)
             {
@@ -423,8 +425,8 @@ static Widget window_land_widgets[] = {
 
                 SelectionLowerLand(GAME_COMMAND_FLAG_APPLY);
 
-                gLandToolRaiseCost = kMoney64Undefined;
-                gLandToolLowerCost = kMoney64Undefined;
+                _landToolRaiseCost = kMoney64Undefined;
+                _landToolLowerCost = kMoney64Undefined;
             }
         }
 
@@ -499,7 +501,7 @@ static Widget window_land_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gLandPaintMode)
+                    if (_landToolPaintMode)
                         ToolUpdateLandPaint(screenCoords);
                     else
                         ToolUpdateLand(screenCoords);
@@ -537,7 +539,7 @@ static Widget window_land_widgets[] = {
                 case WIDX_BACKGROUND:
                 {
                     // Custom setting to only change land style instead of raising or lowering land
-                    if (gLandPaintMode)
+                    if (_landToolPaintMode)
                     {
                         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                         {
@@ -606,10 +608,10 @@ static Widget window_land_widgets[] = {
                 money64 lower_cost = SelectionLowerLand(0);
                 money64 raise_cost = SelectionRaiseLand(0);
 
-                if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
+                if (_landToolRaiseCost != raise_cost || _landToolLowerCost != lower_cost)
                 {
-                    gLandToolRaiseCost = raise_cost;
-                    gLandToolLowerCost = lower_cost;
+                    _landToolRaiseCost = raise_cost;
+                    _landToolLowerCost = lower_cost;
                     WindowInvalidateByClass(WindowClass::Land);
                 }
                 return;
@@ -632,10 +634,10 @@ static Widget window_land_widgets[] = {
                     money64 lower_cost = kMoney64Undefined;
                     money64 raise_cost = kMoney64Undefined;
 
-                    if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
+                    if (_landToolRaiseCost != raise_cost || _landToolLowerCost != lower_cost)
                     {
-                        gLandToolRaiseCost = raise_cost;
-                        gLandToolLowerCost = lower_cost;
+                        _landToolRaiseCost = raise_cost;
+                        _landToolLowerCost = lower_cost;
                         WindowInvalidateByClass(WindowClass::Land);
                     }
                     return;
@@ -692,10 +694,10 @@ static Widget window_land_widgets[] = {
                 money64 lower_cost = SelectionLowerLand(0);
                 money64 raise_cost = SelectionRaiseLand(0);
 
-                if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
+                if (_landToolRaiseCost != raise_cost || _landToolLowerCost != lower_cost)
                 {
-                    gLandToolRaiseCost = raise_cost;
-                    gLandToolLowerCost = lower_cost;
+                    _landToolRaiseCost = raise_cost;
+                    _landToolLowerCost = lower_cost;
                     WindowInvalidateByClass(WindowClass::Land);
                 }
                 return;
@@ -709,10 +711,10 @@ static Widget window_land_widgets[] = {
                 money64 lower_cost = kMoney64Undefined;
                 money64 raise_cost = kMoney64Undefined;
 
-                if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
+                if (_landToolRaiseCost != raise_cost || _landToolLowerCost != lower_cost)
                 {
-                    gLandToolRaiseCost = raise_cost;
-                    gLandToolLowerCost = lower_cost;
+                    _landToolRaiseCost = raise_cost;
+                    _landToolLowerCost = lower_cost;
                     WindowInvalidateByClass(WindowClass::Land);
                 }
                 return;
@@ -818,10 +820,10 @@ static Widget window_land_widgets[] = {
             money64 lower_cost = SelectionLowerLand(0);
             money64 raise_cost = SelectionRaiseLand(0);
 
-            if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
+            if (_landToolRaiseCost != raise_cost || _landToolLowerCost != lower_cost)
             {
-                gLandToolRaiseCost = raise_cost;
-                gLandToolLowerCost = lower_cost;
+                _landToolRaiseCost = raise_cost;
+                _landToolLowerCost = lower_cost;
                 WindowInvalidateByClass(WindowClass::Land);
             }
         }

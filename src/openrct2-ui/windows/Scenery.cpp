@@ -112,11 +112,12 @@ static Widget WindowSceneryBaseWidgets[] = {
     static size_t _activeTabIndex;
     static std::vector<ScenerySelection> _tabSelections;
 
-    uint8_t gWindowSceneryPaintEnabled;
+    static bool _sceneryPaintEnabled;
+    static colour_t _sceneryPrimaryColour;
+    static colour_t _scenerySecondaryColour;
+    static colour_t _sceneryTertiaryColour;
+
     uint8_t gWindowSceneryRotation;
-    colour_t gWindowSceneryPrimaryColour;
-    colour_t gWindowScenerySecondaryColour;
-    colour_t gWindowSceneryTertiaryColour;
     bool gWindowSceneryEyedropperEnabled;
 
     class SceneryWindow final : public Window
@@ -212,7 +213,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             gSceneryGhostType = 0;
             gSceneryPlaceCost = kMoney64Undefined;
             gSceneryPlaceRotation = 0;
-            gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
+            _sceneryPaintEnabled = false; // repaint coloured scenery tool state
             gWindowSceneryEyedropperEnabled = false;
 
             width = GetRequiredWidth();
@@ -257,14 +258,14 @@ static Widget WindowSceneryBaseWidgets[] = {
                     Invalidate();
                     break;
                 case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:
-                    gWindowSceneryPaintEnabled ^= 1;
+                    _sceneryPaintEnabled ^= true;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
                         WindowCloseByClass(WindowClass::SceneryScatter);
                     Invalidate();
                     break;
                 case WIDX_SCENERY_EYEDROPPER_BUTTON:
-                    gWindowSceneryPaintEnabled = 0;
+                    _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
                     if (gWindowSceneryScatterEnabled)
                         WindowCloseByClass(WindowClass::SceneryScatter);
@@ -272,7 +273,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     Invalidate();
                     break;
                 case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
-                    gWindowSceneryPaintEnabled = 0;
+                    _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
                         WindowCloseByClass(WindowClass::SceneryScatter);
@@ -357,13 +358,13 @@ static Widget WindowSceneryBaseWidgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
-                    WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], gWindowSceneryPrimaryColour);
+                    WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], _sceneryPrimaryColour);
                     break;
                 case WIDX_SCENERY_SECONDARY_COLOUR_BUTTON:
-                    WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], gWindowScenerySecondaryColour);
+                    WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], _scenerySecondaryColour);
                     break;
                 case WIDX_SCENERY_TERTIARY_COLOUR_BUTTON:
-                    WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], gWindowSceneryTertiaryColour);
+                    WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], _sceneryTertiaryColour);
                     break;
             }
 
@@ -384,15 +385,15 @@ static Widget WindowSceneryBaseWidgets[] = {
 
             if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
             {
-                gWindowSceneryPrimaryColour = ColourDropDownIndexToColour(dropdownIndex);
+                _sceneryPrimaryColour = ColourDropDownIndexToColour(dropdownIndex);
             }
             else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
             {
-                gWindowScenerySecondaryColour = ColourDropDownIndexToColour(dropdownIndex);
+                _scenerySecondaryColour = ColourDropDownIndexToColour(dropdownIndex);
             }
             else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
             {
-                gWindowSceneryTertiaryColour = ColourDropDownIndexToColour(dropdownIndex);
+                _sceneryTertiaryColour = ColourDropDownIndexToColour(dropdownIndex);
             }
 
             Invalidate();
@@ -494,7 +495,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             {
                 gCurrentToolId = Tool::Crosshair;
             }
-            else if (gWindowSceneryPaintEnabled == 1)
+            else if (_sceneryPaintEnabled)
             {
                 gCurrentToolId = Tool::PaintDown;
             }
@@ -636,7 +637,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
             pressed_widgets = 0;
             pressed_widgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
-            if (gWindowSceneryPaintEnabled == 1)
+            if (_sceneryPaintEnabled)
                 pressed_widgets |= (1uLL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
             if (gWindowSceneryEyedropperEnabled)
                 pressed_widgets |= (1uLL << WIDX_SCENERY_EYEDROPPER_BUTTON);
@@ -676,15 +677,15 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
             }
 
-            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowSceneryPrimaryColour);
-            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowScenerySecondaryColour);
-            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowSceneryTertiaryColour);
+            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = GetColourButtonImage(_sceneryPrimaryColour);
+            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = GetColourButtonImage(_scenerySecondaryColour);
+            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = GetColourButtonImage(_sceneryTertiaryColour);
 
             widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
 
-            if (gWindowSceneryPaintEnabled & 1)
+            if (_sceneryPaintEnabled)
             { // repaint coloured scenery tool is on
                 widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
@@ -805,7 +806,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             auto selectedSceneryEntry = _selectedScenery;
             if (selectedSceneryEntry.IsUndefined())
             {
-                if (gWindowSceneryPaintEnabled & 1) // repaint coloured scenery tool is on
+                if (_sceneryPaintEnabled) // repaint coloured scenery tool is on
                     return;
                 if (gWindowSceneryEyedropperEnabled)
                     return;
@@ -890,7 +891,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_SCENERY_BACKGROUND:
-                    if (gWindowSceneryPaintEnabled & 1)
+                    if (_sceneryPaintEnabled)
                         SceneryToolDown(screenCoords, widgetIndex);
                     if (gWindowSceneryEyedropperEnabled)
                         SceneryToolDown(screenCoords, widgetIndex);
@@ -912,15 +913,15 @@ static Widget WindowSceneryBaseWidgets[] = {
             SetSelectedScenery(tabIndex.value(), scenery);
             if (primary.has_value())
             {
-                gWindowSceneryPrimaryColour = primary.value();
+                _sceneryPrimaryColour = primary.value();
             }
             if (secondary.has_value())
             {
-                gWindowScenerySecondaryColour = secondary.value();
+                _scenerySecondaryColour = secondary.value();
             }
             if (tertiary.has_value())
             {
-                gWindowSceneryTertiaryColour = tertiary.value();
+                _sceneryTertiaryColour = tertiary.value();
             }
             if (rotation.has_value())
             {
@@ -1463,8 +1464,9 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
             SetSelectedScenery(_activeTabIndex, scenery);
 
-            gWindowSceneryPaintEnabled &= 0xFE;
+            _sceneryPaintEnabled = false;
             gWindowSceneryEyedropperEnabled = false;
+
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
             _hoverCounter = -16;
             gSceneryPlaceCost = kMoney64Undefined;
@@ -1573,7 +1575,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
                 auto bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
-                auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, gWindowSceneryPrimaryColour);
+                auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, _sceneryPrimaryColour);
                 GfxDrawSprite(dpi, imageId, { 33, 40 });
                 GfxDrawSprite(dpi, imageId.WithIndexOffset(1), { 33, 40 });
             }
@@ -1582,11 +1584,11 @@ static Widget WindowSceneryBaseWidgets[] = {
                 auto sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(scenerySelection.EntryIndex);
                 auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
-                    imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
+                    imageId = imageId.WithPrimary(_sceneryPrimaryColour);
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-                    imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
+                    imageId = imageId.WithSecondary(_scenerySecondaryColour);
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
-                    imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
+                    imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                 GfxDrawSprite(dpi, imageId, { 33, 0 });
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
@@ -1596,25 +1598,25 @@ static Widget WindowSceneryBaseWidgets[] = {
                 auto spriteTop = (wallEntry->height * 2) + 0x32;
                 if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
                 {
-                    imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
+                    imageId = imageId.WithPrimary(_sceneryPrimaryColour);
                     if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
                     {
-                        imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
+                        imageId = imageId.WithSecondary(_scenerySecondaryColour);
                     }
                     GfxDrawSprite(dpi, imageId, { 47, spriteTop });
 
-                    auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(gWindowSceneryPrimaryColour);
+                    auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(_sceneryPrimaryColour);
                     GfxDrawSprite(dpi, glassImageId, { 47, spriteTop });
                 }
                 else
                 {
-                    imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
+                    imageId = imageId.WithPrimary(_sceneryPrimaryColour);
                     if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
                     {
-                        imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
+                        imageId = imageId.WithSecondary(_scenerySecondaryColour);
                         if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
                         {
-                            imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
+                            imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                         }
                     }
                     GfxDrawSprite(dpi, imageId, { 47, spriteTop });
@@ -1638,15 +1640,15 @@ static Widget WindowSceneryBaseWidgets[] = {
                 auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 {
-                    imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
+                    imageId = imageId.WithPrimary(_sceneryPrimaryColour);
                     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     {
-                        imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
+                        imageId = imageId.WithSecondary(_scenerySecondaryColour);
                     }
                 }
                 if (sceneryEntry->flags & SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
                 {
-                    imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
+                    imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                 }
 
                 auto spriteTop = (sceneryEntry->height / 4) + 43;
@@ -1660,8 +1662,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
                 {
-                    imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation)
-                                  .WithTransparency(gWindowSceneryPrimaryColour);
+                    imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation).WithTransparency(_sceneryPrimaryColour);
                     GfxDrawSprite(dpi, imageId, { 32, spriteTop });
                 }
 
@@ -1691,7 +1692,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             {
                 const auto& currentSceneryGlobal = _filteredSceneryTab.Entries[sceneryTabItemIndex];
                 const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
-                if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
+                if (_sceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
                 {
                     if (_selectedScenery == currentSceneryGlobal)
                     {
@@ -1749,7 +1750,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 
-            if (gWindowSceneryPaintEnabled)
+            if (_sceneryPaintEnabled)
                 return;
             if (gWindowSceneryEyedropperEnabled)
                 return;
@@ -1833,8 +1834,8 @@ static Widget WindowSceneryBaseWidgets[] = {
                     for (; attemptsLeft != 0; attemptsLeft--)
                     {
                         cost = TryPlaceGhostSmallScenery(
-                            { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, gWindowSceneryPrimaryColour,
-                            gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                            { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, _sceneryPrimaryColour,
+                            _scenerySecondaryColour, _sceneryTertiaryColour);
 
                         if (cost != kMoney64Undefined)
                             break;
@@ -1924,8 +1925,8 @@ static Widget WindowSceneryBaseWidgets[] = {
                     for (; attemptsLeft != 0; attemptsLeft--)
                     {
                         cost = TryPlaceGhostWall(
-                            { mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, gWindowSceneryPrimaryColour,
-                            gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                            { mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, _sceneryPrimaryColour,
+                            _scenerySecondaryColour, _sceneryTertiaryColour);
 
                         if (cost != kMoney64Undefined)
                             break;
@@ -1990,8 +1991,8 @@ static Widget WindowSceneryBaseWidgets[] = {
                     for (; attemptsLeft != 0; attemptsLeft--)
                     {
                         cost = TryPlaceGhostLargeScenery(
-                            { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, gWindowSceneryPrimaryColour,
-                            gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                            { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, _sceneryPrimaryColour,
+                            _scenerySecondaryColour, _sceneryTertiaryColour);
 
                         if (cost != kMoney64Undefined)
                             break;
@@ -2173,7 +2174,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             SceneryRemoveGhostToolPlacement();
 
             // 6e2612
-            auto primaryColour = gWindowSceneryPrimaryColour;
+            auto primaryColour = _sceneryPrimaryColour;
             auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, primaryColour);
             bannerPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
@@ -2211,7 +2212,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
                     auto repaintScenery = SmallScenerySetColourAction(
                         { info.Loc, info.Element->GetBaseZ() }, quadrant, info.Element->AsSmallScenery()->GetEntryIndex(),
-                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                        _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery);
                     break;
@@ -2225,8 +2226,8 @@ static Widget WindowSceneryBaseWidgets[] = {
                         return;
 
                     auto repaintScenery = WallSetColourAction(
-                        { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() }, gWindowSceneryPrimaryColour,
-                        gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                        { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() }, _sceneryPrimaryColour,
+                        _scenerySecondaryColour, _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery);
                     break;
@@ -2241,8 +2242,8 @@ static Widget WindowSceneryBaseWidgets[] = {
 
                     auto repaintScenery = LargeScenerySetColourAction(
                         { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() },
-                        info.Element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour,
-                        gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                        info.Element->AsLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
+                        _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery);
                     break;
@@ -2257,7 +2258,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                         {
                             auto repaintScenery = BannerSetColourAction(
                                 { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
-                                gWindowSceneryPrimaryColour);
+                                _sceneryPrimaryColour);
 
                             GameActions::Execute(&repaintScenery);
                         }
@@ -2897,7 +2898,8 @@ static Widget WindowSceneryBaseWidgets[] = {
         void SceneryToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
             SceneryRemoveGhostToolPlacement();
-            if (gWindowSceneryPaintEnabled & 1)
+
+            if (_sceneryPaintEnabled)
             {
                 RepaintSceneryToolDown(screenCoords, widgetIndex);
                 return;
@@ -2991,7 +2993,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                         {
                             auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                                 { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                                _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
                             auto res = GameActions::Query(&smallSceneryPlaceAction);
                             success = res.Error;
                             if (res.Error == GameActions::Status::Ok)
@@ -3014,7 +3016,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                         {
                             auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                                 { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                                _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                             smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                                 if (result->Error == GameActions::Status::Ok)
@@ -3072,8 +3074,8 @@ static Widget WindowSceneryBaseWidgets[] = {
                     for (; zAttemptRange != 0; zAttemptRange--)
                     {
                         auto wallPlaceAction = WallPlaceAction(
-                            selectedScenery, { gridPos, gSceneryPlaceZ }, edges, gWindowSceneryPrimaryColour,
-                            gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                            selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
+                            _sceneryTertiaryColour);
 
                         auto res = GameActions::Query(&wallPlaceAction);
                         if (res.Error == GameActions::Status::Ok)
@@ -3096,8 +3098,8 @@ static Widget WindowSceneryBaseWidgets[] = {
                     }
 
                     auto wallPlaceAction = WallPlaceAction(
-                        selectedScenery, { gridPos, gSceneryPlaceZ }, edges, gWindowSceneryPrimaryColour,
-                        gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                        selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
+                        _sceneryTertiaryColour);
 
                     wallPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
@@ -3126,8 +3128,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                         CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
                         auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                            loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour,
-                            gWindowSceneryTertiaryColour);
+                            loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                         auto res = GameActions::Query(&sceneryPlaceAction);
                         if (res.Error == GameActions::Status::Ok)
@@ -3152,8 +3153,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                     CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
                     auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                        loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour,
-                        gWindowSceneryTertiaryColour);
+                        loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
                     sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
@@ -3176,7 +3176,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                         return;
 
                     CoordsXYZD loc{ gridPos, z, direction };
-                    auto primaryColour = gWindowSceneryPrimaryColour;
+                    auto primaryColour = _sceneryPrimaryColour;
                     auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, primaryColour);
                     bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
@@ -3234,9 +3234,9 @@ static Widget WindowSceneryBaseWidgets[] = {
     void WindowScenerySetDefaultPlacementConfiguration()
     {
         gWindowSceneryRotation = 3;
-        gWindowSceneryPrimaryColour = COLOUR_BORDEAUX_RED;
-        gWindowScenerySecondaryColour = COLOUR_YELLOW;
-        gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
+        _sceneryPrimaryColour = COLOUR_BORDEAUX_RED;
+        _scenerySecondaryColour = COLOUR_YELLOW;
+        _sceneryTertiaryColour = COLOUR_DARK_BROWN;
 
         WindowSceneryResetSelectedSceneryItems();
     }

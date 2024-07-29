@@ -46,6 +46,10 @@ static Widget _waterWidgets[] = {
 
     class WaterWindow final : public Window
     {
+    private:
+        money64 _waterToolRaiseCost = kMoney64Undefined;
+        money64 _waterToolLowerCost = kMoney64Undefined;
+
     public:
         void OnOpen() override
         {
@@ -55,8 +59,6 @@ static Widget _waterWidgets[] = {
             WindowPushOthersBelow(*this);
 
             gLandToolSize = 1;
-            gWaterToolRaiseCost = kMoney64Undefined;
-            gWaterToolLowerCost = kMoney64Undefined;
         }
 
         void OnClose() override
@@ -161,19 +163,19 @@ static Widget _waterWidgets[] = {
             {
                 // Draw raise cost amount
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
-                if (gWaterToolRaiseCost != kMoney64Undefined && gWaterToolRaiseCost != 0)
+                if (_waterToolRaiseCost != kMoney64Undefined && _waterToolRaiseCost != 0)
                 {
                     auto ft = Formatter();
-                    ft.Add<money64>(gWaterToolRaiseCost);
+                    ft.Add<money64>(_waterToolRaiseCost);
                     DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 10;
 
                 // Draw lower cost amount
-                if (gWaterToolLowerCost != kMoney64Undefined && gWaterToolLowerCost != 0)
+                if (_waterToolLowerCost != kMoney64Undefined && _waterToolLowerCost != 0)
                 {
                     auto ft = Formatter();
-                    ft.Add<money64>(gWaterToolLowerCost);
+                    ft.Add<money64>(_waterToolLowerCost);
                     DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
             }
@@ -262,8 +264,8 @@ static Widget _waterWidgets[] = {
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
                 GameActions::Execute(&waterRaiseAction);
 
-                gWaterToolRaiseCost = kMoney64Undefined;
-                gWaterToolLowerCost = kMoney64Undefined;
+                _waterToolRaiseCost = kMoney64Undefined;
+                _waterToolLowerCost = kMoney64Undefined;
 
                 return;
             }
@@ -277,8 +279,8 @@ static Widget _waterWidgets[] = {
                 auto waterLowerAction = WaterLowerAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
                 GameActions::Execute(&waterLowerAction);
-                gWaterToolRaiseCost = kMoney64Undefined;
-                gWaterToolLowerCost = kMoney64Undefined;
+                _waterToolRaiseCost = kMoney64Undefined;
+                _waterToolLowerCost = kMoney64Undefined;
 
                 return;
             }
@@ -308,10 +310,10 @@ static Widget _waterWidgets[] = {
                 res = GameActions::Query(&waterRaiseAction);
                 money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
-                if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
+                if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
                 {
-                    gWaterToolRaiseCost = raiseCost;
-                    gWaterToolLowerCost = lowerCost;
+                    _waterToolRaiseCost = raiseCost;
+                    _waterToolLowerCost = lowerCost;
                     WindowInvalidateByClass(WindowClass::Water);
                 }
                 return;
@@ -324,10 +326,10 @@ static Widget _waterWidgets[] = {
 
             if (info.SpriteType == ViewportInteractionItem::None)
             {
-                if (gWaterToolRaiseCost != kMoney64Undefined || gWaterToolLowerCost != kMoney64Undefined)
+                if (_waterToolRaiseCost != kMoney64Undefined || _waterToolLowerCost != kMoney64Undefined)
                 {
-                    gWaterToolRaiseCost = kMoney64Undefined;
-                    gWaterToolLowerCost = kMoney64Undefined;
+                    _waterToolRaiseCost = kMoney64Undefined;
+                    _waterToolLowerCost = kMoney64Undefined;
                     WindowInvalidateByClass(WindowClass::Water);
                 }
                 return;
@@ -398,10 +400,10 @@ static Widget _waterWidgets[] = {
             res = GameActions::Query(&waterRaiseAction);
             money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
-            if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
+            if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
             {
-                gWaterToolRaiseCost = raiseCost;
-                gWaterToolLowerCost = lowerCost;
+                _waterToolRaiseCost = raiseCost;
+                _waterToolLowerCost = lowerCost;
                 WindowInvalidateByClass(WindowClass::Water);
             }
         }

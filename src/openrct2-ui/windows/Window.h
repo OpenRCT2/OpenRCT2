@@ -32,11 +32,7 @@ namespace OpenRCT2::Ui::Windows
     extern bool gWindowSceneryScatterEnabled;
     extern uint16_t gWindowSceneryScatterSize;
     extern ScatterToolDensity gWindowSceneryScatterDensity;
-    extern uint8_t gWindowSceneryPaintEnabled;
     extern uint8_t gWindowSceneryRotation;
-    extern colour_t gWindowSceneryPrimaryColour;
-    extern colour_t gWindowScenerySecondaryColour;
-    extern colour_t gWindowSceneryTertiaryColour;
     extern bool gWindowSceneryEyedropperEnabled;
 
     WindowBase* AboutOpen();
