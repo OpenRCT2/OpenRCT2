@@ -210,6 +210,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowSceneryInit();
     void WindowSceneryResetSelectedSceneryItems();
     const ScenerySelection WindowSceneryGetTabSelection();
+    void ToggleSceneryWindow();
 
     extern uint8_t gToolbarDirtyFlags;
     WindowBase* GameBottomToolbarOpen();
