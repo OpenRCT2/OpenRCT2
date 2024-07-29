@@ -16,7 +16,6 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>

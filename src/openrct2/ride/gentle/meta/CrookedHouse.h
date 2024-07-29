@@ -18,7 +18,7 @@
 constexpr RideTypeDescriptor CrookedHouseRTD =
 {
     .Category = RIDE_CATEGORY_GENTLE,
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionCrookedHouse,
         .EnabledTrackPieces = {},

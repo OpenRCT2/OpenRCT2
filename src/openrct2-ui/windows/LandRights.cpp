@@ -19,7 +19,6 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -338,7 +337,7 @@ static Widget window_land_rights_widgets[] = {
         {
             if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -348,7 +347,7 @@ static Widget window_land_rights_widgets[] = {
             }
             else
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -362,7 +361,7 @@ static Widget window_land_rights_widgets[] = {
         {
             if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -372,7 +371,7 @@ static Widget window_land_rights_widgets[] = {
             }
             else
             {
-                if (screenCoords.x != LOCATION_NULL)
+                if (screenCoords.x != kLocationNull)
                 {
                     auto landBuyRightsAction = LandBuyRightsAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },

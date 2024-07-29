@@ -35,8 +35,8 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Formatting.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -79,7 +79,7 @@
 
 using namespace OpenRCT2;
 
-namespace RCT2
+namespace OpenRCT2::RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 
@@ -416,7 +416,7 @@ namespace RCT2
             gameState.Park.Entrances.clear();
             for (uint8_t i = 0; i < Limits::kMaxParkEntrances; i++)
             {
-                if (_s6.ParkEntranceX[i] != LOCATION_NULL)
+                if (_s6.ParkEntranceX[i] != kLocationNull)
                 {
                     CoordsXYZD entrance;
                     entrance.x = _s6.ParkEntranceX[i];
@@ -1599,7 +1599,7 @@ namespace RCT2
             dst->totalAirTime = src->TotalAirTime;
             dst->current_test_station = StationIndex::FromUnderlying(src->CurrentTestStation);
             dst->num_circuits = src->NumCircuits;
-            dst->CableLiftLoc = { src->CableLiftX, src->CableLiftY, src->CableLiftZ * COORDS_Z_STEP };
+            dst->CableLiftLoc = { src->CableLiftX, src->CableLiftY, src->CableLiftZ * kCoordsZStep };
             // Pad1FD;
             dst->cable_lift = EntityId::FromUnderlying(src->CableLift);
 
@@ -1869,8 +1869,8 @@ namespace RCT2
             const auto rct12Type = src->GetType();
             dst->ClearAs(ToOpenRCT2TileElementType(rct12Type));
             dst->SetDirection(src->GetDirection());
-            dst->SetBaseZ(src->BaseHeight * COORDS_Z_STEP);
-            dst->SetClearanceZ(src->ClearanceHeight * COORDS_Z_STEP);
+            dst->SetBaseZ(src->BaseHeight * kCoordsZStep);
+            dst->SetClearanceZ(src->ClearanceHeight * kCoordsZStep);
 
             // All saved in "flags"
             dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
@@ -2204,8 +2204,7 @@ namespace RCT2
                     x <<= 7;
                     int32_t y = val & 0xFC0;
                     y <<= 1;
-                    staffmember->SetPatrolArea(
-                        MapRange(x, y, x + (4 * COORDS_XY_STEP) - 1, y + (4 * COORDS_XY_STEP) - 1), true);
+                    staffmember->SetPatrolArea(MapRange(x, y, x + (4 * kCoordsXYStep) - 1, y + (4 * kCoordsXYStep) - 1), true);
                 }
             }
         }
@@ -2236,7 +2235,7 @@ namespace RCT2
             {
                 dst->SetName(GetUserString(src->NameStringIdx));
             }
-            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * COORDS_Z_STEP };
+            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * kCoordsZStep };
             dst->NextFlags = src->NextFlags;
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
@@ -2865,7 +2864,7 @@ namespace RCT2
                 break;
         }
     }
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {

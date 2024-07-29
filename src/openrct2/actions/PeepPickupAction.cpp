@@ -16,6 +16,8 @@
 #include "../network/network.h"
 #include "../util/Util.h"
 
+using namespace OpenRCT2;
+
 PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
     : _type(type)
     , _entityId(entityId)

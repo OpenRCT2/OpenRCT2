@@ -24,6 +24,8 @@
 #    include <chrono>
 #    include <discord_rpc.h>
 
+using namespace OpenRCT2;
+
 namespace
 {
     using namespace std::chrono_literals;

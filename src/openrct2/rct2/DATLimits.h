@@ -10,7 +10,7 @@
 #pragma once
 #include <cstdint>
 
-namespace RCT2::ObjectLimits
+namespace OpenRCT2::RCT2::ObjectLimits
 {
     constexpr uint8_t MaxCategoriesPerRide = 2;
     constexpr uint8_t MaxRideTypesPerRideEntry = 3;
@@ -18,4 +18,4 @@ namespace RCT2::ObjectLimits
     // Examples of cars here are the locomotive, tender and carriage of the Miniature Railway.
     constexpr uint8_t MaxCarTypesPerRideEntry = 4;
     constexpr uint8_t MaxShopItemsPerRideEntry = 2;
-} // namespace RCT2::ObjectLimits
+} // namespace OpenRCT2::RCT2::ObjectLimits

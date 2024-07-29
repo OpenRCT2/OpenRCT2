@@ -31,6 +31,8 @@
 #include "FileSystem.hpp"
 #include "FileWatcher.h"
 
+using namespace OpenRCT2;
+
 #if defined(__linux__)
 FileWatcher::FileDescriptor::~FileDescriptor()
 {

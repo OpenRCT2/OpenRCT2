@@ -19,8 +19,7 @@
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -70,7 +69,7 @@ const StringId StaffCostumeNames[] = {
 // clang-format on
 
 // Maximum manhattan distance that litter can be for a handyman to seek to it
-const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
+const uint16_t MAX_LITTER_DISTANCE = 3 * kCoordsXYStep;
 
 template<> bool EntityBase::Is<Staff>() const
 {
@@ -184,7 +183,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!PathFinding::IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
+            if (!PathFinding::IsValidPathZAndDirection(test_element, adjacPos.z / kCoordsZStep, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -229,22 +228,22 @@ uint8_t Staff::GetValidPatrolDirections(const CoordsXY& loc) const
 {
     uint8_t directions = 0;
 
-    if (IsLocationInPatrol({ loc.x - COORDS_XY_STEP, loc.y }))
+    if (IsLocationInPatrol({ loc.x - kCoordsXYStep, loc.y }))
     {
         directions |= (1 << 0);
     }
 
-    if (IsLocationInPatrol({ loc.x, loc.y + COORDS_XY_STEP }))
+    if (IsLocationInPatrol({ loc.x, loc.y + kCoordsXYStep }))
     {
         directions |= (1 << 1);
     }
 
-    if (IsLocationInPatrol({ loc.x + COORDS_XY_STEP, loc.y }))
+    if (IsLocationInPatrol({ loc.x + kCoordsXYStep, loc.y }))
     {
         directions |= (1 << 2);
     }
 
-    if (IsLocationInPatrol({ loc.x, loc.y - COORDS_XY_STEP }))
+    if (IsLocationInPatrol({ loc.x, loc.y - kCoordsXYStep }))
     {
         directions |= (1 << 3);
     }
@@ -304,9 +303,9 @@ void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
 
 void Staff::SetPatrolArea(const MapRange& range, bool value)
 {
-    for (int32_t yy = range.GetTop(); yy <= range.GetBottom(); yy += COORDS_XY_STEP)
+    for (int32_t yy = range.GetTop(); yy <= range.GetBottom(); yy += kCoordsXYStep)
     {
-        for (int32_t xx = range.GetLeft(); xx <= range.GetRight(); xx += COORDS_XY_STEP)
+        for (int32_t xx = range.GetLeft(); xx <= range.GetRight(); xx += kCoordsXYStep)
         {
             SetPatrolArea({ xx, yy }, value);
         }
@@ -361,7 +360,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     CoordsXY nextTile = litterTile.ToTileStart() - CoordsDirectionDelta[nextDirection];
 
-    int16_t nextZ = ((z + COORDS_Z_STEP) & 0xFFF0) / COORDS_Z_STEP;
+    int16_t nextZ = ((z + kCoordsZStep) & 0xFFF0) / kCoordsZStep;
 
     TileElement* tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
@@ -437,7 +436,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
         auto surfaceElement = MapGetSurfaceElementAt(chosenTile);
         if (surfaceElement != nullptr)
         {
-            if (std::abs(surfaceElement->GetBaseZ() - NextLoc.z) <= 2 * COORDS_Z_STEP)
+            if (std::abs(surfaceElement->GetBaseZ() - NextLoc.z) <= 2 * kCoordsZStep)
             {
                 if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                 {
@@ -663,7 +662,7 @@ Direction Staff::MechanicDirectionPathRand(uint8_t pathDirections) const
  */
 Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement)
 {
-    uint8_t pathDirections = pathElement->GetEdges();
+    uint32_t pathDirections = pathElement->GetEdges();
     pathDirections &= validDirections;
 
     if (pathDirections == 0)
@@ -781,7 +780,7 @@ bool Staff::DoMechanicPathFinding()
  */
 Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement) const
 {
-    uint8_t pathDirections = pathElement->GetEdges();
+    uint32_t pathDirections = pathElement->GetEdges();
     if (State != PeepState::Answering && State != PeepState::HeadingToInspection)
     {
         pathDirections &= validDirections;
@@ -792,15 +791,15 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         return DirectionSurface(ScenarioRand() & 3);
     }
 
-    pathDirections &= ~(1 << DirectionReverse(PeepDirection));
+    pathDirections &= ~(1u << DirectionReverse(PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << DirectionReverse(PeepDirection));
+        pathDirections |= (1u << DirectionReverse(PeepDirection));
     }
 
     Direction direction = UtilBitScanForward(pathDirections);
     // If this is the only direction they can go, then go
-    if (pathDirections == (1 << direction))
+    if (pathDirections == (1u << direction))
     {
         return direction;
     }
@@ -808,7 +807,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
     direction = ScenarioRand() & 3;
     for (uint8_t i = 0; i < kNumOrthogonalDirections; ++i, direction = DirectionNext(direction))
     {
-        if (pathDirections & (1 << direction))
+        if (pathDirections & (1u << direction))
             return direction;
     }
 
@@ -879,7 +878,7 @@ void Staff::EntertainerUpdateNearbyPeeps() const
 {
     for (auto guest : EntityList<Guest>())
     {
-        if (guest->x == LOCATION_NULL)
+        if (guest->x == kLocationNull)
             continue;
 
         int16_t z_dist = abs(z - guest->z);
@@ -1140,7 +1139,7 @@ void Staff::UpdateWatering()
             if (tile_element->GetType() != TileElementType::SmallScenery)
                 continue;
 
-            if (abs(NextLoc.z - tile_element->GetBaseZ()) > 4 * COORDS_Z_STEP)
+            if (abs(NextLoc.z - tile_element->GetBaseZ()) > 4 * kCoordsZStep)
                 continue;
 
             const auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
@@ -1527,7 +1526,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
             auto z_diff = abs(NextLoc.z - tile_element->GetBaseZ());
 
-            if (z_diff >= 4 * COORDS_Z_STEP)
+            if (z_diff >= 4 * kCoordsZStep)
             {
                 continue;
             }

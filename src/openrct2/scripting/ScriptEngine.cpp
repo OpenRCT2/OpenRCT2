@@ -450,6 +450,9 @@ void ScriptEngine::Initialise()
     ScScenarioObjective::Register(ctx);
     ScPatrolArea::Register(ctx);
     ScStaff::Register(ctx);
+    ScHandyman::Register(ctx);
+    ScMechanic::Register(ctx);
+    ScSecurity::Register(ctx);
     ScPlugin::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
@@ -1634,7 +1637,7 @@ IntervalHandle ScriptEngine::AllocateHandle()
     const auto nextHandle = _nextIntervalHandle;
 
     // In case of overflow start from 1 again
-    _nextIntervalHandle = std::max(_nextIntervalHandle + 1U, 1U);
+    _nextIntervalHandle = std::max(_nextIntervalHandle + 1u, 1u);
 
     return nextHandle;
 }

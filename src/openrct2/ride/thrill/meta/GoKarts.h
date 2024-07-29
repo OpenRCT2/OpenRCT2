@@ -19,7 +19,7 @@
 constexpr RideTypeDescriptor GoKartsRTD =
 {
     .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionGoKarts,
         .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL},

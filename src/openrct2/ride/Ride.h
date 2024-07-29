@@ -44,9 +44,9 @@ constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
-constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
+constexpr uint16_t MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
 
-constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
+constexpr uint16_t MAZE_CLEARANCE_HEIGHT = 4 * kCoordsZStep;
 
 constexpr uint8_t kRideMaxDropsCount = 63;
 constexpr uint8_t kRideNumDropsMask = 0b00111111;
@@ -55,6 +55,8 @@ constexpr uint8_t kRideNumPoweredLiftsMask = 0b11000000;
 
 constexpr money64 kRideMinPrice = 0.00_GBP;
 constexpr money64 kRideMaxPrice = 20.00_GBP;
+
+extern const StringId kRideInspectionIntervalNames[];
 
 struct RideStation
 {
@@ -101,12 +103,12 @@ enum class RideClassification
     KioskOrFacility
 };
 
-namespace ShelteredSectionsBits
+namespace OpenRCT2::ShelteredSectionsBits
 {
     constexpr uint8_t NumShelteredSectionsMask = 0b00011111;
     constexpr uint8_t RotatingWhileSheltered = 0b00100000;
     constexpr uint8_t BankingWhileSheltered = 0b01000000;
-}; // namespace ShelteredSectionsBits
+}; // namespace OpenRCT2::ShelteredSectionsBits
 
 struct TrackDesign;
 struct TrackDesignState;
@@ -196,7 +198,7 @@ struct Ride
     uint16_t num_customers_timeout{};
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
-    money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    money64 price[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     RatingTuple ratings{};
     money64 value{};

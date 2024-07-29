@@ -365,7 +365,7 @@ namespace OpenRCT2::Scripting
             const auto* item = GetItem();
             if (item != nullptr)
             {
-                return item->PredefinedIndex != PREDEFINED_INDEX_CUSTOM;
+                return item->PredefinedIndex != TitleSequenceManager::kPredefinedIndexCustom;
             }
             return {};
         }
@@ -545,7 +545,7 @@ namespace OpenRCT2::Scripting
             return std::nullopt;
         }
 
-        const TitleSequenceManagerItem* GetItem() const
+        const TitleSequenceManager::Item* GetItem() const
         {
             auto index = GetManagerIndex();
             if (index)

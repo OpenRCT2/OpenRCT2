@@ -217,6 +217,7 @@
     <ClCompile Include="windows\TitleLogo.cpp" />
     <ClCompile Include="windows\TitleMenu.cpp" />
     <ClCompile Include="windows\TitleOptions.cpp" />
+    <ClCompile Include="windows\TitleVersion.cpp" />
     <ClCompile Include="windows\Tooltip.cpp" />
     <ClCompile Include="windows\TopToolbar.cpp" />
     <ClCompile Include="windows\TrackDesignManage.cpp" />

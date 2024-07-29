@@ -101,8 +101,8 @@ public:
 [[nodiscard]] std::unique_ptr<IUdpSocket> CreateUdpSocket();
 [[nodiscard]] std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();
 
-namespace Convert
+namespace OpenRCT2::Convert
 {
     uint16_t HostToNetwork(uint16_t value);
     uint16_t NetworkToHost(uint16_t value);
-} // namespace Convert
+} // namespace OpenRCT2::Convert

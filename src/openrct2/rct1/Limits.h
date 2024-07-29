@@ -10,7 +10,7 @@
 #pragma once
 #include "../rct12/Limits.h"
 
-namespace RCT1::Limits
+namespace OpenRCT2::RCT1::Limits
 {
     using namespace RCT12::Limits;
     constexpr uint16_t kMaxTileElements = 0xC000;
@@ -25,4 +25,4 @@ namespace RCT1::Limits
     constexpr uint32_t kLLCsg1DatFileSize = 41402869;
     constexpr uint32_t kNumTerrainSurfaces = 16;
     constexpr uint32_t kNumTerrainEdges = 15;
-} // namespace RCT1::Limits
+} // namespace OpenRCT2::RCT1::Limits

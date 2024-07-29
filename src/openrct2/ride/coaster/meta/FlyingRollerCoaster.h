@@ -19,7 +19,7 @@
 constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 {
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionFlyingRC,
         .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_INLINE_TWIST_UNINVERTED, TRACK_FLYING_HALF_LOOP_UNINVERTED_UP, TRACK_QUARTER_LOOP_UNINVERTED_UP, TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP, TRACK_SLOPE_VERTICAL, TRACK_SLOPE_CURVE_BANKED, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES},
@@ -97,7 +97,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
 {
     .Category = RIDE_CATEGORY_NONE,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .Drawer = nullptr,
         .EnabledTrackPieces = {  },

@@ -25,7 +25,6 @@
 #    include <openrct2/interface/Window.h>
 #    include <openrct2/localisation/Formatter.h>
 #    include <openrct2/localisation/Language.h>
-#    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/scripting/Plugin.h>
 #    include <openrct2/sprites.h>
 #    include <optional>

@@ -12,12 +12,13 @@
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/RideConstruction.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2;
 
 RideSetColourSchemeAction::RideSetColourSchemeAction(
     const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme)

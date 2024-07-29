@@ -19,7 +19,7 @@
 constexpr RideTypeDescriptor SplashBoatsRTD =
 {
     .Category = RIDE_CATEGORY_WATER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionSplashBoats,
         .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE, TRACK_ON_RIDE_PHOTO},

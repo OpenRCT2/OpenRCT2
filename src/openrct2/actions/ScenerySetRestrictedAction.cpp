@@ -12,6 +12,8 @@
 #include "../object/SceneryGroupObject.h"
 #include "../world/Scenery.h"
 
+using namespace OpenRCT2;
+
 ScenerySetRestrictedAction::ScenerySetRestrictedAction(ObjectType objectType, ObjectEntryIndex entryIndex, bool isRestricted)
     : _objectType(objectType)
     , _objectIndex(entryIndex)

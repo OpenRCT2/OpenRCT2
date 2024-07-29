@@ -18,13 +18,10 @@
 namespace OpenRCT2
 {
     struct IStream;
-}
+    struct IPlatformEnvironment;
+} // namespace OpenRCT2
 
 class Object;
-namespace OpenRCT2
-{
-    struct IPlatformEnvironment;
-}
 
 namespace OpenRCT2::Localisation
 {
@@ -55,8 +52,8 @@ struct ObjectRepositoryItem
     struct
     {
         uint8_t RideFlags;
-        uint8_t RideCategory[RCT2::ObjectLimits::MaxCategoriesPerRide];
-        ride_type_t RideType[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+        uint8_t RideCategory[OpenRCT2::RCT2::ObjectLimits::MaxCategoriesPerRide];
+        ride_type_t RideType[OpenRCT2::RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
     } RideInfo;
     struct
     {

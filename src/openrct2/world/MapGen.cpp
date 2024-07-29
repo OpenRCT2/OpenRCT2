@@ -16,7 +16,6 @@
 #include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/String.hpp"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
@@ -36,6 +35,8 @@
 #include <cstring>
 #include <iterator>
 #include <vector>
+
+using namespace OpenRCT2;
 
 #pragma region Height map struct
 
@@ -341,8 +342,8 @@ static void MapGenPlaceTrees()
     {
         for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
         {
-            pos.x = x * COORDS_XY_STEP;
-            pos.y = y * COORDS_XY_STEP;
+            pos.x = x * kCoordsXYStep;
+            pos.y = y * kCoordsXYStep;
 
             auto* surfaceElement = MapGetSurfaceElementAt(pos);
             if (surfaceElement == nullptr)
@@ -366,10 +367,10 @@ static void MapGenPlaceTrees()
                     for (int32_t offsetX = -maxOasisDistance; offsetX <= maxOasisDistance; offsetX++)
                     {
                         // Get map coord, clamped to the edges
-                        const auto offset = CoordsXY{ offsetX * COORDS_XY_STEP, offsetY * COORDS_XY_STEP };
+                        const auto offset = CoordsXY{ offsetX * kCoordsXYStep, offsetY * kCoordsXYStep };
                         auto neighbourPos = pos + offset;
-                        neighbourPos.x = std::clamp(neighbourPos.x, COORDS_XY_STEP, COORDS_XY_STEP * (gameState.MapSize.x - 1));
-                        neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gameState.MapSize.y - 1));
+                        neighbourPos.x = std::clamp(neighbourPos.x, kCoordsXYStep, kCoordsXYStep * (gameState.MapSize.x - 1));
+                        neighbourPos.y = std::clamp(neighbourPos.y, kCoordsXYStep, kCoordsXYStep * (gameState.MapSize.y - 1));
 
                         const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
                         if (neighboutSurface != nullptr && neighboutSurface->GetWaterHeight() > 0)
@@ -424,7 +425,7 @@ static void MapGenSetWaterLevel(int32_t waterLevel)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel)
-                surfaceElement->SetWaterHeight(waterLevel * COORDS_Z_STEP);
+                surfaceElement->SetWaterHeight(waterLevel * kCoordsZStep);
         }
     }
 }
@@ -867,7 +868,7 @@ void MapGenGenerateFromHeightmap(MapGenSettings* settings)
             // Set water level
             if (surfaceElement->BaseHeight < settings->water_level)
             {
-                surfaceElement->SetWaterHeight(settings->water_level * COORDS_Z_STEP);
+                surfaceElement->SetWaterHeight(settings->water_level * kCoordsZStep);
             }
         }
     }

@@ -18,7 +18,6 @@
 #include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -362,8 +361,8 @@ static Widget _trackPlaceWidgets[] = {
                 CoordsXY origin = { 0, 0 };
                 if (pass == 1)
                 {
-                    origin.x -= ((max.x + min.x) >> 6) * COORDS_XY_STEP;
-                    origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
+                    origin.x -= ((max.x + min.x) >> 6) * kCoordsXYStep;
+                    origin.y -= ((max.y + min.y) >> 6) * kCoordsXYStep;
                 }
 
                 const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);

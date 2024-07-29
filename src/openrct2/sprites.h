@@ -1517,7 +1517,7 @@ enum
     SPR_G2_END,
 
     SPR_CSG_BEGIN = SPR_G2_END,
-    SPR_CSG_END = SPR_CSG_BEGIN + RCT1::Limits::kNumLLCsgEntries,
+    SPR_CSG_END = SPR_CSG_BEGIN + OpenRCT2::RCT1::Limits::kNumLLCsgEntries,
 
     G2_SPRITE_COUNT = SPR_G2_END - SPR_G2_BEGIN,
 

@@ -975,7 +975,7 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
     return baddresses;
 }
 
-namespace Convert
+namespace OpenRCT2::Convert
 {
     uint16_t HostToNetwork(uint16_t value)
     {
@@ -986,6 +986,6 @@ namespace Convert
     {
         return ntohs(value);
     }
-} // namespace Convert
+} // namespace OpenRCT2::Convert
 
 #endif

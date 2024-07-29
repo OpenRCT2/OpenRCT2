@@ -21,6 +21,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+
 enum
 {
     SPR_LAUNCHED_FREEFALL_TOWER_BASE = 14564,

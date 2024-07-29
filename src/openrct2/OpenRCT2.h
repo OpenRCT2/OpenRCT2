@@ -48,6 +48,7 @@ extern bool gOpenRCT2NoGraphics;
 extern bool gOpenRCT2ShowChangelog;
 extern bool gOpenRCT2SilentBreakpad;
 extern u8string gSilentRecordingName;
+extern bool gSilentReplays;
 
 #ifndef DISABLE_NETWORK
 extern int32_t gNetworkStart;

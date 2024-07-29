@@ -22,6 +22,8 @@
 #include "../TrackPaint.h"
 #include "BolligerMabillardTrack.hpp"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::TubesInverted;
 
 static constexpr const uint32_t InvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {

@@ -16,9 +16,8 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../interface/Window.h"
-#include "../localisation/FormatCodes.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Formatting.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/BannerSceneryEntry.h"
@@ -108,7 +107,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
         if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             continue;
 
-        if ((tileElement->GetClearanceZ()) + (4 * COORDS_Z_STEP) <= bannerCoords.z)
+        if ((tileElement->GetClearanceZ()) + (4 * kCoordsZStep) <= bannerCoords.z)
             continue;
 
         resultRideIndex = rideIndex;
@@ -202,14 +201,14 @@ WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
 RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
 {
     static constexpr std::array NeighbourCheckOrder = {
-        CoordsXY{ COORDS_XY_STEP, 0 },
-        CoordsXY{ -COORDS_XY_STEP, 0 },
-        CoordsXY{ 0, COORDS_XY_STEP },
-        CoordsXY{ 0, -COORDS_XY_STEP },
-        CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
-        CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
-        CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
-        CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+        CoordsXY{ kCoordsXYStep, 0 },
+        CoordsXY{ -kCoordsXYStep, 0 },
+        CoordsXY{ 0, kCoordsXYStep },
+        CoordsXY{ 0, -kCoordsXYStep },
+        CoordsXY{ -kCoordsXYStep, +kCoordsXYStep },
+        CoordsXY{ +kCoordsXYStep, -kCoordsXYStep },
+        CoordsXY{ +kCoordsXYStep, +kCoordsXYStep },
+        CoordsXY{ -kCoordsXYStep, +kCoordsXYStep },
         CoordsXY{ 0, 0 },
     };
 

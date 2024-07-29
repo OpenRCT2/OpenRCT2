@@ -384,8 +384,13 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            auto coords = CoordsXYZD(vehicle->TrackLocation, vehicle->GetTrackDirection());
-            return ToDuk<CoordsXYZD>(ctx, coords);
+            DukObject dukCoords(ctx);
+            dukCoords.Set("x", vehicle->TrackLocation.x);
+            dukCoords.Set("y", vehicle->TrackLocation.y);
+            dukCoords.Set("z", vehicle->TrackLocation.z);
+            dukCoords.Set("direction", vehicle->GetTrackDirection());
+            dukCoords.Set("trackType", vehicle->GetTrackType());
+            return dukCoords.Take();
         }
         return ToDuk(ctx, nullptr);
     }
@@ -395,9 +400,12 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            auto coords = FromDuk<CoordsXYZD>(value);
-            vehicle->TrackLocation = CoordsXYZ(coords.x, coords.y, coords.z);
-            vehicle->SetTrackDirection(coords.direction);
+            auto x = AsOrDefault(value["x"], 0);
+            auto y = AsOrDefault(value["y"], 0);
+            auto z = AsOrDefault(value["z"], 0);
+            vehicle->TrackLocation = CoordsXYZ(x, y, z);
+            vehicle->SetTrackDirection(AsOrDefault(value["direction"], 0));
+            vehicle->SetTrackType(AsOrDefault(value["trackType"], 0));
         }
     }
 
@@ -515,7 +523,6 @@ namespace OpenRCT2::Scripting
             vehicle->MoveRelativeDistance(value);
         }
     }
-
 } // namespace OpenRCT2::Scripting
 
 #endif

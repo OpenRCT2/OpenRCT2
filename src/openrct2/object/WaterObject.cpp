@@ -23,6 +23,8 @@
 #include <cstring>
 #include <memory>
 
+using namespace OpenRCT2;
+
 void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(14, OpenRCT2::STREAM_SEEK_CURRENT);

@@ -14,13 +14,14 @@
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2;
 
 ParkSetNameAction::ParkSetNameAction(const std::string& name)
     : _name(name)

@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <string>
 
-namespace Guard
+namespace OpenRCT2::Guard
 {
     constexpr const utf8* ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
 
@@ -152,4 +152,4 @@ namespace Guard
 #    endif
     }
 #endif
-} // namespace Guard
+} // namespace OpenRCT2::Guard

@@ -616,7 +616,6 @@ static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
         GameNotifyMapChange();
         GameUnloadScripts();
         WindowCloseByClass(WindowClass::EditorObjectSelection);
-        GetContext()->LoadParkFromFile(path);
         GameLoadScripts();
         GameNotifyMapChanged();
         gIsAutosaveLoaded = gIsAutosave;

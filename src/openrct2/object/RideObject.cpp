@@ -107,7 +107,7 @@ static LegacyAnimationParameters GetDefaultAnimationParameters(uint8_t legacyAni
     return VehicleEntryDefaultAnimation[legacyAnimationType];
 }
 
-static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrames)
+static constexpr SpritePrecision PrecisionFromNumFrames(uint32_t numRotationFrames)
 {
     if (numRotationFrames == 0)
         return SpritePrecision::None;

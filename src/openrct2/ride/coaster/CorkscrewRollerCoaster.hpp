@@ -23,6 +23,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeOpen = 16232;
 static constexpr uint32_t kCorkscrewRcBlockBrakeNwSeOpen = 16233;
 static constexpr uint32_t kCorkscrewRcBlockBrakeSwNeClosed = 16234;

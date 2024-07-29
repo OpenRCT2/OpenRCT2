@@ -15,6 +15,8 @@
 #include "FootpathEntry.h"
 #include "ObjectRepository.h"
 
+using namespace OpenRCT2;
+
 void FootpathSurfaceObject::Load()
 {
     GetStringTable().Sort();

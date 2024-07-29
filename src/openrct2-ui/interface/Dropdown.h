@@ -16,7 +16,7 @@
 
 using namespace OpenRCT2;
 
-namespace Dropdown
+namespace OpenRCT2::Dropdown
 {
     struct Item;
 
@@ -36,7 +36,7 @@ namespace Dropdown
     void SetChecked(int32_t index, bool value);
     void SetDisabled(int32_t index, bool value);
     void SetImage(int32_t index, ImageId image);
-} // namespace Dropdown
+} // namespace OpenRCT2::Dropdown
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui::Windows
     colour_t ColourDropDownIndexToColour(uint8_t ddidx);
 } // namespace OpenRCT2::Ui::Windows
 
-namespace Dropdown
+namespace OpenRCT2::Dropdown
 {
     enum class ItemFlag : uint8_t
     {
@@ -142,4 +142,4 @@ namespace Dropdown
 
         return true;
     }
-} // namespace Dropdown
+} // namespace OpenRCT2::Dropdown

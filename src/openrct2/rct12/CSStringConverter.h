@@ -10,6 +10,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 #include <string_view>
 
 enum class RCT2LanguageId : uint8_t;

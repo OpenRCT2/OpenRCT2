@@ -326,7 +326,7 @@ GameActions::Result WallPlaceAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
-    uint8_t clearanceHeight = targetHeight / COORDS_Z_STEP;
+    uint8_t clearanceHeight = targetHeight / kCoordsZStep;
     if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
     {
         clearanceHeight += 2;
@@ -336,7 +336,7 @@ GameActions::Result WallPlaceAction::Execute() const
     bool wallAcrossTrack = false;
     if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.Cheats.DisableClearanceChecks)
     {
-        auto result = WallCheckObstruction(wallEntry, targetHeight / COORDS_Z_STEP, clearanceHeight, &wallAcrossTrack);
+        auto result = WallCheckObstruction(wallEntry, targetHeight / kCoordsZStep, clearanceHeight, &wallAcrossTrack);
         if (result.Error != GameActions::Status::Ok)
         {
             return result;

@@ -37,7 +37,8 @@
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
-#include "../localisation/Date.h"
+#include "../localisation/Formatting.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -81,7 +82,7 @@ using namespace OpenRCT2;
 
 static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
-namespace RCT1
+namespace OpenRCT2::RCT1
 {
     class S4Importer final : public IParkImporter
     {
@@ -1389,8 +1390,7 @@ namespace RCT1
                     x <<= 7;
                     int32_t y = val & 0x3E0;
                     y <<= 2;
-                    staffmember->SetPatrolArea(
-                        MapRange(x, y, x + (4 * COORDS_XY_STEP) - 1, y + (4 * COORDS_XY_STEP) - 1), true);
+                    staffmember->SetPatrolArea(MapRange(x, y, x + (4 * kCoordsXYStep) - 1, y + (4 * kCoordsXYStep) - 1), true);
                 }
             }
         }
@@ -3222,7 +3222,7 @@ namespace RCT1
                 break;
         }
     }
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
 {

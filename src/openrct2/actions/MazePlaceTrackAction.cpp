@@ -16,6 +16,8 @@
 #include "../ride/gentle/Maze.h"
 #include "../world/ConstructionClearance.h"
 
+using namespace OpenRCT2;
+
 using namespace OpenRCT2::TrackMetaData;
 
 MazePlaceTrackAction::MazePlaceTrackAction(const CoordsXYZ& location, RideId rideIndex, uint16_t mazeEntry)
@@ -85,7 +87,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
     if (heightDifference >= 0 && !OpenRCT2::GetGameState().Cheats.DisableSupportLimits)
     {
-        heightDifference /= COORDS_Z_PER_TINY_Z;
+        heightDifference /= kCoordsZPerTinyZ;
 
         auto* ride = GetRide(_rideIndex);
         const auto& rtd = ride->GetRideTypeDescriptor();

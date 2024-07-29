@@ -20,6 +20,8 @@
 #include "../TrackPaint.h"
 #include "../VehiclePaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Stick;
 
 /** rct2: 0x */

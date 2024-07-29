@@ -37,7 +37,6 @@
 #include "../core/String.hpp"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -71,7 +70,9 @@
 #include <iterator>
 #include <memory>
 
-namespace TrackDesignSceneryElementFlags
+using namespace OpenRCT2;
+
+namespace OpenRCT2::TrackDesignSceneryElementFlags
 {
     static constexpr uint8_t kRotationMask = 0b00000011;
 
@@ -81,7 +82,7 @@ namespace TrackDesignSceneryElementFlags
     static constexpr uint8_t kHasSlopeMask = 0b00010000;
     static constexpr uint8_t kSlopeDirectionMask = 0b01100000;
     static constexpr uint8_t kIsQueueMask = 0b10000000;
-} // namespace TrackDesignSceneryElementFlags
+} // namespace OpenRCT2::TrackDesignSceneryElementFlags
 
 using namespace TrackDesignSceneryElementFlags;
 
@@ -316,7 +317,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             auto rotatedMapLocation = TileCoordsXY(mapLocation.Rotate(0 - _saveDirection));
 
             z -= tds.origin.z;
-            z /= COORDS_Z_STEP;
+            z /= kCoordsZStep;
 
             if (z > 127 || z < -126)
             {
@@ -362,9 +363,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     // x is defined here as we can start the search
     // on tile start_x, start_y but then the next row
     // must restart on 0
-    for (int32_t y = startLoc.y, x = startLoc.x; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
+    for (int32_t y = startLoc.y, x = startLoc.x; y < MAXIMUM_MAP_SIZE_BIG; y += kCoordsXYStep)
     {
-        for (; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
+        for (; x < MAXIMUM_MAP_SIZE_BIG; x += kCoordsXYStep)
         {
             auto tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
             do
@@ -379,8 +380,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
                 TrackDesignMazeElement maze{};
 
                 maze.mazeEntry = tileElement->AsTrack()->GetMazeEntry();
-                maze.location.x = (x - startLoc.x) / COORDS_XY_STEP;
-                maze.location.y = (y - startLoc.y) / COORDS_XY_STEP;
+                maze.location.x = (x - startLoc.x) / kCoordsXYStep;
+                maze.location.y = (y - startLoc.y) / kCoordsXYStep;
                 _saveDirection = tileElement->GetDirection();
                 mazeElements.push_back(maze);
 
@@ -464,9 +465,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 {
     CoordsXYE tile{};
-    for (tile.y = 0; tile.y < MAXIMUM_MAP_SIZE_BIG; tile.y += COORDS_XY_STEP)
+    for (tile.y = 0; tile.y < MAXIMUM_MAP_SIZE_BIG; tile.y += kCoordsXYStep)
     {
-        for (tile.x = 0; tile.x < MAXIMUM_MAP_SIZE_BIG; tile.x += COORDS_XY_STEP)
+        for (tile.x = 0; tile.x < MAXIMUM_MAP_SIZE_BIG; tile.x += kCoordsXYStep)
         {
             tile.element = MapGetFirstElementAt(CoordsXY{ tile.x, tile.y });
             do
@@ -525,13 +526,13 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
         const auto relativeMapPosition = scenery.loc - tds.origin;
         const CoordsXY rotatedRelativeMapPos = relativeMapPosition.Rotate(0 - _saveDirection);
 
-        if (rotatedRelativeMapPos.x > 127 * COORDS_XY_STEP || rotatedRelativeMapPos.y > 127 * COORDS_XY_STEP
-            || rotatedRelativeMapPos.x < -126 * COORDS_XY_STEP || rotatedRelativeMapPos.y < -126 * COORDS_XY_STEP)
+        if (rotatedRelativeMapPos.x > 127 * kCoordsXYStep || rotatedRelativeMapPos.y > 127 * kCoordsXYStep
+            || rotatedRelativeMapPos.x < -126 * kCoordsXYStep || rotatedRelativeMapPos.y < -126 * kCoordsXYStep)
         {
             return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         }
 
-        if (relativeMapPosition.z > 127 * COORDS_Z_STEP || relativeMapPosition.z < -126 * COORDS_Z_STEP)
+        if (relativeMapPosition.z > 127 * kCoordsZStep || relativeMapPosition.z < -126 * kCoordsZStep)
         {
             return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         }
@@ -884,7 +885,7 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
     {
         maze.location.y = -maze.location.y;
 
-        auto mazeEntry = maze.mazeEntry;
+        uint32_t mazeEntry = maze.mazeEntry;
         uint16_t newEntry = 0;
         for (uint8_t position = UtilBitScanForward(mazeEntry); position != 0xFF; position = UtilBitScanForward(mazeEntry))
         {
@@ -1327,7 +1328,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
             case TrackPlaceOperation::placeTrackPreview:
             {
                 rotation = (rotation + entrance.location.direction) & 3;
-                newCoords.z = entrance.location.z * COORDS_Z_STEP;
+                newCoords.z = entrance.location.z * kCoordsZStep;
                 newCoords.z += tds.origin.z;
 
                 if (tds.placeOperation != TrackPlaceOperation::placeQuery)

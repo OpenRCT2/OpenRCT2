@@ -21,6 +21,8 @@
 
 #    include <unordered_set>
 
+using namespace OpenRCT2;
+
 constexpr const utf8* USER_STORE_FILENAME = "users.json";
 
 std::unique_ptr<NetworkUser> NetworkUser::FromJson(const json_t& jsonData)

@@ -24,6 +24,8 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
 
 #ifndef NO_VEHICLES

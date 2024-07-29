@@ -17,6 +17,8 @@
 
 #    include <vector>
 
+using namespace OpenRCT2;
+
 NetworkKey::NetworkKey() = default;
 NetworkKey::~NetworkKey() = default;
 

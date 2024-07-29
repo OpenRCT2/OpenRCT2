@@ -21,7 +21,6 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
@@ -49,6 +48,7 @@
 #include <bit>
 #include <iterator>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
@@ -74,7 +74,7 @@ const std::array<CoordsXY, kNumOrthogonalDirections> BinUseOffsets = {
 
 // These are the offsets for bench positions on footpaths, 2 for each edge
 // rct2: 0x00981F2C, 0x00981F2E
-const std::array<CoordsXY, kNumOrthogonalDirections* 2> BenchUseOffsets = {
+const std::array<CoordsXY, 2 * kNumOrthogonalDirections> BenchUseOffsets = {
     CoordsXY{ 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 
@@ -359,7 +359,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
         && (*tileElement)->GetType() == TileElementType::Entrance)
     {
-        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
+        uint32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = UtilBitScanForward(directions);
@@ -376,7 +376,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
     if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TileElementType::Entrance)
     {
-        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
+        uint32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = (*tileElement)->GetDirectionWithOffset(UtilBitScanForward(directions));
@@ -1285,7 +1285,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
     GameActions::Execute(&landSetRightsAction);
 }
 
-static bool GetNextDirection(int32_t edges, int32_t* direction)
+static bool GetNextDirection(uint32_t edges, int32_t* direction)
 {
     int32_t index = UtilBitScanForward(edges);
     if (index == -1)
@@ -2334,7 +2334,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
             bool isQueue = tileElement->GetType() == TileElementType::Path ? tileElement->AsPath()->IsQueue() : false;
             int32_t z0 = z1 - 2;
             FootpathRemoveEdgesTowards(
-                { footpathPos + CoordsDirectionDelta[direction], z0 * COORDS_Z_STEP, z1 * COORDS_Z_STEP }, direction, isQueue);
+                { footpathPos + CoordsDirectionDelta[direction], z0 * kCoordsZStep, z1 * kCoordsZStep }, direction, isQueue);
         }
         else
         {

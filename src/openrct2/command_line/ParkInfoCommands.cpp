@@ -16,6 +16,8 @@
 #include "../object/ObjectRepository.h"
 #include "CommandLine.hpp"
 
+using namespace OpenRCT2;
+
 // clang-format off
 static constexpr CommandLineOptionDefinition NoOptions[]
 {

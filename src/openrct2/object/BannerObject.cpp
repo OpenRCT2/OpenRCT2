@@ -17,6 +17,8 @@
 #include "../object/ObjectRepository.h"
 #include "ObjectList.h"
 
+using namespace OpenRCT2;
+
 void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);

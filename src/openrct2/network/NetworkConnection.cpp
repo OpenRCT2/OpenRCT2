@@ -13,10 +13,11 @@
 
 #    include "../core/String.hpp"
 #    include "../localisation/Formatting.h"
-#    include "../localisation/Localisation.h"
 #    include "../platform/Platform.h"
 #    include "Socket.h"
 #    include "network.h"
+
+using namespace OpenRCT2;
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
 constexpr size_t NetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.

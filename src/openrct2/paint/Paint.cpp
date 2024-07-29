@@ -16,7 +16,6 @@
 #include "../interface/Viewport.h"
 #include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
 #include "../profiling/Profiling.h"
@@ -63,7 +62,7 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
 
 static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
 {
-    constexpr auto MapRangeMax = MaxPaintQuadrants * COORDS_XY_STEP;
+    constexpr auto MapRangeMax = MaxPaintQuadrants * kCoordsXYStep;
     constexpr auto MapRangeCenter = MapRangeMax / 2;
 
     const auto x = ps.Bounds.x;
@@ -92,7 +91,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     const auto positionHash = RemapPositionToQuadrant(*ps, session.CurrentRotation);
 
     // Values below zero or above MaxPaintQuadrants are void, corners also share the same quadrant as void.
-    const uint32_t paintQuadrantIndex = std::clamp(positionHash / COORDS_XY_STEP, 0, MaxPaintQuadrants - 1);
+    const uint32_t paintQuadrantIndex = std::clamp(positionHash / kCoordsXYStep, 0, MaxPaintQuadrants - 1);
 
     ps->QuadrantIndex = paintQuadrantIndex;
     ps->NextQuadrantEntry = session.Quadrants[paintQuadrantIndex];
@@ -301,13 +300,13 @@ static bool CheckBoundingBox(const PaintStructBoundBox& initialBBox, const Paint
     return false;
 }
 
-namespace PaintSortFlags
+namespace OpenRCT2::PaintSortFlags
 {
     static constexpr uint8_t None = 0;
     static constexpr uint8_t PendingVisit = (1u << 0);
     static constexpr uint8_t Neighbour = (1u << 1);
     static constexpr uint8_t OutsideQuadrant = (1u << 7);
-} // namespace PaintSortFlags
+} // namespace OpenRCT2::PaintSortFlags
 
 static PaintStruct* PaintStructsFirstInQuadrant(PaintStruct* psNext, uint16_t quadrantIndex)
 {

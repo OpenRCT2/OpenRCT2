@@ -18,7 +18,7 @@
 constexpr RideTypeDescriptor LogFlumeRTD =
 {
     .Category = RIDE_CATEGORY_WATER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionLogFlume,
         .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_ON_RIDE_PHOTO, TRACK_LOG_FLUME_REVERSER, TRACK_SLOPE_STEEP_DOWN},

@@ -26,11 +26,11 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 
 private:
     TileElement* GetFootpathElement() const;
     money64 GetRefundPrice(TileElement* footpathElement) const;
-    GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
+    OpenRCT2::GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
 };

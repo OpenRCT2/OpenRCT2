@@ -17,7 +17,6 @@
 #include "../drawing/Drawing.h"
 #include "../entity/EntityList.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"

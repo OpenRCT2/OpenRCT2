@@ -21,6 +21,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
 
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_OPEN = 18742;

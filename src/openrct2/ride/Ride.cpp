@@ -32,10 +32,9 @@
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -94,6 +93,18 @@ RideMode& operator++(RideMode& d, int)
 static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
+
+// clang-format off
+const StringId kRideInspectionIntervalNames[] = {
+    STR_EVERY_10_MINUTES,
+    STR_EVERY_20_MINUTES,
+    STR_EVERY_30_MINUTES,
+    STR_EVERY_45_MINUTES,
+    STR_EVERY_HOUR,
+    STR_EVERY_2_HOURS,
+    STR_NEVER,
+};
+// clang-format on
 
 // This is the highest used index + 1 of the GameState_t::Rides array.
 static size_t _endOfUsedRange = 0;
@@ -495,8 +506,8 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
             if (output != nullptr)
             {
                 output->element = resultTileElement;
-                output->x = it.x * COORDS_XY_STEP;
-                output->y = it.y * COORDS_XY_STEP;
+                output->x = it.x * kCoordsXYStep;
+                output->y = it.y * kCoordsXYStep;
             }
         }
 
@@ -532,7 +543,7 @@ bool TrackBlockGetNextFromZero(
     if (tileElement == nullptr)
     {
         output->element = nullptr;
-        output->x = LOCATION_NULL;
+        output->x = kLocationNull;
         return false;
     }
 
@@ -1179,10 +1190,10 @@ void UpdateChairlift(Ride& ride)
         return;
 
     auto bullwheelLoc = ride.ChairliftBullwheelLocation[0].ToCoordsXYZ();
-    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
+    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * kCoordsZStep) });
 
     bullwheelLoc = ride.ChairliftBullwheelLocation[1].ToCoordsXYZ();
-    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
+    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * kCoordsZStep) });
 }
 
 /**
@@ -1453,19 +1464,18 @@ static void RideBreakdownUpdate(Ride& ride)
  */
 static int32_t RideGetNewBreakdownProblem(const Ride& ride)
 {
-    int32_t availableBreakdownProblems, totalProbability, randomProbability, problemBits, breakdownProblem;
-
     // Brake failure is more likely when it's raining
     _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = ClimateIsRaining() ? 20 : 3;
 
     if (!ride.CanBreakDown())
         return -1;
 
-    availableBreakdownProblems = ride.GetRideTypeDescriptor().AvailableBreakdowns;
+    int32_t availableBreakdownProblems = ride.GetRideTypeDescriptor().AvailableBreakdowns;
 
     // Calculate the total probability range for all possible breakdown problems
-    totalProbability = 0;
-    problemBits = availableBreakdownProblems;
+    int32_t totalProbability = 0;
+    uint32_t problemBits = availableBreakdownProblems;
+    int32_t breakdownProblem;
     while (problemBits != 0)
     {
         breakdownProblem = UtilBitScanForward(problemBits);
@@ -1476,7 +1486,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
         return -1;
 
     // Choose a random number within this range
-    randomProbability = ScenarioRand() % totalProbability;
+    int32_t randomProbability = ScenarioRand() % totalProbability;
 
     // Find which problem range the random number lies
     problemBits = availableBreakdownProblems;
@@ -1824,7 +1834,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
             if (!peep->IsLocationInPatrol(location))
                 continue;
 
-        if (peep->x == LOCATION_NULL)
+        if (peep->x == kLocationNull)
             continue;
 
         // Manhattan distance
@@ -2263,7 +2273,7 @@ void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
         ride.vehicleColourSettings = VehicleColourSettings::perTrain;
         for (uint32_t i = 0; i < presetList->count; i++)
         {
-            const auto index = i % 32U;
+            const auto index = i % 32u;
             ride.vehicle_colours[i] = presetList->list[index];
         }
     }
@@ -5382,7 +5392,7 @@ static bool CheckForAdjacentStation(const CoordsXYZ& stationCoords, uint8_t dire
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;
         TileElement* stationElement = GetStationPlatform(
-            { { adjX, adjY, stationCoords.z }, stationCoords.z + 2 * COORDS_Z_STEP });
+            { { adjX, adjY, stationCoords.z }, stationCoords.z + 2 * kCoordsZStep });
         if (stationElement != nullptr)
         {
             auto rideIndex = stationElement->AsTrack()->GetRideIndex();

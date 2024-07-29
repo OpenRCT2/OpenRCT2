@@ -56,11 +56,6 @@ void Painter::Paint(IDrawingEngine& de)
         UpdatePaletteEffects();
         _uiContext->Draw(*dpi);
 
-        if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !TitleShouldHideVersionInfo())
-        {
-            DrawOpenRCT2(*dpi, { 0, _uiContext->GetHeight() - 20 });
-        }
-
         GfxDrawPickedUpPeep(*dpi);
         GfxInvalidatePickedUpPeep();
 
@@ -70,7 +65,7 @@ void Painter::Paint(IDrawingEngine& de)
     auto* replayManager = GetContext()->GetReplayManager();
     const char* text = nullptr;
 
-    if (replayManager->IsReplaying())
+    if (replayManager->IsReplaying() && !gSilentReplays)
         text = "Replaying...";
     else if (replayManager->ShouldDisplayNotice())
         text = "Recording...";
@@ -106,13 +101,10 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
 
 static bool ShouldShowFPS()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO && !TitleShouldHideVersionInfo())
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return true;
 
-    if (!WindowFindByClass(WindowClass::TopToolbar))
-        return false;
-
-    return true;
+    return WindowFindByClass(WindowClass::TopToolbar);
 }
 
 void Painter::PaintFPS(DrawPixelInfo& dpi)

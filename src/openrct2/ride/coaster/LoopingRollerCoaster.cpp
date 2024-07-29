@@ -21,6 +21,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
 
 static constexpr auto SPR_LOOPING_RC_BOOSTER_NE_SW = 15010;

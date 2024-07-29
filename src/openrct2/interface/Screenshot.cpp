@@ -26,7 +26,6 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
 #include "../paint/Painter.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
@@ -229,7 +228,7 @@ static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool use
     {
         do
         {
-            if (useViewClipping && (element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
+            if (useViewClipping && (element->GetBaseZ() > gClipHeight * kCoordsZStep))
             {
                 continue;
             }
@@ -536,8 +535,8 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             const auto& mapSize = GetGameState().MapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
-                resolutionWidth = (mapSize.x * COORDS_XY_STEP * 2) >> customZoom;
-                resolutionHeight = (mapSize.y * COORDS_XY_STEP * 1) >> customZoom;
+                resolutionWidth = (mapSize.x * kCoordsXYStep * 2) >> customZoom;
+                resolutionHeight = (mapSize.y * kCoordsXYStep * 1) >> customZoom;
 
                 resolutionWidth += 8;
                 resolutionHeight += 128;

@@ -17,6 +17,8 @@
 
 #include <cstring>
 
+using namespace OpenRCT2;
+
 #pragma region CommandLineArgEnumerator
 
 CommandLineArgEnumerator::CommandLineArgEnumerator(const char* const* arguments, int32_t count)
@@ -91,7 +93,7 @@ bool CommandLineArgEnumerator::TryPopString(const char** result)
 
 #pragma endregion
 
-namespace CommandLine
+namespace OpenRCT2::CommandLine
 {
     constexpr const char* HelpText = "openrct2 -ha shows help for all commands. "
                                      "openrct2 <command> -h will show help and details for a given command.";
@@ -522,7 +524,7 @@ namespace CommandLine
         }
         return nullptr;
     }
-} // namespace CommandLine
+} // namespace OpenRCT2::CommandLine
 
 int32_t CommandLineRun(const char** argv, int32_t argc)
 {

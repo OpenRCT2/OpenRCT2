@@ -39,3 +39,9 @@ extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)];
  * custom currency entry
  */
 void CurrencyLoadCustomCurrencyConfig();
+
+// The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
+constexpr size_t kMoneyStringMaxlength = 14;
+
+money64 StringToMoney(const char* string_to_monetise);
+void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);

@@ -125,7 +125,7 @@ enum
 };
 
 constexpr int8_t kMaxStationPlatformLength = 32;
-constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
+constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * kCoordsZStep;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
 // Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
@@ -263,7 +263,7 @@ enum
     TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND = (1 << 16),
 };
 
-namespace TrackElemType
+namespace OpenRCT2::TrackElemType
 {
     constexpr track_type_t Flat = 0;
     constexpr track_type_t EndStation = 1;
@@ -634,7 +634,7 @@ namespace TrackElemType
     constexpr track_type_t Count = 339;
     constexpr track_type_t None = 65535;
 
-}; // namespace TrackElemType
+}; // namespace OpenRCT2::TrackElemType
 
 enum
 {

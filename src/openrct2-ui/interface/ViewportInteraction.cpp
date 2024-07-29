@@ -30,7 +30,6 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
@@ -724,7 +723,7 @@ static PeepDistance GetClosestPeep(
 {
     for (auto peep : EntityList<T>())
     {
-        if (peep->x == LOCATION_NULL)
+        if (peep->x == kLocationNull)
             continue;
 
         auto screenCoords = Translate3DTo2DWithZ(rotation, peep->GetLocation());

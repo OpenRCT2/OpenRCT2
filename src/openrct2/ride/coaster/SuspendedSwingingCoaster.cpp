@@ -20,6 +20,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
 
 static constexpr ImageIndex kSuspendedSwingingRCDiagFlatImages[2][kNumOrthogonalDirections] = {

@@ -11,6 +11,8 @@
 
 #include "../core/DataSerialiser.h"
 
+using namespace OpenRCT2;
+
 // Required for GetEntity to return a default
 template<> bool EntityBase::Is<EntityBase>() const
 {
@@ -31,7 +33,7 @@ void EntityBase::SetLocation(const CoordsXYZ& newLocation)
 
 void EntityBase::Invalidate()
 {
-    if (x == LOCATION_NULL)
+    if (x == kLocationNull)
         return;
 
     ZoomLevel maxZoom{ 0 };

@@ -19,7 +19,7 @@
 constexpr RideTypeDescriptor WaterCoasterRTD =
 {
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .Drawer = GetTrackPaintFunctionWaterRC,
@@ -28,7 +28,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         },
         {
             .Drawer = GetTrackPaintFunctionSplashBoats,
-            .EnabledTrackPieces = {TrackElemType::Flat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight},
+            .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight},
             .ExtraTrackPieces = {},
         }
     ),

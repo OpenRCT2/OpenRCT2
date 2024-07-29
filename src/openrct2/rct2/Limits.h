@@ -10,7 +10,7 @@
 #pragma once
 #include "../rct12/Limits.h"
 
-namespace RCT2::Limits
+namespace OpenRCT2::RCT2::Limits
 {
     using namespace RCT12::Limits;
     constexpr uint8_t kMaxStaff = 200;
@@ -45,4 +45,4 @@ namespace RCT2::Limits
     constexpr uint8_t kMaxWaterObjects = 1;
     constexpr uint8_t kMaxScenarioTextObjects = 1;
     constexpr uint16_t kMaxMapSize = 256;
-} // namespace RCT2::Limits
+} // namespace OpenRCT2::RCT2::Limits

@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 
-namespace FileScanner
+namespace OpenRCT2::FileScanner
 {
     struct FileInfo
     {
@@ -23,13 +23,13 @@ namespace FileScanner
         uint64_t Size;
         uint64_t LastModified;
     };
-} // namespace FileScanner
+} // namespace OpenRCT2::FileScanner
 
 struct IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const FileScanner::FileInfo& GetFileInfo() const = 0;
+    virtual const OpenRCT2::FileScanner::FileInfo& GetFileInfo() const = 0;
     virtual const u8string& GetPath() const = 0;
     virtual u8string GetPathRelative() const = 0;
 
@@ -45,7 +45,7 @@ struct QueryDirectoryResult
     uint32_t PathChecksum;
 };
 
-namespace Path
+namespace OpenRCT2::Path
 {
     /**
      * Scans a directory and optionally sub directories for files that matches the
@@ -64,4 +64,4 @@ namespace Path
     void QueryDirectory(QueryDirectoryResult* result, const std::string& pattern);
 
     [[nodiscard]] std::vector<std::string> GetDirectories(const std::string& path);
-} // namespace Path
+} // namespace OpenRCT2::Path

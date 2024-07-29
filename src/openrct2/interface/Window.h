@@ -37,10 +37,14 @@ struct WindowCloseModifier;
 
 enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
-enum class RideConstructionState : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
 using rct_windownumber = uint16_t;
+
+namespace OpenRCT2
+{
+    enum class RideConstructionState : uint8_t;
+}
 
 struct WindowIdentifier
 {
@@ -57,7 +61,7 @@ struct WidgetIdentifier
 extern WindowCloseModifier gLastCloseModifier;
 
 using WidgetFlags = uint32_t;
-namespace WIDGET_FLAGS
+namespace OpenRCT2::WIDGET_FLAGS
 {
     const WidgetFlags TEXT_IS_STRING = 1 << 0;
     const WidgetFlags IS_PRESSED = 1 << 2;
@@ -65,7 +69,7 @@ namespace WIDGET_FLAGS
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
     const WidgetFlags IS_HIDDEN = 1 << 5;
     const WidgetFlags IS_HOLDABLE = 1 << 6;
-} // namespace WIDGET_FLAGS
+} // namespace OpenRCT2::WIDGET_FLAGS
 
 enum class WindowWidgetType : uint8_t;
 
@@ -138,7 +142,7 @@ struct Widget
 
     bool IsVisible() const
     {
-        return !(flags & WIDGET_FLAGS::IS_HIDDEN);
+        return !(flags & OpenRCT2::WIDGET_FLAGS::IS_HIDDEN);
     }
 };
 
@@ -255,7 +259,7 @@ enum WINDOW_FLAGS
     WF_SCROLLING_TO_LOCATION = (1 << 3),
     WF_TRANSPARENT = (1 << 4),
     WF_NO_BACKGROUND = (1 << 5), // Instead of half transparency, completely remove the window background
-    WF_DEAD = (1U << 6),         // Window is closed and will be deleted in the next update.
+    WF_DEAD = (1u << 6),         // Window is closed and will be deleted in the next update.
     WF_7 = (1 << 7),
     WF_RESIZABLE = (1 << 8),
     WF_NO_AUTO_CLOSE = (1 << 9), // Don't auto close this window if too many windows are open
@@ -491,6 +495,8 @@ extern bool gDisableErrorWindowSound;
 std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
 void WindowVisitEach(std::function<void(WindowBase*)> func);
 
+void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled);
+
 void WindowDispatchUpdateAll();
 void WindowUpdateAllViewports();
 void WindowUpdateAll();
@@ -627,4 +633,4 @@ money64 PlaceProvisionalTrackPiece(
     RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
     const CoordsXYZ& trackPos);
 
-extern RideConstructionState _rideConstructionState2;
+extern OpenRCT2::RideConstructionState _rideConstructionState2;

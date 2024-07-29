@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Cheats.h"
+#include "../localisation/StringIdType.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
 
@@ -52,12 +53,14 @@ struct MarketingCampaign
     };
 };
 
-namespace MarketingCampaignFlags
+namespace OpenRCT2::MarketingCampaignFlags
 {
     constexpr uint8_t FIRST_WEEK = 1 << 0;
 }
 
 extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
+
+extern const StringId kMarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
 
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
 void MarketingUpdate();

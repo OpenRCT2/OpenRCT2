@@ -78,6 +78,53 @@ namespace OpenRCT2::Scripting
         uint8_t animationLength_get() const;
     };
 
+    class ScHandyman : public ScStaff
+    {
+    public:
+        ScHandyman(EntityId Id);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        Staff* GetHandyman() const;
+
+        DukValue lawnsMown_get() const;
+
+        DukValue gardensWatered_get() const;
+
+        DukValue litterSwept_get() const;
+
+        DukValue binsEmptied_get() const;
+    };
+
+    class ScMechanic : public ScStaff
+    {
+    public:
+        ScMechanic(EntityId Id);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        Staff* GetMechanic() const;
+
+        DukValue ridesFixed_get() const;
+
+        DukValue ridesInspected_get() const;
+    };
+
+    class ScSecurity : public ScStaff
+    {
+    public:
+        ScSecurity(EntityId Id);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        Staff* GetSecurity() const;
+
+        DukValue vandalsStopped_get() const;
+    };
+
 } // namespace OpenRCT2::Scripting
 
 #endif

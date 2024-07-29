@@ -14,6 +14,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace OpenRCT2;
+
 class LanguagePackTest : public testing::Test
 {
 protected:

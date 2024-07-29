@@ -22,7 +22,7 @@
 struct CoordsXYZ;
 class Formatter;
 
-namespace News
+namespace OpenRCT2::News
 {
     enum class ItemType : uint8_t
     {
@@ -312,4 +312,4 @@ namespace News
 
     void AddItemToQueue(News::Item* newNewsItem);
     void RemoveItem(int32_t index);
-} // namespace News
+} // namespace OpenRCT2::News

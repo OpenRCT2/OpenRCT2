@@ -21,6 +21,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
+using namespace OpenRCT2;
+
 enum class Plane
 {
     Back,

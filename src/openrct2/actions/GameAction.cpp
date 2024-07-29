@@ -18,7 +18,6 @@
 #include "../core/MemoryStream.h"
 #include "../entity/MoneyEffect.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -35,7 +34,7 @@
 
 using namespace OpenRCT2;
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     struct QueuedGameAction
     {
@@ -468,7 +467,7 @@ namespace GameActions
     {
         return ExecuteInternal(action, false);
     }
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions
 
 const char* GameAction::GetName() const
 {

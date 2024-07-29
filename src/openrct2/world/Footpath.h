@@ -25,10 +25,10 @@ enum
     PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
-constexpr auto FootpathMaxHeight = 248 * COORDS_Z_STEP;
-constexpr auto FootpathMinHeight = 2 * COORDS_Z_STEP;
-constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
-constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
+constexpr auto FootpathMaxHeight = 248 * kCoordsZStep;
+constexpr auto FootpathMinHeight = 2 * kCoordsZStep;
+constexpr auto PATH_HEIGHT_STEP = 2 * kCoordsZStep;
+constexpr auto PATH_CLEARANCE = 4 * kCoordsZStep;
 
 enum class RailingEntrySupportType : uint8_t
 {
@@ -58,11 +58,11 @@ struct PathRailingsDescriptor
 };
 
 using PathConstructFlags = uint8_t;
-namespace PathConstructFlag
+namespace OpenRCT2::PathConstructFlag
 {
     constexpr PathConstructFlags IsQueue = 1 << 0;
     constexpr PathConstructFlags IsLegacyPathObject = 1 << 1;
-} // namespace PathConstructFlag
+} // namespace OpenRCT2::PathConstructFlag
 
 struct FootpathSelection
 {

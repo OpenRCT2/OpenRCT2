@@ -14,9 +14,10 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
+
+using namespace OpenRCT2;
 
 StaffSetOrdersAction::StaffSetOrdersAction(EntityId spriteIndex, uint8_t ordersId)
     : _spriteIndex(spriteIndex)

@@ -17,10 +17,11 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2;
 
 StaffSetNameAction::StaffSetNameAction(EntityId spriteIndex, const std::string& name)
     : _spriteIndex(spriteIndex)

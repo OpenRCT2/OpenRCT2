@@ -23,9 +23,8 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
 #include "../ui/UiContext.h"
@@ -51,6 +50,7 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 money64 _currentTrackPrice;
@@ -260,8 +260,8 @@ void Ride::RemovePeeps()
         {
             auto direction = DirectionReverse(location.direction);
             exitPosition = location;
-            exitPosition.x += (DirectionOffsets[direction].x * 20) + COORDS_XY_HALF_TILE;
-            exitPosition.y += (DirectionOffsets[direction].y * 20) + COORDS_XY_HALF_TILE;
+            exitPosition.x += (DirectionOffsets[direction].x * 20) + kCoordsXYHalfTile;
+            exitPosition.y += (DirectionOffsets[direction].y * 20) + kCoordsXYHalfTile;
             exitPosition.z += 2;
 
             // Reverse direction
@@ -288,7 +288,7 @@ void Ride::RemovePeeps()
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
-                    newLoc.z += COORDS_Z_STEP;
+                    newLoc.z += kCoordsZStep;
                 newLoc.z++;
                 peep->MoveTo(newLoc);
             }
@@ -318,7 +318,7 @@ void Ride::RemovePeeps()
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
-                    newLoc.z += COORDS_Z_STEP;
+                    newLoc.z += kCoordsZStep;
                 newLoc.z++;
                 peep->MoveTo(newLoc);
             }

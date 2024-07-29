@@ -19,7 +19,7 @@
 constexpr RideTypeDescriptor MazeRTD =
 {
     .Category = RIDE_CATEGORY_GENTLE,
-    .StartTrackPiece = TrackElemType::Maze,
+    .StartTrackPiece = OpenRCT2::TrackElemType::Maze,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMaze,
         .EnabledTrackPieces = {},

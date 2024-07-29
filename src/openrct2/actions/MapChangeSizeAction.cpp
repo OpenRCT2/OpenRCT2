@@ -17,6 +17,8 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
+using namespace OpenRCT2;
+
 MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize)
     : MapChangeSizeAction(targetSize, TileCoordsXY())
 {

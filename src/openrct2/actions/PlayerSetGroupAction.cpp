@@ -11,6 +11,8 @@
 
 #include "../network/network.h"
 
+using namespace OpenRCT2;
+
 PlayerSetGroupAction::PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
     : _playerId(playerId)
     , _groupId(groupId)

@@ -15,7 +15,6 @@
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideConstruction.h"
@@ -26,6 +25,8 @@
 #include "../world/Surface.h"
 #include "../world/SurfaceData.h"
 #include "../world/tile_element/Slope.h"
+
+using namespace OpenRCT2;
 
 LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
     : _coords(coords)
@@ -85,9 +86,9 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
     uint8_t maxHeight = MapGetHighestLandHeight(validRange);
     bool withinOwnership = false;
 
-    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (!LocationValid({ x, y }))
                 continue;

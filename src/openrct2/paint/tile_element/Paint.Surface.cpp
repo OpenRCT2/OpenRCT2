@@ -481,7 +481,7 @@ static bool TileIsInsideClipView(const TileDescriptor& tile)
     if (tile.tile_element == nullptr)
         return false;
 
-    if (tile.tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP)
+    if (tile.tile_element->GetBaseZ() > gClipHeight * kCoordsZStep)
         return false;
 
     auto coords = tile.tile_coords.ToCoordsXY();
@@ -500,7 +500,7 @@ static void ViewportSurfaceDrawTileSideBottom(
     PROFILED_FUNCTION();
 
     // From big Z to tiny Z
-    height /= COORDS_Z_PER_TINY_Z;
+    height /= kCoordsZPerTinyZ;
     int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
     CoordsXY offset = { 0, 0 };
@@ -556,7 +556,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     if (isWater && neighbour.tile_element != nullptr)
     {
-        auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (COORDS_Z_STEP * 2);
+        auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (kCoordsZStep * 2);
         if (waterHeight == height && !neighbourIsClippedAway)
         {
             // Don't draw the edge when the neighbour's water level is the same
@@ -598,7 +598,7 @@ static void ViewportSurfaceDrawTileSideBottom(
         if (curHeight != cornerHeight1 && curHeight != cornerHeight2)
         {
             auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+            PaintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, 15 });
             curHeight++;
         }
     }
@@ -622,7 +622,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             }
 
             auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+            PaintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, 15 });
 
             return;
         }
@@ -637,7 +637,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
-                PaintAddImageAsParent(session, baseImageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+                PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, 15 });
 
                 curHeight++;
                 continue;
@@ -671,7 +671,7 @@ static void ViewportSurfaceDrawTileSideBottom(
         PaintAddImageAsParent(
             session, imageId, { offset, zOffset }, { { 0, 0, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
-        boundBoxOffsetZ = curHeight * COORDS_Z_PER_TINY_Z;
+        boundBoxOffsetZ = curHeight * kCoordsZPerTinyZ;
         boundBoxLength = td.boundBoxLength * 16;
         boundBoxOffsetZ += td.boundBoxZOffset;
         if (boundBoxOffsetZ == 0)
@@ -682,7 +682,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         imageId = GetTunnelImage(edgeObject, tunnelType, edge).WithIndexOffset(1);
         PaintAddImageAsParent(
-            session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z },
+            session, imageId, { offset, curHeight * kCoordsZPerTinyZ },
             { { tunnelTopBoundBoxOffset, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
         curHeight += td.height;
@@ -697,7 +697,7 @@ static void ViewportSurfaceDrawTileSideTop(
     PROFILED_FUNCTION();
 
     // From big Z to tiny Z
-    height /= COORDS_Z_PER_TINY_Z;
+    height /= kCoordsZPerTinyZ;
 
     int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
@@ -742,7 +742,7 @@ static void ViewportSurfaceDrawTileSideTop(
     {
         if (isWater)
         {
-            auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (COORDS_Z_STEP * 2);
+            auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (kCoordsZStep * 2);
             if (height == waterHeight)
             {
                 return;
@@ -774,7 +774,7 @@ static void ViewportSurfaceDrawTileSideTop(
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
             const auto imageId = GetEdgeImage(edgeObject, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
-            const int16_t y = (height - cornerHeight1) * COORDS_Z_PER_TINY_Z;
+            const int16_t y = (height - cornerHeight1) * kCoordsZPerTinyZ;
             PaintAttachToPreviousPS(session, imageId, 0, y);
             return;
         }
@@ -795,7 +795,7 @@ static void ViewportSurfaceDrawTileSideTop(
         {
             auto imageId = baseImageId.WithIndexOffset(image_offset);
             PaintAddImageAsParent(
-                session, imageId, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
+                session, imageId, { offset.x, offset.y, cur_height * kCoordsZPerTinyZ }, { bounds.x, bounds.y, 15 });
             cur_height++;
         }
     }
@@ -810,7 +810,7 @@ static void ViewportSurfaceDrawTileSideTop(
 
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
-        PaintAddImageAsParent(session, baseImageId, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+        PaintAddImageAsParent(session, baseImageId, { offset, cur_height * kCoordsZPerTinyZ }, { bounds, 15 });
         cur_height++;
     }
 
@@ -826,7 +826,7 @@ static void ViewportSurfaceDrawTileSideTop(
     }
 
     auto imageId = baseImageId.WithIndexOffset(image_offset);
-    PaintAddImageAsParent(session, imageId, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+    PaintAddImageAsParent(session, imageId, { offset, cur_height * kCoordsZPerTinyZ }, { bounds, 15 });
 }
 
 static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
@@ -1060,7 +1060,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     bool has_surface = false;
-    if (session.VerticalTunnelHeight * COORDS_Z_PER_TINY_Z == height)
+    if (session.VerticalTunnelHeight * kCoordsZPerTinyZ == height)
     {
         // Vertical tunnels
         PaintAddImageAsParent(session, ImageId(1575), { 0, 0, height }, { { -2, 1, height - 40 }, { 1, 30, 39 } });
@@ -1279,7 +1279,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
-    const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * COORDS_Z_STEP);
+    const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
@@ -1299,7 +1299,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
         PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
-        const bool transparent = Config::Get().general.TransparentWater
+        const bool transparent = !IsCsgLoaded() || Config::Get().general.TransparentWater
             || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
         const uint32_t overlayStart = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;
         PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);

@@ -18,7 +18,7 @@
 constexpr RideTypeDescriptor DinghySlideRTD =
 {
     .Category = RIDE_CATEGORY_WATER,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .Drawer = GetTrackPaintFunctionDinghySlide,
@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         }, 
         {
             .Drawer = GetTrackPaintFunctionDinghySlideCovered,
-            .EnabledTrackPieces = {TrackElemType::Flat, TrackElemType::Up25, TrackElemType::Up60, TrackElemType::FlatToUp25, TrackElemType::Up25ToUp60, TrackElemType::Up60ToUp25, TrackElemType::Up25ToFlat, TrackElemType::Down25, TrackElemType::Down60, TrackElemType::FlatToDown25, TrackElemType::Down25ToDown60, TrackElemType::Down60ToDown25, TrackElemType::Down25ToFlat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight, TrackElemType::LeftQuarterTurn3Tiles,TrackElemType::RightQuarterTurn3Tiles},
+            .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::Up25, OpenRCT2::TrackElemType::Up60, OpenRCT2::TrackElemType::FlatToUp25, OpenRCT2::TrackElemType::Up25ToUp60, OpenRCT2::TrackElemType::Up60ToUp25, OpenRCT2::TrackElemType::Up25ToFlat, OpenRCT2::TrackElemType::Down25, OpenRCT2::TrackElemType::Down60, OpenRCT2::TrackElemType::FlatToDown25, OpenRCT2::TrackElemType::Down25ToDown60, OpenRCT2::TrackElemType::Down60ToDown25, OpenRCT2::TrackElemType::Down25ToFlat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight, OpenRCT2::TrackElemType::LeftQuarterTurn3Tiles,OpenRCT2::TrackElemType::RightQuarterTurn3Tiles},
             .ExtraTrackPieces = {},
         }
     ),

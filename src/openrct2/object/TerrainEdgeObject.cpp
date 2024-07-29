@@ -14,8 +14,9 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../localisation/Localisation.h"
 #include "ObjectManager.h"
+
+using namespace OpenRCT2;
 
 void TerrainEdgeObject::Load()
 {

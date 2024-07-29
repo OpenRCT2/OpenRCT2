@@ -27,7 +27,6 @@
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/network/network.h>
 #include <openrct2/peep/PeepAnimationData.h>
@@ -130,7 +129,7 @@ static Widget _staffOptionsWidgets[] = {
     private:
         EntertainerCostume _availableCostumes[EnumValue(EntertainerCostume::Count)]{};
         uint16_t _tabAnimationOffset = 0;
-        int32_t _pickedPeepOldX = LOCATION_NULL;
+        int32_t _pickedPeepOldX = kLocationNull;
 
     public:
         void Initialise(EntityId entityId)
@@ -884,8 +883,7 @@ static Widget _staffOptionsWidgets[] = {
                 return;
             }
 
-            auto staffOrders = staff->StaffOrders;
-
+            uint32_t staffOrders = staff->StaffOrders;
             for (auto index = UtilBitScanForward(staffOrders); index != -1; index = UtilBitScanForward(staffOrders))
             {
                 staffOrders &= ~(1 << index);

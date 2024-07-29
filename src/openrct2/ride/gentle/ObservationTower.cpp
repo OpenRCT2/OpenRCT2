@@ -22,6 +22,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+
 enum
 {
     SprObservationTowerSegmentBase = 14986,

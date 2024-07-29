@@ -61,7 +61,7 @@ public:
     virtual bool GetDetails(ScenarioIndexEntry* dst) = 0;
 };
 
-namespace ParkImporter
+namespace OpenRCT2::ParkImporter
 {
     [[nodiscard]] std::unique_ptr<IParkImporter> Create(const std::string& hintPath);
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateS4();
@@ -71,7 +71,7 @@ namespace ParkImporter
     bool ExtensionIsOpenRCT2ParkFile(std::string_view extension);
     bool ExtensionIsRCT1(std::string_view extension);
     bool ExtensionIsScenario(std::string_view extension);
-} // namespace ParkImporter
+} // namespace OpenRCT2::ParkImporter
 
 class ObjectLoadException : public std::exception
 {

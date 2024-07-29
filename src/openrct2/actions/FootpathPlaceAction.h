@@ -32,14 +32,14 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result ElementUpdateQuery(PathElement* pathElement, GameActions::Result res) const;
-    GameActions::Result ElementUpdateExecute(PathElement* pathElement, GameActions::Result res) const;
-    GameActions::Result ElementInsertQuery(GameActions::Result res) const;
-    GameActions::Result ElementInsertExecute(GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementUpdateQuery(PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementUpdateExecute(PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementInsertQuery(OpenRCT2::GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementInsertExecute(OpenRCT2::GameActions::Result res) const;
     void AutomaticallySetPeepSpawn() const;
     void RemoveIntersectingWalls(PathElement* pathElement) const;
     PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;

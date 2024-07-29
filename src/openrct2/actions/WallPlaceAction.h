@@ -42,8 +42,8 @@ public:
     uint16_t GetActionFlags() const override final;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 
 private:
     /**
@@ -56,7 +56,8 @@ private:
      *
      *  rct2: 0x006E5C1A
      */
-    GameActions::Result WallCheckObstruction(const WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
+    OpenRCT2::GameActions::Result WallCheckObstruction(
+        const WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
 
     /**
      * Gets whether the given track type can have a wall placed on the edge of the given direction.

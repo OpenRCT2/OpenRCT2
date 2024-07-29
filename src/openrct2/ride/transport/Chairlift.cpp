@@ -22,6 +22,8 @@
 
 #include <iterator>
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Truss;
 
 enum

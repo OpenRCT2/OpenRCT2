@@ -17,7 +17,6 @@
 #include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"

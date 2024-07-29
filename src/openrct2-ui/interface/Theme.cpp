@@ -137,6 +137,7 @@ static constexpr WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::SavePrompt,                  "WC_SAVE_PROMPT",                    STR_THEMES_WINDOW_SAVE_PROMPT,                    COLOURS_1(translucent(COLOUR_BORDEAUX_RED)                                                                                                             ) },
     { WindowClass::ConstructRide,               "WC_CONSTRUCT_RIDE",                 STR_THEMES_WINDOW_CONSTRUCT_RIDE,                 COLOURS_3(opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_BORDEAUX_RED),             opaque(COLOUR_BORDEAUX_RED)                                ) },
     { WindowClass::DemolishRidePrompt,          "WC_DEMOLISH_RIDE_PROMPT",           STR_THEMES_WINDOW_DEMOLISH_RIDE_PROMPT,           COLOURS_1(translucent(COLOUR_BORDEAUX_RED)                                                                                                             ) },
+    { WindowClass::Error,                       "WC_ERROR",                          STR_THEMES_WINDOW_ERROR,                          COLOURS_1(translucent(COLOUR_BORDEAUX_RED)                                                                                                             ) },
     { WindowClass::Scenery,                     "WC_SCENERY",                        STR_THEMES_WINDOW_SCENERY,                        COLOURS_3(opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_GREEN)                                  ) },
     { WindowClass::SceneryScatter,              "WC_SCENERY_SCATTER",                STR_THEMES_WINDOW_SCENERY_SCATTER,                COLOURS_3(opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_GREEN)                                  ) },
     { WindowClass::Options,                     "WC_OPTIONS",                        STR_THEMES_WINDOW_OPTIONS,                        COLOURS_3(opaque(COLOUR_GREY),                     opaque(COLOUR_LIGHT_BLUE),               opaque(COLOUR_LIGHT_BLUE)                                  ) },
@@ -165,7 +166,7 @@ static constexpr WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::EditorObjectSelection,       "WC_EDITOR_OBJECT_SELECTION",        STR_THEMES_WINDOW_EDITOR_OBJECT_SELECTION,        COLOURS_3(opaque(COLOUR_LIGHT_PURPLE),             opaque(COLOUR_GREY),                     opaque(COLOUR_GREY)                                        ) },
     { WindowClass::EditorInventionList,         "WC_EDITOR_INVENTION_LIST",          STR_THEMES_WINDOW_EDITOR_INVENTION_LIST,          COLOURS_3(opaque(COLOUR_LIGHT_PURPLE),             opaque(COLOUR_GREY),                     opaque(COLOUR_GREY)                                        ) },
     { WindowClass::EditorScenarioOptions,       "WC_EDITOR_SCENARIO_OPTIONS",        STR_THEMES_WINDOW_EDITOR_SCENARIO_OPTIONS,        COLOURS_3(opaque(COLOUR_LIGHT_PURPLE),             opaque(COLOUR_GREY),                     opaque(COLOUR_GREY)                                        ) },
-    { WindowClass::EditorObjectiveOptions,      "WC_EDITOR_OBJECTIVE_OPTIONS",       STR_THEMES_WINDOW_EDTIOR_OBJECTIVE_OPTIONS,       COLOURS_3(opaque(COLOUR_LIGHT_PURPLE),             opaque(COLOUR_GREY),                     opaque(COLOUR_GREY)                                        ) },
+    { WindowClass::EditorObjectiveOptions,      "WC_EDITOR_OBJECTIVE_OPTIONS",       STR_THEMES_WINDOW_EDITOR_OBJECTIVE_OPTIONS,       COLOURS_3(opaque(COLOUR_LIGHT_PURPLE),             opaque(COLOUR_GREY),                     opaque(COLOUR_GREY)                                        ) },
     { WindowClass::ManageTrackDesign,           "WC_MANAGE_TRACK_DESIGN",            STR_THEMES_WINDOW_MANAGE_TRACK_DESIGN,            COLOURS_3(opaque(COLOUR_GREY),                     opaque(COLOUR_GREY),                     opaque(COLOUR_GREY)                                        ) },
     { WindowClass::TrackDeletePrompt,           "WC_TRACK_DELETE_PROMPT",            STR_THEMES_WINDOW_TRACK_DELETE_PROMPT,            COLOURS_3(opaque(COLOUR_BORDEAUX_RED),             opaque(COLOUR_BORDEAUX_RED),             opaque(COLOUR_BORDEAUX_RED)                                ) },
     { WindowClass::InstallTrack,                "WC_INSTALL_TRACK",                  STR_THEMES_WINDOW_INSTALL_TRACK,                  COLOURS_3(opaque(COLOUR_BORDEAUX_RED),             opaque(COLOUR_BORDEAUX_RED),             opaque(COLOUR_BORDEAUX_RED)                                ) },
@@ -528,7 +529,7 @@ UITheme UITheme::CreatePredefined(const std::string& name, const UIThemeWindowEn
 
 #pragma endregion
 
-namespace ThemeManager
+namespace OpenRCT2::ThemeManager
 {
     struct AvailableTheme
     {
@@ -688,7 +689,7 @@ namespace ThemeManager
         auto env = context->GetPlatformEnvironment();
         return env->GetDirectoryPath(DIRBASE::USER, DIRID::THEME);
     }
-} // namespace ThemeManager
+} // namespace OpenRCT2::ThemeManager
 
 void ThemeManagerLoadAvailableThemes()
 {

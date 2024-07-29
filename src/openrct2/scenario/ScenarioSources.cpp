@@ -17,7 +17,7 @@
 
 #include <iterator>
 
-namespace ScenarioSources
+namespace OpenRCT2::ScenarioSources
 {
     struct ScenarioAlias
     {
@@ -453,4 +453,4 @@ namespace ScenarioSources
             }
         }
     }
-} // namespace ScenarioSources
+} // namespace OpenRCT2::ScenarioSources

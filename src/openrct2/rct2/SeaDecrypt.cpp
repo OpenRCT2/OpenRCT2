@@ -17,6 +17,8 @@
 #include <memory>
 #include <string_view>
 
+using namespace OpenRCT2;
+
 constexpr int32_t MASK_SIZE = 0x1000;
 
 struct EncryptionKey

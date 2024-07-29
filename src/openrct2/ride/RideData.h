@@ -38,13 +38,13 @@
 
 enum class ResearchCategory : uint8_t;
 
-constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultToiletHeight = 4 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultInformationKioskHeight = 6 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultFirstAidHeight = 6 * COORDS_Z_STEP;
-constexpr const uint8_t DefaultCashMachineHeight = 8 * COORDS_Z_STEP;
+constexpr uint8_t DefaultFoodStallHeight = 8 * kCoordsZStep;
+constexpr uint8_t DefaultDrinksStallHeight = 8 * kCoordsZStep;
+constexpr uint8_t DefaultShopHeight = 8 * kCoordsZStep;
+constexpr uint8_t DefaultToiletHeight = 4 * kCoordsZStep;
+constexpr uint8_t DefaultInformationKioskHeight = 6 * kCoordsZStep;
+constexpr uint8_t DefaultFirstAidHeight = 6 * kCoordsZStep;
+constexpr uint8_t DefaultCashMachineHeight = 8 * kCoordsZStep;
 
 struct RideComponentName
 {
@@ -352,7 +352,7 @@ struct RideTypeDescriptor
     UpkeepCostsDescriptor UpkeepCosts{};
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts{};
-    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    money64 DefaultPrices[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
     std::string_view DefaultMusic{};
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem{};
@@ -555,7 +555,7 @@ extern const StringId RideModeNames[EnumValue(RideMode::Count)];
 constexpr RideTypeDescriptor DummyRTD =
 {
     .Category = RIDE_CATEGORY_NONE,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},
     .Flags = 0,

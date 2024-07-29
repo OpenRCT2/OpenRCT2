@@ -17,7 +17,6 @@
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"

@@ -14,7 +14,7 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
-#include "../localisation/Date.h"
+#include "../localisation/Localisation.Date.h"
 #include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
 #include "../world/Footpath.h"
@@ -584,7 +584,7 @@ static void ride_ratings_score_close_proximity_in_direction(
                 }
                 break;
             case TileElementType::Path:
-                if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
+                if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * kCoordsZStep)
                 {
                     proximity_score_increment(state, PROXIMITY_PATH_SIDE_CLOSE);
                 }
@@ -592,7 +592,7 @@ static void ride_ratings_score_close_proximity_in_direction(
             case TileElementType::Track:
                 if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
-                    if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
+                    if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * kCoordsZStep)
                     {
                         proximity_score_increment(state, PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                     }
@@ -2268,6 +2268,4 @@ bool RatingTuple::isNull() const
 void RatingTuple::setNull()
 {
     excitement = kRideRatingUndefined;
-    intensity = kRideRatingUndefined;
-    nausea = kRideRatingUndefined;
 }

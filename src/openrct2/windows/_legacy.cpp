@@ -33,6 +33,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+
 bool gDisableErrorWindowSound = false;
 
 RideConstructionState _rideConstructionState2;

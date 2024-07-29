@@ -9,7 +9,6 @@
 
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Localisation.h"
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/support/WoodenSupports.h"
@@ -21,6 +20,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
+
+using namespace OpenRCT2;
 
 static int16_t TopSpinSeatHeightOffset[] = {
     -10, -10, -9, -7, -4, -1, 2,  6,  11, 16, 21, 26, 31, 37, 42, 47, 52, 57, 61, 64, 67, 70, 72, 73,

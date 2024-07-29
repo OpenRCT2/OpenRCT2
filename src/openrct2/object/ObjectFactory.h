@@ -19,7 +19,7 @@ class Object;
 struct RCTObjectEntry;
 enum class ObjectType : uint8_t;
 
-namespace ObjectFactory
+namespace OpenRCT2::ObjectFactory
 {
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyFile(
         IObjectRepository& objectRepository, const utf8* path, bool loadImages);
@@ -31,4 +31,4 @@ namespace ObjectFactory
 
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromJsonFile(
         IObjectRepository& objectRepository, const std::string& path, bool loadImages);
-} // namespace ObjectFactory
+} // namespace OpenRCT2::ObjectFactory

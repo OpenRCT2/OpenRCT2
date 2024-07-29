@@ -38,7 +38,7 @@ namespace OpenRCT2
     };
 }
 
-namespace String
+namespace OpenRCT2::String
 {
     constexpr const utf8* Empty = "";
 
@@ -186,7 +186,7 @@ namespace String
 
     // Escapes special characters in a string to the percentage equivalent that can be used in URLs.
     std::string URLEncode(std::string_view value);
-} // namespace String
+} // namespace OpenRCT2::String
 
 class CodepointView
 {
@@ -250,7 +250,7 @@ public:
     };
 
     CodepointView(std::string_view str)
-        : _str(String::UTF8Truncate(str, str.size()))
+        : _str(OpenRCT2::String::UTF8Truncate(str, str.size()))
     {
     }
 

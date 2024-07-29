@@ -20,6 +20,8 @@
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
 
+using namespace OpenRCT2;
+
 void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);

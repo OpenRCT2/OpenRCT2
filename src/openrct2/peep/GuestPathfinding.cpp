@@ -217,14 +217,14 @@ namespace OpenRCT2::PathFinding
             if (direction == 0 || direction == 2)
             {
                 // Peep is moving along X, so apply the offset to the X position of the destination and clamp their current Y
-                const int32_t centreLine = (peep.y & 0xFFE0) + COORDS_XY_HALF_TILE;
+                const int32_t centreLine = (peep.y & 0xFFE0) + kCoordsXYHalfTile;
                 newTile.x += offset;
                 newTile.y = std::clamp<int32_t>(peep.y, centreLine - 3, centreLine + 3);
             }
             else
             {
                 // Peep is moving along Y, so apply the offset to the Y position of the destination and clamp their current X
-                const int32_t centreLine = (peep.x & 0xFFE0) + COORDS_XY_HALF_TILE;
+                const int32_t centreLine = (peep.x & 0xFFE0) + kCoordsXYHalfTile;
                 newTile.x = std::clamp<int32_t>(peep.x, centreLine - 3, centreLine + 3);
                 newTile.y += offset;
             }
@@ -582,7 +582,7 @@ namespace OpenRCT2::PathFinding
     {
         PROFILED_FUNCTION();
 
-        uint8_t edges = path->GetEdges();
+        uint32_t edges = path->GetEdges();
 
         int32_t testEdge = UtilBitScanForward(edges);
         if (testEdge == -1)
@@ -981,7 +981,7 @@ namespace OpenRCT2::PathFinding
 
             /* Get all the permitted_edges of the map element. */
             Guard::Assert(tileElement->AsPath() != nullptr);
-            uint8_t edges = PathGetPermittedEdges(staff != nullptr, tileElement->AsPath());
+            uint32_t edges = PathGetPermittedEdges(staff != nullptr, tileElement->AsPath());
 
             LogPathfinding(
                 &peep, "Path element at %d,%d,%d; Steps: %u; Edges (0123):%d%d%d%d; Reverse: %d", loc.x >> 5, loc.y >> 5, loc.z,
@@ -1279,7 +1279,7 @@ namespace OpenRCT2::PathFinding
             return INVALID_DIRECTION;
 
         permittedEdges &= 0xF;
-        uint8_t edges = permittedEdges;
+        uint32_t edges = permittedEdges;
         if (isThin && peep.PathfindGoal == goal)
         {
             /* Use of peep.PathfindHistory[]:
@@ -1886,7 +1886,7 @@ namespace OpenRCT2::PathFinding
         }
 
         // Because this function is called for guests only, never ignore banners.
-        uint8_t edges = PathGetPermittedEdges(false, pathElement);
+        uint32_t edges = PathGetPermittedEdges(false, pathElement);
 
         if (edges == 0)
         {

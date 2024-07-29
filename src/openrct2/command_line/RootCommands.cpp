@@ -56,6 +56,7 @@ static bool _all = false;
 static bool _about = false;
 static bool _verbose = false;
 static bool _headless = false;
+static bool _silentReplays = false;
 static u8string _password = {};
 static u8string _userDataPath = {};
 static u8string _openrct2DataPath = {};
@@ -73,6 +74,7 @@ static constexpr CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_SWITCH,  &_about,            NAC, "about",              "show information about " OPENRCT2_NAME                      },
     { CMDLINE_TYPE_SWITCH,  &_verbose,          NAC, "verbose",            "log verbose messages"                                       },
     { CMDLINE_TYPE_SWITCH,  &_headless,         NAC, "headless",           "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
+    { CMDLINE_TYPE_SWITCH,  &_silentReplays,    NAC, "silent-replays",     "use unobtrusive replays"                                    },
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,             NAC, "port",               "port to use for hosting or joining a server"                },
     { CMDLINE_TYPE_STRING,  &_address,          NAC, "address",            "address to listen on when hosting a server"                 },
@@ -222,6 +224,11 @@ exitcode_t CommandLine::HandleCommandDefault()
     if (!_password.empty())
     {
         gCustomPassword = _password;
+    }
+
+    if (_silentReplays)
+    {
+        gSilentReplays = _silentReplays;
     }
 
     return result;

@@ -21,6 +21,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+using namespace OpenRCT2;
+
 static constexpr MetalSupportType kSupportType = MetalSupportType::Boxed;
 
 static constexpr ImageIndex kSuspendedMonorailDiagFlatImages[kNumOrthogonalDirections] = { 25935, 25936, 25935, 25936 };

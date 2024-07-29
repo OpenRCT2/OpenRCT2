@@ -30,7 +30,6 @@
 #include "../core/File.h"
 #include "../core/Path.hpp"
 #include "../localisation/Currency.h"
-#include "../localisation/Localisation.h"
 #include "Platform.h"
 
 #include <algorithm>
@@ -46,7 +45,7 @@ static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', 
 static constexpr std::array _prohibitedCharacters = { '/' };
 #endif
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     CurrencyType GetCurrencyValue(const char* currCode)
     {
@@ -203,4 +202,4 @@ namespace Platform
         return false;
     }
 
-} // namespace Platform
+} // namespace OpenRCT2::Platform

@@ -12,12 +12,13 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../drawing/Drawing.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
 
 #include <string>
+
+using namespace OpenRCT2;
 
 SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
     : _bannerIndex(bannerIndex)

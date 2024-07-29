@@ -12,6 +12,8 @@
 #include "../Diagnostic.h"
 #include "../management/Finance.h"
 
+using namespace OpenRCT2;
+
 TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
     : _loc(loc)
     , _trackType(trackType)

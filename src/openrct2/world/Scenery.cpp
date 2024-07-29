@@ -21,7 +21,6 @@
 #include "../actions/WallRemoveAction.h"
 #include "../core/String.hpp"
 #include "../entity/Fountain.h"
-#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/BannerSceneryEntry.h"
 #include "../object/LargeSceneryEntry.h"

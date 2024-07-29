@@ -17,7 +17,7 @@
 constexpr RideTypeDescriptor FirstAidRTD =
 {
     .Category = RIDE_CATEGORY_SHOP,
-    .StartTrackPiece = TrackElemType::FlatTrack1x1A,
+    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionFacility,
         .EnabledTrackPieces = {},

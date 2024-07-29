@@ -21,7 +21,7 @@
 #include <iterator>
 
 // clang-format off
-namespace RCT1
+namespace OpenRCT2::RCT1
 {
     colour_t GetColour(colour_t colour)
     {
@@ -68,7 +68,7 @@ namespace RCT1
         return map[colour];
     }
 
-    ::PeepSpriteType GetPeepSpriteType(::RCT1::PeepSpriteType rct1SpriteType)
+    ::PeepSpriteType GetPeepSpriteType(RCT1::PeepSpriteType rct1SpriteType)
     {
         static constexpr ::PeepSpriteType map[] =
         {
@@ -1517,4 +1517,4 @@ namespace RCT1
                 return false;
         }
     }
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1

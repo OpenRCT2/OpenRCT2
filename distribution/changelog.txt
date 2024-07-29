@@ -1,13 +1,35 @@
 0.4.13 (in development)
 ------------------------------------------------------------------------
+- Feature: [#19596] Allow for playing back a replay without camera movement or alert box.
 - Feature: [#20831] The ride selection window now shows object authors if debugging tools are active.
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
+- Feature: [#22184] [Plugin] Expose staff statistics to the plugin API.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
+- Feature: [#22272] [Plugin] Expose ride vehicle’s current track type via car trackLocation.
+- Feature: [#22301] Loading save games or scenarios now indicates loading progress.
 - Feature: [OpenMusic#54] Added Progressive ride music style (feat. Approaching Nirvana).
+- Improved: [#22352] The object selection window now groups relevant object tabs together.
+- Improved: [#22357] Error messages are now themeable and easier to read.
+- Improved: [#22361] Add additional colour preset for the Observation Tower.
+- Change: [#21494] Display pixel density is now taken into account for the initial window scale setting.
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
+- Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
+- Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
+- Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
+- Fix: [#22056] Potential crash upon exiting the game.
+- Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
+- Fix: [#22209] Water tool selection may disappear near edge of map.
+- Fix: [#22222] Staff list may remain invalid when changing tabs.
+- Fix: [#22265] Button for switching covered tracks on slides doesn’t stay pressed.
+- Fix: [#22284] Unrated rides cause high amount of nausea.
+- Fix: [#22304] Graphs don’t draw lines on the left edge of the screen.
+- Fix: [#22318] Water sparkles are missing if transparent water is enabled without RCT1 linked.
+- Fix: [#22333] Tile inspector closes other tool windows.
+- Fix: [#22339] Printing ui.tool.cursor in console crashes the game.
 - Fix: [#22389] Alpine coaster has wrong tunnel entrance type.
+- Fix: [#22348] Progress bar screen doesn’t handle window resizing.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------

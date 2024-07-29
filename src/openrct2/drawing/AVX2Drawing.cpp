@@ -51,7 +51,7 @@ void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
-    Guard::Fail("AVX2 function called on a CPU that doesn't support AVX2");
+    OpenRCT2::Guard::Fail("AVX2 function called on a CPU that doesn't support AVX2");
 }
 
 #endif // __AVX2__

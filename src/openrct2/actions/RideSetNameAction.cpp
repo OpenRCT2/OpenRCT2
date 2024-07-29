@@ -15,12 +15,13 @@
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2;
 
 RideSetNameAction::RideSetNameAction(RideId rideIndex, const std::string& name)
     : _rideIndex(rideIndex)

@@ -34,7 +34,7 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     std::string GetEnvironmentVariable(std::string_view name)
     {
@@ -369,6 +369,6 @@ namespace Platform
         datetime64 utcNow = epochAsTicks + utcEpochTicks;
         return utcNow;
     }
-} // namespace Platform
+} // namespace OpenRCT2::Platform
 
 #endif

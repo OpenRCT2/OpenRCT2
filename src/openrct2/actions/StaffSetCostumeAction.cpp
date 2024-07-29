@@ -13,9 +13,10 @@
 #include "../Diagnostic.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
+
+using namespace OpenRCT2;
 
 /** rct2: 0x00982134 */
 constexpr bool peep_slow_walking_types[] = {
