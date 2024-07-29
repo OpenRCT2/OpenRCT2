@@ -19501,7 +19501,7 @@ namespace SpinningRC
     {
         SteelspinningRCTrackRightTwistDownToUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
-
+    // adding 1 Turn tile curve to the track
     static void SteelspinningRCTrackLeftQuarterTurn1(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
@@ -19542,8 +19542,6 @@ namespace SpinningRC
             0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32);
     }
-
-    /** rct2: 0x0078B3A4 */
 
     static void SteelspinningRCTrackRightQuarterTurn1(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
