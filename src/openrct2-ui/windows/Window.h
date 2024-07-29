@@ -53,8 +53,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FootpathOpen();
     void WindowFootpathResetSelectedPath();
     WindowBase* GuestOpen(Peep* peep);
+
     WindowBase* LandOpen();
+    void ToggleLandWindow();
+
     WindowBase* LandRightsOpen();
+
     WindowBase* MainOpen();
     WindowBase* MapgenOpen();
     WindowBase* MultiplayerOpen();

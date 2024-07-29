@@ -33,16 +33,12 @@
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
 #include <openrct2/actions/GameSetSpeedAction.h>
-#include <openrct2/actions/LandLowerAction.h>
-#include <openrct2/actions/LandRaiseAction.h>
-#include <openrct2/actions/LandSmoothAction.h>
 #include <openrct2/actions/LargeSceneryPlaceAction.h>
 #include <openrct2/actions/LargeScenerySetColourAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/PauseToggleAction.h>
 #include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.h>
-#include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/actions/WallPlaceAction.h>
 #include <openrct2/actions/WallSetColourAction.h>
 #include <openrct2/actions/WaterLowerAction.h>
@@ -354,27 +350,6 @@ namespace OpenRCT2::Ui::Windows
 
         /**
          *
-         *  rct2: 0x0066CD54
-         */
-        void ToggleLandWindow(WidgetIndex widgetIndex)
-        {
-            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
-                && gCurrentToolWidget.widget_index == WIDX_LAND)
-            {
-                ToolCancel();
-            }
-            else
-            {
-                _landToolBlocked = false;
-                ShowGridlines();
-                ToolSet(*this, widgetIndex, Tool::DigDown);
-                InputSetFlag(INPUT_FLAG_6, true);
-                ContextOpenWindow(WindowClass::Land);
-            }
-        }
-
-        /**
-         *
          *  rct2: 0x0066CD0C
          */
         void ToggleClearSceneryWindow(WidgetIndex widgetIndex)
@@ -420,9 +395,6 @@ namespace OpenRCT2::Ui::Windows
          */
         void ToolUpdateSceneryClear(const ScreenCoordsXY& screenPos)
         {
-            if (!ToolUpdateLandPaint(screenPos))
-                return;
-
             auto action = GetClearAction();
             auto result = GameActions::Query(&action);
             auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
@@ -430,314 +402,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 gClearSceneryCost = cost;
                 WindowInvalidateByClass(WindowClass::ClearScenery);
-            }
-        }
-
-        int8_t ToolUpdateLandPaint(const ScreenCoordsXY& screenPos)
-        {
-            uint8_t state_changed = 0;
-
-            MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-
-            auto mapTile = ScreenGetMapXY(screenPos, nullptr);
-
-            if (!mapTile.has_value())
-            {
-                if (gClearSceneryCost != kMoney64Undefined)
-                {
-                    gClearSceneryCost = kMoney64Undefined;
-                    WindowInvalidateByClass(WindowClass::ClearScenery);
-                }
-                return state_changed;
-            }
-
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-            {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                state_changed++;
-            }
-
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
-            {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
-                state_changed++;
-            }
-
-            int16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
-            int16_t tool_length = (tool_size - 1) * 32;
-
-            // Move to tool bottom left
-            mapTile->x -= (tool_size - 1) * 16;
-            mapTile->y -= (tool_size - 1) * 16;
-            mapTile = mapTile->ToTileStart();
-
-            if (gMapSelectPositionA.x != mapTile->x)
-            {
-                gMapSelectPositionA.x = mapTile->x;
-                state_changed++;
-            }
-
-            if (gMapSelectPositionA.y != mapTile->y)
-            {
-                gMapSelectPositionA.y = mapTile->y;
-                state_changed++;
-            }
-
-            mapTile->x += tool_length;
-            mapTile->y += tool_length;
-
-            if (gMapSelectPositionB.x != mapTile->x)
-            {
-                gMapSelectPositionB.x = mapTile->x;
-                state_changed++;
-            }
-
-            if (gMapSelectPositionB.y != mapTile->y)
-            {
-                gMapSelectPositionB.y = mapTile->y;
-                state_changed++;
-            }
-
-            MapInvalidateSelectionRect();
-            return state_changed;
-        }
-
-        /**
-         *
-         *  rct2: 0x00664280
-         */
-        void ToolUpdateLand(const ScreenCoordsXY& screenPos)
-        {
-            const bool mapCtrlPressed = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
-
-            MapInvalidateSelectionRect();
-
-            if (gCurrentToolId == Tool::UpDownArrow)
-            {
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-                    return;
-
-                money64 lower_cost = SelectionLowerLand(0);
-                money64 raise_cost = SelectionRaiseLand(0);
-
-                if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
-                {
-                    gLandToolRaiseCost = raise_cost;
-                    gLandToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
-                }
-                return;
-            }
-
-            int16_t tool_size = gLandToolSize;
-            std::optional<CoordsXY> mapTile;
-            uint8_t side{};
-
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            if (tool_size == 1)
-            {
-                int32_t selectionType;
-                // Get selection type and map coordinates from mouse x,y position
-                ScreenPosToMapPos(screenPos, &selectionType);
-                mapTile = ScreenGetMapXYSide(screenPos, &side);
-
-                if (!mapTile.has_value())
-                {
-                    money64 lower_cost = kMoney64Undefined;
-                    money64 raise_cost = kMoney64Undefined;
-
-                    if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
-                    {
-                        gLandToolRaiseCost = raise_cost;
-                        gLandToolLowerCost = lower_cost;
-                        WindowInvalidateByClass(WindowClass::Land);
-                    }
-                    return;
-                }
-
-                uint8_t state_changed = 0;
-
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-                {
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                    state_changed++;
-                }
-
-                if (gMapSelectType != selectionType)
-                {
-                    gMapSelectType = selectionType;
-                    state_changed++;
-                }
-
-                if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
-                {
-                    gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
-                    state_changed++;
-                }
-
-                if (gMapSelectPositionA.x != mapTile->x)
-                {
-                    gMapSelectPositionA.x = mapTile->x;
-                    state_changed++;
-                }
-
-                if (gMapSelectPositionA.y != mapTile->y)
-                {
-                    gMapSelectPositionA.y = mapTile->y;
-                    state_changed++;
-                }
-
-                if (gMapSelectPositionB.x != mapTile->x)
-                {
-                    gMapSelectPositionB.x = mapTile->x;
-                    state_changed++;
-                }
-
-                if (gMapSelectPositionB.y != mapTile->y)
-                {
-                    gMapSelectPositionB.y = mapTile->y;
-                    state_changed++;
-                }
-
-                MapInvalidateSelectionRect();
-                if (!state_changed)
-                    return;
-
-                money64 lower_cost = SelectionLowerLand(0);
-                money64 raise_cost = SelectionRaiseLand(0);
-
-                if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
-                {
-                    gLandToolRaiseCost = raise_cost;
-                    gLandToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
-                }
-                return;
-            }
-
-            // Get map coordinates and the side of the tile that is being hovered over
-            mapTile = ScreenGetMapXYSide(screenPos, &side);
-
-            if (!mapTile.has_value())
-            {
-                money64 lower_cost = kMoney64Undefined;
-                money64 raise_cost = kMoney64Undefined;
-
-                if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
-                {
-                    gLandToolRaiseCost = raise_cost;
-                    gLandToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
-                }
-                return;
-            }
-
-            uint8_t state_changed = 0;
-
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-            {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                state_changed++;
-            }
-
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
-            {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
-                state_changed++;
-            }
-
-            if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
-            {
-                gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
-                state_changed++;
-            }
-
-            if (tool_size == 0)
-                tool_size = 1;
-
-            int16_t tool_length = (tool_size - 1) * 32;
-
-            // Decide on shape of the brush for bigger selection size
-            switch (gMapSelectType)
-            {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
-                    // Line
-                    mapTile->y -= (tool_size - 1) * 16;
-                    mapTile->y = mapTile->ToTileStart().y;
-                    break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
-                    // Line
-                    mapTile->x -= (tool_size - 1) * 16;
-                    mapTile->x = mapTile->ToTileStart().x;
-                    break;
-                default:
-                    // Move to tool bottom left
-                    mapTile->x -= (tool_size - 1) * 16;
-                    mapTile->y -= (tool_size - 1) * 16;
-                    mapTile = mapTile->ToTileStart();
-                    break;
-            }
-
-            if (gMapSelectPositionA.x != mapTile->x)
-            {
-                gMapSelectPositionA.x = mapTile->x;
-                state_changed++;
-            }
-
-            if (gMapSelectPositionA.y != mapTile->y)
-            {
-                gMapSelectPositionA.y = mapTile->y;
-                state_changed++;
-            }
-
-            // Go to other side
-            switch (gMapSelectType)
-            {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
-                    // Line
-                    mapTile->y += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
-                    break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
-                    // Line
-                    mapTile->x += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
-                    break;
-                default:
-                    mapTile->x += tool_length;
-                    mapTile->y += tool_length;
-                    break;
-            }
-
-            if (gMapSelectPositionB.x != mapTile->x)
-            {
-                gMapSelectPositionB.x = mapTile->x;
-                state_changed++;
-            }
-
-            if (gMapSelectPositionB.y != mapTile->y)
-            {
-                gMapSelectPositionB.y = mapTile->y;
-                state_changed++;
-            }
-
-            MapInvalidateSelectionRect();
-            if (!state_changed)
-                return;
-
-            money64 lower_cost = SelectionLowerLand(0);
-            money64 raise_cost = SelectionRaiseLand(0);
-
-            if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
-            {
-                gLandToolRaiseCost = raise_cost;
-                gLandToolLowerCost = lower_cost;
-                WindowInvalidateByClass(WindowClass::Land);
             }
         }
 
@@ -1169,111 +833,6 @@ namespace OpenRCT2::Ui::Windows
                     gSceneryPlaceCost = cost;
                     break;
                 }
-            }
-        }
-
-        /**
-         *
-         *  rct2: 0x006644DD
-         */
-        money64 SelectionRaiseLand(uint8_t flag)
-        {
-            int32_t centreX = (gMapSelectPositionA.x + gMapSelectPositionB.x) / 2;
-            int32_t centreY = (gMapSelectPositionA.y + gMapSelectPositionB.y) / 2;
-            centreX += 16;
-            centreY += 16;
-
-            if (gLandMountainMode)
-            {
-                auto landSmoothAction = LandSmoothAction(
-                    { centreX, centreY },
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    gMapSelectType, false);
-                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
-                                                            : GameActions::Query(&landSmoothAction);
-                return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
-            }
-
-            auto landRaiseAction = LandRaiseAction(
-                { centreX, centreY },
-                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
-                                                        : GameActions::Query(&landRaiseAction);
-
-            return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
-        }
-
-        /**
-         *
-         *  rct2: 0x006645B3
-         */
-        money64 SelectionLowerLand(uint8_t flag)
-        {
-            int32_t centreX = (gMapSelectPositionA.x + gMapSelectPositionB.x) / 2;
-            int32_t centreY = (gMapSelectPositionA.y + gMapSelectPositionB.y) / 2;
-            centreX += 16;
-            centreY += 16;
-
-            if (gLandMountainMode)
-            {
-                auto landSmoothAction = LandSmoothAction(
-                    { centreX, centreY },
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    gMapSelectType, true);
-                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
-                                                            : GameActions::Query(&landSmoothAction);
-                return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
-            }
-
-            auto landLowerAction = LandLowerAction(
-                { centreX, centreY },
-                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
-                                                        : GameActions::Query(&landLowerAction);
-
-            return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
-        }
-
-        /**
-         *  part of window_top_toolbar_tool_drag(0x0066CB4E)
-         *  rct2: 0x00664454
-         */
-        void LandToolDrag(const ScreenCoordsXY& screenPos)
-        {
-            auto* window = WindowFindFromPoint(screenPos);
-            if (window == nullptr)
-                return;
-            WidgetIndex widget_index = WindowFindWidgetFromPoint(*window, screenPos);
-            if (widget_index == -1)
-                return;
-            const auto& widget = window->widgets[widget_index];
-            if (widget.type != WindowWidgetType::Viewport)
-                return;
-            const auto* selectedViewport = window->viewport;
-            if (selectedViewport == nullptr)
-                return;
-
-            int16_t tile_height = selectedViewport->zoom.ApplyInversedTo(-16);
-
-            int32_t y_diff = screenPos.y - gInputDragLast.y;
-
-            if (y_diff <= tile_height)
-            {
-                gInputDragLast.y += tile_height;
-
-                SelectionRaiseLand(GAME_COMMAND_FLAG_APPLY);
-
-                gLandToolRaiseCost = kMoney64Undefined;
-                gLandToolLowerCost = kMoney64Undefined;
-            }
-            else if (y_diff >= -tile_height)
-            {
-                gInputDragLast.y -= tile_height;
-
-                SelectionLowerLand(GAME_COMMAND_FLAG_APPLY);
-
-                gLandToolRaiseCost = kMoney64Undefined;
-                gLandToolLowerCost = kMoney64Undefined;
             }
         }
 
@@ -2515,7 +2074,7 @@ namespace OpenRCT2::Ui::Windows
                     ToggleClearSceneryWindow(WIDX_CLEAR_SCENERY);
                     break;
                 case WIDX_LAND:
-                    ToggleLandWindow(WIDX_LAND);
+                    ToggleLandWindow();
                     break;
                 case WIDX_WATER:
                     ToggleWaterWindow(WIDX_WATER);
@@ -2734,12 +2293,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLEAR_SCENERY:
                     ToolUpdateSceneryClear(screenCoords);
                     break;
-                case WIDX_LAND:
-                    if (gLandPaintMode)
-                        ToolUpdateLandPaint(screenCoords);
-                    else
-                        ToolUpdateLand(screenCoords);
-                    break;
                 case WIDX_WATER:
                     ToolUpdateWater(screenCoords);
                     break;
@@ -2768,22 +2321,6 @@ namespace OpenRCT2::Ui::Windows
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
                         gCurrentToolId = Tool::Crosshair;
-                    }
-                    break;
-                case WIDX_LAND:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
-                    {
-                        auto surfaceSetStyleAction = SurfaceSetStyleAction(
-                            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                            gLandToolTerrainSurface, gLandToolTerrainEdge);
-
-                        GameActions::Execute(&surfaceSetStyleAction);
-
-                        gCurrentToolId = Tool::UpDownArrow;
-                    }
-                    else
-                    {
-                        _landToolBlocked = true;
                     }
                     break;
                 case WIDX_WATER:
@@ -2823,31 +2360,6 @@ namespace OpenRCT2::Ui::Windows
                         gCurrentToolId = Tool::Crosshair;
                     }
                     break;
-                case WIDX_LAND:
-                    // Custom setting to only change land style instead of raising or lowering land
-                    if (gLandPaintMode)
-                    {
-                        if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
-                        {
-                            auto surfaceSetStyleAction = SurfaceSetStyleAction(
-                                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                                gLandToolTerrainSurface, gLandToolTerrainEdge);
-
-                            GameActions::Execute(&surfaceSetStyleAction);
-
-                            // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
-                            // cursor
-                            gCurrentToolId = Tool::Crosshair;
-                        }
-                    }
-                    else
-                    {
-                        if (!_landToolBlocked)
-                        {
-                            LandToolDrag(screenCoords);
-                        }
-                    }
-                    break;
                 case WIDX_WATER:
                     if (!_landToolBlocked)
                     {
@@ -2877,11 +2389,6 @@ namespace OpenRCT2::Ui::Windows
             _landToolBlocked = false;
             switch (widgetIndex)
             {
-                case WIDX_LAND:
-                    MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::DigDown;
-                    break;
                 case WIDX_WATER:
                     MapInvalidateSelectionRect();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -2908,7 +2415,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_LAND:
                 case WIDX_WATER:
                 case WIDX_CLEAR_SCENERY:
                     HideGridlines();
@@ -3352,21 +2858,6 @@ namespace OpenRCT2::Ui::Windows
         WindowInitScrollWidgets(*window);
 
         return window;
-    }
-
-    /**
-     *
-     *  rct2: 0x0066D104
-     */
-    bool LandToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
-            return false;
-        if (gCurrentToolWidget.widget_index != WIDX_LAND)
-            return false;
-        return true;
     }
 
     /**
