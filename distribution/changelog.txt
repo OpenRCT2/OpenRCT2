@@ -24,6 +24,7 @@
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22184] [Plugin] Expose staff statistics to the plugin API.
+- Feature: [#22206] Add option to randomise train or vehicle colours.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
 - Feature: [#22272] [Plugin] Expose ride vehicle’s current track type via car trackLocation.
 - Feature: [#22301] Loading save games or scenarios now indicates loading progress.
@@ -74,7 +75,6 @@
 - Feature: [#22090] [Plugin] Allow writing of paused state in non-networked settings.
 - Feature: [#22140] Add option to automatically close dropdown menus if Enlarged UI is enabled.
 - Feature: [#22150] [Plugin] Expose monthly expenditure history to the plugin API.
-- Feature: [#22206] Add option to randomise train or vehicle colours.
 - Feature: [#22210] [Plugin] Peeps can now be made stationary or completely frozen.
 - Feature: [#22210] [Plugin] The direction in which a peep is facing can now be manipulated.
 - Improved: [#19870] Allow using new colours in UI themes.
