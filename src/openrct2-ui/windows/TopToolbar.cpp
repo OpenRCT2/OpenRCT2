@@ -86,12 +86,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SEPARATOR,
     };
 
-    validate_global_widx(WC_TOP_TOOLBAR, WIDX_PAUSE);
-    validate_global_widx(WC_TOP_TOOLBAR, WIDX_LAND);
-    validate_global_widx(WC_TOP_TOOLBAR, WIDX_WATER);
-    validate_global_widx(WC_TOP_TOOLBAR, WIDX_SCENERY);
-    validate_global_widx(WC_TOP_TOOLBAR, WIDX_PATH);
-
     enum FileMenuDdidx
     {
         DDIDX_NEW_GAME = 0,

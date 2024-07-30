@@ -192,18 +192,13 @@ static void ShortcutAdjustLand()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_LAND);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleLandWindow();
 }
 
 static void ShortcutAdjustWater()
@@ -211,18 +206,13 @@ static void ShortcutAdjustWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_WATER);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleWaterWindow();
 }
 
 static void ShortcutBuildScenery()
@@ -230,18 +220,13 @@ static void ShortcutBuildScenery()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_SCENERY);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleSceneryWindow();
 }
 
 static void ShortcutBuildPaths()
@@ -249,13 +234,13 @@ static void ShortcutBuildPaths()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            ContextOpenWindow(WindowClass::Footpath);
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleFootpathWindow();
 }
 
 static void ShortcutBuildNewRide()
@@ -407,18 +392,13 @@ static void ShortcutClearScenery()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleClearSceneryWindow();
 }
 
 static void ShortcutQuickSaveGame()
@@ -455,14 +435,7 @@ static void ShortcutOpenSceneryPicker()
 
     WindowBase* window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery == nullptr)
-    {
-        WindowBase* window_toolbar = WindowFindByClass(WindowClass::TopToolbar);
-        if (window_toolbar != nullptr)
-        {
-            window_toolbar->Invalidate();
-            window_toolbar->OnMouseUp(WC_TOP_TOOLBAR__WIDX_SCENERY);
-        }
-    }
+        ToggleSceneryWindow();
 
     window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)

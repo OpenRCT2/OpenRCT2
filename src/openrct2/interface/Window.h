@@ -342,12 +342,6 @@ enum WindowDetail
     static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
 
 constexpr int32_t WC_MAIN_WINDOW__0 = 0;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_PAUSE = 0;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_LAND = 8;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_WATER = 9;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_SCENERY = 10;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_PATH = 11;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY = 17;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT = 25;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE = 30;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_EXIT = 31;

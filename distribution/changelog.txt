@@ -20,6 +20,7 @@
 - Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
 - Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
+- Fix: [#21175] Terraform tool hotkeys don't work when toolbars are hidden.
 - Fix: [#22056] Potential crash upon exiting the game.
 - Fix: [#22101] Wrong tunnel shapes on Log Flume and Giga, Hybrid, Single-Rail and Alpine Coasters.
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
