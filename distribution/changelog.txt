@@ -29,6 +29,7 @@
 - Fix: [#22333] Tile inspector closes other tool windows.
 - Fix: [#22339] Printing ui.tool.cursor in console crashes the game.
 - Fix: [#22348] Progress bar screen doesn’t handle window resizing.
+- Fix: [#22389] Alpine coaster has wrong tunnel entrance type.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
