@@ -10,7 +10,6 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Graph.h>
-#include <openrct2/Context.h>
 #include <openrct2/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -110,13 +109,9 @@ namespace OpenRCT2::Graph
 namespace OpenRCT2::Graph
 {
     constexpr int32_t kDashLength = 2;
-    constexpr ScreenCoordsXY kFinanceTopLeftPadding{ 88, 20 };
-    constexpr ScreenCoordsXY kFinanceBottomRightPadding{ 15, 18 };
-    constexpr uint8_t kNumFinanceGraphYLabels = 5;
 
     template<typename T, T TkNoValue>
-    static void DrawMonths(
-        DrawPixelInfo& dpi, const T* series, int32_t count, const ScreenRect& bounds, const int32_t xStep)
+    static void DrawMonths(DrawPixelInfo& dpi, const T* series, int32_t count, const ScreenRect& bounds, const int32_t xStep)
     {
         auto& date = GetDate();
         int32_t currentMonth = date.GetMonth();
@@ -143,37 +138,22 @@ namespace OpenRCT2::Graph
         }
     }
 
-    template<typename T, T TkNoValue>
+    template<typename T>
     static void DrawHoveredValue(
-        DrawPixelInfo& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
+        DrawPixelInfo& dpi, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue)
     {
-        const ScreenCoordsXY cursorPos = ContextGetCursorPositionScaled();
-        if (!bounds.Contains(cursorPos))
-            return;
-
-        int32_t i = (count - 1) - (cursorPos.x - bounds.GetLeft() + (xStep / 2)) / xStep;
-        if (i < 0)
-            i = 1;
-        if (i > count - 1)
-            i = count - 1;
-
-        T value = series[i];
-        if (value == TkNoValue)
-            return;
         const int32_t screenRange = bounds.GetHeight();
         const int32_t valueRange = maxValue - minValue;
-        int32_t test = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
-        ScreenCoordsXY coords = { bounds.GetRight() - i * xStep, test };
+
+        const int32_t yPosition = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
+        ScreenCoordsXY coords = { bounds.GetRight() - hoverIdx * xStep, yPosition };
+        // Line needs to be shifted over 1 pixel to match with the month ticks.
         ScreenCoordsXY lineCoords = { coords.x + 1, coords.y };
 
-        GfxDrawDashedLine(dpi, { { lineCoords.x, bounds.GetTop() }, lineCoords }, kDashLength, PALETTE_INDEX_10);
+        GfxDrawDashedLine(
+            dpi, { { lineCoords.x, bounds.GetTop() }, { lineCoords.x, bounds.GetBottom() } }, kDashLength, PALETTE_INDEX_10);
         GfxDrawDashedLine(dpi, { { bounds.GetLeft(), lineCoords.y }, lineCoords }, kDashLength, PALETTE_INDEX_10);
-
-        if (cursorPos.y > coords.y)
-        {
-            GfxDrawDashedLine(dpi, { lineCoords, { lineCoords.x, cursorPos.y } }, kDashLength, PALETTE_INDEX_10);
-        }
 
         auto ft = Formatter();
         ft.Add<money64>(value);
@@ -240,60 +220,41 @@ namespace OpenRCT2::Graph
         }
     }
 
-    void DrawFinanceGraph(
-        DrawPixelInfo& dpi, const money64 (&series)[128], const ScreenRect& graphBounds, const bool centred,
-        const ColourWithFlags lineCol)
+    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
     {
-        constexpr int32_t count = 64; // todo for whatever reason this is 64.
-
-        ScreenRect internalBounds{ graphBounds.Point1 + kFinanceTopLeftPadding,
-                                   graphBounds.Point2 - kFinanceBottomRightPadding };
-        const int32_t yLabelStepPx = (internalBounds.GetBottom() - internalBounds.GetTop()) / (kNumFinanceGraphYLabels - 1);
-        const int32_t xStepPx = (internalBounds.GetRight() - internalBounds.GetLeft()) / (count - 1);
-
-        // adjust bounds to be exact multiples of the steps.
-        internalBounds.Point2 = internalBounds.Point1
-            + ScreenCoordsXY{ xStepPx * (count - 1), yLabelStepPx * (kNumFinanceGraphYLabels - 1) };
-
-        money64 graphMaximum = centred ? 12.00_GBP : 24.00_GBP;
-        for (int32_t i = 0; i < count; i++)
-        {
-            auto currentValue = series[i];
-            if (currentValue == kMoney64Undefined)
-                continue;
-            while (std::abs(currentValue) > graphMaximum)
-                graphMaximum *= 2;
-        }
-        const money64 graphMinimum = centred ? -graphMaximum : 0.00_GBP;
-
-        const money64 yLabelStep = (graphMaximum - graphMinimum) / (kNumFinanceGraphYLabels - 1);
-        money64 curLabel = graphMaximum;
-        int32_t curScreenPos = internalBounds.GetTop() - 5;
-        for (uint8_t i = 0; i < kNumFinanceGraphYLabels; i++)
+        money64 curLabel = p.max;
+        int32_t curScreenPos = p.internalBounds.GetTop() - 5;
+        const money64 yLabelStep = (p.max - p.min) / (p.numYLabels - 1);
+        for (int32_t i = 0; i < p.numYLabels; i++)
         {
             Formatter ft;
             ft.Add<money64>(curLabel);
             DrawTextBasic(
-                dpi, { internalBounds.GetLeft(), curScreenPos }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                dpi, { p.internalBounds.GetLeft(), curScreenPos }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
-                dpi, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
-                lineCol, INSET_RECT_FLAG_BORDER_INSET);
-            curScreenPos += yLabelStepPx;
+                dpi, { { p.internalBounds.GetLeft(), curScreenPos + 5 }, { p.internalBounds.GetRight(), curScreenPos + 5 } },
+                p.lineCol, INSET_RECT_FLAG_BORDER_INSET);
+            curScreenPos += p.yLabelStepPx;
             curLabel -= yLabelStep;
         }
 
-        DrawMonths<money64, kMoney64Undefined>(dpi, series, count, internalBounds, xStepPx);
-        DrawLine<money64, kMoney64Undefined, true>(dpi, series, count, internalBounds, xStepPx, graphMinimum, graphMaximum);
-        DrawLine<money64, kMoney64Undefined, false>(dpi, series, count, internalBounds, xStepPx, graphMinimum, graphMaximum);
-        DrawHoveredValue<money64, kMoney64Undefined>(dpi, series, count, internalBounds, xStepPx, graphMinimum, graphMaximum);
+        DrawMonths<money64, kMoney64Undefined>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
+        DrawLine<money64, kMoney64Undefined, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawLine<money64, kMoney64Undefined, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        if (p.hoverIdx >= 0 && p.hoverIdx < p.numPoints)
+        {
+            money64 value = p.series[p.hoverIdx];
+            if (value != kMoney64Undefined)
+                DrawHoveredValue<money64>(dpi, value, p.hoverIdx, p.internalBounds, p.xStepPx, p.min, p.max);
+        }
 
         // todo debug code.
-        ScreenCoordsXY bottomLeft{ internalBounds.Point1.x, internalBounds.Point2.y };
-        ScreenCoordsXY topRight{ internalBounds.Point2.x, internalBounds.Point1.y };
-        GfxDrawLine(dpi, { internalBounds.Point1, topRight }, 33);
-        GfxDrawLine(dpi, { internalBounds.Point1, bottomLeft }, 33);
-        GfxDrawLine(dpi, { bottomLeft, internalBounds.Point2 }, 33);
-        GfxDrawLine(dpi, { topRight, internalBounds.Point2 }, 33);
+        ScreenCoordsXY bottomLeft{ p.internalBounds.Point1.x, p.internalBounds.Point2.y };
+        ScreenCoordsXY topRight{ p.internalBounds.Point2.x, p.internalBounds.Point1.y };
+        GfxDrawLine(dpi, { p.internalBounds.Point1, topRight }, 33);
+        GfxDrawLine(dpi, { p.internalBounds.Point1, bottomLeft }, 33);
+        GfxDrawLine(dpi, { bottomLeft, p.internalBounds.Point2 }, 33);
+        GfxDrawLine(dpi, { topRight, p.internalBounds.Point2 }, 33);
     }
 } // namespace OpenRCT2::Graph

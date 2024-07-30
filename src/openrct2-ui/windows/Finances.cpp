@@ -177,6 +177,8 @@ static Widget _windowFinancesResearchWidgets[] =
 
 #pragma endregion
 
+#pragma region Constants
+
     static constexpr StringId _windowFinancesSummaryRowLabels[EnumValue(ExpenditureType::Count)] = {
         STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
         STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
@@ -217,12 +219,19 @@ static Widget _windowFinancesResearchWidgets[] =
     };
     static_assert(std::size(_windowFinancesPageHoldDownWidgets) == WINDOW_FINANCES_PAGE_COUNT);
 
+    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 88, 20 };
+    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 15, 18 };
+    static constexpr uint8_t kGraphNumYLabels = 5;
+    static constexpr int32_t kGraphNumPoints = 64; // todo. was always 64 in original code.
+
 #pragma endregion
 
     class FinancesWindow final : public Window
     {
     private:
-        uint32_t _lastPaintedMonth;
+        uint32_t _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
+        ScreenRect _graphBounds;
+        Graph::GraphProperties<money64> _graphProps{};
 
         void SetDisabledTabs()
         {
@@ -235,12 +244,23 @@ static Widget _windowFinancesResearchWidgets[] =
             SetPage(WINDOW_FINANCES_PAGE_SUMMARY);
             _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
             ResearchUpdateUncompletedTypes();
+            _graphProps.lineCol = colours[2];
+            _graphProps.hoverIdx = -1;
         }
 
         void OnUpdate() override
         {
             frame_no++;
             InvalidateWidget(WIDX_TAB_1 + page);
+
+            if (page == WINDOW_FINANCES_PAGE_VALUE_GRAPH || page == WINDOW_FINANCES_PAGE_PROFIT_GRAPH
+                || page == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
+            {
+                if (_graphProps.UpdateHoverIdx())
+                {
+                    InvalidateWidget(WIDX_BACKGROUND);
+                }
+            }
         }
 
         void OnMouseDown(WidgetIndex widgetIndex) override
@@ -318,6 +338,33 @@ static Widget _windowFinancesResearchWidgets[] =
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
                     break;
+                case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
+                case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
+                case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
+                {
+                    // recalculate size for graph pages only.
+                    Widget* pageWidget;
+                    switch (page)
+                    {
+                        case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
+                            pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+                            break;
+                        case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
+                            pageWidget = &_windowFinancesParkValueWidgets[WIDX_PAGE_BACKGROUND];
+                            break;
+                        case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
+                            pageWidget = &_windowFinancesProfitWidgets[WIDX_PAGE_BACKGROUND];
+                            break;
+                        default:
+                            return;
+                    }
+                    _graphBounds = { windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 },
+                                     windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 } };
+                    _graphProps.RecalculateLayout(
+                        { _graphBounds.Point1 + kGraphTopLeftPadding, _graphBounds.Point2 - kGraphBottomRightPadding },
+                        kGraphNumYLabels, kGraphNumPoints);
+                }
+                break;
             }
         }
 
@@ -469,16 +516,26 @@ static Widget _windowFinancesResearchWidgets[] =
             {
                 width = WW_RESEARCH;
                 height = WH_RESEARCH;
+                flags &= ~WF_RESIZABLE;
             }
             else if (p == WINDOW_FINANCES_PAGE_SUMMARY)
             {
                 width = WW_OTHER_TABS;
                 height = WH_SUMMARY;
+                flags &= ~WF_RESIZABLE;
+            }
+            else if (
+                p == WINDOW_FINANCES_PAGE_VALUE_GRAPH || p == WINDOW_FINANCES_PAGE_PROFIT_GRAPH
+                || p == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
+            {
+                flags |= WF_RESIZABLE;
+                WindowSetResize(*this, WW_OTHER_TABS, WH_OTHER_TABS, 2000, 2000);
             }
             else
             {
                 width = WW_OTHER_TABS;
                 height = WH_OTHER_TABS;
+                flags &= ~WF_RESIZABLE;
             }
             OnResize();
             OnPrepareDraw();
@@ -782,26 +839,35 @@ static Widget _windowFinancesResearchWidgets[] =
         }
 
         void OnDrawGraph(
-            DrawPixelInfo& dpi, const money64 currentValue, money64 (&series)[128], const StringId fmt,
-            const bool centred) const
+            DrawPixelInfo& dpi, const money64 currentValue, money64 (&series)[kFinanceGraphSize], const StringId fmt, const bool centred)
         {
-            const Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-            auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
-            auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
-            ScreenRect graphBounds(graphTopLeft, graphBottomRight);
-
             auto ft = Formatter();
             ft.Add<money64>(currentValue);
-            DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, fmt, ft);
+            DrawTextBasic(dpi, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
-            GfxFillRectInset(dpi, graphBounds, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
 
             for (int i = 0; i < 128; i++) // TODO debug
                 series[i] = i % 2 * 96.00_GBP;
             // series[i] = 0;
 
-            Graph::DrawFinanceGraph(dpi, series, graphBounds, centred, colours[2]);
+            money64 max = centred ? 12.00_GBP : 24.00_GBP;
+            for (int32_t i = 0; i < kGraphNumPoints; i++)
+            {
+                auto val = series[i];
+                if (val == kMoney64Undefined)
+                    continue;
+                while (std::abs(val) > max)
+                    max *= 2;
+            }
+            const money64 min = centred ? -max : 0.00_GBP;
+
+            _graphProps.min = min;
+            _graphProps.max = max;
+            _graphProps.series = series;
+
+            Graph::DrawFinanceGraph(dpi, _graphProps);
         }
     };
 
