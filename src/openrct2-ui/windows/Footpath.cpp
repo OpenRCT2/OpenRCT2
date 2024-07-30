@@ -1521,4 +1521,21 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             }
         }
     }
+
+    /**
+     *
+     *  rct2: 0x0066CCE7
+     */
+    void ToggleFootpathWindow()
+    {
+        if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+        {
+            ContextOpenWindow(WindowClass::Footpath);
+        }
+        else
+        {
+            ToolCancel();
+            WindowCloseByClass(WindowClass::Footpath);
+        }
+    }
 } // namespace OpenRCT2::Ui::Windows

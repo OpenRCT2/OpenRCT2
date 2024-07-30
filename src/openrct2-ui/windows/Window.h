@@ -49,8 +49,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* EditorMainOpen();
     WindowBase* EditorObjectiveOptionsOpen();
     WindowBase* EditorScenarioOptionsOpen();
+
     WindowBase* FootpathOpen();
     void WindowFootpathResetSelectedPath();
+    void ToggleFootpathWindow();
+
     WindowBase* GuestOpen(Peep* peep);
 
     WindowBase* LandOpen();

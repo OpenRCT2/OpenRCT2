@@ -309,23 +309,6 @@ namespace OpenRCT2::Ui::Windows
 
         void NetworkMenuDropdown(int16_t dropdownIndex);
 
-        /**
-         *
-         *  rct2: 0x0066CCE7
-         */
-        void ToggleFootpathWindow()
-        {
-            if (WindowFindByClass(WindowClass::Footpath) == nullptr)
-            {
-                ContextOpenWindow(WindowClass::Footpath);
-            }
-            else
-            {
-                ToolCancel();
-                WindowCloseByClass(WindowClass::Footpath);
-            }
-        }
-
     public:
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
