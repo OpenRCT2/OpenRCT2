@@ -19,6 +19,7 @@
 - Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
 - Fix: [#22056] Potential crash upon exiting the game.
+- Fix: [#22101] Wrong tunnel shapes on Log Flume and Giga, Hybrid, Single-Rail and Alpine Coasters. 
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
 - Fix: [#22209] Water tool selection may disappear near edge of map.
 - Fix: [#22222] Staff list may remain invalid when changing tabs.
