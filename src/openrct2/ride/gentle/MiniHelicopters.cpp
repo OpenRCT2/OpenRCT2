@@ -197,12 +197,12 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
         case 1:
             imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
-            PaintUtilPushTunnelRight(session, height + 8, TunnelType::_12);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlatTo25Deg);
             break;
         case 2:
             imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::_12);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlatTo25Deg);
             break;
         case 3:
             imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW);

@@ -2014,7 +2014,7 @@ static void JuniorRCPaintTrack25DegUpToFlat(
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TunnelType::_12;
+        tunnelType = TunnelType::StandardFlatTo25Deg;
         tunnelHeight = height + 8;
     }
     else
@@ -2609,7 +2609,7 @@ static void JuniorRC25DegUpToLeftBankPaintSetup(
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TunnelType::_12;
+        tunnelType = TunnelType::StandardFlatTo25Deg;
         tunnelHeight = height + 8;
     }
     else
@@ -2673,7 +2673,7 @@ static void JuniorRC25DegUpToRightBankPaintSetup(
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TunnelType::_12;
+        tunnelType = TunnelType::StandardFlatTo25Deg;
         tunnelHeight = height + 8;
     }
     else

@@ -251,7 +251,7 @@ static void MineRideTrack25DegUpToFlat(
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -1149,7 +1149,7 @@ static void MineRideTrack25DegUpToLeftBank(
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -1213,7 +1213,7 @@ static void MineRideTrack25DegUpToRightBank(
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);

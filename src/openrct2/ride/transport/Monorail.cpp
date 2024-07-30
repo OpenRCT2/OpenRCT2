@@ -611,10 +611,10 @@ static void PaintMonorailTrack25DegUpToFlat(
             PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareFlat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlatTo25Deg);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlatTo25Deg);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareFlat);

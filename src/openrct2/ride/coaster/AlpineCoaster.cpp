@@ -361,7 +361,7 @@ namespace OpenRCT2::AlpineRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_12);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2420,7 +2420,7 @@ namespace OpenRCT2::AlpineRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2472,7 +2472,7 @@ namespace OpenRCT2::AlpineRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
