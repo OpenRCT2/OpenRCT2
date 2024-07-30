@@ -19,7 +19,7 @@ namespace OpenRCT2::Graph
     template<typename T> struct GraphProperties
     {
         ScreenRect internalBounds;
-        T* series;
+        const T* series;
         T min;
         T max;
         int32_t hoverIdx;
@@ -41,7 +41,7 @@ namespace OpenRCT2::Graph
             numYLabels = newNumYLabels;
         }
 
-        bool UpdateHoverIdx()
+        bool UpdateHoverIndex()
         {
             const ScreenCoordsXY cursorPos = ContextGetCursorPositionScaled();
 
@@ -64,7 +64,7 @@ namespace OpenRCT2::Graph
         }
     };
 
-    void Draw(DrawPixelInfo& dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos);
-
     void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p);
+    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint8_t>& p);
+    void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p);
 } // namespace OpenRCT2::Graph

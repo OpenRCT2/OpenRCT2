@@ -256,7 +256,7 @@ static Widget _windowFinancesResearchWidgets[] =
             if (page == WINDOW_FINANCES_PAGE_VALUE_GRAPH || page == WINDOW_FINANCES_PAGE_PROFIT_GRAPH
                 || page == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
             {
-                if (_graphProps.UpdateHoverIdx())
+                if (_graphProps.UpdateHoverIndex())
                 {
                     InvalidateWidget(WIDX_BACKGROUND);
                 }
@@ -839,19 +839,18 @@ static Widget _windowFinancesResearchWidgets[] =
         }
 
         void OnDrawGraph(
-            DrawPixelInfo& dpi, const money64 currentValue, money64 (&series)[kFinanceGraphSize], const StringId fmt, const bool centred)
+            DrawPixelInfo& dpi, const money64 currentValue, money64 (&series)[kFinanceHistorySize], const StringId fmt,
+            const bool centred)
         {
-            auto ft = Formatter();
+            Formatter ft;
             ft.Add<money64>(currentValue);
             DrawTextBasic(dpi, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
             GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
 
-            for (int i = 0; i < 128; i++) // TODO debug
-                series[i] = i % 2 * 96.00_GBP;
-            // series[i] = 0;
-
+            // Calculate Y axis max and min.
+            // This is how the original code does it. Could be improved.
             money64 max = centred ? 12.00_GBP : 24.00_GBP;
             for (int32_t i = 0; i < kGraphNumPoints; i++)
             {
