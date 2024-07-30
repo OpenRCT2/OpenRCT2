@@ -12,7 +12,7 @@
 - Improved: [#22352] The object selection window now groups relevant object tabs together.
 - Improved: [#22357] Error messages are now themeable and easier to read.
 - Improved: [#22361] Add additional colour preset for the Observation Tower.
-- Change: [#12292] The 'Toggle visibility of toolbars' shortcut is no longer assigned by default.
+- Change: [#12292] The ‘Toggle visibility of toolbars’ shortcut is no longer assigned by default.
 - Change: [#21494] Display pixel density is now taken into account for the initial window scale setting.
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
