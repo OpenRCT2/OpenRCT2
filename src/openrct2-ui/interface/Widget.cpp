@@ -27,7 +27,6 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Ui
 {
-
     static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);

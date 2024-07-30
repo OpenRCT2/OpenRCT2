@@ -34,7 +34,6 @@
 
 namespace OpenRCT2::Ui
 {
-
     static constexpr uint8_t kCurrentThemeVersion = 1;
 
     struct WindowThemeDesc;
