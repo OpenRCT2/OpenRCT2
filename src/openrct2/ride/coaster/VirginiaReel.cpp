@@ -412,13 +412,13 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
             WoodenASupportsPaintSetupRotated(
                 session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25DegToFlat);
-            PaintUtilPushTunnelRight(session, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlatTo25Deg);
             break;
         case 2:
             WoodenASupportsPaintSetupRotated(
                 session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25DegToFlat);
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlatTo25Deg);
             break;
         case 3:
             WoodenASupportsPaintSetupRotated(
