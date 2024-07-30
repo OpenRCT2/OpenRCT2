@@ -14,8 +14,6 @@
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/util/Util.h>
 
-using namespace OpenRCT2;
-
 namespace OpenRCT2::Dropdown
 {
     struct Item;
