@@ -3722,6 +3722,10 @@ STR_6648    :Carregando motor de plugins…
 STR_6649    :Carregando cenário…
 STR_6650    :Carregando jogo salvo…
 STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Janela de Erro
+STR_6653    :Todas fontes exibidas
+STR_6654    :Mostrando {POP16}{UINT16} fontes
+STR_6655    :Apenas ‘{POP16}{STRINGID}’
 
 #############
 # Scenarios #
