@@ -44,7 +44,6 @@
 #include "../object/ObjectManager.h"
 #include "../object/RideObject.h"
 #include "../object/StationObject.h"
-#include "../paint/VirtualFloor.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../scenario/Scenario.h"

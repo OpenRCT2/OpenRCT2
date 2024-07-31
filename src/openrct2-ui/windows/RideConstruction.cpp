@@ -32,6 +32,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
@@ -1021,10 +1022,16 @@ static Widget _rideConstructionWidgets[] = {
                     MouseUpDemolish();
                     break;
                 case WIDX_NEXT_SECTION:
+                    VirtualFloorInvalidate();
                     RideSelectNextSection();
+                    if (!SceneryToolIsActive())
+                        VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
+                    VirtualFloorInvalidate();
                     RideSelectPreviousSection();
+                    if (!SceneryToolIsActive())
+                        VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
@@ -3128,6 +3135,15 @@ static Widget _rideConstructionWidgets[] = {
                         _currentTrackPrice = PlaceProvisionalTrackPiece(
                             rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                         WindowRideConstructionUpdateActiveElements();
+
+                        // Invalidate previous track piece (we may not be changing height!)
+                        VirtualFloorInvalidate();
+
+                        if (!SceneryToolIsActive())
+                        {
+                            // Set height to where the next track piece would begin
+                            VirtualFloorSetHeight(_currentTrackBegin.z);
+                        }
                     }
                 }
                 // update flashing arrow
