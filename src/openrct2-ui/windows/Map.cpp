@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
         PAGE_RIDES
     };
 
-    enum WindowMapWidgetIdx
+    enum WindowMapWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -267,8 +267,8 @@ static Widget window_map_widgets[] = {
         {
             _mapImageData.clear();
             _mapImageData.shrink_to_fit();
-            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == classification
-                && gCurrentToolWidget.window_number == number)
+
+            if (isToolActive(classification, number))
             {
                 ToolCancel();
             }
@@ -823,29 +823,21 @@ static Widget window_map_widgets[] = {
                 // Always show set land rights button
                 widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
-                // If any tool is active
-                if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
+                if (isToolActive(WindowClass::Map, WIDX_SET_LAND_RIGHTS))
                 {
-                    // if not in set land rights mode: show the default scenario editor buttons
-                    if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS)
-                    {
-                        ShowDefaultScenarioEditorButtons();
-                    }
-                    else
-                    { // if in set land rights mode: show land tool buttons + modes
-                        widgets[WIDX_LAND_TOOL].type = WindowWidgetType::ImgBtn;
-                        widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
-                        widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
+                    // Show land tool buttons + modes
+                    widgets[WIDX_LAND_TOOL].type = WindowWidgetType::ImgBtn;
+                    widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
+                    widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
 
-                        for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
-                            widgets[i].type = WindowWidgetType::Checkbox;
+                    for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
+                        widgets[i].type = WindowWidgetType::Checkbox;
 
-                        widgets[WIDX_LAND_TOOL].image = ImageId(LandTool::SizeToSpriteIndex(_landRightsToolSize));
-                    }
+                    widgets[WIDX_LAND_TOOL].image = ImageId(LandTool::SizeToSpriteIndex(_landRightsToolSize));
                 }
                 else
                 {
-                    // if no tool is active: show the default scenario editor buttons
+                    // Show the default scenario editor buttons
                     ShowDefaultScenarioEditorButtons();
                 }
             }
