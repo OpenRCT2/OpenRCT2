@@ -91,8 +91,8 @@ namespace OpenRCT2::Scripting
         std::string status_get() const;
         void status_set(const std::string& value);
 
-        uint8_t spinSprite_get() const;
-        void spinSprite_set(uint8_t value);
+        uint8_t spin_get() const;
+        void spin_set(uint8_t value);
 
         std::vector<DukValue> guests_get() const;
 
