@@ -210,96 +210,6 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
     return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
 }
 
-WindowBase* WindowCreate(
-    std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
-{
-    if (flags & WF_AUTO_POSITION)
-    {
-        if (flags & WF_CENTRE_SCREEN)
-        {
-            pos = GetCentrePositionForNewWindow(width, height);
-        }
-        else
-        {
-            pos = GetAutoPositionForNewWindow(width, height);
-        }
-    }
-
-    // Check if there are any window slots left
-    // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
-    {
-        // Close least recently used window
-        for (auto& w : g_window_list)
-        {
-            if (w->flags & WF_DEAD)
-                continue;
-            if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
-            {
-                WindowClose(*w.get());
-                break;
-            }
-        }
-    }
-
-    // Find right position to insert new window
-    auto itDestPos = g_window_list.end();
-    if (flags & WF_STICK_TO_BACK)
-    {
-        for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
-        {
-            if ((*it)->flags & WF_DEAD)
-                continue;
-            if (!((*it)->flags & WF_STICK_TO_BACK))
-            {
-                itDestPos = it;
-            }
-        }
-    }
-    else if (!(flags & WF_STICK_TO_FRONT))
-    {
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-        {
-            if ((*it)->flags & WF_DEAD)
-                continue;
-            if (!((*it)->flags & WF_STICK_TO_FRONT))
-            {
-                itDestPos = it.base();
-                break;
-            }
-        }
-    }
-
-    auto itNew = g_window_list.insert(itDestPos, std::move(wp));
-    auto w = itNew->get();
-
-    // Setup window
-    w->classification = cls;
-    w->flags = flags;
-
-    // Play sounds and flash the window
-    if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-    {
-        w->flags |= WF_WHITE_BORDER_MASK;
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
-    }
-
-    w->windowPos = pos;
-    w->width = width;
-    w->height = height;
-    w->min_width = width;
-    w->max_width = width;
-    w->min_height = height;
-    w->max_height = height;
-
-    w->focus = std::nullopt;
-
-    ColourSchemeUpdate(w);
-    w->Invalidate();
-    w->OnOpen();
-    return w;
-}
-
 static int32_t WindowGetWidgetIndex(const WindowBase& w, Widget* widget)
 {
     int32_t i = 0;
@@ -785,6 +695,96 @@ namespace OpenRCT2::Ui::Windows
     static bool _usingWidgetTextBox = false;
     static TextInputSession* _textInput;
     static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+
+    WindowBase* WindowCreate(
+        std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+    {
+        if (flags & WF_AUTO_POSITION)
+        {
+            if (flags & WF_CENTRE_SCREEN)
+            {
+                pos = GetCentrePositionForNewWindow(width, height);
+            }
+            else
+            {
+                pos = GetAutoPositionForNewWindow(width, height);
+            }
+        }
+
+        // Check if there are any window slots left
+        // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
+        if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
+        {
+            // Close least recently used window
+            for (auto& w : g_window_list)
+            {
+                if (w->flags & WF_DEAD)
+                    continue;
+                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+                {
+                    WindowClose(*w.get());
+                    break;
+                }
+            }
+        }
+
+        // Find right position to insert new window
+        auto itDestPos = g_window_list.end();
+        if (flags & WF_STICK_TO_BACK)
+        {
+            for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
+            {
+                if ((*it)->flags & WF_DEAD)
+                    continue;
+                if (!((*it)->flags & WF_STICK_TO_BACK))
+                {
+                    itDestPos = it;
+                }
+            }
+        }
+        else if (!(flags & WF_STICK_TO_FRONT))
+        {
+            for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+            {
+                if ((*it)->flags & WF_DEAD)
+                    continue;
+                if (!((*it)->flags & WF_STICK_TO_FRONT))
+                {
+                    itDestPos = it.base();
+                    break;
+                }
+            }
+        }
+
+        auto itNew = g_window_list.insert(itDestPos, std::move(wp));
+        auto w = itNew->get();
+
+        // Setup window
+        w->classification = cls;
+        w->flags = flags;
+
+        // Play sounds and flash the window
+        if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            w->flags |= WF_WHITE_BORDER_MASK;
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
+        }
+
+        w->windowPos = pos;
+        w->width = width;
+        w->height = height;
+        w->min_width = width;
+        w->max_width = width;
+        w->min_height = height;
+        w->max_height = height;
+
+        w->focus = std::nullopt;
+
+        ColourSchemeUpdate(w);
+        w->Invalidate();
+        w->OnOpen();
+        return w;
+    }
 
     WindowBase* WindowGetListening()
     {

@@ -509,41 +509,6 @@ WindowBase* WindowBringToFrontByClass(WindowClass cls);
 WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags);
 WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number);
 
-WindowBase* WindowCreate(
-    std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
-template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(
-    WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0, TArgs&&... args)
-{
-    return static_cast<T*>(WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, width, height, flags));
-}
-template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)
-{
-    return static_cast<T*>(
-        WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
-}
-template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
-{
-    auto* w = WindowBringToFrontByClass(cls);
-    if (w == nullptr)
-    {
-        w = WindowCreate<T>(cls, pos, width, height, flags);
-    }
-    return static_cast<T*>(w);
-}
-template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
-{
-    auto* w = WindowBringToFrontByClass(cls);
-    if (w == nullptr)
-    {
-        w = WindowCreate<T>(cls, width, height, flags);
-    }
-    return static_cast<T*>(w);
-}
-
 void WindowClose(WindowBase& window);
 void WindowFlushDead();
 void WindowCloseByClass(WindowClass cls);
