@@ -90,4 +90,10 @@ namespace OpenRCT2::Ui::Windows
     void WindowResize(WindowBase& w, int32_t dw, int32_t dh);
     void WindowInitScrollWidgets(WindowBase& w);
     void WindowUpdateScrollWidgets(WindowBase& w);
+
+    void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
+    void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
+    void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
+
+    void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 } // namespace OpenRCT2::Ui::Windows

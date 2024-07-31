@@ -589,10 +589,6 @@ void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, in
 void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi);
 void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w);
 
-void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
-void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
-void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
-
 bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
 void ToolCancel();
 
@@ -610,7 +606,6 @@ void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
 void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
 
-void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
 int32_t WindowCanResize(const WindowBase& w);
 
 bool WindowIsVisible(WindowBase& w);
