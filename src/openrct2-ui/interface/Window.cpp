@@ -1019,7 +1019,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void window_snap_left(WindowBase& w, int32_t proximity)
+    static void SnapLeft(WindowBase& w, int32_t proximity)
     {
         const auto* mainWindow = WindowGetMain();
         auto wBottom = w.windowPos.y + w.height;
@@ -1049,7 +1049,7 @@ namespace OpenRCT2::Ui::Windows
             w.windowPos.x = rightMost;
     }
 
-    static void window_snap_top(WindowBase& w, int32_t proximity)
+    static void SnapTop(WindowBase& w, int32_t proximity)
     {
         const auto* mainWindow = WindowGetMain();
         auto wRight = w.windowPos.x + w.width;
@@ -1079,7 +1079,7 @@ namespace OpenRCT2::Ui::Windows
             w.windowPos.y = bottomMost;
     }
 
-    static void window_snap_right(WindowBase& w, int32_t proximity)
+    static void SnapRight(WindowBase& w, int32_t proximity)
     {
         const auto* mainWindow = WindowGetMain();
         auto wRight = w.windowPos.x + w.width;
@@ -1109,7 +1109,7 @@ namespace OpenRCT2::Ui::Windows
             w.windowPos.x = leftMost - w.width;
     }
 
-    static void window_snap_bottom(WindowBase& w, int32_t proximity)
+    static void SnapBottom(WindowBase& w, int32_t proximity)
     {
         const auto* mainWindow = WindowGetMain();
         auto wRight = w.windowPos.x + w.width;
@@ -1150,10 +1150,10 @@ namespace OpenRCT2::Ui::Windows
         {
             w.windowPos = newWindowCoords;
 
-            window_snap_right(w, snapProximity);
-            window_snap_bottom(w, snapProximity);
-            window_snap_left(w, snapProximity);
-            window_snap_top(w, snapProximity);
+            SnapRight(w, snapProximity);
+            SnapBottom(w, snapProximity);
+            SnapLeft(w, snapProximity);
+            SnapTop(w, snapProximity);
 
             if (w.windowPos == originalPos)
                 return;
