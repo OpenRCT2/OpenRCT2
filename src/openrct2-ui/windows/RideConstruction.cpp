@@ -32,8 +32,8 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/paint/VirtualFloor.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
