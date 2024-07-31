@@ -26,7 +26,6 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.Date.h"
 #include "../network/network.h"
-#include "../paint/VirtualFloor.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -777,9 +776,6 @@ void RideSelectNextSection()
             return;
         }
 
-        // Invalidate previous track piece (we may not be changing height!)
-        VirtualFloorInvalidate();
-
         CoordsXYE inputElement, outputElement;
         inputElement.x = newCoords->x;
         inputElement.y = newCoords->y;
@@ -789,12 +785,6 @@ void RideSelectNextSection()
             newCoords->x = outputElement.x;
             newCoords->y = outputElement.y;
             tileElement = outputElement.element;
-            if (!SceneryToolIsActive())
-            {
-                // Set next element's height.
-                VirtualFloorSetHeight(tileElement->GetBaseZ());
-            }
-
             _currentTrackBegin = *newCoords;
             _currentTrackPieceDirection = tileElement->GetDirection();
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
@@ -844,9 +834,6 @@ void RideSelectPreviousSection()
             return;
         }
 
-        // Invalidate previous track piece (we may not be changing height!)
-        VirtualFloorInvalidate();
-
         TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
         {
@@ -856,11 +843,6 @@ void RideSelectPreviousSection()
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            if (!SceneryToolIsActive())
-            {
-                // Set previous element's height.
-                VirtualFloorSetHeight(trackBeginEnd.begin_element->GetBaseZ());
-            }
             WindowRideConstructionUpdateActiveElements();
         }
         else
