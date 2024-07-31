@@ -559,6 +559,7 @@ bool isToolActive(WindowClass cls);
 bool isToolActive(WindowClass cls, rct_windownumber number);
 bool isToolActive(WindowClass cls, WidgetIndex widgetIndex);
 bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number);
+bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex);
 bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
 void ToolCancel();
 

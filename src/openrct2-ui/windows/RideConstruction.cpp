@@ -935,7 +935,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_rideConstructionState == RideConstructionState::Place)
             {
-                if (!WidgetIsActiveTool(*this, WIDX_CONSTRUCT))
+                if (!isToolActive(*this, WIDX_CONSTRUCT))
                 {
                     Close();
                     return;
@@ -944,7 +944,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_rideConstructionState == RideConstructionState::EntranceExit)
             {
-                if (!WidgetIsActiveTool(*this, WIDX_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_EXIT))
+                if (!isToolActive(*this, WIDX_ENTRANCE) && !isToolActive(*this, WIDX_EXIT))
                 {
                     _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                     WindowRideConstructionUpdateActiveElements();

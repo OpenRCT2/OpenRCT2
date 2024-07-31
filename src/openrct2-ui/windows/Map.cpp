@@ -683,7 +683,7 @@ static Widget window_map_widgets[] = {
                     gLandToolTerrainSurface, gLandToolTerrainEdge);
                 GameActions::Execute(&surfaceSetStyleAction);
             }
-            else if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
+            else if (isToolActive(*this, WIDX_SET_LAND_RIGHTS))
             {
                 // Set land rights
                 int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
@@ -857,7 +857,7 @@ static Widget window_map_widgets[] = {
                 + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
             // Draw land tool size
-            if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > kLandToolMaximumSizeWithSprite)
+            if (isToolActive(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > kLandToolMaximumSizeWithSprite)
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(_landRightsToolSize);
@@ -898,7 +898,7 @@ static Widget window_map_widgets[] = {
                     }
                 }
             }
-            else if (!WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
+            else if (!isToolActive(*this, WIDX_SET_LAND_RIGHTS))
             {
                 DrawTextBasic(
                     dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},

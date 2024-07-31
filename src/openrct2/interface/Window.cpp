@@ -1126,6 +1126,11 @@ bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber num
     return isToolActive(cls, widgetIndex) && gCurrentToolWidget.window_number == number;
 }
 
+bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex)
+{
+    return isToolActive(w.classification, widgetIndex, w.number);
+}
+
 /**
  *
  *  rct2: 0x006EE212
