@@ -410,9 +410,3 @@ bool SceneryToolIsActive()
 
     return false;
 }
-
-void ScenerySetDefaultPlacementConfiguration()
-{
-    auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
-    ContextBroadcastIntent(&intent);
-}

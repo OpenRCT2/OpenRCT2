@@ -12,6 +12,7 @@
 #include "../interface/Window.h"
 
 #include <memory>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
@@ -24,7 +25,6 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Window.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectManager.h>
@@ -437,7 +437,7 @@ namespace OpenRCT2::Title
             ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
-            ScenerySetDefaultPlacementConfiguration();
+            Ui::Windows::WindowScenerySetDefaultPlacementConfiguration();
             News::InitQueue();
             LoadPalette();
             gScreenAge = 0;

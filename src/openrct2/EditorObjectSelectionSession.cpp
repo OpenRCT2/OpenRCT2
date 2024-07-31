@@ -501,7 +501,10 @@ void FinishObjectSelection()
     else
     {
         SetAllSceneryItemsInvented();
-        ScenerySetDefaultPlacementConfiguration();
+
+        auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+        ContextBroadcastIntent(&intent);
+
         gameState.EditorStep = EditorStep::LandscapeEditor;
         GfxInvalidateScreen();
     }
