@@ -576,8 +576,6 @@ void TextinputCancel();
 
 bool WindowIsVisible(WindowBase& w);
 
-bool SceneryToolIsActive();
-
 Viewport* WindowGetPreviousViewport(Viewport* current);
 void WindowResetVisibilities();
 void WindowInitAll();

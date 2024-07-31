@@ -241,7 +241,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             if (gWindowSceneryScatterEnabled)
                 WindowCloseByClass(WindowClass::SceneryScatter);
 
-            if (SceneryToolIsActive())
+            if (isToolActive(WindowClass::Scenery))
                 ToolCancel();
         }
 
@@ -486,7 +486,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
             Invalidate();
 
-            if (!SceneryToolIsActive())
+            if (!isToolActive(WindowClass::Scenery))
             {
                 Close();
                 return;

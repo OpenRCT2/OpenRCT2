@@ -1025,13 +1025,13 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_NEXT_SECTION:
                     VirtualFloorInvalidate();
                     RideSelectNextSection();
-                    if (!SceneryToolIsActive())
+                    if (!isToolActive(WindowClass::Scenery))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
                     VirtualFloorInvalidate();
                     RideSelectPreviousSection();
-                    if (!SceneryToolIsActive())
+                    if (!isToolActive(WindowClass::Scenery))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_LEFT_CURVE:
@@ -2201,7 +2201,7 @@ static Widget _rideConstructionWidgets[] = {
         {
             // If the scenery tool is active, we do not display our tiles as it
             // will conflict with larger scenery objects selecting tiles
-            if (SceneryToolIsActive())
+            if (isToolActive(WindowClass::Scenery))
             {
                 return;
             }
@@ -3140,7 +3140,7 @@ static Widget _rideConstructionWidgets[] = {
                         // Invalidate previous track piece (we may not be changing height!)
                         VirtualFloorInvalidate();
 
-                        if (!SceneryToolIsActive())
+                        if (!isToolActive(WindowClass::Scenery))
                         {
                             // Set height to where the next track piece would begin
                             VirtualFloorSetHeight(_currentTrackBegin.z);
