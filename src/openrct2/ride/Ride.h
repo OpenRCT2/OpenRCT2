@@ -1046,7 +1046,6 @@ bool TrackBlockGetPreviousFromZero(
 
 void RideGetStartOfTrack(CoordsXYE* output);
 
-void WindowRideConstructionUpdateActiveElements();
 money64 RideEntranceExitPlaceGhost(
     const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
