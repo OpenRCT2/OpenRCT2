@@ -19,8 +19,8 @@
 
 using namespace OpenRCT2;
 
-constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
-constexpr size_t NetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
+static constexpr size_t kNetworkDisconnectReasonBufSize = 256;
+static constexpr size_t kNetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
 
 NetworkConnection::NetworkConnection() noexcept
 {
@@ -68,11 +68,11 @@ NetworkReadPacket NetworkConnection::ReadPacket()
         // NOTE: BytesTransfered includes the header length, this will not underflow.
         const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
 
-        uint8_t buffer[NetworkBufferSize];
+        uint8_t buffer[kNetworkBufferSize];
 
         if (missingLength > 0)
         {
-            NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, NetworkBufferSize), &bytesRead);
+            NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kNetworkBufferSize), &bytesRead);
             if (status != NetworkReadPacket::Success)
             {
                 return status;
@@ -199,8 +199,8 @@ void NetworkConnection::SetLastDisconnectReason(std::string_view src)
 
 void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
 {
-    char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-    OpenRCT2::FormatStringLegacy(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);
+    char buffer[kNetworkDisconnectReasonBufSize];
+    OpenRCT2::FormatStringLegacy(buffer, kNetworkDisconnectReasonBufSize, string_id, args);
     SetLastDisconnectReason(buffer);
 }
 
