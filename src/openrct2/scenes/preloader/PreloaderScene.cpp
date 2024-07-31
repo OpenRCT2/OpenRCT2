@@ -52,11 +52,6 @@ void PreloaderScene::Tick()
     ContextHandleInput();
     WindowInvalidateAll();
 
-    // Reset screen
-    auto* engine = GetContext().GetDrawingEngine();
-    auto* drawingContext = engine->GetDrawingContext();
-    drawingContext->Clear(*engine->GetDrawingPixelInfo(), PALETTE_INDEX_10);
-
     gInUpdateCode = false;
 
     if (_jobs.CountPending() == 0 && _jobs.CountProcessing() == 0)

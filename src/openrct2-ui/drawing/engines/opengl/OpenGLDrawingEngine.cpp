@@ -245,6 +245,7 @@ public:
         ConfigureBits(width, height, width);
         ConfigureCanvas();
         _drawingContext->Resize(width, height);
+        _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
     }
 
     void SetPalette(const GamePalette& palette) override
