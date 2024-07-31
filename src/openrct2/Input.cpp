@@ -21,9 +21,6 @@ WidgetRef gPressedWidget;
 
 uint32_t _tooltipNotShownTimeout;
 
-Tool gCurrentToolId;
-WidgetRef gCurrentToolWidget;
-
 /**
  *
  *  rct2: 0x006E3B43
