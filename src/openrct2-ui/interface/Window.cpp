@@ -14,6 +14,7 @@
 #include "Widget.h"
 
 #include <SDL.h>
+#include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -207,96 +208,6 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
     auto screenWidth = uiContext->GetWidth();
     auto screenHeight = uiContext->GetHeight();
     return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
-}
-
-WindowBase* WindowCreate(
-    std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
-{
-    if (flags & WF_AUTO_POSITION)
-    {
-        if (flags & WF_CENTRE_SCREEN)
-        {
-            pos = GetCentrePositionForNewWindow(width, height);
-        }
-        else
-        {
-            pos = GetAutoPositionForNewWindow(width, height);
-        }
-    }
-
-    // Check if there are any window slots left
-    // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
-    {
-        // Close least recently used window
-        for (auto& w : g_window_list)
-        {
-            if (w->flags & WF_DEAD)
-                continue;
-            if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
-            {
-                WindowClose(*w.get());
-                break;
-            }
-        }
-    }
-
-    // Find right position to insert new window
-    auto itDestPos = g_window_list.end();
-    if (flags & WF_STICK_TO_BACK)
-    {
-        for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
-        {
-            if ((*it)->flags & WF_DEAD)
-                continue;
-            if (!((*it)->flags & WF_STICK_TO_BACK))
-            {
-                itDestPos = it;
-            }
-        }
-    }
-    else if (!(flags & WF_STICK_TO_FRONT))
-    {
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-        {
-            if ((*it)->flags & WF_DEAD)
-                continue;
-            if (!((*it)->flags & WF_STICK_TO_FRONT))
-            {
-                itDestPos = it.base();
-                break;
-            }
-        }
-    }
-
-    auto itNew = g_window_list.insert(itDestPos, std::move(wp));
-    auto w = itNew->get();
-
-    // Setup window
-    w->classification = cls;
-    w->flags = flags;
-
-    // Play sounds and flash the window
-    if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-    {
-        w->flags |= WF_WHITE_BORDER_MASK;
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
-    }
-
-    w->windowPos = pos;
-    w->width = width;
-    w->height = height;
-    w->min_width = width;
-    w->max_width = width;
-    w->min_height = height;
-    w->max_height = height;
-
-    w->focus = std::nullopt;
-
-    ColourSchemeUpdate(w);
-    w->Invalidate();
-    w->OnOpen();
-    return w;
 }
 
 static int32_t WindowGetWidgetIndex(const WindowBase& w, Widget* widget)
@@ -571,45 +482,6 @@ void ApplyScreenSaverLockSetting()
 }
 
 /**
- * Initialises scroll widgets to their virtual size.
- *  rct2: 0x006EAEB8
- */
-void WindowInitScrollWidgets(WindowBase& w)
-{
-    Widget* widget;
-    int32_t widget_index, scroll_index;
-
-    widget_index = 0;
-    scroll_index = 0;
-    for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
-    {
-        if (widget->type != WindowWidgetType::Scroll)
-        {
-            widget_index++;
-            continue;
-        }
-
-        auto& scroll = w.scrolls[scroll_index];
-        scroll.flags = 0;
-        ScreenSize scrollSize = w.OnScrollGetSize(scroll_index);
-        scroll.h_left = 0;
-        scroll.h_right = scrollSize.width + 1;
-        scroll.v_top = 0;
-        scroll.v_bottom = scrollSize.height + 1;
-
-        if (widget->content & SCROLL_HORIZONTAL)
-            scroll.flags |= HSCROLLBAR_VISIBLE;
-        if (widget->content & SCROLL_VERTICAL)
-            scroll.flags |= VSCROLLBAR_VISIBLE;
-
-        WidgetScrollUpdateThumbs(w, widget_index);
-
-        widget_index++;
-        scroll_index++;
-    }
-}
-
-/**
  *
  *  rct2: 0x006EB15C
  */
@@ -671,19 +543,6 @@ static void WindowInvalidatePressedImageButton(const WindowBase& w)
     }
 }
 
-/**
- *
- *  rct2: 0x006EA73F
- */
-void InvalidateAllWindowsAfterInput()
-{
-    WindowVisitEach([](WindowBase* w) {
-        WindowUpdateScrollWidgets(*w);
-        WindowInvalidatePressedImageButton(*w);
-        w->OnResize();
-    });
-}
-
 void Window::OnDraw(DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*this, dpi);
@@ -696,7 +555,7 @@ void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
 
 void Window::InitScrollWidgets()
 {
-    WindowInitScrollWidgets(*this);
+    Windows::WindowInitScrollWidgets(*this);
 }
 
 void Window::InvalidateWidget(WidgetIndex widgetIndex)
@@ -837,6 +696,96 @@ namespace OpenRCT2::Ui::Windows
     static TextInputSession* _textInput;
     static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
 
+    WindowBase* WindowCreate(
+        std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+    {
+        if (flags & WF_AUTO_POSITION)
+        {
+            if (flags & WF_CENTRE_SCREEN)
+            {
+                pos = GetCentrePositionForNewWindow(width, height);
+            }
+            else
+            {
+                pos = GetAutoPositionForNewWindow(width, height);
+            }
+        }
+
+        // Check if there are any window slots left
+        // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
+        if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
+        {
+            // Close least recently used window
+            for (auto& w : g_window_list)
+            {
+                if (w->flags & WF_DEAD)
+                    continue;
+                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+                {
+                    WindowClose(*w.get());
+                    break;
+                }
+            }
+        }
+
+        // Find right position to insert new window
+        auto itDestPos = g_window_list.end();
+        if (flags & WF_STICK_TO_BACK)
+        {
+            for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
+            {
+                if ((*it)->flags & WF_DEAD)
+                    continue;
+                if (!((*it)->flags & WF_STICK_TO_BACK))
+                {
+                    itDestPos = it;
+                }
+            }
+        }
+        else if (!(flags & WF_STICK_TO_FRONT))
+        {
+            for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+            {
+                if ((*it)->flags & WF_DEAD)
+                    continue;
+                if (!((*it)->flags & WF_STICK_TO_FRONT))
+                {
+                    itDestPos = it.base();
+                    break;
+                }
+            }
+        }
+
+        auto itNew = g_window_list.insert(itDestPos, std::move(wp));
+        auto w = itNew->get();
+
+        // Setup window
+        w->classification = cls;
+        w->flags = flags;
+
+        // Play sounds and flash the window
+        if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            w->flags |= WF_WHITE_BORDER_MASK;
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
+        }
+
+        w->windowPos = pos;
+        w->width = width;
+        w->height = height;
+        w->min_width = width;
+        w->max_width = width;
+        w->min_height = height;
+        w->max_height = height;
+
+        w->focus = std::nullopt;
+
+        ColourSchemeUpdate(w);
+        w->Invalidate();
+        w->OnOpen();
+        return w;
+    }
+
     WindowBase* WindowGetListening()
     {
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -933,5 +882,377 @@ namespace OpenRCT2::Ui::Windows
     const WidgetIdentifier& GetCurrentTextBox()
     {
         return _currentTextBox;
+    }
+
+    void WindowResize(WindowBase& w, int32_t dw, int32_t dh)
+    {
+        if (dw == 0 && dh == 0)
+            return;
+
+        // Invalidate old region
+        w.Invalidate();
+
+        // Clamp new size to minimum and maximum
+        w.width = std::clamp<int32_t>(w.width + dw, w.min_width, w.max_width);
+        w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
+
+        w.OnResize();
+        w.OnPrepareDraw();
+
+        // Update scroll widgets
+        for (auto& scroll : w.scrolls)
+        {
+            scroll.h_right = WINDOW_SCROLL_UNDEFINED;
+            scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
+        }
+        WindowUpdateScrollWidgets(w);
+
+        // Invalidate new region
+        w.Invalidate();
+    }
+
+    /**
+     *
+     *  rct2: 0x006EAE4E
+     *
+     * @param w The window (esi).
+     */
+    void WindowUpdateScrollWidgets(WindowBase& w)
+    {
+        int32_t scrollIndex, width, height, scrollPositionChanged;
+        WidgetIndex widgetIndex;
+        Widget* widget;
+
+        widgetIndex = 0;
+        scrollIndex = 0;
+        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
+        {
+            if (widget->type != WindowWidgetType::Scroll)
+                continue;
+
+            auto& scroll = w.scrolls[scrollIndex];
+            ScreenSize scrollSize = w.OnScrollGetSize(scrollIndex);
+            width = scrollSize.width;
+            height = scrollSize.height;
+
+            if (height == 0)
+            {
+                scroll.v_top = 0;
+            }
+            else if (width == 0)
+            {
+                scroll.h_left = 0;
+            }
+            width++;
+            height++;
+
+            scrollPositionChanged = 0;
+            if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.h_right)
+            {
+                scrollPositionChanged = 1;
+                scroll.h_right = width;
+            }
+
+            if ((widget->content & SCROLL_VERTICAL) && height != scroll.v_bottom)
+            {
+                scrollPositionChanged = 1;
+                scroll.v_bottom = height;
+            }
+
+            if (scrollPositionChanged)
+            {
+                WidgetScrollUpdateThumbs(w, widgetIndex);
+                w.Invalidate();
+            }
+            scrollIndex++;
+        }
+    }
+    /**
+     * Initialises scroll widgets to their virtual size.
+     *  rct2: 0x006EAEB8
+     */
+    void WindowInitScrollWidgets(WindowBase& w)
+    {
+        Widget* widget;
+        int32_t widget_index, scroll_index;
+
+        widget_index = 0;
+        scroll_index = 0;
+        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+        {
+            if (widget->type != WindowWidgetType::Scroll)
+            {
+                widget_index++;
+                continue;
+            }
+
+            auto& scroll = w.scrolls[scroll_index];
+            scroll.flags = 0;
+            ScreenSize scrollSize = w.OnScrollGetSize(scroll_index);
+            scroll.h_left = 0;
+            scroll.h_right = scrollSize.width + 1;
+            scroll.v_top = 0;
+            scroll.v_bottom = scrollSize.height + 1;
+
+            if (widget->content & SCROLL_HORIZONTAL)
+                scroll.flags |= HSCROLLBAR_VISIBLE;
+            if (widget->content & SCROLL_VERTICAL)
+                scroll.flags |= VSCROLLBAR_VISIBLE;
+
+            WidgetScrollUpdateThumbs(w, widget_index);
+
+            widget_index++;
+            scroll_index++;
+        }
+    }
+
+    static void SnapLeft(WindowBase& w, int32_t proximity)
+    {
+        const auto* mainWindow = WindowGetMain();
+        auto wBottom = w.windowPos.y + w.height;
+        auto wLeftProximity = w.windowPos.x - (proximity * 2);
+        auto wRightProximity = w.windowPos.x + (proximity * 2);
+        auto rightMost = INT32_MIN;
+
+        WindowVisitEach([&](WindowBase* w2) {
+            if (w2 == &w || w2 == mainWindow)
+                return;
+
+            auto right = w2->windowPos.x + w2->width;
+
+            if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
+                return;
+
+            if (right < wLeftProximity || right > wRightProximity)
+                return;
+
+            rightMost = std::max(rightMost, right);
+        });
+
+        if (0 >= wLeftProximity && 0 <= wRightProximity)
+            rightMost = std::max(rightMost, 0);
+
+        if (rightMost != INT32_MIN)
+            w.windowPos.x = rightMost;
+    }
+
+    static void SnapTop(WindowBase& w, int32_t proximity)
+    {
+        const auto* mainWindow = WindowGetMain();
+        auto wRight = w.windowPos.x + w.width;
+        auto wTopProximity = w.windowPos.y - (proximity * 2);
+        auto wBottomProximity = w.windowPos.y + (proximity * 2);
+        auto bottomMost = INT32_MIN;
+
+        WindowVisitEach([&](WindowBase* w2) {
+            if (w2 == &w || w2 == mainWindow)
+                return;
+
+            auto bottom = w2->windowPos.y + w2->height;
+
+            if (wRight < w2->windowPos.x || w.windowPos.x > w2->windowPos.x + w2->width)
+                return;
+
+            if (bottom < wTopProximity || bottom > wBottomProximity)
+                return;
+
+            bottomMost = std::max(bottomMost, bottom);
+        });
+
+        if (0 >= wTopProximity && 0 <= wBottomProximity)
+            bottomMost = std::max(bottomMost, 0);
+
+        if (bottomMost != INT32_MIN)
+            w.windowPos.y = bottomMost;
+    }
+
+    static void SnapRight(WindowBase& w, int32_t proximity)
+    {
+        const auto* mainWindow = WindowGetMain();
+        auto wRight = w.windowPos.x + w.width;
+        auto wBottom = w.windowPos.y + w.height;
+        auto wLeftProximity = wRight - (proximity * 2);
+        auto wRightProximity = wRight + (proximity * 2);
+        auto leftMost = INT32_MAX;
+
+        WindowVisitEach([&](WindowBase* w2) {
+            if (w2 == &w || w2 == mainWindow)
+                return;
+
+            if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
+                return;
+
+            if (w2->windowPos.x < wLeftProximity || w2->windowPos.x > wRightProximity)
+                return;
+
+            leftMost = std::min<int32_t>(leftMost, w2->windowPos.x);
+        });
+
+        auto screenWidth = ContextGetWidth();
+        if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
+            leftMost = std::min(leftMost, screenWidth);
+
+        if (leftMost != INT32_MAX)
+            w.windowPos.x = leftMost - w.width;
+    }
+
+    static void SnapBottom(WindowBase& w, int32_t proximity)
+    {
+        const auto* mainWindow = WindowGetMain();
+        auto wRight = w.windowPos.x + w.width;
+        auto wBottom = w.windowPos.y + w.height;
+        auto wTopProximity = wBottom - (proximity * 2);
+        auto wBottomProximity = wBottom + (proximity * 2);
+        auto topMost = INT32_MAX;
+
+        WindowVisitEach([&](WindowBase* w2) {
+            if (w2 == &w || w2 == mainWindow)
+                return;
+
+            if (wRight < w2->windowPos.x || w.windowPos.x > w2->windowPos.x + w2->width)
+                return;
+
+            if (w2->windowPos.y < wTopProximity || w2->windowPos.y > wBottomProximity)
+                return;
+
+            topMost = std::min<int32_t>(topMost, w2->windowPos.y);
+        });
+
+        auto screenHeight = ContextGetHeight();
+        if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
+            topMost = std::min(topMost, screenHeight);
+
+        if (topMost != INT32_MAX)
+            w.windowPos.y = topMost - w.height;
+    }
+
+    void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
+    {
+        auto originalPos = w.windowPos;
+        int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : kTopToolbarHeight + 2;
+
+        newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
+
+        if (snapProximity > 0)
+        {
+            w.windowPos = newWindowCoords;
+
+            SnapRight(w, snapProximity);
+            SnapBottom(w, snapProximity);
+            SnapLeft(w, snapProximity);
+            SnapTop(w, snapProximity);
+
+            if (w.windowPos == originalPos)
+                return;
+
+            newWindowCoords = w.windowPos;
+            w.windowPos = originalPos;
+        }
+
+        WindowSetPosition(w, newWindowCoords);
+    }
+
+    void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& deltaCoords)
+    {
+        if (deltaCoords.x == 0 && deltaCoords.y == 0)
+            return;
+
+        // Invalidate old region
+        w.Invalidate();
+
+        // Translate window and viewport
+        w.windowPos += deltaCoords;
+        if (w.viewport != nullptr)
+        {
+            w.viewport->pos += deltaCoords;
+        }
+
+        // Invalidate new region
+        w.Invalidate();
+    }
+
+    void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords)
+    {
+        WindowMovePosition(w, screenCoords - w.windowPos);
+    }
+
+    /**
+     *
+     *  rct2: 0x006ED710
+     * Called after a window resize to move windows if they
+     * are going to be out of sight.
+     */
+    void WindowRelocateWindows(int32_t width, int32_t height)
+    {
+        int32_t new_location = 8;
+        WindowVisitEach([width, height, &new_location](WindowBase* w) {
+            // Work out if the window requires moving
+            if (w->windowPos.x + 10 < width)
+            {
+                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+                {
+                    if (w->windowPos.y - 22 < height)
+                    {
+                        return;
+                    }
+                }
+                if (w->windowPos.y + 10 < height)
+                {
+                    return;
+                }
+            }
+
+            // Calculate the new locations
+            auto newWinPos = w->windowPos;
+            w->windowPos = { new_location, new_location + kTopToolbarHeight + 1 };
+
+            // Move the next new location so windows are not directly on top
+            new_location += 8;
+
+            // Adjust the viewport if required.
+            if (w->viewport != nullptr)
+            {
+                w->viewport->pos -= newWinPos - w->windowPos;
+            }
+        });
+    }
+
+    void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight)
+    {
+        w.min_width = minWidth;
+        w.min_height = minHeight;
+        w.max_width = maxWidth;
+        w.max_height = maxHeight;
+
+        // Clamp width and height to minimum and maximum
+        int32_t width = std::clamp<int32_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
+        int32_t height = std::clamp<int32_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
+
+        // Resize window if size has changed
+        if (w.width != width || w.height != height)
+        {
+            w.Invalidate();
+            w.width = width;
+            w.height = height;
+            w.Invalidate();
+        }
+    }
+
+    bool WindowCanResize(const WindowBase& w)
+    {
+        return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.min_height != w.max_height);
+    }
+
+    /**
+     *
+     *  rct2: 0x006EA73F
+     */
+    void InvalidateAllWindowsAfterInput()
+    {
+        WindowVisitEach([](WindowBase* w) {
+            Windows::WindowUpdateScrollWidgets(*w);
+            WindowInvalidatePressedImageButton(*w);
+            w->OnResize();
+        });
     }
 } // namespace OpenRCT2::Ui::Windows

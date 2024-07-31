@@ -509,41 +509,6 @@ WindowBase* WindowBringToFrontByClass(WindowClass cls);
 WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags);
 WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number);
 
-WindowBase* WindowCreate(
-    std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
-template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(
-    WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0, TArgs&&... args)
-{
-    return static_cast<T*>(WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, width, height, flags));
-}
-template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)
-{
-    return static_cast<T*>(
-        WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
-}
-template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
-{
-    auto* w = WindowBringToFrontByClass(cls);
-    if (w == nullptr)
-    {
-        w = WindowCreate<T>(cls, pos, width, height, flags);
-    }
-    return static_cast<T*>(w);
-}
-template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
-{
-    auto* w = WindowBringToFrontByClass(cls);
-    if (w == nullptr)
-    {
-        w = WindowCreate<T>(cls, width, height, flags);
-    }
-    return static_cast<T*>(w);
-}
-
 void WindowClose(WindowBase& window);
 void WindowFlushDead();
 void WindowCloseByClass(WindowClass cls);
@@ -566,8 +531,7 @@ void WindowInvalidateAll();
 void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex);
 void WidgetInvalidateByClass(WindowClass cls, WidgetIndex widgetIndex);
 void WidgetInvalidateByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex);
-void WindowInitScrollWidgets(WindowBase& w);
-void WindowUpdateScrollWidgets(WindowBase& w);
+
 int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index);
 
 void WindowPushOthersRight(WindowBase& w);
@@ -590,11 +554,6 @@ void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, in
 void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi);
 void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w);
 
-void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
-void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
-void WindowResize(WindowBase& w, int32_t dw, int32_t dh);
-void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
-
 bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
 void ToolCancel();
 
@@ -605,15 +564,10 @@ void WindowUpdateViewportRideMusic();
 Viewport* WindowGetViewport(WindowBase* window);
 
 // Open window functions
-void WindowRelocateWindows(int32_t width, int32_t height);
 void WindowResizeGui(int32_t width, int32_t height);
 void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
 
-void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
-
-void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
-int32_t WindowCanResize(const WindowBase& w);
 
 bool WindowIsVisible(WindowBase& w);
 
