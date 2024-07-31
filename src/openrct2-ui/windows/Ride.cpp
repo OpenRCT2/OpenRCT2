@@ -1048,9 +1048,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void SetPage(int32_t newPage)
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                    ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
 
             if (newPage == WINDOW_RIDE_PAGE_VEHICLE)
             {
@@ -4134,16 +4133,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void ColourClose()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return;
-
-            if (gCurrentToolWidget.window_classification != classification)
-                return;
-
-            if (gCurrentToolWidget.window_number != number)
-                return;
-
-            ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         void ColourOnMouseUp(WidgetIndex widgetIndex)
@@ -6899,12 +6890,9 @@ static_assert(std::size(RatingNames) == 6);
             w->SetViewIndex(0);
         }
 
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+        if (isToolActive(w->classification, w->number))
         {
-            if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
-            {
-                ToolCancel();
-            }
+            ToolCancel();
         }
 
         if (w->page != WINDOW_RIDE_PAGE_MAIN)
@@ -6934,8 +6922,7 @@ static_assert(std::size(RatingNames) == 6);
             w = WindowRideOpen(ride);
         }
 
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
-            && gCurrentToolWidget.window_number == w->number)
+        if (isToolActive(w->classification, w->number))
         {
             ToolCancel();
         }
@@ -7024,8 +7011,7 @@ static_assert(std::size(RatingNames) == 6);
         {
             w->Invalidate();
 
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
-                && gCurrentToolWidget.window_number == w->number)
+            if (isToolActive(w->classification, w->number))
             {
                 ToolCancel();
             }
