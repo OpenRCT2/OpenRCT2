@@ -200,7 +200,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowRideConstructionUpdateEnabledTrackPieces();
 
     WindowBase* TopToolbarOpen();
-    bool LandToolIsActive();
 
     WindowBase* SceneryOpen();
     void WindowScenerySetSelectedItem(

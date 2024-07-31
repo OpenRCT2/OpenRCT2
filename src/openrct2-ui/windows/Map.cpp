@@ -663,7 +663,7 @@ static Widget window_map_widgets[] = {
                 WindowScrollToLocation(*mainWindow, { mapCoords, mapZ });
             }
 
-            if (LandToolIsActive())
+            if (isToolActive(WindowClass::Land))
             {
                 // Set land terrain
                 int32_t landToolSize = std::max<int32_t>(1, gLandToolSize);
