@@ -15,8 +15,6 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/audio.h"
-#include "../../drawing/IDrawingContext.h"
-#include "../../drawing/IDrawingEngine.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
 #include "../../localisation/LocalisationService.h"
