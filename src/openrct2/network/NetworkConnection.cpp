@@ -21,6 +21,7 @@ using namespace OpenRCT2;
 
 static constexpr size_t kNetworkDisconnectReasonBufSize = 256;
 static constexpr size_t kNetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
+static constexpr size_t kNetworkNoDataTimeout = 20;     // Seconds.
 
 NetworkConnection::NetworkConnection() noexcept
 {
@@ -179,7 +180,8 @@ void NetworkConnection::ResetLastPacketTime() noexcept
 bool NetworkConnection::ReceivedPacketRecently() const noexcept
 {
 #    ifndef DEBUG
-    if (Platform::GetTicks() > _lastPacketTime + 7000)
+    constexpr auto kTimeoutMs = kNetworkNoDataTimeout * 1000;
+    if (Platform::GetTicks() > _lastPacketTime + kTimeoutMs)
     {
         return false;
     }
