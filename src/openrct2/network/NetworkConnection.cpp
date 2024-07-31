@@ -21,7 +21,9 @@ using namespace OpenRCT2;
 
 static constexpr size_t kNetworkDisconnectReasonBufSize = 256;
 static constexpr size_t kNetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
-static constexpr size_t kNetworkNoDataTimeout = 20;     // Seconds.
+#    ifndef DEBUG
+static constexpr size_t kNetworkNoDataTimeout = 20; // Seconds.
+#    endif
 
 NetworkConnection::NetworkConnection() noexcept
 {
