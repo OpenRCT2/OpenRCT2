@@ -201,7 +201,6 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* TopToolbarOpen();
     bool LandToolIsActive();
-    bool ClearSceneryToolIsActive();
     bool WaterToolIsActive();
 
     WindowBase* SceneryOpen();
