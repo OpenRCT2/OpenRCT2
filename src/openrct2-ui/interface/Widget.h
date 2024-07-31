@@ -190,4 +190,6 @@ namespace OpenRCT2::Ui
     void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
 
     void WidgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);
+
+    void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);
 } // namespace OpenRCT2::Ui
