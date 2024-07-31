@@ -291,7 +291,7 @@ namespace OpenRCT2::Title
             if (progress == 0)
                 GetContext()->OpenProgress(STR_LOADING_TITLE_SEQUENCE);
 
-            GetContext()->SetProgress(progress, 100, STR_STRING_M_PERCENT, true);
+            GetContext()->SetProgress(progress, 100, STR_STRING_M_PERCENT);
 
             if (progress == 100)
                 GetContext()->CloseProgress();
