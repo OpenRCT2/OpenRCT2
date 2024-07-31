@@ -381,8 +381,10 @@ bool SceneryToolIsActive()
     auto toolWindowClassification = gCurrentToolWidget.window_classification;
     WidgetIndex toolWidgetIndex = gCurrentToolWidget.widget_index;
     if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-        if (toolWindowClassification == WindowClass::TopToolbar && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)
+    {
+        if (toolWindowClassification == WindowClass::Scenery && toolWidgetIndex == WC_SCENERY__WIDX_SCENERY_BACKGROUND)
             return true;
+    }
 
     return false;
 }

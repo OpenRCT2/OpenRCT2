@@ -32,29 +32,35 @@ namespace OpenRCT2::Ui::Windows
     extern bool gWindowSceneryScatterEnabled;
     extern uint16_t gWindowSceneryScatterSize;
     extern ScatterToolDensity gWindowSceneryScatterDensity;
-    extern uint8_t gWindowSceneryPaintEnabled;
     extern uint8_t gWindowSceneryRotation;
-    extern colour_t gWindowSceneryPrimaryColour;
-    extern colour_t gWindowScenerySecondaryColour;
-    extern colour_t gWindowSceneryTertiaryColour;
     extern bool gWindowSceneryEyedropperEnabled;
 
     WindowBase* AboutOpen();
     void WindowCampaignRefreshRides();
     WindowBase* ChangelogOpen(int personality);
     WindowBase* CheatsOpen();
+
     WindowBase* ClearSceneryOpen();
+    void ToggleClearSceneryWindow();
+
     WindowBase* CustomCurrencyOpen();
     WindowBase* DebugPaintOpen();
     WindowBase* EditorInventionsListOpen();
     WindowBase* EditorMainOpen();
     WindowBase* EditorObjectiveOptionsOpen();
     WindowBase* EditorScenarioOptionsOpen();
+
     WindowBase* FootpathOpen();
     void WindowFootpathResetSelectedPath();
+    void ToggleFootpathWindow();
+
     WindowBase* GuestOpen(Peep* peep);
+
     WindowBase* LandOpen();
+    void ToggleLandWindow();
+
     WindowBase* LandRightsOpen();
+
     WindowBase* MainOpen();
     WindowBase* MapgenOpen();
     WindowBase* MultiplayerOpen();
@@ -77,7 +83,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleOptionsOpen();
     WindowBase* TitleVersionOpen();
     WindowBase* ViewportOpen();
+
     WindowBase* WaterOpen();
+    void ToggleWaterWindow();
+
     WindowBase* ViewClippingOpen();
     WindowBase* TransparencyOpen();
     WindowBase* AssetPacksOpen();
@@ -203,6 +212,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowSceneryInit();
     void WindowSceneryResetSelectedSceneryItems();
     const ScenerySelection WindowSceneryGetTabSelection();
+    void ToggleSceneryWindow();
 
     extern uint8_t gToolbarDirtyFlags;
     WindowBase* GameBottomToolbarOpen();
