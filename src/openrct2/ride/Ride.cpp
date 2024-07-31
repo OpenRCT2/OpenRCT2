@@ -1464,8 +1464,8 @@ static void RideBreakdownUpdate(Ride& ride)
  */
 static int32_t RideGetNewBreakdownProblem(const Ride& ride)
 {
-    // Brake failure is more likely when it's raining
-    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = ClimateIsRaining() ? 20 : 3;
+    // Brake failure is more likely when it's raining or heavily snowing (HeavySnow and Blizzard)
+    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = (ClimateIsRaining() || ClimateIsSnowingHeavily()) ? 20 : 3;
 
     if (!ride.CanBreakDown())
         return -1;
