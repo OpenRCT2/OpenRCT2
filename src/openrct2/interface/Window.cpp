@@ -576,63 +576,6 @@ void WidgetInvalidateByNumber(WindowClass cls, rct_windownumber number, WidgetIn
     });
 }
 
-/**
- *
- *  rct2: 0x006EAE4E
- *
- * @param w The window (esi).
- */
-void WindowUpdateScrollWidgets(WindowBase& w)
-{
-    int32_t scrollIndex, width, height, scrollPositionChanged;
-    WidgetIndex widgetIndex;
-    Widget* widget;
-
-    widgetIndex = 0;
-    scrollIndex = 0;
-    for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
-    {
-        if (widget->type != WindowWidgetType::Scroll)
-            continue;
-
-        auto& scroll = w.scrolls[scrollIndex];
-        ScreenSize scrollSize = w.OnScrollGetSize(scrollIndex);
-        width = scrollSize.width;
-        height = scrollSize.height;
-
-        if (height == 0)
-        {
-            scroll.v_top = 0;
-        }
-        else if (width == 0)
-        {
-            scroll.h_left = 0;
-        }
-        width++;
-        height++;
-
-        scrollPositionChanged = 0;
-        if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.h_right)
-        {
-            scrollPositionChanged = 1;
-            scroll.h_right = width;
-        }
-
-        if ((widget->content & SCROLL_VERTICAL) && height != scroll.v_bottom)
-        {
-            scrollPositionChanged = 1;
-            scroll.v_bottom = height;
-        }
-
-        if (scrollPositionChanged)
-        {
-            WidgetScrollUpdateThumbs(w, widgetIndex);
-            w.Invalidate();
-        }
-        scrollIndex++;
-    }
-}
-
 int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index)
 {
     int32_t i, result;
@@ -1230,33 +1173,6 @@ void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& deltaCoords)
     {
         w.viewport->pos += deltaCoords;
     }
-
-    // Invalidate new region
-    w.Invalidate();
-}
-
-void WindowResize(WindowBase& w, int32_t dw, int32_t dh)
-{
-    if (dw == 0 && dh == 0)
-        return;
-
-    // Invalidate old region
-    w.Invalidate();
-
-    // Clamp new size to minimum and maximum
-    w.width = std::clamp<int32_t>(w.width + dw, w.min_width, w.max_width);
-    w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
-
-    w.OnResize();
-    w.OnPrepareDraw();
-
-    // Update scroll widgets
-    for (auto& scroll : w.scrolls)
-    {
-        scroll.h_right = WINDOW_SCROLL_UNDEFINED;
-        scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
-    }
-    WindowUpdateScrollWidgets(w);
 
     // Invalidate new region
     w.Invalidate();

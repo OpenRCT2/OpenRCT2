@@ -86,4 +86,8 @@ namespace OpenRCT2::Ui::Windows
     bool IsUsingWidgetTextBox();
     bool TextBoxCaretIsFlashed();
     const WidgetIdentifier& GetCurrentTextBox();
+
+    void WindowResize(WindowBase& w, int32_t dw, int32_t dh);
+    void WindowInitScrollWidgets(WindowBase& w);
+    void WindowUpdateScrollWidgets(WindowBase& w);
 } // namespace OpenRCT2::Ui::Windows

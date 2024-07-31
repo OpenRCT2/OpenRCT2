@@ -566,8 +566,7 @@ void WindowInvalidateAll();
 void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex);
 void WidgetInvalidateByClass(WindowClass cls, WidgetIndex widgetIndex);
 void WidgetInvalidateByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex);
-void WindowInitScrollWidgets(WindowBase& w);
-void WindowUpdateScrollWidgets(WindowBase& w);
+
 int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index);
 
 void WindowPushOthersRight(WindowBase& w);
@@ -592,7 +591,6 @@ void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w);
 
 void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
 void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
-void WindowResize(WindowBase& w, int32_t dw, int32_t dh);
 void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
 bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);

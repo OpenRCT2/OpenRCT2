@@ -14,6 +14,7 @@
 #include "Widget.h"
 
 #include <SDL.h>
+#include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -571,45 +572,6 @@ void ApplyScreenSaverLockSetting()
 }
 
 /**
- * Initialises scroll widgets to their virtual size.
- *  rct2: 0x006EAEB8
- */
-void WindowInitScrollWidgets(WindowBase& w)
-{
-    Widget* widget;
-    int32_t widget_index, scroll_index;
-
-    widget_index = 0;
-    scroll_index = 0;
-    for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
-    {
-        if (widget->type != WindowWidgetType::Scroll)
-        {
-            widget_index++;
-            continue;
-        }
-
-        auto& scroll = w.scrolls[scroll_index];
-        scroll.flags = 0;
-        ScreenSize scrollSize = w.OnScrollGetSize(scroll_index);
-        scroll.h_left = 0;
-        scroll.h_right = scrollSize.width + 1;
-        scroll.v_top = 0;
-        scroll.v_bottom = scrollSize.height + 1;
-
-        if (widget->content & SCROLL_HORIZONTAL)
-            scroll.flags |= HSCROLLBAR_VISIBLE;
-        if (widget->content & SCROLL_VERTICAL)
-            scroll.flags |= VSCROLLBAR_VISIBLE;
-
-        WidgetScrollUpdateThumbs(w, widget_index);
-
-        widget_index++;
-        scroll_index++;
-    }
-}
-
-/**
  *
  *  rct2: 0x006EB15C
  */
@@ -678,7 +640,7 @@ static void WindowInvalidatePressedImageButton(const WindowBase& w)
 void InvalidateAllWindowsAfterInput()
 {
     WindowVisitEach([](WindowBase* w) {
-        WindowUpdateScrollWidgets(*w);
+        Windows::WindowUpdateScrollWidgets(*w);
         WindowInvalidatePressedImageButton(*w);
         w->OnResize();
     });
@@ -696,7 +658,7 @@ void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
 
 void Window::InitScrollWidgets()
 {
-    WindowInitScrollWidgets(*this);
+    Windows::WindowInitScrollWidgets(*this);
 }
 
 void Window::InvalidateWidget(WidgetIndex widgetIndex)
@@ -933,5 +895,127 @@ namespace OpenRCT2::Ui::Windows
     const WidgetIdentifier& GetCurrentTextBox()
     {
         return _currentTextBox;
+    }
+
+    void WindowResize(WindowBase& w, int32_t dw, int32_t dh)
+    {
+        if (dw == 0 && dh == 0)
+            return;
+
+        // Invalidate old region
+        w.Invalidate();
+
+        // Clamp new size to minimum and maximum
+        w.width = std::clamp<int32_t>(w.width + dw, w.min_width, w.max_width);
+        w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
+
+        w.OnResize();
+        w.OnPrepareDraw();
+
+        // Update scroll widgets
+        for (auto& scroll : w.scrolls)
+        {
+            scroll.h_right = WINDOW_SCROLL_UNDEFINED;
+            scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
+        }
+        WindowUpdateScrollWidgets(w);
+
+        // Invalidate new region
+        w.Invalidate();
+    }
+
+    /**
+     *
+     *  rct2: 0x006EAE4E
+     *
+     * @param w The window (esi).
+     */
+    void WindowUpdateScrollWidgets(WindowBase& w)
+    {
+        int32_t scrollIndex, width, height, scrollPositionChanged;
+        WidgetIndex widgetIndex;
+        Widget* widget;
+
+        widgetIndex = 0;
+        scrollIndex = 0;
+        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
+        {
+            if (widget->type != WindowWidgetType::Scroll)
+                continue;
+
+            auto& scroll = w.scrolls[scrollIndex];
+            ScreenSize scrollSize = w.OnScrollGetSize(scrollIndex);
+            width = scrollSize.width;
+            height = scrollSize.height;
+
+            if (height == 0)
+            {
+                scroll.v_top = 0;
+            }
+            else if (width == 0)
+            {
+                scroll.h_left = 0;
+            }
+            width++;
+            height++;
+
+            scrollPositionChanged = 0;
+            if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.h_right)
+            {
+                scrollPositionChanged = 1;
+                scroll.h_right = width;
+            }
+
+            if ((widget->content & SCROLL_VERTICAL) && height != scroll.v_bottom)
+            {
+                scrollPositionChanged = 1;
+                scroll.v_bottom = height;
+            }
+
+            if (scrollPositionChanged)
+            {
+                WidgetScrollUpdateThumbs(w, widgetIndex);
+                w.Invalidate();
+            }
+            scrollIndex++;
+        }
+    }
+    /**
+     * Initialises scroll widgets to their virtual size.
+     *  rct2: 0x006EAEB8
+     */
+    void WindowInitScrollWidgets(WindowBase& w)
+    {
+        Widget* widget;
+        int32_t widget_index, scroll_index;
+
+        widget_index = 0;
+        scroll_index = 0;
+        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+        {
+            if (widget->type != WindowWidgetType::Scroll)
+            {
+                widget_index++;
+                continue;
+            }
+
+            auto& scroll = w.scrolls[scroll_index];
+            scroll.flags = 0;
+            ScreenSize scrollSize = w.OnScrollGetSize(scroll_index);
+            scroll.h_left = 0;
+            scroll.h_right = scrollSize.width + 1;
+            scroll.v_top = 0;
+            scroll.v_bottom = scrollSize.height + 1;
+
+            if (widget->content & SCROLL_HORIZONTAL)
+                scroll.flags |= HSCROLLBAR_VISIBLE;
+            if (widget->content & SCROLL_VERTICAL)
+                scroll.flags |= VSCROLLBAR_VISIBLE;
+
+            WidgetScrollUpdateThumbs(w, widget_index);
+
+            widget_index++;
+            scroll_index++;
+        }
     }
 } // namespace OpenRCT2::Ui::Windows
