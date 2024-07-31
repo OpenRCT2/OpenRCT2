@@ -30,6 +30,7 @@
 #include <openrct2/world/Location.hpp>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 // The amount of pixels to scroll per wheel click
 constexpr int32_t WindowScrollPixels = 17;
