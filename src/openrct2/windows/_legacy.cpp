@@ -411,12 +411,6 @@ bool SceneryToolIsActive()
     return false;
 }
 
-void SceneryInit()
-{
-    auto intent = Intent(INTENT_ACTION_INIT_SCENERY);
-    ContextBroadcastIntent(&intent);
-}
-
 void ScenerySetDefaultPlacementConfiguration()
 {
     auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
