@@ -464,6 +464,12 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     return retCoordsXYZ;
 }
 
+static void WindowRideConstructionUpdateActiveElements()
+{
+    auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
+    ContextBroadcastIntent(&intent);
+}
+
 void RideRestoreProvisionalTrackPiece()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)

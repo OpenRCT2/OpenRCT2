@@ -163,7 +163,7 @@ static Widget _editorBottomToolbarWidgets[] = {
         {
             WindowCloseAll();
             SetAllSceneryItemsInvented();
-            ScenerySetDefaultPlacementConfiguration();
+            WindowScenerySetDefaultPlacementConfiguration();
             GetGameState().EditorStep = EditorStep::LandscapeEditor;
             ContextOpenWindow(WindowClass::Map);
             GfxInvalidateScreen();

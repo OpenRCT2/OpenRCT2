@@ -182,6 +182,7 @@ static Widget _rideConstructionWidgets[] = {
     };
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type);
+    static void WindowRideConstructionUpdateActiveElements();
 
     /* move to ride.c */
     static void CloseRideWindowForConstruction(RideId rideId)
@@ -4628,5 +4629,11 @@ static Widget _rideConstructionWidgets[] = {
             }
             WindowRideConstructionUpdateActiveElements();
         }
+    }
+
+    static void WindowRideConstructionUpdateActiveElements()
+    {
+        auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
+        ContextBroadcastIntent(&intent);
     }
 } // namespace OpenRCT2::Ui::Windows

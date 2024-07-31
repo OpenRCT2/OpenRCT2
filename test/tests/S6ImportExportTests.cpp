@@ -65,7 +65,6 @@ static void GameInit(bool retainSpatialIndices)
         ResetEntitySpatialIndices();
 
     ResetAllSpriteQuadrantPlacements();
-    ScenerySetDefaultPlacementConfiguration();
     LoadPalette();
     EntityTweener::Get().Reset();
     MapAnimationAutoCreate();

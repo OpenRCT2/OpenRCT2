@@ -94,7 +94,10 @@ void ScenarioReset(GameState_t& gameState)
     gameState.ScenarioRand.seed(s);
 
     ResearchResetCurrentItem();
-    ScenerySetDefaultPlacementConfiguration();
+
+    auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+    ContextBroadcastIntent(&intent);
+
     News::InitQueue();
 
     gameState.Park.Rating = Park::CalculateParkRating();

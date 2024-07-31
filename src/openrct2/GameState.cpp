@@ -83,10 +83,12 @@ namespace OpenRCT2
         GetGameState().NextGuestNumber = 1;
 
         ContextInit();
-        ScenerySetDefaultPlacementConfiguration();
 
-        auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        ContextBroadcastIntent(&intent);
+        auto sceneryIntent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+        ContextBroadcastIntent(&sceneryIntent);
+
+        auto clipboardIntent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+        ContextBroadcastIntent(&clipboardIntent);
 
         LoadPalette();
 

@@ -1273,10 +1273,12 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
             ResearchResetCurrentItem();
             gSilentResearch = false;
         }
-        ScenerySetDefaultPlacementConfiguration();
 
-        auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        ContextBroadcastIntent(&intent);
+        auto sceneryIntent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+        ContextBroadcastIntent(&sceneryIntent);
+
+        auto ridesIntent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+        ContextBroadcastIntent(&ridesIntent);
 
         gWindowUpdateTicks = 0;
         GfxInvalidateScreen();

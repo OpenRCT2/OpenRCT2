@@ -398,16 +398,6 @@ bool WindowRideConstructionUpdateState(
 
 /**
  *
- *  rct2: 0x006C84CE
- */
-void WindowRideConstructionUpdateActiveElements()
-{
-    auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
-    ContextBroadcastIntent(&intent);
-}
-
-/**
- *
  *  rct2: 0x0066DB3D
  */
 bool SceneryToolIsActive()
@@ -419,16 +409,4 @@ bool SceneryToolIsActive()
             return true;
 
     return false;
-}
-
-void SceneryInit()
-{
-    auto intent = Intent(INTENT_ACTION_INIT_SCENERY);
-    ContextBroadcastIntent(&intent);
-}
-
-void ScenerySetDefaultPlacementConfiguration()
-{
-    auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
-    ContextBroadcastIntent(&intent);
 }
