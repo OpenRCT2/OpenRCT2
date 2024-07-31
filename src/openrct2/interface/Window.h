@@ -599,14 +599,10 @@ void WindowUpdateViewportRideMusic();
 Viewport* WindowGetViewport(WindowBase* window);
 
 // Open window functions
-void WindowRelocateWindows(int32_t width, int32_t height);
 void WindowResizeGui(int32_t width, int32_t height);
 void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
 
-void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
-
-int32_t WindowCanResize(const WindowBase& w);
 
 bool WindowIsVisible(WindowBase& w);
 

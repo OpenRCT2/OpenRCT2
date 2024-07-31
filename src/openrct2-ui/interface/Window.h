@@ -94,6 +94,10 @@ namespace OpenRCT2::Ui::Windows
     void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
     void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
+    void WindowRelocateWindows(int32_t width, int32_t height);
 
     void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
+    bool WindowCanResize(const WindowBase& w);
+
+    void InvalidateAllWindowsAfterInput();
 } // namespace OpenRCT2::Ui::Windows

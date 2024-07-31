@@ -633,19 +633,6 @@ static void WindowInvalidatePressedImageButton(const WindowBase& w)
     }
 }
 
-/**
- *
- *  rct2: 0x006EA73F
- */
-void InvalidateAllWindowsAfterInput()
-{
-    WindowVisitEach([](WindowBase* w) {
-        Windows::WindowUpdateScrollWidgets(*w);
-        WindowInvalidatePressedImageButton(*w);
-        w->OnResize();
-    });
-}
-
 void Window::OnDraw(DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*this, dpi);
@@ -1189,6 +1176,47 @@ namespace OpenRCT2::Ui::Windows
         WindowMovePosition(w, screenCoords - w.windowPos);
     }
 
+    /**
+     *
+     *  rct2: 0x006ED710
+     * Called after a window resize to move windows if they
+     * are going to be out of sight.
+     */
+    void WindowRelocateWindows(int32_t width, int32_t height)
+    {
+        int32_t new_location = 8;
+        WindowVisitEach([width, height, &new_location](WindowBase* w) {
+            // Work out if the window requires moving
+            if (w->windowPos.x + 10 < width)
+            {
+                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+                {
+                    if (w->windowPos.y - 22 < height)
+                    {
+                        return;
+                    }
+                }
+                if (w->windowPos.y + 10 < height)
+                {
+                    return;
+                }
+            }
+
+            // Calculate the new locations
+            auto newWinPos = w->windowPos;
+            w->windowPos = { new_location, new_location + kTopToolbarHeight + 1 };
+
+            // Move the next new location so windows are not directly on top
+            new_location += 8;
+
+            // Adjust the viewport if required.
+            if (w->viewport != nullptr)
+            {
+                w->viewport->pos -= newWinPos - w->windowPos;
+            }
+        });
+    }
+
     void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight)
     {
         w.min_width = minWidth;
@@ -1208,5 +1236,23 @@ namespace OpenRCT2::Ui::Windows
             w.height = height;
             w.Invalidate();
         }
+    }
+
+    bool WindowCanResize(const WindowBase& w)
+    {
+        return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.min_height != w.max_height);
+    }
+
+    /**
+     *
+     *  rct2: 0x006EA73F
+     */
+    void InvalidateAllWindowsAfterInput()
+    {
+        WindowVisitEach([](WindowBase* w) {
+            Windows::WindowUpdateScrollWidgets(*w);
+            WindowInvalidatePressedImageButton(*w);
+            w->OnResize();
+        });
     }
 } // namespace OpenRCT2::Ui::Windows

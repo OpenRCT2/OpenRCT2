@@ -802,7 +802,7 @@ private:
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)
         {
             WindowResizeGui(_width, _height);
-            WindowRelocateWindows(_width, _height);
+            Windows::WindowRelocateWindows(_width, _height);
         }
 
         GfxInvalidateScreen();
