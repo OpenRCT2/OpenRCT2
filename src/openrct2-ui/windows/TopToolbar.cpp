@@ -1024,7 +1024,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
+        if (gCurrentToolWidget.window_classification != WindowClass::ClearScenery)
             return false;
         if (gCurrentToolWidget.widget_index != WIDX_CLEAR_SCENERY)
             return false;
