@@ -21,6 +21,7 @@
 
 struct Ride;
 struct ResultWithMessage;
+enum class ViewportInteractionItem : uint8_t;
 
 constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
 

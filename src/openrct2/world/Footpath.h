@@ -10,13 +10,13 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../interface/Viewport.h"
 #include "../object/Object.h"
 
 class FootpathObject;
 class FootpathSurfaceObject;
 class FootpathRailingsObject;
 struct PathElement;
+struct TileElement;
 
 enum
 {

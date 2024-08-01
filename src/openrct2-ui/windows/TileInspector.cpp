@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../UiStringIds.h"
+#include "../interface/Viewport.h"
 
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>

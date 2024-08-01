@@ -16,6 +16,7 @@
 #include "../core/Console.hpp"
 #include "../core/JobPool.h"
 #include "../core/Memory.hpp"
+#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"

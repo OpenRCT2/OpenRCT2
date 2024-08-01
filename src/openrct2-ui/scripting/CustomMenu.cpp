@@ -11,6 +11,8 @@
 
 #    include "CustomMenu.h"
 
+#    include "../interface/Viewport.h"
+
 #    include <openrct2-ui/input/ShortcutManager.h>
 #    include <openrct2/Input.h>
 #    include <openrct2/world/Map.h>

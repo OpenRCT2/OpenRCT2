@@ -9,6 +9,8 @@
 
 #include "Construction.h"
 
+#include "../interface/Viewport.h"
+
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideCreateAction.h>
 #include <openrct2/ride/Ride.h>

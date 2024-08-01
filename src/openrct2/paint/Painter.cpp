@@ -19,6 +19,7 @@
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
 #include "../interface/Widget.h"
+#include "../interface/Window.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"

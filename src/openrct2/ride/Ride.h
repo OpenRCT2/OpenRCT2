@@ -13,6 +13,7 @@
 #include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
+#include "../localisation/Formatter.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"

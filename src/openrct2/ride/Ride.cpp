@@ -31,6 +31,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
+#include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
