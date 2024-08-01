@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../interface/Theme.h"
+#include "../interface/ViewportQuery.h"
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>

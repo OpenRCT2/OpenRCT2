@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../interface/ViewportInteraction.h"
+#include "../interface/ViewportQuery.h"
 
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
