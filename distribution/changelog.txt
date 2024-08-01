@@ -35,7 +35,7 @@
 - Fix: [#22339] Printing ui.tool.cursor in console crashes the game.
 - Fix: [#22348] Progress bar screen doesn’t handle window resizing.
 - Fix: [#22389] Alpine coaster has wrong tunnel entrance type.
-- Fix: [#22445] Fix crash due to incorrect renderer state.
+- Fix: [#22445] Crash due to incorrect renderer state.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
