@@ -4124,8 +4124,7 @@ ResultWithMessage Ride::Open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WindowClass::RideConstruction == gCurrentToolWidget.window_classification
-        && id.ToUnderlying() == gCurrentToolWidget.window_number && (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (isToolActive(WindowClass::RideConstruction, static_cast<rct_windownumber>(id.ToUnderlying())))
     {
         WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
     }
