@@ -376,8 +376,8 @@
     <ClInclude Include="paint\track\coaster\WoodenRollerCoaster.h" />
     <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\track\Support.h" />
-    <ClCompile Include="paint\vehicle\Vehicle.MiniGolf.h" />
-    <ClCompile Include="paint\vehicle\VehiclePaint.h" />
+    <ClInclude Include="paint\vehicle\Vehicle.MiniGolf.h" />
+    <ClInclude Include="paint\vehicle\VehiclePaint.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="park\Legacy.h" />
