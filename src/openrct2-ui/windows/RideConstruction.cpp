@@ -1514,7 +1514,7 @@ static Widget _rideConstructionWidgets[] = {
             {
                 const auto& rtd = currentRide->GetRideTypeDescriptor();
                 const auto& ted = GetTrackElementDescriptor(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
-                stringId = ted.Description;
+                stringId = ted.description;
                 if (stringId == STR_RAPIDS && rtd.Category != RIDE_CATEGORY_WATER)
                 {
                     stringId = STR_LOG_BUMPS;
@@ -2209,7 +2209,7 @@ static Widget _rideConstructionWidgets[] = {
             const PreviewTrack* trackBlock;
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            trackBlock = ted.Block;
+            trackBlock = ted.block;
             trackDirection &= 3;
             gMapSelectionTiles.clear();
             while (trackBlock->index != 255)
@@ -2372,7 +2372,7 @@ static Widget _rideConstructionWidgets[] = {
                 }
 
                 const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                const PreviewTrack* trackBlock = ted.Block;
+                const PreviewTrack* trackBlock = ted.block;
                 newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
                 _gotoStartPlacementMode = true;
             }
@@ -2515,7 +2515,7 @@ static Widget _rideConstructionWidgets[] = {
                 track_type_t trackPiece = _specialElementDropdownState.Elements[i].TrackType;
 
                 const auto& ted = GetTrackElementDescriptor(trackPiece);
-                StringId trackPieceStringId = ted.Description;
+                StringId trackPieceStringId = ted.description;
                 if (trackPieceStringId == STR_RAPIDS)
                 {
                     auto currentRide = GetRide(_currentRideIndex);
@@ -2605,7 +2605,7 @@ static Widget _rideConstructionWidgets[] = {
             }
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.Block;
+            const auto* trackBlock = ted.block;
             while ((trackBlock + 1)->index != 0xFF)
                 trackBlock++;
 
@@ -2622,7 +2622,7 @@ static Widget _rideConstructionWidgets[] = {
             mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
             mapCoords.z = 1024 + mapCoords.z;
 
-            auto previewZOffset = ted.Definition.PreviewZOffset;
+            auto previewZOffset = ted.definition.PreviewZOffset;
             mapCoords.z -= previewZOffset;
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
@@ -2668,7 +2668,7 @@ static Widget _rideConstructionWidgets[] = {
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.Block;
+            const auto* trackBlock = ted.block;
             const auto* rideEntry = currentRide->GetRideEntry();
             auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
                                                           : currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight;
@@ -3310,7 +3310,7 @@ static Widget _rideConstructionWidgets[] = {
         }
         // Loc6CC91B:
         const auto& ted = GetTrackElementDescriptor(trackType);
-        trackBlock = ted.Block;
+        trackBlock = ted.block;
         int32_t bx = 0;
         do
         {
@@ -3546,7 +3546,7 @@ static Widget _rideConstructionWidgets[] = {
         if (_trackPlaceZ == 0)
         {
             const auto& ted = GetTrackElementDescriptor(_currentTrackPieceType);
-            const PreviewTrack* trackBlock = ted.Block;
+            const PreviewTrack* trackBlock = ted.block;
             int32_t bx = 0;
             do
             {

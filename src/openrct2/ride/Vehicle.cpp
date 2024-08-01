@@ -781,7 +781,7 @@ bool Vehicle::OpenRestraints()
 void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_t trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    uint16_t trackFlags = ted.Flags;
+    uint16_t trackFlags = ted.flags;
     if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
     {
         if (ride.inversions < OpenRCT2::Limits::kMaxInversions)
@@ -792,7 +792,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type_t trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    uint16_t trackFlags = ted.Flags;
+    uint16_t trackFlags = ted.flags;
     if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
     {
         if (ride.holes < OpenRCT2::Limits::kMaxGolfHoles)
@@ -938,7 +938,7 @@ void Vehicle::UpdateMeasurements()
         }
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
-        uint16_t trackFlags = ted.Flags;
+        uint16_t trackFlags = ted.flags;
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
@@ -5030,8 +5030,8 @@ GForces Vehicle::GetGForces() const
     gForceVert = ((static_cast<int64_t>(gForceVert)) * Unk9A39C4[bank_rotation]) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());
-    const int32_t vertFactor = ted.VerticalFactor(track_progress);
-    const int32_t lateralFactor = ted.LateralFactor(track_progress);
+    const int32_t vertFactor = ted.verticalFactor(track_progress);
+    const int32_t lateralFactor = ted.lateralFactor(track_progress);
 
     int32_t gForceLateral = 0;
 
@@ -6300,12 +6300,12 @@ void Vehicle::UpdateSceneryDoor() const
 {
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const PreviewTrack* trackBlock = ted.Block;
+    const PreviewTrack* trackBlock = ted.block;
     while ((trackBlock + 1)->index != 255)
     {
         trackBlock++;
     }
-    const TrackCoordinates* trackCoordinates = &ted.Coordinates;
+    const TrackCoordinates* trackCoordinates = &ted.coordinates;
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_end) & 3;
 
@@ -6358,7 +6358,7 @@ static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tile
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.Definition.PitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
+    return PitchAndRoll{ ted.definition.PitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
 }
 
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
@@ -6398,8 +6398,8 @@ void Vehicle::UpdateSceneryDoorBackwards() const
 {
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const PreviewTrack* trackBlock = ted.Block;
-    const TrackCoordinates* trackCoordinates = &ted.Coordinates;
+    const PreviewTrack* trackBlock = ted.block;
+    const TrackCoordinates* trackCoordinates = &ted.coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
     direction = DirectionReverse(direction);
@@ -6746,7 +6746,7 @@ void Vehicle::Sub6DBF3E()
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }
@@ -7303,7 +7303,7 @@ static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.Definition.PitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.RollEnd) };
+    return { ted.definition.PitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.definition.RollEnd) };
 }
 
 /**
@@ -7421,7 +7421,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
                 const auto& ted = GetTrackElementDescriptor(trackType);
-                if (!(ted.Flags & TRACK_ELEM_FLAG_DOWN))
+                if (!(ted.flags & TRACK_ELEM_FLAG_DOWN))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }
@@ -8203,7 +8203,7 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }

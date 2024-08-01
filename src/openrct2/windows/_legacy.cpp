@@ -80,7 +80,7 @@ money64 PlaceProvisionalTrackPiece(
 
     int16_t z_begin{};
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const TrackCoordinates& coords = ted.Coordinates;
+    const TrackCoordinates& coords = ted.coordinates;
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         z_begin = coords.z_begin;
@@ -138,20 +138,20 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
         {
             const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
 
-            if (EnumValue(trackDescriptor->track_curve) != curve)
+            if (EnumValue(trackDescriptor->trackCurve) != curve)
                 continue;
-            if (trackDescriptor->starts_diagonal != startsDiagonal)
+            if (trackDescriptor->startsDiagonally != startsDiagonal)
                 continue;
-            if (trackDescriptor->slope_start != startSlope)
+            if (trackDescriptor->slopeStart != startSlope)
                 continue;
-            if (trackDescriptor->slope_end != endSlope)
+            if (trackDescriptor->slopeEnd != endSlope)
                 continue;
-            if (trackDescriptor->RollStart != startBank)
+            if (trackDescriptor->rollStart != startBank)
                 continue;
-            if (trackDescriptor->RollEnd != endBank)
+            if (trackDescriptor->rollEnd != endBank)
                 continue;
 
-            return std::make_tuple(true, trackDescriptor->track_element);
+            return std::make_tuple(true, trackDescriptor->trackElement);
         }
 
         return std::make_tuple(false, 0);
@@ -281,7 +281,7 @@ bool WindowRideConstructionUpdateState(
     {
         auto availablePieces = trackDrawerDecriptor.Covered.EnabledTrackPieces;
         const auto& ted = GetTrackElementDescriptor(trackType);
-        auto alternativeType = ted.AlternativeType;
+        auto alternativeType = ted.alternativeType;
         // this method limits the track element types that can be used
         if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
         {
@@ -292,7 +292,7 @@ bool WindowRideConstructionUpdateState(
     }
 
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const TrackCoordinates& trackCoordinates = ted.Coordinates;
+    const TrackCoordinates& trackCoordinates = ted.coordinates;
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
@@ -325,13 +325,13 @@ bool WindowRideConstructionUpdateState(
     bool turnOffLiftHill = false;
     if (!IsTrackEnabled(TRACK_LIFT_HILL_CURVE))
     {
-        if (ted.Flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+        if (ted.flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
         {
             turnOffLiftHill = true;
         }
     }
 
-    if (!(ted.Flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+    if (!(ted.flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
     {
         turnOffLiftHill = true;
     }

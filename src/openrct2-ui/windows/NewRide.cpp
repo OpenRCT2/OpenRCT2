@@ -960,7 +960,7 @@ static Widget window_new_ride_widgets[] = {
                 int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
                 money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
                 const auto& ted = GetTrackElementDescriptor(startPieceId);
-                price *= ted.PriceModifier;
+                price *= ted.priceModifier;
                 price = (price >> 16) * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
                 //

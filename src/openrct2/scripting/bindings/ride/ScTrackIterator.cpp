@@ -74,7 +74,7 @@ DukValue ScTrackIterator::previousPosition_get() const
     auto ctx = scriptEngine.GetContext();
 
     auto& ted = GetTrackElementDescriptor(_type);
-    auto& seq0 = ted.Block;
+    auto& seq0 = ted.block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
     auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
@@ -94,7 +94,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     auto ctx = scriptEngine.GetContext();
 
     auto& ted = GetTrackElementDescriptor(_type);
-    auto& seq0 = ted.Block;
+    auto& seq0 = ted.block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
     auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
@@ -113,7 +113,7 @@ DukValue ScTrackIterator::nextPosition_get() const
 bool ScTrackIterator::previous()
 {
     auto& ted = GetTrackElementDescriptor(_type);
-    auto& seq0 = ted.Block;
+    auto& seq0 = ted.block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
     auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
@@ -139,7 +139,7 @@ bool ScTrackIterator::previous()
 bool ScTrackIterator::next()
 {
     auto& ted = GetTrackElementDescriptor(_type);
-    auto& seq0 = ted.Block;
+    auto& seq0 = ted.block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
     auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);

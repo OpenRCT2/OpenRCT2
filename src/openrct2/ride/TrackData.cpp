@@ -7993,25 +7993,25 @@ namespace OpenRCT2::TrackMetaData
         for (int i = 0; i < TrackElemType::Count; i++)
         {
             TrackElementDescriptor& desc = res[i];
-            desc.Description = RideConfigurationStringIds[i];
-            desc.AlternativeType = AlternativeTrackTypes[i];
-            desc.Block = const_cast<PreviewTrack*>(TrackBlocks[i]);
-            desc.Coordinates = _trackCoordinates[i];
-            desc.CurveChain = gTrackCurveChain[i];
-            desc.Flags = TrackFlags[i];
-            desc.HeightMarkerPositions = TrackHeightMarkerPositions[i];
-            desc.MirrorElement = TrackElementMirrorMap[i];
-            desc.PieceLength = TrackPieceLengths[i];
-            desc.PriceModifier = TrackPricing[i];
-            desc.Definition = TrackDefinitions[i];
+            desc.description = RideConfigurationStringIds[i];
+            desc.alternativeType = AlternativeTrackTypes[i];
+            desc.block = const_cast<PreviewTrack*>(TrackBlocks[i]);
+            desc.coordinates = _trackCoordinates[i];
+            desc.curveChain = gTrackCurveChain[i];
+            desc.flags = TrackFlags[i];
+            desc.heightMarkerPositions = TrackHeightMarkerPositions[i];
+            desc.mirrorElement = TrackElementMirrorMap[i];
+            desc.pieceLength = TrackPieceLengths[i];
+            desc.priceModifier = TrackPricing[i];
+            desc.definition = TrackDefinitions[i];
             desc.spinFunction = TrackTypeToSpinFunction[i];
-            desc.VerticalFactor = GetVerticalFunction(i);
-            desc.LateralFactor = GetLateralFunction(i);
+            desc.verticalFactor = GetVerticalFunction(i);
+            desc.lateralFactor = GetLateralFunction(i);
 
             for (uint8_t j = 0; j < MaxSequencesPerPiece; j++)
             {
-                desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
-                desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
+                desc.sequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
+                desc.sequenceProperties[j] = TrackSequenceProperties[i][j];
             }
         }
 
@@ -8029,7 +8029,7 @@ namespace OpenRCT2::TrackMetaData
 
     const PreviewTrack* TrackElementDescriptor::GetBlockForSequence(uint8_t sequenceIndex) const
     {
-        const auto* trackBlock = Block;
+        const auto* trackBlock = block;
         if (trackBlock == nullptr)
             return nullptr;
 

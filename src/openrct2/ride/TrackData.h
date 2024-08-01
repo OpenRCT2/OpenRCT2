@@ -25,13 +25,13 @@ namespace OpenRCT2::TrackMetaData
 
     struct TrackDescriptor
     {
-        bool starts_diagonal;
-        TrackPitch slope_start;
-        TrackRoll RollStart;
-        TrackCurve track_curve;
-        TrackPitch slope_end;
-        TrackRoll RollEnd;
-        track_type_t track_element;
+        bool startsDiagonally;
+        TrackPitch slopeStart;
+        TrackRoll rollStart;
+        TrackCurve trackCurve;
+        TrackPitch slopeEnd;
+        TrackRoll rollEnd;
+        track_type_t trackElement;
     };
 
     enum class SpinFunction : uint8_t
@@ -75,28 +75,28 @@ namespace OpenRCT2::TrackMetaData
     using TrackComputeFunction = int32_t (*)(const int16_t);
     struct TrackElementDescriptor
     {
-        StringId Description;
-        TrackCoordinates Coordinates;
+        StringId description;
+        TrackCoordinates coordinates;
 
-        PreviewTrack* Block;
-        uint8_t PieceLength;
-        TrackCurveChain CurveChain;
-        track_type_t AlternativeType;
+        PreviewTrack* block;
+        uint8_t pieceLength;
+        TrackCurveChain curveChain;
+        track_type_t alternativeType;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536
-        uint32_t PriceModifier;
-        track_type_t MirrorElement;
-        uint32_t HeightMarkerPositions;
-        uint32_t Flags;
+        uint32_t priceModifier;
+        track_type_t mirrorElement;
+        uint32_t heightMarkerPositions;
+        uint32_t flags;
 
-        std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
-        std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
+        std::array<uint8_t, MaxSequencesPerPiece> sequenceElementAllowedWallEdges;
+        std::array<uint8_t, MaxSequencesPerPiece> sequenceProperties;
 
-        TrackDefinition Definition;
+        TrackDefinition definition;
         SpinFunction spinFunction;
 
-        TrackComputeFunction VerticalFactor;
-        TrackComputeFunction LateralFactor;
+        TrackComputeFunction verticalFactor;
+        TrackComputeFunction lateralFactor;
 
         /**
          * Retrieves the block for the given sequence. This method safely handles
