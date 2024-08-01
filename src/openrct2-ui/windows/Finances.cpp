@@ -222,7 +222,7 @@ static Widget _windowFinancesResearchWidgets[] =
     static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 88, 20 };
     static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 15, 18 };
     static constexpr uint8_t kGraphNumYLabels = 5;
-    static constexpr int32_t kGraphNumPoints = 64; // todo. was always 64 in original code.
+    static constexpr int32_t kGraphNumPoints = 64;
 
 #pragma endregion
 
@@ -244,7 +244,6 @@ static Widget _windowFinancesResearchWidgets[] =
             SetPage(WINDOW_FINANCES_PAGE_SUMMARY);
             _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
             ResearchUpdateUncompletedTypes();
-            _graphProps.lineCol = colours[2];
             _graphProps.hoverIdx = -1;
         }
 
@@ -363,6 +362,7 @@ static Widget _windowFinancesResearchWidgets[] =
                     _graphProps.RecalculateLayout(
                         { _graphBounds.Point1 + kGraphTopLeftPadding, _graphBounds.Point2 - kGraphBottomRightPadding },
                         kGraphNumYLabels, kGraphNumPoints);
+                    _graphProps.lineCol = colours[2];
                 }
                 break;
             }
@@ -848,6 +848,12 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // Graph
             GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
 
             // Calculate Y axis max and min.
             // This is how the original code does it. Could be improved.

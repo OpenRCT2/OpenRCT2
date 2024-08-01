@@ -10,11 +10,11 @@
 #include "../interface/Theme.h"
 
 #include <array>
-#include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Objective.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -38,7 +38,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_STRINGID;
     static constexpr int32_t WH = 224;
 
-    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 35, 15 };
+    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 15 };
     static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 5, 5 };
     static constexpr uint8_t kGraphNumYLabels = 6;
 
