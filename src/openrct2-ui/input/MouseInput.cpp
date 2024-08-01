@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../UiStringIds.h"
+#include "../interface/ViewportInteraction.h"
 
 #include <cassert>
 #include <cmath>

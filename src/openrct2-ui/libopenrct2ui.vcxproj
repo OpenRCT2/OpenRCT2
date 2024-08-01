@@ -72,6 +72,7 @@
     <ClInclude Include="interface\Objective.h" />
     <ClInclude Include="interface\Theme.h" />
     <ClInclude Include="interface\Viewport.h" />
+    <ClInclude Include="interface\ViewportInteraction.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
     <ClInclude Include="ride\Construction.h" />
