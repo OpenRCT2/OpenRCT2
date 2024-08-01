@@ -483,48 +483,6 @@ void ApplyScreenSaverLockSetting()
 
 /**
  *
- *  rct2: 0x006EB15C
- */
-void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
-{
-    Widget* widget;
-    WidgetIndex widgetIndex;
-
-    if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
-        GfxFilterRect(
-            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
-
-    // todo: some code missing here? Between 006EB18C and 006EB260
-
-    widgetIndex = 0;
-    for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
-    {
-        if (widget->IsVisible())
-        {
-            // Check if widget is outside the draw region
-            if (w.windowPos.x + widget->left < dpi.x + dpi.width && w.windowPos.x + widget->right >= dpi.x)
-            {
-                if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
-                {
-                    w.OnDrawWidget(widgetIndex, dpi);
-                }
-            }
-        }
-        widgetIndex++;
-    }
-
-    // todo: something missing here too? Between 006EC32B and 006EC369
-
-    if (w.flags & WF_WHITE_BORDER_MASK)
-    {
-        GfxFillRectInset(
-            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
-            INSET_RECT_FLAG_FILL_NONE);
-    }
-}
-
-/**
- *
  *  rct2: 0x006EA776
  */
 static void WindowInvalidatePressedImageButton(const WindowBase& w)
@@ -543,9 +501,21 @@ static void WindowInvalidatePressedImageButton(const WindowBase& w)
     }
 }
 
+void Window::ScrollToViewport()
+{
+    if (viewport == nullptr || !focus.has_value())
+        return;
+
+    CoordsXYZ newCoords = focus.value().GetPos();
+
+    auto mainWindow = WindowGetMain();
+    if (mainWindow != nullptr)
+        WindowScrollToLocation(*mainWindow, newCoords);
+}
+
 void Window::OnDraw(DrawPixelInfo& dpi)
 {
-    WindowDrawWidgets(*this, dpi);
+    Windows::WindowDrawWidgets(*this, dpi);
 }
 
 void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
@@ -605,7 +575,7 @@ void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
 
 void Window::DrawWidgets(DrawPixelInfo& dpi)
 {
-    WindowDrawWidgets(*this, dpi);
+    Windows::WindowDrawWidgets(*this, dpi);
 }
 
 void Window::Close()
@@ -656,6 +626,69 @@ void Window::TextInputOpen(
 {
     OpenRCT2::Ui::Windows::WindowTextInputOpen(
         this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+}
+
+void Window::ResizeFrame()
+{
+    // Frame
+    widgets[0].right = width - 1;
+    widgets[0].bottom = height - 1;
+    // Title
+    widgets[1].right = width - 2;
+    // Close button
+    if (Config::Get().interface.WindowButtonsOnTheLeft)
+    {
+        widgets[2].left = 2;
+        widgets[2].right = 2 + kCloseButtonWidth;
+    }
+    else
+    {
+        widgets[2].left = width - 3 - kCloseButtonWidth;
+        widgets[2].right = width - 3;
+    }
+}
+
+void Window::ResizeFrameWithPage()
+{
+    ResizeFrame();
+    // Page background
+    widgets[3].right = width - 1;
+    widgets[3].bottom = height - 1;
+}
+
+void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
+{
+    auto right = origin.x + size.width - 1;
+    auto bottom = origin.y + size.height - 1;
+    widgets[widgetIndex].left = origin.x;
+    widgets[widgetIndex].top = origin.y;
+    widgets[widgetIndex].right = right;
+    widgets[widgetIndex].bottom = bottom;
+
+    widgets[widgetIndex + 1].left = right - size.height; // subtract height to maintain aspect ratio
+    widgets[widgetIndex + 1].top = origin.y + 1;
+    widgets[widgetIndex + 1].right = right - 1;
+    widgets[widgetIndex + 1].bottom = bottom - 1;
+
+    widgets[widgetIndex + 2].left = right - size.height * 2;
+    widgets[widgetIndex + 2].top = origin.y + 1;
+    widgets[widgetIndex + 2].right = right - size.height - 1;
+    widgets[widgetIndex + 2].bottom = bottom - 1;
+}
+
+void Window::ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
+{
+    auto right = origin.x + size.width - 1;
+    auto bottom = origin.y + size.height - 1;
+    widgets[widgetIndex].left = origin.x;
+    widgets[widgetIndex].top = origin.y;
+    widgets[widgetIndex].right = right;
+    widgets[widgetIndex].bottom = bottom;
+
+    widgets[widgetIndex + 1].left = right - size.height + 1; // subtract height to maintain aspect ratio
+    widgets[widgetIndex + 1].top = origin.y + 1;
+    widgets[widgetIndex + 1].right = right - 1;
+    widgets[widgetIndex + 1].bottom = bottom - 1;
 }
 
 void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
@@ -1254,5 +1287,59 @@ namespace OpenRCT2::Ui::Windows
             WindowInvalidatePressedImageButton(*w);
             w->OnResize();
         });
+    }
+
+    /**
+     *
+     *  rct2: 0x00685BE1
+     *
+     * @param dpi (edi)
+     * @param w (esi)
+     */
+    void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
+    {
+        ViewportRender(dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
+    }
+
+    /**
+     *
+     *  rct2: 0x006EB15C
+     */
+    void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
+    {
+        Widget* widget;
+        WidgetIndex widgetIndex;
+
+        if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
+            GfxFilterRect(
+                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
+
+        // todo: some code missing here? Between 006EB18C and 006EB260
+
+        widgetIndex = 0;
+        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+        {
+            if (widget->IsVisible())
+            {
+                // Check if widget is outside the draw region
+                if (w.windowPos.x + widget->left < dpi.x + dpi.width && w.windowPos.x + widget->right >= dpi.x)
+                {
+                    if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
+                    {
+                        w.OnDrawWidget(widgetIndex, dpi);
+                    }
+                }
+            }
+            widgetIndex++;
+        }
+
+        // todo: something missing here too? Between 006EC32B and 006EC369
+
+        if (w.flags & WF_WHITE_BORDER_MASK)
+        {
+            GfxFillRectInset(
+                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
+                INSET_RECT_FLAG_FILL_NONE);
+        }
     }
 } // namespace OpenRCT2::Ui::Windows

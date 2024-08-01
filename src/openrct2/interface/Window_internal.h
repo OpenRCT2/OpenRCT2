@@ -71,7 +71,6 @@ struct WindowBase
     EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
     void SetLocation(const CoordsXYZ& coords);
-    void ScrollToViewport();
     void Invalidate();
     void RemoveViewport();
 
@@ -166,12 +165,6 @@ struct WindowBase
     virtual void OnLanguageChange()
     {
     }
-
-    void ResizeFrame();
-    void ResizeFrameWithPage();
-
-    void ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
-    void ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

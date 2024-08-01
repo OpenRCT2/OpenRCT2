@@ -546,8 +546,6 @@ void MainWindowZoom(bool zoomIn, bool atCursor);
 
 void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi);
-void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w);
 
 bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
 void ToolCancel();

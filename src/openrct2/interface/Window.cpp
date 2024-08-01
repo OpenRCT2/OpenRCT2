@@ -1144,18 +1144,6 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
 
 /**
  *
- *  rct2: 0x00685BE1
- *
- * @param dpi (edi)
- * @param w (esi)
- */
-void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
-{
-    ViewportRender(dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
-}
-
-/**
- *
  *  rct2: 0x006EE212
  *
  * @param tool (al)
@@ -1480,67 +1468,4 @@ Viewport* WindowGetViewport(WindowBase* w)
     }
 
     return w->viewport;
-}
-
-void WindowBase::ResizeFrame()
-{
-    // Frame
-    widgets[0].right = width - 1;
-    widgets[0].bottom = height - 1;
-    // Title
-    widgets[1].right = width - 2;
-    // Close button
-    if (Config::Get().interface.WindowButtonsOnTheLeft)
-    {
-        widgets[2].left = 2;
-        widgets[2].right = 2 + kCloseButtonWidth;
-    }
-    else
-    {
-        widgets[2].left = width - 3 - kCloseButtonWidth;
-        widgets[2].right = width - 3;
-    }
-}
-
-void WindowBase::ResizeFrameWithPage()
-{
-    ResizeFrame();
-    // Page background
-    widgets[3].right = width - 1;
-    widgets[3].bottom = height - 1;
-}
-
-void WindowBase::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
-{
-    auto right = origin.x + size.width - 1;
-    auto bottom = origin.y + size.height - 1;
-    widgets[widgetIndex].left = origin.x;
-    widgets[widgetIndex].top = origin.y;
-    widgets[widgetIndex].right = right;
-    widgets[widgetIndex].bottom = bottom;
-
-    widgets[widgetIndex + 1].left = right - size.height; // subtract height to maintain aspect ratio
-    widgets[widgetIndex + 1].top = origin.y + 1;
-    widgets[widgetIndex + 1].right = right - 1;
-    widgets[widgetIndex + 1].bottom = bottom - 1;
-
-    widgets[widgetIndex + 2].left = right - size.height * 2;
-    widgets[widgetIndex + 2].top = origin.y + 1;
-    widgets[widgetIndex + 2].right = right - size.height - 1;
-    widgets[widgetIndex + 2].bottom = bottom - 1;
-}
-
-void WindowBase::ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
-{
-    auto right = origin.x + size.width - 1;
-    auto bottom = origin.y + size.height - 1;
-    widgets[widgetIndex].left = origin.x;
-    widgets[widgetIndex].top = origin.y;
-    widgets[widgetIndex].right = right;
-    widgets[widgetIndex].bottom = bottom;
-
-    widgets[widgetIndex + 1].left = right - size.height + 1; // subtract height to maintain aspect ratio
-    widgets[widgetIndex + 1].top = origin.y + 1;
-    widgets[widgetIndex + 1].right = right - 1;
-    widgets[widgetIndex + 1].bottom = bottom - 1;
 }
