@@ -252,19 +252,19 @@ std::vector<uint8_t> SawyerChunkReader::DecodeChunkRepeat(const void* src, size_
         else
         {
             size_t count = (src8[i] & 7) + 1;
-            auto dst8 = buf.data();
-            const uint8_t* copySrc = dst8 + static_cast<int32_t>(src8[i] >> 3) - 32;
+            int32_t offset = static_cast<int32_t>(src8[i] >> 3) - 32;
+            const uint8_t* copySrc = buf.data() + (buf.size() + offset);
 
-            if (copySrc < buf.data())
+            if (copySrc < buf.data() || copySrc + count > buf.data() + buf.size())
             {
                 throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
             }
-            if (copySrc + count > buf.data() + buf.size())
-            {
-                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
-            }
 
-            buf.insert(buf.end(), copySrc, copySrc + count);
+            // We need a temporary buffer as the vector might invalidate the pointer.
+            uint8_t temp[16];
+            std::memcpy(temp, copySrc, count);
+
+            buf.insert(buf.end(), std::begin(temp), std::begin(temp) + count);
         }
     }
 
