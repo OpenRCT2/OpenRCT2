@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ViewportInteraction.h"
+
 #include "../UiStringIds.h"
 #include "../windows/Window.h"
 #include "Viewport.h"
