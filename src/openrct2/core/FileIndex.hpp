@@ -166,30 +166,6 @@ private:
         return ScanResult(stats, std::move(files));
     }
 
-    void BuildRange(
-        int32_t language, const ScanResult& scanResult, size_t rangeStart, size_t rangeEnd, std::vector<TItem>& items,
-        std::atomic<size_t>& processed, std::mutex& printLock) const
-    {
-        items.reserve(rangeEnd - rangeStart);
-        for (size_t i = rangeStart; i < rangeEnd; i++)
-        {
-            const auto& filePath = scanResult.Files.at(i);
-
-            if (_log_levels[EnumValue(DiagnosticLevel::Verbose)])
-            {
-                std::lock_guard<std::mutex> lock(printLock);
-                LOG_VERBOSE("FileIndex:Indexing '%s'", filePath.c_str());
-            }
-
-            if (auto item = Create(language, filePath); item.has_value())
-            {
-                items.push_back(std::move(item.value()));
-            }
-
-            ++processed;
-        }
-    }
-
     std::vector<TItem> Build(int32_t language, const ScanResult& scanResult) const
     {
         std::vector<TItem> allItems;
@@ -201,43 +177,27 @@ private:
         if (totalCount > 0)
         {
             JobPool jobPool;
-            std::mutex printLock; // For verbose prints.
-
-            std::list<std::vector<TItem>> containers;
-
-            size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
-
+            std::mutex mtx;
             std::atomic<size_t> processed{ 0 };
 
-            auto reportProgress = [&]() {
-                const size_t completed = processed;
-                OpenRCT2::Console::WriteFormat(
-                    "File %5zu of %zu, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
-                OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(completed), static_cast<uint32_t>(totalCount));
-            };
-
-            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
+            for (size_t i = 0; i < totalCount; i++)
             {
-                if (rangeStart + stepSize > totalCount)
-                {
-                    stepSize = totalCount - rangeStart;
-                }
+                jobPool.AddTask([&, index = i]() {
+                    const auto& filePath = scanResult.Files.at(index);
 
-                auto& items = containers.emplace_back();
+                    if (auto item = Create(language, filePath); item.has_value())
+                    {
+                        std::lock_guard lock(mtx);
+                        allItems.push_back(std::move(item.value()));
+                    }
 
-                jobPool.AddTask([&, rangeStart, stepSize]() {
-                    BuildRange(language, scanResult, rangeStart, rangeStart + stepSize, items, processed, printLock);
+                    processed++;
                 });
-
-                reportProgress();
             }
 
-            jobPool.Join(reportProgress);
-
-            for (const auto& itr : containers)
-            {
-                allItems.insert(allItems.end(), itr.begin(), itr.end());
-            }
+            jobPool.Join([&]() {
+                OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(processed.load()), static_cast<uint32_t>(totalCount));
+            });
         }
 
         WriteIndexFile(language, scanResult.Stats, allItems);
