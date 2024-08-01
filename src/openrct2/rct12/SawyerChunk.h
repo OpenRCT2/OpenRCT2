@@ -10,6 +10,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 /**
  * The type of encoding / compression for a sawyer encoded chunk.
@@ -28,23 +29,22 @@ enum class SAWYER_ENCODING : uint8_t
 class SawyerChunk final
 {
 private:
-    std::unique_ptr<uint8_t[]> _data;
-    size_t _length = 0;
+    std::vector<uint8_t> _data;
     SAWYER_ENCODING _encoding = SAWYER_ENCODING::NONE;
 
 public:
     const void* GetData() const
     {
-        return _data.get();
+        return _data.data();
     }
     size_t GetLength() const
     {
-        return _length;
+        return _data.size();
     }
     SAWYER_ENCODING GetEncoding() const
     {
         return _encoding;
     }
 
-    SawyerChunk(SAWYER_ENCODING encoding, std::unique_ptr<uint8_t[]> data, size_t length);
+    SawyerChunk(SAWYER_ENCODING encoding, std::vector<uint8_t>&& data);
 };
