@@ -13,6 +13,7 @@
 - Improved: [#22357] Error messages are now themeable and easier to read.
 - Improved: [#22361] Add additional colour preset for the Observation Tower.
 - Improved: [#22433] Increase the network timeout from 7 to 20 seconds, should help slow clients getting disconnected.
+- Improved: [#22437] File indexing now properly uses all CPU power, improving object and scenario indexing.
 - Change: [#12292] The ‘Toggle visibility of toolbars’ shortcut is no longer assigned by default.
 - Change: [#21494] Display pixel density is now taken into account for the initial window scale setting.
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
