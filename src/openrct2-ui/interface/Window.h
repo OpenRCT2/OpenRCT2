@@ -19,6 +19,7 @@ struct Window : WindowBase
     virtual void OnDraw(DrawPixelInfo& dpi) override;
     virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override;
 
+    void ScrollToViewport();
     void InitScrollWidgets();
     void InvalidateWidget(WidgetIndex widgetIndex);
     bool IsWidgetDisabled(WidgetIndex widgetIndex) const;
@@ -36,6 +37,12 @@ struct Window : WindowBase
     void TextInputOpen(
         WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
         uintptr_t existingArgs, int32_t maxLength);
+
+    void ResizeFrame();
+    void ResizeFrameWithPage();
+
+    void ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
+    void ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
 };
 
 void WindowAllWheelInput();
@@ -136,4 +143,11 @@ namespace OpenRCT2::Ui::Windows
     bool WindowCanResize(const WindowBase& w);
 
     void InvalidateAllWindowsAfterInput();
+
+    void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi);
+    void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w);
+
+    void WindowZoomIn(WindowBase& w, bool atCursor);
+    void WindowZoomOut(WindowBase& w, bool atCursor);
+    void MainWindowZoom(bool zoomIn, bool atCursor);
 } // namespace OpenRCT2::Ui::Windows
