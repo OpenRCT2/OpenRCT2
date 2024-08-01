@@ -34,21 +34,21 @@ namespace OpenRCT2::TrackMetaData
         track_type_t track_element;
     };
 
-    enum
+    enum class SpinFunction : uint8_t
     {
-        NO_SPIN,
-        L8_SPIN,
-        R8_SPIN,
-        LR_SPIN,
-        RL_SPIN,
-        L7_SPIN,
-        R7_SPIN,
-        L5_SPIN,
-        R5_SPIN,
-        RC_SPIN, // Rotation Control Spin
-        SP_SPIN, // Special rapids Spin
-        L9_SPIN,
-        R9_SPIN
+        None,
+        L8,
+        R8,
+        LR,
+        RL,
+        L7,
+        R7,
+        L5,
+        R5,
+        RC, // Rotation Control Spin
+        SP, // Special rapids Spin
+        L9,
+        R9
     };
 
     extern const TrackDescriptor gTrackDescriptors[186];
@@ -93,7 +93,7 @@ namespace OpenRCT2::TrackMetaData
         std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
 
         TrackDefinition Definition;
-        uint8_t SpinFunction;
+        SpinFunction spinFunction;
 
         TrackComputeFunction VerticalFactor;
         TrackComputeFunction LateralFactor;

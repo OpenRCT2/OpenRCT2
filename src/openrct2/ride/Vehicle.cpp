@@ -5903,9 +5903,9 @@ void Vehicle::UpdateSpinningCar()
     // The bigger the number the less change in spin.
 
     const auto& ted = GetTrackElementDescriptor(trackType);
-    switch (ted.SpinFunction)
+    switch (ted.spinFunction)
     {
-        case RC_SPIN:
+        case SpinFunction::RC:
             // On a rotation control track element
             spinningInertia += 6;
             spinSpeed = dword_F64E08 >> spinningInertia;
@@ -5919,68 +5919,70 @@ void Vehicle::UpdateSpinningCar()
                 spin_speed += spinSpeed;
             }
             break;
-        case R5_SPIN:
+        case SpinFunction::R5:
             // It looks like in the original there was going to be special code for whirlpool
-            // this has been removed and just uses R5_SPIN
+            // this has been removed and just uses R5
             spinningInertia += 5;
             spin_speed -= dword_F64E08 >> spinningInertia;
             break;
-        case L5_SPIN:
+        case SpinFunction::L5:
             spinningInertia += 5;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case R7_SPIN:
+        case SpinFunction::R7:
             spinningInertia += 7;
             spin_speed -= dword_F64E08 >> spinningInertia;
             break;
-        case L7_SPIN:
+        case SpinFunction::L7:
             spinningInertia += 7;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case RL_SPIN:
+        case SpinFunction::RL:
             // Right Left Curve Track Piece
             if (track_progress < 48)
             {
-                // R8_SPIN
+                // R8
                 spinningInertia += 8;
                 spin_speed -= dword_F64E08 >> spinningInertia;
                 break;
             }
             [[fallthrough]];
-        case L9_SPIN:
+        case SpinFunction::L9:
             spinningInertia += 9;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case L8_SPIN:
+        case SpinFunction::L8:
             spinningInertia += 8;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case SP_SPIN:
+        case SpinFunction::SP:
             // On rapids spin after fully on them
             if (track_progress > 22)
             {
-                // L5_SPIN
+                // L5
                 spinningInertia += 5;
                 spin_speed += dword_F64E08 >> spinningInertia;
             }
             break;
-        case LR_SPIN:
+        case SpinFunction::LR:
             // Left Right Curve Track Piece
             if (track_progress < 48)
             {
-                // L8_SPIN
+                // L8
                 spinningInertia += 8;
                 spin_speed += dword_F64E08 >> spinningInertia;
                 break;
             }
             [[fallthrough]];
-        case R9_SPIN:
+        case SpinFunction::R9:
             spinningInertia += 9;
             spin_speed -= dword_F64E08 >> spinningInertia;
             break;
-        case R8_SPIN:
+        case SpinFunction::R8:
             spinningInertia += 8;
             spin_speed -= dword_F64E08 >> spinningInertia;
+            break;
+        case SpinFunction::None:
             break;
     }
 
