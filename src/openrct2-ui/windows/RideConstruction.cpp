@@ -259,7 +259,7 @@ static Widget _rideConstructionWidgets[] = {
             // In order to cancel the yellow arrow correctly the
             // selection tool should be cancelled. Don't do a tool cancel if
             // another window has already taken control of tool.
-            if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
+            if (isToolActive(classification, number))
                 ToolCancel();
 
             HideGridlines();
@@ -956,8 +956,7 @@ static Widget _rideConstructionWidgets[] = {
                 case RideConstructionState::Front:
                 case RideConstructionState::Back:
                 case RideConstructionState::Selected:
-                    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                        && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
+                    if (isToolActive(WindowClass::RideConstruction))
                     {
                         ToolCancel();
                     }
@@ -2567,7 +2566,7 @@ static Widget _rideConstructionWidgets[] = {
                 entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-            rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            rideEntranceExitPlaceAction.SetCallback([=, this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
 
@@ -2586,9 +2585,13 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
                     WindowInvalidateByClass(WindowClass::RideConstruction);
-                    gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+
+                    auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                         ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                         : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+
+                    ToolCancel();
+                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
                 }
             });
             auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
