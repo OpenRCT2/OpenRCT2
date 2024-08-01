@@ -12,9 +12,8 @@
 #include "../core/Memory.hpp"
 #include "SawyerChunkReader.h"
 
-SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, std::unique_ptr<uint8_t[]> data, size_t length)
+SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, std::vector<uint8_t>&& data)
+    : _data(std::move(data))
+    , _encoding(encoding)
 {
-    _encoding = encoding;
-    _data = std::move(data);
-    _length = length;
 }
