@@ -365,7 +365,7 @@ namespace OpenRCT2::TrackMetaData
 	static_assert(std::size(_trackCoordinates) == TrackElemType::Count);
 	
 	/** rct2: 0x0099BA64 */
-	static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
+	static constexpr uint8_t TrackSequenceProperties[][kMaxSequencesPerPiece] = {
 		{ 0 },
 		/* TrackElemType::EndStation */    { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		/* TrackElemType::BeginStation */  { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -5622,7 +5622,7 @@ namespace OpenRCT2::TrackMetaData
 	static_assert(std::size(TrackHeightMarkerPositions) == TrackElemType::Count);
 	
 	/** rct2: 0x00999A94 */
-	static constexpr uint8_t TrackSequenceElementAllowedWallEdges[][MaxSequencesPerPiece] = {
+	static constexpr uint8_t TrackSequenceElementAllowedWallEdges[][kMaxSequencesPerPiece] = {
 		{ 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Flat
 		{      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::EndStation
 		{      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BeginStation
@@ -8008,7 +8008,7 @@ namespace OpenRCT2::TrackMetaData
             desc.verticalFactor = GetVerticalFunction(i);
             desc.lateralFactor = GetLateralFunction(i);
 
-            for (uint8_t j = 0; j < MaxSequencesPerPiece; j++)
+            for (uint8_t j = 0; j < kMaxSequencesPerPiece; j++)
             {
                 desc.sequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
                 desc.sequenceProperties[j] = TrackSequenceProperties[i][j];

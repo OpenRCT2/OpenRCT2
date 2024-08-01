@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::TrackMetaData
 {
-    constexpr uint8_t MaxSequencesPerPiece = 16;
+    constexpr uint8_t kMaxSequencesPerPiece = 16;
 
     // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 
@@ -89,8 +89,8 @@ namespace OpenRCT2::TrackMetaData
         uint32_t heightMarkerPositions;
         uint32_t flags;
 
-        std::array<uint8_t, MaxSequencesPerPiece> sequenceElementAllowedWallEdges;
-        std::array<uint8_t, MaxSequencesPerPiece> sequenceProperties;
+        std::array<uint8_t, kMaxSequencesPerPiece> sequenceElementAllowedWallEdges;
+        std::array<uint8_t, kMaxSequencesPerPiece> sequenceProperties;
 
         TrackDefinition definition;
         SpinFunction spinFunction;
