@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
@@ -318,9 +319,9 @@ static void WindowViewportWheelInput(WindowBase& w, int32_t wheel)
         return;
 
     if (wheel < 0)
-        WindowZoomIn(w, true);
+        Windows::WindowZoomIn(w, true);
     else if (wheel > 0)
-        WindowZoomOut(w, true);
+        Windows::WindowZoomOut(w, true);
 }
 
 static bool isSpinnerGroup(WindowBase& w, WidgetIndex index, WindowWidgetType buttonType)
@@ -1342,4 +1343,44 @@ namespace OpenRCT2::Ui::Windows
                 INSET_RECT_FLAG_FILL_NONE);
         }
     }
+
+    /**
+     *
+     *  rct2: 0x006887A6
+     */
+    void WindowZoomIn(WindowBase& w, bool atCursor)
+    {
+        WindowZoomSet(w, w.viewport->zoom - 1, atCursor);
+    }
+
+    /**
+     *
+     *  rct2: 0x006887E0
+     */
+    void WindowZoomOut(WindowBase& w, bool atCursor)
+    {
+        WindowZoomSet(w, w.viewport->zoom + 1, atCursor);
+    }
+
+    void MainWindowZoom(bool zoomIn, bool atCursor)
+    {
+        auto* mainWindow = WindowGetMain();
+        if (mainWindow == nullptr)
+            return;
+
+        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            return;
+
+        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+            return;
+
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            return;
+
+        if (zoomIn)
+            WindowZoomIn(*mainWindow, atCursor);
+        else
+            WindowZoomOut(*mainWindow, atCursor);
+    }
+
 } // namespace OpenRCT2::Ui::Windows

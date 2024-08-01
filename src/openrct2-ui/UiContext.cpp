@@ -554,7 +554,7 @@ public:
                         if (abs(gesturePixels) > tolerance)
                         {
                             _gestureRadius = 0;
-                            MainWindowZoom(gesturePixels > 0, true);
+                            Windows::MainWindowZoom(gesturePixels > 0, true);
                         }
                     }
                     break;

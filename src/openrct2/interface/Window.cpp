@@ -961,45 +961,6 @@ void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor)
 }
 
 /**
- *
- *  rct2: 0x006887A6
- */
-void WindowZoomIn(WindowBase& w, bool atCursor)
-{
-    WindowZoomSet(w, w.viewport->zoom - 1, atCursor);
-}
-
-/**
- *
- *  rct2: 0x006887E0
- */
-void WindowZoomOut(WindowBase& w, bool atCursor)
-{
-    WindowZoomSet(w, w.viewport->zoom + 1, atCursor);
-}
-
-void MainWindowZoom(bool zoomIn, bool atCursor)
-{
-    auto* mainWindow = WindowGetMain();
-    if (mainWindow == nullptr)
-        return;
-
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
-        return;
-
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
-        return;
-
-    if (zoomIn)
-        WindowZoomIn(*mainWindow, atCursor);
-    else
-        WindowZoomOut(*mainWindow, atCursor);
-}
-
-/**
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */

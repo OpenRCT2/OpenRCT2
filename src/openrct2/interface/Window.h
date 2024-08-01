@@ -540,9 +540,6 @@ void WindowViewportGetMapCoordsByCursor(
 void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
 void WindowCheckAllValidZoom();
 void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor);
-void WindowZoomIn(WindowBase& w, bool atCursor);
-void WindowZoomOut(WindowBase& w, bool atCursor);
-void MainWindowZoom(bool zoomIn, bool atCursor);
 
 void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);

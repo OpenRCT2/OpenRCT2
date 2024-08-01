@@ -146,4 +146,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi);
     void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w);
+
+    void WindowZoomIn(WindowBase& w, bool atCursor);
+    void WindowZoomOut(WindowBase& w, bool atCursor);
+    void MainWindowZoom(bool zoomIn, bool atCursor);
 } // namespace OpenRCT2::Ui::Windows
