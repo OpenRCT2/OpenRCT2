@@ -67,16 +67,7 @@ public:
 
     void Initialise() override
     {
-#if SDL_VERSION_ATLEAST(2, 28, 0)
-        // Before creating a new renderer, destroy any possible leftover state, as it will prevent the renderer from being
-        // created.
-        if (SDL_GetWindowSurface(_window) != nullptr)
-        {
-            SDL_DestroyWindowSurface(_window);
-        }
-#endif
         _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | (_useVsync ? SDL_RENDERER_PRESENTVSYNC : 0));
-        Guard::Assert(_sdlRenderer != nullptr, "Failed to create renderer: %s", SDL_GetError());
     }
 
     void SetVSync(bool vsync) override
