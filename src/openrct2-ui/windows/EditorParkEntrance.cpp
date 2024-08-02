@@ -301,7 +301,8 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawPixelInfo clipDPI;
                 auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };
-                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))
+                if (ClipDrawPixelInfo(
+                        clipDPI, dpi, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))
                 {
                     PaintPreview(
                         clipDPI, entranceType.imageId, ScreenCoordsXY{ kImageSize / 2, kImageSize / 2 },
@@ -371,7 +372,8 @@ namespace OpenRCT2::Ui::Windows
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<EditorParkEntrance>(WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
+        window = WindowCreate<EditorParkEntrance>(
+            WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
 
         return window;
     }
