@@ -11,7 +11,7 @@
 - Feature: [OpenMusic#54] Added Progressive ride music style (feat. Approaching Nirvana).
 - Improved: [#22352] The object selection window now groups relevant object tabs together.
 - Improved: [#22357] Error messages are now themeable and easier to read.
-- Improved: [#22361] Add additional colour preset for the Observation Tower.
+- Improved: [#22361, objects#342, objects#343] Add additional colour presets to the Observation Tower, Twist, and Ferris Wheel.
 - Improved: [#22433] Increase the network timeout from 7 to 20 seconds, should help slow clients getting disconnected.
 - Improved: [#22437] File indexing now properly uses all CPU power, improving object and scenario indexing.
 - Improved: [#22449] Reduced the time it takes to load and index objects, scenarios and tracks.
