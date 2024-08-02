@@ -26,6 +26,7 @@
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
+#include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"

@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include "../interface/ViewportInteraction.h"
 
 #include <deque>
 #include <openrct2-ui/interface/Dropdown.h>

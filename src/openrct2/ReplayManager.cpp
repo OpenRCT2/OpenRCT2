@@ -29,6 +29,7 @@
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
+#include "interface/Window.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"

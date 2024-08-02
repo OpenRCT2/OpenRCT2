@@ -11,6 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../interface/Window.h"
+
 #    include <cstdint>
 #    include <memory>
 #    include <openrct2/scripting/Duktape.hpp>

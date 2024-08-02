@@ -159,12 +159,6 @@ InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int
 InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32_t viewFlags, uint16_t filter);
-bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords);
-bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
-bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords);
-bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
-
-CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 
 std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport);
 std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, int32_t z);

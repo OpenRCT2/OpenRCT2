@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../interface/Window.h"
 #include "GameAction.h"
 
 enum class LoadOrQuitModes : uint8_t

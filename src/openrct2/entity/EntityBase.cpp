@@ -10,6 +10,7 @@
 #include "EntityBase.h"
 
 #include "../core/DataSerialiser.h"
+#include "../interface/Viewport.h"
 
 using namespace OpenRCT2;
 

@@ -10,13 +10,13 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../interface/Viewport.h"
 #include "../object/Object.h"
 
 class FootpathObject;
 class FootpathSurfaceObject;
 class FootpathRailingsObject;
 struct PathElement;
+struct TileElement;
 
 enum
 {
@@ -191,8 +191,6 @@ money64 FootpathProvisionalSet(
     PathConstructFlags constructFlags);
 void FootpathProvisionalRemove();
 void FootpathProvisionalUpdate();
-CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
-CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
 void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
 void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
 void FootpathUpdateQueueChains();

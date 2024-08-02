@@ -10,6 +10,7 @@
 #include "RideFreezeRatingAction.h"
 
 #include "../Diagnostic.h"
+#include "../interface/Window.h"
 
 using namespace OpenRCT2;
 

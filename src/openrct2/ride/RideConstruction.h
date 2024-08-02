@@ -91,8 +91,6 @@ void RideSelectPreviousSection();
 
 bool RideModify(const CoordsXYE& input);
 
-CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);
-
 bool RideSelectBackwardsFromFront();
 bool RideSelectForwardsFromBack();
 

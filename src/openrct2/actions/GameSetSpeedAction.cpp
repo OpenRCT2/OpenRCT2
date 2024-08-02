@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../config/Config.h"
+#include "../interface/Window.h"
 
 using namespace OpenRCT2;
 
