@@ -20,7 +20,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowClearSceneryWidgetIdx
+    enum WindowClearSceneryWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -305,7 +305,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ClearSceneryOpen()
     {
-        return WindowFocusOrCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+        return WindowFocusOrCreate<CleanSceneryWindow>(
+            WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 
     /**
