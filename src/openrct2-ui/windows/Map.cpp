@@ -27,10 +27,6 @@
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
-#include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Language.h>
-#include <openrct2/object/EntranceObject.h>
-#include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
