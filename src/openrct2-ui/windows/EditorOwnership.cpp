@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         ObjectEntryIndex _selectedEntranceType = 0;
-        // ObjectEntryIndex _highlightedEntranceType = 0;
+        ObjectEntryIndex _highlightedEntranceType = 0;
         std::vector<EntranceSelection> _entranceTypes{};
 
         void InitParkEntranceItems()
@@ -279,6 +279,8 @@ namespace OpenRCT2::Ui::Windows
                 int32_t buttonFlags = 0;
                 if (_selectedEntranceType == entranceType.entryIndex)
                     buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
+                else if (_highlightedEntranceType == entranceType.entryIndex)
+                    buttonFlags |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 
                 if (buttonFlags != 0)
                     GfxFillRectInset(
@@ -327,6 +329,16 @@ namespace OpenRCT2::Ui::Windows
             HideGridlines();
             HideLandRights();
             HideConstructionRights();
+        }
+
+        void ContentScrollMouseOver(const ScreenCoordsXY& screenCoords)
+        {
+            auto highlighted = ScrollGetEntranceListItemAt(screenCoords);
+            if (highlighted != OBJECT_ENTRY_INDEX_NULL)
+            {
+                _highlightedEntranceType = highlighted;
+                Invalidate();
+            }
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
