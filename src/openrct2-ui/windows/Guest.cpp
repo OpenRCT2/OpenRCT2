@@ -1064,6 +1064,34 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 
         void OnDrawStats(DrawPixelInfo& dpi)
         {
+            // ebx
+            const auto peep = GetGuest();
+            if (peep == nullptr)
+            {
+                return;
+            }
+
+            int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 10);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
+
+            int32_t energyPercentage = NormalizeGuestStatValue(
+                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
+
+            int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
+            hungerPercentage = 100 - hungerPercentage; // the bar should be longer when peep->Hunger is low
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_HUNGER_BAR], hungerPercentage);
+
+            int32_t thirstPercentage = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
+            thirstPercentage = 100 - thirstPercentage; // the bar should be longer when peep->Thirst is low
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_THIRST_BAR], thirstPercentage);
+
+            int32_t nauseaPercentage = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_NAUSEA_BAR], nauseaPercentage);
+
+            int32_t toiletPercentage = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_TOILET_BAR], toiletPercentage);
+
             DrawWidgets(dpi);
             OverviewTabDraw(dpi);
             StatsTabDraw(dpi);
@@ -1073,13 +1101,6 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             InventoryTabDraw(dpi);
             DebugTabDraw(dpi);
 
-            // ebx
-            const auto peep = GetGuest();
-            if (peep == nullptr)
-            {
-                return;
-            }
-
             // Not sure why this is not stats widgets
             // cx dx
             auto screenCoords = windowPos
@@ -1088,46 +1109,25 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             // Happiness
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
 
-            int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 10);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
-
             // Energy
             screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
-
-            int32_t energyPercentage = NormalizeGuestStatValue(
-                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
 
             // Hunger
             screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
 
-            int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
-            hungerPercentage = 100 - hungerPercentage; // the bar should be longer when peep->Hunger is low
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_HUNGER_BAR], hungerPercentage);
-
             // Thirst
             screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
-
-            int32_t thirstPercentage = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
-            thirstPercentage = 100 - thirstPercentage; // the bar should be longer when peep->Thirst is low
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_THIRST_BAR], thirstPercentage);
 
             // Nausea
             screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
 
-            int32_t nauseaPercentage = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_NAUSEA_BAR], nauseaPercentage);
-
             // Toilet
             screenCoords.y += kListRowHeight;
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
-
-            int32_t toiletPercentage = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_TOILET_BAR], toiletPercentage);
 
             // Time in park
             screenCoords.y += kListRowHeight + 1;
