@@ -259,6 +259,18 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void OnClose() override
+        {
+            if (gCurrentToolWidget.window_classification == classification)
+                ToolCancel();
+        }
+
+        void OnUpdate() override
+        {
+            if (gCurrentToolWidget.window_classification != classification)
+                Close();
+        }
+
         void OnDraw(DrawPixelInfo& dpi) override
         {
             DrawWidgets(dpi);

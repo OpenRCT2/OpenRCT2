@@ -330,8 +330,13 @@ static Widget window_map_widgets[] = {
                     Invalidate();
                     break;
                 case WIDX_BUILD_PARK_ENTRANCE:
-                    ContextOpenWindow(WindowClass::EditorParkEntrance);
+                {
+                    if (!WindowFindByClass(WindowClass::EditorParkEntrance))
+                        ContextOpenWindow(WindowClass::EditorParkEntrance);
+                    else
+                        WindowCloseByClass(WindowClass::EditorParkEntrance);
                     break;
+                }
                 case WIDX_PEOPLE_STARTING_POSITION:
                     if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                         break;
@@ -758,6 +763,9 @@ static Widget window_map_widgets[] = {
 
             if (_activeTool & (1 << 0))
                 pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+
+            if (WindowFindByClass(WindowClass::EditorParkEntrance))
+                pressed_widgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
 
             // Set disabled widgets
             auto& gameState = GetGameState();
