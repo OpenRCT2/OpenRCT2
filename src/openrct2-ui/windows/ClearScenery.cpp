@@ -305,17 +305,22 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ClearSceneryOpen()
     {
-        auto* w = static_cast<CleanSceneryWindow*>(WindowBringToFrontByClass(WindowClass::ClearScenery));
+        return WindowFocusOrCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+    }
 
-        if (w != nullptr)
-            return w;
-
-        w = WindowCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
-
-        if (w != nullptr)
-            return w;
-
-        return nullptr;
+    /**
+     *
+     *  rct2: 0x0066D125
+     */
+    bool ClearSceneryToolIsActive()
+    {
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
+            return false;
+        if (gCurrentToolWidget.window_classification != WindowClass::ClearScenery)
+            return false;
+        if (gCurrentToolWidget.widget_index != WIDX_BACKGROUND)
+            return false;
+        return true;
     }
 
     /**
