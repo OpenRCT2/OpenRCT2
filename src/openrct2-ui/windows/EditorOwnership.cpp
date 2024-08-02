@@ -26,7 +26,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId _windowTitle = STR_OBJECT_SELECTION_PARK_ENTRANCE;
     static constexpr int32_t _imageSize = 116;
     static constexpr int32_t _numColumns = 4;
-    static constexpr int32_t _numRows = 3;
+    static constexpr int32_t _numRows = 1;
     // static constexpr int32_t _scrollPadding = 2;
     static constexpr int32_t _scrollWidth = (_imageSize * _numColumns) + kScrollBarWidth + 4;
     static constexpr int32_t _scrollHeight = (_imageSize * _numRows);
