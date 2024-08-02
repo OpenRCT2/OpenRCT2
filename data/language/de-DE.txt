@@ -3670,7 +3670,7 @@ STR_6599    :Geisterelement konnte nicht gefunden werden
 STR_6600    :Ballon konnte nicht gefunden werden
 STR_6601    :Mitarbeiter konnte nicht gefunden werden
 STR_6602    :Fahrgeschäft/Attraktion konnte nicht gefunden werden
-STR_6603    :Attraktionseingang konnte nicht gefunden werden
+STR_6603    :Attraktionsobjekteintrag konnte nicht gefunden werden
 STR_6604    :Spieler konnte nicht gefunden werden
 STR_6605    :Eingangselement konnte nicht gefunden werden
 STR_6606    :Oberflächenelement konnte nicht gefunden werden
