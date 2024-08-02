@@ -27,10 +27,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t _imageSize = 116;
     static constexpr int32_t _numColumns = 4;
     static constexpr int32_t _numRows = 1;
-    // static constexpr int32_t _scrollPadding = 2;
+    static constexpr int32_t _scrollPadding = 2;
     static constexpr int32_t _scrollWidth = (_imageSize * _numColumns) + kScrollBarWidth + 4;
     static constexpr int32_t _scrollHeight = (_imageSize * _numRows);
-    static constexpr int32_t _windowWidth = _scrollWidth + 21;
+    static constexpr int32_t _windowWidth = _scrollWidth + 28;
     static constexpr int32_t _windowHeight = _scrollHeight + 50;
 
     struct EntranceSelection
@@ -288,19 +288,13 @@ namespace OpenRCT2::Ui::Windows
                         INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
 
                 DrawPixelInfo clipDPI;
-                auto screenPos = coords + ScreenCoordsXY{ 2, 2 };
-                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _imageSize - 4, _imageSize - 4))
+                auto screenPos = coords + ScreenCoordsXY{ _scrollPadding, _scrollPadding };
+                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _imageSize - (2 * _scrollPadding), _imageSize - (2 * _scrollPadding)))
                 {
                     PaintPreview(
                         clipDPI, entranceType.imageId, ScreenCoordsXY{ _imageSize / 2, _imageSize / 2 },
                         gWindowSceneryRotation);
-                    //_loadedObject->DrawPreview(clipDPI, _width, _height);
                 }
-
-                // Draw ride image with feathered border
-                //                auto mask = ImageId(SPR_NEW_RIDE_MASK);
-                //                auto entranceImage = ImageId(entranceType.imageId);
-                //                GfxDrawSpriteRawMasked(dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, entranceImage);
 
                 // Next position
                 coords.x += _imageSize;
