@@ -336,50 +336,20 @@ static Widget window_land_rights_widgets[] = {
 
         void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
-            {
-                if (screenCoords.x != kLocationNull)
-                {
-                    auto landBuyRightsAction = LandBuyRightsAction(
-                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                        LandBuyRightSetting::BuyLand);
-                    GameActions::Execute(&landBuyRightsAction);
-                }
-            }
-            else
-            {
-                if (screenCoords.x != kLocationNull)
-                {
-                    auto landBuyRightsAction = LandBuyRightsAction(
-                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                        LandBuyRightSetting::BuyConstructionRights);
-                    GameActions::Execute(&landBuyRightsAction);
-                }
-            }
+            if (screenCoords.x == kLocationNull)
+                return;
+
+            auto modeSetting = _landRightsMode == LAND_RIGHTS_MODE_BUY_LAND ? LandBuyRightSetting::BuyLand
+                                                                            : LandBuyRightSetting::BuyConstructionRights;
+
+            auto landBuyRightsAction = LandBuyRightsAction(
+                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, modeSetting);
+            GameActions::Execute(&landBuyRightsAction);
         }
 
         void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
-            {
-                if (screenCoords.x != kLocationNull)
-                {
-                    auto landBuyRightsAction = LandBuyRightsAction(
-                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                        LandBuyRightSetting::BuyLand);
-                    GameActions::Execute(&landBuyRightsAction);
-                }
-            }
-            else
-            {
-                if (screenCoords.x != kLocationNull)
-                {
-                    auto landBuyRightsAction = LandBuyRightsAction(
-                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                        LandBuyRightSetting::BuyConstructionRights);
-                    GameActions::Execute(&landBuyRightsAction);
-                }
-            }
+            OnToolDown(widgetIndex, screenCoords);
         }
 
         void OnResize() override
