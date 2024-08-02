@@ -240,6 +240,9 @@ namespace OpenRCT2::Ui::Windows
 
             InitParkEntranceItems();
             pressed_widgets |= 1LL << WIDX_TAB;
+
+            ToolSet(*this, WIDX_LIST, Tool::UpArrow);
+            InputSetFlag(INPUT_FLAG_6, true);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -338,9 +341,6 @@ namespace OpenRCT2::Ui::Windows
 
             Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
             Invalidate();
-
-            ToolSet(*this, WIDX_LIST, Tool::UpArrow);
-            InputSetFlag(INPUT_FLAG_6, true);
         }
     };
 
