@@ -250,7 +250,7 @@ static Widget window_land_rights_widgets[] = {
                 if (_landRightsCost != kMoney64Undefined)
                 {
                     _landRightsCost = kMoney64Undefined;
-                    WindowInvalidateByClass(WindowClass::ClearScenery);
+                    WindowInvalidateByClass(WindowClass::LandRights);
                 }
                 return;
             }

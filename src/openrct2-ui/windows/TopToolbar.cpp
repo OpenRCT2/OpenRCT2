@@ -1016,21 +1016,6 @@ namespace OpenRCT2::Ui::Windows
         return window;
     }
 
-    /**
-     *
-     *  rct2: 0x0066D125
-     */
-    bool ClearSceneryToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::ClearScenery)
-            return false;
-        if (gCurrentToolWidget.widget_index != WIDX_CLEAR_SCENERY)
-            return false;
-        return true;
-    }
-
     void TopToolbar::InitViewMenu(Widget& widget)
     {
         using namespace Dropdown;
