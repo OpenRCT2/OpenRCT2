@@ -856,19 +856,23 @@ static Widget _windowFinancesResearchWidgets[] =
                 INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
 
             // Calculate Y axis max and min.
-            // This is how the original code does it. Could be improved.
-            money64 max = centred ? 12.00_GBP : 24.00_GBP;
+            money64 maxVal = 0;
             for (int32_t i = 0; i < kGraphNumPoints; i++)
             {
                 auto val = series[i];
                 if (val == kMoney64Undefined)
                     continue;
-                while (std::abs(val) > max)
-                    max *= 2;
+                while (std::abs(val) > maxVal)
+                    maxVal = val;
             }
-            const money64 min = centred ? -max : 0.00_GBP;
+            // This algorithm increments the leading digit of the max and sets all other digits to zero.
+            // e.g. 681 => 700.
+            money64 oom = 10;
+            while (maxVal / oom >= 10)
+                oom *= 10;
+            const money64 max = ((maxVal + oom - 1) / oom) * oom;
 
-            _graphProps.min = min;
+            _graphProps.min = centred ? -max : 0.00_GBP;
             _graphProps.max = max;
             _graphProps.series = series;
 
