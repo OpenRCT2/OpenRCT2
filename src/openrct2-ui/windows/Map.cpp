@@ -330,7 +330,7 @@ static Widget window_map_widgets[] = {
                     Invalidate();
                     break;
                 case WIDX_BUILD_PARK_ENTRANCE:
-                    ContextOpenWindow(WindowClass::EditorOwnership);
+                    ContextOpenWindow(WindowClass::EditorParkEntrance);
                     break;
                 case WIDX_PEOPLE_STARTING_POSITION:
                     if (ToolSet(*this, widgetIndex, Tool::UpArrow))

@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ViewClippingOpen();
     WindowBase* TransparencyOpen();
     WindowBase* AssetPacksOpen();
-    WindowBase* EditorOwnershipOpen();
+    WindowBase* EditorParkEntranceOpen();
 
     // WC_FINANCES
     WindowBase* FinancesOpen();

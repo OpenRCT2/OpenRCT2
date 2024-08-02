@@ -90,7 +90,7 @@ enum class WindowClass : uint8_t
     ResetShortcutKeysPrompt = 136,
     ProgressWindow = 137,
     TitleVersion = 138,
-    EditorOwnership = 139,
+    EditorParkEntrance = 139,
 
     // Only used for colour schemes
     Staff = 220,

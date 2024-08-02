@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
         ImageIndex imageId = SPR_NONE;
     };
 
-    enum WindowEditorOwnershipListWidgetIdx
+    enum WindowEditorParkEntranceListWidgetIdx
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    class EditorOwnership final : public Window
+    class EditorParkEntrance final : public Window
     {
     private:
         ObjectEntryIndex _selectedEntranceType = 0;
@@ -350,16 +350,16 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* EditorOwnershipOpen()
+    WindowBase* EditorParkEntranceOpen()
     {
         WindowBase* window;
 
         // Check if window is already open
-        window = WindowBringToFrontByClass(WindowClass::EditorOwnership);
+        window = WindowBringToFrontByClass(WindowClass::EditorParkEntrance);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<EditorOwnership>(WindowClass::EditorOwnership, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
+        window = WindowCreate<EditorParkEntrance>(WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
 
         return window;
     }
