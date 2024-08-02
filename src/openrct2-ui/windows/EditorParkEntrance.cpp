@@ -7,14 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/audio/audio.h"
-
-#include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
+#include <openrct2/audio/audio.h>
 #include <openrct2/object/EntranceObject.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>

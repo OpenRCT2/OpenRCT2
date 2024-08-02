@@ -50,4 +50,3 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 void PaintTrack(PaintSession& session, uint8_t direction, int32_t height, const TrackElement& tileElement);
 
 bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag);
-
