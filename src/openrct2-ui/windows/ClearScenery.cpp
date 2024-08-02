@@ -224,12 +224,80 @@ namespace OpenRCT2::Ui::Windows
             return ClearAction(range, itemsToClear);
         }
 
+        int8_t ToolUpdateClearLandPaint(const ScreenCoordsXY& screenPos)
+        {
+            uint8_t state_changed = 0;
+
+            MapInvalidateSelectionRect();
+            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+
+            auto mapTile = ScreenGetMapXY(screenPos, nullptr);
+
+            if (!mapTile.has_value())
+            {
+                return state_changed;
+            }
+
+            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            {
+                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                state_changed++;
+            }
+
+            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            {
+                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                state_changed++;
+            }
+
+            int16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
+            int16_t tool_length = (tool_size - 1) * 32;
+
+            // Move to tool bottom left
+            mapTile->x -= (tool_size - 1) * 16;
+            mapTile->y -= (tool_size - 1) * 16;
+            mapTile = mapTile->ToTileStart();
+
+            if (gMapSelectPositionA.x != mapTile->x)
+            {
+                gMapSelectPositionA.x = mapTile->x;
+                state_changed++;
+            }
+
+            if (gMapSelectPositionA.y != mapTile->y)
+            {
+                gMapSelectPositionA.y = mapTile->y;
+                state_changed++;
+            }
+
+            mapTile->x += tool_length;
+            mapTile->y += tool_length;
+
+            if (gMapSelectPositionB.x != mapTile->x)
+            {
+                gMapSelectPositionB.x = mapTile->x;
+                state_changed++;
+            }
+
+            if (gMapSelectPositionB.y != mapTile->y)
+            {
+                gMapSelectPositionB.y = mapTile->y;
+                state_changed++;
+            }
+
+            MapInvalidateSelectionRect();
+            return state_changed;
+        }
+
         /**
          *
          *  rct2: 0x0068E213
          */
         void ToolUpdateSceneryClear(const ScreenCoordsXY& screenPos)
         {
+            if (!ToolUpdateClearLandPaint(screenPos))
+                return;
+
             auto action = GetClearAction();
             auto result = GameActions::Query(&action);
             auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
