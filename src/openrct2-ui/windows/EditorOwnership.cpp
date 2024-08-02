@@ -23,15 +23,15 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId _windowTitle = STR_OBJECT_SELECTION_PARK_ENTRANCE;
-    static constexpr int32_t _imageSize = 116;
-    static constexpr int32_t _numColumns = 4;
-    static constexpr int32_t _numRows = 1;
-    static constexpr int32_t _scrollPadding = 2;
-    static constexpr int32_t _scrollWidth = (_imageSize * _numColumns) + kScrollBarWidth + 4;
-    static constexpr int32_t _scrollHeight = (_imageSize * _numRows);
-    static constexpr int32_t _windowWidth = _scrollWidth + 28;
-    static constexpr int32_t _windowHeight = _scrollHeight + 50;
+    static constexpr StringId kWindowTitle = STR_OBJECT_SELECTION_PARK_ENTRANCE;
+    static constexpr int32_t kImageSize = 116;
+    static constexpr int32_t kNumColumns = 4;
+    static constexpr int32_t kNumRows = 1;
+    static constexpr int32_t kScrollPadding = 2;
+    static constexpr int32_t kScrollWidth = (kImageSize * kNumColumns) + kScrollBarWidth + 4;
+    static constexpr int32_t kScrollHeight = (kImageSize * kNumRows);
+    static constexpr int32_t kWindowWidth = kScrollWidth + 28;
+    static constexpr int32_t kWindowHeight = kScrollHeight + 50;
 
     struct EntranceSelection
     {
@@ -55,11 +55,11 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static Widget _widgets[] = {
-        WINDOW_SHIM(_windowTitle, _windowWidth, _windowHeight),
-        MakeWidget     ({                 0, 43 }, { _windowWidth, _windowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
+        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
+        MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
         MakeTab        ({                 3, 17 },                                                                                           STR_NONE                                         ),
-        MakeWidget     ({                 2, 45 }, { _scrollWidth, _scrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
-        MakeWidget     ({ _windowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
+        MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
+        MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
         kWidgetsEnd,
     };
     // clang-format on
@@ -233,10 +233,10 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
 
             list_information_type = 0;
-            min_width = _windowWidth;
-            min_height = _windowHeight;
-            max_width = _windowWidth;
-            max_height = _windowHeight;
+            min_width = kWindowWidth;
+            min_height = kWindowHeight;
+            max_width = kWindowWidth;
+            max_height = kWindowHeight;
 
             InitParkEntranceItems();
             pressed_widgets |= 1LL << WIDX_TAB;
@@ -284,24 +284,24 @@ namespace OpenRCT2::Ui::Windows
 
                 if (buttonFlags != 0)
                     GfxFillRectInset(
-                        dpi, { coords, coords + ScreenCoordsXY{ _imageSize - 1, _imageSize - 1 } }, colours[1],
+                        dpi, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1],
                         INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
 
                 DrawPixelInfo clipDPI;
-                auto screenPos = coords + ScreenCoordsXY{ _scrollPadding, _scrollPadding };
-                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _imageSize - (2 * _scrollPadding), _imageSize - (2 * _scrollPadding)))
+                auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };
+                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))
                 {
                     PaintPreview(
-                        clipDPI, entranceType.imageId, ScreenCoordsXY{ _imageSize / 2, _imageSize / 2 },
+                        clipDPI, entranceType.imageId, ScreenCoordsXY{ kImageSize / 2, kImageSize / 2 },
                         gWindowSceneryRotation);
                 }
 
                 // Next position
-                coords.x += _imageSize;
-                if (coords.x >= _imageSize * _numColumns + 1)
+                coords.x += kImageSize;
+                if (coords.x >= kImageSize * kNumColumns + 1)
                 {
                     coords.x = 1;
-                    coords.y += _imageSize;
+                    coords.y += kImageSize;
                 }
             }
         }
@@ -359,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<EditorOwnership>(WindowClass::EditorOwnership, _windowWidth, _windowHeight, WF_10 | WF_RESIZABLE);
+        window = WindowCreate<EditorOwnership>(WindowClass::EditorOwnership, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
 
         return window;
     }
