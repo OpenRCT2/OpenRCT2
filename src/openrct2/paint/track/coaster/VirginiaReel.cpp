@@ -450,7 +450,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
         case 3:
             WoodenASupportsPaintSetupRotated(
                 session, kSupportType, WoodenSupportSubType::Corner3, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
     }
 
