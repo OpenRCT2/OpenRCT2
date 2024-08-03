@@ -104,7 +104,7 @@ namespace OpenRCT2
     {
         static constexpr uint16_t kReplayVersion = 10;
         static constexpr uint32_t kReplayMagic = 0x5243524F; // ORCR.
-        static constexpr int ReplayCompressionLevel = 9;
+        static constexpr int kReplayCompressionLevel = 9;
         static constexpr int NormalRecordingChecksumTicks = 1;
         static constexpr int SilentRecordingChecksumTicks = 40; // Same as network server
 
@@ -320,7 +320,7 @@ namespace OpenRCT2
             auto compressBuf = std::make_unique<unsigned char[]>(compressLength);
             compress2(
                 compressBuf.get(), &compressLength, static_cast<const unsigned char*>(stream.GetData()), stream.GetLength(),
-                ReplayCompressionLevel);
+                kReplayCompressionLevel);
             file.data.Write(compressBuf.get(), compressLength);
 
             DataSerialiser fileSerialiser(true);
