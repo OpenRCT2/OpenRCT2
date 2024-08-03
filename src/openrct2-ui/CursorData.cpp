@@ -912,6 +912,41 @@ namespace OpenRCT2::Ui
         "                XX.........XX   "
         "                 XXXXXXXXXX     ");
 
+    static constexpr CursorData kBulldozerCursorData = cursorFromBitMap(
+        6, 31,
+        "                 XXX            "
+        "               XX...X           "
+        "             XX....X            "
+        "            X..XX.X             "
+        "            X..X X    XXXXXXX   "
+        "            XXX      X.......X  "
+        " XX         X.X      X.XXX.X.X  "
+        " X.X      XXX.XXXXXXXX.XXX.X.X  "
+        "  X.X    X...........X.XXX.X.X  "
+        "   X.X   X.XXXXXX....X.XXX.X.X  "
+        "   X.X   X.XX.X......X.......X  "
+        "    X.XXXXXXXXXXX..XXXX......X  "
+        "    X.X..........X...........X  "
+        "    X.X....XXXXXXXXXXX.XX.XXX   "
+        "    X.XXXXX..X..X..X..X..X..XX  "
+        "   X.X   X.XX.XX.XX.XX.XX.XX.X  "
+        "   X.X   X.XX.XX.XX.XX.XX.XX.X  "
+        " XX.X     X..X..X..X..X..X..X   "
+        "X..X       XXXXXXXXXXXXXXXXX    "
+        " XX XXXXX                       "
+        "    X...X                       "
+        "    X...X                       "
+        "    X...X                       "
+        "    X...X                       "
+        "    X...X                       "
+        "XXXXX...XXXXX                   "
+        " X.........X                    "
+        "  X.......X                     "
+        "   X.....X                      "
+        "    X...X                       "
+        "     X.X                        "
+        "      X                         ");
+
     static constexpr const CursorData* RawCursorData[] = {
         nullptr,                    // CursorID::Arrow
         &kBlankCursorData,          // CursorID::Blank
@@ -940,6 +975,7 @@ namespace OpenRCT2::Ui
         &kEntranceDownCursorData,   // CursorID::EntranceDown
         &kHandOpenDownCursorData,   // CursorID::HandOpen
         &kHandClosedDownCursorData, // CursorID::HandClosed
+        &kBulldozerCursorData,      // CursorID::Bulldozer
     };
 
     const CursorData* getCursorData(CursorID cursorId)

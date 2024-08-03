@@ -470,6 +470,7 @@ enum class Tool
     WalkDown = 22,
     PaintDown = 23,
     EntranceDown = 24,
+    Bulldozer = 27,
 };
 
 using modal_callback = void (*)(int32_t result);

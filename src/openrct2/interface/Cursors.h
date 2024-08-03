@@ -41,6 +41,7 @@ enum class CursorID : uint8_t
     EntranceDown,
     HandOpen,
     HandClosed,
+    Bulldozer,
     Count,
 
     Undefined = 0xFF
