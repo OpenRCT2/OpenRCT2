@@ -103,7 +103,7 @@ namespace OpenRCT2
     class ReplayManager final : public IReplayManager
     {
         static constexpr uint16_t kReplayVersion = 10;
-        static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
+        static constexpr uint32_t kReplayMagic = 0x5243524F; // ORCR.
         static constexpr int ReplayCompressionLevel = 9;
         static constexpr int NormalRecordingChecksumTicks = 1;
         static constexpr int SilentRecordingChecksumTicks = 40; // Same as network server
@@ -241,7 +241,7 @@ namespace OpenRCT2
             const auto currentTicks = GetGameState().CurrentTicks;
 
             auto replayData = std::make_unique<ReplayRecordData>();
-            replayData->magic = ReplayMagic;
+            replayData->magic = kReplayMagic;
             replayData->version = kReplayVersion;
             replayData->networkId = NetworkGetVersion();
             replayData->name = name;
@@ -729,9 +729,9 @@ namespace OpenRCT2
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
         {
             serialiser << data.magic;
-            if (data.magic != ReplayMagic)
+            if (data.magic != kReplayMagic)
             {
-                LOG_ERROR("Magic does not match %08X, expected: %08X", data.magic, ReplayMagic);
+                LOG_ERROR("Magic does not match %08X, expected: %08X", data.magic, kReplayMagic);
                 return false;
             }
             serialiser << data.version;
