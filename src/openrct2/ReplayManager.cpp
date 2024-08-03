@@ -102,7 +102,7 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t ReplayVersion = 10;
+        static constexpr uint16_t kReplayVersion = 10;
         static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
         static constexpr int ReplayCompressionLevel = 9;
         static constexpr int NormalRecordingChecksumTicks = 1;
@@ -242,7 +242,7 @@ namespace OpenRCT2
 
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->magic = ReplayMagic;
-            replayData->version = ReplayVersion;
+            replayData->version = kReplayVersion;
             replayData->networkId = NetworkGetVersion();
             replayData->name = name;
             replayData->tickStart = currentTicks;
@@ -723,7 +723,7 @@ namespace OpenRCT2
 
         bool Compatible(ReplayRecordData& data)
         {
-            return data.version == ReplayVersion;
+            return data.version == kReplayVersion;
         }
 
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
@@ -735,9 +735,9 @@ namespace OpenRCT2
                 return false;
             }
             serialiser << data.version;
-            if (data.version != ReplayVersion && !Compatible(data))
+            if (data.version != kReplayVersion && !Compatible(data))
             {
-                LOG_ERROR("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
+                LOG_ERROR("Invalid version detected %04X, expected: %04X", data.version, kReplayVersion);
                 return false;
             }
 
