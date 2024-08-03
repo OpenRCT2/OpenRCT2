@@ -614,7 +614,7 @@ namespace OpenRCT2
                 }
                 cs.ReadWrite(gameState.SavedViewRotation);
 
-                if (os.GetHeader().TargetVersion >= PARK_FILE_CURRENT_VERSION)
+                if (os.GetHeader().TargetVersion >= 34)
                     cs.ReadWrite(gameState.CurrentlyFollowingEntity);
                 else
                     gameState.CurrentlyFollowingEntity = EntityId::GetNull();
