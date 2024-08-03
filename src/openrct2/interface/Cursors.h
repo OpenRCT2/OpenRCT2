@@ -50,19 +50,3 @@ namespace OpenRCT2::Cursor
 {
     CursorID FromString(const std::string& s, CursorID defaultValue);
 }
-
-namespace OpenRCT2::Ui
-{
-    constexpr size_t CURSOR_BIT_WIDTH = 32;
-    constexpr size_t CURSOR_HEIGHT = 4;
-    struct CursorData
-    {
-        struct HotSpot
-        {
-            int16_t X;
-            int16_t Y;
-        } HotSpot;
-        uint8_t Data[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
-        uint8_t Mask[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
-    };
-} // namespace OpenRCT2::Ui

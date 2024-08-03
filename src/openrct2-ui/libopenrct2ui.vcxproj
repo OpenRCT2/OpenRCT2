@@ -46,6 +46,7 @@
     <ClInclude Include="audio\AudioFormat.h" />
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\SDLAudioSource.h" />
+    <ClInclude Include="CursorData.h" />
     <ClInclude Include="CursorRepository.h" />
     <ClInclude Include="drawing\BitmapReader.h" />
     <ClInclude Include="drawing\engines\DrawingEngineFactory.hpp" />

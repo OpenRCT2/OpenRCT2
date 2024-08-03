@@ -7,19 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "CursorRepository.h"
+#include "CursorData.h"
 
 #include <openrct2/interface/Cursors.h>
+#include <openrct2/util/Util.h>
 
 namespace OpenRCT2::Ui
 {
     // clang-format off
-    static constexpr CursorData BlankCursorData =
+    static constexpr CursorData kBlankCursorData =
     {
         { 0, 0 }, { 0 }, { 0 }
     };
 
-    static constexpr CursorData UpArrowCursorData =
+    static constexpr CursorData kUpArrowCursorData =
     {
         { 15, 0 },
         {
@@ -44,7 +45,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData UpDownArrowCursorData =
+    static constexpr CursorData kUpDownArrowCursorData =
     {
         { 17, 15 },
         {
@@ -69,7 +70,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData ZZZCursorData =
+    static constexpr CursorData kZzzCursorData =
     {
         { 0, 0 },
         {
@@ -94,7 +95,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData DiagonalArrowCursorData =
+    static constexpr CursorData kDiagonalArrowCursorData =
     {
         { 0, 0 },
         {
@@ -119,7 +120,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData PickerArrowCursorData =
+    static constexpr CursorData kPickerArrowCursorData =
     {
         { 15, 31 },
         {
@@ -144,7 +145,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData TreeDownCursorData =
+    static constexpr CursorData kTreeDownCursorData =
     {
         { 7, 31 },
         {
@@ -169,7 +170,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData FountainDownCursorData =
+    static constexpr CursorData kFountainDownCursorData =
     {
         { 7, 31 },
         {
@@ -194,7 +195,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData StatueDownCursorData =
+    static constexpr CursorData kStatueDownCursorData =
     {
         { 7, 31 },
         {
@@ -219,7 +220,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData BenchDownCursorData =
+    static constexpr CursorData kBenchDownCursorData =
     {
         { 7, 31 },
         {
@@ -244,7 +245,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData CrossHairCursorData =
+    static constexpr CursorData kCrossHairCursorData =
     {
         { 15, 15 },
         {
@@ -269,7 +270,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData BinDownCursorData =
+    static constexpr CursorData kBinDownCursorData =
     {
         { 7, 31 },
         {
@@ -294,7 +295,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData LampPostDownCursorData =
+    static constexpr CursorData kLampPostDownCursorData =
     {
         { 7, 31 },
         {
@@ -319,7 +320,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData FenceDownCursorData =
+    static constexpr CursorData kFenceDownCursorData =
     {
         { 7, 31 },
         {
@@ -344,7 +345,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData FlowerDownCursorData =
+    static constexpr CursorData kFlowerDownCursorData =
     {
         { 7, 31 },
         {
@@ -369,7 +370,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData FootpathDownCursorData =
+    static constexpr CursorData kFootpathDownCursorData =
     {
         { 7, 31 },
         {
@@ -394,7 +395,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData DigDownCursorData =
+    static constexpr CursorData kDigDownCursorData =
     {
         { 7, 31 },
         {
@@ -419,7 +420,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData WaterDownCursorData =
+    static constexpr CursorData kWaterDownCursorData =
     {
         { 7, 31 },
         {
@@ -444,7 +445,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData HouseDownCursorData =
+    static constexpr CursorData kHouseDownCursorData =
     {
         { 7, 31 },
         {
@@ -469,7 +470,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData VolcanoDownCursorData =
+    static constexpr CursorData kVolcanoDownCursorData =
     {
         { 7, 31 },
         {
@@ -494,7 +495,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData WalkDownCursorData =
+    static constexpr CursorData kWalkDownCursorData =
     {
         { 7, 31 },
         {
@@ -519,7 +520,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData PaintDownCursorData =
+    static constexpr CursorData kPaintDownCursorData =
     {
         { 8, 30 },
         {
@@ -544,7 +545,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData EntranceDownCursorData =
+    static constexpr CursorData kEntranceDownCursorData =
     {
         { 7, 31 },
         {
@@ -569,7 +570,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData HandOpenDownCursorData =
+    static constexpr CursorData kHandOpenDownCursorData =
     {
         { 14, 15 },
         {
@@ -594,7 +595,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr CursorData HandClosedDownCursorData =
+    static constexpr CursorData kHandClosedDownCursorData =
     {
         { 14, 15 },
         {
@@ -619,39 +620,38 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData * RawCursorData[] =
-    {
-        nullptr,                    // CURSOR_ARROW
-        &BlankCursorData,           // CURSOR_BLANK
-        &UpArrowCursorData,         // CURSOR_UP_ARROW
-        &UpDownArrowCursorData,     // CURSOR_UP_DOWN_ARROW
-        nullptr,                    // CURSOR_HAND_POINT
-        &ZZZCursorData,             // CURSOR_ZZZ
-        &DiagonalArrowCursorData,   // CURSOR_DIAGONAL_ARROWS
-        &PickerArrowCursorData,     // CURSOR_PICKER
-        &TreeDownCursorData,        // CURSOR_TREE_DOWN
-        &FountainDownCursorData,    // CURSOR_FOUNTAIN_DOWN
-        &StatueDownCursorData,      // CURSOR_STATUE_DOWN
-        &BenchDownCursorData,       // CURSOR_BENCH_DOWN
-        &CrossHairCursorData,       // CURSOR_CROSS_HAIR
-        &BinDownCursorData,         // CURSOR_BIN_DOWN
-        &LampPostDownCursorData,    // CURSOR_LAMPPOST_DOWN
-        &FenceDownCursorData,       // CURSOR_FENCE_DOWN
-        &FlowerDownCursorData,      // CURSOR_FLOWER_DOWN
-        &FootpathDownCursorData,    // CURSOR_PATH_DOWN
-        &DigDownCursorData,         // CURSOR_DIG_DOWN
-        &WaterDownCursorData,       // CURSOR_WATER_DOWN
-        &HouseDownCursorData,       // CURSOR_HOUSE_DOWN
-        &VolcanoDownCursorData,     // CURSOR_VOLCANO_DOWN
-        &WalkDownCursorData,        // CURSOR_WALK_DOWN
-        &PaintDownCursorData,       // CURSOR_PAINT_DOWN
-        &EntranceDownCursorData,    // CURSOR_ENTRANCE_DOWN
-        &HandOpenDownCursorData,    // CURSOR_HAND_OPEN
-        &HandClosedDownCursorData,  // CURSOR_HAND_CLOSED
+    static constexpr const CursorData* RawCursorData[] = {
+        nullptr,                    // CursorID::Arrow
+        &kBlankCursorData,          // CursorID::Blank
+        &kUpArrowCursorData,        // CursorID::UpArrow
+        &kUpDownArrowCursorData,    // CursorID::UpDownArrow
+        nullptr,                    // CursorID::HandPoint
+        &kZzzCursorData,            // CursorID::ZZZ
+        &kDiagonalArrowCursorData,  // CursorID::DiagonalArrows
+        &kPickerArrowCursorData,    // CursorID::Picker
+        &kTreeDownCursorData,       // CursorID::TreeDown
+        &kFountainDownCursorData,   // CursorID::FountainDown
+        &kStatueDownCursorData,     // CursorID::StatueDown
+        &kBenchDownCursorData,      // CursorID::BenchDown
+        &kCrossHairCursorData,      // CursorID::CrossHair
+        &kBinDownCursorData,        // CursorID::BinDown
+        &kLampPostDownCursorData,   // CursorID::LamppostDown
+        &kFenceDownCursorData,      // CursorID::FenceDown
+        &kFlowerDownCursorData,     // CursorID::FlowerDown
+        &kFootpathDownCursorData,   // CursorID::PathDown
+        &kDigDownCursorData,        // CursorID::DigDown
+        &kWaterDownCursorData,      // CursorID::WaterDown
+        &kHouseDownCursorData,      // CursorID::HouseDown
+        &kVolcanoDownCursorData,    // CursorID::VolcanoDown
+        &kWalkDownCursorData,       // CursorID::WalkDown
+        &kPaintDownCursorData,      // CursorID::PaintDown
+        &kEntranceDownCursorData,   // CursorID::EntranceDown
+        &kHandOpenDownCursorData,   // CursorID::HandOpen
+        &kHandClosedDownCursorData, // CursorID::HandClosed
     };
 
     // clang-format on
-    const CursorData* CursorRepository::GetCursorData(CursorID cursorId)
+    const CursorData* getCursorData(CursorID cursorId)
     {
         const CursorData* result = nullptr;
         if (cursorId != CursorID::Undefined && cursorId != CursorID::Count)
