@@ -8,14 +8,18 @@ Each script is a single physical javascript file within the `plugin` directory i
 - Mac: `/Users/YourName/Library/Application Support/OpenRCT2`
 - Linux: `$XDG_CONFIG_HOME/OpenRCT2` or in its absence `$HOME/.config/OpenRCT2`
 
+You can also find the user directory via the "Open custom content folder" option under the red toolbox button in the game's title screen.
+
 OpenRCT2 will load every single file with the extension `.js` in this directory recursively. So if you want to prevent a plug-in from being used, you must move it outside this directory, or rename it so the filename does not end with `.js`.
+
+## Script types
 
 There are three types of scripts:
 * Local
 * Remote
 * Intransient
 
-Local scripts can **not** alter the game state. This allows each player to enable any local script for their own game without other players needing to also enable the same script. These scripts tend to provide extra tools for productivity, or new windows containing information.
+Local scripts can **not** alter the game state directly. This allows each player to enable any local script for their own game without other players in a multiplayer server also needing to also enable the same script. Local scripts can interact with the game by mimicing a player's actions through the built-in "game actions". These scripts tend to provide extra tools for productivity, or new windows containing information.
 
 Remote scripts on the other hand can alter the game state in certain contexts, thus must be enabled for every player in a multiplayer game. Players **cannot** enable or disable remote scripts for multiplayer servers they join. Instead the server will upload any remote scripts that have been enabled on the server to each player. This allows servers to enable scripts without players needing to manually download or enable the same script on their end.
 
@@ -25,7 +29,7 @@ The authors must also define a licence for the plug-in, making it clear to the c
 
 ## Writing Scripts
 
-Scripts are written in ECMAScript 5 compatible JavaScript. OpenRCT2 currently uses the [duktape](https://duktape.org) library to execute scripts. This however does not mean you need to write your plug-in in JavaScript, there are many transpilers that allow you to write in a language of your choice and then compile it to JavaScript allowing it to be executed by OpenRCT2. JavaScript or [TypeScript](https://www.typescriptlang.org) is recommended however, as that will allow you to utilise the type definition file we supply (`openrct2.d.ts`). If you would like to use ECMAScript 6 or later which contain features such as the `let` keyword or classes, then you will need to use a transpiler such as [Babel](https://babeljs.io) or [TypeScript](https://www.typescriptlang.org).
+Scripts are written in ECMAScript 5 compatible JavaScript. OpenRCT2 currently uses the [duktape](https://duktape.org) library to execute scripts. This however does not mean you need to write your plug-in in JavaScript, there are many transpilers that allow you to write in a language of your choice and then compile it to JavaScript allowing it to be executed by OpenRCT2. JavaScript or [TypeScript](https://www.typescriptlang.org) is recommended however, as that will allow you to utilise the type definition file we supply (`openrct2.d.ts`). If you would like to use ECMAScript 6 or later which contain features such as arrow functions, the `let` keyword or classes, then you will need to use a transpiler such as [Babel](https://babeljs.io) or [TypeScript](https://www.typescriptlang.org).
 
 Official references for writing plug-ins are:
 * The API: `openrct2.d.ts` distributed with OpenRCT2.
@@ -81,15 +85,13 @@ Yes, but the performance would be so dire that it would be a waste of their time
 
 > What are the limits?
 
-Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs.
+Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs. [Duktape also provides some engine-specific performance tips](https://wiki.duktape.org/performance). 
 
-The APIs for OpenRCT2 try to mimic the internal data structures as close as possible but we can only add so many at a time. The best way to grow the plug-in system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub and also feel free to submit a pull request afterwards.
+The APIs for OpenRCT2 try to provide access to the game's data structures as much as possible but we can only add so many at a time. The best way to grow the plug-in system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub and also feel free to discuss it on our Discord and to submit a pull request afterwards.
 
 > What is ```targetApiVersion```
 
-In case there are breaking Api changes plugins can use this to keep the old Api behavior, as an example in version 34 ```Entity.Type``` would no longer return "peep" for
-guests and staff, instead it would return either "guest" or "staff", so if your plugin expects "peep" you can specify the version 33 to keep the old behavior. See the list
-of breaking changes. If this is not specified it will default to version 33, it is recommended to specify the current api version.
+In case there are breaking Api changes plugins can use this to keep the old API behavior. For example in version 34 ```Entity.type``` would no longer return "peep" for guests and staff, instead it would return either "guest" or "staff", so if your plugin expects "peep" you can specify the version 33 to keep the old behavior. See the list of breaking changes. If this is not specified it will default to version 33 and the plugin will log an error on startup, it is recommended to specify the current api version.
 
 > How do I debug my script?
 
@@ -113,11 +115,11 @@ context.subscribe('interval.day', function() {
 });
 ```
 
-Other hooks include receiving a chat message in multiplayer, or a ride breaking-down.
+Other hooks include receiving a chat message in multiplayer, or a ride's ratings have been recalculated.
 
 > What are game actions?
 
-Game actions allow you to define new actions (with a new permission slot) that players can invoke in games. Here is an example flow of a game action such as opening the park:
+Game actions are actions that players can invoke in games. Here is an example flow of a game action such as opening the park:
 
 1. Player executes action (open park) via UI.
 2. Game action (open park), query method is called.
@@ -128,6 +130,8 @@ Game actions allow you to define new actions (with a new permission slot) that p
 7. All players execute action at tick ###.
 
 This sequence of actions ensures that every player execute the action exactly in the same way on the exact same game tick. It also allows the server to validate that the action is allowed and does not fail due to permission or another player executing a conflicting action just before it. This is why there is a noticeable delay when constructing in multiplayer games, as the client has to wait for the server to acknowledge the action and reply with the tick number to execute it on, since we do not yet have any rollback support.
+
+Besides built-in game actions, remote scripts can also register their own game actions ("custom game actions"). These custom actions allow custom game state mutations to be executed in sync for all players on the server. Beware that the plugin will also be responsible for proper permission checks, as custom game actions have no permission checks by default.
 
 > Can I run code specifically for servers or clients?
 
@@ -184,7 +188,7 @@ If you want to only store data specific to the current park that is loaded, use 
 There is a socket API (based on net.Server and net.Socket from node.js) available for listening and communicating across TCP streams. For security purposes, plugins can only listen and connect to localhost. If you want to extend the communication further, you will need to provide your own separate reverse proxy. What port you can listen on is subject to your operating system, and how elevated the OpenRCT2 process is.
 
 ```js
-var server = network.createServer();
+var server = network.createListener();
 server.on('connection', function (conn) {
     conn.on('data', function(data) {
         console.log("Received data: ", data);
@@ -196,17 +200,28 @@ server.listen(8080);
 
 > Can I use third party JavaScript libraries?
 
-Absolutely, just embed the library in your JavaScript file. There are a number of tools to help you do this.
+Absolutely, as long as you embed the library in your JavaScript file. There are a number of tools to help you do this. Raw module statements like `import` and `require` are not supported unless transpiled by other bundling tools.
 
 > Can I share code across multiple scripts?
 
-Yes, and there are two ways this can be done. If you are just sharing helper routines or libraries, the best thing is to embed it in each plug-in. There are a number of tools for JavaScript to help you do this. If you would like two plug-ins to communicate with each other, perhaps to share data, then you can do this by declaring a variable or function in global scope which is available to all plug-ins, or use the shared storage APIs.
+Yes, and there are two ways this can be done. If you are just sharing helper routines or libraries, the best thing is to embed it in each plug-in. There are a number of tools for JavaScript to help you do this. Raw module statements like `import` and `require` are not supported unless transpiled by other bundling tools.
+
+If you would like two plug-ins to communicate with each other, perhaps to share data, then you can do use custom actions, or use the shared storage APIs.
 
 > What do I do if there is no API for ...?
 
 No problem, if there is something you need, post a new issue on the issue tracker for OpenRCT2 asking for the API you require: https://github.com/OpenRCT2/OpenRCT2/issues
 
 Adding new APIs is most of time straight forward, so they can be added to new development builds quickly. Or if you are capable, make the change yourself to the OpenRCT2 source stream and create a pull request.
+
+> Why do array/string functions like `find` and `includes` give me an error?
+
+OpenRCT2 uses Duktape as the script engine and Duktape only has full support for ES5 Javascript and limited support for ES6+ features. Functions like `find` and `includes` are ES6 functions and not yet supported by Duktape. As an alternative you can implement these yourself, or use a polyfill.
+
+- [List of object and functions in ES5](https://github.com/microsoft/TypeScript/blob/main/src/lib/es5.d.ts)
+- [List of ES6+ features that are implemented in Duktape.](https://wiki.duktape.org/postes5features)
+
+Some ES6 features that are not supported: arrow functions, classes, `let` keyword, async/await, spread operator, destructuring, template literals, default parameters. To use these features anyway, it is recommended to use a transpiler and/or polyfills.
 
 > How do I prevent my script from running on older versions of OpenRCT2 that do not support all the APIs I require?
 
@@ -222,7 +237,9 @@ registerPlugin({
 });
 ```
 
-When new APIs are introduced, or the behaviour of current APIs change, a new version number will be issued which you can find in the OpenRCT2 source code or changelog.
+This will prevent the script from loading at all on OpenRCT2 versions before API v7.
+
+When new APIs are introduced, or the behaviour of current APIs change, a new version number will be issued which you can find in the OpenRCT2 [source code](https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/scripting/ScriptEngine.h) or changelog.
 
 > Where shall I keep the code for my script?
 
